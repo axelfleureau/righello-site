@@ -72,7 +72,7 @@
       <h2 class="heading-lg text-center mb-16 uppercase">Il nostro team</h2>
     </ScrollReveal>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
       {#each team as member, i}
         <ScrollReveal animation="fade-up" delay={i * 100}>
           <TiltCard>
@@ -100,7 +100,7 @@
 
 <section class="py-20">
   <div class="section-container">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 text-center">
       {#each stats as stat, i}
         <ScrollReveal animation="scale" delay={i * 100}>
           <div class="p-8 group rounded-2xl transition-colors duration-300" style="background-color: var(--bg-primary);">

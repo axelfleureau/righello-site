@@ -27,10 +27,10 @@
     </ScrollReveal>
     
     <ScrollReveal animation="fade-up" delay={100}>
-      <div class="flex flex-wrap gap-3 mb-12">
+      <div class="flex flex-wrap gap-2 md:gap-3 mb-8 md:mb-12">
         {#each categories as category}
           <button
-            class="px-5 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 {selectedCategory === category.id ? 'bg-righello-pink text-white shadow-lg shadow-righello-pink/30' : 'bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'}"
+            class="px-4 py-2 md:px-5 md:py-2 rounded-full font-medium text-sm md:text-base transition-all duration-300 transform hover:scale-105 {selectedCategory === category.id ? 'bg-righello-pink text-white shadow-lg shadow-righello-pink/30' : 'bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'}"
             style="border: 1px solid var(--border-color);"
             on:click={() => selectedCategory = category.id}
           >
@@ -40,7 +40,7 @@
       </div>
     </ScrollReveal>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
       {#each filteredProjects as project, i (project.id)}
         <ScrollReveal animation="fade-up" delay={i * 80}>
           <TiltCard>

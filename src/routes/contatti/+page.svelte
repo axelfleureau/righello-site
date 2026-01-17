@@ -31,7 +31,7 @@
 
 <section class="pt-28 pb-16 md:pt-36 md:pb-20">
   <div class="section-container">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
       <div>
         <ScrollReveal animation="fade-up">
           <h1 class="heading-xl mb-8 uppercase"><Highlight variant="pink">PARLIAMONE</Highlight></h1>
@@ -91,7 +91,7 @@
       </div>
       
       <ScrollReveal animation="fade-right" delay={200}>
-        <div class="rounded-3xl p-8 md:p-12 hover:shadow-xl transition-shadow duration-500" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color);">
+        <div class="rounded-2xl md:rounded-3xl p-6 md:p-12 hover:shadow-xl transition-shadow duration-500" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color);">
           {#if submitted}
             <div class="text-center py-12">
               <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6 animate-bounce">

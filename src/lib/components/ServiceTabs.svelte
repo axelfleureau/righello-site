@@ -25,10 +25,10 @@
 
 <div class="service-tabs">
   <div 
-    class="tabs-container relative flex justify-center mb-16"
+    class="tabs-container relative mb-12 md:mb-16 overflow-x-auto scrollbar-hide px-4 md:px-0"
     role="tablist"
   >
-    <div class="tabs-wrapper relative inline-flex p-1.5 bg-[var(--bg-secondary)] rounded-2xl border border-[var(--border-color)] shadow-2xl">
+    <div class="tabs-wrapper relative inline-flex p-1.5 bg-[var(--bg-secondary)] rounded-2xl border border-[var(--border-color)] shadow-2xl mx-auto">
       <div 
         class="tab-indicator absolute top-1.5 bottom-1.5 rounded-xl bg-gradient-to-r from-righello-pink to-cyan-500 transition-all duration-500 ease-out shadow-lg"
         style="
@@ -71,14 +71,14 @@
           <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-3xl mx-auto leading-relaxed">{activeDepartment.description}</p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-14">
           {#each activeDepartment.services as service, i}
             <div 
               class="service-card-wrapper"
               in:fly={{ y: 30, duration: 400, delay: i * 80, easing: cubicOut }}
             >
               <GlowCard class="h-full">
-                <div class="p-6 md:p-8">
+                <div class="p-5 md:p-8">
                   <h4 class="text-xl font-semibold mb-3 text-[var(--text-primary)]">{service.title}</h4>
                   <p class="text-[var(--text-secondary)] leading-relaxed">{service.description}</p>
                 </div>
@@ -88,11 +88,11 @@
         </div>
         
         <div 
-          class="glass-card rounded-3xl p-8 md:p-10"
+          class="glass-card rounded-2xl md:rounded-3xl p-5 md:p-10"
           in:fade={{ duration: 400, delay: 400 }}
         >
-          <h4 class="text-lg font-semibold mb-8 text-center text-[var(--text-primary)]">Cosa include</h4>
-          <div class="flex flex-wrap justify-center gap-3">
+          <h4 class="text-lg font-semibold mb-5 md:mb-8 text-center text-[var(--text-primary)]">Cosa include</h4>
+          <div class="flex flex-wrap justify-center gap-2 md:gap-3">
             {#each activeDepartment.features as feature, i}
               <span 
                 class="feature-tag px-5 py-2.5 bg-[var(--bg-tertiary)] border border-[var(--border-color)] rounded-full text-sm text-[var(--text-secondary)] hover:border-righello-pink/50 hover:text-righello-pink transition-all duration-300 cursor-default"
@@ -109,10 +109,26 @@
 </div>
 
 <style>
+  .tabs-container {
+    display: flex;
+    justify-content: center;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .tabs-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
   .tabs-wrapper {
     box-shadow: 
       0 4px 30px rgba(0, 0, 0, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
   }
   
   .tab-indicator {
@@ -122,12 +138,24 @@
   }
   
   .tab-button {
-    min-width: 100px;
+    min-width: 80px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  @media (min-width: 480px) {
+    .tab-button {
+      min-width: 100px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
   }
   
   @media (min-width: 768px) {
     .tab-button {
       min-width: 180px;
+      padding-left: 32px;
+      padding-right: 32px;
     }
   }
   

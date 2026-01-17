@@ -39,74 +39,76 @@
     gsap.registerPlugin(ScrollTrigger);
     
     ctx = gsap.context(() => {
-      const totalSlides = slides.length + 1;
-      const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-      const isMobile = window.innerWidth < 1024;
-      const scrollDistance = isMobile ? slides.length * 200 : slides.length * 120;
-      const scrubValue = isMobile ? 3 : 2;
-      
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: 'top top',
-          end: () => `+=${scrollDistance}vh`,
-          pin: true,
-          scrub: scrubValue,
-          snap: {
-            snapTo: snapPoints,
-            duration: { min: 0.4, max: 1 },
-            delay: 0.15,
-            ease: 'power2.inOut'
-          }
-        }
-      });
-      
-      tl.to(heroContent, {
-        opacity: 0,
-        y: -50,
-        duration: 0.3
-      }, 0);
-      
-      tl.to(phoneWrapper, {
-        x: () => {
-          const vw = window.innerWidth;
-          if (vw < 1024) return 0;
-          return -(vw / 2 - 160 - (vw * 0.08));
-        },
-        scale: 0.85,
-        duration: 0.4
-      }, 0.1);
-      
-      slideRefs.forEach((slideEl, i) => {
-        if (!slideEl) return;
-        const slide = slides[i];
-        const startTime = 0.3 + (i * 0.7 / slides.length);
-        const endTime = startTime + (0.5 / slides.length);
-        
-        tl.fromTo(slideEl, 
-          { 
-            opacity: 0, 
-            x: slide.position === 'left' ? -100 : 100,
-            scale: 0.9
-          },
-          { 
-            opacity: 1, 
-            x: 0,
-            scale: 1,
-            duration: 0.15
-          }, 
-          startTime
-        );
-        
-        if (i < slides.length - 1) {
-          tl.to(slideEl, 
-            { 
-              opacity: 0, 
-              x: slide.position === 'left' ? -50 : 50,
-              duration: 0.1
-            }, 
-            endTime
-          );
+      // Only enable GSAP scrollytelling on desktop (>=1024px)
+      ScrollTrigger.matchMedia({
+        "(min-width: 1024px)": function() {
+          const totalSlides = slides.length + 1;
+          const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
+          const scrollDistance = slides.length * 120;
+          
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: container,
+              start: 'top top',
+              end: () => `+=${scrollDistance}vh`,
+              pin: true,
+              scrub: 2,
+              snap: {
+                snapTo: snapPoints,
+                duration: { min: 0.4, max: 1 },
+                delay: 0.15,
+                ease: 'power2.inOut'
+              }
+            }
+          });
+          
+          tl.to(heroContent, {
+            opacity: 0,
+            y: -50,
+            duration: 0.3
+          }, 0);
+          
+          tl.to(phoneWrapper, {
+            x: () => {
+              const vw = window.innerWidth;
+              return -(vw / 2 - 160 - (vw * 0.08));
+            },
+            scale: 0.85,
+            duration: 0.4
+          }, 0.1);
+          
+          slideRefs.forEach((slideEl, i) => {
+            if (!slideEl) return;
+            const slide = slides[i];
+            const startTime = 0.3 + (i * 0.7 / slides.length);
+            const endTime = startTime + (0.5 / slides.length);
+            
+            tl.fromTo(slideEl, 
+              { 
+                opacity: 0, 
+                x: slide.position === 'left' ? -100 : 100,
+                scale: 0.9
+              },
+              { 
+                opacity: 1, 
+                x: 0,
+                scale: 1,
+                duration: 0.15
+              }, 
+              startTime
+            );
+            
+            if (i < slides.length - 1) {
+              tl.to(slideEl, 
+                { 
+                  opacity: 0, 
+                  x: slide.position === 'left' ? -50 : 50,
+                  duration: 0.1
+                }, 
+                endTime
+              );
+            }
+          });
         }
       });
     }, container);
@@ -202,21 +204,15 @@
 <style>
   .apple-scrolly {
     position: relative;
-    height: 100vh;
-    height: 100svh;
-    min-height: 600px;
+    min-height: auto;
     overflow: hidden;
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
   
-  @media (max-width: 768px) {
-    .apple-scrolly {
-      min-height: 100svh;
-    }
-  }
-  
   @media (min-width: 1024px) {
     .apple-scrolly {
+      height: 100vh;
+      height: 100svh;
       min-height: 700px;
     }
   }
@@ -238,83 +234,69 @@
   .scrolly-content {
     position: relative;
     z-index: 10;
-    height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 0 5%;
-    padding-top: 70px;
-  }
-  
-  @media (min-width: 768px) {
-    .scrolly-content {
-      padding-top: 90px;
-    }
+    padding: 100px 6% 60px;
+    gap: 2.5rem;
   }
   
   @media (min-width: 1024px) {
     .scrolly-content {
+      flex-direction: row;
+      height: 100%;
+      align-items: center;
       padding-top: 100px;
+      padding-bottom: 0;
+      gap: 0;
     }
   }
   
   .hero-text {
-    flex: 1;
-    max-width: 600px;
-    text-align: left;
+    flex-shrink: 0;
+    max-width: 100%;
+    text-align: center;
+  }
+  
+  @media (min-width: 1024px) {
+    .hero-text {
+      flex: 1;
+      max-width: 600px;
+      text-align: left;
+    }
   }
   
   .phone-area {
-    position: absolute;
-    right: 8%;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 5;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  @media (min-width: 1024px) {
+    .phone-area {
+      position: absolute;
+      right: 8%;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+    }
   }
   
   @media (max-width: 1023px) {
-    .scrolly-content {
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding-top: 60px;
-      padding-bottom: 20px;
-      gap: 1rem;
-    }
-    
-    .hero-text {
-      max-width: 100%;
-      text-align: center;
-      margin-bottom: 0;
-      flex-shrink: 0;
-    }
-    
     .hero-text .flex {
       justify-content: center;
-    }
-    
-    .phone-area {
-      position: relative;
-      right: auto;
-      top: auto;
-      transform: none;
-      flex-shrink: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
   }
   
   @media (max-width: 480px) {
     .scrolly-content {
-      padding-top: 56px;
-      padding-left: 4%;
-      padding-right: 4%;
-      gap: 0.75rem;
-    }
-    
-    .hero-text {
-      padding-bottom: 0;
+      padding-top: 80px;
+      padding-left: 5%;
+      padding-right: 5%;
+      padding-bottom: 40px;
+      gap: 2rem;
     }
   }
   
@@ -341,21 +323,7 @@
   
   @media (max-width: 1023px) {
     .slide {
-      left: 50% !important;
-      right: auto !important;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
-      top: 30%;
-      padding: 0 1rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .slide {
-      top: 28%;
-      padding: 0 0.5rem;
+      display: none;
     }
   }
   

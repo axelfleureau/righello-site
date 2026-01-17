@@ -1,7 +1,7 @@
 <script lang="ts">
   export let fromColor = 'var(--bg-primary)';
   export let toColor = 'var(--bg-secondary)';
-  export let height = '120px';
+  export let height = '150px';
   export let variant: 'gradient' | 'wave' | 'angle' = 'gradient';
 </script>
 
@@ -44,10 +44,17 @@
     width: 100%;
     position: relative;
     z-index: 1;
+    margin-top: -1px;
+    margin-bottom: -1px;
   }
   
   .section-divider.gradient {
     pointer-events: none;
+    opacity: 0.95;
+  }
+  
+  :global([data-theme="light"]) .section-divider.gradient {
+    opacity: 1;
   }
   
   .section-divider.wave,
