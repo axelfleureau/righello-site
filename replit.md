@@ -95,13 +95,17 @@ Sito web per Righello, una growth agency italiana orientata ai risultati e ai nu
 - iPhone mostra placeholder reel con gradient animato e UI social
 - Animazioni CSS con delay staggerati
 
-### Mobile Optimizations
-- **PhoneMockup responsive**: 180x360px (mobile) → 320x640px (desktop) con max-height in svh
-- **Padding ridotto**: 56px mobile → 100px desktop per evitare overlap con navbar
-- **GSAP mobile**: scrub: 3 (più lento), scrollDistance: 200vh per slide (vs 120vh desktop)
-- **Snap migliorato**: duration 0.4-1s con delay 0.15 per controllo preciso
+### Mobile Optimizations (Gennaio 2026)
+- **Hero mobile-first**: Nessun vincolo 100vh su mobile, la sezione si espande naturalmente in verticale
+- **PhoneMockup full-size**: Dimensioni costanti 280-320px su tutti i dispositivi (nessuna riduzione su mobile)
+- **GSAP condizionale**: ScrollTrigger.matchMedia disabilita pinning su schermi <1024px
+- **Layout stacked**: Testo sopra, iPhone sotto su mobile con gap adeguato
 - **Safe area iOS**: padding-bottom: env(safe-area-inset-bottom) per notch/home indicator
-- **SectionDivider**: Gradienti sfumati 80px tra sezioni per transizioni morbide
+- **SectionDivider migliorato**: Altezza 150px con margin overlap per blend più morbidi tra sezioni
+- **ServiceTabs responsive**: Tab container scrollabile orizzontalmente, grid cards sm:2 lg:3 colonne
+- **Progetti filtri**: Bottoni più compatti su mobile con gap ridotti
+- **Team grid**: 2 colonne su mobile, 4 su desktop
+- **Form contatti**: Padding ridotto su mobile per migliore utilizzo spazio
 
 ## Tracking & Analytics
 - **Meta Pixel**: Integrato via `src/lib/tracking/metaPixel.ts`
