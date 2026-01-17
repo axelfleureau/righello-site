@@ -8,14 +8,12 @@ const isTheme = (t: string | null): t is Theme => {
 };
 
 function createThemeStore() {
-  let initialTheme: Theme = 'light';
+  let initialTheme: Theme = 'dark';
   
   if (browser) {
     const stored = localStorage.getItem('theme');
     if (isTheme(stored)) {
       initialTheme = stored;
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      initialTheme = 'dark';
     }
   }
   
@@ -45,12 +43,10 @@ function createThemeStore() {
     init: () => {
       if (browser) {
         const stored = localStorage.getItem('theme');
-        let theme: Theme = 'light';
+        let theme: Theme = 'dark';
         
         if (isTheme(stored)) {
           theme = stored;
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          theme = 'dark';
         }
         
         document.documentElement.setAttribute('data-theme', theme);

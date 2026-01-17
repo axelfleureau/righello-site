@@ -1,293 +1,339 @@
 <script lang="ts">
   import { projects, services, clients } from '$lib/data/projects';
-  import ScrollReveal from '$lib/components/ScrollReveal.svelte';
-  import SplitText from '$lib/components/SplitText.svelte';
-  import TiltCard from '$lib/components/TiltCard.svelte';
-  import Highlight from '$lib/components/Highlight.svelte';
-  import TechWord from '$lib/components/TechWord.svelte';
+  import GSAPReveal from '$lib/components/GSAPReveal.svelte';
+  import TextReveal from '$lib/components/TextReveal.svelte';
+  import GlowCard from '$lib/components/GlowCard.svelte';
+  import InfiniteMarquee from '$lib/components/InfiniteMarquee.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
-  import DraggableRuler from '$lib/components/DraggableRuler.svelte';
-  import StickyNote from '$lib/components/StickyNote.svelte';
-  import SwingingIcon from '$lib/components/SwingingIcon.svelte';
+  import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
+  import { onMount } from 'svelte';
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   
   const featuredProjects = projects.filter(p => p.featured);
+  
+  const stats = [
+    { value: 50, suffix: '+', label: 'Progetti completati' },
+    { value: 2, suffix: 'M+', label: 'Views generate' },
+    { value: 98, suffix: '%', label: 'Clienti soddisfatti' },
+    { value: 24, suffix: 'h', label: 'Risposta garantita' },
+  ];
+  
+  const videoContent = [
+    { title: 'Reel virali', views: '938K', desc: 'Contenuti per social' },
+    { title: 'Video corporate', views: '550K', desc: 'Brand storytelling' },
+    { title: 'Product demos', views: '220K', desc: 'Presentazioni prodotto' },
+    { title: 'Behind the scenes', views: '350K', desc: 'Dietro le quinte' },
+    { title: 'Testimonial', views: '120K', desc: 'Storie di successo' },
+    { title: 'Event coverage', views: '180K', desc: 'Copertura eventi' },
+  ];
+  
+  let heroContainer: HTMLElement;
+  
+  onMount(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    const ctx = gsap.context(() => {
+      gsap.to('.hero-gradient', {
+        backgroundPosition: '100% 100%',
+        duration: 20,
+        ease: 'none',
+        repeat: -1,
+        yoyo: true
+      });
+    });
+    
+    return () => ctx.revert();
+  });
 </script>
 
 <svelte:head>
-  <title>Righello - Creative Lab</title>
-  <meta name="description" content="Siamo un team dedicato e dinamico, uniti dalla passione per l'innovazione e l'eccellenza nel settore digitale." />
+  <title>Righello - Creative Lab | Marketing & Video Production</title>
+  <meta name="description" content="L'agenzia di marketing video che trasforma la tua visibilità in fatturato. Creiamo contenuti virali per brand ambiziosi." />
 </svelte:head>
 
-<section class="min-h-screen flex items-center justify-center relative overflow-hidden">
+<section bind:this={heroContainer} class="min-h-screen flex items-center justify-center relative overflow-hidden">
+  <div class="absolute inset-0 hero-gradient" style="background: radial-gradient(ellipse at 30% 20%, rgba(214, 72, 126, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%), var(--bg-primary);"></div>
+  
+  <div class="absolute inset-0 noise-overlay"></div>
+  
   <video 
     autoplay 
     loop 
     muted 
     playsinline
-    class="absolute inset-0 w-full h-full object-cover"
+    class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity"
   >
     <source src="/hero-video.mp4" type="video/mp4" />
   </video>
   
-  <div class="absolute inset-0 bg-black/40"></div>
-  <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--bg-secondary)] to-transparent z-[5]"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[var(--bg-primary)] to-transparent z-10"></div>
   
-  <div class="absolute top-32 right-10 hidden lg:block z-10">
-    <StickyNote variant="pink" rotation={-5}>
-      Creatività ✨
-    </StickyNote>
+  <div class="section-container text-center relative z-20 py-32">
+    <GSAPReveal animation="fade-up" delay={0.2}>
+      <p class="text-sm md:text-base uppercase tracking-[0.3em] text-righello-pink mb-6 font-medium">
+        Creative Lab
+      </p>
+    </GSAPReveal>
+    
+    <GSAPReveal animation="fade-up" delay={0.4}>
+      <h1 class="heading-xl mb-8 max-w-5xl mx-auto">
+        <span class="block">L'agenzia nata da</span>
+        <span class="gradient-text">content creator.</span>
+      </h1>
+    </GSAPReveal>
+    
+    <GSAPReveal animation="fade-up" delay={0.6}>
+      <p class="text-xl md:text-2xl text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto leading-relaxed">
+        Dalla produzione dei contenuti alla viralità sui social: un approccio pensato per le aziende che vogliono crescere.
+      </p>
+    </GSAPReveal>
+    
+    <GSAPReveal animation="fade-up" delay={0.8}>
+      <div class="flex flex-wrap justify-center gap-4">
+        <MagneticButton href="/contatti" variant="primary">
+          Iniziamo a parlare
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </MagneticButton>
+        <MagneticButton href="/progetti" variant="outline-white">
+          Guarda i progetti
+        </MagneticButton>
+      </div>
+    </GSAPReveal>
   </div>
   
-  <div class="absolute top-48 left-10 hidden lg:block z-10">
-    <StickyNote variant="black" rotation={3}>
-      Innovazione 🚀
-    </StickyNote>
-  </div>
-  
-  <div class="absolute bottom-32 right-20 hidden lg:block z-10">
-    <DraggableRuler />
-  </div>
-  
-  <div class="section-container text-center py-20 relative z-10">
-    <div>
-      <ScrollReveal animation="scale" duration={800}>
-        <img 
-          src="/logo-full.png" 
-          alt="Righello" 
-          class="mx-auto h-24 sm:h-32 md:h-40 lg:h-48 mb-8 w-auto max-w-[90vw] object-contain brightness-0 invert"
-        />
-      </ScrollReveal>
-      <ScrollReveal animation="fade-up" delay={200}>
-        <p class="text-2xl sm:text-3xl md:text-4xl font-light text-white mb-4 drop-shadow-lg">
-          <SplitText text="Creative Lab." delay={80} startDelay={400} />
-        </p>
-      </ScrollReveal>
-      <ScrollReveal animation="fade-up" delay={400}>
-        <p class="text-xl md:text-2xl text-gray-200 mb-12 max-w-2xl mx-auto drop-shadow-md">
-          Aiutiamo le aziende a lavorare meglio attraverso <TechWord highlight>marketing strategico</TechWord> e <TechWord>sviluppo software</TechWord> innovativo.
-        </p>
-      </ScrollReveal>
-      <ScrollReveal animation="fade-up" delay={600}>
-        <div class="flex flex-wrap justify-center gap-4">
-          <MagneticButton href="/progetti" variant="primary">
-            Scopri i nostri progetti
-          </MagneticButton>
-          <MagneticButton href="/contatti" variant="outline-white">
-            Contattaci
-          </MagneticButton>
-        </div>
-      </ScrollReveal>
+  <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-20">
+    <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+      <div class="w-1.5 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
     </div>
-  </div>
-  
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-10">
-    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-    </svg>
   </div>
 </section>
 
-<section class="py-20 relative" style="background-color: var(--bg-secondary);">
+<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="section-container">
-    <ScrollReveal animation="fade-up">
-      <h2 class="heading-lg mb-6 uppercase text-center">
-        <Highlight variant="pink">CREIAMO ESPERIENZE MEMORABILI</Highlight>
-      </h2>
-    </ScrollReveal>
-    <ScrollReveal animation="fade-up" delay={200}>
-      <p class="text-xl md:text-2xl max-w-3xl mx-auto text-center mb-12" style="color: var(--text-secondary);">
-        Video istituzionali, contenuti dimostrativi e proof of work per raccontare il tuo brand
-      </p>
-    </ScrollReveal>
+    <GSAPReveal animation="fade-up">
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Risultati reali</p>
+        <h2 class="heading-lg max-w-4xl mx-auto">
+          I numeri che <span class="gradient-text">fanno la differenza</span>
+        </h2>
+      </div>
+    </GSAPReveal>
     
-    <div class="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide" style="overflow-y: hidden;">
-      {#each [
-        { title: 'Video Istituzionale', desc: 'Racconta la tua azienda' },
-        { title: 'Demo Prodotto', desc: 'Mostra come funziona' },
-        { title: 'Testimonial', desc: 'Le storie dei clienti' },
-        { title: 'Behind the Scenes', desc: 'Il dietro le quinte' },
-        { title: 'Case Study', desc: 'Risultati concreti' }
-      ] as video, i}
-        <ScrollReveal animation="fade-up" delay={i * 100}>
-          <div class="flex-shrink-0 snap-center">
-            <div class="relative w-[400px] aspect-video rounded-2xl overflow-hidden group cursor-pointer hover:scale-[1.02] transition-transform duration-300" style="background-color: var(--bg-primary);">
-              <div class="absolute inset-0 bg-gradient-to-br from-righello-pink/20 to-black/60"></div>
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-righello-pink/80 transition-colors duration-300">
-                  <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-              </div>
-              <div class="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
-                <p class="text-lg font-bold">{video.title}</p>
-                <p class="text-sm text-gray-300">{video.desc}</p>
-              </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+      {#each stats as stat, i}
+        <GSAPReveal animation="scale" delay={i * 0.1}>
+          <div class="glass-card rounded-2xl p-6 md:p-8 text-center hover-lift">
+            <div class="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text mb-2">
+              <AnimatedCounter target={stat.value} duration={2000} />{stat.suffix}
             </div>
+            <p class="text-sm md:text-base text-[var(--text-secondary)]">{stat.label}</p>
           </div>
-        </ScrollReveal>
+        </GSAPReveal>
       {/each}
     </div>
   </div>
 </section>
 
-<section class="py-20 relative overflow-hidden" style="background-color: var(--bg-secondary);">
+<section class="section-padding relative">
   <div class="section-container">
-    <ScrollReveal>
-      <h2 class="heading-lg text-center mb-4 uppercase">Cosa facciamo</h2>
-      <p class="text-xl text-center max-w-2xl mx-auto mb-12" style="color: var(--text-secondary);">
-        Creiamo <TechWord>esperienze digitali</TechWord> per le aziende che vogliono crescere
-      </p>
-    </ScrollReveal>
+    <GSAPReveal animation="fade-up">
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">I nostri servizi</p>
+        <h2 class="heading-lg mb-6">Cosa <span class="gradient-text">facciamo</span></h2>
+        <p class="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
+          Creiamo ecosistemi di conversione che trasformano views in clienti e fatturato ricorrente.
+        </p>
+      </div>
+    </GSAPReveal>
     
-    <div class="flex flex-wrap justify-center gap-6 mb-16">
-      <ScrollReveal animation="fade-up" delay={0}>
-        <SwingingIcon label="Strategia">
-          <svg class="w-10 h-10 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-          </svg>
-        </SwingingIcon>
-      </ScrollReveal>
-      
-      <ScrollReveal animation="fade-up" delay={100}>
-        <SwingingIcon label="Design">
-          <svg class="w-10 h-10 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-          </svg>
-        </SwingingIcon>
-      </ScrollReveal>
-      
-      <ScrollReveal animation="fade-up" delay={200}>
-        <SwingingIcon label="Sviluppo">
-          <svg class="w-10 h-10 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-          </svg>
-        </SwingingIcon>
-      </ScrollReveal>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {#each services as service, i}
-        <ScrollReveal animation="fade-up" delay={i * 100}>
-          <div class="p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-2" style="background-color: var(--bg-primary);">
-            <div class="w-14 h-14 rounded-xl bg-righello-pink/10 flex items-center justify-center mb-6 group-hover:bg-righello-pink group-hover:scale-110 transition-all duration-300">
-              {#if service.icon === 'palette'}
-                <svg class="w-7 h-7 text-righello-pink group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                </svg>
-              {:else if service.icon === 'sparkles'}
-                <svg class="w-7 h-7 text-righello-pink group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                </svg>
-              {:else if service.icon === 'code'}
-                <svg class="w-7 h-7 text-righello-pink group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                </svg>
-              {:else if service.icon === 'camera'}
-                <svg class="w-7 h-7 text-righello-pink group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              {:else if service.icon === 'cpu'}
-                <svg class="w-7 h-7 text-righello-pink group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                </svg>
-              {/if}
+        <GSAPReveal animation="fade-up" delay={i * 0.1}>
+          <GlowCard class="h-full">
+            <div class="p-8">
+              <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-righello-pink/20 to-cyan-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                {#if service.icon === 'palette'}
+                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                  </svg>
+                {:else if service.icon === 'sparkles'}
+                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  </svg>
+                {:else if service.icon === 'code'}
+                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                {:else if service.icon === 'camera'}
+                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                {:else if service.icon === 'cpu'}
+                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                {:else}
+                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                {/if}
+              </div>
+              <h3 class="text-xl font-semibold mb-3 text-white">{service.title}</h3>
+              <p class="text-[var(--text-secondary)] leading-relaxed">{service.description}</p>
             </div>
-            <h3 class="text-xl font-semibold mb-3 group-hover:text-righello-pink transition-colors">{service.title}</h3>
-            <p style="color: var(--text-secondary);">{service.description}</p>
-          </div>
-        </ScrollReveal>
+          </GlowCard>
+        </GSAPReveal>
       {/each}
     </div>
   </div>
 </section>
 
-<section class="py-20">
-  <div class="section-container">
-    <ScrollReveal>
-      <div class="text-center mb-12">
-        <h2 class="heading-lg mb-4 uppercase">Cosa facciamo sui social</h2>
-        <p class="text-xl max-w-xl mx-auto" style="color: var(--text-secondary);">
-          Dai un'occhiata ai nostri contenuti in formato reel
+<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
+  <div class="section-container mb-12">
+    <GSAPReveal animation="fade-up">
+      <div class="text-center">
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Portfolio</p>
+        <h2 class="heading-lg mb-6">I nostri <span class="gradient-text">contenuti virali</span></h2>
+        <p class="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
+          Guarda i video che hanno generato milioni di views per i nostri clienti
         </p>
       </div>
-    </ScrollReveal>
-    
-    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide" style="overflow-y: hidden;">
-      {#each [1, 2, 3, 4, 5, 6] as reel, i}
-        <ScrollReveal animation="fade-up" delay={i * 100}>
-          <div class="flex-shrink-0 snap-center">
-            <div class="relative w-[280px] aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer hover:scale-[1.02] transition-transform duration-300">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-righello-pink/80 transition-colors duration-300">
-                  <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
+    </GSAPReveal>
+  </div>
+  
+  <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 md:px-8 pb-8">
+    {#each videoContent as video, i}
+      <GSAPReveal animation="fade-up" delay={i * 0.1}>
+        <div class="flex-shrink-0 snap-center">
+          <div class="video-preview w-[260px] md:w-[300px] group">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-righello-pink/10 to-cyan-500/10"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center z-20">
+              <div class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-righello-pink group-hover:border-righello-pink transition-all duration-300 group-hover:scale-110">
+                <svg class="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
               </div>
-              <div class="absolute bottom-0 left-0 right-0 p-4 z-10 text-white">
-                <p class="text-sm font-medium">Reel #{reel}</p>
-                <p class="text-xs text-gray-300">Contenuto social</p>
-              </div>
-              <div class="absolute inset-0 bg-gradient-to-br from-righello-pink/20 to-black/40"></div>
+            </div>
+            
+            <div class="absolute top-4 right-4 z-20">
+              <span class="px-3 py-1 bg-righello-pink/90 text-white text-xs font-bold rounded-full">
+                {video.views} views
+              </span>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 right-0 p-5 z-20">
+              <p class="text-lg font-bold text-white mb-1">{video.title}</p>
+              <p class="text-sm text-gray-300">{video.desc}</p>
             </div>
           </div>
-        </ScrollReveal>
-      {/each}
-    </div>
-    
-    <div class="text-center mt-8">
-      <MagneticButton href="/progetti" variant="secondary">
-        Vedi tutti i progetti
-        <svg class="w-4 h-4 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </MagneticButton>
-    </div>
-  </div>
-</section>
-
-<section class="py-20 bg-black text-white overflow-hidden">
-  <ScrollReveal>
-    <div class="section-container mb-12">
-      <h2 class="heading-lg text-center uppercase">I nostri clienti</h2>
-    </div>
-  </ScrollReveal>
-  
-  <div class="relative">
-    <div class="flex animate-marquee whitespace-nowrap hover:pause-animation">
-      {#each [...clients, ...clients, ...clients] as client}
-        <span class="text-4xl md:text-6xl font-bold mx-8 text-gray-600 hover:text-righello-pink transition-colors duration-300 cursor-default">
-          {client}
-        </span>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<section class="py-20">
-  <div class="section-container">
-    <ScrollReveal animation="scale">
-      <div class="bg-gradient-to-r from-righello-pink to-righello-pink-light rounded-3xl p-12 md:p-16 text-white text-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-          <div class="absolute top-0 left-0 w-40 h-40 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-          <div class="absolute bottom-0 right-0 w-60 h-60 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>
         </div>
-        <div class="relative z-10">
-          <h2 class="heading-lg mb-6 uppercase">HAI UN PROGETTO IN MENTE?</h2>
-          <p class="text-xl md:text-2xl opacity-90 mb-8 max-w-2xl mx-auto">
-            Parliamone insieme! Siamo sempre pronti a trasformare le tue <Highlight variant="white">idee</Highlight> in <em>realtà</em>.
+      </GSAPReveal>
+    {/each}
+  </div>
+  
+  <div class="text-center mt-8">
+    <MagneticButton href="/progetti" variant="secondary">
+      Vedi tutti i progetti
+      <svg class="w-4 h-4 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </MagneticButton>
+  </div>
+</section>
+
+<section class="py-16 md:py-24 overflow-hidden relative">
+  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-righello-pink/5 to-transparent"></div>
+  
+  <GSAPReveal animation="fade-in">
+    <div class="section-container mb-8">
+      <p class="text-sm uppercase tracking-[0.2em] text-righello-pink text-center">I nostri clienti</p>
+    </div>
+  </GSAPReveal>
+  
+  <InfiniteMarquee speed={40} class="mask-fade-edges">
+    {#each clients as client}
+      <span class="text-4xl md:text-6xl font-bold mx-8 text-white/20 hover:text-righello-pink transition-colors duration-500 cursor-default whitespace-nowrap">
+        {client}
+      </span>
+    {/each}
+  </InfiniteMarquee>
+</section>
+
+<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
+  <div class="section-container">
+    <GSAPReveal animation="fade-up">
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Come funziona</p>
+        <h2 class="heading-lg">Il tuo percorso di <span class="gradient-text">crescita</span></h2>
+      </div>
+    </GSAPReveal>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {#each [
+        { step: '01', title: 'Analisi', desc: 'Compila il form o scrivici. Analizziamo il tuo brand e i tuoi obiettivi.' },
+        { step: '02', title: 'Strategia', desc: 'Organizziamo un incontro dove definiamo la strategia su misura per te.' },
+        { step: '03', title: 'Esecuzione', desc: 'Produciamo contenuti e gestiamo le campagne per massimizzare i risultati.' },
+      ] as item, i}
+        <GSAPReveal animation="fade-up" delay={i * 0.15}>
+          <div class="relative">
+            <div class="text-8xl font-black text-white/5 absolute -top-8 -left-4">{item.step}</div>
+            <div class="glass-card rounded-2xl p-8 relative z-10 h-full">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-righello-pink to-cyan-500 flex items-center justify-center text-white font-bold mb-6">
+                {item.step}
+              </div>
+              <h3 class="text-2xl font-bold mb-4">{item.title}</h3>
+              <p class="text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
+            </div>
+          </div>
+        </GSAPReveal>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<section class="section-padding">
+  <div class="section-container">
+    <GSAPReveal animation="scale">
+      <div class="relative rounded-3xl overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-righello-pink via-[#8B5CF6] to-cyan-500"></div>
+        <div class="absolute inset-0 noise-overlay opacity-20"></div>
+        
+        <div class="relative z-10 p-12 md:p-20 text-center">
+          <h2 class="heading-lg text-white mb-6">
+            Pronto a far <span class="font-black">crescere</span> il tuo brand?
+          </h2>
+          <p class="text-xl md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto">
+            Candidati ora e scopri se sei tra i pochi che possiamo seguire personalmente.
           </p>
-          <a href="/contatti" class="inline-flex items-center justify-center px-8 py-4 bg-white text-righello-pink font-black rounded-full transition-all duration-300 hover:bg-black hover:text-white hover:scale-105">
-            Contattaci ora
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a 
+              href="/contatti" 
+              class="inline-flex items-center justify-center px-10 py-5 bg-white text-gray-900 font-bold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            >
+              Candidati ora
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            <a 
+              href="https://wa.me/393514613439" 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-10 py-5 bg-transparent border-2 border-white text-white font-bold rounded-full transition-all duration-300 hover:bg-white hover:text-gray-900"
+            >
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Scrivici su WhatsApp
+            </a>
+          </div>
         </div>
       </div>
-    </ScrollReveal>
+    </GSAPReveal>
   </div>
 </section>
