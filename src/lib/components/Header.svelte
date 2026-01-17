@@ -45,10 +45,9 @@
 </script>
 
 <header 
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-  class:shadow-lg={isPastTop}
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 header-blur"
   class:-translate-y-full={isHidden && !mobileMenuOpen}
-  style="background-color: {isPastTop ? 'var(--bg-primary)' : 'transparent'};"
+  class:header-scrolled={isPastTop}
 >
   <div class="section-container">
     <nav class="flex items-center justify-between h-20">
@@ -129,4 +128,26 @@
   </div>
 </header>
 
-<div class="h-20"></div>
+<style>
+  .header-blur {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(5, 5, 5, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .header-scrolled {
+    background-color: rgba(5, 5, 5, 0.85);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  :global([data-theme="light"]) .header-blur {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  :global([data-theme="light"]) .header-scrolled {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+</style>
