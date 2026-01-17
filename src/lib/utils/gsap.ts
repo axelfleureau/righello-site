@@ -9,15 +9,13 @@ if (browser) {
 
 export { gsap, ScrollTrigger };
 
-export function useGsapContext(callback: (ctx: gsap.Context) => void) {
+export function useGsapContext(callback: () => void) {
   let ctx: gsap.Context | null = null;
   
   onMount(() => {
     if (!browser) return;
     
-    ctx = gsap.context(() => {
-      callback(ctx!);
-    });
+    ctx = gsap.context(callback);
   });
   
   onDestroy(() => {

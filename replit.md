@@ -14,7 +14,7 @@ Sito web per Righello, una growth agency italiana orientata ai risultati e ai nu
 - **Styling**: TailwindCSS
 - **Font**: Degular Display (custom font con tutti i pesi da Thin a Black)
 - **Adapter**: Node adapter
-- **Animazioni**: Native Svelte transitions + CSS animations (no GSAP per performance)
+- **Animazioni**: GSAP + ScrollTrigger per scrollytelling avanzato, Svelte transitions per transizioni UI
 
 ## Colori Brand (Dark Theme Premium)
 - **Tema di default**: Dark mode
@@ -65,14 +65,19 @@ Sito web per Righello, una growth agency italiana orientata ai risultati e ai nu
 
 ## Componenti Interattivi
 - **PhoneMockup**: iPhone 3D mockup con spring physics, tilt hover effects, gradient animato
+- **ScrollyPhone**: iPhone parallax con GSAP ScrollTrigger, rotazione 3D, traslazione e contenuti sincronizzati allo scroll
 - **RevealOnScroll**: Animazioni scroll-triggered con Svelte native (fly, fade, scale)
 - **GlowCard**: Card con effetto glow che segue il cursore (rosa/ciano gradient)
 - **InfiniteMarquee**: Scroll infinito orizzontale per loghi clienti
 - **ServiceTabs**: Switch a schede moderno con indicatore animato e angoli arrotondati
-- **VideoTestimonials**: Carousel video recensioni clienti in formato reel (9:16)
+- **VideoTestimonials**: Carousel video reel con drag-to-scroll e lightbox fullscreen
 - **AnimatedCounter**: Contatori che si animano quando visibili
 - **MagneticButton**: Bottoni che seguono il cursore con effetto magnetico
-- **Header Smart**: Fixed transparent, si nasconde/mostra con lo scroll, background scuro dopo scroll
+- **Header Smart**: Fixed transparent con backdrop-filter blur (glassmorphism), si nasconde/mostra con scroll
+- **BenefitsSection**: Card glassmorphism con statistiche animate e confronto Prima/Dopo
+- **FAQ**: Accordion con animazioni smooth (Svelte slide transition)
+- **BackgroundBeams**: Effetti di luce animati per sezioni hero/accent
+- **SectionDivider**: Transizioni sfumate tra sezioni (gradient blend)
 
 ## Hero Section
 - Desktop: 100vh fullscreen, header trasparente sovrapposto
@@ -103,8 +108,9 @@ Il dev server gira sulla porta 5000 usando `npm run dev`.
 
 ## Struttura File Principali
 - `src/routes/` - Pagine SvelteKit
-- `src/lib/components/` - Componenti UI (PhoneMockup, VideoTestimonials, ServiceTabs, etc.)
+- `src/lib/components/` - Componenti UI (PhoneMockup, ScrollyPhone, VideoTestimonials, BenefitsSection, FAQ, etc.)
 - `src/lib/data/projects.ts` - Dati statici (progetti, dipartimenti, servizi, clienti)
+- `src/lib/utils/gsap.ts` - Utility GSAP per Svelte (useGsapContext, createScrollTrigger, createParallax, etc.)
 - `src/lib/actions/inview.ts` - Svelte action per scroll detection
 - `src/lib/tracking/` - Moduli tracking (Meta Pixel)
 - `src/lib/stores/` - Svelte stores (tema, media queries)

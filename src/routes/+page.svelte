@@ -7,7 +7,42 @@
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
   import PhoneMockup from '$lib/components/PhoneMockup.svelte';
   import VideoTestimonials from '$lib/components/VideoTestimonials.svelte';
+  import ScrollyPhone from '$lib/components/ScrollyPhone.svelte';
+  import BenefitsSection from '$lib/components/BenefitsSection.svelte';
+  import FAQ from '$lib/components/FAQ.svelte';
+  import BackgroundBeams from '$lib/components/BackgroundBeams.svelte';
+  import SectionDivider from '$lib/components/SectionDivider.svelte';
   import { onMount } from 'svelte';
+  
+  const scrollySlides = [
+    {
+      title: 'Content che converte',
+      subtitle: 'Content & Social',
+      description: 'Creiamo contenuti che catturano l\'attenzione e trasformano follower in clienti. Reel, stories e campagne UGC con risultati misurabili.',
+      stats: [
+        { value: '+340%', label: 'Engagement rate' },
+        { value: '2M+', label: 'Views mensili' },
+      ],
+    },
+    {
+      title: 'Advertising precision',
+      subtitle: 'Performance Marketing',
+      description: 'Meta Ads, Google Ads, TikTok Ads. Ogni euro investito tracciato, ottimizzato e moltiplicato. ROAS che parlano da soli.',
+      stats: [
+        { value: '8.5x', label: 'ROAS medio' },
+        { value: '-45%', label: 'Costo acquisizione' },
+      ],
+    },
+    {
+      title: 'Digital Experience',
+      subtitle: 'Tech & Development',
+      description: 'Siti web, e-commerce e web app che convertono. Design system, integrazioni CRM e automazioni AI per scalare il tuo business.',
+      stats: [
+        { value: '+180%', label: 'Conversion rate' },
+        { value: '99.9%', label: 'Uptime garantito' },
+      ],
+    },
+  ];
   
   const homepageServices = departments.map(dept => ({
     id: dept.id,
@@ -90,6 +125,7 @@
 
 <section class="h-screen min-h-[600px] flex items-center relative overflow-hidden">
   <div class="absolute inset-0 hero-bg"></div>
+  <BackgroundBeams variant="subtle" />
   <div class="absolute inset-0 noise-overlay opacity-30"></div>
   
   <div class="section-container relative z-10 pt-24 pb-12 md:pt-28 md:pb-16">
@@ -162,6 +198,8 @@
     </div>
   </div>
 </section>
+
+<ScrollyPhone slides={scrollySlides} />
 
 <section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="section-container">
@@ -286,7 +324,20 @@
   <InfiniteMarquee items={clients} speed={30} />
 </section>
 
-<section class="section-padding relative overflow-hidden">
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+
+<BenefitsSection />
+
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
+
+<div class="relative">
+  <BackgroundBeams variant="subtle" />
+  <FAQ />
+</div>
+
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+
+<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="absolute inset-0 cta-gradient"></div>
   
   <div class="section-container relative z-10">
