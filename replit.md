@@ -95,6 +95,14 @@ Sito web per Righello, una growth agency italiana orientata ai risultati e ai nu
 - iPhone mostra placeholder reel con gradient animato e UI social
 - Animazioni CSS con delay staggerati
 
+### Mobile Optimizations
+- **PhoneMockup responsive**: 180x360px (mobile) → 320x640px (desktop) con max-height in svh
+- **Padding ridotto**: 56px mobile → 100px desktop per evitare overlap con navbar
+- **GSAP mobile**: scrub: 3 (più lento), scrollDistance: 200vh per slide (vs 120vh desktop)
+- **Snap migliorato**: duration 0.4-1s con delay 0.15 per controllo preciso
+- **Safe area iOS**: padding-bottom: env(safe-area-inset-bottom) per notch/home indicator
+- **SectionDivider**: Gradienti sfumati 80px tra sezioni per transizioni morbide
+
 ## Tracking & Analytics
 - **Meta Pixel**: Integrato via `src/lib/tracking/metaPixel.ts`
 - Per attivare: impostare `PUBLIC_META_PIXEL_ID` nelle variabili d'ambiente
