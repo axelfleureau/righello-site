@@ -89,6 +89,8 @@
 
 <AppleScrolly {credibilityBadges} />
 
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" height="80px" />
+
 <section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
@@ -114,6 +116,8 @@
     </div>
   </div>
 </section>
+
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="80px" />
 
 <section class="section-padding relative">
   <div class="section-container">
@@ -184,6 +188,8 @@
   </div>
 </section>
 
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" height="80px" />
+
 <section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="section-container mb-12">
     <RevealOnScroll animation="fly-up">
@@ -199,6 +205,8 @@
   
   <VideoTestimonials testimonials={videoTestimonials} />
 </section>
+
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="60px" />
 
 <section class="py-16 md:py-24 overflow-hidden relative">
   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-righello-pink/5 to-transparent"></div>

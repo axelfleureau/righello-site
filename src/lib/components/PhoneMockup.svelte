@@ -133,15 +133,33 @@
 <style>
   .phone-container {
     position: relative;
-    width: 280px;
-    height: 560px;
+    width: 180px;
+    height: 360px;
     cursor: pointer;
+    max-height: 40svh;
+  }
+  
+  @media (min-width: 480px) {
+    .phone-container {
+      width: 220px;
+      height: 440px;
+      max-height: 50svh;
+    }
   }
   
   @media (min-width: 768px) {
     .phone-container {
+      width: 280px;
+      height: 560px;
+      max-height: 65svh;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .phone-container {
       width: 320px;
       height: 640px;
+      max-height: none;
     }
   }
   

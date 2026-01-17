@@ -41,18 +41,22 @@
     ctx = gsap.context(() => {
       const totalSlides = slides.length + 1;
       const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
+      const isMobile = window.innerWidth < 1024;
+      const scrollDistance = isMobile ? slides.length * 200 : slides.length * 120;
+      const scrubValue = isMobile ? 3 : 2;
       
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: 'top top',
-          end: () => `+=${slides.length * 120}vh`,
+          end: () => `+=${scrollDistance}vh`,
           pin: true,
-          scrub: 2,
+          scrub: scrubValue,
           snap: {
             snapTo: snapPoints,
-            duration: { min: 0.2, max: 0.6 },
-            ease: 'power1.inOut'
+            duration: { min: 0.4, max: 1 },
+            delay: 0.15,
+            ease: 'power2.inOut'
           }
         }
       });
@@ -124,17 +128,17 @@
         Growth Agency
       </p>
       
-      <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-[1.1]">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 leading-[1.1]">
         <span class="block text-[var(--text-primary)]">La tua crescita,</span>
         <span class="gradient-text">inquadrata alla perfezione.</span>
       </h1>
       
-      <p class="text-lg md:text-xl text-[var(--text-secondary)] mb-8 max-w-xl leading-relaxed">
+      <p class="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] mb-5 md:mb-8 max-w-xl leading-relaxed">
         Marketing, advertising e sviluppo digitale con un approccio data-driven. 
         Ogni euro investito, ogni conversione tracciata.
       </p>
       
-      <div class="flex flex-wrap gap-4 mb-10">
+      <div class="flex flex-wrap gap-3 md:gap-4 mb-6 md:mb-10">
         <MagneticButton href="/contatti" variant="primary">
           Iniziamo a parlare
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +150,7 @@
         </MagneticButton>
       </div>
       
-      <div class="flex flex-wrap gap-6">
+      <div class="flex flex-wrap gap-4 md:gap-6 justify-center lg:justify-start">
         {#each credibilityBadges as badge}
           <div class="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
             {#if badge.icon === 'meta'}
@@ -199,13 +203,21 @@
   .apple-scrolly {
     position: relative;
     height: 100vh;
-    min-height: 700px;
+    height: 100svh;
+    min-height: 600px;
     overflow: hidden;
+    padding-bottom: env(safe-area-inset-bottom, 0);
   }
   
   @media (max-width: 768px) {
     .apple-scrolly {
       min-height: 100svh;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .apple-scrolly {
+      min-height: 700px;
     }
   }
   
@@ -230,12 +242,18 @@
     display: flex;
     align-items: center;
     padding: 0 5%;
-    padding-top: 100px;
+    padding-top: 70px;
+  }
+  
+  @media (min-width: 768px) {
+    .scrolly-content {
+      padding-top: 90px;
+    }
   }
   
   @media (min-width: 1024px) {
     .scrolly-content {
-      padding-top: 120px;
+      padding-top: 100px;
     }
   }
   
@@ -256,16 +274,18 @@
   @media (max-width: 1023px) {
     .scrolly-content {
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      padding-top: 100px;
-      padding-bottom: 80px;
+      padding-top: 60px;
+      padding-bottom: 20px;
+      gap: 1rem;
     }
     
     .hero-text {
       max-width: 100%;
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0;
       flex-shrink: 0;
     }
     
@@ -279,14 +299,22 @@
       top: auto;
       transform: none;
       flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
   
   @media (max-width: 480px) {
     .scrolly-content {
-      padding-top: 90px;
+      padding-top: 56px;
       padding-left: 4%;
       padding-right: 4%;
+      gap: 0.75rem;
+    }
+    
+    .hero-text {
+      padding-bottom: 0;
     }
   }
   
@@ -297,6 +325,10 @@
     max-width: 400px;
     opacity: 0;
     z-index: 20;
+    min-height: clamp(200px, 30svh, 300px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   
   .slide-left {
@@ -315,7 +347,15 @@
       text-align: center;
       width: 90%;
       max-width: 400px;
-      top: 25%;
+      top: 30%;
+      padding: 0 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .slide {
+      top: 28%;
+      padding: 0 0.5rem;
     }
   }
   
