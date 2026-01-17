@@ -1,0 +1,147 @@
+Meravigliä Lab usa uno stack Next.js + React con stile da design system/Tailwind-like, più un set preciso di script marketing.
+​
+
+Librerie e stack tecnico
+Framework & runtime
+
+Next.js (app router):
+
+/_next/static/chunks/app/page-*.js, app/layout-*.js, main-app-*.js, webpack-*.js.
+​
+
+React (implicito in Next).
+​
+
+CSS / stili
+
+CSS globali da Next:
+
+/_next/static/css/cd42968ebb42b615.css
+
+/_next/static/css/ee74cbf989b58c77.css
+​
+
+Classi nel <body>: bg-dark text-white font-poppins antialiased → pattern utility-first:
+
+bg-*, text-*, font-*, antialiased tipici di Tailwind o di un design system custom ispirato a Tailwind.
+​
+
+Font custom:
+
+preload di 7 font WOFF2 via _next/static/media/*-s.p.woff2 → probabilmente vari pesi di Poppins/brand font.
+​
+
+JS / tracking / widget
+
+TikTok Pixel:
+
+https://analytics.tiktok.com/i18n/pixel/static/identify_b46e7c41.js
+
+.../pixel/static/main.*.js con sdkid=CLDION3C77U93A3DFSOG.
+​
+
+Google:
+
+gtag/js?id=G-CJRTWWZY9Q (GA4)
+
+gtag/destination?id=AW-929781618 (Google Ads conversion)
+
+gtm.js?id=GTM-TV28298L (GTM).
+​
+
+Spoki (WhatsApp / chat):
+
+CSS inline per #spoki-fixed-btn e #spoki-chat-link.
+​
+
+Pattern strutturali utili da copiare
+Head / performance
+
+Preload font:
+
+<link rel="preload" href="/_next/static/media/xxxx-s.p.woff2" as="font" type="font/woff2" crossorigin />.
+​
+
+Preload immagini chiave (logo + loghi partner) con imagesrcset e imagesizes (Next Image).
+​
+
+Manifest + meta PWA (theme-color, favicon in più size).
+​
+
+Body / layout
+
+<body class="bg-dark text-white font-poppins antialiased">:
+
+definisce tema dark globale con font Poppins e smoothing.
+​
+
+Come “esportare” questo su Svelte/JS
+1. Stili globali (Tailwind-like o CSS custom)
+
+Se vuoi emulare il loro approccio, puoi:
+
+Usare Tailwind e definire in tailwind.config.js:
+
+js
+theme: {
+  extend: {
+    colors: {
+      dark: '#05050a',   // ipotetico bg
+      brand: '#247DFF',  // theme-color
+    },
+    fontFamily: {
+      poppins: ['Poppins', 'system-ui', 'sans-serif'],
+    },
+  },
+}
+In app.css / global.css Svelte:
+
+css
+body {
+  @apply bg-dark text-white font-poppins antialiased;
+}
+Se non vuoi Tailwind, definisci classi equivalenti:
+
+css
+.bg-dark { background-color: #05050a; }
+.text-white { color: #ffffff; }
+.font-poppins { font-family: 'Poppins', system-ui, sans-serif; }
+.antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+2. Font preload
+
+Emula il pattern nel <head> di SvelteKit o template HTML:
+
+xml
+<link
+  rel="preload"
+  href="/fonts/poppins-regular.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+>
+3. Tracking (se vuoi replicarlo)
+
+TikTok Pixel in Svelte:
+
+xml
+<script>
+  (function(w,d,t,u,s,q,m){
+    w.ttq = w.ttq || [];
+    q = w.ttq;
+    q.push(['config', 'CLDION3C77U93A3DFSOG']);
+    var js = d.createElement(t); js.async = true;
+    js.src = 'https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=CLDION3C77U93A3DFSOG&lib=ttq';
+    var f = d.getElementsByTagName(t)[0];
+    f.parentNode.insertBefore(js, f);
+  })(window, document, 'script');
+</script>
+Google Tag / GTM copia-incolla con i tuoi ID (GA4, Ads, GTM) seguendo il pattern che vedi nei loro script.
+​
+
+4. Component structure
+
+Converti mentalmente:
+
+Next app/page.tsx → Svelte +page.svelte.
+
+Sezioni (hero, servizi, proof, CTA finale) come componenti Svelte, ma lo styling e l’impostazione “dark + font Poppins + utility classes” rimangono identici.

@@ -1,0 +1,149 @@
+Il sito certoagency.com è un WordPress con tema YOOtheme personalizzato, che usa GSAP + ScrollTrigger + ScrollTo per le animazioni scroll-based e un hero video full-screen sticky con overlay sfumato.
+​
+
+Stack e librerie principali
+CMS / Tema
+
+WordPress 6.9.
+​
+
+Tema: YOOtheme (/wp-content/themes/yootheme/...) con tema child custom certoagency (/wp-content/themes/certoagency/css/theme.1.css, custom.css, custom.js).
+​
+
+JS / UI Framework
+
+jQuery (jquery.min.js, jquery-migrate).
+​
+
+UIkit (framework di YOOtheme):
+
+uikit.min.js e uikit-icons-circle.min.js.
+​
+
+Markup con classi uk-section, uk-container, uk-grid, uk-position-cover, uk-height-viewport, uk-sticky, uk-scrollspy, uk-visible@s, ecc.
+​
+
+Animazioni
+
+GSAP 3.11.2 core.
+​
+
+GSAP ScrollTrigger per effetti in base allo scroll.
+​
+
+GSAP ScrollToPlugin per scroll morbidi verso anchor/section.
+​
+
+UIkit Scrollspy per animazioni d’ingresso (uk-scrollspy="... uk-animation-slide-top-medium").
+​
+
+Tracking / Cookie
+
+Google Tag Manager (GTM-K39D5CCV) + Google Analytics.
+​
+
+Iubenda per cookie solution e banner.
+​
+
+Contact Form 7 per form.
+​
+
+Struttura hero e sezioni chiave
+Hero video sticky
+
+Wrapper #page#3 con classi:
+
+uk-cover-container uk-section uk-section-large uk-flex uk-flex-bottom uk-height-viewport uk-sticky uk-active uk-sticky-fixed.
+​
+
+Attributo uk-sticky="position: bottom; overflow-flip: true; start: -100%; end: 0;" per effetto sticky dal fondo.
+​
+
+Dentro:
+
+<video src="/wp-content/uploads/2024/07/14sec_compressed.webm" loop autoplay muted playsinline class="uk-visible@s" uk-cover> per video di sfondo.
+​
+
+div.uk-position-cover con background-image: linear-gradient(...) per overlay sfumato viola→nero.
+​
+
+Container con grid e header placeholder, poi:
+
+h1 con payoff: “L’agenzia nata da content creator.” (markup con span.creator e pseudo-elemento con SVG double-line).
+​
+
+h2 subheadline: “Dalla produzione dei contenuti alla vendita su TikTok Shop: un approccio pensato per le aziende.”
+​
+
+CSS custom per sezioni (id page#0–#9)
+
+#page#0 (hero mobile) e #page#3 (hero desktop) scalati a transform: scale(1.2), overlay gradient, video height 50vh su mobile.
+​
+
+#page#1:
+
+line-height: .8, .creator:after con double-line.svg sottolineatura diagonale.
+​
+
+font size responsive: 100px desktop, 70px tablet, 38px mobile.
+​
+
+#page#7:
+
+slider video con .el-item video{border-radius:20px; height:550px; object-fit:cover;} e pseudo-elemento progress bar sotto.
+​
+
+#page#9:
+
+card con glassmorphism (background: rgba(255,255,255,0.05); backdrop-filter: blur(5px); border-radius:16px;).
+​
+
+Come far assomigliare il tuo sito Svelte/JS a Certo Agency
+Con Svelte/JS puoi replicare:
+
+Pattern hero
+
+Hero full viewport con:
+
+video background object-fit: cover
+
+overlay linear-gradient viola→nero
+
+header sopra con placeholder in alto e payoff centrato in area sicura.
+​
+
+Usa un wrapper sticky (in CSS + JS o Svelte action) per creare la sensazione di video che resta durante lo scroll della prima sezione, come uk-sticky.
+​
+
+Animazioni scroll
+
+Integra GSAP + ScrollTrigger + ScrollTo nel tuo progetto Svelte, in modo analogo a Certo (CDN o install via npm).
+​
+
+Usa ScrollTrigger per:
+
+far apparire il payoff (h1, h2) con slide/fade su scroll.
+​
+
+controllare parti del video hero o classi che cambiano su avanzamento dello scroll.
+
+UI e stile
+
+Replica:
+
+titoli grandi con line-height stretta .8 nella hero, highlight color (#b582d6 per il “creator”).
+​
+
+pseudo-elemento con immagine SVG come underline della parola chiave (puoi usare un ::after con content: url(...)).
+​
+
+sezioni successive con:
+
+slider video verticali e card con border-radius 20px
+
+card “glass” con fondo trasparente, blur, border semi-trasparente.
+​
+
+Librerie equivalenti
+
+Non serve UIkit in Svelte: puoi riprodurre layout uk-section/uk-container con flex/grid Svelte + CSS, e usare solo GSAP come fanno loro.

@@ -1,0 +1,340 @@
+Hero section (Svelte + CSS)
+Imita layout 5/4 con claim + CTA + micro-testimonial + video verticale.
+​
+
+text
+<!-- Hero.svelte -->
+<section class="section hero" id="hero">
+  <div class="section-inner hero-grid">
+    <div class="hero-copy" use:fadeUp={0}>
+      <p class="eyebrow">Agenzia di Marketing Video</p>
+      <h1 class="hero-title">
+        L’agenzia video per le PMI che non hanno paura di diventare virali
+      </h1>
+      <p class="hero-subtitle">
+        Il tuo successo, inquadrato alla perfezione.
+      </p>
+
+      <div class="hero-cta" use:fadeUp={0.6}>
+        <a href="#contact" class="btn btn-primary">Conosciamoci</a>
+        <a href="#portfolio" class="btn btn-outline">Progetti passati</a>
+      </div>
+
+      <div class="hero-testimonial" use:fadeUp={0.8}>
+        <div class="avatar"></div>
+        <div>
+          <p class="testimonial-title">“+30% lead qualificati in 3 mesi”</p>
+          <p class="testimonial-meta">Esig Shop · PMI Friuli</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-media" use:fadeUp={0.4}>
+      <div class="hero-video-card">
+        <video autoplay muted loop playsinline>
+          <source src="/media/hero-pmi.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { onMount } from 'svelte';
+
+  // semplice directive per animazione entranceUp
+  export function fadeUp(node, delay = 0) {
+    node.style.opacity = '0';
+    node.style.transform = 'translateY(16px)';
+    node.style.transition =
+      `opacity 0.6s cubic-bezier(0.25,0.1,0.25,1) ${delay}s,
+       transform 0.6s cubic-bezier(0.25,0.1,0.25,1) ${delay}s`;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        node.style.opacity = '1';
+        node.style.transform = 'translateY(0)';
+        observer.disconnect();
+      }
+    }, { threshold: 0.2 });
+
+    observer.observe(node);
+    return {
+      destroy() { observer.disconnect(); }
+    };
+  }
+</script>
+
+<style>
+.hero {
+  padding-block: 120px 96px;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 5fr 4fr;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 991px) {
+  .hero-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+}
+.hero-title {
+  font-size: var(--title-lg);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.hero-subtitle {
+  margin-top: 24px;
+  font-size: var(--text-lg);
+  max-width: 600px;
+  font-weight: 500;
+}
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+}
+.btn {
+  border-radius: var(--radius-btn);
+  padding: 14px 32px;
+  font-weight: 700;
+  font-size: var(--text-base);
+  text-decoration: none;
+  transition: all 0.27s ease;
+}
+.btn-primary {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-accent-yellow-text);
+}
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+.btn-outline {
+  border: var(--border-width) solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text);
+}
+.hero-testimonial {
+  margin-top: 48px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  max-width: 500px;
+}
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-border-soft);
+}
+.testimonial-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.testimonial-meta {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  font-style: italic;
+}
+.hero-video-card {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background-color: #080808;
+  padding: 6px;
+}
+.hero-video-card video {
+  display: block;
+  width: 100%;
+  border-radius: calc(var(--radius-card) - 6px);
+}
+</style>
+Slider video + Lightbox (Svelte)
+Ispirato allo slider drag-to-scroll e lightbox custom della pagina.
+​
+
+text
+<!-- VideoSlider.svelte -->
+<script>
+  import { onMount } from 'svelte';
+
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+  let activeVideo = null;
+  let wrapper;
+
+  const videos = [
+    { id: 1, src: '/media/case1.mp4', label: 'Spot PMI 1' },
+    { id: 2, src: '/media/case2.mp4', label: 'Spot PMI 2' },
+    // ...
+  ];
+
+  function handleMouseDown(e) {
+    isDown = true;
+    wrapper.classList.add('is-dragging');
+    startX = e.pageX - wrapper.offsetLeft;
+    scrollLeft = wrapper.scrollLeft;
+  }
+  function handleMouseLeave() {
+    isDown = false;
+    wrapper.classList.remove('is-dragging');
+  }
+  function handleMouseUp() {
+    isDown = false;
+    wrapper.classList.remove('is-dragging');
+  }
+  function handleMouseMove(e) {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - wrapper.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    wrapper.scrollLeft = scrollLeft - walk;
+  }
+
+  function openLightbox(video) {
+    activeVideo = video;
+  }
+  function closeLightbox() {
+    activeVideo = null;
+  }
+</script>
+
+<section class="section" id="portfolio">
+  <div class="section-inner">
+    <h2 class="sec-title">Progetti per PMI come la tua</h2>
+    <div
+      class="video-slider"
+      bind:this={wrapper}
+      on:mousedown={handleMouseDown}
+      on:mouseleave={handleMouseLeave}
+      on:mouseup={handleMouseUp}
+      on:mousemove={handleMouseMove}
+    >
+      {#each videos as v}
+        <button class="slider-video" on:click={() => openLightbox(v)}>
+          <video muted playsinline>
+            <source src={v.src} type="video/mp4" />
+          </video>
+          <span class="video-label">{v.label}</span>
+        </button>
+      {/each}
+    </div>
+  </div>
+
+  {#if activeVideo}
+    <div class="lightbox" on:click|self={closeLightbox}>
+      <div class="lightbox-inner">
+        <button class="lightbox-close" on:click={closeLightbox}>×</button>
+        <video controls autoplay>
+          <source src={activeVideo.src} type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  {/if}
+</section>
+
+<style>
+.sec-title {
+  font-size: var(--title-md);
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+.video-slider {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  cursor: grab;
+  scroll-behavior: smooth;
+}
+.video-slider.is-dragging {
+  cursor: grabbing;
+}
+.video-slider::-webkit-scrollbar {
+  height: 0;
+}
+.slider-video {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(220px, 35vw, 280px);
+  height: clamp(360px, 50vw, 420px);
+  border-radius: var(--radius-card);
+  border: var(--border-width) solid var(--color-border);
+  background-color: #080808;
+  overflow: hidden;
+  padding: 6px;
+}
+.slider-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: calc(var(--radius-card) - 6px);
+}
+.video-label {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 12px;
+  border-radius: 30px;
+  background-color: #fff;
+  color: #000;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.lightbox-inner {
+  position: relative;
+  max-width: 900px;
+  width: 90%;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background-color: #000;
+}
+.lightbox video {
+  width: 100%;
+  display: block;
+}
+.lightbox-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: rgba(0,0,0,0.7);
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+</style>
+Sezioni card “benefici”, FAQ e Contact
+Puoi modellare:
+
+Benefici / perché noi: grid di card con circle icon + titolo + testo, usando --radius-card, --color-border, --color-accent-red/yellow.
+​
+
+FAQ: accordioni Svelte con question-container e icona che ruota di 90° (class .toggle-icon), replicando l’effetto CSS visto (transform: rotate(90deg) quando aperto).
+​
+
+Contatti: sezione con 2 colonne (testo + form), campi input con fondo scuro e bordo grigio (var(--color-border)) e bottone primario giallo, come nel form #brxe-fjolyp.
+​
+
+Se vuoi, nel prossimo messaggio posso:
+
+Estrarti strutture dati (array benefits, faq, steps) già pronti per Svelte.
+
+Aggiungere lazy load video con IntersectionObserver come fanno loro con lazy-video.
+​
