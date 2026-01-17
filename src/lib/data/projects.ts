@@ -87,38 +87,140 @@ export const projects: Project[] = [
   },
 ];
 
-export const services = [
+export interface Department {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  icon: string;
+  services: {
+    title: string;
+    description: string;
+    icon: string;
+  }[];
+}
+
+export const departments: Department[] = [
   {
-    id: 'social',
-    title: 'Social Media Management',
-    description: 'Gestiamo i tuoi canali social con strategia, creatività e analisi dei dati per massimizzare l\'engagement.',
-    icon: 'sparkles',
-  },
-  {
-    id: 'content',
-    title: 'Content Production',
-    description: 'Produciamo contenuti video e foto che convertono: reel, stories, video corporate e shooting professionali.',
+    id: 'content-social',
+    name: 'Content & Social Media',
+    tagline: 'Contenuti che convertono',
+    description: 'Creiamo e gestiamo la tua presenza social con strategie data-driven. Ogni contenuto è pensato per generare engagement reale e conversioni misurabili.',
     icon: 'camera',
+    services: [
+      {
+        title: 'Gestione Social Media',
+        description: 'Strategia, pianificazione editoriale e community management per i tuoi canali social con analisi delle performance.',
+        icon: 'sparkles',
+      },
+      {
+        title: 'Content Production',
+        description: 'Reel, stories, video corporate e contenuti ottimizzati per ogni piattaforma. Produzione in-house con team dedicato.',
+        icon: 'video',
+      },
+      {
+        title: 'Shooting Foto & Video',
+        description: 'Produzioni professionali per campagne advertising, e-commerce e branding con attrezzatura di ultima generazione.',
+        icon: 'camera',
+      },
+      {
+        title: 'Influencer Marketing',
+        description: 'Selezione, gestione e coordinamento di creator e influencer per amplificare la reach delle tue campagne.',
+        icon: 'users',
+      },
+      {
+        title: 'UGC Strategy',
+        description: 'Strategie per generare contenuti autentici dai tuoi clienti e trasformarli in asset di marketing.',
+        icon: 'heart',
+      },
+      {
+        title: 'Social Listening',
+        description: 'Monitoraggio della brand reputation, analisi del sentiment e identificazione di trend e opportunità.',
+        icon: 'ear',
+      },
+    ],
   },
   {
     id: 'advertising',
-    title: 'Performance Advertising',
-    description: 'Campagne Meta, Google e TikTok Ads ottimizzate per massimizzare il ROAS e le conversioni.',
+    name: 'Advertising & Performance',
+    tagline: 'Ogni euro tracciato',
+    description: 'Campagne pubblicitarie ottimizzate per il massimo ritorno sull\'investimento. Tracking avanzato, A/B testing continuo e reportistica trasparente.',
     icon: 'target',
+    services: [
+      {
+        title: 'Meta Ads',
+        description: 'Campagne Facebook e Instagram Ads con targeting avanzato, creatività ottimizzate e scaling progressivo.',
+        icon: 'meta',
+      },
+      {
+        title: 'Google Ads',
+        description: 'Search, Display, Shopping e Performance Max per intercettare la domanda consapevole e generare conversioni.',
+        icon: 'google',
+      },
+      {
+        title: 'TikTok Ads',
+        description: 'Campagne native per raggiungere nuove audience con formati creativi e virali su TikTok.',
+        icon: 'tiktok',
+      },
+      {
+        title: 'Tracking & Analytics',
+        description: 'Setup pixel, server-side tracking, GA4 e dashboard personalizzate per tracciare ogni touchpoint del customer journey.',
+        icon: 'chart',
+      },
+      {
+        title: 'CRO - Conversion Rate',
+        description: 'Ottimizzazione delle landing page e dei funnel per massimizzare il tasso di conversione con A/B testing.',
+        icon: 'trending',
+      },
+      {
+        title: 'Reporting & Attribution',
+        description: 'Report mensili dettagliati con modelli di attribuzione avanzati per capire cosa genera realmente valore.',
+        icon: 'report',
+      },
+    ],
   },
   {
-    id: 'digital',
-    title: 'Digital Experience',
-    description: 'Siti web B2B, e-commerce, web app e soluzioni AI per una presenza digitale evoluta.',
+    id: 'digital-experience',
+    name: 'Digital Experience',
+    tagline: 'Infrastrutture digitali evolute',
+    description: 'Progettiamo siti web, e-commerce e applicazioni con un approccio sistemico. Soluzioni integrate, scalabili e potenziate dall\'intelligenza artificiale.',
     icon: 'code',
-  },
-  {
-    id: 'analytics',
-    title: 'Tracking & Analytics',
-    description: 'Setup pixel, dashboard personalizzate e reportistica per tracciare ogni conversione.',
-    icon: 'cpu',
+    services: [
+      {
+        title: 'Siti Web B2B',
+        description: 'Siti istituzionali e corporate ottimizzati per UX, SEO e lead generation con design system personalizzati.',
+        icon: 'globe',
+      },
+      {
+        title: 'E-Commerce',
+        description: 'Piattaforme e-commerce B2B e B2C con integrazioni ERP, gestione catalogo e checkout ottimizzati per la conversione.',
+        icon: 'cart',
+      },
+      {
+        title: 'Web App & Software',
+        description: 'Applicazioni web custom, portali clienti, configuratori di prodotto e dashboard di business intelligence.',
+        icon: 'app',
+      },
+      {
+        title: 'AI & Automazioni',
+        description: 'Chatbot intelligenti, automazioni di marketing, workflow AI-powered e integrazioni con LLM per efficienza operativa.',
+        icon: 'brain',
+      },
+      {
+        title: 'Design System',
+        description: 'Sistemi di design modulari con UI Kit, componenti riutilizzabili e documentazione per garantire coerenza visiva.',
+        icon: 'palette',
+      },
+      {
+        title: 'Integrazioni CRM & ERP',
+        description: 'Connessione di siti e app con HubSpot, Salesforce, SAP e sistemi gestionali per un flusso dati unificato.',
+        icon: 'link',
+      },
+    ],
   },
 ];
+
+export const services = departments.flatMap(d => d.services.map(s => ({ ...s, departmentId: d.id })));
 
 export const clients = [
   'Barcolana',

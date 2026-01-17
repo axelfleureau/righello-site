@@ -1,37 +1,61 @@
 <script lang="ts">
-  import { projects, services, clients } from '$lib/data/projects';
+  import { projects, departments, clients } from '$lib/data/projects';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import InfiniteMarquee from '$lib/components/InfiniteMarquee.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
   import PhoneMockup from '$lib/components/PhoneMockup.svelte';
+  import VideoTestimonials from '$lib/components/VideoTestimonials.svelte';
   import { onMount } from 'svelte';
   
-  const clientTestimonials = [
+  const homepageServices = departments.map(dept => ({
+    id: dept.id,
+    title: dept.name,
+    description: dept.description,
+    icon: dept.icon === 'camera' ? 'sparkles' : dept.icon === 'target' ? 'target' : 'code',
+  }));
+  
+  const videoTestimonials = [
     {
       id: '1',
       clientName: 'Marco Zanutta',
-      clientRole: 'CEO, Zanutta Group',
-      quote: 'Hanno trasformato la nostra presenza digitale. I numeri parlano chiaro: +340% di lead qualificati.'
+      clientRole: 'CEO',
+      company: 'Zanutta Group',
+      quote: 'Hanno trasformato la nostra presenza digitale. I numeri parlano chiaro: +340% di lead qualificati.',
+      videoSrc: '/testimonials/zanutta.mp4',
     },
     {
       id: '2',
       clientName: 'Elena Reginato',
-      clientRole: 'Marketing Director, Reginato',
-      quote: 'Finalmente un\'agenzia che parla di ROI e non solo di like. Risultati concreti e misurabili.'
+      clientRole: 'Marketing Director',
+      company: 'Reginato',
+      quote: 'Finalmente un\'agenzia che parla di ROI e non solo di like. Risultati concreti e misurabili.',
+      videoSrc: '/testimonials/reginato.mp4',
     },
     {
       id: '3',
       clientName: 'Giovanni Ennevi',
-      clientRole: 'Founder, Ennevi',
-      quote: 'Il team Righello ha portato la nostra campagna Meta a un ROAS di 8.5x. Impressionante.'
+      clientRole: 'Founder',
+      company: 'Ennevi',
+      quote: 'Il team Righello ha portato la nostra campagna Meta a un ROAS di 8.5x. Impressionante.',
+      videoSrc: '/testimonials/ennevi.mp4',
     },
     {
       id: '4',
       clientName: 'Laura Dolfo',
-      clientRole: 'Owner, Dolfo Restaurant',
-      quote: 'Gestiscono i nostri social con una creatività che non avrei mai immaginato. Sold out ogni weekend.'
+      clientRole: 'Owner',
+      company: 'Dolfo Restaurant',
+      quote: 'Gestiscono i nostri social con una creatività che non avrei mai immaginato. Sold out ogni weekend.',
+      videoSrc: '/testimonials/dolfo.mp4',
+    },
+    {
+      id: '5',
+      clientName: 'Paolo Reguta',
+      clientRole: 'Direttore Marketing',
+      company: 'Reguta Wines',
+      quote: 'La strategia social ha portato +180% di engagement e vendite dirette raddoppiate.',
+      videoSrc: '/testimonials/reguta.mp4',
     },
   ];
   
@@ -64,11 +88,11 @@
   <meta name="description" content="Agenzia di marketing orientata ai risultati. Gestiamo social, creiamo contenuti e campagne pubblicitarie che generano conversioni misurabili." />
 </svelte:head>
 
-<section class="min-h-[100svh] flex items-center relative overflow-hidden">
+<section class="h-screen min-h-[600px] flex items-center relative overflow-hidden">
   <div class="absolute inset-0 hero-bg"></div>
   <div class="absolute inset-0 noise-overlay opacity-30"></div>
   
-  <div class="section-container relative z-10 py-20 md:py-32">
+  <div class="section-container relative z-10 pt-24 pb-12 md:pt-28 md:pb-16">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
       <div class="order-2 lg:order-1 text-center lg:text-left">
         <p class="text-sm md:text-base uppercase tracking-[0.3em] text-righello-pink mb-6 font-medium hero-animate" style="--delay: 0ms">
@@ -178,7 +202,7 @@
     </RevealOnScroll>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {#each services as service, i}
+      {#each homepageServices as service, i}
         <RevealOnScroll animation="fly-up" stagger={80} index={i}>
           <GlowCard class="h-full">
             <div class="p-8">
@@ -238,44 +262,16 @@
   <div class="section-container mb-12">
     <RevealOnScroll animation="fly-up">
       <div class="text-center">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Dicono di noi</p>
-        <h2 class="heading-lg mb-6">Le <span class="gradient-text">storie dei clienti</span></h2>
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Video Recensioni</p>
+        <h2 class="heading-lg mb-6">I clienti <span class="gradient-text">parlano di noi</span></h2>
         <p class="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-          Ascolta direttamente dai nostri clienti i risultati che abbiamo ottenuto insieme
+          Guarda le video testimonianze dei nostri clienti e scopri i risultati che abbiamo ottenuto insieme
         </p>
       </div>
     </RevealOnScroll>
   </div>
   
-  <div class="overflow-x-auto scrollbar-hide">
-    <div class="flex gap-6 px-4 md:px-8 pb-8 snap-x snap-mandatory">
-      {#each clientTestimonials as testimonial, i}
-        <RevealOnScroll animation="scale" stagger={100} index={i}>
-          <div class="testimonial-card snap-center flex-shrink-0 w-[300px] md:w-[350px]">
-            <div class="glass-card rounded-2xl p-6 md:p-8 h-full">
-              <div class="flex items-center gap-4 mb-6">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-righello-pink to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
-                  {testimonial.clientName.charAt(0)}
-                </div>
-                <div>
-                  <p class="font-semibold text-white">{testimonial.clientName}</p>
-                  <p class="text-sm text-[var(--text-secondary)]">{testimonial.clientRole}</p>
-                </div>
-              </div>
-              <p class="text-[var(--text-secondary)] leading-relaxed italic">"{testimonial.quote}"</p>
-              <div class="flex gap-1 mt-4">
-                {#each Array(5) as _, starIdx}
-                  <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                {/each}
-              </div>
-            </div>
-          </div>
-        </RevealOnScroll>
-      {/each}
-    </div>
-  </div>
+  <VideoTestimonials testimonials={videoTestimonials} />
 </section>
 
 <section class="py-16 md:py-24 overflow-hidden relative">

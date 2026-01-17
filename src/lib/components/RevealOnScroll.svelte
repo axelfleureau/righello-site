@@ -2,6 +2,8 @@
   import { fly, fade, scale } from 'svelte/transition';
   import { cubicOut, backOut } from 'svelte/easing';
   import { inview } from '$lib/actions/inview';
+  import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
   
   export let animation: 'fade' | 'fly-up' | 'fly-left' | 'fly-right' | 'scale' | 'blur' = 'fly-up';
   export let delay: number = 0;
@@ -11,7 +13,13 @@
   export let stagger: number = 0;
   export let index: number = 0;
   
-  let visible = false;
+  let visible = !browser;
+  let mounted = false;
+  
+  onMount(() => {
+    mounted = true;
+    visible = false;
+  });
   
   function handleInview(e: CustomEvent<{inView: boolean}>) {
     if (e.detail.inView) {

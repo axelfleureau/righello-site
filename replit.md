@@ -1,19 +1,20 @@
 # Righello - Growth Agency Website
 
 ## Overview
-Sito web per Righello, una growth agency italiana orientata ai risultati. L'agenzia trasforma dati in crescita misurabile attraverso marketing, advertising e digital experience.
+Sito web per Righello, una growth agency italiana orientata ai risultati e ai numeri. L'agenzia trasforma dati in crescita misurabile attraverso creazione contenuti, advertising e digital experience.
 
 ## Posizionamento
-- **Tagline**: "Trasformiamo dati in crescita misurabile"
-- **Focus**: Approccio data-driven, ROAS, conversioni tracciabili
+- **Tagline Hero**: "La tua crescita, inquadrata alla perfezione"
+- **Focus**: Approccio data-driven, ROAS, conversioni tracciabili, orientamento ai numeri
 - **NON siamo**: Content creator agency (i founder non sono content creator)
+- **Priorità**: Creazione contenuti, pubblicità, gestione social
 
 ## Tech Stack
 - **Framework**: SvelteKit 1.x
 - **Styling**: TailwindCSS
 - **Font**: Degular Display (custom font con tutti i pesi da Thin a Black)
 - **Adapter**: Node adapter
-- **Animazioni**: GSAP con ScrollTrigger
+- **Animazioni**: Native Svelte transitions + CSS animations (no GSAP per performance)
 
 ## Colori Brand (Dark Theme Premium)
 - **Tema di default**: Dark mode
@@ -55,24 +56,29 @@ Sito web per Righello, una growth agency italiana orientata ai risultati. L'agen
    - Integrazioni CRM & ERP
 
 ## Struttura Pagine
-- `/` - Homepage con hero "Trasformiamo dati in crescita misurabile", statistiche animate, servizi, video testimonial, clienti marquee
-- `/servizi` - Pagina con switch a schede moderno per i 3 dipartimenti
+- `/` - Homepage con hero fullscreen (iPhone mockup 3D + nuovo tagline), statistiche animate, servizi, video testimonial reel, clienti marquee
+- `/servizi` - Pagina con switch a schede moderno con angoli arrotondati per i 3 dipartimenti
 - `/progetti` - Galleria progetti con filtri per categoria e effetti tilt 3D
 - `/progetti/[slug]` - Pagina dettaglio progetto
 - `/chi-siamo` - Presentazione team con foto, statistiche animate
 - `/contatti` - Form di contatto con animazioni e informazioni
 
 ## Componenti Interattivi
-- **GSAPReveal**: Animazioni GSAP con scroll trigger (fade-up, fade-in, scale)
-- **TextReveal**: Animazione testo carattere per carattere con GSAP
+- **PhoneMockup**: iPhone 3D mockup con spring physics, tilt hover effects, gradient animato
+- **RevealOnScroll**: Animazioni scroll-triggered con Svelte native (fly, fade, scale)
 - **GlowCard**: Card con effetto glow che segue il cursore (rosa/ciano gradient)
 - **InfiniteMarquee**: Scroll infinito orizzontale per loghi clienti
-- **ServiceTabs**: Switch a schede moderno con angoli arrotondati per i dipartimenti
-- **VideoTestimonials**: Sezione video recensioni clienti in formato reel (9:16)
-- **ScrollReveal**: Animazioni fade-in al scroll (supporta prefers-reduced-motion)
+- **ServiceTabs**: Switch a schede moderno con indicatore animato e angoli arrotondati
+- **VideoTestimonials**: Carousel video recensioni clienti in formato reel (9:16)
 - **AnimatedCounter**: Contatori che si animano quando visibili
 - **MagneticButton**: Bottoni che seguono il cursore con effetto magnetico
-- **Header Smart**: Si nasconde/mostra con lo scroll, transizione trasparente/scuro
+- **Header Smart**: Fixed transparent, si nasconde/mostra con lo scroll, background scuro dopo scroll
+
+## Hero Section
+- Desktop: 100vh fullscreen, header trasparente sovrapposto
+- Layout: Testo sinistra + iPhone mockup 3D destra
+- iPhone mostra placeholder reel con gradient animato e UI social
+- Animazioni CSS con delay staggerati
 
 ## Tracking & Analytics
 - **Meta Pixel**: Integrato via `src/lib/tracking/metaPixel.ts`
@@ -83,7 +89,9 @@ Sito web per Righello, una growth agency italiana orientata ai risultati. L'agen
 ## Video Testimonial
 - Posizionare i video in `/static/testimonials/`
 - Formato: MP4, aspect ratio 9:16 (verticale come reel)
-- I dati testimonial sono in `src/routes/+page.svelte` → array `clientTestimonials`
+- Nomi file: zanutta.mp4, reginato.mp4, ennevi.mp4, dolfo.mp4, reguta.mp4
+- I dati testimonial sono in `src/routes/+page.svelte` → array `videoTestimonials`
+- Se video non presente, mostra card con quote e avatar gradient
 
 ## Sviluppo
 Il dev server gira sulla porta 5000 usando `npm run dev`.
@@ -95,11 +103,12 @@ Il dev server gira sulla porta 5000 usando `npm run dev`.
 
 ## Struttura File Principali
 - `src/routes/` - Pagine SvelteKit
-- `src/lib/components/` - Componenti UI
-- `src/lib/data/` - Dati statici (progetti, servizi, clienti)
+- `src/lib/components/` - Componenti UI (PhoneMockup, VideoTestimonials, ServiceTabs, etc.)
+- `src/lib/data/projects.ts` - Dati statici (progetti, dipartimenti, servizi, clienti)
+- `src/lib/actions/inview.ts` - Svelte action per scroll detection
 - `src/lib/tracking/` - Moduli tracking (Meta Pixel)
 - `src/lib/stores/` - Svelte stores (tema, media queries)
-- `src/styles/` - CSS globali con animazioni
+- `src/styles/index.css` - CSS globali con animazioni (hero-animate, etc.)
 - `static/` - Asset statici (loghi, favicon, video)
 - `static/fonts/` - Font Degular Display (OTF)
 - `static/testimonials/` - Video recensioni clienti

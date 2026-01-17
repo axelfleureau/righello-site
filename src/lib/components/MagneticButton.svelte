@@ -5,6 +5,8 @@
   export let href: string = '';
   export let variant: 'primary' | 'secondary' | 'outline-white' = 'primary';
   export let strength: number = 0.3;
+  let className: string = '';
+  export { className as class };
   
   let element: HTMLElement;
   let x = 0;
@@ -56,7 +58,7 @@
   on:mouseenter={handleMouseEnter}
   on:mouseleave={handleMouseLeave}
   on:click
-  class="magnetic-button inline-flex items-center justify-center px-6 py-3 font-semibold rounded-full transition-all duration-300 {variants[variant]}"
+  class="magnetic-button inline-flex items-center justify-center px-6 py-3 font-semibold rounded-full transition-all duration-300 {variants[variant]} {className}"
   style="transform: translate({x}px, {y}px); transition: transform {isHovering ? '0.1s' : '0.3s'} ease-out, background-color 0.3s, color 0.3s;"
 >
   <slot />
