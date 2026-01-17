@@ -41,7 +41,7 @@
   <meta name="description" content="Siamo un team dedicato e dinamico di professionisti, uniti dalla passione per l'innovazione e l'eccellenza nel settore digitale." />
 </svelte:head>
 
-<section class="py-16">
+<section class="pt-28 pb-16 md:pt-36 md:pb-20">
   <div class="section-container">
     <div class="max-w-4xl">
       <ScrollReveal animation="fade-up">

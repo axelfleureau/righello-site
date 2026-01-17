@@ -17,11 +17,11 @@
   <meta name="description" content="Scopri i progetti realizzati da Righello Creative Lab." />
 </svelte:head>
 
-<section class="py-16">
+<section class="pt-28 pb-16 md:pt-36 md:pb-20">
   <div class="section-container">
     <ScrollReveal>
       <h1 class="heading-xl mb-6 uppercase">I nostri progetti</h1>
-      <p class="text-xl md:text-2xl text-gray-600 max-w-2xl mb-12">
+      <p class="text-xl md:text-2xl text-[var(--text-secondary)] max-w-2xl mb-12">
         Una selezione dei <TechWord>lavori</TechWord> che abbiamo realizzato per i nostri clienti.
       </p>
     </ScrollReveal>
@@ -30,7 +30,8 @@
       <div class="flex flex-wrap gap-3 mb-12">
         {#each categories as category}
           <button
-            class="px-5 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 {selectedCategory === category.id ? 'bg-righello-pink text-white shadow-lg shadow-righello-pink/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}"
+            class="px-5 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 {selectedCategory === category.id ? 'bg-righello-pink text-white shadow-lg shadow-righello-pink/30' : 'bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'}"
+            style="border: 1px solid var(--border-color);"
             on:click={() => selectedCategory = category.id}
           >
             {category.label}
@@ -68,7 +69,7 @@
                 {/each}
               </div>
               <h3 class="text-xl font-semibold group-hover:text-righello-pink transition-colors">{project.title}</h3>
-              <p class="text-gray-600 mt-2">{project.description}</p>
+              <p class="text-[var(--text-secondary)] mt-2">{project.description}</p>
             </a>
           </TiltCard>
         </ScrollReveal>

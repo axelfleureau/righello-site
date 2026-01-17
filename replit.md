@@ -16,11 +16,13 @@ Sito web per Righello, una growth agency italiana orientata ai risultati e ai nu
 - **Adapter**: Node adapter
 - **Animazioni**: GSAP + ScrollTrigger per scrollytelling avanzato, Svelte transitions per transizioni UI
 
-## Colori Brand (Dark Theme Premium)
-- **Tema di default**: Dark mode
+## Colori Brand (Dual Theme)
+- **Tema di default**: Dark mode (con switch light/dark nell'header)
 - Rosa Righello: #D6487E
 - Ciano accent: #06B6D4
 - Gradiente primario: Rosa → Ciano (usato per testo hero e accenti)
+
+### Dark Mode
 - Background primario: #050505
 - Background secondario: #0a0a0a
 - Background terziario: #111111
@@ -29,6 +31,14 @@ Sito web per Righello, una growth agency italiana orientata ai risultati e ai nu
 - Border: rgba(255, 255, 255, 0.1)
 - Glow rosa: rgba(214, 72, 126, 0.5)
 - Glow ciano: rgba(6, 182, 212, 0.4)
+
+### Light Mode
+- Background primario: #f8fafc (slate-50)
+- Background secondario: #f1f5f9 (slate-100)
+- Testo primario: #0f172a (slate-900)
+- Testo secondario: #475569 (slate-600)
+- Border: rgba(0, 0, 0, 0.1)
+- Card glassmorphism con ombre
 
 ## Dipartimenti Servizi (3 aree)
 1. **Content & Social Media**

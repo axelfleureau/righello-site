@@ -39,13 +39,21 @@
     gsap.registerPlugin(ScrollTrigger);
     
     ctx = gsap.context(() => {
+      const totalSlides = slides.length + 1;
+      const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
+      
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: 'top top',
-          end: () => `+=${slides.length * 100}vh`,
+          end: () => `+=${slides.length * 120}vh`,
           pin: true,
-          scrub: 1
+          scrub: 2,
+          snap: {
+            snapTo: snapPoints,
+            duration: { min: 0.2, max: 0.6 },
+            ease: 'power1.inOut'
+          }
         }
       });
       
@@ -181,8 +189,8 @@
   </div>
   
   <div class="scroll-hint">
-    <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-      <div class="w-1.5 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
+    <div class="scroll-indicator">
+      <div class="scroll-dot"></div>
     </div>
   </div>
 </section>
@@ -191,14 +199,27 @@
   .apple-scrolly {
     position: relative;
     height: 100vh;
-    min-height: 600px;
+    min-height: 700px;
     overflow: hidden;
+  }
+  
+  @media (max-width: 768px) {
+    .apple-scrolly {
+      min-height: 100svh;
+    }
   }
   
   .hero-bg {
     background: 
       radial-gradient(ellipse at 20% 30%, rgba(214, 72, 126, 0.15) 0%, transparent 50%),
       radial-gradient(ellipse at 80% 70%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+      var(--bg-primary);
+  }
+  
+  :global([data-theme="light"]) .hero-bg {
+    background: 
+      radial-gradient(ellipse at 20% 30%, rgba(214, 72, 126, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
       var(--bg-primary);
   }
   
@@ -209,7 +230,13 @@
     display: flex;
     align-items: center;
     padding: 0 5%;
-    padding-top: 80px;
+    padding-top: 100px;
+  }
+  
+  @media (min-width: 1024px) {
+    .scrolly-content {
+      padding-top: 120px;
+    }
   }
   
   .hero-text {
@@ -229,15 +256,17 @@
   @media (max-width: 1023px) {
     .scrolly-content {
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       text-align: center;
       padding-top: 100px;
+      padding-bottom: 80px;
     }
     
     .hero-text {
       max-width: 100%;
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+      flex-shrink: 0;
     }
     
     .hero-text .flex {
@@ -249,6 +278,15 @@
       right: auto;
       top: auto;
       transform: none;
+      flex-shrink: 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .scrolly-content {
+      padding-top: 90px;
+      padding-left: 4%;
+      padding-right: 4%;
     }
   }
   
@@ -310,6 +348,37 @@
   @keyframes float {
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50% { transform: translateX(-50%) translateY(-10px); }
+  }
+  
+  .scroll-indicator {
+    width: 24px;
+    height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 9999px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .scroll-dot {
+    width: 6px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 9999px;
+    margin-top: 8px;
+    animation: bounce 1s ease-in-out infinite;
+  }
+  
+  :global([data-theme="light"]) .scroll-indicator {
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  :global([data-theme="light"]) .scroll-dot {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
   }
   
   @media (max-width: 768px) {

@@ -29,7 +29,7 @@
   <meta name="description" content="Contatta Righello Creative Lab per il tuo prossimo progetto." />
 </svelte:head>
 
-<section class="py-16">
+<section class="pt-28 pb-16 md:pt-36 md:pb-20">
   <div class="section-container">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
       <div>
@@ -37,7 +37,7 @@
           <h1 class="heading-xl mb-8 uppercase"><Highlight variant="pink">PARLIAMONE</Highlight></h1>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={100}>
-          <p class="text-xl md:text-2xl text-gray-600 mb-8">
+          <p class="text-xl md:text-2xl text-[var(--text-secondary)] mb-8">
             Hai un <TechWord>progetto</TechWord> in mente? Compila il form e ti risponderemo il prima possibile.
           </p>
         </ScrollReveal>
@@ -52,7 +52,7 @@
               </div>
               <div>
                 <h3 class="font-semibold mb-1">Email</h3>
-                <a href="mailto:info@wearerighello.com" class="text-gray-600 hover:text-righello-pink transition-colors">
+                <a href="mailto:info@wearerighello.com" class="text-[var(--text-secondary)] hover:text-righello-pink transition-colors">
                   info@wearerighello.com
                 </a>
               </div>
@@ -69,7 +69,7 @@
               </div>
               <div>
                 <h3 class="font-semibold mb-1">Sede</h3>
-                <p class="text-gray-600">Italia</p>
+                <p class="text-[var(--text-secondary)]">Italia</p>
               </div>
             </div>
           </ScrollReveal>
@@ -83,7 +83,7 @@
               </div>
               <div>
                 <h3 class="font-semibold mb-1">Orari</h3>
-                <p class="text-gray-600">Lun - Ven: 9:00 - 18:00</p>
+                <p class="text-[var(--text-secondary)]">Lun - Ven: 9:00 - 18:00</p>
               </div>
             </div>
           </ScrollReveal>
@@ -91,7 +91,7 @@
       </div>
       
       <ScrollReveal animation="fade-right" delay={200}>
-        <div class="bg-gray-50 rounded-3xl p-8 md:p-12 hover:shadow-xl transition-shadow duration-500">
+        <div class="rounded-3xl p-8 md:p-12 hover:shadow-xl transition-shadow duration-500" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color);">
           {#if submitted}
             <div class="text-center py-12">
               <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6 animate-bounce">
@@ -100,7 +100,7 @@
                 </svg>
               </div>
               <h3 class="text-2xl font-semibold mb-4">Messaggio inviato!</h3>
-              <p class="text-gray-600 mb-8">Ti risponderemo il prima possibile.</p>
+              <p class="text-[var(--text-secondary)] mb-8">Ti risponderemo il prima possibile.</p>
               <button 
                 class="btn-secondary"
                 on:click={() => { submitted = false; formData = { name: '', email: '', company: '', message: '' }; }}
@@ -117,7 +117,8 @@
                   id="name" 
                   bind:value={formData.name}
                   required
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-righello-pink focus:ring-2 focus:ring-righello-pink/20 outline-none transition-all duration-300 hover:border-gray-300"
+                  class="w-full px-4 py-3 rounded-xl border outline-none transition-all duration-300 focus:border-righello-pink focus:ring-2 focus:ring-righello-pink/20"
+                  style="background-color: var(--bg-primary); border-color: var(--border-color); color: var(--text-primary);"
                   placeholder="Il tuo nome"
                 />
               </div>
@@ -129,7 +130,8 @@
                   id="email" 
                   bind:value={formData.email}
                   required
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-righello-pink focus:ring-2 focus:ring-righello-pink/20 outline-none transition-all duration-300 hover:border-gray-300"
+                  class="w-full px-4 py-3 rounded-xl border outline-none transition-all duration-300 focus:border-righello-pink focus:ring-2 focus:ring-righello-pink/20"
+                  style="background-color: var(--bg-primary); border-color: var(--border-color); color: var(--text-primary);"
                   placeholder="la.tua@email.com"
                 />
               </div>
@@ -140,7 +142,8 @@
                   type="text" 
                   id="company" 
                   bind:value={formData.company}
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-righello-pink focus:ring-2 focus:ring-righello-pink/20 outline-none transition-all duration-300 hover:border-gray-300"
+                  class="w-full px-4 py-3 rounded-xl border outline-none transition-all duration-300 focus:border-righello-pink focus:ring-2 focus:ring-righello-pink/20"
+                  style="background-color: var(--bg-primary); border-color: var(--border-color); color: var(--text-primary);"
                   placeholder="Nome della tua azienda"
                 />
               </div>
@@ -152,7 +155,8 @@
                   bind:value={formData.message}
                   required
                   rows="5"
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-righello-pink focus:ring-2 focus:ring-righello-pink/20 outline-none transition-all duration-300 resize-none hover:border-gray-300"
+                  class="w-full px-4 py-3 rounded-xl border outline-none transition-all duration-300 resize-none focus:border-righello-pink focus:ring-2 focus:ring-righello-pink/20"
+                  style="background-color: var(--bg-primary); border-color: var(--border-color); color: var(--text-primary);"
                   placeholder="Raccontaci del tuo progetto..."
                 ></textarea>
               </div>

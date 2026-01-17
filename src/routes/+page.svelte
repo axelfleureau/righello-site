@@ -27,7 +27,6 @@
       clientRole: 'CEO',
       company: 'Zanutta Group',
       quote: 'Hanno trasformato la nostra presenza digitale. I numeri parlano chiaro: +340% di lead qualificati.',
-      videoSrc: '/testimonials/zanutta.mp4',
     },
     {
       id: '2',
@@ -35,7 +34,6 @@
       clientRole: 'Marketing Director',
       company: 'Reginato',
       quote: 'Finalmente un\'agenzia che parla di ROI e non solo di like. Risultati concreti e misurabili.',
-      videoSrc: '/testimonials/reginato.mp4',
     },
     {
       id: '3',
@@ -43,7 +41,6 @@
       clientRole: 'Founder',
       company: 'Ennevi',
       quote: 'Il team Righello ha portato la nostra campagna Meta a un ROAS di 8.5x. Impressionante.',
-      videoSrc: '/testimonials/ennevi.mp4',
     },
     {
       id: '4',
@@ -51,7 +48,6 @@
       clientRole: 'Owner',
       company: 'Dolfo Restaurant',
       quote: 'Gestiscono i nostri social con una creatività che non avrei mai immaginato. Sold out ogni weekend.',
-      videoSrc: '/testimonials/dolfo.mp4',
     },
     {
       id: '5',
@@ -59,7 +55,6 @@
       clientRole: 'Direttore Marketing',
       company: 'Reguta Wines',
       quote: 'La strategia social ha portato +180% di engagement e vendite dirette raddoppiate.',
-      videoSrc: '/testimonials/reguta.mp4',
     },
   ];
   
