@@ -1,42 +1,36 @@
 <script lang="ts">
   import { projects, services, clients } from '$lib/data/projects';
-  import GSAPReveal from '$lib/components/GSAPReveal.svelte';
-  import TextReveal from '$lib/components/TextReveal.svelte';
+  import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import InfiniteMarquee from '$lib/components/InfiniteMarquee.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
+  import PhoneMockup from '$lib/components/PhoneMockup.svelte';
   import { onMount } from 'svelte';
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   
   const clientTestimonials = [
     {
       id: '1',
       clientName: 'Marco Zanutta',
       clientRole: 'CEO, Zanutta Group',
-      videoUrl: '/testimonials/zanutta.mp4',
       quote: 'Hanno trasformato la nostra presenza digitale. I numeri parlano chiaro: +340% di lead qualificati.'
     },
     {
       id: '2',
       clientName: 'Elena Reginato',
       clientRole: 'Marketing Director, Reginato',
-      videoUrl: '/testimonials/reginato.mp4',
       quote: 'Finalmente un\'agenzia che parla di ROI e non solo di like. Risultati concreti e misurabili.'
     },
     {
       id: '3',
       clientName: 'Giovanni Ennevi',
       clientRole: 'Founder, Ennevi',
-      videoUrl: '/testimonials/ennevi.mp4',
       quote: 'Il team Righello ha portato la nostra campagna Meta a un ROAS di 8.5x. Impressionante.'
     },
     {
       id: '4',
       clientName: 'Laura Dolfo',
       clientRole: 'Owner, Dolfo Restaurant',
-      videoUrl: '/testimonials/dolfo.mp4',
       quote: 'Gestiscono i nostri social con una creatività che non avrei mai immaginato. Sold out ogni weekend.'
     },
   ];
@@ -47,34 +41,21 @@
     { value: 50, suffix: '+', label: 'Progetti completati' },
     { value: 2, suffix: 'M+', label: 'Views generate' },
     { value: 98, suffix: '%', label: 'Clienti soddisfatti' },
-    { value: 24, suffix: 'h', label: 'Risposta garantita' },
+    { value: 8, suffix: '.5x', label: 'ROAS medio' },
   ];
   
-  const videoContent = [
-    { title: 'Reel virali', views: '938K', desc: 'Contenuti per social' },
-    { title: 'Video corporate', views: '550K', desc: 'Brand storytelling' },
-    { title: 'Product demos', views: '220K', desc: 'Presentazioni prodotto' },
-    { title: 'Behind the scenes', views: '350K', desc: 'Dietro le quinte' },
-    { title: 'Testimonial', views: '120K', desc: 'Storie di successo' },
-    { title: 'Event coverage', views: '180K', desc: 'Copertura eventi' },
+  const credibilityBadges = [
+    { icon: 'meta', label: 'Meta Partner' },
+    { icon: 'google', label: 'Google Partner' },
+    { icon: 'star', label: '5.0 Rating' },
   ];
   
-  let heroContainer: HTMLElement;
+  import { browser } from '$app/environment';
+  
+  let mounted = false;
   
   onMount(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    
-    const ctx = gsap.context(() => {
-      gsap.to('.hero-gradient', {
-        backgroundPosition: '100% 100%',
-        duration: 20,
-        ease: 'none',
-        repeat: -1,
-        yoyo: true
-      });
-    });
-    
-    return () => ctx.revert();
+    mounted = true;
   });
 </script>
 
@@ -83,86 +64,102 @@
   <meta name="description" content="Agenzia di marketing orientata ai risultati. Gestiamo social, creiamo contenuti e campagne pubblicitarie che generano conversioni misurabili." />
 </svelte:head>
 
-<section bind:this={heroContainer} class="min-h-screen flex items-center justify-center relative overflow-hidden">
-  <div class="absolute inset-0 hero-gradient" style="background: radial-gradient(ellipse at 30% 20%, rgba(214, 72, 126, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%), var(--bg-primary);"></div>
+<section class="min-h-[100svh] flex items-center relative overflow-hidden">
+  <div class="absolute inset-0 hero-bg"></div>
+  <div class="absolute inset-0 noise-overlay opacity-30"></div>
   
-  <div class="absolute inset-0 noise-overlay"></div>
-  
-  <video 
-    autoplay 
-    loop 
-    muted 
-    playsinline
-    class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity"
-  >
-    <source src="/hero-video.mp4" type="video/mp4" />
-  </video>
-  
-  <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[var(--bg-primary)] to-transparent z-10"></div>
-  
-  <div class="section-container text-center relative z-20 py-32">
-    <GSAPReveal animation="fade-up" delay={0.2}>
-      <p class="text-sm md:text-base uppercase tracking-[0.3em] text-righello-pink mb-6 font-medium">
-        Growth Agency
-      </p>
-    </GSAPReveal>
-    
-    <GSAPReveal animation="fade-up" delay={0.4}>
-      <h1 class="heading-xl mb-8 max-w-5xl mx-auto">
-        <span class="block">Trasformiamo dati in</span>
-        <span class="gradient-text">crescita misurabile.</span>
-      </h1>
-    </GSAPReveal>
-    
-    <GSAPReveal animation="fade-up" delay={0.6}>
-      <p class="text-xl md:text-2xl text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto leading-relaxed">
-        Marketing, advertising e gestione social con un approccio data-driven. Ogni euro investito, ogni conversione tracciata.
-      </p>
-    </GSAPReveal>
-    
-    <GSAPReveal animation="fade-up" delay={0.8}>
-      <div class="flex flex-wrap justify-center gap-4">
-        <MagneticButton href="/contatti" variant="primary">
-          Iniziamo a parlare
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </MagneticButton>
-        <MagneticButton href="/progetti" variant="outline-white">
-          Guarda i progetti
-        </MagneticButton>
+  <div class="section-container relative z-10 py-20 md:py-32">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+      <div class="order-2 lg:order-1 text-center lg:text-left">
+        <p class="text-sm md:text-base uppercase tracking-[0.3em] text-righello-pink mb-6 font-medium hero-animate" style="--delay: 0ms">
+          Growth Agency
+        </p>
+        
+        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-[1.1] hero-animate" style="--delay: 100ms">
+          <span class="block text-white">La tua crescita,</span>
+          <span class="gradient-text">inquadrata alla perfezione.</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-[var(--text-secondary)] mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed hero-animate" style="--delay: 200ms">
+          Marketing, advertising e sviluppo digitale con un approccio data-driven. 
+          Ogni euro investito, ogni conversione tracciata.
+        </p>
+        
+        <div class="flex flex-wrap justify-center lg:justify-start gap-4 mb-10 hero-animate" style="--delay: 300ms">
+          <MagneticButton href="/contatti" variant="primary">
+            Iniziamo a parlare
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </MagneticButton>
+          <MagneticButton href="/progetti" variant="outline-white">
+            Guarda i progetti
+          </MagneticButton>
+        </div>
+        
+        <div class="flex flex-wrap justify-center lg:justify-start gap-6 hero-animate" style="--delay: 400ms">
+          {#each credibilityBadges as badge, i}
+            <div class="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+                {#if badge.icon === 'meta'}
+                  <svg class="w-5 h-5 text-righello-pink" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
+                  </svg>
+                {:else if badge.icon === 'google'}
+                  <svg class="w-5 h-5 text-righello-pink" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                  </svg>
+                {:else if badge.icon === 'star'}
+                  <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                {/if}
+                <span class="font-medium">{badge.label}</span>
+            </div>
+          {/each}
+        </div>
       </div>
-    </GSAPReveal>
+      
+      <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
+        <div class="hero-animate" style="--delay: 200ms">
+          <PhoneMockup />
+        </div>
+      </div>
+    </div>
   </div>
   
-  <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-20">
-    <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-      <div class="w-1.5 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden md:block">
+    <div class="scroll-indicator hero-animate" style="--delay: 800ms">
+      <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+        <div class="w-1.5 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="section-container">
-    <GSAPReveal animation="fade-up">
+    <RevealOnScroll animation="fly-up">
       <div class="text-center mb-16">
         <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Risultati reali</p>
         <h2 class="heading-lg max-w-4xl mx-auto">
           I numeri che <span class="gradient-text">fanno la differenza</span>
         </h2>
       </div>
-    </GSAPReveal>
+    </RevealOnScroll>
     
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
       {#each stats as stat, i}
-        <GSAPReveal animation="scale" delay={i * 0.1}>
+        <RevealOnScroll animation="scale" delay={0} stagger={100} index={i}>
           <div class="glass-card rounded-2xl p-6 md:p-8 text-center hover-lift">
-            <div class="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text mb-2">
+            <div class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text mb-2">
               <AnimatedCounter target={stat.value} duration={2000} />{stat.suffix}
             </div>
             <p class="text-sm md:text-base text-[var(--text-secondary)]">{stat.label}</p>
           </div>
-        </GSAPReveal>
+        </RevealOnScroll>
       {/each}
     </div>
   </div>
@@ -170,7 +167,7 @@
 
 <section class="section-padding relative">
   <div class="section-container">
-    <GSAPReveal animation="fade-up">
+    <RevealOnScroll animation="fly-up">
       <div class="text-center mb-16">
         <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">I nostri servizi</p>
         <h2 class="heading-lg mb-6">Cosa <span class="gradient-text">facciamo</span></h2>
@@ -178,11 +175,11 @@
           Creiamo ecosistemi di conversione che trasformano views in clienti e fatturato ricorrente.
         </p>
       </div>
-    </GSAPReveal>
+    </RevealOnScroll>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {#each services as service, i}
-        <GSAPReveal animation="fade-up" delay={i * 0.1}>
+        <RevealOnScroll animation="fly-up" stagger={80} index={i}>
           <GlowCard class="h-full">
             <div class="p-8">
               <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-righello-pink/20 to-cyan-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -220,70 +217,26 @@
               <p class="text-[var(--text-secondary)] leading-relaxed">{service.description}</p>
             </div>
           </GlowCard>
-        </GSAPReveal>
+        </RevealOnScroll>
       {/each}
     </div>
-  </div>
-</section>
-
-<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
-  <div class="section-container mb-12">
-    <GSAPReveal animation="fade-up">
-      <div class="text-center">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Case studies</p>
-        <h2 class="heading-lg mb-6">Campagne con <span class="gradient-text">risultati tracciabili</span></h2>
-        <p class="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-          Ogni progetto misura ROI, conversioni e crescita reale per i nostri clienti
-        </p>
+    
+    <RevealOnScroll animation="fly-up" delay={400}>
+      <div class="text-center mt-12">
+        <MagneticButton href="/servizi" variant="secondary">
+          Scopri tutti i servizi
+          <svg class="w-4 h-4 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </MagneticButton>
       </div>
-    </GSAPReveal>
-  </div>
-  
-  <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 md:px-8 pb-8">
-    {#each videoContent as video, i}
-      <GSAPReveal animation="fade-up" delay={i * 0.1}>
-        <div class="flex-shrink-0 snap-center">
-          <div class="video-preview w-[260px] md:w-[300px] group">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
-            <div class="absolute inset-0 bg-gradient-to-br from-righello-pink/10 to-cyan-500/10"></div>
-            
-            <div class="absolute inset-0 flex items-center justify-center z-20">
-              <div class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-righello-pink group-hover:border-righello-pink transition-all duration-300 group-hover:scale-110">
-                <svg class="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </div>
-            
-            <div class="absolute top-4 right-4 z-20">
-              <span class="px-3 py-1 bg-righello-pink/90 text-white text-xs font-bold rounded-full">
-                +{video.views} conversioni
-              </span>
-            </div>
-            
-            <div class="absolute bottom-0 left-0 right-0 p-5 z-20">
-              <p class="text-lg font-bold text-white mb-1">{video.title}</p>
-              <p class="text-sm text-gray-300">{video.desc}</p>
-            </div>
-          </div>
-        </div>
-      </GSAPReveal>
-    {/each}
-  </div>
-  
-  <div class="text-center mt-8">
-    <MagneticButton href="/progetti" variant="secondary">
-      Vedi tutti i progetti
-      <svg class="w-4 h-4 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-      </svg>
-    </MagneticButton>
+    </RevealOnScroll>
   </div>
 </section>
 
 <section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="section-container mb-12">
-    <GSAPReveal animation="fade-up">
+    <RevealOnScroll animation="fly-up">
       <div class="text-center">
         <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Dicono di noi</p>
         <h2 class="heading-lg mb-6">Le <span class="gradient-text">storie dei clienti</span></h2>
@@ -291,125 +244,111 @@
           Ascolta direttamente dai nostri clienti i risultati che abbiamo ottenuto insieme
         </p>
       </div>
-    </GSAPReveal>
+    </RevealOnScroll>
   </div>
   
-  <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 md:px-8 pb-8">
-    {#each clientTestimonials as testimonial, i}
-      <GSAPReveal animation="fade-up" delay={i * 0.1}>
-        <div class="flex-shrink-0 snap-center">
-          <div class="testimonial-reel w-[260px] md:w-[300px] aspect-[9/16] rounded-2xl overflow-hidden relative cursor-pointer group">
-            <div class="absolute inset-0 bg-gradient-to-br from-righello-pink/30 to-cyan-500/30"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
-            
-            <div class="absolute inset-0 flex items-center justify-center z-20">
-              <div class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-righello-pink group-hover:border-righello-pink transition-all duration-300 group-hover:scale-110">
-                <svg class="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+  <div class="overflow-x-auto scrollbar-hide">
+    <div class="flex gap-6 px-4 md:px-8 pb-8 snap-x snap-mandatory">
+      {#each clientTestimonials as testimonial, i}
+        <RevealOnScroll animation="scale" stagger={100} index={i}>
+          <div class="testimonial-card snap-center flex-shrink-0 w-[300px] md:w-[350px]">
+            <div class="glass-card rounded-2xl p-6 md:p-8 h-full">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-righello-pink to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+                  {testimonial.clientName.charAt(0)}
+                </div>
+                <div>
+                  <p class="font-semibold text-white">{testimonial.clientName}</p>
+                  <p class="text-sm text-[var(--text-secondary)]">{testimonial.clientRole}</p>
+                </div>
+              </div>
+              <p class="text-[var(--text-secondary)] leading-relaxed italic">"{testimonial.quote}"</p>
+              <div class="flex gap-1 mt-4">
+                {#each Array(5) as _, starIdx}
+                  <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                {/each}
               </div>
             </div>
-            
-            <div class="absolute bottom-0 left-0 right-0 p-5 z-20">
-              <p class="text-sm text-white/80 mb-3 line-clamp-3 italic">"{testimonial.quote}"</p>
-              <p class="text-lg font-bold text-white">{testimonial.clientName}</p>
-              <p class="text-sm text-gray-400">{testimonial.clientRole}</p>
-            </div>
           </div>
-        </div>
-      </GSAPReveal>
-    {/each}
+        </RevealOnScroll>
+      {/each}
+    </div>
   </div>
 </section>
 
 <section class="py-16 md:py-24 overflow-hidden relative">
   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-righello-pink/5 to-transparent"></div>
   
-  <GSAPReveal animation="fade-in">
+  <RevealOnScroll animation="fade">
     <div class="section-container mb-8">
       <p class="text-sm uppercase tracking-[0.2em] text-righello-pink text-center">I nostri clienti</p>
     </div>
-  </GSAPReveal>
+  </RevealOnScroll>
   
-  <InfiniteMarquee speed={40} class="mask-fade-edges">
-    {#each clients as client}
-      <span class="text-4xl md:text-6xl font-bold mx-8 text-white/20 hover:text-righello-pink transition-colors duration-500 cursor-default whitespace-nowrap">
-        {client}
-      </span>
-    {/each}
-  </InfiniteMarquee>
+  <InfiniteMarquee items={clients} speed={30} />
 </section>
 
-<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
-  <div class="section-container">
-    <GSAPReveal animation="fade-up">
-      <div class="text-center mb-16">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Come funziona</p>
-        <h2 class="heading-lg">Il tuo percorso di <span class="gradient-text">crescita</span></h2>
-      </div>
-    </GSAPReveal>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {#each [
-        { step: '01', title: 'Analisi', desc: 'Compila il form o scrivici. Analizziamo il tuo brand e i tuoi obiettivi.' },
-        { step: '02', title: 'Strategia', desc: 'Organizziamo un incontro dove definiamo la strategia su misura per te.' },
-        { step: '03', title: 'Esecuzione', desc: 'Produciamo contenuti e gestiamo le campagne per massimizzare i risultati.' },
-      ] as item, i}
-        <GSAPReveal animation="fade-up" delay={i * 0.15}>
-          <div class="relative">
-            <div class="text-8xl font-black text-white/5 absolute -top-8 -left-4">{item.step}</div>
-            <div class="glass-card rounded-2xl p-8 relative z-10 h-full">
-              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-righello-pink to-cyan-500 flex items-center justify-center text-white font-bold mb-6">
-                {item.step}
-              </div>
-              <h3 class="text-2xl font-bold mb-4">{item.title}</h3>
-              <p class="text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
-            </div>
-          </div>
-        </GSAPReveal>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<section class="section-padding">
-  <div class="section-container">
-    <GSAPReveal animation="scale">
-      <div class="relative rounded-3xl overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-righello-pink via-[#8B5CF6] to-cyan-500"></div>
-        <div class="absolute inset-0 noise-overlay opacity-20"></div>
-        
-        <div class="relative z-10 p-12 md:p-20 text-center">
-          <h2 class="heading-lg text-white mb-6">
-            Pronto a far <span class="font-black">crescere</span> il tuo brand?
-          </h2>
-          <p class="text-xl md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto">
-            Candidati ora e scopri se sei tra i pochi che possiamo seguire personalmente.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a 
-              href="/contatti" 
-              class="inline-flex items-center justify-center px-10 py-5 bg-white text-gray-900 font-bold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-            >
-              Candidati ora
-              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-            <a 
-              href="https://wa.me/393514613439" 
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center justify-center px-10 py-5 bg-transparent border-2 border-white text-white font-bold rounded-full transition-all duration-300 hover:bg-white hover:text-gray-900"
-            >
-              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Scrivici su WhatsApp
-            </a>
-          </div>
+<section class="section-padding relative overflow-hidden">
+  <div class="absolute inset-0 cta-gradient"></div>
+  
+  <div class="section-container relative z-10">
+    <RevealOnScroll animation="scale">
+      <div class="glass-card rounded-3xl p-8 md:p-16 text-center max-w-4xl mx-auto">
+        <h2 class="heading-lg mb-6">
+          Pronto a <span class="gradient-text">crescere?</span>
+        </h2>
+        <p class="text-xl text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto">
+          Inizia oggi a trasformare il tuo business con strategie data-driven e risultati misurabili.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <MagneticButton href="/contatti" variant="primary" class="text-lg px-8 py-4">
+            Richiedi una consulenza gratuita
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </MagneticButton>
         </div>
       </div>
-    </GSAPReveal>
+    </RevealOnScroll>
   </div>
 </section>
+
+<style>
+  .hero-bg {
+    background: 
+      radial-gradient(ellipse at 20% 30%, rgba(214, 72, 126, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+      var(--bg-primary);
+  }
+  
+  .cta-gradient {
+    background: 
+      radial-gradient(ellipse at center, rgba(214, 72, 126, 0.1) 0%, transparent 70%);
+  }
+  
+  .scroll-indicator {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .heading-lg {
+      font-size: 2rem;
+    }
+  }
+</style>
