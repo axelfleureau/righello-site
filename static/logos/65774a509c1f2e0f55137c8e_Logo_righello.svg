@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Livello_2"
+   data-name="Livello 2"
+   viewBox="0 0 665.22 162.54"
+   version="1.1"
+   sodipodi:docname="Logo_righello.svg"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:inkstitch="http://inkstitch.org/namespace">
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.80309518"
+     inkscape:cx="305.69229"
+     inkscape:cy="71.59799"
+     inkscape:window-width="1440"
+     inkscape:window-height="804"
+     inkscape:window-x="25"
+     inkscape:window-y="496"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g3" />
+  <metadata
+     id="metadata11">
+    <inkstitch:min_stitch_len_mm>0</inkstitch:min_stitch_len_mm>
+    <inkstitch:collapse_len_mm>3</inkstitch:collapse_len_mm>
+    <inkstitch:inkstitch_svg_version>1</inkstitch:inkstitch_svg_version>
+  </metadata>
+  <defs
+     id="defs1">
+    <style
+       id="style1">&#10;      .cls-1 {&#10;        stroke: #1d1d1b;&#10;        stroke-miterlimit: 10;&#10;      }&#10;&#10;      .cls-1, .cls-2 {&#10;        fill: #1d1d1b;&#10;      }&#10;&#10;      .cls-2, .cls-3 {&#10;        stroke-width: 0px;&#10;      }&#10;&#10;      .cls-3 {&#10;        fill: #ff0092;&#10;      }&#10;    </style>
+  </defs>
+  <g
+     id="Livello_1-2"
+     data-name="Livello 1">
+    <g
+       id="g12">
+      <g
+         id="g10">
+        <g
+           id="g3">
+          <g
+             id="g13">
+            <path
+               class="cls-3"
+               d="m380.31,70.34s-4.91,0-4.91,4.54v11.35c0,2.42,2.12,4.38,4.73,4.38h35.65c2.61,0,4.73-1.96,4.73-4.38v-11.52c0-2.42-2.12-4.38-4.73-4.38h-35.47Z"
+               id="path1"
+               inkstitch:running_stitch_tolerance_mm="0.3" />
+            <path
+               class="cls-3"
+               d="m375.4,53.65v-16.03c0-2.23,2.04-4.04,4.55-4.04h73.04c2.51,0,4.55,1.81,4.55,4.04v12c0,2.23-2.04,4.04-4.55,4.04h-51.35s-26.23,0-26.23,0Z"
+               id="path2"
+               inkstitch:running_stitch_tolerance_mm="0.3" />
+            <path
+               class="cls-3"
+               d="m401.69,107.2h50.8c2.79,0,5.04,2.03,5.04,4.53v11.3c0,2.5-2.26,4.53-5.04,4.53h-72.04c-2.79,0-5.04-2.03-5.04-4.53v-15.84h26.29Z"
+               id="path3"
+               inkstitch:running_stitch_tolerance_mm="0.3" />
+          </g>
+          <g
+             inkscape:label="Ink/Stitch Lettering"
+             transform=""
+             inkstitch:lettering="{&quot;text&quot;: &quot;&quot;, &quot;back_and_forth&quot;: false, &quot;font&quot;: &quot;small_font&quot;, &quot;scale&quot;: 100, &quot;trim_option&quot;: 2, &quot;use_trim_symbols&quot;: false}"
+             id="g11" />
+        </g>
+        <g
+           id="g9">
+          <path
+             class="cls-2"
+             d="m46.89,86.44h-18.08v41.13H0V8.35h52.26c30.6,0,46.3,12.92,46.3,38.75,0,18.28-8.55,30.2-23.65,35.77l30.6,42.52v2.19h-33.38l-25.24-41.13Zm-18.08-54.05v31.79h21.46c13.91,0,19.87-4.97,19.87-16.1s-5.56-15.7-19.87-15.7h-21.46Z"
+             id="path4"
+             inkstitch:running_stitch_tolerance_mm="0.3" />
+          <path
+             class="cls-2"
+             d="m117.83,20.07V.6h28.22v19.47h-28.22Zm.6,107.5V33.38h27.02v94.19h-27.02Z"
+             id="path5"
+             inkstitch:running_stitch_tolerance_mm="0.3" />
+          <path
+             class="cls-2"
+             d="m203.27,162.54c-35.97,0-46.1-7.35-46.1-19.08,0-8.55,9.34-14.31,22.06-16.89v-1.19c-10.13-1.39-14.51-6.36-14.51-12.92,0-5.36,4.17-10.13,11.92-13.51l6.95-3.58c-14.11-4.57-21.86-14.51-21.86-29.21,0-21.06,15.9-32.79,42.72-32.79h47.69v20.27h-10.33c-4.57,0-10.53-.2-18.08-.99l-.2,2.19c11.72,2.19,21.66,6.56,21.66,17.49,0,15.7-14.9,25.83-41.33,25.83-5.76,0-11.13-.6-15.7-1.59l-1.59,2.58c-.99,1.79-1.79,3.58-1.79,5.17,0,3.38,2.38,4.77,8.35,4.77,10.33,0,21.06-.6,30.8-.6,20.86,0,30.4,9.14,30.4,24.44,0,19.67-12.92,29.61-51.07,29.61Zm30.2-28.81c0-4.57-3.18-7.75-10.73-7.75h-31.99c-8.35,0-13.31,3.97-13.31,8.54,0,6.36,4.97,9.14,27.62,9.14s28.41-3.38,28.41-9.94Zm-47.69-66.57c0,7.55,4.57,13.31,18.08,13.31s18.48-5.76,18.48-13.31-5.56-13.31-18.48-13.31-18.08,5.76-18.08,13.31Z"
+             id="path6"
+             inkstitch:running_stitch_tolerance_mm="0.3" />
+          <path
+             class="cls-2"
+             d="m292.49,127.57h-27.02V0h27.02v58.62h1.59c5.56-18.08,16.49-27.82,31.79-27.82,17.88,0,26.83,12.52,26.83,32.98v63.78h-27.02v-56.23c0-9.54-4.57-16.09-14.31-16.09-11.52,0-18.88,8.15-18.88,19.87v52.46Z"
+             id="path7"
+             inkstitch:running_stitch_tolerance_mm="0.3" />
+          <path
+             class="cls-2"
+             d="m507.49,127.57h-27.02V0h27.02v127.57Z"
+             id="path8"
+             inkstitch:running_stitch_tolerance_mm="0.3" />
+          <path
+             class="cls-2"
+             d="m554.38,127.57h-27.02V0h27.02v127.57Z"
+             id="path9"
+             inkstitch:running_stitch_tolerance_mm="0.3" />
+        </g>
+      </g>
+      <path
+         class="cls-1"
+         d="m647.7,33.38h-60.17c-9.4,0-17.02,7.62-17.02,17.02v60.17c0,9.4,7.62,17.02,17.02,17.02h60.17c9.4,0,17.02-7.62,17.02-17.02v-60.17c0-9.4-7.62-17.02-17.02-17.02Zm-8.61,63.7c0,2.51-2.03,4.54-4.54,4.54h-33.18c-2.51,0-4.54-2.03-4.54-4.54v-33.18c0-2.51,2.03-4.54,4.54-4.54h33.18c2.51,0,4.54,2.03,4.54,4.54v33.18Z"
+         id="path10"
+         inkstitch:running_stitch_tolerance_mm="0.3"
+         inkstitch:force_lock_stitches="True"
+         inkstitch:lock_start="half_stitch"
+         inkstitch:lock_end="half_stitch" />
+    </g>
+  </g>
+</svg>
