@@ -178,22 +178,22 @@
   </div>
 </section>
 
-<section class="py-20 relative overflow-hidden">
+<section class="py-32 md:py-40 relative overflow-visible min-h-[600px] md:min-h-[700px]">
   <div class="section-container">
-    <div class="absolute top-10 right-10 hidden md:block">
+    <div class="absolute top-4 right-4 md:top-10 md:right-10">
       <StickyNote variant="pink" rotation={-3}>
         Soluzioni creative! ✨
       </StickyNote>
     </div>
     
-    <div class="absolute bottom-20 left-10 hidden md:block">
+    <div class="absolute bottom-4 left-4 md:bottom-16 md:left-10">
       <StickyNote variant="black" rotation={5}>
         Innovazione 🚀
       </StickyNote>
     </div>
     
     <ScrollReveal animation="scale">
-      <div class="bg-black rounded-3xl p-12 md:p-16 text-white text-center relative overflow-hidden">
+      <div class="bg-black rounded-3xl p-12 md:p-20 lg:p-24 text-white text-center relative overflow-hidden">
         <div class="relative z-10">
           <h2 class="heading-lg mb-6 uppercase"><Highlight variant="white">INIZIAMO INSIEME?</Highlight></h2>
           <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
