@@ -5,9 +5,23 @@
   import { theme } from '$lib/stores/theme';
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
+  import { afterNavigate } from '$app/navigation';
+  import { initMetaPixel, trackPageView } from '$lib/tracking/metaPixel';
+  
+  const PUBLIC_META_PIXEL_ID = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
   
   onMount(() => {
     theme.init();
+    
+    if (PUBLIC_META_PIXEL_ID) {
+      initMetaPixel(PUBLIC_META_PIXEL_ID);
+    }
+  });
+  
+  afterNavigate(() => {
+    if (browser && PUBLIC_META_PIXEL_ID) {
+      trackPageView();
+    }
   });
   
   $: if (browser) {

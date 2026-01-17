@@ -1,13 +1,19 @@
-# Righello - Creative Lab Website
+# Righello - Growth Agency Website
 
 ## Overview
-Sito web per Righello Creative Lab, un'agenzia creativa italiana leader nel marketing e sviluppo software. L'azienda assiste le aziende per farle lavorare meglio attraverso soluzioni creative e tecnologicamente avanzate.
+Sito web per Righello, una growth agency italiana orientata ai risultati. L'agenzia trasforma dati in crescita misurabile attraverso marketing, advertising e digital experience.
+
+## Posizionamento
+- **Tagline**: "Trasformiamo dati in crescita misurabile"
+- **Focus**: Approccio data-driven, ROAS, conversioni tracciabili
+- **NON siamo**: Content creator agency (i founder non sono content creator)
 
 ## Tech Stack
 - **Framework**: SvelteKit 1.x
 - **Styling**: TailwindCSS
 - **Font**: Degular Display (custom font con tutti i pesi da Thin a Black)
 - **Adapter**: Node adapter
+- **Animazioni**: GSAP con ScrollTrigger
 
 ## Colori Brand (Dark Theme Premium)
 - **Tema di default**: Dark mode
@@ -23,20 +29,34 @@ Sito web per Righello Creative Lab, un'agenzia creativa italiana leader nel mark
 - Glow rosa: rgba(214, 72, 126, 0.5)
 - Glow ciano: rgba(6, 182, 212, 0.4)
 
-## Tipografia Righello
-- **Font principale**: Degular Display (pesi: Thin 100, Light 300, Regular 400, Medium 500, Semibold 600, Bold 700, Black 900)
-- **Accenti in Black**: Usare `font-black` per enfatizzare parole importanti
-- **Highlight**: Rettangoli colorati dietro al testo (rosa, nero, bianco) con inversione automatica del colore del testo
-- **TechWord**: Parole tecniche in corsivo, opzionalmente evidenziate con rettangolo
+## Dipartimenti Servizi (3 aree)
+1. **Content & Social Media**
+   - Gestione social media
+   - Content production (reel, stories, video)
+   - Shooting foto & video
+   - Influencer marketing
+   - UGC Strategy
+   - Social listening
 
-## Componenti Tipografici
-- **Highlight.svelte**: Rettangolo colorato dietro al testo con inversione automatica colore (varianti: pink, black, white)
-- **TechWord.svelte**: Parole tecniche in corsivo (con opzione highlight)
-- **Accent.svelte**: Testo enfatizzato in font-black
+2. **Advertising & Performance**
+   - Meta Ads (Facebook/Instagram)
+   - Google Ads (Search, Display, Shopping)
+   - TikTok Ads
+   - Tracking & Analytics
+   - CRO - Conversion Rate Optimization
+   - Reporting & Attribution
+
+3. **Digital Experience**
+   - Siti Web B2B
+   - E-Commerce
+   - Web App & Software
+   - AI & Automazioni
+   - Design System
+   - Integrazioni CRM & ERP
 
 ## Struttura Pagine
-- `/` - Homepage con hero animato, video hero (con sfumature blend), sezione Reels social, clienti marquee
-- `/servizi` - Pagina servizi con InteractiveTimeline (fasi progetto trascinabile) e headline grande "Strategia. Design. Sviluppo."
+- `/` - Homepage con hero "Trasformiamo dati in crescita misurabile", statistiche animate, servizi, video testimonial, clienti marquee
+- `/servizi` - Pagina con switch a schede moderno per i 3 dipartimenti
 - `/progetti` - Galleria progetti con filtri per categoria e effetti tilt 3D
 - `/progetti/[slug]` - Pagina dettaglio progetto
 - `/chi-siamo` - Presentazione team con foto, statistiche animate
@@ -47,31 +67,23 @@ Sito web per Righello Creative Lab, un'agenzia creativa italiana leader nel mark
 - **TextReveal**: Animazione testo carattere per carattere con GSAP
 - **GlowCard**: Card con effetto glow che segue il cursore (rosa/ciano gradient)
 - **InfiniteMarquee**: Scroll infinito orizzontale per loghi clienti
+- **ServiceTabs**: Switch a schede moderno con angoli arrotondati per i dipartimenti
+- **VideoTestimonials**: Sezione video recensioni clienti in formato reel (9:16)
 - **ScrollReveal**: Animazioni fade-in al scroll (supporta prefers-reduced-motion)
 - **AnimatedCounter**: Contatori che si animano quando visibili
-- **TiltCard**: Effetto 3D al passaggio del mouse
-- **SplitText**: Animazione testo parola per parola
 - **MagneticButton**: Bottoni che seguono il cursore con effetto magnetico
 - **Header Smart**: Si nasconde/mostra con lo scroll, transizione trasparente/scuro
-- **SwingingIcon**: Icone oscillanti con animazione fisica
-- **StickyNote**: Post-it rosa trascinabili
-- **DraggableRuler**: Righello interattivo con marchi Righello
-- **InteractiveTimeline**: Timeline orizzontale stile Significa.co con righe per categoria (Strategia, Design, Sviluppo Web, Sviluppo App, Content & Shooting, Marketing) con:
-  - Pill sfalsate posizionate tramite offset percentuale (0-100%)
-  - Effetto reveal progressivo: le pill passano da grigie a colorate quando il cursore le attraversa
-  - Animazione confetti (svelte-confetti) quando si raggiunge la fine
-  - Supporta tastiera (frecce sinistra/destra) e accessibilità
 
-## Tipografia Globale
-- Font base: 18px (html)
-- Body text: text-lg con responsive md:text-xl
-- Descrizioni pagine: text-xl md:text-2xl
+## Tracking & Analytics
+- **Meta Pixel**: Integrato via `src/lib/tracking/metaPixel.ts`
+- Per attivare: impostare `PUBLIC_META_PIXEL_ID` nelle variabili d'ambiente
+- Traccia automaticamente PageView su ogni navigazione
+- Helper functions: `trackLead()`, `trackContact()`, `trackViewContent()`
 
-## Clienti
-Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, e altri
-
-## Video
-- Hero video: `/static/hero-video.mp4` (autoplay, loop, muted, playsinline)
+## Video Testimonial
+- Posizionare i video in `/static/testimonials/`
+- Formato: MP4, aspect ratio 9:16 (verticale come reel)
+- I dati testimonial sono in `src/routes/+page.svelte` → array `clientTestimonials`
 
 ## Sviluppo
 Il dev server gira sulla porta 5000 usando `npm run dev`.
@@ -83,12 +95,17 @@ Il dev server gira sulla porta 5000 usando `npm run dev`.
 
 ## Struttura File Principali
 - `src/routes/` - Pagine SvelteKit
-- `src/lib/components/` - Componenti (Header, Footer, ScrollReveal, TiltCard, AnimatedCounter, SplitText, Highlight, TechWord, MagneticButton)
+- `src/lib/components/` - Componenti UI
 - `src/lib/data/` - Dati statici (progetti, servizi, clienti)
-- `src/lib/actions/` - Azioni Svelte (drag-scrolling, intersection-observer)
-- `src/styles/` - CSS globali con animazioni (marquee, hover effects)
-- `static/` - Asset statici (loghi, favicon)
+- `src/lib/tracking/` - Moduli tracking (Meta Pixel)
+- `src/lib/stores/` - Svelte stores (tema, media queries)
+- `src/styles/` - CSS globali con animazioni
+- `static/` - Asset statici (loghi, favicon, video)
 - `static/fonts/` - Font Degular Display (OTF)
+- `static/testimonials/` - Video recensioni clienti
+
+## Clienti
+Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, Barcolana, Ippodromo Merano, Quellenhof, e altri
 
 ## Accessibilità
 - Supporto `prefers-reduced-motion` per tutti i componenti animati

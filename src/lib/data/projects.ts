@@ -89,33 +89,33 @@ export const projects: Project[] = [
 
 export const services = [
   {
-    id: 'branding',
-    title: 'Branding',
-    description: 'Creiamo identità di marca uniche e memorabili che raccontano la tua storia.',
-    icon: 'palette',
+    id: 'social',
+    title: 'Social Media Management',
+    description: 'Gestiamo i tuoi canali social con strategia, creatività e analisi dei dati per massimizzare l\'engagement.',
+    icon: 'sparkles',
   },
   {
     id: 'content',
     title: 'Content Production',
-    description: 'Produciamo contenuti creativi che catturano l\'attenzione del tuo pubblico.',
-    icon: 'sparkles',
-  },
-  {
-    id: 'web',
-    title: 'Sviluppo Web',
-    description: 'Realizziamo siti web moderni, veloci e ottimizzati per ogni dispositivo.',
-    icon: 'code',
-  },
-  {
-    id: 'photo-video',
-    title: 'Foto & Video',
-    description: 'Catturiamo momenti e storie attraverso immagini e video di alta qualità.',
+    description: 'Produciamo contenuti video e foto che convertono: reel, stories, video corporate e shooting professionali.',
     icon: 'camera',
   },
   {
-    id: 'software',
-    title: 'Sviluppo Software',
-    description: 'Sviluppiamo soluzioni software personalizzate per le tue esigenze.',
+    id: 'advertising',
+    title: 'Performance Advertising',
+    description: 'Campagne Meta, Google e TikTok Ads ottimizzate per massimizzare il ROAS e le conversioni.',
+    icon: 'target',
+  },
+  {
+    id: 'digital',
+    title: 'Digital Experience',
+    description: 'Siti web B2B, e-commerce, web app e soluzioni AI per una presenza digitale evoluta.',
+    icon: 'code',
+  },
+  {
+    id: 'analytics',
+    title: 'Tracking & Analytics',
+    description: 'Setup pixel, dashboard personalizzate e reportistica per tracciare ogni conversione.',
     icon: 'cpu',
   },
 ];

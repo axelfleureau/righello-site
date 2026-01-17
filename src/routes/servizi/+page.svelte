@@ -1,212 +1,236 @@
 <script lang="ts">
   import ScrollReveal from '$lib/components/ScrollReveal.svelte';
-  import InteractiveTimeline from '$lib/components/InteractiveTimeline.svelte';
-  import SwingingIcon from '$lib/components/SwingingIcon.svelte';
-  import StickyNote from '$lib/components/StickyNote.svelte';
+  import ServiceTabs from '$lib/components/ServiceTabs.svelte';
+  import GSAPReveal from '$lib/components/GSAPReveal.svelte';
+  import GlowCard from '$lib/components/GlowCard.svelte';
   import Highlight from '$lib/components/Highlight.svelte';
   import TechWord from '$lib/components/TechWord.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   
-  const timelinePhases = [
+  const departments = [
     {
-      name: 'Strategia',
-      color: 'bg-righello-pink',
-      items: [
-        { name: 'Discovery', color: 'bg-righello-pink', offset: 5 },
-        { name: 'Analisi mercato', color: 'bg-righello-pink', offset: 15 },
-        { name: 'Definizione obiettivi', color: 'bg-righello-pink', offset: 25 }
-      ]
+      id: 'content-social',
+      name: 'Content & Social',
+      icon: '📱',
+      tagline: 'Contenuti che convertono',
+      description: 'Creiamo e gestiamo la tua presenza social con contenuti strategici che generano engagement e portano risultati misurabili. Dalla produzione video alla gestione quotidiana.',
+      services: [
+        {
+          title: 'Gestione Social Media',
+          description: 'Piano editoriale, pubblicazione, community management e analisi performance su tutte le piattaforme.'
+        },
+        {
+          title: 'Content Production',
+          description: 'Reel, stories, post, video corporate e contenuti creativi ottimizzati per ogni formato e piattaforma.'
+        },
+        {
+          title: 'Shooting Foto & Video',
+          description: 'Produzioni professionali per brand, prodotti, eventi e contenuti social con team dedicato.'
+        },
+        {
+          title: 'Influencer Marketing',
+          description: 'Identificazione, contatto e gestione collaborazioni con creator e influencer del tuo settore.'
+        },
+        {
+          title: 'UGC Strategy',
+          description: 'Strategia e produzione di contenuti User Generated per aumentare autenticità e conversioni.'
+        },
+        {
+          title: 'Social Listening',
+          description: 'Monitoraggio conversazioni, trend e sentiment per anticipare opportunità e proteggere la reputation.'
+        }
+      ],
+      features: ['Piano editoriale mensile', 'Report analytics', 'A/B testing contenuti', 'Trend analysis', 'Community management', 'Crisis management']
     },
     {
-      name: 'Design',
-      color: 'bg-gray-800',
-      items: [
-        { name: 'Wireframe', color: 'bg-gray-700', offset: 20 },
-        { name: 'User Testing', color: 'bg-gray-600', offset: 30 },
-        { name: 'Look & Feel', color: 'bg-gray-700', offset: 40 },
-        { name: 'UI Design', color: 'bg-gray-800', offset: 50 },
-        { name: 'User Testing', color: 'bg-gray-600', offset: 60 },
-        { name: 'Design System', color: 'bg-gray-800', offset: 70 }
-      ]
+      id: 'advertising',
+      name: 'Advertising & Performance',
+      icon: '📊',
+      tagline: 'Ogni euro tracciato',
+      description: 'Campagne pubblicitarie data-driven su Meta, Google e TikTok. Ottimizziamo costantemente per massimizzare ROAS e ridurre il costo per acquisizione.',
+      services: [
+        {
+          title: 'Meta Ads',
+          description: 'Campagne Facebook e Instagram con targeting avanzato, retargeting e lookalike audiences ottimizzate.'
+        },
+        {
+          title: 'Google Ads',
+          description: 'Search, Display, Shopping e YouTube Ads per catturare domanda attiva e generare conversioni.'
+        },
+        {
+          title: 'TikTok Ads',
+          description: 'Campagne native per raggiungere Gen Z e Millennials con formati creativi ad alto engagement.'
+        },
+        {
+          title: 'Tracking & Analytics',
+          description: 'Setup pixel, conversion API, GA4, dashboard personalizzate per tracciare ogni touchpoint.'
+        },
+        {
+          title: 'CRO - Conversion Rate Optimization',
+          description: 'A/B testing landing page, funnel optimization e analisi comportamentale per aumentare le conversioni.'
+        },
+        {
+          title: 'Reporting & Attribution',
+          description: 'Report settimanali/mensili con KPI chiave, attribution modeling e insights actionable.'
+        }
+      ],
+      features: ['Setup pixel completo', 'Dashboard real-time', 'A/B testing', 'Audience building', 'Retargeting avanzato', 'Budget optimization']
     },
     {
-      name: 'Sviluppo Web',
-      color: 'bg-blue-600',
-      items: [
-        { name: 'Architettura', color: 'bg-blue-600', offset: 35 },
-        { name: 'Frontend', color: 'bg-blue-600', offset: 50 },
-        { name: 'Backend', color: 'bg-blue-500', offset: 60 },
-        { name: 'QA', color: 'bg-cyan-600', offset: 75 },
-        { name: 'QA', color: 'bg-cyan-600', offset: 80 },
-        { name: 'Launch', color: 'bg-green-600', offset: 90 }
-      ]
-    },
-    {
-      name: 'Sviluppo App',
-      color: 'bg-purple-600',
-      items: [
-        { name: 'UX Mobile', color: 'bg-purple-600', offset: 25 },
-        { name: 'Prototipo', color: 'bg-purple-500', offset: 40 },
-        { name: 'Sviluppo nativo', color: 'bg-purple-600', offset: 55 },
-        { name: 'Testing', color: 'bg-purple-500', offset: 70 },
-        { name: 'Store submission', color: 'bg-green-600', offset: 85 }
-      ]
-    },
-    {
-      name: 'Content & Shooting',
-      color: 'bg-orange-500',
-      items: [
-        { name: 'Concept creativo', color: 'bg-orange-500', offset: 10 },
-        { name: 'Shooting foto', color: 'bg-orange-500', offset: 30 },
-        { name: 'Shooting video', color: 'bg-orange-400', offset: 45 },
-        { name: 'Post-produzione', color: 'bg-orange-500', offset: 60 },
-        { name: 'Consegna materiali', color: 'bg-orange-400', offset: 80 }
-      ]
-    },
-    {
-      name: 'Marketing',
-      color: 'bg-green-600',
-      items: [
-        { name: 'Piano editoriale', color: 'bg-green-600', offset: 15 },
-        { name: 'Campagne Ads', color: 'bg-green-500', offset: 35 },
-        { name: 'SEO/SEM', color: 'bg-green-600', offset: 50 },
-        { name: 'Analytics', color: 'bg-green-500', offset: 65 },
-        { name: 'Ottimizzazione', color: 'bg-green-600', offset: 80 },
-        { name: 'Scaling', color: 'bg-green-500', offset: 92 }
-      ]
-    }
-  ];
-  
-  const serviceCategories = [
-    {
-      title: 'Digital Strategy',
-      items: ['Analisi di mercato', 'Brand positioning', 'Digital advertising', 'Influencer marketing']
-    },
-    {
-      title: 'Siti Web',
-      items: ['Siti web aziendali', 'E-commerce', 'Landing page', 'Web app']
-    },
-    {
-      title: 'Creative Design',
-      items: ['UI/UX Design', 'Brand identity', 'Graphic design', 'Design system']
-    },
-    {
-      title: 'Social Media Marketing',
-      items: ['Piano editoriale', 'Community management', 'Campagne ads', 'Analytics']
-    },
-    {
-      title: 'Shooting e Video',
-      items: ['Video istituzionali', 'Fotografia prodotto', 'Reels e contenuti social', 'Post-produzione']
-    },
-    {
-      title: 'Web Development',
-      items: ['Frontend', 'Backend', 'Mobile app', 'Software custom']
+      id: 'digital-experience',
+      name: 'Digital Experience',
+      icon: '🚀',
+      tagline: 'Soluzioni digitali evolute',
+      description: 'Progettiamo esperienze digitali B2B e B2C: siti web, e-commerce, applicazioni e soluzioni AI. Strutture solide, misurabili e pronte a scalare.',
+      services: [
+        {
+          title: 'Siti Web B2B',
+          description: 'Siti ottimizzati per UX, contenuti e flussi di engagement che convertono visitatori in lead qualificati.'
+        },
+        {
+          title: 'E-Commerce',
+          description: 'Piattaforme di vendita online con listini personalizzati, integrazioni gestionali e checkout ottimizzato.'
+        },
+        {
+          title: 'Web App & Software',
+          description: 'Applicazioni web custom, dashboard, portali clienti e soluzioni software su misura.'
+        },
+        {
+          title: 'AI & Automazioni',
+          description: 'Chatbot intelligenti, automazioni marketing, lead scoring AI e integrazioni con sistemi aziendali.'
+        },
+        {
+          title: 'Design System',
+          description: 'UI Kit modulari, design token e librerie componenti per garantire coerenza e scalabilità.'
+        },
+        {
+          title: 'Integrazioni CRM & ERP',
+          description: 'Collegamento a HubSpot, Salesforce, SAP e altri sistemi per un ecosistema digitale connesso.'
+        }
+      ],
+      features: ['UX Research', 'Prototipi interattivi', 'Design responsive', 'SEO tecnico', 'Performance optimization', 'Manutenzione evolutiva']
     }
   ];
 </script>
 
 <svelte:head>
-  <title>Servizi - Righello</title>
-  <meta name="description" content="I nostri servizi: strategia, design, sviluppo e content. Soluzioni su misura per far crescere il tuo business." />
+  <title>Servizi - Righello | Marketing, Advertising & Digital Experience</title>
+  <meta name="description" content="I nostri servizi: Content & Social Media, Advertising & Performance, Digital Experience. Soluzioni complete per la crescita del tuo business." />
 </svelte:head>
 
-<section class="py-16">
+<section class="py-20 md:py-32">
   <div class="section-container">
     <div class="max-w-4xl">
-      <ScrollReveal animation="fade-up">
-        <h1 class="heading-xl mb-6 uppercase"><Highlight variant="pink">SOLUZIONI SU MISURA</Highlight></h1>
-      </ScrollReveal>
-      <ScrollReveal animation="fade-up" delay={100}>
-        <p class="text-xl md:text-2xl mb-8" style="color: var(--text-secondary);">
-          Strategie di <TechWord highlight>marketing</TechWord> e prodotti digitali costruiti per crescere con il tuo <TechWord>business</TechWord>.
+      <GSAPReveal animation="fade-up">
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">I nostri servizi</p>
+        <h1 class="heading-xl mb-6">
+          Tre dipartimenti,<br/>
+          <span class="gradient-text">un unico obiettivo.</span>
+        </h1>
+      </GSAPReveal>
+      <GSAPReveal animation="fade-up" delay={0.2}>
+        <p class="text-xl md:text-2xl mb-8 text-[var(--text-secondary)]">
+          Combiniamo creatività, dati e tecnologia per costruire strategie di crescita <TechWord highlight>misurabili</TechWord> e <TechWord>scalabili</TechWord>.
         </p>
-      </ScrollReveal>
+      </GSAPReveal>
     </div>
   </div>
 </section>
 
-<section class="py-8">
+<section class="pb-20 md:pb-32">
   <div class="section-container">
-    <ScrollReveal animation="fade-up">
-      <h2 class="text-4xl md:text-5xl lg:text-6xl font-black leading-tight" style="color: var(--text-primary);">
-        Strategia. Marketing.<br/>
-        Design. Sviluppo.
-      </h2>
-    </ScrollReveal>
+    <ServiceTabs {departments} />
   </div>
 </section>
 
-<section class="py-12 overflow-hidden">
+<section class="section-padding" style="background: var(--bg-secondary);">
   <div class="section-container">
-    <ScrollReveal>
-      <InteractiveTimeline phases={timelinePhases} />
-    </ScrollReveal>
-  </div>
-</section>
-
-<section class="py-20 bg-black text-white">
-  <div class="section-container">
-    <ScrollReveal animation="fade-up">
-      <p class="text-sm uppercase tracking-widest text-gray-400 mb-4">COSA FACCIAMO</p>
-      <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-16 leading-tight">
-        Servizi agenzia Web<br/>e Marketing
-      </h2>
-    </ScrollReveal>
+    <GSAPReveal animation="fade-up">
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Il nostro approccio</p>
+        <h2 class="heading-lg">
+          Metodologia <span class="gradient-text">data-driven</span>
+        </h2>
+      </div>
+    </GSAPReveal>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-8">
-      {#each serviceCategories as category, i}
-        <ScrollReveal animation="fade-up" delay={i * 100}>
-          <div class="space-y-4">
-            <h3 class="text-lg font-semibold text-white">{category.title}</h3>
-            <ul class="space-y-2">
-              {#each category.items as item}
-                <li class="text-gray-400 hover:text-white transition-colors cursor-default">{item}</li>
-              {/each}
-            </ul>
-          </div>
-        </ScrollReveal>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {#each [
+        { num: '01', title: 'Analisi', desc: 'Studiamo il mercato, i competitor e i dati esistenti per definire la strategia.' },
+        { num: '02', title: 'Strategia', desc: 'Definiamo obiettivi, KPI e roadmap con milestone misurabili.' },
+        { num: '03', title: 'Esecuzione', desc: 'Implementiamo con agilità, testando e ottimizzando costantemente.' },
+        { num: '04', title: 'Scaling', desc: 'Scaliamo ciò che funziona, eliminando ciò che non performa.' },
+      ] as step, i}
+        <GSAPReveal animation="fade-up" delay={i * 0.1}>
+          <GlowCard class="h-full">
+            <div class="p-6">
+              <span class="text-5xl font-black text-white/10">{step.num}</span>
+              <h3 class="text-xl font-bold mt-2 mb-3 text-white">{step.title}</h3>
+              <p class="text-[var(--text-secondary)]">{step.desc}</p>
+            </div>
+          </GlowCard>
+        </GSAPReveal>
       {/each}
     </div>
-    
-    <ScrollReveal animation="fade-up" delay={600}>
-      <div class="mt-16">
-        <MagneticButton href="/contatti" variant="outline-white">
-          Scopri i servizi
-        </MagneticButton>
-      </div>
-    </ScrollReveal>
   </div>
 </section>
 
-<section class="py-32 md:py-40 relative overflow-visible min-h-[600px] md:min-h-[700px]">
+<section class="section-padding">
   <div class="section-container">
-    <div class="absolute top-4 right-4 md:top-10 md:right-10">
-      <StickyNote variant="pink" rotation={-3}>
-        Soluzioni creative! ✨
-      </StickyNote>
-    </div>
+    <GSAPReveal animation="fade-up">
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Perché Righello</p>
+        <h2 class="heading-lg mb-6">
+          I nostri <span class="gradient-text">punti di forza</span>
+        </h2>
+      </div>
+    </GSAPReveal>
     
-    <div class="absolute bottom-4 left-4 md:bottom-16 md:left-10">
-      <StickyNote variant="black" rotation={5}>
-        Innovazione 🚀
-      </StickyNote>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {#each [
+        { icon: '📈', title: 'Orientamento ai numeri', desc: 'Ogni decisione è basata su dati. Ogni risultato è tracciato e misurabile.' },
+        { icon: '🎯', title: 'Full-funnel approach', desc: 'Dalla awareness alla conversione, gestiamo l\'intero percorso del cliente.' },
+        { icon: '🤝', title: 'Team dedicato', desc: 'Un referente unico che coordina specialisti di ogni dipartimento.' },
+      ] as point, i}
+        <GSAPReveal animation="fade-up" delay={i * 0.1}>
+          <div class="text-center">
+            <span class="text-5xl mb-4 block">{point.icon}</span>
+            <h3 class="text-xl font-bold mb-3">{point.title}</h3>
+            <p class="text-[var(--text-secondary)]">{point.desc}</p>
+          </div>
+        </GSAPReveal>
+      {/each}
     </div>
-    
-    <ScrollReveal animation="scale">
-      <div class="bg-black rounded-3xl p-12 md:p-20 lg:p-24 text-white text-center relative overflow-hidden">
-        <div class="relative z-10">
-          <h2 class="heading-lg mb-6 uppercase"><Highlight variant="white">INIZIAMO INSIEME?</Highlight></h2>
-          <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-            Ogni grande progetto inizia con una <TechWord>conversazione</TechWord>. Parliamo del tuo.
+  </div>
+</section>
+
+<section class="section-padding" style="background: var(--bg-secondary);">
+  <div class="section-container">
+    <GSAPReveal animation="scale">
+      <div class="relative rounded-3xl overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-righello-pink via-[#8B5CF6] to-cyan-500"></div>
+        <div class="absolute inset-0 noise-overlay opacity-20"></div>
+        
+        <div class="relative z-10 p-12 md:p-20 text-center">
+          <h2 class="heading-lg text-white mb-6">
+            Parliamo del tuo <span class="font-black">progetto</span>
+          </h2>
+          <p class="text-xl md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto">
+            Prenota una call gratuita per analizzare insieme le opportunità di crescita.
           </p>
-          <MagneticButton href="/contatti" variant="primary">
-            Contattaci
-            <svg class="w-5 h-5 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </MagneticButton>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a 
+              href="/contatti" 
+              class="inline-flex items-center justify-center px-10 py-5 bg-white text-gray-900 font-bold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            >
+              Richiedi una consulenza
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
-    </ScrollReveal>
+    </GSAPReveal>
   </div>
 </section>

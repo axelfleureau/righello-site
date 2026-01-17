@@ -10,6 +10,37 @@
   import gsap from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   
+  const clientTestimonials = [
+    {
+      id: '1',
+      clientName: 'Marco Zanutta',
+      clientRole: 'CEO, Zanutta Group',
+      videoUrl: '/testimonials/zanutta.mp4',
+      quote: 'Hanno trasformato la nostra presenza digitale. I numeri parlano chiaro: +340% di lead qualificati.'
+    },
+    {
+      id: '2',
+      clientName: 'Elena Reginato',
+      clientRole: 'Marketing Director, Reginato',
+      videoUrl: '/testimonials/reginato.mp4',
+      quote: 'Finalmente un\'agenzia che parla di ROI e non solo di like. Risultati concreti e misurabili.'
+    },
+    {
+      id: '3',
+      clientName: 'Giovanni Ennevi',
+      clientRole: 'Founder, Ennevi',
+      videoUrl: '/testimonials/ennevi.mp4',
+      quote: 'Il team Righello ha portato la nostra campagna Meta a un ROAS di 8.5x. Impressionante.'
+    },
+    {
+      id: '4',
+      clientName: 'Laura Dolfo',
+      clientRole: 'Owner, Dolfo Restaurant',
+      videoUrl: '/testimonials/dolfo.mp4',
+      quote: 'Gestiscono i nostri social con una creatività che non avrei mai immaginato. Sold out ogni weekend.'
+    },
+  ];
+  
   const featuredProjects = projects.filter(p => p.featured);
   
   const stats = [
@@ -48,8 +79,8 @@
 </script>
 
 <svelte:head>
-  <title>Righello - Creative Lab | Marketing & Video Production</title>
-  <meta name="description" content="L'agenzia di marketing video che trasforma la tua visibilità in fatturato. Creiamo contenuti virali per brand ambiziosi." />
+  <title>Righello - Growth Agency | Marketing, Advertising & Digital Experience</title>
+  <meta name="description" content="Agenzia di marketing orientata ai risultati. Gestiamo social, creiamo contenuti e campagne pubblicitarie che generano conversioni misurabili." />
 </svelte:head>
 
 <section bind:this={heroContainer} class="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -72,20 +103,20 @@
   <div class="section-container text-center relative z-20 py-32">
     <GSAPReveal animation="fade-up" delay={0.2}>
       <p class="text-sm md:text-base uppercase tracking-[0.3em] text-righello-pink mb-6 font-medium">
-        Creative Lab
+        Growth Agency
       </p>
     </GSAPReveal>
     
     <GSAPReveal animation="fade-up" delay={0.4}>
       <h1 class="heading-xl mb-8 max-w-5xl mx-auto">
-        <span class="block">L'agenzia nata da</span>
-        <span class="gradient-text">content creator.</span>
+        <span class="block">Trasformiamo dati in</span>
+        <span class="gradient-text">crescita misurabile.</span>
       </h1>
     </GSAPReveal>
     
     <GSAPReveal animation="fade-up" delay={0.6}>
       <p class="text-xl md:text-2xl text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto leading-relaxed">
-        Dalla produzione dei contenuti alla viralità sui social: un approccio pensato per le aziende che vogliono crescere.
+        Marketing, advertising e gestione social con un approccio data-driven. Ogni euro investito, ogni conversione tracciata.
       </p>
     </GSAPReveal>
     
@@ -175,6 +206,10 @@
                   <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
+                {:else if service.icon === 'target'}
+                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
                 {:else}
                   <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -195,10 +230,10 @@
   <div class="section-container mb-12">
     <GSAPReveal animation="fade-up">
       <div class="text-center">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Portfolio</p>
-        <h2 class="heading-lg mb-6">I nostri <span class="gradient-text">contenuti virali</span></h2>
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Case studies</p>
+        <h2 class="heading-lg mb-6">Campagne con <span class="gradient-text">risultati tracciabili</span></h2>
         <p class="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-          Guarda i video che hanno generato milioni di views per i nostri clienti
+          Ogni progetto misura ROI, conversioni e crescita reale per i nostri clienti
         </p>
       </div>
     </GSAPReveal>
@@ -222,7 +257,7 @@
             
             <div class="absolute top-4 right-4 z-20">
               <span class="px-3 py-1 bg-righello-pink/90 text-white text-xs font-bold rounded-full">
-                {video.views} views
+                +{video.views} conversioni
               </span>
             </div>
             
@@ -243,6 +278,47 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
       </svg>
     </MagneticButton>
+  </div>
+</section>
+
+<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
+  <div class="section-container mb-12">
+    <GSAPReveal animation="fade-up">
+      <div class="text-center">
+        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Dicono di noi</p>
+        <h2 class="heading-lg mb-6">Le <span class="gradient-text">storie dei clienti</span></h2>
+        <p class="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
+          Ascolta direttamente dai nostri clienti i risultati che abbiamo ottenuto insieme
+        </p>
+      </div>
+    </GSAPReveal>
+  </div>
+  
+  <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 md:px-8 pb-8">
+    {#each clientTestimonials as testimonial, i}
+      <GSAPReveal animation="fade-up" delay={i * 0.1}>
+        <div class="flex-shrink-0 snap-center">
+          <div class="testimonial-reel w-[260px] md:w-[300px] aspect-[9/16] rounded-2xl overflow-hidden relative cursor-pointer group">
+            <div class="absolute inset-0 bg-gradient-to-br from-righello-pink/30 to-cyan-500/30"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center z-20">
+              <div class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-righello-pink group-hover:border-righello-pink transition-all duration-300 group-hover:scale-110">
+                <svg class="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 right-0 p-5 z-20">
+              <p class="text-sm text-white/80 mb-3 line-clamp-3 italic">"{testimonial.quote}"</p>
+              <p class="text-lg font-bold text-white">{testimonial.clientName}</p>
+              <p class="text-sm text-gray-400">{testimonial.clientRole}</p>
+            </div>
+          </div>
+        </div>
+      </GSAPReveal>
+    {/each}
   </div>
 </section>
 
