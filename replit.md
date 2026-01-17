@@ -65,7 +65,7 @@ Sito web per Righello, una growth agency italiana orientata ai risultati e ai nu
 
 ## Componenti Interattivi
 - **PhoneMockup**: iPhone 3D mockup con spring physics, tilt hover effects, gradient animato
-- **ScrollyPhone**: iPhone parallax con GSAP ScrollTrigger, rotazione 3D, traslazione e contenuti sincronizzati allo scroll
+- **AppleScrolly**: Effetto scrollytelling stile Apple - hero con iPhone che si pinna e si sposta al centro durante lo scroll, con frasi ad impatto alternate a sinistra/destra sincronizzate allo scroll
 - **RevealOnScroll**: Animazioni scroll-triggered con Svelte native (fly, fade, scale)
 - **GlowCard**: Card con effetto glow che segue il cursore (rosa/ciano gradient)
 - **InfiniteMarquee**: Scroll infinito orizzontale per loghi clienti
@@ -108,7 +108,7 @@ Il dev server gira sulla porta 5000 usando `npm run dev`.
 
 ## Struttura File Principali
 - `src/routes/` - Pagine SvelteKit
-- `src/lib/components/` - Componenti UI (PhoneMockup, ScrollyPhone, VideoTestimonials, BenefitsSection, FAQ, etc.)
+- `src/lib/components/` - Componenti UI (PhoneMockup, AppleScrolly, VideoTestimonials, BenefitsSection, FAQ, etc.)
 - `src/lib/data/projects.ts` - Dati statici (progetti, dipartimenti, servizi, clienti)
 - `src/lib/utils/gsap.ts` - Utility GSAP per Svelte (useGsapContext, createScrollTrigger, createParallax, etc.)
 - `src/lib/actions/inview.ts` - Svelte action per scroll detection
