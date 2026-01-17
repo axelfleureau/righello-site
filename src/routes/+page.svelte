@@ -5,44 +5,13 @@
   import InfiniteMarquee from '$lib/components/InfiniteMarquee.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
-  import PhoneMockup from '$lib/components/PhoneMockup.svelte';
   import VideoTestimonials from '$lib/components/VideoTestimonials.svelte';
-  import ScrollyPhone from '$lib/components/ScrollyPhone.svelte';
+  import AppleScrolly from '$lib/components/AppleScrolly.svelte';
   import BenefitsSection from '$lib/components/BenefitsSection.svelte';
   import FAQ from '$lib/components/FAQ.svelte';
   import BackgroundBeams from '$lib/components/BackgroundBeams.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
   import { onMount } from 'svelte';
-  
-  const scrollySlides = [
-    {
-      title: 'Content che converte',
-      subtitle: 'Content & Social',
-      description: 'Creiamo contenuti che catturano l\'attenzione e trasformano follower in clienti. Reel, stories e campagne UGC con risultati misurabili.',
-      stats: [
-        { value: '+340%', label: 'Engagement rate' },
-        { value: '2M+', label: 'Views mensili' },
-      ],
-    },
-    {
-      title: 'Advertising precision',
-      subtitle: 'Performance Marketing',
-      description: 'Meta Ads, Google Ads, TikTok Ads. Ogni euro investito tracciato, ottimizzato e moltiplicato. ROAS che parlano da soli.',
-      stats: [
-        { value: '8.5x', label: 'ROAS medio' },
-        { value: '-45%', label: 'Costo acquisizione' },
-      ],
-    },
-    {
-      title: 'Digital Experience',
-      subtitle: 'Tech & Development',
-      description: 'Siti web, e-commerce e web app che convertono. Design system, integrazioni CRM e automazioni AI per scalare il tuo business.',
-      stats: [
-        { value: '+180%', label: 'Conversion rate' },
-        { value: '99.9%', label: 'Uptime garantito' },
-      ],
-    },
-  ];
   
   const homepageServices = departments.map(dept => ({
     id: dept.id,
@@ -123,83 +92,7 @@
   <meta name="description" content="Agenzia di marketing orientata ai risultati. Gestiamo social, creiamo contenuti e campagne pubblicitarie che generano conversioni misurabili." />
 </svelte:head>
 
-<section class="h-screen min-h-[600px] flex items-center relative overflow-hidden">
-  <div class="absolute inset-0 hero-bg"></div>
-  <BackgroundBeams variant="subtle" />
-  <div class="absolute inset-0 noise-overlay opacity-30"></div>
-  
-  <div class="section-container relative z-10 pt-24 pb-12 md:pt-28 md:pb-16">
-    <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-      <div class="order-2 lg:order-1 text-center lg:text-left">
-        <p class="text-sm md:text-base uppercase tracking-[0.3em] text-righello-pink mb-6 font-medium hero-animate" style="--delay: 0ms">
-          Growth Agency
-        </p>
-        
-        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-[1.1] hero-animate" style="--delay: 100ms">
-          <span class="block text-white">La tua crescita,</span>
-          <span class="gradient-text">inquadrata alla perfezione.</span>
-        </h1>
-        
-        <p class="text-lg md:text-xl text-[var(--text-secondary)] mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed hero-animate" style="--delay: 200ms">
-          Marketing, advertising e sviluppo digitale con un approccio data-driven. 
-          Ogni euro investito, ogni conversione tracciata.
-        </p>
-        
-        <div class="flex flex-wrap justify-center lg:justify-start gap-4 mb-10 hero-animate" style="--delay: 300ms">
-          <MagneticButton href="/contatti" variant="primary">
-            Iniziamo a parlare
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </MagneticButton>
-          <MagneticButton href="/progetti" variant="outline-white">
-            Guarda i progetti
-          </MagneticButton>
-        </div>
-        
-        <div class="flex flex-wrap justify-center lg:justify-start gap-6 hero-animate" style="--delay: 400ms">
-          {#each credibilityBadges as badge, i}
-            <div class="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-                {#if badge.icon === 'meta'}
-                  <svg class="w-5 h-5 text-righello-pink" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
-                  </svg>
-                {:else if badge.icon === 'google'}
-                  <svg class="w-5 h-5 text-righello-pink" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                  </svg>
-                {:else if badge.icon === 'star'}
-                  <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                {/if}
-                <span class="font-medium">{badge.label}</span>
-            </div>
-          {/each}
-        </div>
-      </div>
-      
-      <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
-        <div class="hero-animate" style="--delay: 200ms">
-          <PhoneMockup />
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden md:block">
-    <div class="scroll-indicator hero-animate" style="--delay: 800ms">
-      <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-        <div class="w-1.5 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<ScrollyPhone slides={scrollySlides} />
+<AppleScrolly {credibilityBadges} />
 
 <section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="section-container">
@@ -363,25 +256,9 @@
 </section>
 
 <style>
-  .hero-bg {
-    background: 
-      radial-gradient(ellipse at 20% 30%, rgba(214, 72, 126, 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 70%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
-      var(--bg-primary);
-  }
-  
   .cta-gradient {
     background: 
       radial-gradient(ellipse at center, rgba(214, 72, 126, 0.1) 0%, transparent 70%);
-  }
-  
-  .scroll-indicator {
-    animation: float 3s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
   }
   
   .scrollbar-hide {
