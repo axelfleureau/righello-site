@@ -76,8 +76,8 @@
         <RevealOnScroll animation="fly-up" stagger={100} index={i}>
           <GlowCard class="h-full">
             <div class="p-6">
-              <span class="text-5xl font-black text-white/10">{step.num}</span>
-              <h3 class="text-xl font-bold mt-2 mb-3 text-white">{step.title}</h3>
+              <span class="text-5xl font-black opacity-10">{step.num}</span>
+              <h3 class="text-xl font-bold mt-2 mb-3 text-[var(--text-primary)]">{step.title}</h3>
               <p class="text-[var(--text-secondary)]">{step.desc}</p>
             </div>
           </GlowCard>

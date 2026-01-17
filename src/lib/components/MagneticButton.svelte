@@ -45,8 +45,8 @@
   
   const variants = {
     primary: 'bg-righello-pink text-white hover:bg-righello-pink-dark',
-    secondary: 'border-2 border-black text-black hover:bg-black hover:text-white',
-    'outline-white': 'border-2 border-white text-white hover:bg-black hover:border-black'
+    secondary: 'border-2 border-[var(--border-color)] text-[var(--text-primary)] hover:bg-righello-pink hover:text-white hover:border-righello-pink',
+    'outline-white': 'border-2 border-[var(--border-color)] text-[var(--text-primary)] hover:bg-righello-pink hover:text-white hover:border-righello-pink'
   };
 </script>
 

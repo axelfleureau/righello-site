@@ -28,7 +28,7 @@
     class="tabs-container relative flex justify-center mb-16"
     role="tablist"
   >
-    <div class="tabs-wrapper relative inline-flex p-1.5 bg-[#0a0a0a] rounded-2xl border border-white/10 shadow-2xl">
+    <div class="tabs-wrapper relative inline-flex p-1.5 bg-[var(--bg-secondary)] rounded-2xl border border-[var(--border-color)] shadow-2xl">
       <div 
         class="tab-indicator absolute top-1.5 bottom-1.5 rounded-xl bg-gradient-to-r from-righello-pink to-cyan-500 transition-all duration-500 ease-out shadow-lg"
         style="
@@ -44,8 +44,8 @@
           aria-controls="panel-{dept.id}"
           class="tab-button relative z-10 px-6 md:px-8 py-4 rounded-xl font-semibold text-sm md:text-base transition-all duration-300 whitespace-nowrap
                  {activeTab === dept.id 
-                   ? 'text-white' 
-                   : 'text-[var(--text-secondary)] hover:text-white'}"
+                   ? 'text-white font-bold' 
+                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}"
           on:click={() => setTab(dept.id)}
         >
           <span class="hidden md:inline mr-2 text-lg">{dept.icon}</span>
@@ -79,7 +79,7 @@
             >
               <GlowCard class="h-full">
                 <div class="p-6 md:p-8">
-                  <h4 class="text-xl font-semibold mb-3 text-white">{service.title}</h4>
+                  <h4 class="text-xl font-semibold mb-3 text-[var(--text-primary)]">{service.title}</h4>
                   <p class="text-[var(--text-secondary)] leading-relaxed">{service.description}</p>
                 </div>
               </GlowCard>
@@ -91,11 +91,11 @@
           class="glass-card rounded-3xl p-8 md:p-10"
           in:fade={{ duration: 400, delay: 400 }}
         >
-          <h4 class="text-lg font-semibold mb-8 text-center text-white">Cosa include</h4>
+          <h4 class="text-lg font-semibold mb-8 text-center text-[var(--text-primary)]">Cosa include</h4>
           <div class="flex flex-wrap justify-center gap-3">
             {#each activeDepartment.features as feature, i}
               <span 
-                class="feature-tag px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-sm text-[var(--text-secondary)] hover:border-righello-pink/50 hover:text-white hover:bg-white/10 transition-all duration-300 cursor-default"
+                class="feature-tag px-5 py-2.5 bg-[var(--bg-tertiary)] border border-[var(--border-color)] rounded-full text-sm text-[var(--text-secondary)] hover:border-righello-pink/50 hover:text-righello-pink transition-all duration-300 cursor-default"
                 in:fly={{ y: 10, duration: 300, delay: 500 + i * 50, easing: cubicOut }}
               >
                 {feature}

@@ -85,7 +85,7 @@
             {/if}
           </div>
           
-          <h3 class="text-xl font-semibold text-white mb-3">{benefit.title}</h3>
+          <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-3">{benefit.title}</h3>
           <p class="text-[var(--text-secondary)] mb-6 leading-relaxed">{benefit.description}</p>
           
           <div class="stat-display">
@@ -100,7 +100,7 @@
     
     <div class="comparison-section">
       <h3 class="text-2xl md:text-3xl font-bold text-center mb-12">
-        <span class="text-white">Prima vs </span>
+        <span class="text-[var(--text-primary)]">Prima vs </span>
         <span class="gradient-text">Dopo</span>
       </h3>
       
@@ -213,7 +213,7 @@
     display: flex;
     flex-direction: column;
     padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--border-color);
   }
   
   .stat-value {
@@ -256,6 +256,12 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
   
+  :global([data-theme="light"]) .comparison-column {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+  
   .comparison-column.before {
     border-color: rgba(239, 68, 68, 0.2);
   }
@@ -265,16 +271,26 @@
     background: rgba(16, 185, 129, 0.05);
   }
   
+  :global([data-theme="light"]) .comparison-column.before {
+    border-color: rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.03);
+  }
+  
+  :global([data-theme="light"]) .comparison-column.after {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.08);
+  }
+  
   .column-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     font-size: 1.25rem;
     font-weight: 600;
-    color: white;
+    color: var(--text-primary);
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-color);
   }
   
   .header-icon {
@@ -318,7 +334,7 @@
   }
   
   .after-item {
-    color: white;
+    color: var(--text-primary);
   }
   
   .comparison-divider {
@@ -338,7 +354,7 @@
   .divider-line {
     width: 2px;
     flex: 1;
-    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(to bottom, transparent, var(--border-color), transparent);
   }
   
   .divider-arrow {

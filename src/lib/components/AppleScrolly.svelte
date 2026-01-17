@@ -125,7 +125,7 @@
       </p>
       
       <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-[1.1]">
-        <span class="block text-white">La tua crescita,</span>
+        <span class="block text-[var(--text-primary)]">La tua crescita,</span>
         <span class="gradient-text">inquadrata alla perfezione.</span>
       </h1>
       

@@ -163,7 +163,7 @@
                   </svg>
                 {/if}
               </div>
-              <h3 class="text-xl font-semibold mb-3 text-white">{service.title}</h3>
+              <h3 class="text-xl font-semibold mb-3 text-[var(--text-primary)]">{service.title}</h3>
               <p class="text-[var(--text-secondary)] leading-relaxed">{service.description}</p>
             </div>
           </GlowCard>
@@ -209,7 +209,11 @@
     </div>
   </RevealOnScroll>
   
-  <InfiniteMarquee items={clients} speed={30} />
+  <InfiniteMarquee speed={30}>
+    {#each clients as client}
+      <span class="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mx-8 md:mx-12 opacity-60 hover:opacity-100 transition-opacity">{client}</span>
+    {/each}
+  </InfiniteMarquee>
 </section>
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
