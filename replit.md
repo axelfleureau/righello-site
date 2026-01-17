@@ -9,10 +9,19 @@ Sito web per Righello Creative Lab, un'agenzia creativa italiana leader nel mark
 - **Font**: Degular Display (custom font con tutti i pesi da Thin a Black)
 - **Adapter**: Node adapter
 
-## Colori Brand
+## Colori Brand (Dark Theme Premium)
+- **Tema di default**: Dark mode
 - Rosa Righello: #D6487E
-- Nero: #000000
-- Bianco: #FFFFFF
+- Ciano accent: #06B6D4
+- Gradiente primario: Rosa → Ciano (usato per testo hero e accenti)
+- Background primario: #050505
+- Background secondario: #0a0a0a
+- Background terziario: #111111
+- Testo primario: #ffffff
+- Testo secondario: #a1a1aa
+- Border: rgba(255, 255, 255, 0.1)
+- Glow rosa: rgba(214, 72, 126, 0.5)
+- Glow ciano: rgba(6, 182, 212, 0.4)
 
 ## Tipografia Righello
 - **Font principale**: Degular Display (pesi: Thin 100, Light 300, Regular 400, Medium 500, Semibold 600, Bold 700, Black 900)
@@ -34,12 +43,16 @@ Sito web per Righello Creative Lab, un'agenzia creativa italiana leader nel mark
 - `/contatti` - Form di contatto con animazioni e informazioni
 
 ## Componenti Interattivi
+- **GSAPReveal**: Animazioni GSAP con scroll trigger (fade-up, fade-in, scale)
+- **TextReveal**: Animazione testo carattere per carattere con GSAP
+- **GlowCard**: Card con effetto glow che segue il cursore (rosa/ciano gradient)
+- **InfiniteMarquee**: Scroll infinito orizzontale per loghi clienti
 - **ScrollReveal**: Animazioni fade-in al scroll (supporta prefers-reduced-motion)
 - **AnimatedCounter**: Contatori che si animano quando visibili
 - **TiltCard**: Effetto 3D al passaggio del mouse
 - **SplitText**: Animazione testo parola per parola
 - **MagneticButton**: Bottoni che seguono il cursore con effetto magnetico
-- **Header Smart**: Si nasconde/mostra con lo scroll, transizione trasparente/bianco
+- **Header Smart**: Si nasconde/mostra con lo scroll, transizione trasparente/scuro
 - **SwingingIcon**: Icone oscillanti con animazione fisica
 - **StickyNote**: Post-it rosa trascinabili
 - **DraggableRuler**: Righello interattivo con marchi Righello
