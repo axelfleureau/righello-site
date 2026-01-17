@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "vite dev",
-    "prebuild": "npm run datasources && npm run sitemap",
+    "prebuild": "svelte-kit sync",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
