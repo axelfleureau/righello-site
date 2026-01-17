@@ -8,7 +8,7 @@ const env = loadEnv('development', process.cwd());
 const HTTPS_ENABLED = env.VITE_HTTPS_ENABLED === 'true';
 const extraPlugins = HTTPS_ENABLED ? [mkcert()] : [];
 
-export default defineConfig({ 
+export default defineConfig({
   plugins: [
     sveltekit(),
     sentrySvelteKit({
