@@ -25,15 +25,18 @@
 
 <div class="service-tabs">
   <div 
-    class="tabs-container relative mb-12 md:mb-16 overflow-x-auto scrollbar-hide px-4 md:px-0"
+    class="tabs-container relative mb-10 md:mb-16 px-4 md:px-0"
     role="tablist"
   >
-    <div class="tabs-wrapper relative inline-flex p-1.5 bg-[var(--bg-secondary)] rounded-2xl border border-[var(--border-color)] shadow-2xl mx-auto">
+    <div class="tabs-wrapper relative flex flex-col sm:flex-row p-1.5 bg-[var(--bg-secondary)] rounded-2xl border border-[var(--border-color)] shadow-2xl mx-auto w-full sm:w-auto sm:inline-flex">
       <div 
-        class="tab-indicator absolute top-1.5 bottom-1.5 rounded-xl bg-gradient-to-r from-righello-pink to-cyan-500 transition-all duration-500 ease-out shadow-lg"
+        class="tab-indicator absolute rounded-xl bg-gradient-to-r from-righello-pink to-cyan-500 transition-all duration-500 ease-out shadow-lg
+               left-1.5 right-1.5 sm:left-auto sm:right-auto sm:top-1.5 sm:bottom-1.5"
         style="
-          left: calc({activeIndex} * (100% / {departments.length}) + 6px);
-          width: calc(100% / {departments.length} - 12px);
+          top: calc({activeIndex} * (100% / {departments.length}) + 6px);
+          height: calc(100% / {departments.length} - 12px);
+          --sm-left: calc({activeIndex} * (100% / {departments.length}) + 6px);
+          --sm-width: calc(100% / {departments.length} - 12px);
         "
       ></div>
       
@@ -42,16 +45,15 @@
           role="tab"
           aria-selected={activeTab === dept.id}
           aria-controls="panel-{dept.id}"
-          class="tab-button relative z-10 px-6 md:px-8 py-4 rounded-xl font-semibold text-sm md:text-base transition-all duration-300 whitespace-nowrap
+          class="tab-button relative z-10 px-4 sm:px-6 md:px-8 py-3.5 sm:py-4 rounded-xl font-semibold text-sm md:text-base transition-all duration-300 text-left sm:text-center
                  {activeTab === dept.id 
                    ? 'text-white font-bold' 
                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}"
           on:click={() => setTab(dept.id)}
         >
-          <span class="hidden md:inline mr-2 text-lg">{dept.icon}</span>
-          <span class="md:hidden mr-1.5 text-base">{dept.icon}</span>
+          <span class="mr-2 text-base md:text-lg">{dept.icon}</span>
           <span class="hidden sm:inline">{dept.name}</span>
-          <span class="sm:hidden">{dept.name.split(' ')[0]}</span>
+          <span class="sm:hidden">{dept.name.split('&')[0].trim()}</span>
         </button>
       {/each}
     </div>
@@ -112,16 +114,6 @@
   .tabs-container {
     display: flex;
     justify-content: center;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .tabs-container::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
   }
   
   .tabs-wrapper {
@@ -137,25 +129,30 @@
       0 0 40px rgba(214, 72, 126, 0.2);
   }
   
-  .tab-button {
-    min-width: 80px;
-    padding-left: 12px;
-    padding-right: 12px;
+  /* Horizontal layout for sm+ screens */
+  @media (min-width: 640px) {
+    .tab-indicator {
+      top: 6px !important;
+      bottom: 6px !important;
+      height: auto !important;
+      left: var(--sm-left) !important;
+      width: var(--sm-width) !important;
+    }
   }
   
-  @media (min-width: 480px) {
+  .tab-button {
+    min-width: auto;
+  }
+  
+  @media (min-width: 640px) {
     .tab-button {
       min-width: 100px;
-      padding-left: 16px;
-      padding-right: 16px;
     }
   }
   
   @media (min-width: 768px) {
     .tab-button {
-      min-width: 180px;
-      padding-left: 32px;
-      padding-right: 32px;
+      min-width: 160px;
     }
   }
   
