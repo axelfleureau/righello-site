@@ -237,7 +237,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 100px 6% 60px;
+    padding: 120px 6% 60px;
     gap: 2.5rem;
   }
   
@@ -278,7 +278,7 @@
     .phone-area {
       position: absolute;
       right: 8%;
-      top: 50%;
+      top: 55%;
       transform: translateY(-50%);
       z-index: 5;
     }
