@@ -44,7 +44,7 @@
         "(min-width: 1024px)": function() {
           const totalSlides = slides.length + 1;
           const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-          const scrollDistance = slides.length * 120;
+          const scrollDistance = slides.length * 180;
           
           const tl = gsap.timeline({
             scrollTrigger: {
@@ -52,12 +52,12 @@
               start: 'top top',
               end: () => `+=${scrollDistance}vh`,
               pin: true,
-              scrub: 2,
+              scrub: 1.5,
               snap: {
                 snapTo: snapPoints,
-                duration: { min: 0.4, max: 1 },
-                delay: 0.15,
-                ease: 'power2.inOut'
+                duration: { min: 0.6, max: 1.2 },
+                delay: 0.2,
+                ease: 'power3.inOut'
               }
             }
           });
@@ -290,9 +290,15 @@
     }
   }
   
+  @media (max-width: 1023px) {
+    .scrolly-content {
+      padding-top: 140px;
+    }
+  }
+  
   @media (max-width: 480px) {
     .scrolly-content {
-      padding-top: 80px;
+      padding-top: 130px;
       padding-left: 5%;
       padding-right: 5%;
       padding-bottom: 40px;

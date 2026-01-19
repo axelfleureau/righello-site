@@ -122,18 +122,18 @@
   }
   
   .glow-1 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(214, 72, 126, 0.4) 0%, transparent 70%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(214, 72, 126, 0.5) 0%, transparent 70%);
     top: -20%;
     left: -10%;
     animation-delay: 0s;
   }
   
   .glow-2 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, transparent 70%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.35) 0%, transparent 70%);
     bottom: -20%;
     right: -10%;
     animation-delay: -5s;

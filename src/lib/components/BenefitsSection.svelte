@@ -155,9 +155,15 @@
 
 <style>
   .benefits-section {
-    padding: 6rem 0;
+    padding: 4rem 0 5rem;
     position: relative;
     background: var(--bg-secondary);
+  }
+  
+  @media (min-width: 768px) {
+    .benefits-section {
+      padding: 5rem 0 6rem;
+    }
   }
   
   .benefits-grid {
@@ -229,14 +235,14 @@
   }
   
   .comparison-section {
-    padding: 3rem 0;
+    padding: 4rem 0;
   }
   
   .comparison-grid {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
   }
   
@@ -244,13 +250,13 @@
     .comparison-grid {
       flex-direction: row;
       align-items: stretch;
-      gap: 1rem;
+      gap: 1.5rem;
     }
   }
   
   .comparison-column {
     flex: 1;
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: 1.5rem;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -324,8 +330,8 @@
     align-items: flex-start;
     gap: 0.75rem;
     color: var(--text-secondary);
-    font-size: 0.9375rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    line-height: 1.6;
   }
   
   .before-item {

@@ -11,6 +11,7 @@
   import FAQ from '$lib/components/FAQ.svelte';
   import BackgroundBeams from '$lib/components/BackgroundBeams.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
+  import SocialReelShowcase from '$lib/components/SocialReelShowcase.svelte';
   import { onMount } from 'svelte';
   
   const homepageServices = departments.map(dept => ({
@@ -209,7 +210,9 @@
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="60px" />
 
 <section class="py-16 md:py-24 overflow-hidden relative">
-  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-righello-pink/5 to-transparent"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-righello-pink/10 via-transparent to-righello-pink/10"></div>
+  <div class="absolute top-0 left-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+  <div class="absolute bottom-0 right-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
   
   <RevealOnScroll animation="fade">
     <div class="section-container mb-8">
@@ -225,6 +228,12 @@
 </section>
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+
+<div class="relative" style="background: var(--bg-secondary);">
+  <SocialReelShowcase />
+</div>
+
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-secondary)" />
 
 <BenefitsSection />
 
@@ -265,7 +274,8 @@
 <style>
   .cta-gradient {
     background: 
-      radial-gradient(ellipse at center, rgba(214, 72, 126, 0.1) 0%, transparent 70%);
+      radial-gradient(ellipse at center, rgba(214, 72, 126, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(214, 72, 126, 0.1) 0%, transparent 50%);
   }
   
   .scrollbar-hide {

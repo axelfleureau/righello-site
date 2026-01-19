@@ -90,8 +90,14 @@
 
 <style>
   .faq-section {
-    padding: 6rem 0;
+    padding: 4rem 0 5rem;
     position: relative;
+  }
+  
+  @media (min-width: 768px) {
+    .faq-section {
+      padding: 5rem 0 6rem;
+    }
   }
   
   .faq-list {

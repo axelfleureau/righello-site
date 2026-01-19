@@ -52,8 +52,8 @@
               </div>
               <div>
                 <h3 class="font-semibold mb-1">Email</h3>
-                <a href="mailto:info@wearerighello.com" class="text-[var(--text-secondary)] hover:text-righello-pink transition-colors">
-                  info@wearerighello.com
+                <a href="mailto:hello@wearerighello.com" class="text-[var(--text-secondary)] hover:text-righello-pink transition-colors">
+                  hello@wearerighello.com
                 </a>
               </div>
             </div>
