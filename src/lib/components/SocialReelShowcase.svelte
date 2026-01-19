@@ -130,12 +130,18 @@
 
 <style>
   .reel-showcase {
-    padding: 4rem 0 5rem;
+    padding: 2.5rem 0 3rem;
     position: relative;
     overflow: hidden;
   }
   
   @media (min-width: 768px) {
+    .reel-showcase {
+      padding: 4rem 0 5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
     .reel-showcase {
       padding: 5rem 0 6rem;
     }

@@ -33,7 +33,7 @@
   <meta name="description" content="I nostri servizi: Content & Social Media, Advertising & Performance, Digital Experience. Soluzioni complete per la crescita del tuo business." />
 </svelte:head>
 
-<section class="pt-32 pb-20 md:pt-40 md:pb-28">
+<section class="pt-28 pb-12 md:pt-36 md:pb-20 lg:pt-40 lg:pb-28">
   <div class="section-container">
     <div class="max-w-4xl">
       <RevealOnScroll animation="fly-up">
@@ -54,7 +54,7 @@
   </div>
 </section>
 
-<section class="pb-24 md:pb-32">
+<section class="pb-16 md:pb-24 lg:pb-32">
   <div class="section-container">
     <ServiceTabs {departments} />
   </div>

@@ -90,11 +90,17 @@
 
 <style>
   .faq-section {
-    padding: 4rem 0 5rem;
+    padding: 2.5rem 0 3rem;
     position: relative;
   }
   
   @media (min-width: 768px) {
+    .faq-section {
+      padding: 4rem 0 5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
     .faq-section {
       padding: 5rem 0 6rem;
     }

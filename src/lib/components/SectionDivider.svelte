@@ -2,6 +2,7 @@
   export let fromColor = 'var(--bg-primary)';
   export let toColor = 'var(--bg-secondary)';
   export let height = '150px';
+  export let mobileHeight = '40px';
   export let variant: 'gradient' | 'wave' | 'angle' = 'gradient';
 </script>
 
@@ -9,7 +10,8 @@
   <div 
     class="section-divider gradient" 
     style="
-      height: {height};
+      --desktop-height: {height};
+      --mobile-height: {mobileHeight};
       background: linear-gradient(to bottom, {fromColor}, {toColor});
     "
   ></div>
@@ -49,8 +51,21 @@
   }
   
   .section-divider.gradient {
+    height: var(--mobile-height, 40px);
     pointer-events: none;
     opacity: 0.95;
+  }
+  
+  @media (min-width: 768px) {
+    .section-divider.gradient {
+      height: calc((var(--desktop-height, 150px) + var(--mobile-height, 40px)) / 2);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section-divider.gradient {
+      height: var(--desktop-height, 150px);
+    }
   }
   
   :global([data-theme="light"]) .section-divider.gradient {
