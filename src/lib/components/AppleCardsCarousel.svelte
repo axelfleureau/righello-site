@@ -8,6 +8,7 @@
     subtitle?: string;
     videoSrc?: string;
     imageSrc?: string;
+    posterSrc?: string;
     category?: string;
   }[] = [];
   
@@ -130,16 +131,21 @@
           }}
         >
           {#if item.videoSrc}
-            <video 
-              class="card-media"
-              src={item.videoSrc}
-              muted
-              loop
-              playsinline
-              preload="metadata"
-            >
-              <track kind="captions" />
-            </video>
+            <div class="video-wrapper">
+              <div class="video-placeholder"></div>
+              <video 
+                class="card-media"
+                src={item.videoSrc}
+                poster={item.posterSrc || ''}
+                muted
+                loop
+                playsinline
+                preload="auto"
+                on:loadeddata={(e) => e.currentTarget.classList.add('loaded')}
+              >
+                <track kind="captions" />
+              </video>
+            </div>
             <button 
               class="play-overlay"
               on:click={() => item.videoSrc && openLightbox(item.videoSrc, item.title)}
@@ -290,11 +296,34 @@
       0 0 40px rgba(214, 72, 126, 0.2);
   }
   
+  .video-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .video-placeholder {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #D6487E 0%, #a855f7 50%, #06B6D4 100%);
+    background-size: 200% 200%;
+    animation: gradientMove 4s ease infinite;
+  }
+  
   .card-media {
+    position: relative;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
+    transition: transform 0.6s ease, opacity 0.3s ease;
+    opacity: 0;
+    z-index: 1;
+  }
+  
+  .card-media.loaded,
+  .card-media[poster]:not([poster=""]) {
+    opacity: 1;
   }
   
   .card-content:hover .card-media {
