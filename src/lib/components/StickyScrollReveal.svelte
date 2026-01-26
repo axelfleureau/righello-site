@@ -15,7 +15,6 @@
   }[] = [];
   
   let container: HTMLElement;
-  let contentPanel: HTMLElement;
   let activeIndex = 0;
   let ctx: any;
   
@@ -31,8 +30,8 @@
         items.forEach((item, i) => {
           ScrollTrigger.create({
             trigger: item,
-            start: 'top center',
-            end: 'bottom center',
+            start: 'top 60%',
+            end: 'bottom 40%',
             onEnter: () => { activeIndex = i; },
             onEnterBack: () => { activeIndex = i; },
           });
@@ -55,32 +54,20 @@
 
 <section bind:this={container} class="sticky-scroll-section">
   {#if title || subtitle}
-    <div class="section-container mb-12 md:mb-20">
-      <div class="text-center">
-        {#if subtitle}
-          <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">{subtitle}</p>
-        {/if}
-        {#if title}
-          <h2 class="heading-lg">{title}</h2>
-        {/if}
-      </div>
+    <div class="section-header">
+      {#if subtitle}
+        <p class="section-subtitle">{subtitle}</p>
+      {/if}
+      {#if title}
+        <h2 class="section-title">{title}</h2>
+      {/if}
     </div>
   {/if}
   
-  <div class="sticky-container">
-    <div class="content-side">
-      {#each content as item, i}
-        <div class="content-item" class:active={activeIndex === i}>
-          <div class="content-inner">
-            <h3 class="content-title">{item.title}</h3>
-            <p class="content-description">{item.description}</p>
-          </div>
-        </div>
-      {/each}
-    </div>
-    
-    <div class="visual-side">
-      <div bind:this={contentPanel} class="visual-sticky">
+  <div class="sticky-wrapper">
+    <!-- Visual panel - sticky on desktop -->
+    <div class="visual-column">
+      <div class="visual-sticky">
         {#each content as item, i}
           <div 
             class="visual-panel"
@@ -103,32 +90,154 @@
         {/each}
       </div>
     </div>
+    
+    <!-- Content - scrolls naturally -->
+    <div class="content-column">
+      {#each content as item, i}
+        <div class="content-item" class:active={activeIndex === i}>
+          <div class="step-indicator">
+            <span class="step-number">{String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <div class="content-inner">
+            <h3 class="content-title">{item.title}</h3>
+            <p class="content-description">{item.description}</p>
+          </div>
+        </div>
+      {/each}
+    </div>
   </div>
 </section>
 
 <style>
   .sticky-scroll-section {
-    padding: 4rem 0;
-    overflow: hidden;
+    padding: 4rem 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
   }
   
-  .sticky-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
   }
   
   @media (min-width: 1024px) {
-    .sticky-container {
+    .section-header {
+      margin-bottom: 4rem;
+    }
+  }
+  
+  .section-subtitle {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #D6487E;
+    margin-bottom: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+  
+  @media (min-width: 768px) {
+    .section-title {
+      font-size: 3rem;
+    }
+  }
+  
+  .sticky-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .sticky-wrapper {
       flex-direction: row;
       gap: 4rem;
     }
   }
   
-  .content-side {
+  /* Visual column - contains sticky element */
+  .visual-column {
+    display: none;
+  }
+  
+  @media (min-width: 1024px) {
+    .visual-column {
+      display: block;
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+  
+  .visual-sticky {
+    position: sticky;
+    top: 15vh;
+    height: 70vh;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .visual-panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.92) translateY(20px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+  
+  .visual-panel.active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+  }
+  
+  .visual-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .visual-icon {
+    font-size: 8rem;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+  }
+  
+  .visual-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .visual-number {
+    font-size: 6rem;
+    font-weight: 800;
+    opacity: 0.2;
+    line-height: 1;
+  }
+  
+  .visual-label {
+    font-size: 1.75rem;
+    font-weight: 600;
+    max-width: 250px;
+    line-height: 1.3;
+  }
+  
+  /* Content column */
+  .content-column {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -136,44 +245,80 @@
   }
   
   @media (min-width: 1024px) {
-    .content-side {
+    .content-column {
       gap: 0;
+      padding-top: 15vh;
+      padding-bottom: 15vh;
     }
   }
   
   .content-item {
-    padding: 2rem 0;
-    opacity: 0.4;
-    transition: opacity 0.4s ease;
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    transition: all 0.4s ease;
   }
   
   @media (min-width: 1024px) {
     .content-item {
-      min-height: 60vh;
+      min-height: 50vh;
       display: flex;
       align-items: center;
+      padding: 2rem;
+      background: transparent;
+      border: none;
+      opacity: 0.4;
+    }
+    
+    .content-item.active {
+      opacity: 1;
     }
   }
   
-  .content-item.active {
-    opacity: 1;
+  .step-indicator {
+    flex-shrink: 0;
+  }
+  
+  .step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D6487E 0%, #a855f7 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .step-number {
+      width: 4rem;
+      height: 4rem;
+      font-size: 1.25rem;
+    }
   }
   
   .content-inner {
-    max-width: 500px;
+    flex: 1;
   }
   
   .content-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     line-height: 1.2;
   }
   
   @media (min-width: 768px) {
     .content-title {
-      font-size: 2.25rem;
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
   }
   
@@ -189,80 +334,8 @@
     }
   }
   
-  .visual-side {
-    flex: 1;
-    display: none;
-  }
-  
-  @media (min-width: 1024px) {
-    .visual-side {
-      display: block;
-    }
-  }
-  
-  .visual-sticky {
-    position: sticky;
-    top: 20vh;
-    height: 60vh;
-    border-radius: 1.5rem;
-    overflow: hidden;
-  }
-  
-  .visual-panel {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transform: scale(0.95);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  
-  .visual-panel.active {
-    opacity: 1;
-    transform: scale(1);
-  }
-  
-  .visual-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .visual-icon {
-    font-size: 6rem;
-  }
-  
-  .visual-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    color: white;
-    text-align: center;
-    padding: 2rem;
-  }
-  
-  .visual-number {
-    font-size: 5rem;
-    font-weight: 800;
-    opacity: 0.3;
-    line-height: 1;
-  }
-  
-  .visual-label {
-    font-size: 1.5rem;
-    font-weight: 600;
-    max-width: 200px;
-  }
-  
   @media (prefers-reduced-motion: reduce) {
-    .visual-panel {
-      transition: none;
-    }
-    
+    .visual-panel,
     .content-item {
       transition: none;
     }

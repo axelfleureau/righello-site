@@ -229,7 +229,7 @@
     </RevealOnScroll>
   </div>
   
-  <TestimonialsParallax testimonials={videoTestimonials} />
+  <VideoTestimonials testimonials={videoTestimonials} />
 </section>
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="60px" />

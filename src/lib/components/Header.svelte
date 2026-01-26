@@ -147,9 +147,9 @@
           aria-controls="mobile-menu"
         >
           <svg class="burger__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <rect class="burger__bar burger__top" x="2" y="4" width="20" height="3" rx="1.5" />
-            <rect class="burger__bar burger__mid" x="2" y="10.5" width="12" height="3" rx="1.5" />
-            <rect class="burger__bar burger__bot" x="2" y="17" width="20" height="3" rx="1.5" />
+            <rect class="burger__bar burger__top" x="2" y="5" width="20" height="2.5" rx="1.25" />
+            <rect class="burger__bar burger__mid" x="2" y="10.75" width="12" height="2.5" rx="1.25" />
+            <rect class="burger__bar burger__bot" x="2" y="16.5" width="20" height="2.5" rx="1.25" />
           </svg>
         </button>
       </div>
@@ -492,19 +492,16 @@
   
   .burger__bar {
     fill: currentColor;
-    transform-origin: 12px 12px;
+    transform-box: fill-box;
+    transform-origin: center;
     transition:
       transform 280ms cubic-bezier(.2,.9,.2,1),
       opacity 180ms ease;
     will-change: transform, opacity;
   }
   
-  .burger__mid {
-    transform-origin: 8px 12px;
-  }
-  
   .burger.is-open .burger__top {
-    transform: translateY(6.5px) rotate(45deg);
+    transform: translateY(5.75px) rotate(45deg);
   }
   
   .burger.is-open .burger__mid {
@@ -513,7 +510,7 @@
   }
   
   .burger.is-open .burger__bot {
-    transform: translateY(-6.5px) rotate(-45deg);
+    transform: translateY(-5.75px) rotate(-45deg);
   }
   
   @media (prefers-reduced-motion: reduce) {
