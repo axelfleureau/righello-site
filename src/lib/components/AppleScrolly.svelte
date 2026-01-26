@@ -44,7 +44,7 @@
         "(min-width: 1024px)": function() {
           const totalSlides = slides.length + 1;
           const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-          const scrollDistance = slides.length * 180;
+          const scrollDistance = slides.length * 280;
           
           const tl = gsap.timeline({
             scrollTrigger: {
@@ -52,12 +52,12 @@
               start: 'top top',
               end: () => `+=${scrollDistance}vh`,
               pin: true,
-              scrub: 1.5,
+              scrub: 2.5,
               snap: {
                 snapTo: snapPoints,
-                duration: { min: 0.6, max: 1.2 },
-                delay: 0.2,
-                ease: 'power3.inOut'
+                duration: { min: 1, max: 2 },
+                delay: 0.4,
+                ease: 'power4.inOut'
               }
             }
           });
@@ -65,7 +65,7 @@
           tl.to(heroContent, {
             opacity: 0,
             y: -50,
-            duration: 0.3
+            duration: 0.2
           }, 0);
           
           tl.to(phoneWrapper, {
@@ -74,36 +74,44 @@
               return -(vw / 2 - 160 - (vw * 0.08));
             },
             scale: 0.85,
-            duration: 0.4
-          }, 0.1);
+            duration: 0.25
+          }, 0.05);
           
           slideRefs.forEach((slideEl, i) => {
             if (!slideEl) return;
             const slide = slides[i];
-            const startTime = 0.3 + (i * 0.7 / slides.length);
-            const endTime = startTime + (0.5 / slides.length);
+            const sectionSize = 0.85 / slides.length;
+            const startTime = 0.15 + (i * sectionSize);
+            const holdTime = startTime + (sectionSize * 0.6);
+            const endTime = startTime + (sectionSize * 0.9);
             
             tl.fromTo(slideEl, 
               { 
                 opacity: 0, 
-                x: slide.position === 'left' ? -100 : 100,
-                scale: 0.9
+                x: slide.position === 'left' ? -80 : 80,
+                scale: 0.95
               },
               { 
                 opacity: 1, 
                 x: 0,
                 scale: 1,
-                duration: 0.15
+                duration: sectionSize * 0.3
               }, 
               startTime
             );
+            
+            tl.to(slideEl, {
+              opacity: 1,
+              x: 0,
+              duration: sectionSize * 0.4
+            }, holdTime);
             
             if (i < slides.length - 1) {
               tl.to(slideEl, 
                 { 
                   opacity: 0, 
-                  x: slide.position === 'left' ? -50 : 50,
-                  duration: 0.1
+                  x: slide.position === 'left' ? -40 : 40,
+                  duration: sectionSize * 0.2
                 }, 
                 endTime
               );

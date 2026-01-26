@@ -3,26 +3,43 @@
   import { onMount } from 'svelte';
   import ThemeToggle from './ThemeToggle.svelte';
   import { theme } from '$lib/stores/theme';
+  import { departments } from '$lib/data/projects';
   
   let mobileMenuOpen = false;
   let scrollY = 0;
   let lastScrollY = 0;
   let isHidden = false;
   let isPastTop = false;
+  let serviziHovered = false;
+  let mobileServiziOpen = false;
   
   const navLinks = [
-    { href: '/servizi', label: 'Servizi' },
-    { href: '/progetti', label: 'Progetti' },
-    { href: '/chi-siamo', label: 'Chi siamo' },
-    { href: '/contatti', label: 'Contatti' },
+    { href: '/servizi', label: 'Servizi', hasDropdown: true },
+    { href: '/progetti', label: 'Progetti', hasDropdown: false },
+    { href: '/chi-siamo', label: 'Chi siamo', hasDropdown: false },
+    { href: '/contatti', label: 'Contatti', hasDropdown: false },
   ];
+  
+  const departmentIcons: Record<string, string> = {
+    'content-social': '📱',
+    'advertising': '🎯',
+    'digital-experience': '💻'
+  };
   
   function toggleMenu() {
     mobileMenuOpen = !mobileMenuOpen;
+    if (!mobileMenuOpen) {
+      mobileServiziOpen = false;
+    }
   }
   
   function closeMenu() {
     mobileMenuOpen = false;
+    mobileServiziOpen = false;
+  }
+  
+  function toggleMobileServizi() {
+    mobileServiziOpen = !mobileServiziOpen;
   }
   
   onMount(() => {
@@ -32,6 +49,7 @@
       
       if (scrollY > lastScrollY && scrollY > 100) {
         isHidden = true;
+        serviziHovered = false;
       } else {
         isHidden = false;
       }
@@ -45,60 +63,108 @@
 </script>
 
 <header 
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 header-blur"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
   class:-translate-y-full={isHidden && !mobileMenuOpen}
-  class:header-scrolled={isPastTop}
 >
-  <div class="section-container">
-    <nav class="flex items-center justify-between h-20">
-      <a href="/" class="flex items-center" on:click={closeMenu}>
+  <div class="header-container mx-auto px-4 md:px-6 pt-4">
+    <nav class="floating-nav" class:nav-scrolled={isPastTop}>
+      <a href="/" class="flex items-center flex-shrink-0" on:click={closeMenu}>
         {#if $theme === 'dark'}
-          <img src="/logo-white.png" alt="Righello" class="h-8 md:h-10" />
+          <img src="/logo-white.png" alt="Righello" class="h-7 md:h-8" />
         {:else}
-          <img src="/logo-full.png" alt="Righello" class="h-8 md:h-10" />
+          <img src="/logo-full.png" alt="Righello" class="h-7 md:h-8" />
         {/if}
       </a>
       
-      <div class="hidden md:flex items-center gap-8">
+      <div class="hidden lg:flex items-center gap-1">
         {#each navLinks as link}
-          <a 
-            href={link.href} 
-            class="text-sm font-medium transition-all duration-300 hover:text-righello-pink relative group"
-            style="color: {$page.url.pathname === link.href ? '#D6487E' : 'var(--text-primary)'};"
-          >
-            {link.label}
-            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-righello-pink transition-all duration-300 group-hover:w-full"></span>
-          </a>
+          {#if link.hasDropdown}
+            <div 
+              class="relative"
+              on:mouseenter={() => serviziHovered = true}
+              on:mouseleave={() => serviziHovered = false}
+              role="button"
+              tabindex="0"
+            >
+              <a 
+                href={link.href}
+                class="nav-link"
+                class:active={$page.url.pathname === link.href || $page.url.pathname.startsWith('/servizi')}
+              >
+                {link.label}
+                <svg class="w-4 h-4 ml-1 transition-transform duration-200" class:rotate-180={serviziHovered} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              
+              <div 
+                class="dropdown-menu"
+                class:dropdown-open={serviziHovered}
+              >
+                <div class="dropdown-content">
+                  {#each departments as dept}
+                    <a 
+                      href="/servizi?tab={dept.id}" 
+                      class="dropdown-item"
+                      on:click={() => serviziHovered = false}
+                    >
+                      <div class="dropdown-icon">
+                        {departmentIcons[dept.id] || '📊'}
+                      </div>
+                      <div class="dropdown-text">
+                        <span class="dropdown-title">{dept.name}</span>
+                        <span class="dropdown-desc">{dept.tagline}</span>
+                      </div>
+                    </a>
+                  {/each}
+                </div>
+              </div>
+            </div>
+          {:else}
+            <a 
+              href={link.href} 
+              class="nav-link"
+              class:active={$page.url.pathname === link.href}
+            >
+              {link.label}
+            </a>
+          {/if}
         {/each}
-        <ThemeToggle />
       </div>
       
-      <button 
-        class="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-righello-pink text-white transition-transform duration-300 hover:scale-110"
-        on:click={toggleMenu}
-        aria-label={mobileMenuOpen ? 'Chiudi menu' : 'Apri menu'}
-        aria-expanded={mobileMenuOpen}
-        aria-controls="mobile-menu"
-      >
-        <div class="relative w-5 h-5">
-          <span 
-            class="absolute left-0 w-5 h-0.5 bg-white transition-all duration-300"
-            class:rotate-45={mobileMenuOpen}
-            class:top-2={mobileMenuOpen}
-            class:top-1={!mobileMenuOpen}
-          ></span>
-          <span 
-            class="absolute left-0 top-2 w-5 h-0.5 bg-white transition-all duration-300"
-            class:opacity-0={mobileMenuOpen}
-          ></span>
-          <span 
-            class="absolute left-0 w-5 h-0.5 bg-white transition-all duration-300"
-            class:-rotate-45={mobileMenuOpen}
-            class:top-2={mobileMenuOpen}
-            class:top-3={!mobileMenuOpen}
-          ></span>
-        </div>
-      </button>
+      <div class="flex items-center gap-3">
+        <ThemeToggle />
+        <a href="/contatti" class="hidden sm:flex cta-button">
+          Parliamone
+        </a>
+        
+        <button 
+          class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-righello-pink text-white transition-all duration-300 hover:scale-105"
+          on:click={toggleMenu}
+          aria-label={mobileMenuOpen ? 'Chiudi menu' : 'Apri menu'}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
+        >
+          <div class="relative w-5 h-5">
+            <span 
+              class="absolute left-0 w-5 h-0.5 bg-white transition-all duration-300"
+              class:rotate-45={mobileMenuOpen}
+              class:top-2={mobileMenuOpen}
+              class:top-1={!mobileMenuOpen}
+            ></span>
+            <span 
+              class="absolute left-0 top-2 w-5 h-0.5 bg-white transition-all duration-300"
+              class:opacity-0={mobileMenuOpen}
+            ></span>
+            <span 
+              class="absolute left-0 w-5 h-0.5 bg-white transition-all duration-300"
+              class:-rotate-45={mobileMenuOpen}
+              class:top-2={mobileMenuOpen}
+              class:top-3={!mobileMenuOpen}
+            ></span>
+          </div>
+        </button>
+      </div>
     </nav>
   </div>
   
@@ -106,48 +172,296 @@
     id="mobile-menu"
     role="navigation"
     aria-label="Menu principale"
-    class="md:hidden absolute top-full left-0 right-0 shadow-lg transition-all duration-300 overflow-hidden"
-    class:max-h-0={!mobileMenuOpen}
-    class:max-h-96={mobileMenuOpen}
-    class:opacity-0={!mobileMenuOpen}
-    class:opacity-100={mobileMenuOpen}
-    style="background-color: var(--bg-primary); border-bottom: 1px solid var(--border-color);"
+    class="lg:hidden mobile-menu"
+    class:mobile-menu-open={mobileMenuOpen}
   >
-    <div class="section-container py-6 flex flex-col gap-4">
+    <div class="px-6 py-6 flex flex-col gap-2">
       {#each navLinks as link, i}
-        <a 
-          href={link.href} 
-          class="text-lg font-medium py-2 transition-all duration-300 hover:text-righello-pink hover:translate-x-2"
-          style="color: {$page.url.pathname === link.href ? '#D6487E' : 'var(--text-primary)'}; transition-delay: {i * 50}ms;"
-          on:click={closeMenu}
-        >
-          {link.label}
-        </a>
+        {#if link.hasDropdown}
+          <div class="mobile-nav-group">
+            <button 
+              class="mobile-nav-link w-full flex items-center justify-between"
+              on:click={toggleMobileServizi}
+              style="transition-delay: {i * 50}ms;"
+            >
+              <span>{link.label}</span>
+              <svg class="w-5 h-5 transition-transform duration-200" class:rotate-180={mobileServiziOpen} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            <div class="mobile-submenu" class:mobile-submenu-open={mobileServiziOpen}>
+              {#each departments as dept}
+                <a 
+                  href="/servizi?tab={dept.id}" 
+                  class="mobile-submenu-item"
+                  on:click={closeMenu}
+                >
+                  <span class="text-lg mr-2">{departmentIcons[dept.id]}</span>
+                  <div>
+                    <div class="font-medium text-[var(--text-primary)]">{dept.name}</div>
+                    <div class="text-sm text-[var(--text-secondary)]">{dept.tagline}</div>
+                  </div>
+                </a>
+              {/each}
+            </div>
+          </div>
+        {:else}
+          <a 
+            href={link.href} 
+            class="mobile-nav-link"
+            style="transition-delay: {i * 50}ms;"
+            on:click={closeMenu}
+          >
+            {link.label}
+          </a>
+        {/if}
       {/each}
+      
+      <a 
+        href="/contatti" 
+        class="mt-4 cta-button-mobile"
+        on:click={closeMenu}
+      >
+        Parliamone
+      </a>
     </div>
   </div>
 </header>
 
 <style>
-  .header-blur {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background-color: rgba(5, 5, 5, 0.7);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  .header-container {
+    max-width: 1200px;
   }
   
-  .header-scrolled {
-    background-color: rgba(5, 5, 5, 0.85);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  .floating-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
   }
   
-  :global([data-theme="light"]) .header-blur {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  .nav-scrolled {
+    background: rgba(5, 5, 5, 0.85);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
   }
   
-  :global([data-theme="light"]) .header-scrolled {
-    background-color: rgba(255, 255, 255, 0.85);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  :global([data-theme="light"]) .floating-nav {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  }
+  
+  :global([data-theme="light"]) .nav-scrolled {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    border-radius: 9999px;
+    transition: all 0.2s ease;
+  }
+  
+  .nav-link:hover {
+    color: #D6487E;
+    background: rgba(214, 72, 126, 0.1);
+  }
+  
+  .nav-link.active {
+    color: #D6487E;
+  }
+  
+  .cta-button {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #D6487E 0%, #c13d6f 100%);
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(214, 72, 126, 0.3);
+  }
+  
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(214, 72, 126, 0.4);
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 0.75rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+  }
+  
+  .dropdown-open {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .dropdown-content {
+    min-width: 320px;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  :global([data-theme="light"]) .dropdown-content {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  }
+  
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+  }
+  
+  .dropdown-item:hover {
+    background: rgba(214, 72, 126, 0.1);
+  }
+  
+  .dropdown-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    background: rgba(214, 72, 126, 0.15);
+    border-radius: 0.75rem;
+    flex-shrink: 0;
+  }
+  
+  .dropdown-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  
+  .dropdown-title {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+  }
+  
+  .dropdown-desc {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+  
+  .mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 1rem;
+    right: 1rem;
+    margin-top: 0.5rem;
+    background: var(--bg-secondary);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-menu-open {
+    max-height: 500px;
+    opacity: 1;
+  }
+  
+  :global([data-theme="light"]) .mobile-menu {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  }
+  
+  .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+  }
+  
+  .mobile-nav-link:hover {
+    background: rgba(214, 72, 126, 0.1);
+    color: #D6487E;
+  }
+  
+  .mobile-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-submenu-open {
+    max-height: 300px;
+  }
+  
+  .mobile-submenu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin-left: 1rem;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+  }
+  
+  .mobile-submenu-item:hover {
+    background: rgba(214, 72, 126, 0.1);
+  }
+  
+  .cta-button-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #D6487E 0%, #c13d6f 100%);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(214, 72, 126, 0.3);
+  }
+  
+  .cta-button-mobile:hover {
+    box-shadow: 0 6px 20px rgba(214, 72, 126, 0.4);
   }
 </style>
