@@ -185,3 +185,11 @@ Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, Barcolana, Ippodromo Mer
 - **AppleCardsCarousel**: Nuovo componente carousel per video reel con effetti 3D
 - **Video Hero**: iPhone mockup ora mostra video reale (caterina_4.mp4 da Firebase)
 - **I nostri lavori**: 4 nuovi video aggiunti (Scuola Sci Piancavallo, 3R Technology, Reguta Wines, Neura)
+
+### Miglioramenti Layout (26 Gennaio 2026 - Sera)
+- **Typography Mobile++**: heading-xl (5xl→9xl), heading-lg (4xl→7xl), section-title (4xl→6xl mobile) per migliore impatto visivo
+- **Section Spacing Consistente**: Tutte le sezioni usano CSS variables (section-padding-sm/md/lg), alternanza bg-primary/bg-secondary con SectionDivider
+- **AppleCardsCarousel Video Fix**: Play overlay sempre visibile con label "Play", z-index corretti per video e anteprime
+- **AnimatedVideoTestimonials**: Nuovo componente Aceternity-style con card stack 3D, autoplay, navigazione dots/arrows, lightbox fullscreen
+- **StickyScrollReveal Sync**: ScrollTrigger migliorato (top/bottom center), media query desktop-only per evitare glitch mobile
+- **LinkPreview Component**: Nuovo componente per anteprima hover link con immagine, titolo, descrizione e freccia
