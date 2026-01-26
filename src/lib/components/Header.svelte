@@ -229,12 +229,60 @@
     gap: 1rem;
     padding: 0.75rem 1.25rem;
     border-radius: 1.5rem;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    position: relative;
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    background: 
+      linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.08) 100%);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 4px 24px rgba(0, 0, 0, 0.12),
+      0 12px 48px rgba(0, 0, 0, 0.08),
+      inset 0 1px 1px rgba(255, 255, 255, 0.15),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+  }
+  
+  .floating-nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg, 
+      rgba(255, 255, 255, 0.25) 0%, 
+      rgba(255, 255, 255, 0.08) 40%,
+      rgba(214, 72, 126, 0.15) 60%,
+      rgba(6, 182, 212, 0.1) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+  
+  .floating-nav::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 20%,
+      rgba(255, 255, 255, 0.6) 50%,
+      rgba(255, 255, 255, 0.4) 80%,
+      transparent 100%
+    );
+    border-radius: 9999px;
+    pointer-events: none;
   }
   
   @media (min-width: 1024px) {
@@ -244,21 +292,71 @@
   }
   
   .nav-scrolled {
-    background: rgba(5, 5, 5, 0.85);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+    background: 
+      linear-gradient(135deg, rgba(20, 20, 25, 0.9) 0%, rgba(15, 15, 20, 0.85) 50%, rgba(20, 20, 25, 0.9) 100%);
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 24px 64px rgba(0, 0, 0, 0.2),
+      0 0 80px rgba(214, 72, 126, 0.08),
+      inset 0 1px 1px rgba(255, 255, 255, 0.1),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+  }
+  
+  .nav-scrolled::before {
+    background: linear-gradient(
+      135deg, 
+      rgba(255, 255, 255, 0.15) 0%, 
+      rgba(255, 255, 255, 0.05) 30%,
+      rgba(214, 72, 126, 0.2) 50%,
+      rgba(6, 182, 212, 0.15) 70%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    opacity: 1;
   }
   
   :global([data-theme="light"]) .floating-nav {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(0, 0, 0, 0.08);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    background: 
+      linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.8) 100%);
+    box-shadow: 
+      0 0 0 1px rgba(0, 0, 0, 0.04),
+      0 4px 24px rgba(0, 0, 0, 0.06),
+      0 12px 48px rgba(0, 0, 0, 0.04),
+      inset 0 1px 2px rgba(255, 255, 255, 0.9),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.03);
+  }
+  
+  :global([data-theme="light"]) .floating-nav::before {
+    background: linear-gradient(
+      135deg, 
+      rgba(255, 255, 255, 0.9) 0%, 
+      rgba(255, 255, 255, 0.5) 40%,
+      rgba(214, 72, 126, 0.08) 60%,
+      rgba(6, 182, 212, 0.06) 100%
+    );
+    opacity: 1;
+  }
+  
+  :global([data-theme="light"]) .floating-nav::after {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.95) 20%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0.95) 80%,
+      transparent 100%
+    );
   }
   
   :global([data-theme="light"]) .nav-scrolled {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+    background: 
+      linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 252, 0.9) 50%, rgba(255, 255, 255, 0.95) 100%);
+    box-shadow: 
+      0 0 0 1px rgba(0, 0, 0, 0.06),
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      0 24px 64px rgba(0, 0, 0, 0.05),
+      inset 0 1px 2px rgba(255, 255, 255, 1),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.02);
   }
   
   .nav-link {
@@ -316,20 +414,59 @@
   .dropdown-content {
     min-width: 320px;
     padding: 0.75rem;
-    background: var(--bg-secondary);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    position: relative;
+    background: 
+      linear-gradient(135deg, rgba(30, 30, 35, 0.95) 0%, rgba(20, 20, 25, 0.9) 50%, rgba(30, 30, 35, 0.95) 100%);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid transparent;
+    border-radius: 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 20px 50px rgba(0, 0, 0, 0.4),
+      0 40px 80px rgba(0, 0, 0, 0.2),
+      inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  }
+  
+  .dropdown-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg, 
+      rgba(255, 255, 255, 0.15) 0%, 
+      rgba(255, 255, 255, 0.05) 40%,
+      rgba(214, 72, 126, 0.1) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
   }
   
   :global([data-theme="light"]) .dropdown-content {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    background: 
+      linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 250, 252, 0.95) 50%, rgba(255, 255, 255, 0.98) 100%);
+    box-shadow: 
+      0 0 0 1px rgba(0, 0, 0, 0.04),
+      0 20px 50px rgba(0, 0, 0, 0.1),
+      0 40px 80px rgba(0, 0, 0, 0.05),
+      inset 0 1px 2px rgba(255, 255, 255, 1);
+  }
+  
+  :global([data-theme="light"]) .dropdown-content::before {
+    background: linear-gradient(
+      135deg, 
+      rgba(255, 255, 255, 0.9) 0%, 
+      rgba(255, 255, 255, 0.5) 40%,
+      rgba(214, 72, 126, 0.05) 100%
+    );
   }
   
   .dropdown-item {
@@ -380,16 +517,41 @@
     left: 1rem;
     right: 1rem;
     margin-top: 0.5rem;
-    background: var(--bg-secondary);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
+    background: 
+      linear-gradient(135deg, rgba(30, 30, 35, 0.95) 0%, rgba(20, 20, 25, 0.92) 50%, rgba(30, 30, 35, 0.95) 100%);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid transparent;
     border-radius: 1.5rem;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 20px 50px rgba(0, 0, 0, 0.4),
+      0 40px 80px rgba(0, 0, 0, 0.2),
+      inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  }
+  
+  .mobile-menu::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg, 
+      rgba(255, 255, 255, 0.15) 0%, 
+      rgba(255, 255, 255, 0.05) 40%,
+      rgba(214, 72, 126, 0.12) 60%,
+      rgba(6, 182, 212, 0.08) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
   }
   
   .mobile-menu-open {
@@ -398,8 +560,22 @@
   }
   
   :global([data-theme="light"]) .mobile-menu {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    background: 
+      linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 250, 252, 0.95) 50%, rgba(255, 255, 255, 0.98) 100%);
+    box-shadow: 
+      0 0 0 1px rgba(0, 0, 0, 0.04),
+      0 20px 50px rgba(0, 0, 0, 0.1),
+      0 40px 80px rgba(0, 0, 0, 0.05),
+      inset 0 1px 2px rgba(255, 255, 255, 1);
+  }
+  
+  :global([data-theme="light"]) .mobile-menu::before {
+    background: linear-gradient(
+      135deg, 
+      rgba(255, 255, 255, 0.9) 0%, 
+      rgba(255, 255, 255, 0.5) 40%,
+      rgba(214, 72, 126, 0.05) 100%
+    );
   }
   
   .mobile-nav-link {
