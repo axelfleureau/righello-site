@@ -16,6 +16,34 @@ Sito web per Righello, una growth agency italiana orientata ai risultati e ai nu
 - **Adapter**: Node adapter
 - **Animazioni**: GSAP + ScrollTrigger per scrollytelling avanzato, Svelte transitions per transizioni UI
 
+## Design System
+
+### Spacing Scale (base 8px)
+Le variabili CSS per spaziature consistenti sono definite in `src/styles/index.css`:
+- `--space-xs`: 0.5rem (8px)
+- `--space-sm`: 1rem (16px)
+- `--space-md`: 1.5rem (24px)
+- `--space-lg`: 2rem (32px)
+- `--space-xl`: 3rem (48px)
+- `--space-2xl`: 4rem (64px)
+- `--space-3xl`: 6rem (96px)
+- `--space-4xl`: 8rem (128px)
+
+### Section Spacing
+- `--section-padding-sm`: 48px (mobile)
+- `--section-padding-md`: 64px (tablet)
+- `--section-padding-lg`: 96px (desktop)
+
+### Classi Sezione
+- `.section-padding` - Padding verticale responsive per sezioni
+- `.section-container` - Container con max-width e padding orizzontale
+- `.section-header` - Header centrato con margin-bottom responsive
+- `.section-title` - Titolo sezione con scala tipografica responsive
+- `.section-subtitle` - Sottotitolo uppercase con tracking
+
+### Typography Scale
+- `--text-xs` a `--text-6xl` per consistenza tipografica
+
 ## Colori Brand (Dual Theme)
 - **Tema di default**: Dark mode (con switch light/dark nell'header)
 - Rosa Righello: #D6487E
