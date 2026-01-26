@@ -501,7 +501,7 @@
   }
   
   .burger.is-open .burger__top {
-    transform: translateY(5.75px) rotate(45deg);
+    transform: rotate(45deg) translateY(5.75px);
   }
   
   .burger.is-open .burger__mid {
@@ -510,7 +510,7 @@
   }
   
   .burger.is-open .burger__bot {
-    transform: translateY(-5.75px) rotate(-45deg);
+    transform: rotate(-45deg) translateY(-5.75px);
   }
   
   @media (prefers-reduced-motion: reduce) {
