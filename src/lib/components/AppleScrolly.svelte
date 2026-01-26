@@ -178,7 +178,7 @@
     </div>
     
     <div bind:this={phoneWrapper} class="phone-area">
-      <PhoneMockup />
+      <PhoneMockup videoSrc="https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/caterina_4.mp4?alt=media&token=82ca60f4-1a84-4682-9e90-c65a50421daa" />
     </div>
     
     {#each slides as slide, i}
