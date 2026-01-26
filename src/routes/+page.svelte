@@ -240,8 +240,11 @@
   <div class="absolute bottom-0 right-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
   
   <RevealOnScroll animation="fade">
-    <div class="section-container" style="margin-bottom: var(--space-lg);">
-      <p class="section-subtitle text-center">I nostri clienti</p>
+    <div class="section-container">
+      <div class="section-header">
+        <p class="section-subtitle">I nostri clienti</p>
+        <h2 class="section-title">Chi si fida di <span class="gradient-text">noi</span></h2>
+      </div>
     </div>
   </RevealOnScroll>
   
@@ -258,13 +261,15 @@
   <SocialReelShowcase />
 </div>
 
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-secondary)" />
-
-<BenefitsSection />
-
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
-<section class="relative" style="background: var(--bg-primary);">
+<div style="background: var(--bg-primary);">
+  <BenefitsSection />
+</div>
+
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+
+<section class="relative" style="background: var(--bg-secondary);">
   <StickyScrollReveal 
     title="Il nostro metodo"
     subtitle="Come lavoriamo"
@@ -272,7 +277,7 @@
   />
 </section>
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" />
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
 <div class="relative">
   <BackgroundBeams variant="subtle" />

@@ -147,7 +147,7 @@
             </div>
             <button 
               class="play-overlay"
-              on:click={() => item.videoSrc && openLightbox(item.videoSrc, item.title)}
+              on:click|stopPropagation={() => item.videoSrc && openLightbox(item.videoSrc, item.title)}
               aria-label="Play video fullscreen"
             >
               <div class="play-icon">
@@ -155,6 +155,7 @@
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </div>
+              <span class="play-label">Play</span>
             </button>
           {:else if item.imageSrc}
             <img 
@@ -308,6 +309,7 @@
     background: linear-gradient(135deg, #D6487E 0%, #a855f7 50%, #06B6D4 100%);
     background-size: 200% 200%;
     animation: gradientMove 4s ease infinite;
+    z-index: 0;
   }
   
   .card-media {
@@ -317,7 +319,12 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s ease;
-    z-index: 1;
+    z-index: 2;
+    opacity: 1;
+  }
+  
+  video.card-media {
+    background: var(--bg-tertiary);
   }
   
   .card-content:hover .card-media {
@@ -347,15 +354,18 @@
     position: absolute;
     inset: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    background: rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transition: opacity 0.3s ease, background 0.3s ease;
+    z-index: 5;
   }
   
   .card-content:hover .play-overlay {
     opacity: 1;
+    background: rgba(0, 0, 0, 0.4);
   }
   
   .play-icon {
@@ -381,6 +391,16 @@
   .play-overlay:hover .play-icon {
     transform: scale(1.15);
     box-shadow: 0 15px 40px rgba(214, 72, 126, 0.5);
+  }
+  
+  .play-label {
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.5rem;
+    opacity: 0.9;
   }
   
   .card-overlay {

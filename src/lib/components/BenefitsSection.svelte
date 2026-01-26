@@ -155,20 +155,19 @@
 
 <style>
   .benefits-section {
-    padding: 2.5rem 0 3rem;
+    padding: var(--section-padding-sm) 0;
     position: relative;
-    background: var(--bg-secondary);
   }
   
   @media (min-width: 768px) {
     .benefits-section {
-      padding: 4rem 0 5rem;
+      padding: var(--section-padding-md) 0;
     }
   }
   
   @media (min-width: 1024px) {
     .benefits-section {
-      padding: 5rem 0 6rem;
+      padding: var(--section-padding-lg) 0;
     }
   }
   

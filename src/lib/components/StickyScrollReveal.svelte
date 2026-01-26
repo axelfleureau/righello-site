@@ -24,19 +24,36 @@
     import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
       gsap.registerPlugin(ScrollTrigger);
       
-      ctx = gsap.context(() => {
-        const items = container.querySelectorAll('.content-item');
+      const mediaQuery = window.matchMedia('(min-width: 1024px)');
+      
+      function setupScrollTriggers() {
+        if (ctx) ctx.revert();
         
-        items.forEach((item, i) => {
-          ScrollTrigger.create({
-            trigger: item,
-            start: 'top 60%',
-            end: 'bottom 40%',
-            onEnter: () => { activeIndex = i; },
-            onEnterBack: () => { activeIndex = i; },
+        if (!mediaQuery.matches) {
+          return;
+        }
+        
+        ctx = gsap.context(() => {
+          const items = container.querySelectorAll('.content-item');
+          
+          items.forEach((item, i) => {
+            ScrollTrigger.create({
+              trigger: item,
+              start: 'top center',
+              end: 'bottom center',
+              onEnter: () => { activeIndex = i; },
+              onEnterBack: () => { activeIndex = i; },
+            });
           });
-        });
-      }, container);
+        }, container);
+      }
+      
+      setupScrollTriggers();
+      mediaQuery.addEventListener('change', setupScrollTriggers);
+      
+      return () => {
+        mediaQuery.removeEventListener('change', setupScrollTriggers);
+      };
     });
   });
   
@@ -110,9 +127,21 @@
 
 <style>
   .sticky-scroll-section {
-    padding: 4rem 1.5rem;
+    padding: var(--section-padding-sm) 1.5rem;
     max-width: 1400px;
     margin: 0 auto;
+  }
+  
+  @media (min-width: 768px) {
+    .sticky-scroll-section {
+      padding: var(--section-padding-md) 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .sticky-scroll-section {
+      padding: var(--section-padding-lg) 1.5rem;
+    }
   }
   
   .section-header {
