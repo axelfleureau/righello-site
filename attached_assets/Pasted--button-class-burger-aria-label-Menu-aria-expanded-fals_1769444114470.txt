@@ -1,0 +1,101 @@
+<button class="burger" aria-label="Menu" aria-expanded="false">
+  <svg class="burger__icon" viewBox="0 0 21.2 24.2" width="28" height="28" aria-hidden="true">
+    <!-- TOP -->
+    <path class="burger__bar burger__top"
+      d="M0,5.1V1C0,.4.5,0,1.2,0h18.8c.7,0,1.2.5,1.2,1v3.1c0,.6-.5,1-1.2,1H6.8S0,5.1.1,5.1h-.1Z" />
+    <!-- MID (corta) -->
+    <path class="burger__bar burger__mid"
+      d="M1.3,9.4s-1.3,0-1.3,1.2v2.9c0,.6.5,1.1,1.2,1.1h9.2c.7,0,1.2-.5,1.2-1.1v-3c0-.6-.5-1.1-1.2-1.1,0,0-9.1,0-9.1,0Z" />
+    <!-- BOT -->
+    <path class="burger__bar burger__bot"
+      d="M6.8,18.9h13.1c.7,0,1.3.5,1.3,1.2v2.9c0,.6-.6,1.2-1.3,1.2H1.4c-.7,0-1.3-.5-1.3-1.2v-4.1h6.8,0Z" />
+  </svg>
+</button>
+
+//css
+
+.burger{
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+  color: #db4a93; /* oppure eredita dal testo */
+}
+
+.burger__bar{
+  fill: currentColor;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 260ms cubic-bezier(.2,.9,.2,1),
+    opacity 160ms ease;
+  will-change: transform, opacity;
+}
+
+/* La barra centrale corta: fai collassare verso sinistra (coerente col design) */
+.burger__mid{
+  transform-origin: left center;
+}
+
+/* STATO OPEN */
+.burger.is-open .burger__top{
+  transform: translateY(9.5px) rotate(45deg);
+}
+
+.burger.is-open .burger__mid{
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.burger.is-open .burger__bot{
+  transform: translateY(-9.5px) rotate(-45deg);
+}
+
+/* Optional: riduci animazioni se l’utente lo chiede */
+@media (prefers-reduced-motion: reduce){
+  .burger__bar{ transition: none; }
+}
+
+//js
+
+.burger{
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+  color: #db4a93; /* oppure eredita dal testo */
+}
+
+.burger__bar{
+  fill: currentColor;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 260ms cubic-bezier(.2,.9,.2,1),
+    opacity 160ms ease;
+  will-change: transform, opacity;
+}
+
+/* La barra centrale corta: fai collassare verso sinistra (coerente col design) */
+.burger__mid{
+  transform-origin: left center;
+}
+
+/* STATO OPEN */
+.burger.is-open .burger__top{
+  transform: translateY(9.5px) rotate(45deg);
+}
+
+.burger.is-open .burger__mid{
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.burger.is-open .burger__bot{
+  transform: translateY(-9.5px) rotate(-45deg);
+}
+
+/* Optional: riduci animazioni se l’utente lo chiede */
+@media (prefers-reduced-motion: reduce){
+  .burger__bar{ transition: none; }
+}
