@@ -5,7 +5,7 @@
   import InfiniteMarquee from '$lib/components/InfiniteMarquee.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
-  import VideoTestimonials from '$lib/components/VideoTestimonials.svelte';
+  import AnimatedVideoTestimonials from '$lib/components/AnimatedVideoTestimonials.svelte';
   import TestimonialsParallax from '$lib/components/TestimonialsParallax.svelte';
   import StickyScrollReveal from '$lib/components/StickyScrollReveal.svelte';
   import AppleScrolly from '$lib/components/AppleScrolly.svelte';
@@ -30,6 +30,7 @@
       clientRole: 'CEO',
       company: 'Zanutta Group',
       quote: 'Hanno trasformato la nostra presenza digitale. I numeri parlano chiaro: +340% di lead qualificati.',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/ricci_scuolasci.mp4?alt=media&token=1456b789-c161-45e2-9414-23074ce7fd53',
     },
     {
       id: '2',
@@ -37,6 +38,7 @@
       clientRole: 'Marketing Director',
       company: 'Reginato',
       quote: 'Finalmente un\'agenzia che parla di ROI e non solo di like. Risultati concreti e misurabili.',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/3r_fast_replace.mp4?alt=media&token=def7dcaa-231d-42ff-bf40-9ffef861a6ba',
     },
     {
       id: '3',
@@ -44,6 +46,7 @@
       clientRole: 'Founder',
       company: 'Ennevi',
       quote: 'Il team Righello ha portato la nostra campagna Meta a un ROAS di 8.5x. Impressionante.',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/vendemmioPOCOvolentieri.mp4?alt=media&token=76867423-5c67-4676-ae0e-a151d3e56325',
     },
     {
       id: '4',
@@ -51,6 +54,7 @@
       clientRole: 'Owner',
       company: 'Dolfo Restaurant',
       quote: 'Gestiscono i nostri social con una creatività che non avrei mai immaginato. Sold out ogni weekend.',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/neura_final.mp4?alt=media&token=27642e9f-c14b-49eb-b8e3-e802f4abdcb4',
     },
     {
       id: '5',
@@ -229,7 +233,7 @@
     </RevealOnScroll>
   </div>
   
-  <VideoTestimonials testimonials={videoTestimonials} />
+  <AnimatedVideoTestimonials testimonials={videoTestimonials} />
 </section>
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />

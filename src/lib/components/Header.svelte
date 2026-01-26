@@ -230,8 +230,8 @@
     padding: 0.75rem 1.25rem;
     border-radius: 1.5rem;
     position: relative;
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     background: 
       linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.08) 100%);
     border: 1px solid transparent;
@@ -417,8 +417,8 @@
     position: relative;
     background: 
       linear-gradient(135deg, rgba(30, 30, 35, 0.95) 0%, rgba(20, 20, 25, 0.9) 50%, rgba(30, 30, 35, 0.95) 100%);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid transparent;
     border-radius: 1.25rem;
     display: flex;
@@ -519,8 +519,8 @@
     margin-top: 0.5rem;
     background: 
       linear-gradient(135deg, rgba(30, 30, 35, 0.95) 0%, rgba(20, 20, 25, 0.92) 50%, rgba(30, 30, 35, 0.95) 100%);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid transparent;
     border-radius: 1.5rem;
     max-height: 0;

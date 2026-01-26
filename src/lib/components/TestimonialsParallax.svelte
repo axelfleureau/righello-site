@@ -250,8 +250,20 @@
 
 <style>
   .testimonials-parallax {
-    padding: 4rem 0;
+    padding: var(--section-padding-sm) 0;
     overflow: hidden;
+  }
+  
+  @media (min-width: 768px) {
+    .testimonials-parallax {
+      padding: var(--section-padding-md) 0;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .testimonials-parallax {
+      padding: var(--section-padding-lg) 0;
+    }
   }
   
   .parallax-container {

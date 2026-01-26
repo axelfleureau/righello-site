@@ -39,8 +39,8 @@
           items.forEach((item, i) => {
             ScrollTrigger.create({
               trigger: item,
-              start: 'top center',
-              end: 'bottom center',
+              start: 'top 60%',
+              end: 'bottom 40%',
               onEnter: () => { activeIndex = i; },
               onEnterBack: () => { activeIndex = i; },
             });
@@ -293,13 +293,14 @@
   
   @media (min-width: 1024px) {
     .content-item {
-      min-height: 50vh;
+      min-height: 40vh;
       display: flex;
       align-items: center;
       padding: 2rem;
       background: transparent;
       border: none;
       opacity: 0.4;
+      transition: opacity 0.5s ease;
     }
     
     .content-item.active {
