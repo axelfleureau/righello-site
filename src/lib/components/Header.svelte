@@ -507,8 +507,16 @@
     transform-origin: left center;
   }
   
+  .burger__top {
+    transform-origin: 50% 50%;
+  }
+  
+  .burger__bot {
+    transform-origin: 50% 50%;
+  }
+  
   .burger.is-open .burger__top {
-    transform: translateY(9.5px) rotate(45deg);
+    transform: translateX(3px) translateY(7px) rotate(45deg);
   }
   
   .burger.is-open .burger__mid {
@@ -517,7 +525,7 @@
   }
   
   .burger.is-open .burger__bot {
-    transform: translateY(-9.5px) rotate(-45deg);
+    transform: translateX(-3px) translateY(-7px) rotate(-45deg);
   }
   
   @media (prefers-reduced-motion: reduce) {
