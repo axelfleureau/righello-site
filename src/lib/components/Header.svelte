@@ -139,30 +139,21 @@
         </a>
         
         <button 
-          class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-righello-pink text-white transition-all duration-300 hover:scale-105"
+          class="burger lg:hidden"
+          class:is-open={mobileMenuOpen}
           on:click={toggleMenu}
           aria-label={mobileMenuOpen ? 'Chiudi menu' : 'Apri menu'}
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-menu"
         >
-          <div class="relative w-5 h-5">
-            <span 
-              class="absolute left-0 w-5 h-0.5 bg-white transition-all duration-300"
-              class:rotate-45={mobileMenuOpen}
-              class:top-2={mobileMenuOpen}
-              class:top-1={!mobileMenuOpen}
-            ></span>
-            <span 
-              class="absolute left-0 top-2 w-5 h-0.5 bg-white transition-all duration-300"
-              class:opacity-0={mobileMenuOpen}
-            ></span>
-            <span 
-              class="absolute left-0 w-5 h-0.5 bg-white transition-all duration-300"
-              class:-rotate-45={mobileMenuOpen}
-              class:top-2={mobileMenuOpen}
-              class:top-3={!mobileMenuOpen}
-            ></span>
-          </div>
+          <svg class="burger__icon" viewBox="0 0 21.2 24.2" width="24" height="24" aria-hidden="true">
+            <path class="burger__bar burger__top"
+              d="M0,5.1V1C0,.4.5,0,1.2,0h18.8c.7,0,1.2.5,1.2,1v3.1c0,.6-.5,1-1.2,1H6.8S0,5.1.1,5.1h-.1Z" />
+            <path class="burger__bar burger__mid"
+              d="M1.3,9.4s-1.3,0-1.3,1.2v2.9c0,.6.5,1.1,1.2,1.1h9.2c.7,0,1.2-.5,1.2-1.1v-3c0-.6-.5-1.1-1.2-1.1,0,0-9.1,0-9.1,0Z" />
+            <path class="burger__bar burger__bot"
+              d="M6.8,18.9h13.1c.7,0,1.3.5,1.3,1.2v2.9c0,.6-.6,1.2-1.3,1.2H1.4c-.7,0-1.3-.5-1.3-1.2v-4.1h6.8,0Z" />
+          </svg>
         </button>
       </div>
     </nav>
@@ -469,5 +460,69 @@
   
   .cta-button-mobile:hover {
     box-shadow: 0 6px 20px rgba(214, 72, 126, 0.4);
+  }
+  
+  .burger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: linear-gradient(135deg, #D6487E 0%, #c13d6f 100%);
+    border: 0;
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(214, 72, 126, 0.3);
+  }
+  
+  @media (min-width: 1024px) {
+    .burger {
+      display: none;
+    }
+  }
+  
+  .burger:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(214, 72, 126, 0.4);
+  }
+  
+  .burger__icon {
+    display: block;
+  }
+  
+  .burger__bar {
+    fill: currentColor;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition:
+      transform 260ms cubic-bezier(.2,.9,.2,1),
+      opacity 160ms ease;
+    will-change: transform, opacity;
+  }
+  
+  .burger__mid {
+    transform-origin: left center;
+  }
+  
+  .burger.is-open .burger__top {
+    transform: translateY(9.5px) rotate(45deg);
+  }
+  
+  .burger.is-open .burger__mid {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  
+  .burger.is-open .burger__bot {
+    transform: translateY(-9.5px) rotate(-45deg);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .burger__bar {
+      transition: none;
+    }
   }
 </style>
