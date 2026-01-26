@@ -193,3 +193,4 @@ Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, Barcolana, Ippodromo Mer
 - **AnimatedVideoTestimonials**: Nuovo componente Aceternity-style con card stack 3D, autoplay, navigazione dots/arrows, lightbox fullscreen
 - **StickyScrollReveal Sync**: ScrollTrigger migliorato (top/bottom center), media query desktop-only per evitare glitch mobile
 - **LinkPreview Component**: Nuovo componente per anteprima hover link con immagine, titolo, descrizione e freccia
+- **Liquid Glass Navbar**: Effetto glassmorphism premium stile Apple con blur(40px) saturate(180%), bordi luminosi gradient, inner highlight, ombre stratificate con profondità. Applicato anche a dropdown e mobile menu
