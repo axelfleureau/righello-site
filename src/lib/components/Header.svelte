@@ -146,13 +146,10 @@
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-menu"
         >
-          <svg class="burger__icon" viewBox="0 0 21.2 24.2" width="24" height="24" aria-hidden="true">
-            <path class="burger__bar burger__top"
-              d="M0,5.1V1C0,.4.5,0,1.2,0h18.8c.7,0,1.2.5,1.2,1v3.1c0,.6-.5,1-1.2,1H6.8S0,5.1.1,5.1h-.1Z" />
-            <path class="burger__bar burger__mid"
-              d="M1.3,9.4s-1.3,0-1.3,1.2v2.9c0,.6.5,1.1,1.2,1.1h9.2c.7,0,1.2-.5,1.2-1.1v-3c0-.6-.5-1.1-1.2-1.1,0,0-9.1,0-9.1,0Z" />
-            <path class="burger__bar burger__bot"
-              d="M6.8,18.9h13.1c.7,0,1.3.5,1.3,1.2v2.9c0,.6-.6,1.2-1.3,1.2H1.4c-.7,0-1.3-.5-1.3-1.2v-4.1h6.8,0Z" />
+          <svg class="burger__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <rect class="burger__bar burger__top" x="2" y="4" width="20" height="3" rx="1.5" />
+            <rect class="burger__bar burger__mid" x="2" y="10.5" width="12" height="3" rx="1.5" />
+            <rect class="burger__bar burger__bot" x="2" y="17" width="20" height="3" rx="1.5" />
           </svg>
         </button>
       </div>
@@ -495,28 +492,19 @@
   
   .burger__bar {
     fill: currentColor;
-    transform-box: fill-box;
-    transform-origin: center;
+    transform-origin: 12px 12px;
     transition:
-      transform 260ms cubic-bezier(.2,.9,.2,1),
-      opacity 160ms ease;
+      transform 280ms cubic-bezier(.2,.9,.2,1),
+      opacity 180ms ease;
     will-change: transform, opacity;
   }
   
   .burger__mid {
-    transform-origin: left center;
-  }
-  
-  .burger__top {
-    transform-origin: 50% 50%;
-  }
-  
-  .burger__bot {
-    transform-origin: 50% 50%;
+    transform-origin: 8px 12px;
   }
   
   .burger.is-open .burger__top {
-    transform: translateX(3px) translateY(7px) rotate(45deg);
+    transform: translateY(6.5px) rotate(45deg);
   }
   
   .burger.is-open .burger__mid {
@@ -525,7 +513,7 @@
   }
   
   .burger.is-open .burger__bot {
-    transform: translateX(-3px) translateY(-7px) rotate(-45deg);
+    transform: translateY(-6.5px) rotate(-45deg);
   }
   
   @media (prefers-reduced-motion: reduce) {
