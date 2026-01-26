@@ -115,14 +115,14 @@
 
 <AppleScrolly {credibilityBadges} />
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" height="80px" />
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
 <section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
-      <div class="text-center mb-16">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Risultati reali</p>
-        <h2 class="heading-lg max-w-4xl mx-auto">
+      <div class="section-header">
+        <p class="section-subtitle">Risultati reali</p>
+        <h2 class="section-title max-w-4xl mx-auto">
           I numeri che <span class="gradient-text">fanno la differenza</span>
         </h2>
       </div>
@@ -143,15 +143,15 @@
   </div>
 </section>
 
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="80px" />
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
 <section class="section-padding relative">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
-      <div class="text-center mb-16">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">I nostri servizi</p>
-        <h2 class="heading-lg mb-6">Cosa <span class="gradient-text">facciamo</span></h2>
-        <p class="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
+      <div class="section-header">
+        <p class="section-subtitle">I nostri servizi</p>
+        <h2 class="section-title mb-4">Cosa <span class="gradient-text">facciamo</span></h2>
+        <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
           Creiamo ecosistemi di conversione che trasformano views in clienti e fatturato ricorrente.
         </p>
       </div>
@@ -214,15 +214,15 @@
   </div>
 </section>
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" height="80px" />
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
 <section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
-  <div class="section-container mb-12">
+  <div class="section-container">
     <RevealOnScroll animation="fly-up">
-      <div class="text-center">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Video Recensioni</p>
-        <h2 class="heading-lg mb-6">I clienti <span class="gradient-text">parlano di noi</span></h2>
-        <p class="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
+      <div class="section-header">
+        <p class="section-subtitle">Video Recensioni</p>
+        <h2 class="section-title mb-4">I clienti <span class="gradient-text">parlano di noi</span></h2>
+        <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
           Guarda le video testimonianze dei nostri clienti e scopri i risultati che abbiamo ottenuto insieme
         </p>
       </div>
@@ -232,16 +232,16 @@
   <VideoTestimonials testimonials={videoTestimonials} />
 </section>
 
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="60px" />
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
-<section class="py-10 md:py-16 lg:py-24 overflow-hidden relative">
+<section class="section-padding overflow-hidden relative">
   <div class="absolute inset-0 bg-gradient-to-r from-righello-pink/10 via-transparent to-righello-pink/10"></div>
   <div class="absolute top-0 left-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
   <div class="absolute bottom-0 right-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
   
   <RevealOnScroll animation="fade">
-    <div class="section-container mb-8">
-      <p class="text-sm uppercase tracking-[0.2em] text-righello-pink text-center">I nostri clienti</p>
+    <div class="section-container" style="margin-bottom: var(--space-lg);">
+      <p class="section-subtitle text-center">I nostri clienti</p>
     </div>
   </RevealOnScroll>
   

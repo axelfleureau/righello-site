@@ -33,13 +33,13 @@
   ];
 </script>
 
-<section class="py-10 md:py-16 lg:py-24 overflow-hidden">
-  <div class="section-container mb-8 md:mb-12">
+<section class="section-padding overflow-hidden">
+  <div class="section-container">
     <RevealOnScroll animation="fly-up">
-      <div class="text-center">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">{subtitle}</p>
-        <h2 class="heading-lg mb-4">{title}</h2>
-        <p class="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+      <div class="section-header">
+        <p class="section-subtitle">{subtitle}</p>
+        <h2 class="section-title mb-4">{title}</h2>
+        <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
           Scorri per esplorare alcuni dei nostri migliori lavori
         </p>
       </div>

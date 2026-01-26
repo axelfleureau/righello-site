@@ -140,8 +140,7 @@
                 muted
                 loop
                 playsinline
-                preload="auto"
-                on:loadeddata={(e) => e.currentTarget.classList.add('loaded')}
+                preload="metadata"
               >
                 <track kind="captions" />
               </video>
@@ -312,18 +311,13 @@
   }
   
   .card-media {
-    position: relative;
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease, opacity 0.3s ease;
-    opacity: 0;
+    transition: transform 0.6s ease;
     z-index: 1;
-  }
-  
-  .card-media.loaded,
-  .card-media[poster]:not([poster=""]) {
-    opacity: 1;
   }
   
   .card-content:hover .card-media {
