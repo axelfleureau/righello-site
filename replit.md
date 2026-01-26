@@ -74,16 +74,18 @@ Sito web per Righello, una growth agency italiana orientata ai risultati e ai nu
 - `/contatti` - Form di contatto con animazioni e informazioni
 
 ## Componenti Interattivi
-- **PhoneMockup**: iPhone 3D mockup con spring physics, tilt hover effects, gradient animato
-- **AppleScrolly**: Effetto scrollytelling stile Apple - hero con iPhone che si pinna e si sposta al centro durante lo scroll, con frasi ad impatto alternate a sinistra/destra sincronizzate allo scroll
+- **PhoneMockup**: iPhone 3D mockup con spring physics, tilt hover effects, video da Firebase Storage
+- **AppleScrolly**: Effetto scrollytelling stile Apple con snap magnetico forte (280vh per slide, scrub 2.5, snap power4.inOut). Hero con iPhone che si pinna durante lo scroll con frasi ad impatto sincronizzate
+- **AppleCardsCarousel**: Carousel orizzontale stile Apple con drag-to-scroll, hover-to-play video, effetti 3D e lightbox fullscreen
+- **Header Floating**: Navbar floating pill-shaped con glassmorphism, dropdown hover per Servizi (mostra 3 dipartimenti con icone), CTA "Parliamone", theme toggle
 - **RevealOnScroll**: Animazioni scroll-triggered con Svelte native (fly, fade, scale)
 - **GlowCard**: Card con effetto glow che segue il cursore (rosa/ciano gradient)
 - **InfiniteMarquee**: Scroll infinito orizzontale per loghi clienti
 - **ServiceTabs**: Switch a schede moderno con indicatore animato e angoli arrotondati
 - **VideoTestimonials**: Carousel video reel con drag-to-scroll e lightbox fullscreen
+- **SocialReelShowcase**: Sezione "I nostri lavori" con AppleCardsCarousel e 4 video reali (Scuola Sci, 3R Technology, Reguta, Neura)
 - **AnimatedCounter**: Contatori che si animano quando visibili
 - **MagneticButton**: Bottoni che seguono il cursore con effetto magnetico
-- **Header Smart**: Fixed transparent con backdrop-filter blur (glassmorphism), si nasconde/mostra con scroll
 - **BenefitsSection**: Card glassmorphism con statistiche animate e confronto Prima/Dopo
 - **FAQ**: Accordion con animazioni smooth (Svelte slide transition)
 - **BackgroundBeams**: Effetti di luce animati per sezioni hero/accent
@@ -148,3 +150,10 @@ Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, Barcolana, Ippodromo Mer
 - Supporto `prefers-reduced-motion` per tutti i componenti animati
 - ARIA labels dinamici per il menu mobile
 - Semantic HTML con ruoli appropriati
+
+## Aggiornamenti Recenti (26 Gennaio 2026)
+- **Navbar Floating**: Nuova navbar pill-shaped con glassmorphism, dropdown Servizi hover con preview 3 dipartimenti
+- **Snap Scrollytelling Migliorato**: scrollDistance 280vh, scrub 2.5, snap magnetico più forte per migliore leggibilità
+- **AppleCardsCarousel**: Nuovo componente carousel per video reel con effetti 3D
+- **Video Hero**: iPhone mockup ora mostra video reale (caterina_4.mp4 da Firebase)
+- **I nostri lavori**: 4 nuovi video aggiunti (Scuola Sci Piancavallo, 3R Technology, Reguta Wines, Neura)
