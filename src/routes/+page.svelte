@@ -322,15 +322,6 @@
       radial-gradient(ellipse at 20% 80%, rgba(214, 72, 126, 0.1) 0%, transparent 50%);
   }
   
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  
   @media (max-width: 768px) {
     .heading-lg {
       font-size: 2rem;

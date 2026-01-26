@@ -190,7 +190,14 @@ Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, Barcolana, Ippodromo Mer
 - **Typography Mobile++**: heading-xl (5xl→9xl), heading-lg (4xl→7xl), section-title (4xl→6xl mobile) per migliore impatto visivo
 - **Section Spacing Consistente**: Tutte le sezioni usano CSS variables (section-padding-sm/md/lg), alternanza bg-primary/bg-secondary con SectionDivider
 - **AppleCardsCarousel Video Fix**: Play overlay sempre visibile con label "Play", z-index corretti per video e anteprime
-- **AnimatedVideoTestimonials**: Nuovo componente Aceternity-style con card stack 3D, autoplay, navigazione dots/arrows, lightbox fullscreen
-- **StickyScrollReveal Sync**: ScrollTrigger migliorato (top/bottom center), media query desktop-only per evitare glitch mobile
+- **AnimatedVideoTestimonials**: Componente Aceternity-style con card stack 3D, autoplay, navigazione dots/arrows, lightbox fullscreen, video sources da Firebase Storage
+- **StickyScrollReveal Sync**: ScrollTrigger migliorato (top 60%/bottom 40%), min-height 40vh, media query desktop-only per evitare glitch mobile
 - **LinkPreview Component**: Nuovo componente per anteprima hover link con immagine, titolo, descrizione e freccia
-- **Liquid Glass Navbar**: Effetto glassmorphism premium stile Apple con blur(40px) saturate(180%), bordi luminosi gradient, inner highlight, ombre stratificate con profondità. Applicato anche a dropdown e mobile menu
+- **Liquid Glass Navbar**: Effetto glassmorphism premium stile Apple con blur(24px) saturate(180%), bordi luminosi gradient, inner highlight, ombre stratificate con profondità
+
+### Ottimizzazioni Spacing & Animazioni (26 Gennaio 2026 - Notte)
+- **SectionDivider ridotto**: Altezza default da 150px/40px a 80px/24px per transizioni più fluide tra sezioni
+- **Navbar blur ottimizzato**: Ridotto da 40px a 24px per effetto più sottile e performante
+- **FAQ/TestimonialsParallax**: Padding standardizzato con section-padding CSS variables (sm/md/lg)
+- **AppleCardsCarousel video preview**: Aggiunto preload="auto" e currentTime=0.1 per mostrare anteprime video
+- **StickyScrollReveal**: Trigger points regolati per migliore sincronizzazione pannello visivo/testo
