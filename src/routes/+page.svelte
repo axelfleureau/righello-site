@@ -6,6 +6,8 @@
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
   import VideoTestimonials from '$lib/components/VideoTestimonials.svelte';
+  import TestimonialsParallax from '$lib/components/TestimonialsParallax.svelte';
+  import StickyScrollReveal from '$lib/components/StickyScrollReveal.svelte';
   import AppleScrolly from '$lib/components/AppleScrolly.svelte';
   import BenefitsSection from '$lib/components/BenefitsSection.svelte';
   import FAQ from '$lib/components/FAQ.svelte';
@@ -72,6 +74,29 @@
     { icon: 'meta', label: 'Meta Partner' },
     { icon: 'google', label: 'Google Partner' },
     { icon: 'star', label: '5.0 Rating' },
+  ];
+  
+  const processSteps = [
+    {
+      title: 'Discovery & Analisi',
+      description: 'Analizziamo il tuo business, il mercato e i competitor. Identifichiamo opportunità di crescita e definiamo KPI chiari e misurabili.',
+      icon: '🔍',
+    },
+    {
+      title: 'Strategia & Pianificazione',
+      description: 'Creiamo una roadmap personalizzata con obiettivi a breve, medio e lungo termine. Ogni azione è connessa a risultati concreti.',
+      icon: '📋',
+    },
+    {
+      title: 'Esecuzione & Ottimizzazione',
+      description: 'Implementiamo la strategia con cicli di test continui. A/B testing, analisi dati e ottimizzazione costante per massimizzare i risultati.',
+      icon: '🚀',
+    },
+    {
+      title: 'Reporting & Crescita',
+      description: 'Dashboard real-time con tutti i KPI. Report settimanali e call strategiche per scalare insieme i risultati ottenuti.',
+      icon: '📈',
+    },
   ];
   
   import { browser } from '$app/environment';
@@ -204,7 +229,7 @@
     </RevealOnScroll>
   </div>
   
-  <VideoTestimonials testimonials={videoTestimonials} />
+  <TestimonialsParallax testimonials={videoTestimonials} />
 </section>
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="60px" />
@@ -238,6 +263,16 @@
 <BenefitsSection />
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
+
+<section class="relative" style="background: var(--bg-primary);">
+  <StickyScrollReveal 
+    title="Il nostro metodo"
+    subtitle="Come lavoriamo"
+    content={processSteps}
+  />
+</section>
+
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" />
 
 <div class="relative">
   <BackgroundBeams variant="subtle" />
