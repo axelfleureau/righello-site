@@ -492,16 +492,23 @@
   
   .burger__bar {
     fill: currentColor;
-    transform-box: fill-box;
-    transform-origin: center;
+    transform-origin: center center;
     transition:
       transform 280ms cubic-bezier(.2,.9,.2,1),
       opacity 180ms ease;
     will-change: transform, opacity;
   }
   
+  .burger__top {
+    transform-origin: center center;
+  }
+  
+  .burger__bot {
+    transform-origin: center center;
+  }
+  
   .burger.is-open .burger__top {
-    transform: rotate(45deg) translateY(5.75px);
+    transform: translateY(5.75px) rotate(45deg);
   }
   
   .burger.is-open .burger__mid {
@@ -510,7 +517,7 @@
   }
   
   .burger.is-open .burger__bot {
-    transform: rotate(-45deg) translateY(-5.75px);
+    transform: translateY(-5.75px) rotate(-45deg);
   }
   
   @media (prefers-reduced-motion: reduce) {
