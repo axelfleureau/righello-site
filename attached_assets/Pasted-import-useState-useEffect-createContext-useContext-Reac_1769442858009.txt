@@ -1,0 +1,84 @@
+import { useState, useEffect, createContext, useContext, ReactNode, ComponentType, AnchorHTMLAttributes, useRef } from "react";
+import { cn } from "@/lib/utils";
+import gsap from "gsap";
+
+interface NavbarContextType {
+  isScrolled: boolean;
+}
+
+const NavbarContext = createContext<NavbarContextType>({ isScrolled: false });
+
+export const useNavbar = () => useContext(NavbarContext);
+
+interface NavbarProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export function Navbar({ children, className }: NavbarProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!navRef.current) return;
+    
+    gsap.fromTo(
+      navRef.current,
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", delay: 0.2 }
+    );
+  }, []);
+
+  return (
+    <NavbarContext.Provider value={{ isScrolled }}>
+      <nav
+        ref={navRef}
+        className={cn(
+          "fixed top-4 inset-x-0 mx-auto z-50 transition-all duration-500 ease-out",
+          isScrolled ? "max-w-4xl" : "max-w-6xl",
+          "px-2 sm:px-4 md:px-6 lg:px-12",
+          className
+        )}
+        data-testid="navbar-main"
+      >
+        {children}
+      </nav>
+    </NavbarContext.Provider>
+  );
+}
+
+interface NavBodyProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export function NavBody({ children, className }: NavBodyProps) {
+  const { isScrolled } = useNavbar();
+
+  return (
+    <div
+      className={cn(
+        "hidden lg:flex items-center justify-between rounded-full transition-all duration-500 ease-out",
+        "backdrop-blur-lg border shadow-xl",
+        isScrolled
+          ? "h-14 px-4 lg:px-6 bg-white/90 dark:bg-black/90 border-border/60"
+          : "h-16 px-6 lg:px-8 bg-white/70 dark:bg-black/70 border-border/40",
+        className
+      )}
+      data-testid="navbar-body"
+    >
+      {children}
+    </div>
+  );
+}
+
+type LinkComponentProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
