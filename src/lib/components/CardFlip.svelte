@@ -147,7 +147,7 @@
 <style>
   .card-flip-wrapper {
     perspective: 2000px;
-    min-height: 320px;
+    min-height: 420px;
     height: auto;
     width: 100%;
     max-width: 280px;
@@ -331,22 +331,6 @@
     flex-direction: column;
     height: 100%;
     padding: 1.5rem;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) transparent;
-  }
-  
-  .card-back-content::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  .card-back-content::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  .card-back-content::-webkit-scrollbar-thumb {
-    background: var(--accent-color);
-    border-radius: 2px;
   }
   
   .back-header {
