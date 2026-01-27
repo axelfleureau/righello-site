@@ -122,9 +122,9 @@
               yPercent: 0,
               scaleY: 1,
               scaleX: 1,
-              stagger: 0.02,
-              ease: 'back.out(2)',
-              duration: sectionSize * 0.25
+              stagger: 0.035,
+              ease: 'back.out(3)',
+              duration: sectionSize * 0.35
             }, startTime + sectionSize * 0.05);
             
             tl.to(descChars, {
@@ -132,10 +132,10 @@
               yPercent: 0,
               scaleY: 1,
               scaleX: 1,
-              stagger: 0.008,
-              ease: 'back.out(1.5)',
-              duration: sectionSize * 0.3
-            }, startTime + sectionSize * 0.15);
+              stagger: 0.012,
+              ease: 'back.out(2)',
+              duration: sectionSize * 0.4
+            }, startTime + sectionSize * 0.2);
             
             tl.to(slideEl, {
               opacity: 1,
@@ -465,5 +465,14 @@
   .desc-char {
     display: inline-block;
     will-change: opacity, transform;
+    opacity: 0;
+    transform: translateY(120%) scaleY(2.3) scaleX(0.7);
+    transform-origin: 50% 0%;
+  }
+  
+  .title-char.revealed,
+  .desc-char.revealed {
+    opacity: 1;
+    transform: translateY(0) scaleY(1) scaleX(1);
   }
 </style>
