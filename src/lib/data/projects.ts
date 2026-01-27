@@ -222,19 +222,25 @@ export const departments: Department[] = [
 
 export const services = departments.flatMap(d => d.services.map(s => ({ ...s, departmentId: d.id })));
 
-export const clients = [
-  'Barcolana',
-  'Ippodromo Merano',
-  'Quellenhof',
-  'Salotto',
-  'Embassy',
-  'VIP Motors',
-  'NoleggioBar',
-  'Tubaro',
-  'Zanutta',
-  'G&M Ambiente',
-  'Reginato',
-  'Ennevi',
-  'Dolfo',
-  'Reguta',
+export interface Client {
+  name: string;
+  logo?: string;
+  href?: string;
+}
+
+export const clients: Client[] = [
+  { name: 'Barcolana', href: '/progetti/barcolana' },
+  { name: 'Ippodromo Merano', href: '/progetti/ippodromo-merano' },
+  { name: 'Quellenhof', href: '/progetti/quellenhof' },
+  { name: 'Salotto', href: '/progetti/salotto' },
+  { name: 'Embassy', href: '/progetti/embassy' },
+  { name: 'VIP Motors', href: '/progetti/vip-motors' },
+  { name: 'NoleggioBar', href: '/progetti/noleggio-bar' },
+  { name: 'Tubaro' },
+  { name: 'Zanutta' },
+  { name: 'G&M Ambiente' },
+  { name: 'Reginato' },
+  { name: 'Ennevi' },
+  { name: 'Dolfo' },
+  { name: 'Reguta' },
 ];

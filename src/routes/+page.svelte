@@ -2,7 +2,7 @@
   import { projects, departments, clients } from '$lib/data/projects';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
-  import InfiniteMarquee from '$lib/components/InfiniteMarquee.svelte';
+  import LogoCarousel from '$lib/components/LogoCarousel.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
   import AnimatedVideoTestimonials from '$lib/components/AnimatedVideoTestimonials.svelte';
@@ -252,11 +252,16 @@
     </div>
   </RevealOnScroll>
   
-  <InfiniteMarquee speed={30}>
-    {#each clients as client}
-      <span class="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mx-8 md:mx-12 opacity-60 hover:opacity-100 transition-opacity">{client}</span>
-    {/each}
-  </InfiniteMarquee>
+  <LogoCarousel 
+    items={clients} 
+    speed={60} 
+    pauseOnHover={true}
+    scaleOnHover={true}
+    fadeEdges={true}
+    fadeSize="10rem"
+    gap={64}
+    itemHeight={32}
+  />
 </section>
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
