@@ -43,6 +43,11 @@
   function handleBlur() {
     isFlipped = false;
   }
+  
+  function closeCard(e: MouseEvent) {
+    e.stopPropagation();
+    isFlipped = false;
+  }
 </script>
 
 <div
@@ -91,7 +96,18 @@
     <div class="card-face card-back">
       <div class="card-back-content">
         <div class="back-header">
-          <h3 class="card-title">{title}</h3>
+          <div class="back-header-row">
+            <h3 class="card-title">{title}</h3>
+            <button 
+              class="close-button" 
+              on:click={closeCard}
+              aria-label="Chiudi dettagli"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
           <p class="card-description">{description}</p>
         </div>
         
@@ -131,7 +147,8 @@
 <style>
   .card-flip-wrapper {
     perspective: 2000px;
-    height: 320px;
+    min-height: 320px;
+    height: auto;
     width: 100%;
     max-width: 280px;
     cursor: pointer;
@@ -314,12 +331,79 @@
     flex-direction: column;
     height: 100%;
     padding: 1.5rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+  }
+  
+  .card-back-content::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .card-back-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .card-back-content::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 2px;
   }
   
   .back-header {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+  
+  .back-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  
+  .close-button {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease;
+  }
+  
+  .close-button svg {
+    width: 16px;
+    height: 16px;
+    color: var(--text-secondary, #a1a1aa);
+    transition: color 200ms ease;
+  }
+  
+  .close-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--accent-color);
+  }
+  
+  .close-button:hover svg {
+    color: var(--accent-color);
+  }
+  
+  :global([data-theme="light"]) .close-button {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  :global([data-theme="light"]) .close-button svg {
+    color: #64748b;
+  }
+  
+  :global([data-theme="light"]) .close-button:hover {
+    background: rgba(0, 0, 0, 0.08);
   }
   
   .card-back .card-title {

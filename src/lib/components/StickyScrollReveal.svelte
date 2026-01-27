@@ -39,12 +39,10 @@
           items.forEach((item, i) => {
             ScrollTrigger.create({
               trigger: item,
-              start: 'center 40%',
-              end: 'center 40%',
+              start: 'center center',
+              end: 'center center',
               onEnter: () => { activeIndex = i; },
               onEnterBack: () => { activeIndex = i; },
-              onLeave: () => { if (i < content.length - 1) activeIndex = i + 1; },
-              onLeaveBack: () => { if (i > 0) activeIndex = i - 1; },
             });
           });
         }, container);
