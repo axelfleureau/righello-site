@@ -9,7 +9,8 @@
   let scrollY = 0;
   let lastScrollY = 0;
   let isHidden = false;
-  let isPastTop = false;
+  let isAtTop = true;
+  let isCompact = false;
   let serviziHovered = false;
   let mobileServiziOpen = false;
   
@@ -45,19 +46,30 @@
   onMount(() => {
     const handleScroll = () => {
       scrollY = window.scrollY;
-      isPastTop = scrollY > 50;
+      const scrollDelta = scrollY - lastScrollY;
       
-      if (scrollY > lastScrollY && scrollY > 100) {
-        isHidden = true;
+      // At top: transparent, classic navbar, reset compact
+      isAtTop = scrollY <= 30;
+      if (isAtTop) {
+        isCompact = false;
+      }
+      
+      // Scrolling down: compact mode
+      if (scrollDelta > 5 && scrollY > 80) {
+        isCompact = true;
+        isHidden = scrollY > 200; // Hide only after significant scroll
         serviziHovered = false;
-      } else {
+      }
+      // Scrolling up: expand, show
+      else if (scrollDelta < -5) {
+        isCompact = false;
         isHidden = false;
       }
       
       lastScrollY = scrollY;
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   });
 </script>
@@ -65,9 +77,15 @@
 <header 
   class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
   class:-translate-y-full={isHidden && !mobileMenuOpen}
+  class:header-at-top={isAtTop}
 >
-  <div class="header-container mx-auto px-4 md:px-6 pt-4">
-    <nav class="floating-nav" class:nav-scrolled={isPastTop}>
+  <div class="header-container mx-auto px-4 md:px-6" class:pt-4={!isAtTop} class:pt-0={isAtTop}>
+    <nav 
+      class="floating-nav" 
+      class:nav-at-top={isAtTop}
+      class:nav-compact={isCompact && !isAtTop}
+      class:nav-scrolled={!isAtTop}
+    >
       <a href="/" class="flex items-center flex-shrink-0" on:click={closeMenu}>
         {#if $theme === 'dark'}
           <img src="/logo-white.png" alt="Righello" class="h-7 md:h-8" />
@@ -220,6 +238,11 @@
 <style>
   .header-container {
     max-width: 1200px;
+    transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .header-at-top .header-container {
+    padding-top: 0;
   }
   
   .floating-nav {
@@ -291,6 +314,46 @@
     }
   }
   
+  /* At top of page: transparent, classic navbar */
+  .nav-at-top {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 1rem 1.25rem;
+  }
+  
+  .nav-at-top::before,
+  .nav-at-top::after {
+    display: none;
+  }
+  
+  /* Compact mode when scrolling down */
+  .nav-compact {
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav-compact .nav-link {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+  
+  .nav-compact .cta-button {
+    padding: 0.375rem 1rem;
+    font-size: 0.8125rem;
+  }
+  
+  .nav-compact img {
+    height: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .nav-compact img {
+      height: 1.625rem;
+    }
+  }
+  
   .nav-scrolled {
     background: 
       linear-gradient(135deg, rgba(20, 20, 25, 0.9) 0%, rgba(15, 15, 20, 0.85) 50%, rgba(20, 20, 25, 0.9) 100%);
@@ -346,6 +409,11 @@
       rgba(255, 255, 255, 0.95) 80%,
       transparent 100%
     );
+  }
+  
+  :global([data-theme="light"]) .nav-at-top {
+    background: transparent;
+    box-shadow: none;
   }
   
   :global([data-theme="light"]) .nav-scrolled {
@@ -668,19 +736,19 @@
   
   .burger__bar {
     fill: currentColor;
-    transform-origin: center center;
+    /* Fix SVG rotation: transform-box ensures transform-origin works correctly */
+    transform-box: fill-box;
+    transform-origin: center;
     transition:
       transform 280ms cubic-bezier(.2,.9,.2,1),
       opacity 180ms ease;
     will-change: transform, opacity;
   }
   
-  .burger__top {
-    transform-origin: center center;
-  }
-  
-  .burger__bot {
-    transform-origin: center center;
+  /* Middle bar collapses toward left */
+  .burger__mid {
+    transform-box: fill-box;
+    transform-origin: left center;
   }
   
   .burger.is-open .burger__top {
