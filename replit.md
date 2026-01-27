@@ -210,7 +210,27 @@ Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, Barcolana, Ippodromo Mer
 
 ### ScrollFloat Effect (27 Gennaio 2026)
 - **Character-by-character animation**: I testi delle slide nello scrollytelling si animano carattere per carattere
-- **Effetto elastico**: Ogni carattere parte da opacity 0, yPercent 120, scaleY 2.3, scaleX 0.7 e torna alla posizione normale con easing "back.out"
-- **Stagger sincronizzato**: Titoli con stagger 0.02s, descrizioni con stagger 0.008s, sincronizzati con la GSAP timeline
-- **DOM queries ottimizzate**: Uso di querySelectorAll invece di binding reattivi per migliore compatibilità Svelte
-- **ScrollFloat.svelte**: Componente riutilizzabile in `src/lib/components/ScrollFloat.svelte` per altre sezioni
+- **Effetto elastico**: Ogni carattere parte da opacity 0, yPercent 120, scaleY 2.3, scaleX 0.7 e torna alla posizione normale con easing "back.out(3)"
+- **Stagger potenziato**: Titoli con stagger 0.035s, descrizioni con stagger 0.012s per effetto più visibile
+- **CSS Initial State**: Caratteri nascosti via CSS come fallback prima che GSAP si carichi
+- **ScrollFloat.svelte**: Componente riutilizzabile in `src/lib/components/ScrollFloat.svelte`
+
+### LogoCarousel & GradualBlur (27 Gennaio 2026)
+- **LogoCarousel.svelte**: Nuovo carousel clienti con requestAnimationFrame a 60fps, loghi cliccabili con link ai progetti
+- **GradualBlur.svelte**: Componente per bordi sfumati premium con backdrop-filter e gradient masks
+- **Pause on hover**: Il carousel si ferma al passaggio del mouse
+- **Scale effect**: I loghi si ingrandiscono al hover (1.15x)
+
+### AnimatedVideoTestimonials Improvements (27 Gennaio 2026)
+- **Autoplay su visibilità**: IntersectionObserver con threshold 50% per autoplay quando visibile
+- **Loop automatico**: Video in loop continuo quando nella viewport
+- **Preview frame**: Poster e preload="metadata" per mostrare anteprima durante caricamento
+- **Mobile ottimizzato**: Avatar/nome/qualifica nascosti su mobile (già visibili nel reel) per dare più spazio alla navigazione
+
+### LanyardBadge Component (27 Gennaio 2026)
+- **Badge 3D interattivo**: Componente ispirato a Aceternity con effetto lanyard per pagina Chi Siamo
+- **Spring physics**: Animazioni di oscillazione con tweened Svelte e damping
+- **Drag & Drop**: Badge trascinabile con il mouse, ritorna in posizione con animazione
+- **Effetto shine**: Highlight al passaggio del mouse
+- **Dual theme**: Supporto dark/light mode con stili adattivi
+- **Logo Righello**: Mostra il logo, titolo e subtitle "Growth Agency"

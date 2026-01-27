@@ -5,6 +5,7 @@
   import Highlight from '$lib/components/Highlight.svelte';
   import TechWord from '$lib/components/TechWord.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import LanyardBadge from '$lib/components/LanyardBadge.svelte';
   
   const team = [
     {
@@ -41,27 +42,39 @@
   <meta name="description" content="Siamo un team dedicato e dinamico di professionisti, uniti dalla passione per l'innovazione e l'eccellenza nel settore digitale." />
 </svelte:head>
 
-<section class="pt-28 pb-16 md:pt-36 md:pb-20">
+<section class="pt-28 pb-8 md:pt-36 md:pb-12">
   <div class="section-container">
-    <div class="max-w-4xl">
-      <ScrollReveal animation="fade-up">
-        <h1 class="heading-xl mb-8 uppercase">Chi siamo</h1>
-      </ScrollReveal>
-      <ScrollReveal animation="fade-up" delay={100}>
-        <p class="text-xl mb-8" style="color: var(--text-secondary);">
-          Siamo un team dedicato e dinamico di quattro professionisti, uniti dalla passione per l'<TechWord>innovazione</TechWord> e l'eccellenza nel settore digitale.
-        </p>
-      </ScrollReveal>
-      <ScrollReveal animation="fade-up" delay={200}>
-        <p class="text-xl mb-8" style="color: var(--text-secondary);">
-          Il nostro percorso è caratterizzato da un impegno costante verso la crescita e l'apprendimento. La nostra missione è quella di offrire soluzioni <TechWord highlight>creative</TechWord> e tecnologicamente avanzate, guidati da un approccio olistico che fonde competenza e inventiva.
-        </p>
-      </ScrollReveal>
-      <ScrollReveal animation="fade-up" delay={300}>
-        <p class="text-xl" style="color: var(--text-secondary);">
-          La nostra ambizione è quella di trasformare ogni sfida in un'opportunità, spingendo i confini del possibile per creare <TechWord>esperienze digitali</TechWord> indimenticabili.
-        </p>
-      </ScrollReveal>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+      <div class="max-w-xl order-2 lg:order-1">
+        <ScrollReveal animation="fade-up">
+          <h1 class="heading-xl mb-8 uppercase">Chi siamo</h1>
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <p class="text-xl mb-8" style="color: var(--text-secondary);">
+            Siamo un team dedicato e dinamico di quattro professionisti, uniti dalla passione per l'<TechWord>innovazione</TechWord> e l'eccellenza nel settore digitale.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={200}>
+          <p class="text-xl mb-8" style="color: var(--text-secondary);">
+            Il nostro percorso è caratterizzato da un impegno costante verso la crescita e l'apprendimento. La nostra missione è quella di offrire soluzioni <TechWord highlight>creative</TechWord> e tecnologicamente avanzate, guidati da un approccio olistico che fonde competenza e inventiva.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={300}>
+          <p class="text-xl" style="color: var(--text-secondary);">
+            La nostra ambizione è quella di trasformare ogni sfida in un'opportunità, spingendo i confini del possibile per creare <TechWord>esperienze digitali</TechWord> indimenticabili.
+          </p>
+        </ScrollReveal>
+      </div>
+      
+      <div class="order-1 lg:order-2 flex justify-center">
+        <ScrollReveal animation="scale" delay={200}>
+          <LanyardBadge 
+            logoSrc="/logo-white.png"
+            title="Righello"
+            subtitle="Growth Agency"
+          />
+        </ScrollReveal>
+      </div>
     </div>
   </div>
 </section>
