@@ -42,7 +42,7 @@
   <meta name="description" content="Siamo un team dedicato e dinamico di professionisti, uniti dalla passione per l'innovazione e l'eccellenza nel settore digitale." />
 </svelte:head>
 
-<section class="pt-28 pb-8 md:pt-36 md:pb-12">
+<section class="pt-32 pb-16 md:pt-40 md:pb-24">
   <div class="section-container">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
       <div class="max-w-xl order-2 lg:order-1">

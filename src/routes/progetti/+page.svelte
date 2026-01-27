@@ -17,7 +17,7 @@
   <meta name="description" content="Scopri i progetti realizzati da Righello Creative Lab." />
 </svelte:head>
 
-<section class="pt-28 pb-16 md:pt-36 md:pb-20">
+<section class="pt-32 pb-20 md:pt-40 md:pb-24">
   <div class="section-container">
     <ScrollReveal>
       <h1 class="heading-xl mb-6 uppercase">I nostri progetti</h1>
