@@ -16,60 +16,70 @@
   
   let container: HTMLElement;
   let activeIndex = 0;
-  let ctx: any;
+  let scrollHandler: (() => void) | null = null;
   
   onMount(() => {
     if (!browser || typeof window === 'undefined') return;
     
-    import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
-      gsap.registerPlugin(ScrollTrigger);
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    
+    function calculateActiveIndex() {
+      const items = container.querySelectorAll('.content-item');
+      if (items.length === 0) return;
       
-      const mediaQuery = window.matchMedia('(min-width: 1024px)');
+      const viewportCenter = window.innerHeight / 2;
+      let closestIndex = 0;
+      let closestDistance = Infinity;
       
-      function setupScrollTriggers() {
-        if (ctx) ctx.revert();
+      items.forEach((item, i) => {
+        const rect = item.getBoundingClientRect();
+        const itemCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(itemCenter - viewportCenter);
         
-        if (!mediaQuery.matches) {
-          return;
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = i;
         }
-        
-        ctx = gsap.context(() => {
-          const contentColumn = container.querySelector('.content-column');
-          const items = container.querySelectorAll('.content-item');
-          const totalItems = items.length;
-          
-          if (!contentColumn || totalItems === 0) return;
-          
-          ScrollTrigger.create({
-            trigger: contentColumn,
-            start: 'top 50%',
-            end: 'bottom 50%',
-            scrub: true,
-            onUpdate: (self) => {
-              const progress = self.progress;
-              const newIndex = Math.min(
-                totalItems - 1,
-                Math.floor(progress * totalItems)
-              );
-              if (newIndex !== activeIndex) {
-                activeIndex = newIndex;
-              }
-            }
-          });
-        }, container);
+      });
+      
+      if (closestIndex !== activeIndex) {
+        activeIndex = closestIndex;
+      }
+    }
+    
+    function setupScrollHandler() {
+      if (scrollHandler) {
+        window.removeEventListener('scroll', scrollHandler);
+        scrollHandler = null;
       }
       
-      setupScrollTriggers();
-      mediaQuery.addEventListener('change', setupScrollTriggers);
+      if (!mediaQuery.matches) {
+        return;
+      }
       
-      return () => {
-        mediaQuery.removeEventListener('change', setupScrollTriggers);
+      scrollHandler = () => {
+        requestAnimationFrame(calculateActiveIndex);
       };
-    });
+      
+      window.addEventListener('scroll', scrollHandler, { passive: true });
+      calculateActiveIndex();
+    }
+    
+    setupScrollHandler();
+    mediaQuery.addEventListener('change', setupScrollHandler);
+    
+    return () => {
+      mediaQuery.removeEventListener('change', setupScrollHandler);
+      if (scrollHandler) {
+        window.removeEventListener('scroll', scrollHandler);
+      }
+    };
   });
   
   onDestroy(() => {
-    if (ctx) ctx.revert();
+    if (scrollHandler) {
+      window.removeEventListener('scroll', scrollHandler);
+    }
   });
   
   const defaultColors = [
@@ -309,13 +319,19 @@
       align-items: center;
       padding: 2rem;
       background: transparent;
-      border: none;
-      opacity: 0.4;
-      transition: opacity 0.5s ease;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+      opacity: 0.35;
+      transform: scale(0.96);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .content-item.active {
       opacity: 1;
+      transform: scale(1);
+      background: rgba(214, 72, 126, 0.08);
+      border-color: rgba(214, 72, 126, 0.3);
+      box-shadow: 0 0 30px rgba(214, 72, 126, 0.15);
     }
   }
   
