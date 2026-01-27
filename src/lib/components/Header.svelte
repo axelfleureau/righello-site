@@ -2,6 +2,7 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import ThemeToggle from './ThemeToggle.svelte';
+  import LiquidGlassNavbar from './LiquidGlassNavbar.svelte';
   import { theme } from '$lib/stores/theme';
   import { departments } from '$lib/data/projects';
   
@@ -82,7 +83,10 @@
       class:nav-compact={isCompact && !isAtTop}
       class:nav-scrolled={!isAtTop}
     >
-      <a href="/" class="flex items-center flex-shrink-0" on:click={closeMenu}>
+      <!-- 3D Liquid Glass Background -->
+      <LiquidGlassNavbar {isAtTop} {isCompact} />
+      
+      <a href="/" class="flex items-center flex-shrink-0 relative z-10" on:click={closeMenu}>
         {#if $theme === 'dark'}
           <img src="/logo-white.png" alt="Righello" class="h-7 md:h-8" />
         {:else}
@@ -90,7 +94,7 @@
         {/if}
       </a>
       
-      <div class="hidden lg:flex items-center gap-1">
+      <div class="hidden lg:flex items-center gap-1 relative z-10">
         {#each navLinks as link}
           {#if link.hasDropdown}
             <div 
@@ -146,7 +150,7 @@
         {/each}
       </div>
       
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 relative z-10">
         <ThemeToggle />
         <a href="/contatti" class="hidden sm:flex cta-button">
           Parliamone
