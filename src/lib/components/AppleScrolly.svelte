@@ -7,21 +7,34 @@
   
   export let credibilityBadges: { icon: string; label: string }[] = [];
   
+  const heroSlide = {
+    subtitle: 'Growth Agency',
+    title: 'La tua crescita,',
+    titleGradient: 'inquadrata alla perfezione.',
+    description: 'Marketing, advertising e sviluppo digitale con un approccio data-driven. Ogni euro investito, ogni conversione tracciata.'
+  };
+  
   const slides = [
     {
+      step: '01',
       title: 'Content che converte',
       description: 'Reel, stories e campagne UGC con risultati misurabili. Ogni contenuto è progettato per trasformare follower in clienti.',
-      position: 'left'
+      position: 'left',
+      icon: '🎬'
     },
     {
+      step: '02',
       title: 'Advertising di precisione',
       description: 'Meta Ads, Google Ads, TikTok Ads. Ogni euro investito è tracciato, ottimizzato e moltiplicato per massimizzare il ROAS.',
-      position: 'right'
+      position: 'right',
+      icon: '📊'
     },
     {
+      step: '03',
       title: 'Digital Experience',
       description: 'Siti web, e-commerce e web app che convertono. Design system, automazioni AI e integrazioni per scalare.',
-      position: 'left'
+      position: 'left',
+      icon: '💻'
     }
   ];
   
@@ -31,7 +44,24 @@
   let slideRefs: HTMLElement[] = [];
   let ctx: any = null;
   let currentSlide = -1;
+  let activeStep = 0;
   let slideAnimated: boolean[] = [false, false, false];
+  let scrollTriggerInstance: any = null;
+  
+  function scrollToStep(stepIndex: number) {
+    if (!scrollTriggerInstance || !container) return;
+    
+    const totalSlides = slides.length + 1;
+    const targetProgress = stepIndex / (totalSlides - 1);
+    const scrollStart = scrollTriggerInstance.start;
+    const scrollEnd = scrollTriggerInstance.end;
+    const targetScroll = scrollStart + (scrollEnd - scrollStart) * targetProgress;
+    
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth'
+    });
+  }
   
   onMount(async () => {
     if (!browser) return;
@@ -52,7 +82,7 @@
             gsap.set(slideEl, { opacity: 0, x: 0 });
           });
           
-          ScrollTrigger.create({
+          scrollTriggerInstance = ScrollTrigger.create({
             trigger: container,
             start: 'top top',
             end: () => `+=${scrollDistance}vh`,
@@ -66,7 +96,10 @@
             },
             onUpdate: (self) => {
               const progress = self.progress;
-              const slideIndex = Math.floor(progress * totalSlides) - 1;
+              const slideIndex = Math.floor(progress * totalSlides);
+              
+              // Update active step for step indicator
+              activeStep = Math.max(0, Math.min(slideIndex, slides.length));
               
               if (progress < 0.2) {
                 const fadeProgress = progress / 0.2;
@@ -167,20 +200,48 @@
   />
   <div class="absolute inset-0 noise-overlay opacity-20"></div>
   
+  <!-- Step Progress Indicator (Desktop only) -->
+  <div class="step-indicator">
+    <div class="step-line">
+      <div class="step-progress" style="height: {(activeStep / slides.length) * 100}%"></div>
+    </div>
+    <div class="step-dots">
+      <button 
+        class="step-dot" 
+        class:active={activeStep === 0}
+        aria-label="Intro"
+        aria-current={activeStep === 0 ? 'step' : undefined}
+        on:click={() => scrollToStep(0)}
+      >
+        <span class="step-label">Intro</span>
+      </button>
+      {#each slides as slide, i}
+        <button 
+          class="step-dot" 
+          class:active={activeStep === i + 1}
+          aria-label={slide.title}
+          aria-current={activeStep === i + 1 ? 'step' : undefined}
+          on:click={() => scrollToStep(i + 1)}
+        >
+          <span class="step-label">{slide.step}</span>
+        </button>
+      {/each}
+    </div>
+  </div>
+  
   <div class="scrolly-content">
     <div bind:this={heroContent} class="hero-text">
       <p class="text-sm md:text-base uppercase tracking-[0.3em] text-righello-pink mb-6 font-medium">
-        Growth Agency
+        {heroSlide.subtitle}
       </p>
       
       <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 leading-[1.1]">
-        <span class="block text-[var(--text-primary)]">La tua crescita,</span>
-        <span class="gradient-text">inquadrata alla perfezione.</span>
+        <span class="block text-[var(--text-primary)]">{heroSlide.title}</span>
+        <span class="gradient-text">{heroSlide.titleGradient}</span>
       </h1>
       
       <p class="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] mb-5 md:mb-8 max-w-xl leading-relaxed">
-        Marketing, advertising e sviluppo digitale con un approccio data-driven. 
-        Ogni euro investito, ogni conversione tracciata.
+        {heroSlide.description}
       </p>
       
       <div class="flex flex-wrap gap-3 md:gap-4 mb-6 md:mb-10">
@@ -231,6 +292,10 @@
         class:slide-left={slide.position === 'left'}
         class:slide-right={slide.position === 'right'}
       >
+        <div class="slide-step-badge">
+          <span class="slide-step-icon">{slide.icon}</span>
+          <span class="slide-step-number">Step {slide.step}</span>
+        </div>
         <h2 class="slide-title overflow-hidden">
           {#each slide.title.split('') as char}
             <span class="title-char">{char === ' ' ? '\u00A0' : char}</span>
@@ -249,6 +314,7 @@
     <div class="scroll-indicator">
       <div class="scroll-dot"></div>
     </div>
+    <span class="scroll-text">Scorri per esplorare</span>
   </div>
 </section>
 
@@ -456,6 +522,136 @@
   .desc-char {
     display: inline-block;
     will-change: opacity, transform;
+  }
+  
+  /* Step Progress Indicator */
+  .step-indicator {
+    display: none;
+    position: absolute;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  
+  @media (min-width: 1024px) {
+    .step-indicator {
+      display: flex;
+    }
+  }
+  
+  .step-line {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1px;
+  }
+  
+  .step-progress {
+    width: 100%;
+    background: linear-gradient(to bottom, #D6487E, #06B6D4);
+    border-radius: 1px;
+    transition: height 0.3s ease;
+  }
+  
+  .step-dots {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .step-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .step-dot.active {
+    background: #D6487E;
+    border-color: #D6487E;
+    box-shadow: 0 0 20px rgba(214, 72, 126, 0.5);
+  }
+  
+  .step-label {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .step-dot:hover .step-label,
+  .step-dot.active .step-label {
+    opacity: 1;
+  }
+  
+  .step-dot.active .step-label {
+    color: #D6487E;
+  }
+  
+  /* Slide Step Badge */
+  .slide-step-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(214, 72, 126, 0.15);
+    border: 1px solid rgba(214, 72, 126, 0.3);
+    border-radius: 9999px;
+    width: fit-content;
+  }
+  
+  .slide-step-icon {
+    font-size: 1rem;
+  }
+  
+  .slide-step-number {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #D6487E;
+  }
+  
+  /* Scroll Hint Text */
+  .scroll-text {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-secondary);
+    opacity: 0.7;
+  }
+  
+  :global([data-theme="light"]) .step-line {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
+  :global([data-theme="light"]) .step-dot {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  :global([data-theme="light"]) .slide-step-badge {
+    background: rgba(214, 72, 126, 0.1);
   }
   
   </style>

@@ -30,6 +30,7 @@
   let touchStartX = 0;
   let touchEndX = 0;
   const SWIPE_THRESHOLD = 50;
+  let reducedMotion = false;
   
   function handleTouchStart(e: TouchEvent) {
     touchStartX = e.touches[0].clientX;
@@ -76,7 +77,7 @@
   }
   
   function startAutoplay() {
-    if (autoplay && !intervalId && !isInView) {
+    if (autoplay && !intervalId && isInView && !reducedMotion) {
       intervalId = setInterval(next, interval);
     }
   }
@@ -95,7 +96,7 @@
   
   function handleMouseLeave() {
     isHovering = false;
-    if (!isInView) {
+    if (isInView) {
       startAutoplay();
     }
   }
@@ -113,7 +114,7 @@
     }
     lightboxOpen = false;
     document.body.style.overflow = '';
-    if (!isInView) {
+    if (isInView) {
       startAutoplay();
     }
   }
@@ -130,6 +131,8 @@
   
   onMount(() => {
     if (browser) {
+      reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
       window.addEventListener('keydown', handleKeydown);
       
       observer = new IntersectionObserver(
@@ -137,12 +140,12 @@
           entries.forEach((entry) => {
             isInView = entry.isIntersecting;
             if (isInView) {
-              stopAutoplay();
-              if (videoElement) {
+              startAutoplay();
+              if (videoElement && !reducedMotion) {
                 videoElement.play().catch(() => {});
               }
             } else if (!isHovering && !lightboxOpen) {
-              startAutoplay();
+              stopAutoplay();
               if (videoElement) {
                 videoElement.pause();
               }
@@ -398,7 +401,7 @@
     .testimonials-container {
       flex-direction: row;
       align-items: center;
-      gap: 4rem;
+      gap: 6rem;
     }
   }
   
@@ -701,7 +704,14 @@
   .navigation {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .navigation {
+      justify-content: flex-start;
+    }
   }
   
   .nav-button {
