@@ -105,7 +105,7 @@ Le variabili CSS per spaziature consistenti sono definite in `src/styles/index.c
 - **PhoneMockup**: iPhone 3D mockup con spring physics, tilt hover effects, video da Firebase Storage
 - **AppleScrolly**: Effetto scrollytelling stile Apple con snap magnetico forte (280vh per slide, scrub 2.5, snap power4.inOut). Hero con iPhone che si pinna durante lo scroll con frasi ad impatto sincronizzate
 - **AppleCardsCarousel**: Carousel orizzontale stile Apple con drag-to-scroll, hover-to-play video, effetti 3D e lightbox fullscreen
-- **Header Floating**: Navbar floating pill-shaped con glassmorphism, dropdown hover per Servizi (mostra 3 dipartimenti con icone), CTA "Parliamone", theme toggle
+- **Header Floating Retrattile**: Navbar pill-shaped con glassmorphism e comportamento dinamico: trasparente e classica in cima, si compatta scrollando giù, si riespande scrollando su, si nasconde dopo scroll significativo. Hamburger X animation con transform-box: fill-box per rotazione SVG corretta
 - **RevealOnScroll**: Animazioni scroll-triggered con Svelte native (fly, fade, scale)
 - **GlowCard**: Card con effetto glow che segue il cursore (rosa/ciano gradient)
 - **InfiniteMarquee**: Scroll infinito orizzontale per loghi clienti
@@ -198,6 +198,12 @@ Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, Barcolana, Ippodromo Mer
 ### Ottimizzazioni Spacing & Animazioni (26 Gennaio 2026 - Notte)
 - **SectionDivider ridotto**: Altezza default da 150px/40px a 80px/24px per transizioni più fluide tra sezioni
 - **Navbar blur ottimizzato**: Ridotto da 40px a 24px per effetto più sottile e performante
+
 - **FAQ/TestimonialsParallax**: Padding standardizzato con section-padding CSS variables (sm/md/lg)
 - **AppleCardsCarousel video preview**: Aggiunto preload="auto" e currentTime=0.1 per mostrare anteprime video
 - **StickyScrollReveal**: Trigger points regolati per migliore sincronizzazione pannello visivo/testo
+
+### Navbar Retrattile (27 Gennaio 2026)
+- **Tre stati navbar**: at-top (trasparente, classica), scrolling-down (compatta), scrolling-up (espansa con glassmorphism)
+- **Scroll direction detection**: Delta threshold per rilevare direzione scroll con passive listener
+- **Hamburger X fix**: Aggiunto transform-box: fill-box per rotazione SVG corretta su tutti i browser
