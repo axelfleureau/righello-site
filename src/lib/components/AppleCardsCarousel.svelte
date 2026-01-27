@@ -60,7 +60,7 @@
   function handleVideoLeave(video: HTMLVideoElement | null) {
     if (video) {
       video.pause();
-      video.currentTime = 0;
+      video.currentTime = 0.1;
     }
     if (video === activeVideo) {
       activeVideo = null;
@@ -329,6 +329,11 @@
   
   video.card-media {
     background: var(--bg-tertiary);
+    object-fit: cover;
+  }
+  
+  video.card-media:not([src=""]) {
+    opacity: 1;
   }
   
   .card-content:hover .card-media {
