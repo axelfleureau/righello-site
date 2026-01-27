@@ -27,6 +27,30 @@
   let containerEl: HTMLElement;
   let isInView = false;
   let observer: IntersectionObserver | null = null;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const SWIPE_THRESHOLD = 50;
+  
+  function handleTouchStart(e: TouchEvent) {
+    touchStartX = e.touches[0].clientX;
+  }
+  
+  function handleTouchMove(e: TouchEvent) {
+    touchEndX = e.touches[0].clientX;
+  }
+  
+  function handleTouchEnd() {
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > SWIPE_THRESHOLD) {
+      if (diff > 0) {
+        next();
+      } else {
+        prev();
+      }
+    }
+    touchStartX = 0;
+    touchEndX = 0;
+  }
   
   $: activeTestimonial = testimonials[activeIndex];
   
@@ -151,6 +175,9 @@
       class="video-showcase"
       on:mouseenter={handleMouseEnter}
       on:mouseleave={handleMouseLeave}
+      on:touchstart={handleTouchStart}
+      on:touchmove={handleTouchMove}
+      on:touchend={handleTouchEnd}
       role="region"
       aria-label="Video testimonial"
     >

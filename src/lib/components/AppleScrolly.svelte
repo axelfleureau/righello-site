@@ -31,15 +31,7 @@
   let slideRefs: HTMLElement[] = [];
   let ctx: any = null;
   let currentSlide = -1;
-  let autoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
-  const AUTO_ADVANCE_DELAY = 4500;
-  
-  function clearAutoAdvance() {
-    if (autoAdvanceTimer) {
-      clearTimeout(autoAdvanceTimer);
-      autoAdvanceTimer = null;
-    }
-  }
+  let slideAnimated: boolean[] = [false, false, false];
   
   onMount(async () => {
     if (!browser) return;
@@ -53,159 +45,108 @@
         "(min-width: 1024px)": function() {
           const totalSlides = slides.length + 1;
           const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-          const scrollDistance = slides.length * 280;
+          const scrollDistance = slides.length * 200;
           
-          slideRefs.forEach((slideEl, i) => {
+          slideRefs.forEach((slideEl) => {
             if (!slideEl) return;
-            const titleChars = slideEl.querySelectorAll('.title-char');
-            const descChars = slideEl.querySelectorAll('.desc-char');
-            
-            gsap.set(titleChars, {
-              opacity: 0,
-              yPercent: 120,
-              scaleY: 2.3,
-              scaleX: 0.7,
-              transformOrigin: '50% 0%'
-            });
-            
-            gsap.set(descChars, {
-              opacity: 0,
-              yPercent: 80,
-              scaleY: 1.8,
-              scaleX: 0.8,
-              transformOrigin: '50% 0%'
-            });
-            
-            gsap.set(slideEl, { opacity: 0 });
+            gsap.set(slideEl, { opacity: 0, x: 0 });
           });
           
-          const mainTrigger = ScrollTrigger.create({
+          ScrollTrigger.create({
             trigger: container,
             start: 'top top',
             end: () => `+=${scrollDistance}vh`,
             pin: true,
-            scrub: 0.5,
+            scrub: 1,
             snap: {
               snapTo: snapPoints,
-              duration: { min: 0.6, max: 1.2 },
-              delay: 0.1,
-              ease: 'power3.inOut',
-              onComplete: (self: any) => {
-                const progress = self.progress;
-                const slideIndex = Math.round(progress * (totalSlides - 1)) - 1;
-                
-                if (slideIndex !== currentSlide && slideIndex >= 0 && slideIndex < slides.length) {
-                  currentSlide = slideIndex;
-                  animateSlideIn(slideIndex);
-                  
-                  clearAutoAdvance();
-                  if (slideIndex < slides.length - 1) {
-                    autoAdvanceTimer = setTimeout(() => {
-                      const targetProgress = (slideIndex + 2) / (totalSlides - 1);
-                      gsap.to(window, {
-                        scrollTo: { y: container.offsetTop + (scrollDistance * window.innerHeight / 100 * targetProgress) },
-                        duration: 1.2,
-                        ease: 'power2.inOut'
-                      });
-                    }, AUTO_ADVANCE_DELAY);
-                  }
-                } else if (slideIndex === -1 && currentSlide !== -1) {
-                  currentSlide = -1;
-                  clearAutoAdvance();
-                }
-              }
+              duration: { min: 0.4, max: 0.8 },
+              delay: 0.05,
+              ease: 'power2.inOut'
             },
-            onUpdate: (self: any) => {
+            onUpdate: (self) => {
               const progress = self.progress;
+              const slideIndex = Math.floor(progress * totalSlides) - 1;
               
-              if (progress < 0.15) {
-                gsap.to(heroContent, { opacity: 1 - (progress / 0.15), y: -50 * (progress / 0.15), duration: 0.1 });
+              if (progress < 0.2) {
+                const fadeProgress = progress / 0.2;
+                gsap.set(heroContent, { opacity: 1 - fadeProgress, y: -40 * fadeProgress });
               } else {
-                gsap.set(heroContent, { opacity: 0, y: -50 });
+                gsap.set(heroContent, { opacity: 0, y: -40 });
               }
               
-              if (progress > 0.05 && progress < 0.25) {
-                const phoneProgress = (progress - 0.05) / 0.2;
+              if (progress > 0.1 && progress < 0.35) {
+                const phoneProgress = (progress - 0.1) / 0.25;
                 const vw = window.innerWidth;
-                const targetX = -(vw / 2 - 160 - (vw * 0.08));
-                gsap.to(phoneWrapper, { 
-                  x: targetX * phoneProgress, 
-                  scale: 1 - (0.15 * phoneProgress),
-                  duration: 0.1 
+                const targetX = -(vw / 2 - 180 - (vw * 0.08));
+                gsap.set(phoneWrapper, { 
+                  x: targetX * Math.min(1, phoneProgress), 
+                  scale: 1 - (0.12 * Math.min(1, phoneProgress))
                 });
               }
+              
+              slideRefs.forEach((slideEl, i) => {
+                if (!slideEl) return;
+                const slideStart = (i + 1) / totalSlides;
+                const slideEnd = (i + 2) / totalSlides;
+                const slideMid = (slideStart + slideEnd) / 2;
+                
+                if (progress >= slideStart - 0.05 && progress < slideEnd + 0.05) {
+                  let slideOpacity = 1;
+                  if (progress < slideStart + 0.1) {
+                    slideOpacity = (progress - (slideStart - 0.05)) / 0.15;
+                  } else if (progress > slideEnd - 0.1) {
+                    slideOpacity = 1 - ((progress - (slideEnd - 0.1)) / 0.15);
+                  }
+                  gsap.set(slideEl, { opacity: Math.max(0, Math.min(1, slideOpacity)) });
+                  
+                  if (i !== currentSlide && progress >= slideStart && progress < slideEnd) {
+                    currentSlide = i;
+                    if (!slideAnimated[i]) {
+                      slideAnimated[i] = true;
+                      animateSlideText(slideEl);
+                    }
+                  }
+                } else {
+                  gsap.set(slideEl, { opacity: 0 });
+                }
+              });
             }
           });
           
-          function animateSlideIn(index: number) {
-            slideRefs.forEach((el, i) => {
-              if (i !== index && el) {
-                gsap.to(el, { opacity: 0, duration: 0.3 });
-              }
-            });
-            
-            const slideEl = slideRefs[index];
-            if (!slideEl) return;
-            
-            const slide = slides[index];
+          function animateSlideText(slideEl: HTMLElement) {
             const titleChars = slideEl.querySelectorAll('.title-char');
             const descChars = slideEl.querySelectorAll('.desc-char');
             
-            gsap.set(titleChars, {
-              opacity: 0,
-              yPercent: 120,
-              scaleY: 2.3,
-              scaleX: 0.7
-            });
+            gsap.fromTo(titleChars, 
+              { opacity: 0, y: 30 },
+              { 
+                opacity: 1, 
+                y: 0, 
+                stagger: 0.02,
+                duration: 0.4,
+                ease: 'power2.out'
+              }
+            );
             
-            gsap.set(descChars, {
-              opacity: 0,
-              yPercent: 80,
-              scaleY: 1.8,
-              scaleX: 0.8
-            });
-            
-            const tl = gsap.timeline();
-            
-            tl.to(slideEl, {
-              opacity: 1,
-              x: 0,
-              duration: 0.4,
-              ease: 'power2.out'
-            });
-            
-            tl.to(titleChars, {
-              opacity: 1,
-              yPercent: 0,
-              scaleY: 1,
-              scaleX: 1,
-              stagger: 0.04,
-              ease: 'back.out(2.5)',
-              duration: 0.6
-            }, 0.1);
-            
-            tl.to(descChars, {
-              opacity: 1,
-              yPercent: 0,
-              scaleY: 1,
-              scaleX: 1,
-              stagger: 0.015,
-              ease: 'back.out(2)',
-              duration: 0.5
-            }, 0.5);
+            gsap.fromTo(descChars, 
+              { opacity: 0, y: 20 },
+              { 
+                opacity: 1, 
+                y: 0, 
+                stagger: 0.008,
+                duration: 0.3,
+                ease: 'power2.out',
+                delay: 0.2
+              }
+            );
           }
-          
-          (window as any).gsapScrollToPlugin = true;
-          import('gsap/ScrollToPlugin').then((module) => {
-            gsap.registerPlugin(module.ScrollToPlugin);
-          });
         }
       });
     }, container);
   });
   
   onDestroy(() => {
-    clearAutoAdvance();
     ctx?.revert();
   });
 </script>
@@ -515,9 +456,6 @@
   .desc-char {
     display: inline-block;
     will-change: opacity, transform;
-    opacity: 0;
-    transform: translateY(120%) scaleY(2.3) scaleX(0.7);
-    transform-origin: 50% 0%;
   }
   
   </style>
