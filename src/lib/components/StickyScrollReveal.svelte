@@ -34,16 +34,27 @@
         }
         
         ctx = gsap.context(() => {
+          const contentColumn = container.querySelector('.content-column');
           const items = container.querySelectorAll('.content-item');
+          const totalItems = items.length;
           
-          items.forEach((item, i) => {
-            ScrollTrigger.create({
-              trigger: item,
-              start: 'center center',
-              end: 'center center',
-              onEnter: () => { activeIndex = i; },
-              onEnterBack: () => { activeIndex = i; },
-            });
+          if (!contentColumn || totalItems === 0) return;
+          
+          ScrollTrigger.create({
+            trigger: contentColumn,
+            start: 'top 50%',
+            end: 'bottom 50%',
+            scrub: true,
+            onUpdate: (self) => {
+              const progress = self.progress;
+              const newIndex = Math.min(
+                totalItems - 1,
+                Math.floor(progress * totalItems)
+              );
+              if (newIndex !== activeIndex) {
+                activeIndex = newIndex;
+              }
+            }
           });
         }, container);
       }
