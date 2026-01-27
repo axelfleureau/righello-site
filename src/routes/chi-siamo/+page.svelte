@@ -1,7 +1,7 @@
 <script lang="ts">
   import ScrollReveal from '$lib/components/ScrollReveal.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
-  import TiltCard from '$lib/components/TiltCard.svelte';
+  import ProfileCard from '$lib/components/ProfileCard.svelte';
   import Highlight from '$lib/components/Highlight.svelte';
   import TechWord from '$lib/components/TechWord.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
@@ -94,26 +94,17 @@
       </div>
     </ScrollReveal>
     
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+    <div class="flex flex-wrap justify-center gap-6 md:gap-8">
       {#each team as member, i}
         <ScrollReveal animation="fade-up" delay={i * 100}>
-          <TiltCard>
-            <div class="text-center group cursor-pointer">
-              <div class="relative overflow-hidden rounded-2xl aspect-square mb-6">
-                <img 
-                  src={member.image} 
-                  alt={member.name}
-                  class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
-                />
-                <div class="absolute inset-0 bg-righello-pink/0 group-hover:bg-righello-pink/20 transition-colors duration-300"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <p class="text-white text-sm">Scopri di più</p>
-                </div>
-              </div>
-              <h3 class="text-xl font-semibold group-hover:text-righello-pink transition-colors">{member.name}</h3>
-              <p style="color: var(--text-secondary);">{member.role}</p>
-            </div>
-          </TiltCard>
+          <ProfileCard 
+            avatarUrl={member.image}
+            name={member.name}
+            title={member.role}
+            handle={member.name.toLowerCase()}
+            status="Online"
+            behindGlowColor="rgba(214, 72, 126, 0.5)"
+          />
         </ScrollReveal>
       {/each}
     </div>
