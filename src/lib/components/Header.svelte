@@ -333,6 +333,7 @@
   :global([data-theme="light"]) .nav-at-top {
     background: transparent;
     box-shadow: none;
+    border-color: transparent;
   }
   
   :global([data-theme="light"]) .nav-scrolled {
