@@ -1,0 +1,71 @@
+Agisci come un team completo composto da: UX writer senior, strategist (PESO framework), UI/UX designer moderno, art director e front-end designer.
+Obiettivo: trasformare la presentazione “PESO – Dalla reputazione all’influenza” in un sito web di Righello Srl che spieghi il metodo in modo intelligente, scorrevole e convertente.
+Lingua: italiano.
+Tone of voice: chiaro, deciso, contemporaneo, “del tu” (umano, professionale, senza corporate-bullshit). Niente inglese inutile, ma i termini PESO (Paid/Earned/Shared/Owned) restano.
+Stile visivo richiesto: ultra moderno, pulito, forte contrasto, tipografia bold, layout a Bento grid, micro-interazioni, switch/toggle per esplorare contenuti.
+
+INPUT (contenuti da integrare nel sito):
+- PESO: Paid, Earned, Shared, Owned Media.
+- Idea chiave: l’esperienza digitale influenza la decisione d’acquisto (ZMOT). Autorevolezza online = vantaggio competitivo.
+- 4 quadranti:
+  • Paid: massima copertura e targeting, ma percepita come meno credibile.
+  • Earned: menzioni, recensioni, rassegna stampa non pagata.
+  • Shared: social organici, like/commenti/condivisioni/community.
+  • Owned: controllo del messaggio, base SEO, hub contenuti.
+- “Segreto”: integrazione PESO → evitare silos e lavorare per amplificazione incrociata.
+  Esempio: un post LinkedIn (Owned) → diventa Ads (Paid) → viene condiviso (Shared) → viene menzionato (Earned).
+- KPI:
+  • Paid: CTR, CPL
+  • Earned: menzioni, sentiment, qualità editoriali
+  • Shared: engagement, crescita community
+  • Owned: traffico, tempo medio, lead generati
+- Casi studio (riassumere in modo concreto):
+  • Croce del Sud: presenza su più canali, status/community, upselling prodotti gourmet.
+  • MANGIO: ecosistema con app proprietaria (hub), social + paid, PR/ADV; modello multilevel (attività interne + esperienza comunicata).
+  • NOI CLUB: app proprietaria, video hype, whatsapp mirato, vendita spazi; viralità + influencer + campagne.
+  • Cantina Reguta: digitalizzazione processi + contenuti + adv mirate; restyling sito verso portale; focus B&B (annunci, testi, immagini, posizionamento).
+  • La Vie en Rose: posizionamento su canali prenotazione, shooting + descrizioni, calendario eventi; nuovo sito dinamico per ristorante, eventi, matrimoni, prenotazioni.
+- Dati:
+  • 54% utenti usa i social per ispirazione/idee/prodotti-servizi.
+  • 91% aziende usa 3+ piattaforme social → multicanalità = standard minimo.
+- CTA finale “Righello-style”: diretta, umana, con contatti; preferenza “dammi del tu”.
+
+TASK / OUTPUT RICHIESTO:
+1) Proponi una struttura del sito (IA) con sezioni in ordine perfetto per comprensione + conversione:
+   - Hero
+   - Metodo PESO (interattivo)
+   - Integrazione (amplificazione incrociata)
+   - KPI & Misurazione
+   - Contenuti che funzionano (pubblico, UGC, storytelling, visual)
+   - Multicanalità (dato 91%)
+   - Casi studio (bento cards)
+   - CTA/Contatti
+2) Scrivi i testi completi per ogni sezione (H1, H2, paragrafi brevi, bullet, microcopy, CTA).
+   - Mantieni frasi corte, leggibili su mobile.
+   - Inserisci i 2 dati (54% e 91%) come “stat cards” in bento grid.
+   - Inserisci almeno 2 varianti di Hero (una più “strategica”, una più “spinta”).
+3) Progetta il layout con indicazioni di design concrete (non generiche):
+   - Usa Bento grid: card con dimensioni variabili (2x1, 1x1, 2x2).
+   - Usa switch/toggle in almeno 3 punti:
+     A) Switch “PESO” per vedere Paid/Earned/Shared/Owned: cambia contenuto nella card a destra con animazione.
+     B) Switch “Obiettivo” (Awareness / Lead / Vendite) che modifica microcopy e KPI evidenziati.
+     C) Switch “Dammi del tu / Dammi del lei” nella CTA: cambia copy e micro-testo (con tono ironico leggero).
+   - Prevedi micro-interazioni: hover lift, glow soft sull’accent color, reveal on scroll, numeri che si contano (54%, 91%).
+   - Stile: background chiaro (off-white) con sezioni scure alternate, oppure dark con card chiare; accent magenta Righello per parole chiave.
+   - Tipografia: headline ultra-bold, sottotitoli ariosi, righe corte.
+4) Specifica anche componenti UI:
+   - Navbar sticky con CTA “Parliamone”
+   - Sezione PESO con tabs/switch + mini-illustrazione (schema circolare o flow)
+   - Case study cards (bento) con: problema → intervento → risultato → leve PESO usate (chips)
+   - Footer contatti con layout pulito e invito all’azione.
+5) Output finale formattato così:
+   - (A) “Sitemap + ordine sezioni”
+   - (B) “Copy completo” (pronto da incollare)
+   - (C) “UI spec” (bento + switch + componenti + micro-interazioni)
+   - (D) “Checklist di coerenza” (cosa verificare prima di pubblicare)
+
+Nota importante:
+- Non inventare dati numerici oltre a 54% e 91%.
+- Mantieni tutto coerente con il metodo PESO e con l’idea “autorevolezza = vantaggio competitivo”.
+- Scrivi in modo molto fruibile: non deve sembrare una presentazione incollata, ma un’esperienza web moderna.
+Fine.
