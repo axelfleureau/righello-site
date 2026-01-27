@@ -39,8 +39,8 @@
           items.forEach((item, i) => {
             ScrollTrigger.create({
               trigger: item,
-              start: 'top 35%',
-              end: 'bottom 35%',
+              start: 'top 25%',
+              end: 'bottom 25%',
               onEnter: () => { activeIndex = i; },
               onEnterBack: () => { activeIndex = i; },
               onLeave: () => { if (i < content.length - 1) activeIndex = i + 1; },
