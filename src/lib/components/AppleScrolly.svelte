@@ -184,8 +184,7 @@
                   gsap.set(heroContent, { opacity: 0, yPercent: -10 });
                 }
                 
-                // Phone animation using percentage transforms (0.05 to 0.35 progress)
-                // Uses xPercent which is relative to element's own width - no viewport calculations!
+                // Phone animation (0.05 to 0.35 progress)
                 if (progress <= 0.05) {
                   phoneProgress = 0;
                 } else if (progress >= 0.35) {
@@ -194,10 +193,17 @@
                   phoneProgress = (progress - 0.05) / 0.30;
                 }
                 
-                // Apply phone transform using CSS variable - updated via Svelte reactivity
-                // Phone moves from right position (0%) to center (-50% of its container offset)
+                // Phone position: animate 'left' from 75% to 50% of viewport
+                // left: 75% = phone on right side
+                // left: 50% = phone at center
+                // xPercent: -50 = offset by half the phone width to truly center it
+                const leftValue = 75 - (25 * phoneProgress);
+                
                 gsap.set(phoneWrapper, { 
-                  xPercent: -40 * phoneProgress,
+                  left: `${leftValue}%`,
+                  xPercent: -50,
+                  top: '50%',
+                  yPercent: -50,
                   scale: 1 - (0.08 * phoneProgress)
                 });
                 
@@ -511,14 +517,18 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+    --phone-offset: 0;
   }
   
   @media (min-width: 1024px) {
     .phone-area {
-      justify-self: end;
-      padding-right: 5%;
+      /* Position phone absolutely - GSAP controls exact position */
+      position: absolute;
+      /* Initial state: right side of viewport (before GSAP takes over) */
+      left: 75%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
       z-index: 5;
-      /* Transform origin for percentage-based animations */
       transform-origin: center center;
     }
   }
