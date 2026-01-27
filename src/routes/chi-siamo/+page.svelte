@@ -6,6 +6,7 @@
   import TechWord from '$lib/components/TechWord.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import LanyardBadge from '$lib/components/LanyardBadge.svelte';
+  import SectionDivider from '$lib/components/SectionDivider.svelte';
   
   const team = [
     {
@@ -45,9 +46,12 @@
 <section class="pt-32 pb-16 md:pt-40 md:pb-24">
   <div class="section-container">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-      <div class="max-w-xl order-2 lg:order-1">
+      <div class="order-2 lg:order-1">
         <ScrollReveal animation="fade-up">
-          <h1 class="heading-xl mb-8 uppercase">Chi siamo</h1>
+          <div class="section-header">
+            <p class="section-subtitle">Chi siamo</p>
+            <h1 class="section-title mb-8">Il nostro team</h1>
+          </div>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={100}>
           <p class="text-xl mb-8" style="color: var(--text-secondary);">
@@ -79,10 +83,15 @@
   </div>
 </section>
 
-<section class="py-20" style="background-color: var(--bg-secondary);">
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+
+<section class="section-padding" style="background-color: var(--bg-secondary);">
   <div class="section-container">
     <ScrollReveal>
-      <h2 class="heading-lg text-center mb-16 uppercase">Il nostro team</h2>
+      <div class="section-header">
+        <p class="section-subtitle">Il nostro team</p>
+        <h2 class="section-title text-center mb-12">I volti dietro Righello</h2>
+      </div>
     </ScrollReveal>
     
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
@@ -111,8 +120,17 @@
   </div>
 </section>
 
-<section class="py-20">
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
+
+<section class="section-padding">
   <div class="section-container">
+    <ScrollReveal>
+      <div class="section-header">
+        <p class="section-subtitle">I numeri</p>
+        <h2 class="section-title text-center mb-12">Il nostro impatto</h2>
+      </div>
+    </ScrollReveal>
+    
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 text-center">
       {#each stats as stat, i}
         <ScrollReveal animation="scale" delay={i * 100}>
@@ -128,10 +146,14 @@
   </div>
 </section>
 
-<section class="py-20 bg-black text-white">
+<SectionDivider fromColor="var(--bg-primary)" toColor="black" />
+
+<section class="section-padding bg-black text-white">
   <div class="section-container text-center">
     <ScrollReveal animation="fade-up">
-      <h2 class="heading-lg mb-6 uppercase"><Highlight variant="white">VUOI LAVORARE CON NOI?</Highlight></h2>
+      <div class="section-header">
+        <h2 class="section-title mb-6"><Highlight variant="white">Vuoi lavorare con noi?</Highlight></h2>
+      </div>
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={100}>
       <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-2xl mx-auto">

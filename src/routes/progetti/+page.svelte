@@ -4,6 +4,7 @@
   import TiltCard from '$lib/components/TiltCard.svelte';
   import Highlight from '$lib/components/Highlight.svelte';
   import TechWord from '$lib/components/TechWord.svelte';
+  import SectionDivider from '$lib/components/SectionDivider.svelte';
   
   let selectedCategory = 'all';
   
@@ -20,10 +21,13 @@
 <section class="pt-32 pb-20 md:pt-40 md:pb-24">
   <div class="section-container">
     <ScrollReveal>
-      <h1 class="heading-xl mb-6 uppercase">I nostri progetti</h1>
-      <p class="text-xl md:text-2xl text-[var(--text-secondary)] max-w-2xl mb-12">
-        Una selezione dei <TechWord>lavori</TechWord> che abbiamo realizzato per i nostri clienti.
-      </p>
+      <div class="section-header">
+        <p class="section-subtitle">I nostri progetti</p>
+        <h1 class="section-title">Una selezione dei nostri <span class="gradient-text"><TechWord>lavori</TechWord></span></h1>
+        <p class="text-lg md:text-xl text-[var(--text-secondary)] mb-12">
+          I migliori progetti realizzati per i nostri clienti, dai contenuti al web design fino alle soluzioni software personalizzate.
+        </p>
+      </div>
     </ScrollReveal>
     
     <ScrollReveal animation="fade-up" delay={100}>
@@ -77,3 +81,5 @@
     </div>
   </div>
 </section>
+
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />

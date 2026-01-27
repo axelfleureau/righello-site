@@ -2,6 +2,8 @@
   import ScrollReveal from '$lib/components/ScrollReveal.svelte';
   import Highlight from '$lib/components/Highlight.svelte';
   import TechWord from '$lib/components/TechWord.svelte';
+  import SectionDivider from '$lib/components/SectionDivider.svelte';
+  import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   
   let formData = {
     name: '',
@@ -29,18 +31,20 @@
   <meta name="description" content="Contatta Righello Creative Lab per il tuo prossimo progetto." />
 </svelte:head>
 
-<section class="pt-32 pb-20 md:pt-40 md:pb-24">
+<section class="section-padding">
   <div class="section-container">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+    <RevealOnScroll animation="fly-up">
+      <div class="section-header">
+        <p class="section-subtitle">Contattaci</p>
+        <h1 class="section-title"><Highlight variant="pink">PARLIAMONE</Highlight></h1>
+        <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
+          Hai un <TechWord>progetto</TechWord> in mente? Compila il form e ti risponderemo il prima possibile.
+        </p>
+      </div>
+    </RevealOnScroll>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start w-full">
       <div class="overflow-hidden">
-        <ScrollReveal animation="fade-up">
-          <h1 class="heading-xl mb-8 uppercase break-words"><Highlight variant="pink">PARLIAMONE</Highlight></h1>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <p class="text-xl md:text-2xl text-[var(--text-secondary)] mb-8">
-            Hai un <TechWord>progetto</TechWord> in mente? Compila il form e ti risponderemo il prima possibile.
-          </p>
-        </ScrollReveal>
         
         <div class="space-y-6">
           <ScrollReveal animation="fade-left" delay={200}>
@@ -186,3 +190,5 @@
     </div>
   </div>
 </section>
+
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />

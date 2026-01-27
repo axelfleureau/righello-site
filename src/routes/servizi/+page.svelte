@@ -3,6 +3,7 @@
   import ServiceTabs from '$lib/components/ServiceTabs.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import SectionDivider from '$lib/components/SectionDivider.svelte';
   import { departments as baseDepartments } from '$lib/data/projects';
   
   const departments = baseDepartments.map(dept => ({
@@ -35,37 +36,41 @@
 
 <section class="pt-32 pb-16 md:pt-40 md:pb-24">
   <div class="section-container">
-    <div class="max-w-4xl">
-      <RevealOnScroll animation="fly-up">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">I nostri servizi</p>
-        <h1 class="heading-xl mb-6">
+    <RevealOnScroll animation="fly-up">
+      <div class="section-header">
+        <p class="section-subtitle">I nostri servizi</p>
+        <h1 class="section-title">
           Tre dipartimenti,<br/>
           <span class="gradient-text">un unico obiettivo.</span>
         </h1>
-      </RevealOnScroll>
-      <RevealOnScroll animation="fly-up" delay={100}>
-        <p class="text-xl md:text-2xl mb-8 text-[var(--text-secondary)]">
-          Combiniamo creatività, dati e tecnologia per costruire strategie di crescita 
-          <span class="text-righello-pink font-medium">misurabili</span> e 
-          <span class="text-cyan-400 font-medium">scalabili</span>.
-        </p>
-      </RevealOnScroll>
-    </div>
+      </div>
+    </RevealOnScroll>
+    <RevealOnScroll animation="fly-up" delay={100}>
+      <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto text-center">
+        Combiniamo creatività, dati e tecnologia per costruire strategie di crescita 
+        <span class="text-righello-pink font-medium">misurabili</span> e 
+        <span class="text-cyan-400 font-medium">scalabili</span>.
+      </p>
+    </RevealOnScroll>
   </div>
 </section>
 
-<section class="pb-16 md:pb-24 lg:pb-32">
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" />
+
+<section class="section-padding">
   <div class="section-container">
     <ServiceTabs {departments} />
   </div>
 </section>
 
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+
 <section class="section-padding" style="background: var(--bg-secondary);">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
-      <div class="text-center mb-16">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Il nostro approccio</p>
-        <h2 class="heading-lg">
+      <div class="section-header">
+        <p class="section-subtitle">Il nostro approccio</p>
+        <h2 class="section-title">
           Metodologia <span class="gradient-text">data-driven</span>
         </h2>
       </div>
@@ -87,12 +92,14 @@
   </div>
 </section>
 
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
+
 <section class="section-padding">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
-      <div class="text-center mb-16">
-        <p class="text-sm uppercase tracking-[0.2em] text-righello-pink mb-4">Perché Righello</p>
-        <h2 class="heading-lg mb-6">
+      <div class="section-header">
+        <p class="section-subtitle">Perché Righello</p>
+        <h2 class="section-title">
           I nostri <span class="gradient-text">punti di forza</span>
         </h2>
       </div>
@@ -111,6 +118,8 @@
     </div>
   </div>
 </section>
+
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
 <section class="section-padding" style="background: var(--bg-secondary);">
   <div class="section-container">
