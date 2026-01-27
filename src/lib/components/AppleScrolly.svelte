@@ -3,7 +3,7 @@
   import { browser } from '$app/environment';
   import PhoneMockup from './PhoneMockup.svelte';
   import MagneticButton from './MagneticButton.svelte';
-  import BackgroundBeams from './BackgroundBeams.svelte';
+  import RippleGrid from './RippleGrid.svelte';
   
   export let credibilityBadges: { icon: string; label: string }[] = [];
   
@@ -173,8 +173,19 @@
 
 <section bind:this={container} class="apple-scrolly">
   <div class="absolute inset-0 hero-bg"></div>
-  <BackgroundBeams variant="subtle" />
-  <div class="absolute inset-0 noise-overlay opacity-30"></div>
+  <RippleGrid 
+    gridColor="#D6487E"
+    opacity={0.25}
+    gridSize={12}
+    gridThickness={18}
+    rippleIntensity={0.03}
+    fadeDistance={1.8}
+    vignetteStrength={2.5}
+    glowIntensity={0.15}
+    mouseInteraction={true}
+    mouseInteractionRadius={1.2}
+  />
+  <div class="absolute inset-0 noise-overlay opacity-20"></div>
   
   <div class="scrolly-content">
     <div bind:this={heroContent} class="hero-text">

@@ -234,3 +234,10 @@ Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, Barcolana, Ippodromo Mer
 - **Effetto shine**: Highlight al passaggio del mouse
 - **Dual theme**: Supporto dark/light mode con stili adattivi
 - **Logo Righello**: Mostra il logo, titolo e subtitle "Growth Agency"
+
+### RippleGrid Background (27 Gennaio 2026)
+- **Shader WebGL OGL**: Griglia animata con effetto ondulazione usando la libreria OGL
+- **Mouse interaction**: Le onde si propagano dalla posizione del cursore
+- **Colore brand**: Rosa Righello (#D6487E) con glow e vignette
+- **Sostituisce BackgroundBeams**: Nuovo sfondo per AppleScrolly hero section
+- **Parametri personalizzabili**: gridSize, gridThickness, rippleIntensity, fadeDistance, opacity, mouseInteractionRadius
