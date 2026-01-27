@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import { fade, fly, scale } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
@@ -24,8 +24,17 @@
   let isHovering = false;
   let lightboxOpen = false;
   let lightboxVideo: HTMLVideoElement | null = null;
+  let containerEl: HTMLElement;
+  let isInView = false;
+  let observer: IntersectionObserver | null = null;
   
   $: activeTestimonial = testimonials[activeIndex];
+  
+  $: if (videoElement && isInView && !lightboxOpen) {
+    videoElement.play().catch(() => {});
+  } else if (videoElement && (!isInView || lightboxOpen)) {
+    videoElement.pause();
+  }
   
   function next() {
     direction = 1;
@@ -43,7 +52,7 @@
   }
   
   function startAutoplay() {
-    if (autoplay && !intervalId) {
+    if (autoplay && !intervalId && !isInView) {
       intervalId = setInterval(next, interval);
     }
   }
@@ -58,17 +67,12 @@
   function handleMouseEnter() {
     isHovering = true;
     stopAutoplay();
-    if (videoElement) {
-      videoElement.play().catch(() => {});
-    }
   }
   
   function handleMouseLeave() {
     isHovering = false;
-    startAutoplay();
-    if (videoElement) {
-      videoElement.pause();
-      videoElement.currentTime = 0;
+    if (!isInView) {
+      startAutoplay();
     }
   }
   
@@ -85,7 +89,9 @@
     }
     lightboxOpen = false;
     document.body.style.overflow = '';
-    startAutoplay();
+    if (!isInView) {
+      startAutoplay();
+    }
   }
   
   function handleKeydown(e: KeyboardEvent) {
@@ -100,18 +106,40 @@
   
   onMount(() => {
     if (browser) {
-      startAutoplay();
       window.addEventListener('keydown', handleKeydown);
+      
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            isInView = entry.isIntersecting;
+            if (isInView) {
+              stopAutoplay();
+            } else if (!isHovering && !lightboxOpen) {
+              startAutoplay();
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      
+      if (containerEl) {
+        observer.observe(containerEl);
+      }
       
       return () => {
         stopAutoplay();
         window.removeEventListener('keydown', handleKeydown);
+        observer?.disconnect();
       };
     }
   });
+  
+  onDestroy(() => {
+    observer?.disconnect();
+  });
 </script>
 
-<div class="animated-testimonials">
+<div class="animated-testimonials" bind:this={containerEl}>
   <div class="testimonials-container">
     <div 
       class="video-showcase"
@@ -134,16 +162,32 @@
                 <video
                   bind:this={videoElement}
                   src={testimonial.videoSrc}
-                  poster={testimonial.thumbnailSrc}
+                  poster={testimonial.thumbnailSrc || `${testimonial.videoSrc}#t=0.5`}
                   muted
                   loop
                   playsinline
+                  preload="metadata"
                   class="video-element"
                 >
                   <track kind="captions" />
                 </video>
+              {:else if testimonial.thumbnailSrc}
+                <img 
+                  src={testimonial.thumbnailSrc} 
+                  alt={testimonial.clientName}
+                  class="video-thumbnail"
+                  loading="lazy"
+                />
               {:else}
-                <div class="video-placeholder-bg"></div>
+                <video
+                  src={testimonial.videoSrc}
+                  muted
+                  playsinline
+                  preload="metadata"
+                  class="video-element video-preview"
+                >
+                  <track kind="captions" />
+                </video>
               {/if}
             {:else}
               <div class="quote-card">
@@ -206,7 +250,7 @@
             "{activeTestimonial.quote}"
           </blockquote>
           
-          <div class="author">
+          <div class="author hide-mobile">
             <div class="author-avatar">
               {activeTestimonial.clientName.charAt(0)}
             </div>
@@ -378,6 +422,26 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  
+  .video-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .video-preview {
+    pointer-events: none;
+  }
+  
+  .hide-mobile {
+    display: none;
+  }
+  
+  @media (min-width: 1024px) {
+    .hide-mobile {
+      display: flex;
+    }
   }
   
   .video-placeholder-bg {
