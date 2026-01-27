@@ -27,7 +27,7 @@
 
 <div 
   bind:this={card}
-  class="relative group cursor-pointer {$$restProps.class || ''}"
+  class="glow-card relative group cursor-pointer {$$restProps.class || ''}"
   on:mousemove={handleMouseMove}
   on:mouseenter={handleMouseEnter}
   on:mouseleave={handleMouseLeave}
@@ -35,7 +35,7 @@
   style="border-radius: {borderRadius};"
 >
   <div 
-    class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+    class="glow-effect absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
     style="
       background: radial-gradient(600px circle at {glowX}px {glowY}px, {glowColor}, transparent 40%);
       border-radius: {borderRadius};
@@ -43,12 +43,12 @@
   ></div>
   
   <div 
-    class="absolute inset-[1px] bg-[#0a0a0a] transition-all duration-300 group-hover:bg-[#111]"
+    class="glow-card-bg absolute inset-[1px] transition-all duration-300"
     style="border-radius: calc({borderRadius} - 1px);"
   ></div>
   
   <div 
-    class="absolute inset-0 border border-white/10 group-hover:border-white/20 transition-colors duration-300"
+    class="glow-card-border absolute inset-0 transition-colors duration-300"
     style="border-radius: {borderRadius};"
   ></div>
   
@@ -56,3 +56,43 @@
     <slot />
   </div>
 </div>
+
+<style>
+  .glow-card-bg {
+    background: #0a0a0a;
+  }
+  
+  .glow-card:hover .glow-card-bg {
+    background: #111;
+  }
+  
+  .glow-card-border {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .glow-card:hover .glow-card-border {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  :global([data-theme="light"]) .glow-card-bg {
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+  
+  :global([data-theme="light"]) .glow-card:hover .glow-card-bg {
+    background: #fafafa;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  :global([data-theme="light"]) .glow-card-border {
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+  
+  :global([data-theme="light"]) .glow-card:hover .glow-card-border {
+    border-color: rgba(214, 72, 126, 0.3);
+  }
+  
+  :global([data-theme="light"]) .glow-effect {
+    opacity: 0.5;
+  }
+</style>

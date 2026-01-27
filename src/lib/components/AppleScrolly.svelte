@@ -110,11 +110,8 @@
               
               if (progress > 0.1 && progress < 0.35) {
                 const phoneProgress = (progress - 0.1) / 0.25;
-                const vw = window.innerWidth;
-                const targetX = -(vw / 2 - 180 - (vw * 0.08));
                 gsap.set(phoneWrapper, { 
-                  x: targetX * Math.min(1, phoneProgress), 
-                  scale: 1 - (0.12 * Math.min(1, phoneProgress))
+                  scale: 1 - (0.1 * Math.min(1, phoneProgress))
                 });
               }
               
@@ -213,7 +210,6 @@
         aria-current={activeStep === 0 ? 'step' : undefined}
         on:click={() => scrollToStep(0)}
       >
-        <span class="step-label">Intro</span>
       </button>
       {#each slides as slide, i}
         <button 
@@ -223,7 +219,6 @@
           aria-current={activeStep === i + 1 ? 'step' : undefined}
           on:click={() => scrollToStep(i + 1)}
         >
-          <span class="step-label">{slide.step}</span>
         </button>
       {/each}
     </div>
@@ -294,7 +289,6 @@
       >
         <div class="slide-step-badge">
           <span class="slide-step-icon">{slide.icon}</span>
-          <span class="slide-step-number">Step {slide.step}</span>
         </div>
         <h2 class="slide-title overflow-hidden">
           {#each slide.title.split('') as char}
@@ -394,9 +388,9 @@
   @media (min-width: 1024px) {
     .phone-area {
       position: absolute;
-      right: 8%;
+      left: 50%;
       top: 55%;
-      transform: translateY(-50%);
+      transform: translate(-50%, -50%);
       z-index: 5;
     }
   }
@@ -451,14 +445,15 @@
   }
   
   .slide-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 1rem;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 1.25rem;
     background: linear-gradient(135deg, #D6487E, #06B6D4);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    letter-spacing: -0.02em;
   }
   
   .slide-description {
@@ -583,27 +578,6 @@
     box-shadow: 0 0 20px rgba(214, 72, 126, 0.5);
   }
   
-  .step-label {
-    position: absolute;
-    left: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .step-dot:hover .step-label,
-  .step-dot.active .step-label {
-    opacity: 1;
-  }
-  
-  .step-dot.active .step-label {
-    color: #D6487E;
-  }
   
   /* Slide Step Badge */
   .slide-step-badge {
@@ -619,15 +593,7 @@
   }
   
   .slide-step-icon {
-    font-size: 1rem;
-  }
-  
-  .slide-step-number {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #D6487E;
+    font-size: 1.25rem;
   }
   
   /* Scroll Hint Text */
