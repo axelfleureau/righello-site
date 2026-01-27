@@ -108,10 +108,15 @@
                 gsap.set(heroContent, { opacity: 0, y: -40 });
               }
               
-              if (progress > 0.1 && progress < 0.35) {
-                const phoneProgress = (progress - 0.1) / 0.25;
+              if (progress > 0.05 && progress < 0.35) {
+                const phoneProgress = (progress - 0.05) / 0.30;
+                const vw = window.innerWidth;
+                const startX = 0;
+                const endX = -(vw * 0.42 - 180);
+                const currentX = startX + (endX - startX) * Math.min(1, phoneProgress);
                 gsap.set(phoneWrapper, { 
-                  scale: 1 - (0.1 * Math.min(1, phoneProgress))
+                  x: currentX,
+                  scale: 1 - (0.08 * Math.min(1, phoneProgress))
                 });
               }
               
@@ -145,19 +150,21 @@
           });
           
           function animateSlideText(slideEl: HTMLElement) {
-            const titleChars = slideEl.querySelectorAll('.title-char');
+            const title = slideEl.querySelector('.slide-title');
             const descChars = slideEl.querySelectorAll('.desc-char');
             
-            gsap.fromTo(titleChars, 
-              { opacity: 0, y: 30 },
-              { 
-                opacity: 1, 
-                y: 0, 
-                stagger: 0.02,
-                duration: 0.4,
-                ease: 'power2.out'
-              }
-            );
+            if (title) {
+              gsap.fromTo(title, 
+                { opacity: 0, y: 40, scale: 0.95 },
+                { 
+                  opacity: 1, 
+                  y: 0, 
+                  scale: 1,
+                  duration: 0.6,
+                  ease: 'power3.out'
+                }
+              );
+            }
             
             gsap.fromTo(descChars, 
               { opacity: 0, y: 20 },
@@ -167,7 +174,7 @@
                 stagger: 0.008,
                 duration: 0.3,
                 ease: 'power2.out',
-                delay: 0.2
+                delay: 0.3
               }
             );
           }
@@ -290,10 +297,8 @@
         <div class="slide-step-badge">
           <span class="slide-step-icon">{slide.icon}</span>
         </div>
-        <h2 class="slide-title overflow-hidden">
-          {#each slide.title.split('') as char}
-            <span class="title-char">{char === ' ' ? '\u00A0' : char}</span>
-          {/each}
+        <h2 class="slide-title">
+          {slide.title}
         </h2>
         <p class="slide-description overflow-hidden">
           {#each slide.description.split('') as char}
@@ -308,7 +313,6 @@
     <div class="scroll-indicator">
       <div class="scroll-dot"></div>
     </div>
-    <span class="scroll-text">Scorri per esplorare</span>
   </div>
 </section>
 
@@ -388,9 +392,9 @@
   @media (min-width: 1024px) {
     .phone-area {
       position: absolute;
-      left: 50%;
+      right: 8%;
       top: 55%;
-      transform: translate(-50%, -50%);
+      transform: translateY(-50%);
       z-index: 5;
     }
   }
@@ -596,16 +600,6 @@
     font-size: 1.25rem;
   }
   
-  /* Scroll Hint Text */
-  .scroll-text {
-    display: block;
-    margin-top: 0.75rem;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--text-secondary);
-    opacity: 0.7;
-  }
   
   :global([data-theme="light"]) .step-line {
     background: rgba(0, 0, 0, 0.1);
