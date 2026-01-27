@@ -70,7 +70,7 @@
         <ScrollReveal animation="scale" delay={200}>
           <LanyardBadge 
             logoSrc="/logo-white.png"
-            title="Righello"
+            title="ID BADGE"
             subtitle="Growth Agency"
           />
         </ScrollReveal>
