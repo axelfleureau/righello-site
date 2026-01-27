@@ -114,12 +114,18 @@
             isInView = entry.isIntersecting;
             if (isInView) {
               stopAutoplay();
+              if (videoElement) {
+                videoElement.play().catch(() => {});
+              }
             } else if (!isHovering && !lightboxOpen) {
               startAutoplay();
+              if (videoElement) {
+                videoElement.pause();
+              }
             }
           });
         },
-        { threshold: 0.5 }
+        { threshold: 0.2 }
       );
       
       if (containerEl) {
@@ -163,11 +169,17 @@
                   bind:this={videoElement}
                   src={testimonial.videoSrc}
                   poster={testimonial.thumbnailSrc || `${testimonial.videoSrc}#t=0.5`}
+                  autoplay
                   muted
                   loop
                   playsinline
-                  preload="metadata"
+                  preload="auto"
                   class="video-element"
+                  on:canplay={() => {
+                    if (isInView && videoElement) {
+                      videoElement.play().catch(() => {});
+                    }
+                  }}
                 >
                   <track kind="captions" />
                 </video>
