@@ -30,6 +30,16 @@
   let heroContent: HTMLElement;
   let slideRefs: HTMLElement[] = [];
   let ctx: any = null;
+  let currentSlide = -1;
+  let autoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
+  const AUTO_ADVANCE_DELAY = 4500;
+  
+  function clearAutoAdvance() {
+    if (autoAdvanceTimer) {
+      clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = null;
+    }
+  }
   
   onMount(async () => {
     if (!browser) return;
@@ -39,52 +49,14 @@
     gsap.registerPlugin(ScrollTrigger);
     
     ctx = gsap.context(() => {
-      // Only enable GSAP scrollytelling on desktop (>=1024px)
       ScrollTrigger.matchMedia({
         "(min-width: 1024px)": function() {
           const totalSlides = slides.length + 1;
           const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
           const scrollDistance = slides.length * 280;
           
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: container,
-              start: 'top top',
-              end: () => `+=${scrollDistance}vh`,
-              pin: true,
-              scrub: 2.5,
-              snap: {
-                snapTo: snapPoints,
-                duration: { min: 1, max: 2 },
-                delay: 0.4,
-                ease: 'power4.inOut'
-              }
-            }
-          });
-          
-          tl.to(heroContent, {
-            opacity: 0,
-            y: -50,
-            duration: 0.2
-          }, 0);
-          
-          tl.to(phoneWrapper, {
-            x: () => {
-              const vw = window.innerWidth;
-              return -(vw / 2 - 160 - (vw * 0.08));
-            },
-            scale: 0.85,
-            duration: 0.25
-          }, 0.05);
-          
           slideRefs.forEach((slideEl, i) => {
             if (!slideEl) return;
-            const slide = slides[i];
-            const sectionSize = 0.85 / slides.length;
-            const startTime = 0.15 + (i * sectionSize);
-            const holdTime = startTime + (sectionSize * 0.6);
-            const endTime = startTime + (sectionSize * 0.9);
-            
             const titleChars = slideEl.querySelectorAll('.title-char');
             const descChars = slideEl.querySelectorAll('.desc-char');
             
@@ -104,62 +76,128 @@
               transformOrigin: '50% 0%'
             });
             
-            tl.fromTo(slideEl, 
-              { 
-                opacity: 0, 
-                x: slide.position === 'left' ? -40 : 40
-              },
-              { 
-                opacity: 1, 
-                x: 0,
-                duration: sectionSize * 0.15
-              }, 
-              startTime
-            );
+            gsap.set(slideEl, { opacity: 0 });
+          });
+          
+          const mainTrigger = ScrollTrigger.create({
+            trigger: container,
+            start: 'top top',
+            end: () => `+=${scrollDistance}vh`,
+            pin: true,
+            scrub: 0.5,
+            snap: {
+              snapTo: snapPoints,
+              duration: { min: 0.6, max: 1.2 },
+              delay: 0.1,
+              ease: 'power3.inOut',
+              onComplete: (self: any) => {
+                const progress = self.progress;
+                const slideIndex = Math.round(progress * (totalSlides - 1)) - 1;
+                
+                if (slideIndex !== currentSlide && slideIndex >= 0 && slideIndex < slides.length) {
+                  currentSlide = slideIndex;
+                  animateSlideIn(slideIndex);
+                  
+                  clearAutoAdvance();
+                  if (slideIndex < slides.length - 1) {
+                    autoAdvanceTimer = setTimeout(() => {
+                      const targetProgress = (slideIndex + 2) / (totalSlides - 1);
+                      gsap.to(window, {
+                        scrollTo: { y: container.offsetTop + (scrollDistance * window.innerHeight / 100 * targetProgress) },
+                        duration: 1.2,
+                        ease: 'power2.inOut'
+                      });
+                    }, AUTO_ADVANCE_DELAY);
+                  }
+                } else if (slideIndex === -1 && currentSlide !== -1) {
+                  currentSlide = -1;
+                  clearAutoAdvance();
+                }
+              }
+            },
+            onUpdate: (self: any) => {
+              const progress = self.progress;
+              
+              if (progress < 0.15) {
+                gsap.to(heroContent, { opacity: 1 - (progress / 0.15), y: -50 * (progress / 0.15), duration: 0.1 });
+              } else {
+                gsap.set(heroContent, { opacity: 0, y: -50 });
+              }
+              
+              if (progress > 0.05 && progress < 0.25) {
+                const phoneProgress = (progress - 0.05) / 0.2;
+                const vw = window.innerWidth;
+                const targetX = -(vw / 2 - 160 - (vw * 0.08));
+                gsap.to(phoneWrapper, { 
+                  x: targetX * phoneProgress, 
+                  scale: 1 - (0.15 * phoneProgress),
+                  duration: 0.1 
+                });
+              }
+            }
+          });
+          
+          function animateSlideIn(index: number) {
+            slideRefs.forEach((el, i) => {
+              if (i !== index && el) {
+                gsap.to(el, { opacity: 0, duration: 0.3 });
+              }
+            });
+            
+            const slideEl = slideRefs[index];
+            if (!slideEl) return;
+            
+            const slide = slides[index];
+            const titleChars = slideEl.querySelectorAll('.title-char');
+            const descChars = slideEl.querySelectorAll('.desc-char');
+            
+            gsap.set(titleChars, {
+              opacity: 0,
+              yPercent: 120,
+              scaleY: 2.3,
+              scaleX: 0.7
+            });
+            
+            gsap.set(descChars, {
+              opacity: 0,
+              yPercent: 80,
+              scaleY: 1.8,
+              scaleX: 0.8
+            });
+            
+            const tl = gsap.timeline();
+            
+            tl.to(slideEl, {
+              opacity: 1,
+              x: 0,
+              duration: 0.4,
+              ease: 'power2.out'
+            });
             
             tl.to(titleChars, {
               opacity: 1,
               yPercent: 0,
               scaleY: 1,
               scaleX: 1,
-              stagger: 0.035,
-              ease: 'back.out(3)',
-              duration: sectionSize * 0.35
-            }, startTime + sectionSize * 0.05);
+              stagger: 0.04,
+              ease: 'back.out(2.5)',
+              duration: 0.6
+            }, 0.1);
             
             tl.to(descChars, {
               opacity: 1,
               yPercent: 0,
               scaleY: 1,
               scaleX: 1,
-              stagger: 0.012,
+              stagger: 0.015,
               ease: 'back.out(2)',
-              duration: sectionSize * 0.4
-            }, startTime + sectionSize * 0.2);
-            
-            tl.to(slideEl, {
-              opacity: 1,
-              x: 0,
-              duration: sectionSize * 0.4
-            }, holdTime);
-            
-            if (i < slides.length - 1) {
-              tl.to([...Array.from(titleChars), ...Array.from(descChars)], {
-                opacity: 0,
-                yPercent: -40,
-                stagger: 0.005,
-                duration: sectionSize * 0.15
-              }, endTime - sectionSize * 0.05);
-              
-              tl.to(slideEl, 
-                { 
-                  opacity: 0, 
-                  x: slide.position === 'left' ? -40 : 40,
-                  duration: sectionSize * 0.1
-                }, 
-                endTime + sectionSize * 0.1
-              );
-            }
+              duration: 0.5
+            }, 0.5);
+          }
+          
+          (window as any).gsapScrollToPlugin = true;
+          import('gsap/ScrollToPlugin').then((module) => {
+            gsap.registerPlugin(module.ScrollToPlugin);
           });
         }
       });
@@ -167,6 +205,7 @@
   });
   
   onDestroy(() => {
+    clearAutoAdvance();
     ctx?.revert();
   });
 </script>
@@ -481,9 +520,4 @@
     transform-origin: 50% 0%;
   }
   
-  .title-char.revealed,
-  .desc-char.revealed {
-    opacity: 1;
-    transform: translateY(0) scaleY(1) scaleX(1);
-  }
-</style>
+  </style>
