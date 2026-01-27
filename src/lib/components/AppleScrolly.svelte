@@ -85,20 +85,57 @@
             const holdTime = startTime + (sectionSize * 0.6);
             const endTime = startTime + (sectionSize * 0.9);
             
+            const titleChars = slideEl.querySelectorAll('.title-char');
+            const descChars = slideEl.querySelectorAll('.desc-char');
+            
+            gsap.set(titleChars, {
+              opacity: 0,
+              yPercent: 120,
+              scaleY: 2.3,
+              scaleX: 0.7,
+              transformOrigin: '50% 0%'
+            });
+            
+            gsap.set(descChars, {
+              opacity: 0,
+              yPercent: 80,
+              scaleY: 1.8,
+              scaleX: 0.8,
+              transformOrigin: '50% 0%'
+            });
+            
             tl.fromTo(slideEl, 
               { 
                 opacity: 0, 
-                x: slide.position === 'left' ? -80 : 80,
-                scale: 0.95
+                x: slide.position === 'left' ? -40 : 40
               },
               { 
                 opacity: 1, 
                 x: 0,
-                scale: 1,
-                duration: sectionSize * 0.3
+                duration: sectionSize * 0.15
               }, 
               startTime
             );
+            
+            tl.to(titleChars, {
+              opacity: 1,
+              yPercent: 0,
+              scaleY: 1,
+              scaleX: 1,
+              stagger: 0.02,
+              ease: 'back.out(2)',
+              duration: sectionSize * 0.25
+            }, startTime + sectionSize * 0.05);
+            
+            tl.to(descChars, {
+              opacity: 1,
+              yPercent: 0,
+              scaleY: 1,
+              scaleX: 1,
+              stagger: 0.008,
+              ease: 'back.out(1.5)',
+              duration: sectionSize * 0.3
+            }, startTime + sectionSize * 0.15);
             
             tl.to(slideEl, {
               opacity: 1,
@@ -107,13 +144,20 @@
             }, holdTime);
             
             if (i < slides.length - 1) {
+              tl.to([...Array.from(titleChars), ...Array.from(descChars)], {
+                opacity: 0,
+                yPercent: -40,
+                stagger: 0.005,
+                duration: sectionSize * 0.15
+              }, endTime - sectionSize * 0.05);
+              
               tl.to(slideEl, 
                 { 
                   opacity: 0, 
                   x: slide.position === 'left' ? -40 : 40,
-                  duration: sectionSize * 0.2
+                  duration: sectionSize * 0.1
                 }, 
-                endTime
+                endTime + sectionSize * 0.1
               );
             }
           });
@@ -196,8 +240,16 @@
         class:slide-left={slide.position === 'left'}
         class:slide-right={slide.position === 'right'}
       >
-        <h2 class="slide-title">{slide.title}</h2>
-        <p class="slide-description">{slide.description}</p>
+        <h2 class="slide-title overflow-hidden">
+          {#each slide.title.split('') as char}
+            <span class="title-char">{char === ' ' ? '\u00A0' : char}</span>
+          {/each}
+        </h2>
+        <p class="slide-description overflow-hidden">
+          {#each slide.description.split('') as char}
+            <span class="desc-char">{char === ' ' ? '\u00A0' : char}</span>
+          {/each}
+        </p>
       </div>
     {/each}
   </div>
@@ -407,5 +459,11 @@
     .scroll-hint {
       display: none;
     }
+  }
+  
+  .title-char,
+  .desc-char {
+    display: inline-block;
+    will-change: opacity, transform;
   }
 </style>
