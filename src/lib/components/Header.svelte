@@ -8,7 +8,6 @@
   let mobileMenuOpen = false;
   let scrollY = 0;
   let lastScrollY = 0;
-  let isHidden = false;
   let isAtTop = true;
   let isCompact = false;
   let serviziHovered = false;
@@ -54,16 +53,14 @@
         isCompact = false;
       }
       
-      // Scrolling down: compact mode
+      // Scrolling down: compact mode (navbar stays visible, just smaller)
       if (scrollDelta > 5 && scrollY > 80) {
         isCompact = true;
-        isHidden = scrollY > 200; // Hide only after significant scroll
         serviziHovered = false;
       }
-      // Scrolling up: expand, show
+      // Scrolling up: expand
       else if (scrollDelta < -5) {
         isCompact = false;
-        isHidden = false;
       }
       
       lastScrollY = scrollY;
@@ -76,7 +73,6 @@
 
 <header 
   class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-  class:-translate-y-full={isHidden && !mobileMenuOpen}
   class:header-at-top={isAtTop}
 >
   <div class="header-container mx-auto px-4 md:px-6" class:pt-4={!isAtTop} class:pt-0={isAtTop}>
