@@ -249,59 +249,14 @@
     padding: 0.75rem 1.25rem;
     border-radius: 1.5rem;
     position: relative;
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    background: 
-      linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.08) 100%);
-    border: 1px solid transparent;
-    background-clip: padding-box;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(20, 20, 25, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 
-      0 0 0 1px rgba(255, 255, 255, 0.1),
-      0 4px 24px rgba(0, 0, 0, 0.12),
-      0 12px 48px rgba(0, 0, 0, 0.08),
-      inset 0 1px 1px rgba(255, 255, 255, 0.15),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.05);
-  }
-  
-  .floating-nav::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg, 
-      rgba(255, 255, 255, 0.25) 0%, 
-      rgba(255, 255, 255, 0.08) 40%,
-      rgba(214, 72, 126, 0.15) 60%,
-      rgba(6, 182, 212, 0.1) 100%
-    );
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask-composite: xor;
-    pointer-events: none;
-    opacity: 0.8;
-  }
-  
-  .floating-nav::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.4) 20%,
-      rgba(255, 255, 255, 0.6) 50%,
-      rgba(255, 255, 255, 0.4) 80%,
-      transparent 100%
-    );
-    border-radius: 9999px;
-    pointer-events: none;
+      0 4px 30px rgba(0, 0, 0, 0.15),
+      0 1px 1px rgba(255, 255, 255, 0.05) inset;
   }
   
   @media (min-width: 1024px) {
@@ -356,60 +311,19 @@
   }
   
   .nav-scrolled {
-    background: 
-      linear-gradient(135deg, rgba(20, 20, 25, 0.9) 0%, rgba(15, 15, 20, 0.85) 50%, rgba(20, 20, 25, 0.9) 100%);
+    background: rgba(15, 15, 20, 0.85);
+    border-color: rgba(255, 255, 255, 0.08);
     box-shadow: 
-      0 0 0 1px rgba(255, 255, 255, 0.08),
-      0 8px 32px rgba(0, 0, 0, 0.4),
-      0 24px 64px rgba(0, 0, 0, 0.2),
-      0 0 80px rgba(214, 72, 126, 0.08),
-      inset 0 1px 1px rgba(255, 255, 255, 0.1),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.2);
-  }
-  
-  .nav-scrolled::before {
-    background: linear-gradient(
-      135deg, 
-      rgba(255, 255, 255, 0.15) 0%, 
-      rgba(255, 255, 255, 0.05) 30%,
-      rgba(214, 72, 126, 0.2) 50%,
-      rgba(6, 182, 212, 0.15) 70%,
-      rgba(255, 255, 255, 0.1) 100%
-    );
-    opacity: 1;
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 1px 1px rgba(255, 255, 255, 0.05) inset;
   }
   
   :global([data-theme="light"]) .floating-nav {
-    background: 
-      linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.8) 100%);
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.08);
     box-shadow: 
-      0 0 0 1px rgba(0, 0, 0, 0.04),
-      0 4px 24px rgba(0, 0, 0, 0.06),
-      0 12px 48px rgba(0, 0, 0, 0.04),
-      inset 0 1px 2px rgba(255, 255, 255, 0.9),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.03);
-  }
-  
-  :global([data-theme="light"]) .floating-nav::before {
-    background: linear-gradient(
-      135deg, 
-      rgba(255, 255, 255, 0.9) 0%, 
-      rgba(255, 255, 255, 0.5) 40%,
-      rgba(214, 72, 126, 0.08) 60%,
-      rgba(6, 182, 212, 0.06) 100%
-    );
-    opacity: 1;
-  }
-  
-  :global([data-theme="light"]) .floating-nav::after {
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.95) 20%,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(255, 255, 255, 0.95) 80%,
-      transparent 100%
-    );
+      0 4px 30px rgba(0, 0, 0, 0.08),
+      0 1px 1px rgba(255, 255, 255, 0.9) inset;
   }
   
   :global([data-theme="light"]) .nav-at-top {
@@ -418,14 +332,11 @@
   }
   
   :global([data-theme="light"]) .nav-scrolled {
-    background: 
-      linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 252, 0.9) 50%, rgba(255, 255, 255, 0.95) 100%);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.1);
     box-shadow: 
-      0 0 0 1px rgba(0, 0, 0, 0.06),
-      0 8px 32px rgba(0, 0, 0, 0.08),
-      0 24px 64px rgba(0, 0, 0, 0.05),
-      inset 0 1px 2px rgba(255, 255, 255, 1),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.02);
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 1px 1px rgba(255, 255, 255, 1) inset;
   }
   
   .nav-link {

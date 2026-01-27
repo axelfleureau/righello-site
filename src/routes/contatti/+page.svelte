@@ -29,9 +29,9 @@
   <meta name="description" content="Contatta Righello Creative Lab per il tuo prossimo progetto." />
 </svelte:head>
 
-<section class="pt-28 pb-16 md:pt-36 md:pb-20">
+<section class="pt-32 pb-20 md:pt-40 md:pb-24">
   <div class="section-container">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
       <div>
         <ScrollReveal animation="fade-up">
           <h1 class="heading-xl mb-8 uppercase"><Highlight variant="pink">PARLIAMONE</Highlight></h1>
@@ -91,7 +91,7 @@
       </div>
       
       <ScrollReveal animation="fade-right" delay={200}>
-        <div class="rounded-2xl md:rounded-3xl p-6 md:p-12 hover:shadow-xl transition-shadow duration-500" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color);">
+        <div class="rounded-2xl md:rounded-3xl p-6 md:p-10 hover:shadow-xl transition-shadow duration-500 relative z-10" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color);">
           {#if submitted}
             <div class="text-center py-12">
               <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6 animate-bounce">
