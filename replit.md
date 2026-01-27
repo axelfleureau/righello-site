@@ -21,16 +21,16 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
 - **Brand Colors (Dual Theme)**: The default theme is dark mode, with a light/dark switch. Key brand colors are Righello Pink (`#D6487E`) and Accent Cyan (`#06B6D4`), used in gradients for hero text and accents. Dark mode features a primary background of `#050505`, while light mode uses `#f8fafc`.
 
 ### UI/UX Decisions and Components
-- **Hero Section**: Fullscreen on desktop with a transparent overlay header, featuring text on the left and a 3D iPhone mockup on the right showcasing a placeholder reel.
+- **Hero Section**: Fullscreen on desktop with a transparent overlay header, featuring text on the left and a 3D iPhone mockup on the right showcasing a placeholder reel. Includes step indicator with vertical dots and labels on the left side, and "SCORRI PER ESPLORARE" scroll hint.
 - **Navbar**: A pill-shaped, glassmorphism-styled floating navbar that adapts its appearance based on scroll direction (transparent/classic at top, compact when scrolling down, expanded when scrolling up, hidden after significant scroll).
 - **Interactive Components**:
     - **PhoneMockup**: 3D iPhone with spring physics and tilt effects.
-    - **AppleScrolly**: Apple-style scrollytelling with strong magnetic snap, pinning the iPhone during scroll with synchronized impact phrases.
+    - **AppleScrolly**: Apple-style scrollytelling with strong magnetic snap, pinning the iPhone during scroll with synchronized impact phrases. Features clickable step indicator with aria-current support for accessibility.
     - **AppleCardsCarousel**: Horizontal, drag-to-scroll carousel with hover-to-play video and 3D effects.
     - **GlowCard**: Cards with a cursor-following glow effect.
     - **InfiniteMarquee**: Infinite horizontal scroll for client logos.
     - **ServiceTabs**: Modern tab switch with animated indicator.
-    - **VideoTestimonials**: Drag-to-scroll video reel carousel with fullscreen lightbox.
+    - **AnimatedVideoTestimonials**: Drag-to-scroll video reel carousel with fullscreen lightbox. Centered mobile navigation, 6rem gap on desktop. Supports prefers-reduced-motion.
     - **AnimatedCounter**: Counters that animate on visibility.
     - **MagneticButton**: Buttons with a magnetic hover effect.
     - **BackgroundBeams**: Animated light effects for hero/accent sections (replaced by RippleGrid Background).
@@ -40,7 +40,10 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
     - **GradualBlur**: Component for premium blurred edges with gradient masks.
     - **LanyardBadge**: 3D interactive badge with spring physics and drag & drop for the "About Us" page.
     - **RippleGrid Background**: WebGL OGL-based animated grid with mouse-interactive ripple effects, using Righello Pink.
-    - **BentoGrid, CardFlip, StatCard, CaseStudyCard**: Components for the PESO Framework section, featuring responsive layouts, 3D flip animations, animated counters, and colored chips.
+    - **BentoGrid**: Kokonutui-style component with 6 feature types (spotlight, counter, timeline, typing, metrics, icons), 3D tilt on hover, proper timer cleanup.
+    - **CardFlip**: 3D flip animation on hover with pulsing circles, keyboard accessible (Enter/Space), aria-label support.
+    - **PesoSection**: 4 quadrants PESO with real data (Croce del Sud, Mangio case studies), stat cards with animated counters, colored chips (P=pink, E=cyan, S=purple, O=green).
+    - **StatCard, CaseStudyCard**: Support components for PESO section with animated counters and category tags.
 
 ### Feature Specifications
 - **Service Departments**: The website categorizes services into three main areas: Content & Social Media, Advertising & Performance, and Digital Experience.
