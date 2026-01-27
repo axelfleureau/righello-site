@@ -207,3 +207,10 @@ Zanutta, G&M Ambiente, Reginato, Ennevi, Dolfo, Reguta, Barcolana, Ippodromo Mer
 - **Tre stati navbar**: at-top (trasparente, classica), scrolling-down (compatta), scrolling-up (espansa con glassmorphism)
 - **Scroll direction detection**: Delta threshold per rilevare direzione scroll con passive listener
 - **Hamburger X fix**: Aggiunto transform-box: fill-box per rotazione SVG corretta su tutti i browser
+
+### ScrollFloat Effect (27 Gennaio 2026)
+- **Character-by-character animation**: I testi delle slide nello scrollytelling si animano carattere per carattere
+- **Effetto elastico**: Ogni carattere parte da opacity 0, yPercent 120, scaleY 2.3, scaleX 0.7 e torna alla posizione normale con easing "back.out"
+- **Stagger sincronizzato**: Titoli con stagger 0.02s, descrizioni con stagger 0.008s, sincronizzati con la GSAP timeline
+- **DOM queries ottimizzate**: Uso di querySelectorAll invece di binding reattivi per migliore compatibilità Svelte
+- **ScrollFloat.svelte**: Componente riutilizzabile in `src/lib/components/ScrollFloat.svelte` per altre sezioni
