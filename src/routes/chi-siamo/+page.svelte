@@ -156,7 +156,7 @@
       </div>
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={100}>
-      <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-2xl mx-auto">
+      <p class="text-xl md:text-2xl text-gray-400 mb-8">
         Siamo sempre alla ricerca di nuove sfide e <TechWord>collaborazioni</TechWord> interessanti.
       </p>
     </ScrollReveal>

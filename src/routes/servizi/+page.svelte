@@ -46,7 +46,7 @@
       </div>
     </RevealOnScroll>
     <RevealOnScroll animation="fly-up" delay={100}>
-      <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto text-center">
+      <p class="text-lg md:text-xl text-[var(--text-secondary)] text-center">
         Combiniamo creatività, dati e tecnologia per costruire strategie di crescita 
         <span class="text-righello-pink font-medium">misurabili</span> e 
         <span class="text-cyan-400 font-medium">scalabili</span>.
