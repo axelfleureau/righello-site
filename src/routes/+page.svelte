@@ -15,6 +15,7 @@
   import SectionDivider from '$lib/components/SectionDivider.svelte';
   import SocialReelShowcase from '$lib/components/SocialReelShowcase.svelte';
   import PesoSection from '$lib/components/PesoSection.svelte';
+  import RippleGrid from '$lib/components/RippleGrid.svelte';
   import { onMount } from 'svelte';
   
   const homepageServices = departments.map(dept => ({
@@ -292,8 +293,21 @@
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
-<div class="relative">
-  <BackgroundBeams variant="subtle" />
+<div class="relative overflow-hidden">
+  <div class="absolute inset-0">
+    <RippleGrid 
+      gridColor="#D6487E"
+      opacity={0.15}
+      gridSize={12}
+      gridThickness={18}
+      rippleIntensity={0.02}
+      fadeDistance={1.8}
+      vignetteStrength={2.5}
+      glowIntensity={0.1}
+      mouseInteraction={true}
+      mouseInteractionRadius={1.2}
+    />
+  </div>
   <FAQ />
 </div>
 
