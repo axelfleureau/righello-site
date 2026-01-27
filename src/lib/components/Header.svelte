@@ -242,12 +242,13 @@
   }
   
   .floating-nav {
+    --nav-radius: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     padding: 0.75rem 1.25rem;
-    border-radius: 1.5rem;
+    border-radius: var(--nav-radius);
     position: relative;
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -261,17 +262,20 @@
   
   @media (min-width: 1024px) {
     .floating-nav {
-      border-radius: 9999px;
+      --nav-radius: 9999px;
+      border-radius: var(--nav-radius);
     }
   }
   
   /* At top of page: transparent, classic navbar */
   .nav-at-top {
+    --nav-radius: 0;
     background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     box-shadow: none;
     border-radius: 0;
+    border-color: transparent;
     padding: 1rem 1.25rem;
   }
   
@@ -631,12 +635,20 @@
     height: 2.5rem;
     background: linear-gradient(135deg, #D6487E 0%, #c13d6f 100%);
     border: 0;
-    border-radius: 0.75rem;
+    border-radius: calc(var(--nav-radius, 1.5rem) * 0.5);
     padding: 0.5rem;
     cursor: pointer;
     color: white;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 15px rgba(214, 72, 126, 0.3);
+  }
+  
+  .nav-at-top .burger {
+    border-radius: 0.5rem;
+  }
+  
+  .nav-compact .burger {
+    border-radius: 0.625rem;
   }
   
   @media (min-width: 1024px) {
