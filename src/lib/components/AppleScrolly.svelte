@@ -63,12 +63,67 @@
     });
   }
   
-  onMount(async () => {
-    if (!browser) return;
+  let isInitialized = false;
+  let ScrollTriggerModule: any = null;
+  
+  async function waitForCriticalAssets() {
+    const promises: Promise<void>[] = [];
+    
+    // Wait for fonts
+    if (document.fonts && document.fonts.ready) {
+      promises.push(document.fonts.ready.then(() => {}));
+    }
+    
+    // Wait for video in the container to load metadata
+    const video = container?.querySelector('video');
+    if (video) {
+      if (video.readyState >= 1) {
+        // Already loaded metadata
+      } else {
+        promises.push(new Promise<void>(resolve => {
+          const onLoaded = () => {
+            video.removeEventListener('loadedmetadata', onLoaded);
+            video.removeEventListener('error', onLoaded);
+            resolve();
+          };
+          video.addEventListener('loadedmetadata', onLoaded);
+          video.addEventListener('error', onLoaded);
+          // Timeout fallback
+          setTimeout(resolve, 3000);
+        }));
+      }
+    }
+    
+    // Wait for images
+    const images = container?.querySelectorAll('img') || [];
+    images.forEach(img => {
+      if (!img.complete) {
+        promises.push(new Promise<void>(resolve => {
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+          setTimeout(resolve, 3000);
+        }));
+      }
+    });
+    
+    await Promise.all(promises);
+  }
+  
+  async function initScrollTrigger() {
+    if (!browser || isInitialized || !container) return;
     
     const gsap = (await import('gsap')).default;
     const ScrollTrigger = (await import('gsap/ScrollTrigger')).ScrollTrigger;
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTriggerModule = ScrollTrigger;
+    
+    // Wait for all critical assets (fonts, video, images)
+    await waitForCriticalAssets();
+    
+    // Additional delay for layout stability
+    await new Promise(resolve => setTimeout(resolve, 150));
+    
+    isInitialized = true;
     
     ctx = gsap.context(() => {
       ScrollTrigger.matchMedia({
@@ -181,7 +236,58 @@
           }
         }
       });
+      
+      // Additional refresh after short delay for late layout shifts
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 300);
+      
     }, container);
+  }
+  
+  onMount(() => {
+    if (!browser) return;
+    
+    // Wait for window load to ensure all assets are ready
+    const startInit = () => {
+      initScrollTrigger();
+    };
+    
+    if (document.readyState === 'complete') {
+      // Page already loaded, init with short delay
+      setTimeout(startInit, 50);
+    } else {
+      // Wait for window load
+      window.addEventListener('load', () => {
+        setTimeout(startInit, 100);
+      }, { once: true });
+      // Also try after DOMContentLoaded as fallback
+      if (document.readyState === 'interactive') {
+        setTimeout(startInit, 500);
+      }
+    }
+    
+    // Re-init on page visibility change (handles tab switching)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && isInitialized && ScrollTriggerModule) {
+        ScrollTriggerModule.refresh();
+      }
+    };
+    
+    // Handle resize events
+    const handleResize = () => {
+      if (isInitialized && ScrollTriggerModule) {
+        ScrollTriggerModule.refresh();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('resize', handleResize);
+    };
   });
   
   onDestroy(() => {
