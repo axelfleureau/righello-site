@@ -476,13 +476,13 @@
     pointer-events: none;
   }
   
-  .hide-mobile {
-    display: none;
+  .author.hide-mobile {
+    display: none !important;
   }
   
   @media (min-width: 1024px) {
-    .hide-mobile {
-      display: flex;
+    .author.hide-mobile {
+      display: flex !important;
     }
   }
   
