@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
   import { browser } from '$app/environment';
   import PhoneMockup from './PhoneMockup.svelte';
   import MagneticButton from './MagneticButton.svelte';
@@ -47,6 +47,10 @@
   let activeStep = 0;
   let slideAnimated: boolean[] = [false, false, false];
   let scrollTriggerInstance: any = null;
+  let isInitialized = false;
+  
+  // CSS variable based progress - no pixel calculations
+  let phoneProgress = 0;
   
   function scrollToStep(stepIndex: number) {
     if (!scrollTriggerInstance || !container) return;
@@ -63,45 +67,48 @@
     });
   }
   
-  let isInitialized = false;
   let ScrollTriggerModule: any = null;
+  let resizeTimeout: ReturnType<typeof setTimeout>;
   
-  async function waitForCriticalAssets() {
+  // Wait for all critical assets to load with timeout fallbacks
+  async function waitForAssets() {
     const promises: Promise<void>[] = [];
+    const ASSET_TIMEOUT = 2000;
     
-    // Wait for fonts
-    if (document.fonts && document.fonts.ready) {
-      promises.push(document.fonts.ready.then(() => {}));
+    // Wait for fonts with timeout
+    if (document.fonts?.ready) {
+      promises.push(
+        Promise.race([
+          document.fonts.ready.then(() => {}),
+          new Promise<void>(resolve => setTimeout(resolve, ASSET_TIMEOUT))
+        ])
+      );
     }
     
-    // Wait for video in the container to load metadata
+    // Wait for video metadata with error handling
     const video = container?.querySelector('video');
-    if (video) {
-      if (video.readyState >= 1) {
-        // Already loaded metadata
-      } else {
-        promises.push(new Promise<void>(resolve => {
-          const onLoaded = () => {
-            video.removeEventListener('loadedmetadata', onLoaded);
-            video.removeEventListener('error', onLoaded);
-            resolve();
-          };
-          video.addEventListener('loadedmetadata', onLoaded);
-          video.addEventListener('error', onLoaded);
-          // Timeout fallback
-          setTimeout(resolve, 3000);
-        }));
-      }
+    if (video && video.readyState < 1) {
+      promises.push(new Promise<void>(resolve => {
+        const done = () => {
+          video.removeEventListener('loadedmetadata', done);
+          video.removeEventListener('error', done);
+          resolve();
+        };
+        video.addEventListener('loadedmetadata', done);
+        video.addEventListener('error', done);
+        setTimeout(resolve, ASSET_TIMEOUT);
+      }));
     }
     
-    // Wait for images
+    // Wait for images with error handling
     const images = container?.querySelectorAll('img') || [];
     images.forEach(img => {
       if (!img.complete) {
         promises.push(new Promise<void>(resolve => {
-          img.onload = () => resolve();
-          img.onerror = () => resolve();
-          setTimeout(resolve, 3000);
+          const done = () => resolve();
+          img.onload = done;
+          img.onerror = done;
+          setTimeout(resolve, ASSET_TIMEOUT);
         }));
       }
     });
@@ -109,186 +116,190 @@
     await Promise.all(promises);
   }
   
-  async function initScrollTrigger() {
-    if (!browser || isInitialized || !container) return;
-    
-    const gsap = (await import('gsap')).default;
-    const ScrollTrigger = (await import('gsap/ScrollTrigger')).ScrollTrigger;
-    gsap.registerPlugin(ScrollTrigger);
-    ScrollTriggerModule = ScrollTrigger;
-    
-    // Wait for all critical assets (fonts, video, images)
-    await waitForCriticalAssets();
-    
-    // Additional delay for layout stability
-    await new Promise(resolve => setTimeout(resolve, 150));
-    
-    isInitialized = true;
-    
-    ctx = gsap.context(() => {
-      ScrollTrigger.matchMedia({
-        "(min-width: 1024px)": function() {
-          const totalSlides = slides.length + 1;
-          const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-          const scrollDistance = slides.length * 300;
-          
-          slideRefs.forEach((slideEl) => {
-            if (!slideEl) return;
-            gsap.set(slideEl, { opacity: 0, x: 0 });
-          });
-          
-          scrollTriggerInstance = ScrollTrigger.create({
-            trigger: container,
-            start: 'top top',
-            end: () => `+=${scrollDistance}vh`,
-            pin: true,
-            scrub: 1,
-            snap: {
-              snapTo: snapPoints,
-              duration: { min: 0.4, max: 0.8 },
-              delay: 0.05,
-              ease: 'power2.inOut'
-            },
-            onUpdate: (self) => {
-              const progress = self.progress;
-              const slideIndex = Math.floor(progress * totalSlides);
-              
-              // Update active step for step indicator
-              activeStep = Math.max(0, Math.min(slideIndex, slides.length));
-              
-              if (progress < 0.2) {
-                const fadeProgress = progress / 0.2;
-                gsap.set(heroContent, { opacity: 1 - fadeProgress, y: -40 * fadeProgress });
-              } else {
-                gsap.set(heroContent, { opacity: 0, y: -40 });
-              }
-              
-              if (progress > 0.05 && progress < 0.35) {
-                const phoneProgress = (progress - 0.05) / 0.30;
-                const vw = window.innerWidth;
-                const phoneWidth = 280;
-                const startX = 0;
-                const endX = -((vw * 0.42) - (phoneWidth / 2) - 20);
-                const currentX = startX + (endX - startX) * Math.min(1, phoneProgress);
-                gsap.set(phoneWrapper, { 
-                  x: currentX,
-                  scale: 1 - (0.08 * Math.min(1, phoneProgress))
-                });
-              }
-              
-              slideRefs.forEach((slideEl, i) => {
-                if (!slideEl) return;
-                const slideStart = (i + 1) / totalSlides;
-                const slideEnd = (i + 2) / totalSlides;
-                const slideMid = (slideStart + slideEnd) / 2;
-                
-                if (progress >= slideStart - 0.05 && progress < slideEnd + 0.05) {
-                  let slideOpacity = 1;
-                  if (progress < slideStart + 0.1) {
-                    slideOpacity = (progress - (slideStart - 0.05)) / 0.15;
-                  } else if (progress > slideEnd - 0.1) {
-                    slideOpacity = 1 - ((progress - (slideEnd - 0.1)) / 0.15);
-                  }
-                  gsap.set(slideEl, { opacity: Math.max(0, Math.min(1, slideOpacity)) });
-                  
-                  if (i !== currentSlide && progress >= slideStart && progress < slideEnd) {
-                    currentSlide = i;
-                    if (!slideAnimated[i]) {
-                      slideAnimated[i] = true;
-                      animateSlideText(slideEl);
-                    }
-                  }
-                } else {
-                  gsap.set(slideEl, { opacity: 0 });
-                }
-              });
-            }
-          });
-          
-          function animateSlideText(slideEl: HTMLElement) {
-            const title = slideEl.querySelector('.slide-title');
-            const descChars = slideEl.querySelectorAll('.desc-char');
-            
-            if (title) {
-              gsap.fromTo(title, 
-                { opacity: 0, y: 40, scale: 0.95 },
-                { 
-                  opacity: 1, 
-                  y: 0, 
-                  scale: 1,
-                  duration: 0.6,
-                  ease: 'power3.out'
-                }
-              );
-            }
-            
-            gsap.fromTo(descChars, 
-              { opacity: 0, y: 20 },
-              { 
-                opacity: 1, 
-                y: 0, 
-                stagger: 0.008,
-                duration: 0.3,
-                ease: 'power2.out',
-                delay: 0.3
-              }
-            );
-          }
-        }
-      });
-      
-      // Additional refresh after short delay for late layout shifts
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 300);
-      
-    }, container);
-  }
-  
-  onMount(() => {
+  onMount(async () => {
     if (!browser) return;
     
-    // Wait for window load to ensure all assets are ready
-    const startInit = () => {
-      initScrollTrigger();
+    // Wait for DOM bindings to be ready
+    await tick();
+    
+    if (!container) return;
+    
+    // Single initialization - wait for window load
+    const init = async () => {
+      if (isInitialized || !container || !heroContent || !phoneWrapper) return;
+      
+      const gsap = (await import('gsap')).default;
+      const ScrollTrigger = (await import('gsap/ScrollTrigger')).ScrollTrigger;
+      gsap.registerPlugin(ScrollTrigger);
+      ScrollTriggerModule = ScrollTrigger;
+      
+      // Wait for all critical assets
+      await waitForAssets();
+      
+      // Small delay for layout stability
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      isInitialized = true;
+      
+      ctx = gsap.context(() => {
+        ScrollTrigger.matchMedia({
+          "(min-width: 1024px)": function() {
+            const totalSlides = slides.length + 1;
+            const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
+            const scrollDistance = slides.length * 300;
+            
+            // Initialize slides as invisible
+            slideRefs.forEach((slideEl) => {
+              if (!slideEl) return;
+              gsap.set(slideEl, { opacity: 0 });
+            });
+            
+            scrollTriggerInstance = ScrollTrigger.create({
+              trigger: container,
+              start: 'top top',
+              end: () => `+=${scrollDistance}vh`,
+              pin: true,
+              scrub: 1,
+              snap: {
+                snapTo: snapPoints,
+                duration: { min: 0.4, max: 0.8 },
+                delay: 0.05,
+                ease: 'power2.inOut'
+              },
+              onUpdate: (self) => {
+                const progress = self.progress;
+                const slideIndex = Math.floor(progress * totalSlides);
+                
+                // Update active step for step indicator
+                activeStep = Math.max(0, Math.min(slideIndex, slides.length));
+                
+                // Hero content fade out (0 to 0.2 progress)
+                if (progress < 0.2) {
+                  const fadeProgress = progress / 0.2;
+                  gsap.set(heroContent, { 
+                    opacity: 1 - fadeProgress, 
+                    yPercent: -10 * fadeProgress 
+                  });
+                } else {
+                  gsap.set(heroContent, { opacity: 0, yPercent: -10 });
+                }
+                
+                // Phone animation using percentage transforms (0.05 to 0.35 progress)
+                // Uses xPercent which is relative to element's own width - no viewport calculations!
+                if (progress <= 0.05) {
+                  phoneProgress = 0;
+                } else if (progress >= 0.35) {
+                  phoneProgress = 1;
+                } else {
+                  phoneProgress = (progress - 0.05) / 0.30;
+                }
+                
+                // Apply phone transform using CSS variable - updated via Svelte reactivity
+                // Phone moves from right position (0%) to center (-50% of its container offset)
+                gsap.set(phoneWrapper, { 
+                  xPercent: -40 * phoneProgress,
+                  scale: 1 - (0.08 * phoneProgress)
+                });
+                
+                // Slides animation
+                slideRefs.forEach((slideEl, i) => {
+                  if (!slideEl) return;
+                  const slideStart = (i + 1) / totalSlides;
+                  const slideEnd = (i + 2) / totalSlides;
+                  
+                  if (progress >= slideStart - 0.05 && progress < slideEnd + 0.05) {
+                    let slideOpacity = 1;
+                    if (progress < slideStart + 0.1) {
+                      slideOpacity = (progress - (slideStart - 0.05)) / 0.15;
+                    } else if (progress > slideEnd - 0.1) {
+                      slideOpacity = 1 - ((progress - (slideEnd - 0.1)) / 0.15);
+                    }
+                    gsap.set(slideEl, { opacity: Math.max(0, Math.min(1, slideOpacity)) });
+                    
+                    if (i !== currentSlide && progress >= slideStart && progress < slideEnd) {
+                      currentSlide = i;
+                      if (!slideAnimated[i]) {
+                        slideAnimated[i] = true;
+                        animateSlideText(slideEl, gsap);
+                      }
+                    }
+                  } else {
+                    gsap.set(slideEl, { opacity: 0 });
+                  }
+                });
+              }
+            });
+            
+            // Single refresh after setup
+            ScrollTrigger.refresh();
+          }
+        });
+      }, container);
     };
     
+    // Initialize when document is ready
     if (document.readyState === 'complete') {
-      // Page already loaded, init with short delay
-      setTimeout(startInit, 50);
+      await init();
     } else {
-      // Wait for window load
-      window.addEventListener('load', () => {
-        setTimeout(startInit, 100);
-      }, { once: true });
-      // Also try after DOMContentLoaded as fallback
-      if (document.readyState === 'interactive') {
-        setTimeout(startInit, 500);
-      }
+      window.addEventListener('load', init, { once: true });
     }
     
-    // Re-init on page visibility change (handles tab switching)
-    const handleVisibilityChange = () => {
+    // Debounced resize handler
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (isInitialized && ScrollTriggerModule) {
+          ScrollTriggerModule.refresh();
+        }
+      }, 200);
+    };
+    
+    // Visibility change handler
+    const handleVisibility = () => {
       if (document.visibilityState === 'visible' && isInitialized && ScrollTriggerModule) {
         ScrollTriggerModule.refresh();
       }
     };
     
-    // Handle resize events
-    const handleResize = () => {
-      if (isInitialized && ScrollTriggerModule) {
-        ScrollTriggerModule.refresh();
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('resize', handleResize);
+    document.addEventListener('visibilitychange', handleVisibility);
     
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      clearTimeout(resizeTimeout);
     };
   });
+  
+  function animateSlideText(slideEl: HTMLElement, gsap: any) {
+    const title = slideEl.querySelector('.slide-title');
+    const descChars = slideEl.querySelectorAll('.desc-char');
+    
+    if (title) {
+      gsap.fromTo(title, 
+        { opacity: 0, y: 40, scale: 0.95 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1,
+          duration: 0.6,
+          ease: 'power3.out'
+        }
+      );
+    }
+    
+    gsap.fromTo(descChars, 
+      { opacity: 0, y: 20 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        stagger: 0.008,
+        duration: 0.3,
+        ease: 'power2.out',
+        delay: 0.3
+      }
+    );
+  }
   
   onDestroy(() => {
     ctx?.revert();
@@ -338,7 +349,9 @@
     </div>
   </div>
   
+  <!-- Main content with CSS Grid layout -->
   <div class="scrolly-content">
+    <!-- Hero text column -->
     <div bind:this={heroContent} class="hero-text">
       <p class="text-sm md:text-base uppercase tracking-[0.3em] text-righello-pink mb-6 font-medium">
         {heroSlide.subtitle}
@@ -390,10 +403,12 @@
       </div>
     </div>
     
+    <!-- Phone column - positioned via CSS Grid, no absolute positioning -->
     <div bind:this={phoneWrapper} class="phone-area">
       <PhoneMockup videoSrc="https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/caterina_4.mp4?alt=media&token=82ca60f4-1a84-4682-9e90-c65a50421daa" />
     </div>
     
+    <!-- Slides overlay -->
     {#each slides as slide, i}
       <div 
         bind:this={slideRefs[i]}
@@ -453,6 +468,7 @@
       var(--bg-primary);
   }
   
+  /* CSS Grid based layout - stable positioning */
   .scrolly-content {
     position: relative;
     z-index: 10;
@@ -465,12 +481,12 @@
   
   @media (min-width: 1024px) {
     .scrolly-content {
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       height: 100%;
       align-items: center;
-      padding-top: 100px;
-      padding-bottom: 0;
-      gap: 0;
+      padding: 100px 6% 0;
+      gap: 2rem;
     }
   }
   
@@ -482,12 +498,13 @@
   
   @media (min-width: 1024px) {
     .hero-text {
-      flex: 1;
       max-width: 600px;
       text-align: left;
+      justify-self: start;
     }
   }
   
+  /* Phone area - uses Grid column positioning on desktop */
   .phone-area {
     position: relative;
     display: flex;
@@ -498,11 +515,11 @@
   
   @media (min-width: 1024px) {
     .phone-area {
-      position: absolute;
-      right: 8%;
-      top: 55%;
-      transform: translateY(-50%);
+      justify-self: end;
+      padding-right: 5%;
       z-index: 5;
+      /* Transform origin for percentage-based animations */
+      transform-origin: center center;
     }
   }
   
@@ -528,6 +545,7 @@
     }
   }
   
+  /* Slides - absolute positioned overlay */
   .slide {
     position: absolute;
     top: 50%;
@@ -624,7 +642,6 @@
     }
   }
   
-  .title-char,
   .desc-char {
     display: inline-block;
     will-change: opacity, transform;
@@ -689,7 +706,6 @@
     box-shadow: 0 0 20px rgba(214, 72, 126, 0.5);
   }
   
-  
   /* Slide Step Badge */
   .slide-step-badge {
     display: flex;
@@ -707,7 +723,6 @@
     font-size: 1.25rem;
   }
   
-  
   :global([data-theme="light"]) .step-line {
     background: rgba(0, 0, 0, 0.1);
   }
@@ -720,5 +735,4 @@
   :global([data-theme="light"]) .slide-step-badge {
     background: rgba(214, 72, 126, 0.1);
   }
-  
-  </style>
+</style>
