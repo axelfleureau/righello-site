@@ -113,7 +113,7 @@
                 const vw = window.innerWidth;
                 const phoneWidth = 280;
                 const startX = 0;
-                const endX = -((vw * 0.42) - (phoneWidth / 2));
+                const endX = -((vw * 0.42) - (phoneWidth / 2) - 20);
                 const currentX = startX + (endX - startX) * Math.min(1, phoneProgress);
                 gsap.set(phoneWrapper, { 
                   x: currentX,
