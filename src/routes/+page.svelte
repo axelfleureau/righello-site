@@ -14,6 +14,7 @@
   import BackgroundBeams from '$lib/components/BackgroundBeams.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
   import SocialReelShowcase from '$lib/components/SocialReelShowcase.svelte';
+  import PesoSection from '$lib/components/PesoSection.svelte';
   import { onMount } from 'svelte';
   
   const homepageServices = departments.map(dept => ({
@@ -284,6 +285,10 @@
     content={processSteps}
   />
 </section>
+
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
+
+<PesoSection />
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
