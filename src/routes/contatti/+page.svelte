@@ -32,9 +32,9 @@
 <section class="pt-32 pb-20 md:pt-40 md:pb-24">
   <div class="section-container">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-      <div>
+      <div class="overflow-hidden">
         <ScrollReveal animation="fade-up">
-          <h1 class="heading-xl mb-8 uppercase"><Highlight variant="pink">PARLIAMONE</Highlight></h1>
+          <h1 class="heading-xl mb-8 uppercase break-words"><Highlight variant="pink">PARLIAMONE</Highlight></h1>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={100}>
           <p class="text-xl md:text-2xl text-[var(--text-secondary)] mb-8">
