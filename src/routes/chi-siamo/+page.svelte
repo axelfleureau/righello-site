@@ -48,10 +48,8 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
       <div class="order-2 lg:order-1">
         <ScrollReveal animation="fade-up">
-          <div class="section-header">
-            <p class="section-subtitle">Chi siamo</p>
-            <h1 class="section-title mb-8">Il nostro team</h1>
-          </div>
+          <p class="section-subtitle text-left">Chi siamo</p>
+          <h1 class="section-title text-left mb-8">Il nostro team</h1>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={100}>
           <p class="text-xl mb-8" style="color: var(--text-secondary);">
@@ -94,7 +92,7 @@
       </div>
     </ScrollReveal>
     
-    <div class="flex flex-wrap justify-center gap-6 md:gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
       {#each team as member, i}
         <ScrollReveal animation="fade-up" delay={i * 100}>
           <ProfileCard 

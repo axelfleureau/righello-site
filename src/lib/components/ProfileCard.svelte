@@ -124,7 +124,19 @@
     --card-radius: 24px;
     perspective: 1200px;
     width: 100%;
-    max-width: 280px;
+    max-width: 100%;
+  }
+  
+  @media (min-width: 640px) {
+    .profile-card-wrap {
+      max-width: 280px;
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .profile-card-wrap {
+      max-width: 300px;
+    }
   }
   
   .profile-card-shell {
