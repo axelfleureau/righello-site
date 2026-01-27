@@ -111,8 +111,9 @@
               if (progress > 0.05 && progress < 0.35) {
                 const phoneProgress = (progress - 0.05) / 0.30;
                 const vw = window.innerWidth;
+                const phoneWidth = 280;
                 const startX = 0;
-                const endX = -(vw * 0.42 - 180);
+                const endX = -((vw * 0.42) - (phoneWidth / 2));
                 const currentX = startX + (endX - startX) * Math.min(1, phoneProgress);
                 gsap.set(phoneWrapper, { 
                   x: currentX,
