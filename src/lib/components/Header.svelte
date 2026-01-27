@@ -340,6 +340,11 @@
     font-size: 0.8125rem;
   }
   
+  /* Logo transition for smooth breathing effect */
+  .floating-nav img {
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
   .nav-compact img {
     height: 1.5rem;
   }
@@ -431,7 +436,11 @@
     font-weight: 500;
     color: var(--text-primary);
     border-radius: 9999px;
-    transition: all 0.2s ease;
+    transition: 
+      padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      font-size 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.2s ease,
+      background 0.2s ease;
   }
   
   .nav-link:hover {
@@ -450,7 +459,11 @@
     color: white;
     background: linear-gradient(135deg, #D6487E 0%, #c13d6f 100%);
     border-radius: 9999px;
-    transition: all 0.3s ease;
+    transition: 
+      padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      font-size 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
     box-shadow: 0 4px 15px rgba(214, 72, 126, 0.3);
   }
   
