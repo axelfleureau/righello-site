@@ -257,8 +257,7 @@
     speed={60} 
     pauseOnHover={true}
     scaleOnHover={true}
-    fadeEdges={true}
-    fadeSize="10rem"
+    fadeEdges={false}
     gap={64}
     itemHeight={32}
   />
