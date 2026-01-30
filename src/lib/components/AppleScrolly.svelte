@@ -117,7 +117,7 @@
           "(min-width: 1024px)": function() {
             const totalSlides = slides.length + 1;
             const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-            const scrollDistance = slides.length * 450;
+            const scrollDistance = slides.length * 550;
             
             // Initialize slides as invisible
             slideRefs.forEach((slideEl) => {
@@ -697,17 +697,18 @@
   .slide-step-badge {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    padding: 0.5rem 1rem;
-    background: rgba(214, 72, 126, 0.15);
-    border: 1px solid rgba(214, 72, 126, 0.3);
+    gap: 0.625rem;
+    margin-bottom: 1.25rem;
+    padding: 0.625rem 1.25rem;
+    background: rgba(214, 72, 126, 0.18);
+    border: 1px solid rgba(214, 72, 126, 0.35);
     border-radius: 9999px;
     width: fit-content;
+    backdrop-filter: blur(8px);
   }
   
   .slide-step-icon {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
   
   :global([data-theme="light"]) .step-line {

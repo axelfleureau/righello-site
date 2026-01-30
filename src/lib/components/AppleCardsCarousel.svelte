@@ -87,6 +87,53 @@
     }
   }
   
+  // Touch support for smooth mobile scrolling
+  let touchStartX = 0;
+  let touchScrollLeft = 0;
+  let isTouching = false;
+  
+  function handleTouchStart(e: TouchEvent) {
+    isTouching = true;
+    touchStartX = e.touches[0].pageX - container.offsetLeft;
+    touchScrollLeft = container.scrollLeft;
+  }
+  
+  function handleTouchMove(e: TouchEvent) {
+    if (!isTouching) return;
+    const x = e.touches[0].pageX - container.offsetLeft;
+    const walk = (touchStartX - x) * 1.2;
+    // Prevent vertical scroll when dragging horizontally
+    if (Math.abs(walk) > 10) {
+      e.preventDefault();
+    }
+    container.scrollLeft = touchScrollLeft + walk;
+  }
+  
+  function handleTouchEnd() {
+    isTouching = false;
+  }
+  
+  // Video frame extraction for thumbnails
+  let videoPosters: { [key: number]: string } = {};
+  
+  function extractVideoFrame(video: HTMLVideoElement, index: number) {
+    if (videoPosters[index]) return;
+    
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth || 320;
+      canvas.height = video.videoHeight || 568;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        videoPosters[index] = canvas.toDataURL('image/jpeg', 0.8);
+        videoPosters = videoPosters; // trigger reactivity
+      }
+    } catch (e) {
+      // CORS or other error - fail silently
+    }
+  }
+  
   onMount(() => {
     if (browser) {
       window.addEventListener('keydown', handleKeydown);
@@ -109,6 +156,9 @@
     on:mousemove={handleMouseMove}
     on:mouseup={handleMouseUp}
     on:mouseleave={handleMouseLeave}
+    on:touchstart={handleTouchStart}
+    on:touchmove={handleTouchMove}
+    on:touchend={handleTouchEnd}
     role="list"
   >
     {#each items as item, i}
@@ -136,14 +186,20 @@
               <video 
                 class="card-media"
                 src={item.videoSrc}
-                poster={item.posterSrc || ''}
+                poster={videoPosters[i] || item.posterSrc || ''}
                 muted
                 loop
                 playsinline
                 preload="metadata"
-                on:loadeddata={(e) => {
+                crossorigin="anonymous"
+                on:loadedmetadata={(e) => {
                   const video = e.currentTarget;
                   video.currentTime = 0.1;
+                }}
+                on:canplay={(e) => {
+                  const video = e.currentTarget;
+                  // Small delay to ensure frame is rendered
+                  setTimeout(() => extractVideoFrame(video, i), 100);
                 }}
               >
                 <track kind="captions" />
@@ -241,11 +297,16 @@
     gap: 1.25rem;
     padding: 1rem 6% 2rem;
     overflow-x: auto;
+    overflow-y: hidden;
     scroll-behavior: smooth;
     cursor: grab;
     -ms-overflow-style: none;
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
   
   .carousel-container::-webkit-scrollbar {
@@ -289,12 +350,14 @@
     border-radius: 1.25rem;
     overflow: hidden;
     background: var(--bg-tertiary);
-    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease;
     will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
   }
   
   .card-content:hover {
-    transform: translateY(-10px) scale(1.02);
+    transform: translate3d(0, -10px, 0) scale(1.02);
     box-shadow: 
       0 30px 60px rgba(0, 0, 0, 0.4),
       0 0 40px rgba(214, 72, 126, 0.2);
@@ -322,9 +385,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
+    transition: transform 0.4s ease, opacity 0.3s ease;
     z-index: 2;
     opacity: 1;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
   }
   
   video.card-media {

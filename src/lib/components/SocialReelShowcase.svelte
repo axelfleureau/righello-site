@@ -2,8 +2,8 @@
   import AppleCardsCarousel from './AppleCardsCarousel.svelte';
   import RevealOnScroll from './RevealOnScroll.svelte';
   
-  export let title = "I nostri lavori";
-  export let subtitle = "Reel & Social";
+  export let title = "Cosa facciamo sui social";
+  export let subtitle = "Content & Reel";
   
   const reelItems = [
     {
@@ -40,7 +40,7 @@
         <p class="section-subtitle">{subtitle}</p>
         <h2 class="section-title mb-4">{title}</h2>
         <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-          Scorri per esplorare alcuni dei nostri migliori lavori
+          Dai un'occhiata ai nostri contenuti in formato reel
         </p>
       </div>
     </RevealOnScroll>
