@@ -1,0 +1,574 @@
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
+  import RevealOnScroll from './RevealOnScroll.svelte';
+  
+  export let title = "Creiamo esperienze memorabili";
+  export let subtitle = "Video Production";
+  export let description = "Video istituzionali, contenuti dimostrativi e proof of work per raccontare il tuo brand";
+  
+  interface VideoItem {
+    title: string;
+    subtitle: string;
+    videoSrc?: string;
+    posterSrc?: string;
+    category: string;
+  }
+  
+  export let items: VideoItem[] = [
+    {
+      title: 'Video Istituzionale',
+      subtitle: 'Racconta la tua azienda',
+      category: 'Corporate',
+      videoSrc: ''
+    },
+    {
+      title: 'Demo Prodotto',
+      subtitle: 'Mostra come funziona',
+      category: 'Product',
+      videoSrc: ''
+    },
+    {
+      title: 'Testimonial',
+      subtitle: 'Le storie dei clienti',
+      category: 'Social Proof',
+      videoSrc: ''
+    },
+    {
+      title: 'Behind the Scenes',
+      subtitle: 'Il dietro le quinte',
+      category: 'Branding',
+      videoSrc: ''
+    }
+  ];
+  
+  let container: HTMLElement;
+  let isDragging = false;
+  let startX = 0;
+  let scrollLeft = 0;
+  let activeVideo: HTMLVideoElement | null = null;
+  let lightboxOpen = false;
+  let lightboxVideo: string | null = null;
+  let lightboxTitle = '';
+  
+  function handleMouseDown(e: MouseEvent) {
+    isDragging = true;
+    container.style.cursor = 'grabbing';
+    startX = e.pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+  }
+  
+  function handleMouseMove(e: MouseEvent) {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    container.scrollLeft = scrollLeft - walk;
+  }
+  
+  function handleMouseUp() {
+    isDragging = false;
+    container.style.cursor = 'grab';
+  }
+  
+  function handleMouseLeave() {
+    isDragging = false;
+    container.style.cursor = 'grab';
+  }
+  
+  function handleVideoHover(e: MouseEvent, video: HTMLVideoElement | null) {
+    if (video && video !== activeVideo) {
+      if (activeVideo) {
+        activeVideo.pause();
+        activeVideo.currentTime = 0;
+      }
+      activeVideo = video;
+      video.play().catch(() => {});
+    }
+  }
+  
+  function handleVideoLeave(video: HTMLVideoElement | null) {
+    if (video) {
+      video.pause();
+      video.currentTime = 0.1;
+    }
+    if (video === activeVideo) {
+      activeVideo = null;
+    }
+  }
+  
+  function openLightbox(videoSrc: string, itemTitle: string) {
+    if (!videoSrc) return;
+    lightboxVideo = videoSrc;
+    lightboxTitle = itemTitle;
+    lightboxOpen = true;
+    document.body.style.overflow = 'hidden';
+  }
+  
+  function closeLightbox() {
+    lightboxOpen = false;
+    lightboxVideo = null;
+    lightboxTitle = '';
+    document.body.style.overflow = '';
+  }
+  
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Escape' && lightboxOpen) {
+      closeLightbox();
+    }
+  }
+  
+  function handleContainerKeydown(e: KeyboardEvent) {
+    if (!container) return;
+    const scrollAmount = 350;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    }
+  }
+  
+  let touchStartX = 0;
+  let touchScrollLeft = 0;
+  
+  function handleTouchStart(e: TouchEvent) {
+    touchStartX = e.touches[0].pageX - container.offsetLeft;
+    touchScrollLeft = container.scrollLeft;
+  }
+  
+  function handleTouchMove(e: TouchEvent) {
+    const x = e.touches[0].pageX - container.offsetLeft;
+    const walk = (touchStartX - x) * 1.2;
+    container.scrollLeft = touchScrollLeft + walk;
+  }
+  
+  onMount(() => {
+    if (browser) {
+      window.addEventListener('keydown', handleKeydown);
+      return () => {
+        window.removeEventListener('keydown', handleKeydown);
+      };
+    }
+  });
+</script>
+
+<section class="section-padding overflow-hidden" aria-labelledby="horizontal-video-title">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up">
+      <header class="section-header">
+        <p class="section-subtitle">{subtitle}</p>
+        <h2 id="horizontal-video-title" class="section-title-highlight mb-4">
+          <span class="highlight-box">{title}</span>
+        </h2>
+        <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-3xl mx-auto">
+          {description}
+        </p>
+      </header>
+    </RevealOnScroll>
+  </div>
+  
+  <div 
+    bind:this={container}
+    class="carousel-container"
+    on:mousedown={handleMouseDown}
+    on:mousemove={handleMouseMove}
+    on:mouseup={handleMouseUp}
+    on:mouseleave={handleMouseLeave}
+    on:touchstart={handleTouchStart}
+    on:touchmove={handleTouchMove}
+    on:keydown={handleContainerKeydown}
+    tabindex="0"
+    role="list"
+    aria-label="Carousel video orizzontali - usa le frecce sinistra/destra per navigare"
+  >
+    {#each items as item, i}
+      <article 
+        class="carousel-card"
+        style="--index: {i}"
+        role="listitem"
+      >
+        <div 
+          class="card-content"
+          on:mouseenter={(e) => {
+            const video = e.currentTarget.querySelector('video');
+            if (video) handleVideoHover(e, video);
+          }}
+          on:mouseleave={() => {
+            const card = container?.querySelectorAll('.card-content')[i];
+            const video = card?.querySelector('video');
+            if (video) handleVideoLeave(video);
+          }}
+        >
+          {#if item.videoSrc}
+            <div class="video-wrapper">
+              <div class="video-placeholder"></div>
+              <video 
+                class="card-media"
+                src={item.videoSrc}
+                poster={item.posterSrc || ''}
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                on:loadeddata={(e) => {
+                  const video = e.currentTarget;
+                  video.currentTime = 0.1;
+                }}
+              >
+                <track kind="captions" />
+              </video>
+            </div>
+            <button 
+              class="play-overlay"
+              on:click|stopPropagation={() => item.videoSrc && openLightbox(item.videoSrc, item.title)}
+              aria-label="Riproduci video {item.title}"
+            >
+              <div class="play-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </button>
+          {:else}
+            <div class="card-placeholder">
+              <div class="placeholder-gradient"></div>
+              <div class="placeholder-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          {/if}
+          
+          <div class="card-overlay">
+            <h3 class="card-title">{item.title}</h3>
+            <p class="card-subtitle">{item.subtitle}</p>
+          </div>
+        </div>
+      </article>
+    {/each}
+  </div>
+</section>
+
+{#if lightboxOpen && lightboxVideo}
+  <div 
+    class="lightbox"
+    on:click={closeLightbox}
+    role="dialog"
+    aria-modal="true"
+    aria-label={lightboxTitle}
+  >
+    <button 
+      class="lightbox-close"
+      on:click={closeLightbox}
+      aria-label="Chiudi video"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+    
+    <div class="lightbox-content" on:click|stopPropagation>
+      <video 
+        src={lightboxVideo}
+        autoplay
+        controls
+        playsinline
+        class="lightbox-video"
+      >
+        <track kind="captions" />
+      </video>
+      <h3 class="lightbox-title">{lightboxTitle}</h3>
+    </div>
+  </div>
+{/if}
+
+<style>
+  .section-title-highlight {
+    font-size: clamp(1.75rem, 5vw, 3rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    text-align: center;
+  }
+  
+  .highlight-box {
+    display: inline;
+    background: linear-gradient(135deg, #D6487E 0%, #a855f7 100%);
+    padding: 0.1em 0.4em;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  
+  .carousel-container {
+    display: flex;
+    gap: 1.5rem;
+    padding: 2rem 6%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    cursor: grab;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+  
+  .carousel-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .carousel-container:focus-visible {
+    outline: 2px solid var(--righello-pink, #D6487E);
+    outline-offset: 4px;
+    border-radius: 1rem;
+  }
+  
+  .carousel-card {
+    flex-shrink: 0;
+    width: 320px;
+    scroll-snap-align: start;
+    animation: cardEnter 0.6s ease-out calc(var(--index) * 0.1s) backwards;
+  }
+  
+  @media (min-width: 640px) {
+    .carousel-card {
+      width: 380px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .carousel-card {
+      width: 420px;
+    }
+  }
+  
+  @keyframes cardEnter {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .card-content {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: var(--bg-tertiary);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
+    will-change: transform;
+  }
+  
+  .card-content:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+      0 25px 50px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(214, 72, 126, 0.15);
+  }
+  
+  .video-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .video-placeholder {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(214, 72, 126, 0.3) 0%, rgba(168, 85, 247, 0.2) 50%, rgba(6, 182, 212, 0.3) 100%);
+    z-index: 0;
+  }
+  
+  .card-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+    z-index: 2;
+  }
+  
+  .card-content:hover .card-media {
+    transform: scale(1.05);
+  }
+  
+  .card-placeholder {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .placeholder-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(214, 72, 126, 0.15) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(6, 182, 212, 0.15) 100%);
+  }
+  
+  .placeholder-icon {
+    position: relative;
+    z-index: 2;
+    width: 56px;
+    height: 56px;
+    background: rgba(214, 72, 126, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+  }
+  
+  .placeholder-icon svg {
+    width: 24px;
+    height: 24px;
+    margin-left: 2px;
+  }
+  
+  .card-content:hover .placeholder-icon {
+    transform: scale(1.1);
+    background: rgba(214, 72, 126, 0.8);
+  }
+  
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transition: opacity 0.3s ease, background 0.3s ease;
+    z-index: 5;
+  }
+  
+  .card-content:hover .play-overlay {
+    background: rgba(0, 0, 0, 0.35);
+  }
+  
+  .play-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(214, 72, 126, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(214, 72, 126, 0.4);
+  }
+  
+  .play-icon svg {
+    width: 22px;
+    height: 22px;
+    margin-left: 2px;
+  }
+  
+  .play-overlay:hover .play-icon {
+    transform: scale(1.12);
+    box-shadow: 0 12px 35px rgba(214, 72, 126, 0.5);
+  }
+  
+  .card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2.5rem 1.25rem 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
+    z-index: 4;
+  }
+  
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+    margin-bottom: 0.25rem;
+  }
+  
+  .card-subtitle {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+  }
+  
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    transition: all 0.2s ease;
+    z-index: 10;
+  }
+  
+  .lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+  }
+  
+  .lightbox-close svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .lightbox-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  .lightbox-video {
+    max-width: min(900px, 95vw);
+    max-height: 80vh;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+  
+  .lightbox-title {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+  }
+</style>

@@ -31,6 +31,7 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
     - **InfiniteMarquee**: Infinite horizontal scroll for client logos.
     - **ServiceTabs**: Modern tab switch with animated indicator.
     - **AnimatedVideoTestimonials**: Drag-to-scroll video reel carousel with fullscreen lightbox. Centered mobile navigation, 6rem gap on desktop. Supports prefers-reduced-motion.
+    - **HorizontalVideoShowcase**: Horizontal 16:9 video carousel for institutional videos, product demos, testimonials, and behind-the-scenes content. Drag-to-scroll with lightbox playback.
     - **AnimatedCounter**: Counters that animate on visibility.
     - **MagneticButton**: Buttons with a magnetic hover effect.
     - **BackgroundBeams**: Animated light effects for hero/accent sections (replaced by RippleGrid Background).

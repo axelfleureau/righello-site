@@ -14,6 +14,7 @@
   import BackgroundBeams from '$lib/components/BackgroundBeams.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
   import SocialReelShowcase from '$lib/components/SocialReelShowcase.svelte';
+  import HorizontalVideoShowcase from '$lib/components/HorizontalVideoShowcase.svelte';
   import PesoSection from '$lib/components/PesoSection.svelte';
   import RippleGrid from '$lib/components/RippleGrid.svelte';
   import { onMount } from 'svelte';
@@ -222,7 +223,17 @@
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
-<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
+<div style="background: var(--bg-secondary);">
+  <HorizontalVideoShowcase 
+    title="Creiamo esperienze memorabili"
+    subtitle="Video Production"
+    description="Video istituzionali, contenuti dimostrativi e proof of work per raccontare il tuo brand"
+  />
+</div>
+
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
+
+<section class="section-padding relative overflow-hidden">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
