@@ -65,15 +65,18 @@
 <style>
   .reveal-wrapper {
     position: relative;
+    height: 100%;
   }
   
   .reveal-content {
     will-change: transform, opacity;
+    height: 100%;
   }
   
   .reveal-placeholder {
     opacity: 0;
     pointer-events: none;
+    height: 100%;
   }
   
   .blur-reveal {

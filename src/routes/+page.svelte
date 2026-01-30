@@ -135,10 +135,10 @@
       </div>
     </RevealOnScroll>
     
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8" style="grid-auto-rows: 1fr;">
       {#each stats as stat, i}
         <RevealOnScroll animation="scale" delay={0} stagger={100} index={i}>
-          <div class="glass-card rounded-2xl p-6 md:p-8 text-center hover-lift">
+          <div class="glass-card rounded-2xl p-6 md:p-8 text-center hover-lift h-full flex flex-col justify-center">
             <div class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text mb-2">
               <AnimatedCounter target={stat.value} duration={2000} />{stat.suffix}
             </div>
