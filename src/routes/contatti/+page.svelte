@@ -31,7 +31,7 @@
   <meta name="description" content="Contatta Righello Creative Lab per il tuo prossimo progetto." />
 </svelte:head>
 
-<section class="section-padding">
+<section class="pt-24 md:pt-32 pb-16 md:pb-24">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">

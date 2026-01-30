@@ -43,7 +43,7 @@
   <meta name="description" content="Siamo un team dedicato e dinamico di professionisti, uniti dalla passione per l'innovazione e l'eccellenza nel settore digitale." />
 </svelte:head>
 
-<section class="pt-32 pb-16 md:pt-40 md:pb-24">
+<section class="pt-24 pb-12 md:pt-32 md:pb-20">
   <div class="section-container">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
       <div class="order-2 lg:order-1">
@@ -81,7 +81,9 @@
   </div>
 </section>
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+<div class="mt-12 md:mt-16">
+  <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+</div>
 
 <section class="section-padding" style="background-color: var(--bg-secondary);">
   <div class="section-container">

@@ -14,6 +14,7 @@
   let mobileServiziOpen = false;
   
   const navLinks = [
+    { href: '/', label: 'Home', hasDropdown: false },
     { href: '/servizi', label: 'Servizi', hasDropdown: true },
     { href: '/progetti', label: 'Progetti', hasDropdown: false },
     { href: '/chi-siamo', label: 'Chi siamo', hasDropdown: false },

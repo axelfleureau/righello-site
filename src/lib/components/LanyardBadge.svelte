@@ -69,6 +69,56 @@
     cardPosition.set({ x: 0, y: 0 });
   }
   
+  // Touch handlers for mobile
+  let touchStartX = 0;
+  let touchStartY = 0;
+  
+  function handleTouchStart(e: TouchEvent) {
+    if (!container) return;
+    isDragging = true;
+    isHovered = true;
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    
+    const rect = container.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    mouseX = (touch.clientX - centerX) / (rect.width / 2);
+    mouseY = (touch.clientY - centerY) / (rect.height / 2);
+  }
+  
+  function handleTouchMove(e: TouchEvent) {
+    if (!container || !isDragging) return;
+    e.preventDefault(); // Prevent scroll interference
+    const touch = e.touches[0];
+    const rect = container.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    mouseX = (touch.clientX - centerX) / (rect.width / 2);
+    mouseY = (touch.clientY - centerY) / (rect.height / 2);
+    
+    // More responsive drag on mobile
+    cardPosition.set({ x: mouseX * 60, y: mouseY * 60 });
+    cardRotation.set({ x: -mouseY * 20, y: mouseX * 20 });
+    swingVelocity += (touch.clientX - touchStartX) * 0.02;
+    
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+  }
+  
+  function handleTouchEnd() {
+    isDragging = false;
+    isHovered = false;
+    cardPosition.set({ x: 0, y: 0 });
+    cardRotation.set({ x: 0, y: 0 });
+  }
+  
+  function handleTouchCancel() {
+    handleTouchEnd();
+  }
+  
   function animate() {
     swingVelocity -= swingAngle * SWING_STIFFNESS;
     swingVelocity += Math.sin(Date.now() * GRAVITY_INFLUENCE) * 0.01;
@@ -110,6 +160,10 @@
   on:mouseup={handleMouseUp}
   on:mouseleave={handleMouseLeave}
   on:mouseenter={handleMouseEnter}
+  on:touchstart={handleTouchStart}
+  on:touchmove={handleTouchMove}
+  on:touchend={handleTouchEnd}
+  on:touchcancel={handleTouchCancel}
   role="presentation"
 >
   <div class="lanyard-rope">
@@ -160,6 +214,7 @@
     align-items: center;
     justify-content: flex-start;
     padding-top: 20px;
+    touch-action: none;
     user-select: none;
   }
   
