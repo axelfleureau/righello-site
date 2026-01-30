@@ -37,7 +37,7 @@
       <div class="section-header">
         <p class="section-subtitle">Contattaci</p>
         <h1 class="section-title"><Highlight variant="pink">PARLIAMONE</Highlight></h1>
-        <p class="text-lg md:text-xl text-[var(--text-secondary)]">
+        <p class="text-lg md:text-xl text-[var(--text-secondary)] mt-4">
           Hai un <TechWord>progetto</TechWord> in mente? Compila il form e ti risponderemo il prima possibile.
         </p>
       </div>
