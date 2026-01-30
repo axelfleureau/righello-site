@@ -251,9 +251,9 @@
     padding: 0.75rem 1.25rem;
     border-radius: var(--nav-radius);
     position: relative;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background: rgba(20, 20, 25, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(20, 20, 25, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 
@@ -316,7 +316,7 @@
   }
   
   .nav-scrolled {
-    background: rgba(15, 15, 20, 0.85);
+    background: rgba(15, 15, 20, 0.7);
     border-color: rgba(255, 255, 255, 0.08);
     box-shadow: 
       0 8px 32px rgba(0, 0, 0, 0.3),
@@ -324,7 +324,7 @@
   }
   
   :global([data-theme="light"]) .floating-nav {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.6);
     border-color: rgba(0, 0, 0, 0.08);
     box-shadow: 
       0 4px 30px rgba(0, 0, 0, 0.08),
@@ -338,7 +338,7 @@
   }
   
   :global([data-theme="light"]) .nav-scrolled {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.75);
     border-color: rgba(0, 0, 0, 0.1);
     box-shadow: 
       0 8px 32px rgba(0, 0, 0, 0.1),

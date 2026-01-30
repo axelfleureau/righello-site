@@ -155,7 +155,9 @@
     grid-column: span var(--span);
     position: relative;
     z-index: 1;
-    transition: z-index 0s 0s;
+    transition: z-index 0s 0.3s;
+    isolation: isolate;
+    transform-style: flat;
   }
   
   .card-flip-wrapper:hover,
