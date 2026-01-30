@@ -138,10 +138,10 @@
   --space-3xl: 6rem;     /* 96px */
   --space-4xl: 8rem;     /* 128px */
   
-  /* Section Spacing */
-  --section-padding-sm: var(--space-xl);       /* 48px - mobile */
-  --section-padding-md: var(--space-2xl);      /* 64px - tablet */
-  --section-padding-lg: var(--space-3xl);      /* 96px - desktop */
+  /* Section Spacing - optimized for tighter layout */
+  --section-padding-sm: var(--space-lg);       /* 32px - mobile */
+  --section-padding-md: var(--space-xl);       /* 48px - tablet */
+  --section-padding-lg: var(--space-2xl);      /* 64px - desktop */
   
   /* Container */
   --container-padding: var(--space-md);

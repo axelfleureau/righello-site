@@ -1,8 +1,8 @@
 <script lang="ts">
   export let fromColor = 'var(--bg-primary)';
   export let toColor = 'var(--bg-secondary)';
-  export let height = '80px';
-  export let mobileHeight = '24px';
+  export let height = '40px';
+  export let mobileHeight = '16px';
   export let variant: 'gradient' | 'wave' | 'angle' = 'gradient';
 </script>
 
