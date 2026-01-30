@@ -153,6 +153,16 @@
     max-width: 280px;
     cursor: pointer;
     grid-column: span var(--span);
+    position: relative;
+    z-index: 1;
+    transition: z-index 0s 0s;
+  }
+  
+  .card-flip-wrapper:hover,
+  .card-flip-wrapper:focus,
+  .card-flip-wrapper.flipped {
+    z-index: 10;
+    transition: z-index 0s 0s;
   }
   
   @media (max-width: 639px) {
@@ -168,6 +178,7 @@
     height: 100%;
     transform-style: preserve-3d;
     transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+    isolation: isolate;
   }
   
   .card-flip-wrapper.flipped .card-inner {
