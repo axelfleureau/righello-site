@@ -203,7 +203,7 @@
                   muted
                   loop
                   playsinline
-                  preload="auto"
+                  preload="metadata"
                   class="video-element"
                   on:canplay={() => {
                     if (isInView && videoElement) {

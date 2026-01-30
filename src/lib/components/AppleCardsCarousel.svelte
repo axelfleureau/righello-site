@@ -140,7 +140,7 @@
                 muted
                 loop
                 playsinline
-                preload="auto"
+                preload="metadata"
                 on:loadeddata={(e) => {
                   const video = e.currentTarget;
                   video.currentTime = 0.1;

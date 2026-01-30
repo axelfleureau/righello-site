@@ -70,50 +70,21 @@
   let ScrollTriggerModule: any = null;
   let resizeTimeout: ReturnType<typeof setTimeout>;
   
-  // Wait for all critical assets to load with timeout fallbacks
+  // Wait only for critical layout assets (fonts) - NOT video
+  // Video loading should not block scrollytelling functionality
   async function waitForAssets() {
-    const promises: Promise<void>[] = [];
-    const ASSET_TIMEOUT = 2000;
+    const ASSET_TIMEOUT = 1000;
     
-    // Wait for fonts with timeout
+    // Only wait for fonts - they affect layout
     if (document.fonts?.ready) {
-      promises.push(
-        Promise.race([
-          document.fonts.ready.then(() => {}),
-          new Promise<void>(resolve => setTimeout(resolve, ASSET_TIMEOUT))
-        ])
-      );
+      await Promise.race([
+        document.fonts.ready,
+        new Promise<void>(resolve => setTimeout(resolve, ASSET_TIMEOUT))
+      ]);
     }
     
-    // Wait for video metadata with error handling
-    const video = container?.querySelector('video');
-    if (video && video.readyState < 1) {
-      promises.push(new Promise<void>(resolve => {
-        const done = () => {
-          video.removeEventListener('loadedmetadata', done);
-          video.removeEventListener('error', done);
-          resolve();
-        };
-        video.addEventListener('loadedmetadata', done);
-        video.addEventListener('error', done);
-        setTimeout(resolve, ASSET_TIMEOUT);
-      }));
-    }
-    
-    // Wait for images with error handling
-    const images = container?.querySelectorAll('img') || [];
-    images.forEach(img => {
-      if (!img.complete) {
-        promises.push(new Promise<void>(resolve => {
-          const done = () => resolve();
-          img.onload = done;
-          img.onerror = done;
-          setTimeout(resolve, ASSET_TIMEOUT);
-        }));
-      }
-    });
-    
-    await Promise.all(promises);
+    // Skip video/image waiting - scrollytelling should work immediately
+    // The phone mockup handles its own loading state
   }
   
   onMount(async () => {
@@ -243,11 +214,17 @@
       }, container);
     };
     
-    // Initialize when document is ready
-    if (document.readyState === 'complete') {
-      await init();
-    } else {
-      window.addEventListener('load', init, { once: true });
+    // Initialize immediately - don't wait for full page load
+    // This ensures scrollytelling works even while videos are still loading
+    await init();
+    
+    // Refresh ScrollTrigger after full load to ensure layout accuracy
+    if (document.readyState !== 'complete') {
+      window.addEventListener('load', () => {
+        if (isInitialized && ScrollTriggerModule) {
+          ScrollTriggerModule.refresh();
+        }
+      }, { once: true });
     }
     
     // Debounced resize handler

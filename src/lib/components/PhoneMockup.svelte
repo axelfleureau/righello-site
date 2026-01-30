@@ -2,12 +2,16 @@
   import { onMount } from 'svelte';
   import { spring } from 'svelte/motion';
   import { fade, scale } from 'svelte/transition';
+  import { browser } from '$app/environment';
   
   export let videoSrc: string | null = null;
   export let showPlaceholder = true;
   
   let mounted = false;
   let isHovered = false;
+  let videoLoading = true;
+  let videoError = false;
+  let videoElement: HTMLVideoElement;
   
   const rotation = spring({ x: 0, y: 0 }, {
     stiffness: 0.05,
@@ -39,8 +43,32 @@
     isHovered = true;
   }
   
+  function handleVideoCanPlay() {
+    videoLoading = false;
+  }
+  
+  function handleVideoError() {
+    videoLoading = false;
+    videoError = true;
+  }
+  
   onMount(() => {
     mounted = true;
+    
+    // If video is already cached/ready, update loading state
+    if (videoElement && videoElement.readyState >= 3) {
+      videoLoading = false;
+    }
+    
+    // Fallback timeout: hide skeleton after 8 seconds even if video hasn't loaded
+    // This prevents permanent skeleton on slow connections
+    const fallbackTimeout = setTimeout(() => {
+      if (videoLoading && videoSrc) {
+        videoLoading = false;
+      }
+    }, 8000);
+    
+    return () => clearTimeout(fallbackTimeout);
   });
 </script>
 
@@ -68,12 +96,25 @@
         
         <div class="phone-screen">
           {#if videoSrc}
+            {#if videoLoading}
+              <div class="video-skeleton" transition:fade={{ duration: 300 }}>
+                <div class="skeleton-shimmer"></div>
+                <div class="skeleton-loader">
+                  <div class="loader-spinner"></div>
+                </div>
+              </div>
+            {/if}
             <video 
+              bind:this={videoElement}
               autoplay 
               loop 
               muted 
               playsinline
+              preload="metadata"
+              on:canplay={handleVideoCanPlay}
+              on:error={handleVideoError}
               class="w-full h-full object-cover"
+              class:video-ready={!videoLoading}
             >
               <source src={videoSrc} type="video/mp4" />
             </video>
@@ -404,5 +445,79 @@
   
   .phone-glow.active {
     opacity: 1;
+  }
+  
+  /* Video loading skeleton */
+  .video-skeleton {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  
+  .skeleton-shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(214, 72, 126, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  
+  .skeleton-loader {
+    position: relative;
+    z-index: 3;
+  }
+  
+  .loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(214, 72, 126, 0.2);
+    border-top-color: #D6487E;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Video ready state */
+  video {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  video.video-ready {
+    opacity: 1;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton-shimmer,
+    .loader-spinner {
+      animation: none;
+    }
+    
+    .loader-spinner {
+      border-top-color: #D6487E;
+      opacity: 0.5;
+    }
+    
+    video {
+      transition: none;
+      opacity: 1;
+    }
   }
 </style>
