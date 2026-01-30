@@ -291,6 +291,13 @@
     font-weight: 800;
     color: var(--text-primary);
     text-align: center;
+    line-height: 1.6;
+  }
+  
+  @media (min-width: 640px) {
+    .section-title-highlight {
+      line-height: 1.4;
+    }
   }
   
   .highlight-box {
@@ -300,6 +307,8 @@
     color: white;
     text-transform: uppercase;
     letter-spacing: 0.02em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
   
   .carousel-container {
