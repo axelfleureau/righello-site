@@ -519,6 +519,7 @@
   @media (max-width: 1023px) {
     .scrolly-content {
       padding-top: 140px;
+      padding-bottom: 60px;
     }
   }
   
@@ -527,7 +528,7 @@
       padding-top: 130px;
       padding-left: 5%;
       padding-right: 5%;
-      padding-bottom: 40px;
+      padding-bottom: 80px;
       gap: 2rem;
     }
   }
