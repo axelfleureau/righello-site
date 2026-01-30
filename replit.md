@@ -25,8 +25,8 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
 - **Navbar**: A pill-shaped, glassmorphism-styled floating navbar that adapts its appearance based on scroll direction (transparent/classic at top, compact when scrolling down, expanded when scrolling up, hidden after significant scroll).
 - **Interactive Components**:
     - **PhoneMockup**: 3D iPhone with spring physics and tilt effects.
-    - **AppleScrolly**: Apple-style scrollytelling with strong magnetic snap, pinning the iPhone during scroll with synchronized impact phrases. Features clickable step indicator with aria-current support for accessibility.
-    - **AppleCardsCarousel**: Horizontal, drag-to-scroll carousel with hover-to-play video and 3D effects.
+    - **AppleScrolly**: Apple-style scrollytelling with strong magnetic snap (550vh per step for relaxed reading), pinning the iPhone during scroll with synchronized impact phrases. Features clickable step indicator with aria-current support, enhanced slide badges with backdrop-filter blur and larger icons (1.5rem).
+    - **AppleCardsCarousel**: Horizontal, drag-to-scroll carousel with hover-to-play video and 3D effects. Features native touch support with preventDefault for smooth mobile scrolling, GPU-accelerated CSS (transform3d, backface-visibility), and video frame extraction for dynamic thumbnails (requires Firebase CORS configuration).
     - **GlowCard**: Cards with a cursor-following glow effect.
     - **InfiniteMarquee**: Infinite horizontal scroll for client logos.
     - **ServiceTabs**: Modern tab switch with animated indicator.
