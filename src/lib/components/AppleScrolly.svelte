@@ -146,7 +146,7 @@
           "(min-width: 1024px)": function() {
             const totalSlides = slides.length + 1;
             const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-            const scrollDistance = slides.length * 300;
+            const scrollDistance = slides.length * 450;
             
             // Initialize slides as invisible
             slideRefs.forEach((slideEl) => {
