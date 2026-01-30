@@ -178,7 +178,6 @@
     height: 100%;
     transform-style: preserve-3d;
     transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
-    isolation: isolate;
   }
   
   .card-flip-wrapper.flipped .card-inner {
