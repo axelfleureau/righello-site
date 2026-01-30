@@ -77,7 +77,7 @@
     "@threlte/extras": "^7.5.4",
     "@types/three": "^0.182.0",
     "gsap": "^3.14.2",
-    "matter-js": "^0.19.0",
+    "matter-js": "^0.20.0",
     "meshline": "^3.3.1",
     "ogl": "^1.0.11",
     "openapi-fetch": "^0.13.4",
