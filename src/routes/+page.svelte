@@ -71,7 +71,7 @@
   
   const stats = [
     { value: 50, suffix: '+', label: 'Progetti completati' },
-    { value: 2, suffix: 'M+', label: 'Views generate' },
+    { value: 8, suffix: 'M+', label: 'Views generate' },
     { value: 98, suffix: '%', label: 'Clienti soddisfatti' },
     { value: 8, suffix: '.5x', label: 'ROAS medio' },
   ];
