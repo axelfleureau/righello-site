@@ -50,8 +50,6 @@
   let lightboxOpen = false;
   let lightboxVideo: string | null = null;
   let lightboxTitle = '';
-  let videoReady: boolean[] = items.map(() => false);
-  
   // Gradient poster SVG data URI for video placeholders
   const gradientPoster = `data:image/svg+xml,${encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600">
@@ -66,11 +64,6 @@
       <rect width="400" height="600" fill="url(#grad)"/>
     </svg>
   `)}`;
-  
-  function markVideoReady(index: number) {
-    videoReady[index] = true;
-    videoReady = videoReady;
-  }
   
   function handleMouseDown(e: MouseEvent) {
     isDragging = true;
@@ -404,25 +397,6 @@
     height: 100%;
   }
   
-  .video-placeholder {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, 
-      rgba(214, 72, 126, 0.4) 0%, 
-      rgba(168, 85, 247, 0.3) 30%,
-      rgba(6, 182, 212, 0.4) 70%,
-      rgba(214, 72, 126, 0.3) 100%
-    );
-    background-size: 200% 200%;
-    animation: gradientShift 4s ease infinite;
-    z-index: 0;
-  }
-  
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-  
   .card-media {
     position: absolute;
     inset: 0;
@@ -431,15 +405,6 @@
     object-fit: cover;
     transition: transform 0.6s ease;
     z-index: 2;
-  }
-  
-  .video-placeholder {
-    transition: opacity 0.5s ease;
-  }
-  
-  .video-placeholder.hidden {
-    opacity: 0;
-    pointer-events: none;
   }
   
   .card-content:hover .card-media {
