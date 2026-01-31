@@ -14,7 +14,7 @@ const { storyblokApi } = storyblokInit({
 
 const storyblok = storyblokApi as NonNullable<ReturnType<typeof storyblokInit>['storyblokApi']>;
 
-type SitemapEntry = {
+type SitemapEntry = { 
   loc: string;
   lastmod: string;
   changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
