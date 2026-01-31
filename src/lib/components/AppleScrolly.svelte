@@ -130,12 +130,13 @@
               start: 'top top',
               end: () => `+=${scrollDistance}vh`,
               pin: true,
-              scrub: 1,
+              scrub: 0.5,
               snap: {
                 snapTo: snapPoints,
-                duration: { min: 0.4, max: 0.8 },
-                delay: 0.05,
-                ease: 'power2.inOut'
+                duration: { min: 0.3, max: 0.6 },
+                delay: 0.15,
+                ease: 'power3.inOut',
+                inertia: false
               },
               onUpdate: (self) => {
                 const progress = self.progress;
