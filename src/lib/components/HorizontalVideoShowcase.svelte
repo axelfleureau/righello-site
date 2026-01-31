@@ -50,6 +50,12 @@
   let lightboxOpen = false;
   let lightboxVideo: string | null = null;
   let lightboxTitle = '';
+  let videoReady: boolean[] = items.map(() => false);
+  
+  function markVideoReady(index: number) {
+    videoReady[index] = true;
+    videoReady = videoReady;
+  }
   
   function handleMouseDown(e: MouseEvent) {
     isDragging = true;
@@ -203,9 +209,10 @@
         >
           {#if item.videoSrc}
             <div class="video-wrapper">
-              <div class="video-placeholder"></div>
+              <div class="video-placeholder" class:hidden={videoReady[i]}></div>
               <video 
                 class="card-media"
+                class:video-ready={videoReady[i]}
                 src={item.videoSrc}
                 muted
                 loop
@@ -215,10 +222,7 @@
                   const video = e.currentTarget;
                   video.currentTime = 0.5;
                 }}
-                on:seeked={(e) => {
-                  const video = e.currentTarget;
-                  video.classList.add('video-ready');
-                }}
+                on:seeked={() => markVideoReady(i)}
               >
                 <track kind="captions" />
               </video>
@@ -420,6 +424,10 @@
   
   .card-media.video-ready {
     opacity: 1;
+  }
+  
+  .video-placeholder.hidden {
+    opacity: 0;
   }
   
   .card-media:not(.video-ready) + .play-overlay {

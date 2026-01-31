@@ -31,6 +31,12 @@
   let touchEndX = 0;
   const SWIPE_THRESHOLD = 50;
   let reducedMotion = false;
+  let videoReady: boolean[] = testimonials.map(() => false);
+  
+  function markVideoReady(index: number) {
+    videoReady[index] = true;
+    videoReady = videoReady;
+  }
   
   function handleTouchStart(e: TouchEvent) {
     touchStartX = e.touches[0].clientX;
@@ -194,7 +200,7 @@
             style="--offset: {i - activeIndex}"
           >
             {#if testimonial.videoSrc}
-              <div class="video-gradient-bg"></div>
+              <div class="video-gradient-bg" class:hidden={videoReady[i]}></div>
               {#if i === activeIndex}
                 <video
                   bind:this={videoElement}
@@ -205,13 +211,14 @@
                   playsinline
                   preload="auto"
                   class="video-element"
+                  class:video-ready={videoReady[i]}
                   on:loadedmetadata={(e) => {
                     const video = e.currentTarget;
                     if (video.currentTime === 0) video.currentTime = 0.5;
                   }}
                   on:seeked={(e) => {
+                    markVideoReady(i);
                     const video = e.currentTarget;
-                    video.classList.add('video-ready');
                     if (isInView) video.play().catch(() => {});
                   }}
                 >
@@ -224,14 +231,12 @@
                   playsinline
                   preload="auto"
                   class="video-element video-preview"
+                  class:video-ready={videoReady[i]}
                   on:loadedmetadata={(e) => {
                     const video = e.currentTarget;
                     video.currentTime = 0.5;
                   }}
-                  on:seeked={(e) => {
-                    const video = e.currentTarget;
-                    video.classList.add('video-ready');
-                  }}
+                  on:seeked={() => markVideoReady(i)}
                 >
                   <track kind="captions" />
                 </video>
@@ -496,6 +501,10 @@
   
   .video-element.video-ready {
     opacity: 1;
+  }
+  
+  .video-gradient-bg.hidden {
+    opacity: 0;
   }
   
   .video-thumbnail {

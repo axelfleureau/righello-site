@@ -340,8 +340,7 @@
   }
   
   .before-item {
-    text-decoration: line-through;
-    opacity: 0.7;
+    opacity: 0.85;
   }
   
   .after-item {
