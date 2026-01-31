@@ -119,18 +119,30 @@
   function extractVideoFrame(video: HTMLVideoElement, index: number) {
     if (videoPosters[index]) return;
     
+    // Wait for video to have actual dimensions
+    if (!video.videoWidth || !video.videoHeight) {
+      // Retry after a short delay
+      setTimeout(() => extractVideoFrame(video, index), 200);
+      return;
+    }
+    
     try {
       const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth || 320;
-      canvas.height = video.videoHeight || 568;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        videoPosters[index] = canvas.toDataURL('image/jpeg', 0.8);
-        videoPosters = videoPosters; // trigger reactivity
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        // Only set if we got valid data (not empty/transparent)
+        if (dataUrl && dataUrl.length > 100) {
+          videoPosters[index] = dataUrl;
+          videoPosters = videoPosters; // trigger reactivity
+        }
       }
     } catch (e) {
-      // CORS or other error - fail silently
+      // CORS or other error - fail silently, video will show on hover
+      console.debug('Frame extraction failed for video', index, e);
     }
   }
   
@@ -196,10 +208,17 @@
                   const video = e.currentTarget;
                   video.currentTime = 0.1;
                 }}
+                on:loadeddata={(e) => {
+                  const video = e.currentTarget;
+                  setTimeout(() => extractVideoFrame(video, i), 50);
+                }}
                 on:canplay={(e) => {
                   const video = e.currentTarget;
-                  // Small delay to ensure frame is rendered
                   setTimeout(() => extractVideoFrame(video, i), 100);
+                }}
+                on:seeked={(e) => {
+                  const video = e.currentTarget;
+                  extractVideoFrame(video, i);
                 }}
               >
                 <track kind="captions" />
