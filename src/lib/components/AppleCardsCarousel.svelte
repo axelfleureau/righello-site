@@ -113,37 +113,12 @@
     isTouching = false;
   }
   
-  // Video frame extraction for thumbnails
-  let videoPosters: { [key: number]: string } = {};
+  // Track which videos have loaded their first frame
+  let videoReady: { [key: number]: boolean } = {};
   
-  function extractVideoFrame(video: HTMLVideoElement, index: number) {
-    if (videoPosters[index]) return;
-    
-    // Wait for video to have actual dimensions
-    if (!video.videoWidth || !video.videoHeight) {
-      // Retry after a short delay
-      setTimeout(() => extractVideoFrame(video, index), 200);
-      return;
-    }
-    
-    try {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-        // Only set if we got valid data (not empty/transparent)
-        if (dataUrl && dataUrl.length > 100) {
-          videoPosters[index] = dataUrl;
-          videoPosters = videoPosters; // trigger reactivity
-        }
-      }
-    } catch (e) {
-      // CORS or other error - fail silently, video will show on hover
-      console.debug('Frame extraction failed for video', index, e);
-    }
+  function markVideoReady(index: number) {
+    videoReady[index] = true;
+    videoReady = videoReady; // trigger reactivity
   }
   
   onMount(() => {
@@ -194,32 +169,22 @@
         >
           {#if item.videoSrc}
             <div class="video-wrapper">
-              <div class="video-placeholder"></div>
+              <div class="video-placeholder" class:hidden={videoReady[i]}></div>
               <video 
                 class="card-media"
+                class:video-loaded={videoReady[i]}
                 src={item.videoSrc}
-                poster={videoPosters[i] || item.posterSrc || ''}
+                poster={item.posterSrc || ''}
                 muted
                 loop
                 playsinline
-                preload="metadata"
-                crossorigin="anonymous"
+                preload="auto"
                 on:loadedmetadata={(e) => {
                   const video = e.currentTarget;
                   video.currentTime = 0.1;
                 }}
-                on:loadeddata={(e) => {
-                  const video = e.currentTarget;
-                  setTimeout(() => extractVideoFrame(video, i), 50);
-                }}
-                on:canplay={(e) => {
-                  const video = e.currentTarget;
-                  setTimeout(() => extractVideoFrame(video, i), 100);
-                }}
-                on:seeked={(e) => {
-                  const video = e.currentTarget;
-                  extractVideoFrame(video, i);
-                }}
+                on:loadeddata={() => markVideoReady(i)}
+                on:canplay={() => markVideoReady(i)}
               >
                 <track kind="captions" />
               </video>
@@ -412,12 +377,17 @@
   }
   
   video.card-media {
-    background: var(--bg-tertiary);
+    background: transparent;
     object-fit: cover;
+    opacity: 0;
   }
   
-  video.card-media:not([src=""]) {
+  video.card-media.video-loaded {
     opacity: 1;
+  }
+  
+  .video-placeholder.hidden {
+    opacity: 0;
   }
   
   .card-content:hover .card-media {
