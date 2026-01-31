@@ -14,7 +14,7 @@
     quote: string;
   }[];
   
-  export let autoplay = true;
+  export let autoplay = false;
   export let interval = 5000;
   
   let activeIndex = 0;
@@ -194,16 +194,16 @@
             style="--offset: {i - activeIndex}"
           >
             {#if testimonial.videoSrc}
+              <div class="video-gradient-bg"></div>
               {#if i === activeIndex}
                 <video
                   bind:this={videoElement}
                   src={testimonial.videoSrc}
-                  poster={testimonial.thumbnailSrc || `${testimonial.videoSrc}#t=0.5`}
                   autoplay
                   muted
                   loop
                   playsinline
-                  preload="metadata"
+                  preload="auto"
                   class="video-element"
                   on:canplay={() => {
                     if (isInView && videoElement) {
@@ -213,19 +213,12 @@
                 >
                   <track kind="captions" />
                 </video>
-              {:else if testimonial.thumbnailSrc}
-                <img 
-                  src={testimonial.thumbnailSrc} 
-                  alt={testimonial.clientName}
-                  class="video-thumbnail"
-                  loading="lazy"
-                />
               {:else}
                 <video
                   src={testimonial.videoSrc}
                   muted
                   playsinline
-                  preload="metadata"
+                  preload="auto"
                   class="video-element video-preview"
                 >
                   <track kind="captions" />
@@ -460,7 +453,28 @@
     z-index: 5;
   }
   
+  .video-gradient-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, 
+      rgba(214, 72, 126, 0.4) 0%, 
+      rgba(139, 92, 246, 0.3) 30%,
+      rgba(6, 182, 212, 0.4) 70%,
+      rgba(214, 72, 126, 0.3) 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+    z-index: 0;
+  }
+  
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
   .video-element {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
     object-fit: cover;
