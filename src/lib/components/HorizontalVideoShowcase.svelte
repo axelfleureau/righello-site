@@ -17,28 +17,28 @@
   
   export let items: VideoItem[] = [
     {
-      title: 'Video Istituzionale',
-      subtitle: 'Racconta la tua azienda',
+      title: 'Geom. Mauro Poles',
+      subtitle: 'Video Showcase',
       category: 'Corporate',
-      videoSrc: ''
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/poles-geometra.firebasestorage.app/o/viedo%20architetto.mp4?alt=media&token=a8a22a02-99d5-4d70-8991-654df9be3379'
     },
     {
-      title: 'Demo Prodotto',
-      subtitle: 'Mostra come funziona',
-      category: 'Product',
-      videoSrc: ''
+      title: 'Living Door',
+      subtitle: 'Capannone industriale',
+      category: 'Industrial',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/poles-geometra.firebasestorage.app/o/20.mp4?alt=media&token=5f0c2e7e-5086-4739-981e-b56083866e81'
     },
     {
-      title: 'Testimonial',
-      subtitle: 'Le storie dei clienti',
-      category: 'Social Proof',
-      videoSrc: ''
+      title: 'Riviera Resort Hotel',
+      subtitle: 'Lignano Sabbiadoro',
+      category: 'Hospitality',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/ennevi-6f853.firebasestorage.app/o/ennevi_1.mp4?alt=media&token=31325f81-6c72-4ae7-8b12-f9ab2d9a75ae'
     },
     {
-      title: 'Behind the Scenes',
-      subtitle: 'Il dietro le quinte',
-      category: 'Branding',
-      videoSrc: ''
+      title: 'Hotel Miramare',
+      subtitle: 'Lignano Sabbiadoro',
+      category: 'Hospitality',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/ennevi-6f853.firebasestorage.app/o/ennevi_2.mp4?alt=media&token=601d71c1-deac-41f5-b49a-68c986b700c6'
     }
   ];
   
