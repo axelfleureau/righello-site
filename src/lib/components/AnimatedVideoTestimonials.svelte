@@ -33,6 +33,21 @@
   let reducedMotion = false;
   let videoReady: boolean[] = testimonials.map(() => false);
   
+  // Gradient poster SVG data URI for video placeholders (9:16 aspect ratio)
+  const gradientPoster = `data:image/svg+xml,${encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 640">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(214,72,126,0.5)"/>
+          <stop offset="50%" style="stop-color:rgba(168,85,247,0.3)"/>
+          <stop offset="100%" style="stop-color:rgba(6,182,212,0.5)"/>
+        </linearGradient>
+      </defs>
+      <rect width="360" height="640" fill="#0a0a0a"/>
+      <rect width="360" height="640" fill="url(#grad)"/>
+    </svg>
+  `)}`;
+  
   function markVideoReady(index: number) {
     videoReady[index] = true;
     videoReady = videoReady;
@@ -200,24 +215,18 @@
             style="--offset: {i - activeIndex}"
           >
             {#if testimonial.videoSrc}
-              <div class="video-gradient-bg" class:hidden={videoReady[i]}></div>
               {#if i === activeIndex}
                 <video
                   bind:this={videoElement}
                   src={testimonial.videoSrc}
+                  poster={gradientPoster}
                   autoplay
                   muted
                   loop
                   playsinline
-                  preload="auto"
+                  preload="metadata"
                   class="video-element"
-                  class:video-ready={videoReady[i]}
-                  on:loadedmetadata={(e) => {
-                    const video = e.currentTarget;
-                    if (video.currentTime === 0) video.currentTime = 0.5;
-                  }}
-                  on:seeked={(e) => {
-                    markVideoReady(i);
+                  on:canplay={(e) => {
                     const video = e.currentTarget;
                     if (isInView) video.play().catch(() => {});
                   }}
@@ -227,16 +236,11 @@
               {:else}
                 <video
                   src={testimonial.videoSrc}
+                  poster={gradientPoster}
                   muted
                   playsinline
-                  preload="auto"
+                  preload="metadata"
                   class="video-element video-preview"
-                  class:video-ready={videoReady[i]}
-                  on:loadedmetadata={(e) => {
-                    const video = e.currentTarget;
-                    video.currentTime = 0.5;
-                  }}
-                  on:seeked={() => markVideoReady(i)}
                 >
                   <track kind="captions" />
                 </video>
@@ -495,16 +499,15 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.5s ease;
   }
   
-  .video-element.video-ready {
-    opacity: 1;
+  .video-gradient-bg {
+    transition: opacity 0.5s ease;
   }
   
   .video-gradient-bg.hidden {
     opacity: 0;
+    pointer-events: none;
   }
   
   .video-thumbnail {

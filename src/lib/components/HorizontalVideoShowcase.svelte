@@ -52,6 +52,21 @@
   let lightboxTitle = '';
   let videoReady: boolean[] = items.map(() => false);
   
+  // Gradient poster SVG data URI for video placeholders
+  const gradientPoster = `data:image/svg+xml,${encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(214,72,126,0.4)"/>
+          <stop offset="50%" style="stop-color:rgba(168,85,247,0.3)"/>
+          <stop offset="100%" style="stop-color:rgba(6,182,212,0.4)"/>
+        </linearGradient>
+      </defs>
+      <rect width="400" height="600" fill="#0a0a0a"/>
+      <rect width="400" height="600" fill="url(#grad)"/>
+    </svg>
+  `)}`;
+  
   function markVideoReady(index: number) {
     videoReady[index] = true;
     videoReady = videoReady;
@@ -209,20 +224,14 @@
         >
           {#if item.videoSrc}
             <div class="video-wrapper">
-              <div class="video-placeholder" class:hidden={videoReady[i]}></div>
               <video 
                 class="card-media"
-                class:video-ready={videoReady[i]}
                 src={item.videoSrc}
+                poster={gradientPoster}
                 muted
                 loop
                 playsinline
-                preload="auto"
-                on:loadedmetadata={(e) => {
-                  const video = e.currentTarget;
-                  video.currentTime = 0.5;
-                }}
-                on:seeked={() => markVideoReady(i)}
+                preload="metadata"
               >
                 <track kind="captions" />
               </video>
@@ -418,24 +427,19 @@
     position: absolute;
     inset: 0;
     width: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-  
-  .card-media.video-ready {
-    opacity: 1;
-  }
-  
-  .video-placeholder.hidden {
-    opacity: 0;
-  }
-  
-  .card-media:not(.video-ready) + .play-overlay {
-    pointer-events: none;
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s ease;
     z-index: 2;
+  }
+  
+  .video-placeholder {
+    transition: opacity 0.5s ease;
+  }
+  
+  .video-placeholder.hidden {
+    opacity: 0;
+    pointer-events: none;
   }
   
   .card-content:hover .card-media {
