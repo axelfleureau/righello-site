@@ -174,17 +174,15 @@
                 class="card-media"
                 class:video-loaded={videoReady[i]}
                 src={item.videoSrc}
-                poster={item.posterSrc || ''}
                 muted
                 loop
                 playsinline
                 preload="auto"
                 on:loadedmetadata={(e) => {
                   const video = e.currentTarget;
-                  video.currentTime = 0.1;
+                  video.currentTime = 0.5;
                 }}
-                on:loadeddata={() => markVideoReady(i)}
-                on:canplay={() => markVideoReady(i)}
+                on:seeked={() => markVideoReady(i)}
               >
                 <track kind="captions" />
               </video>

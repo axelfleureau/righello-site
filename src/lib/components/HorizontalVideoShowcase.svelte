@@ -207,14 +207,17 @@
               <video 
                 class="card-media"
                 src={item.videoSrc}
-                poster={item.posterSrc || ''}
                 muted
                 loop
                 playsinline
-                preload="metadata"
-                on:loadeddata={(e) => {
+                preload="auto"
+                on:loadedmetadata={(e) => {
                   const video = e.currentTarget;
-                  video.currentTime = 0.1;
+                  video.currentTime = 0.5;
+                }}
+                on:seeked={(e) => {
+                  const video = e.currentTarget;
+                  video.classList.add('video-ready');
                 }}
               >
                 <track kind="captions" />
@@ -391,14 +394,36 @@
   .video-placeholder {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(214, 72, 126, 0.3) 0%, rgba(168, 85, 247, 0.2) 50%, rgba(6, 182, 212, 0.3) 100%);
+    background: linear-gradient(135deg, 
+      rgba(214, 72, 126, 0.4) 0%, 
+      rgba(168, 85, 247, 0.3) 30%,
+      rgba(6, 182, 212, 0.4) 70%,
+      rgba(214, 72, 126, 0.3) 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
     z-index: 0;
+  }
+  
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
   
   .card-media {
     position: absolute;
     inset: 0;
     width: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  .card-media.video-ready {
+    opacity: 1;
+  }
+  
+  .card-media:not(.video-ready) + .play-overlay {
+    pointer-events: none;
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s ease;

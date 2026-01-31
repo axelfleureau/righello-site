@@ -205,10 +205,14 @@
                   playsinline
                   preload="auto"
                   class="video-element"
-                  on:canplay={() => {
-                    if (isInView && videoElement) {
-                      videoElement.play().catch(() => {});
-                    }
+                  on:loadedmetadata={(e) => {
+                    const video = e.currentTarget;
+                    if (video.currentTime === 0) video.currentTime = 0.5;
+                  }}
+                  on:seeked={(e) => {
+                    const video = e.currentTarget;
+                    video.classList.add('video-ready');
+                    if (isInView) video.play().catch(() => {});
                   }}
                 >
                   <track kind="captions" />
@@ -220,6 +224,14 @@
                   playsinline
                   preload="auto"
                   class="video-element video-preview"
+                  on:loadedmetadata={(e) => {
+                    const video = e.currentTarget;
+                    video.currentTime = 0.5;
+                  }}
+                  on:seeked={(e) => {
+                    const video = e.currentTarget;
+                    video.classList.add('video-ready');
+                  }}
                 >
                   <track kind="captions" />
                 </video>
@@ -478,6 +490,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  .video-element.video-ready {
+    opacity: 1;
   }
   
   .video-thumbnail {
