@@ -496,6 +496,7 @@
               class="faq-question"
               on:click={() => toggleFaq(i)}
               aria-expanded={openFaqIndex === i}
+              aria-controls="faq-answer-{i}"
             >
               <span>{faq.question}</span>
               <svg 
@@ -504,13 +505,14 @@
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             
             {#if openFaqIndex === i}
-              <div class="faq-answer" transition:slide={{ duration: 300, easing: cubicOut }}>
+              <div id="faq-answer-{i}" class="faq-answer" transition:slide={{ duration: 300, easing: cubicOut }}>
                 <p>{faq.answer}</p>
               </div>
             {/if}
@@ -682,7 +684,7 @@
   }
   
   .section-subtitle {
-    font-size: 0.875rem;
+    font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: #D6487E;
@@ -756,7 +758,7 @@
   }
   
   .help-desc {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     color: var(--text-secondary);
     line-height: 1.6;
   }
@@ -799,7 +801,7 @@
   }
   
   .pillar-desc {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     color: var(--text-secondary);
     line-height: 1.6;
   }
@@ -836,7 +838,7 @@
   
   .case-badge {
     display: inline-block;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -852,7 +854,7 @@
   }
   
   .case-desc {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 1.5rem;
@@ -882,7 +884,7 @@
   }
   
   .metric-label {
-    font-size: 0.75rem;
+    font-size: 1rem;
     color: var(--text-secondary);
     line-height: 1.3;
   }
@@ -945,7 +947,7 @@
   }
   
   .step-desc {
-    font-size: 0.875rem;
+    font-size: 1rem;
     color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 1rem;
@@ -953,7 +955,7 @@
   
   .step-duration {
     display: inline-block;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 600;
     padding: 0.25rem 0.75rem;
     background: rgba(214, 72, 126, 0.1);
@@ -1014,7 +1016,7 @@
     padding: 0.25rem 1rem;
     background: linear-gradient(135deg, #D6487E, #B83B6A);
     color: white;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 600;
     border-radius: 9999px;
     white-space: nowrap;
@@ -1034,7 +1036,7 @@
   }
   
   .solution-desc {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 1.5rem;
@@ -1051,7 +1053,7 @@
     display: flex;
     align-items: flex-start;
     gap: 0.5rem;
-    font-size: 0.875rem;
+    font-size: 1rem;
     color: var(--text-secondary);
     margin-bottom: 0.5rem;
   }
@@ -1175,13 +1177,13 @@
   }
   
   .author-name {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--text-primary);
   }
   
   .author-role {
-    font-size: 0.8125rem;
+    font-size: 1rem;
     color: var(--text-secondary);
   }
   
@@ -1254,7 +1256,7 @@
   }
   
   .faq-answer p {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     color: var(--text-secondary);
     line-height: 1.7;
   }
