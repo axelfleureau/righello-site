@@ -93,7 +93,7 @@
   
   const pillars = [
     { icon: '🎨', title: 'Design che Converte', desc: 'UI/UX pensate per guidare l\'utente verso l\'azione, non solo per essere belle.' },
-    { icon: '⚙️', title: 'Codice Pulito e Scalabile', desc: 'Svelte, React, TypeScript: tecnologie moderne per progetti che crescono.' },
+    { icon: '⚙️', title: 'Sito Veloce e Affidabile', desc: 'Pagine che caricano in meno di 3 secondi, zero crash, aggiornamenti semplici.' },
     { icon: '📊', title: 'Dati e KPI Chiari', desc: 'Ogni progetto ha obiettivi misurabili: traffico, conversioni, performance.' },
     { icon: '🔄', title: 'Supporto Continuo', desc: 'Non ci fermiamo al lancio: aggiornamenti, SEO, ottimizzazioni ongoing.' },
     { icon: '🤖', title: 'AI × Human', desc: 'Automazioni intelligenti per velocità, esperienza umana per qualità.' },
