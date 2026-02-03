@@ -1,0 +1,57 @@
+Analisi Completa Pagine Servizi Leviathan
+1. DIGITAL EXPERIENCE PAGE - Struttura Vincente
+Hero Section:
+
+"Creiamo esperienze digitali che uniscono design e performance: 
+progettate per distinguerti e far crescere il tuo business."
+Punti di Forza:
+
+✅ Value proposition in una riga (chiara, concreta)
+✅ Benefit immediato ("distinguerti e far crescere")
+✅ No buzzword inutili
+Sezione "In cosa possiamo aiutarti":
+
+SEO, velocità, user journey e obiettivi di business 
+sono parte del progetto fin dall'inizio.
+Pattern identificato:
+
+5-6 bullet points con titolo bold + descrizione breve
+Focus su QUANDO e COME, non solo COSA
+Ogni punto inizia con un verbo d'azione
+Case Study Section:
+
+Badge con settore ([ TRAVEL | Headless eCommerce ])
+Risultato concreto in 1-2 righe
+NO metriche vaghe, solo numeri specifici
+Tabella Comparativa LEVpod™:
+
+Confronto a 3 colonne
+Righe: Team & costi, Time-to-market, Regia & KPI, Evoluzione, Operatività
+Icona info i per dettagli (UX pattern intelligente)
+FAQ Section:
+
+Domande cliente-centriche (iniziano con "Posso...", "Come...", "Quanto...")
+Risposte brevi (2-3 righe max)
+Rassicurazioni concrete (es: "No perdita SEO", "Sì proprietà codice")
+2. CONTENT STRATEGY PAGE - Copy Eccezionale
+Hero:
+
+"Shake up your Content. Feed. growth."
+I contenuti definiscono il percepito del brand, 
+ne guidano il messaggio e costruiscono community solide e attive.
+Pattern copy:
+
+Titolo con punteggiatura ritmica (Shake up. Feed. Growth.)
+Sottotitolo che spiega il "perché" non il "cosa"
+Sezione "Perché scegliere Leviathan":
+
+Non solo creatività, Leviathan unisce dati, AI e execution 
+per contenuti che generano risultati concreti e misurabili.
+6 Pilastri con Icon + Titolo + Descrizione:
+
+Creatività che performa - Format pensati per KPI, non solo estetica
+Multicanale integrato - Un unico piano per social, video ed eventi
+Execution continua - Dai PED al calendario, fino alla distribuzione
+Dati & KPI - Ogni contenuto misurabile: reach, CR, lead
+AI × Human - Insight e varianti generate dall'AI, validate dal team
+[ripetizione per enfasi]
