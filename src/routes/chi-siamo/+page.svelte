@@ -108,13 +108,13 @@
   const stats = [
     { value: 50, suffix: '+', label: 'Progetti completati' },
     { value: 30, suffix: '+', label: 'Clienti attivi' },
-    { value: 4, suffix: '', label: 'Co-Founder dedicati' },
+    { value: 3, suffix: '', label: 'Dipartimenti integrati' },
   ];
 </script>
 
 <svelte:head>
   <title>Chi Siamo - Righello | Growth Agency Venezia</title>
-  <meta name="description" content="4 Co-Founder, 3 dipartimenti, un unico obiettivo: trasformare i tuoi dati in crescita misurabile. Scopri il team Righello a Mestre, Venezia." />
+  <meta name="description" content="Growth agency a Venezia. 3 dipartimenti integrati, un unico obiettivo: trasformare i tuoi dati in crescita misurabile. Scopri il team Righello." />
 </svelte:head>
 
 <section class="pt-24 pb-12 md:pt-32 md:pb-20">
@@ -124,18 +124,18 @@
         <ScrollReveal animation="fade-up">
           <p class="section-subtitle text-left">Chi Siamo</p>
           <h1 class="section-title text-left mb-6">
-            <span class="block">4 Co-Founder.</span>
-            <span class="block"><Highlight variant="pink">Un Unico Team.</Highlight></span>
+            <span class="block">Crescita Misurabile.</span>
+            <span class="block"><Highlight variant="pink">Nessuna Promessa Vuota.</Highlight></span>
           </h1>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={100}>
           <p class="text-lg md:text-xl mb-6" style="color: var(--text-secondary);">
-            Non siamo un'agenzia tradizionale. Siamo <TechWord>4 professionisti</TechWord> che hanno unito competenze complementari per offrire un servizio completo: dalla strategia al codice, dalla creativita alle campagne.
+            Siamo una <TechWord>growth agency</TechWord> nata dall'unione di tre Co-Founder con competenze complementari: strategia, creatività e tecnologia. Un team compatto che lavora insieme ogni giorno.
           </p>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={200}>
           <p class="text-lg md:text-xl mb-8" style="color: var(--text-secondary);">
-            Ogni progetto ha un <TechWord highlight>interlocutore unico</TechWord>. Niente passaggi tra reparti, niente dispersioni. Un team agile che parla la tua lingua e misura tutto in numeri.
+            Il nostro approccio? <TechWord highlight>Zero dispersioni</TechWord>. Un interlocutore unico, KPI condivisi, risultati tracciabili. Non vendiamo ore, vendiamo crescita.
           </p>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={300}>
@@ -177,7 +177,7 @@
         <p class="section-subtitle">Il Team</p>
         <h2 class="section-title text-center mb-4">I Volti di Righello</h2>
         <p class="text-lg md:text-xl text-center max-w-3xl mx-auto mb-12" style="color: var(--text-secondary);">
-          4 Co-Founder con competenze diverse, un obiettivo comune: portare risultati misurabili.
+          Tre Co-Founder, competenze complementari, un obiettivo comune: far crescere il tuo business.
         </p>
       </div>
     </ScrollReveal>
