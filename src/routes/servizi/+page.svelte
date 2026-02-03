@@ -1,87 +1,312 @@
 <script lang="ts">
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
-  import ServiceTabs from '$lib/components/ServiceTabs.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
-  import SectionDivider from '$lib/components/SectionDivider.svelte';
-  import { departments as baseDepartments } from '$lib/data/projects';
+  import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
+  import FAQ from '$lib/components/FAQ.svelte';
+  import { slide } from 'svelte/transition';
+  import { cubicOut } from 'svelte/easing';
   
-  const departments = baseDepartments.map(dept => ({
-    ...dept,
-    features: dept.id === 'content-social' 
-      ? ['Piano editoriale mensile', 'Report analytics', 'A/B testing contenuti', 'Trend analysis', 'Community management', 'Crisis management']
-      : dept.id === 'advertising'
-      ? ['Setup pixel completo', 'Dashboard real-time', 'A/B testing', 'Audience building', 'Retargeting avanzato', 'Budget optimization']
-      : ['UX Research', 'Prototipi interattivi', 'Design responsive', 'SEO tecnico', 'Performance optimization', 'Manutenzione evolutiva']
-  }));
-  
-  const methodology = [
-    { num: '01', title: 'Analisi', desc: 'Studiamo il mercato, i competitor e i dati esistenti per definire la strategia.' },
-    { num: '02', title: 'Strategia', desc: 'Definiamo obiettivi, KPI e roadmap con milestone misurabili.' },
-    { num: '03', title: 'Esecuzione', desc: 'Implementiamo con agilità, testando e ottimizzando costantemente.' },
-    { num: '04', title: 'Scaling', desc: 'Scaliamo ciò che funziona, eliminando ciò che non performa.' },
+  const helpPoints = [
+    { 
+      icon: '🎯', 
+      title: 'Strategia Prima del Design', 
+      desc: 'SEO, performance, user journey e obiettivi di business sono parte del progetto fin dall\'inizio, non aggiunte dopo.'
+    },
+    { 
+      icon: '⚡', 
+      title: 'Performance dal Giorno Zero', 
+      desc: 'Impostiamo Analytics, tracking conversioni e dashboard prima ancora che il sito sia online. Zero dati persi.'
+    },
+    { 
+      icon: '🤝', 
+      title: 'Un Team, Tutte le Competenze', 
+      desc: 'Strategia, design, sviluppo, SEO: un team multidisciplinare che continua a far crescere il tuo progetto dopo il lancio.'
+    },
+    { 
+      icon: '📱', 
+      title: 'Mobile-First, Sempre', 
+      desc: 'Il 70%+ del traffico è mobile. Progettiamo per smartphone, poi adattiamo per desktop. Mai il contrario.'
+    },
+    { 
+      icon: '🧠', 
+      title: 'AI-Powered, Human-Validated', 
+      desc: 'Analisi, automazioni e ottimizzazioni: l\'AI accelera ogni fase, il team trasforma i dati in risultati concreti.'
+    },
+    { 
+      icon: '🔧', 
+      title: 'Proprietà Totale del Codice', 
+      desc: 'Repository, design system, documentazione: tutto è tuo. Piena trasparenza e controllo sul progetto.'
+    },
   ];
   
-  const strengths = [
-    { icon: '📈', title: 'Orientamento ai numeri', desc: 'Ogni decisione è basata su dati. Ogni risultato è tracciato e misurabile.' },
-    { icon: '🎯', title: 'Full-funnel approach', desc: 'Dalla awareness alla conversione, gestiamo l\'intero percorso del cliente.' },
-    { icon: '🤝', title: 'Team dedicato', desc: 'Un referente unico che coordina specialisti di ogni dipartimento.' },
+  const pillars = [
+    { icon: '🎨', title: 'Design che Converte', desc: 'UI/UX pensate per guidare l\'utente verso l\'azione, non solo per essere belle.' },
+    { icon: '⚙️', title: 'Codice Pulito e Scalabile', desc: 'Svelte, React, TypeScript: tecnologie moderne per progetti che crescono.' },
+    { icon: '📊', title: 'Dati e KPI Chiari', desc: 'Ogni progetto ha obiettivi misurabili: traffico, conversioni, performance.' },
+    { icon: '🔄', title: 'Supporto Continuo', desc: 'Non ci fermiamo al lancio: aggiornamenti, SEO, ottimizzazioni ongoing.' },
+    { icon: '🤖', title: 'AI × Human', desc: 'Automazioni intelligenti per velocità, esperienza umana per qualità.' },
+    { icon: '🌍', title: 'Local Expertise', desc: 'Conosciamo il mercato Veneto, parliamo la tua lingua, siamo sempre raggiungibili.' },
   ];
+  
+  const caseStudies = [
+    {
+      badge: 'E-COMMERCE | Shopify Custom',
+      title: 'Brand Moda Veneto',
+      description: 'E-commerce da zero, ottimizzato per mobile e integrato con sistemi di magazzino esistenti.',
+      metrics: [
+        { value: 180, suffix: '%', label: 'Conversioni in 6 mesi', prefix: '+' },
+        { value: 2.8, suffix: 's', label: 'Load time mobile' },
+        { value: 95, label: 'PageSpeed score' },
+      ]
+    },
+    {
+      badge: 'SERVIZI | Web App Custom',
+      title: 'Studio Professionale Mestre',
+      description: 'Portale clienti con prenotazioni, documenti e area riservata. Sviluppo custom in Svelte.',
+      metrics: [
+        { value: 40, suffix: '%', label: 'Tempo gestione appuntamenti', prefix: '-' },
+        { value: 98, suffix: '%', label: 'Customer satisfaction' },
+        { value: 100, label: 'Lighthouse score' },
+      ]
+    },
+    {
+      badge: 'TURISMO | Sito Multilingua',
+      title: 'Agenzia Viaggi Venezia',
+      description: 'Sito multilingua (IT/EN/DE) con integrazione booking engine e SEO local avanzata.',
+      metrics: [
+        { value: 250, suffix: '%', label: 'Traffico organico in 1 anno', prefix: '+' },
+        { value: 1, prefix: '#', label: 'Google per "tour venezia"' },
+        { value: 3, suffix: ' lingue', label: 'IT, EN, DE' },
+      ]
+    },
+  ];
+  
+  const workflow = [
+    { num: '01', title: 'Strategia & Discovery', desc: 'Definiamo obiettivi, KPI, target, competitor e tecnologie. Brief tecnico e wireframe prima di ogni design.', duration: '1-2 settimane' },
+    { num: '02', title: 'Design & Prototipazione', desc: 'UI/UX in Figma, mobile-first, con design system riutilizzabile. Prototype interattivi per testare user journey.', duration: '2-3 settimane' },
+    { num: '03', title: 'Sviluppo & Testing', desc: 'Codice pulito (Svelte/React/TS), repository privato, ambienti staging/production. QA completo su tutti i device.', duration: '4-6 settimane' },
+    { num: '04', title: 'Lancio & Ottimizzazione', desc: 'Deploy orchestrato, monitoring attivo, SEO tecnico, Analytics configurato. Supporto post-lancio e CRO continuo.', duration: 'Ongoing' },
+  ];
+  
+  const solutions = [
+    {
+      icon: '🌐',
+      title: 'Sito Vetrina',
+      description: 'Sito istituzionale moderno, veloce e ottimizzato SEO. Perfetto per professionisti e PMI.',
+      features: ['Design custom mobile-first', '5-10 pagine', 'Form contatti + Google Maps', 'SEO on-page', 'Analytics configurato'],
+      highlight: false
+    },
+    {
+      icon: '🛒',
+      title: 'E-Commerce',
+      description: 'Piattaforma vendita online con checkout ottimizzato, integrazioni e automazioni marketing.',
+      features: ['Shopify / WooCommerce / Custom', 'Catalogo prodotti illimitato', 'Gateway pagamento', 'Automazioni email', 'Dashboard vendite'],
+      highlight: true
+    },
+    {
+      icon: '⚡',
+      title: 'Web App Custom',
+      description: 'Applicazioni web su misura per processi aziendali, portali clienti e configuratori.',
+      features: ['Sviluppo Svelte/React', 'Backend Node/Python', 'Database cloud', 'API RESTful', 'Hosting gestito'],
+      highlight: false
+    },
+    {
+      icon: '📈',
+      title: 'Performance Marketing',
+      description: 'Campagne Meta, Google e TikTok Ads con tracking avanzato e ottimizzazione continua.',
+      features: ['Setup pixel completo', 'A/B testing creatività', 'Audience building', 'Report mensili', 'ROAS garantito'],
+      highlight: false
+    },
+  ];
+  
+  const testimonials = [
+    {
+      quote: 'Con Righello abbiamo finalmente un team che parla la nostra lingua. Risultati concreti, zero fumo.',
+      name: 'Marco Rossi',
+      role: 'CEO',
+      company: 'Brand Moda Veneto'
+    },
+    {
+      quote: 'Il portale clienti ha dimezzato il tempo di gestione appuntamenti. ROI in 3 mesi.',
+      name: 'Laura Bianchi',
+      role: 'Founder',
+      company: 'Studio Professionale'
+    },
+    {
+      quote: 'Dal lancio del nuovo sito, il traffico organico è triplicato. Ora siamo primi su Google.',
+      name: 'Andrea Verdi',
+      role: 'Marketing Manager',
+      company: 'Agenzia Viaggi Venezia'
+    },
+  ];
+
+  const faqs = [
+    {
+      question: "Quanto costa un progetto con Righello?",
+      answer: "Ogni progetto è personalizzato. Siti vetrina partono da €3.000, e-commerce da €8.000, web app custom da €15.000. Per campagne advertising, investimenti minimi consigliati da €1.500/mese. Prenota una call gratuita per un preventivo su misura."
+    },
+    {
+      question: "Quanto tempo ci vuole per un sito web?",
+      answer: "Siti vetrina: 4-6 settimane. E-commerce: 6-10 settimane. Web app custom: 8-16 settimane. Includiamo sempre fasi di strategia, design, sviluppo e testing."
+    },
+    {
+      question: "Lavorate solo con aziende del Veneto?",
+      answer: "No, lavoriamo con clienti in tutta Italia e anche all'estero. La nostra sede è a Mestre-Venezia, ma gestiamo progetti da remoto con call regolari e strumenti collaborativi."
+    },
+    {
+      question: "Posso mantenere il sito da solo dopo il lancio?",
+      answer: "Sì, forniamo formazione e documentazione. Tuttavia, consigliamo un piano di manutenzione per aggiornamenti, sicurezza e ottimizzazioni continue."
+    },
+    {
+      question: "Che garanzie offrite sui risultati?",
+      answer: "Definiamo KPI chiari all'inizio del progetto. Per l'advertising, offriamo periodi di test e ottimizzazione. Per lo sviluppo, garanzia bug-fix inclusa per 6 mesi post-lancio."
+    },
+    {
+      question: "Come funziona il processo di pagamento?",
+      answer: "Tipicamente: 30% all'avvio, 40% alla consegna design approvato, 30% al lancio. Per progetti ricorrenti (advertising, social), fatturazione mensile anticipata."
+    },
+    {
+      question: "Posso vedere il codice sorgente?",
+      answer: "Sì, proprietà totale del codice. Ti forniamo accesso al repository, documentazione e tutti gli asset. Niente lock-in, niente sorprese."
+    },
+    {
+      question: "Offrite supporto post-lancio?",
+      answer: "Sì, offriamo piani di manutenzione mensili che includono: hosting gestito, backup, aggiornamenti sicurezza, modifiche minori e supporto prioritario."
+    }
+  ];
+  
+  let openFaqIndex: number | null = null;
+  
+  function toggleFaq(index: number) {
+    openFaqIndex = openFaqIndex === index ? null : index;
+  }
 </script>
 
 <svelte:head>
-  <title>Servizi - Righello | Marketing, Advertising & Digital Experience</title>
-  <meta name="description" content="I nostri servizi: Content & Social Media, Advertising & Performance, Digital Experience. Soluzioni complete per la crescita del tuo business." />
+  <title>Servizi Web & Digital - Righello | Venezia Mestre</title>
+  <meta name="description" content="Siti web, e-commerce e strategie digitali. Un team unico dalla strategia al codice. Scopri i servizi Righello a Venezia." />
+  <meta property="og:title" content="Servizi Web & Digital - Righello" />
+  <meta property="og:description" content="Dalla strategia al codice: un unico team per siti web, e-commerce e campagne advertising." />
+  <meta property="og:type" content="website" />
+  
+  {@html `<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Digital Agency Services",
+      "provider": {
+        "@type": "Organization",
+        "name": "Righello",
+        "email": "hello@wearerighello.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Via Pio X 21",
+          "addressLocality": "Mestre",
+          "addressRegion": "Venezia",
+          "addressCountry": "IT"
+        }
+      },
+      "areaServed": "IT",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servizi Digitali",
+        "itemListElement": [
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Siti Web"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "E-Commerce"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Web App Custom"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Performance Marketing"}}
+        ]
+      }
+    }
+  </script>`}
 </svelte:head>
 
-<section class="pt-32 pb-8 md:pt-40 md:pb-12">
+<!-- HERO SECTION -->
+<section class="hero-section">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
-      <div class="section-header">
-        <p class="section-subtitle">I nostri servizi</p>
-        <h1 class="section-title">
-          Tre dipartimenti,<br/>
-          <span class="gradient-text">un unico obiettivo.</span>
-        </h1>
-      </div>
+      <p class="eyebrow">I Nostri Servizi</p>
+      <h1 class="hero-title">
+        Dalla Strategia al Codice.<br/>
+        <span class="gradient-text">Un Unico Team.</span>
+      </h1>
     </RevealOnScroll>
+    
     <RevealOnScroll animation="fly-up" delay={100}>
-      <p class="text-lg md:text-xl text-[var(--text-secondary)] text-center">
-        Combiniamo creatività, dati e tecnologia per costruire strategie di crescita 
-        <span class="text-righello-pink font-medium">misurabili</span> e 
-        <span class="text-cyan-400 font-medium">scalabili</span>.
+      <p class="hero-subtitle">
+        Creiamo siti web, e-commerce e strategie digitali che portano 
+        risultati misurabili. Niente agenzie multiple, niente dispersioni: 
+        un solo interlocutore per ogni fase del progetto.
       </p>
     </RevealOnScroll>
+    
+    <RevealOnScroll animation="fly-up" delay={200}>
+      <div class="cta-group">
+        <a href="/contatti" class="btn-primary">
+          Richiedi un Preventivo
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="/progetti" class="btn-secondary">
+          Vedi i Progetti
+        </a>
+      </div>
+    </RevealOnScroll>
   </div>
 </section>
 
-<section class="pb-16 md:pb-24">
-  <div class="section-container">
-    <ServiceTabs {departments} />
-  </div>
-</section>
-
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
-
-<section class="section-padding" style="background: var(--bg-secondary);">
+<!-- IN COSA TI AIUTIAMO -->
+<section class="section-padding bg-secondary">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
-        <p class="section-subtitle">Il nostro approccio</p>
+        <p class="section-subtitle">Cosa facciamo</p>
         <h2 class="section-title">
-          Metodologia <span class="gradient-text">data-driven</span>
+          In Cosa Possiamo <span class="gradient-text">Aiutarti</span>
         </h2>
       </div>
     </RevealOnScroll>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {#each methodology as step, i}
-        <RevealOnScroll animation="fly-up" stagger={100} index={i}>
+    <div class="help-grid">
+      {#each helpPoints as point, i}
+        <RevealOnScroll animation="fly-up" stagger={80} index={i}>
+          <div class="help-card">
+            <span class="help-icon">{point.icon}</span>
+            <h3 class="help-title">{point.title}</h3>
+            <p class="help-desc">{point.desc}</p>
+          </div>
+        </RevealOnScroll>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<!-- PERCHÉ RIGHELLO -->
+<section class="section-padding">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up">
+      <div class="section-header">
+        <p class="section-subtitle">I nostri punti di forza</p>
+        <h2 class="section-title">
+          Perché Scegliere <span class="gradient-text">Righello</span>
+        </h2>
+        <p class="section-intro">
+          Non solo sviluppo: uniamo strategia, design e performance 
+          per progetti digitali che funzionano e crescono nel tempo.
+        </p>
+      </div>
+    </RevealOnScroll>
+    
+    <div class="pillars-grid">
+      {#each pillars as pillar, i}
+        <RevealOnScroll animation="scale" stagger={80} index={i}>
           <GlowCard class="h-full">
-            <div class="p-6">
-              <span class="text-5xl font-black opacity-10">{step.num}</span>
-              <h3 class="text-xl font-bold mt-2 mb-3 text-[var(--text-primary)]">{step.title}</h3>
-              <p class="text-[var(--text-secondary)]">{step.desc}</p>
+            <div class="pillar-card">
+              <span class="pillar-icon">{pillar.icon}</span>
+              <h3 class="pillar-title">{pillar.title}</h3>
+              <p class="pillar-desc">{pillar.desc}</p>
             </div>
           </GlowCard>
         </RevealOnScroll>
@@ -90,26 +315,80 @@
   </div>
 </section>
 
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
-
-<section class="section-padding">
+<!-- CASE STUDIES -->
+<section class="section-padding bg-secondary">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
-        <p class="section-subtitle">Perché Righello</p>
+        <p class="section-subtitle">I nostri risultati</p>
         <h2 class="section-title">
-          I nostri <span class="gradient-text">punti di forza</span>
+          Risultati Concreti, <span class="gradient-text">Non Promesse</span>
         </h2>
       </div>
     </RevealOnScroll>
     
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {#each strengths as point, i}
-        <RevealOnScroll animation="scale" stagger={100} index={i}>
-          <div class="text-center">
-            <span class="text-5xl mb-4 block">{point.icon}</span>
-            <h3 class="text-xl font-bold mb-3">{point.title}</h3>
-            <p class="text-[var(--text-secondary)]">{point.desc}</p>
+    <div class="case-studies-grid">
+      {#each caseStudies as study, i}
+        <RevealOnScroll animation="fly-up" stagger={100} index={i}>
+          <div class="case-study-card">
+            <span class="case-badge">[ {study.badge} ]</span>
+            <h3 class="case-title">{study.title}</h3>
+            <p class="case-desc">{study.description}</p>
+            
+            <div class="case-metrics">
+              {#each study.metrics as metric}
+                <div class="metric">
+                  <strong class="metric-value">
+                    {metric.prefix || ''}<AnimatedCounter target={metric.value} duration={2000} />{metric.suffix || ''}
+                  </strong>
+                  <span class="metric-label">{metric.label}</span>
+                </div>
+              {/each}
+            </div>
+          </div>
+        </RevealOnScroll>
+      {/each}
+    </div>
+    
+    <RevealOnScroll animation="fly-up">
+      <div class="text-center mt-12">
+        <a href="/progetti" class="btn-outline">
+          Vedi tutti i progetti
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </RevealOnScroll>
+  </div>
+</section>
+
+<!-- COME LAVORIAMO -->
+<section class="section-padding">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up">
+      <div class="section-header">
+        <p class="section-subtitle">Il nostro processo</p>
+        <h2 class="section-title">
+          Dal Brief al Lancio <span class="gradient-text">(e Oltre)</span>
+        </h2>
+        <p class="section-intro">
+          Un flusso chiaro che unisce strategia, design, sviluppo 
+          e ottimizzazione continua.
+        </p>
+      </div>
+    </RevealOnScroll>
+    
+    <div class="workflow-grid">
+      {#each workflow as step, i}
+        <RevealOnScroll animation="fly-up" stagger={100} index={i}>
+          <div class="workflow-step">
+            <span class="step-number">{step.num}</span>
+            <div class="step-content">
+              <h3 class="step-title">{step.title}</h3>
+              <p class="step-desc">{step.desc}</p>
+              <span class="step-duration">{step.duration}</span>
+            </div>
           </div>
         </RevealOnScroll>
       {/each}
@@ -117,35 +396,944 @@
   </div>
 </section>
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
-
-<section class="section-padding" style="background: var(--bg-secondary);">
+<!-- SOLUZIONI -->
+<section class="section-padding bg-secondary">
   <div class="section-container">
-    <RevealOnScroll animation="scale">
-      <div class="relative rounded-3xl overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-righello-pink via-[#8B5CF6] to-cyan-500"></div>
-        <div class="absolute inset-0 noise-overlay opacity-20"></div>
-        
-        <div class="relative z-10 p-12 md:p-20 text-center">
-          <h2 class="heading-lg text-white mb-6">
-            Parliamo del tuo <span class="font-black">progetto</span>
-          </h2>
-          <p class="text-xl md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto">
-            Prenota una call gratuita per analizzare insieme le opportunità di crescita.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a 
-              href="/contatti" 
-              class="inline-flex items-center justify-center px-10 py-5 bg-white text-gray-900 font-bold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-            >
-              Richiedi una consulenza
-              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+    <RevealOnScroll animation="fly-up">
+      <div class="section-header">
+        <p class="section-subtitle">I nostri pacchetti</p>
+        <h2 class="section-title">
+          Scegli la Tua <span class="gradient-text">Soluzione</span>
+        </h2>
+        <p class="section-intro">
+          Ogni progetto è diverso. Ecco i percorsi principali 
+          che possiamo attivare per costruire la tua casa digitale.
+        </p>
+      </div>
+    </RevealOnScroll>
+    
+    <div class="solutions-grid">
+      {#each solutions as solution, i}
+        <RevealOnScroll animation="scale" stagger={80} index={i}>
+          <div class="solution-card" class:highlighted={solution.highlight}>
+            {#if solution.highlight}
+              <span class="popular-badge">Più richiesto</span>
+            {/if}
+            <span class="solution-icon">{solution.icon}</span>
+            <h3 class="solution-title">{solution.title}</h3>
+            <p class="solution-desc">{solution.description}</p>
+            <ul class="solution-features">
+              {#each solution.features as feature}
+                <li>
+                  <svg class="w-4 h-4 text-righello-pink flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  <span>{feature}</span>
+                </li>
+              {/each}
+            </ul>
+            <a href="/contatti" class="solution-cta" class:primary={solution.highlight}>
+              Richiedi info
             </a>
           </div>
+        </RevealOnScroll>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section-padding">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up">
+      <div class="section-header">
+        <p class="section-subtitle">Cosa dicono di noi</p>
+        <h2 class="section-title">
+          I Clienti <span class="gradient-text">Parlano</span>
+        </h2>
+      </div>
+    </RevealOnScroll>
+    
+    <div class="testimonials-grid">
+      {#each testimonials as testimonial, i}
+        <RevealOnScroll animation="fly-up" stagger={100} index={i}>
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p class="testimonial-quote">{testimonial.quote}</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">
+                {testimonial.name.charAt(0)}
+              </div>
+              <div class="author-info">
+                <strong class="author-name">{testimonial.name}</strong>
+                <span class="author-role">{testimonial.role}, {testimonial.company}</span>
+              </div>
+            </div>
+          </div>
+        </RevealOnScroll>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-padding bg-secondary">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up">
+      <div class="section-header">
+        <p class="section-subtitle">FAQ</p>
+        <h2 class="section-title">
+          Domande <span class="gradient-text">Frequenti</span>
+        </h2>
+      </div>
+    </RevealOnScroll>
+    
+    <div class="faq-list">
+      {#each faqs as faq, i}
+        <RevealOnScroll animation="fly-up" stagger={50} index={i}>
+          <div class="faq-item" class:open={openFaqIndex === i}>
+            <button 
+              class="faq-question"
+              on:click={() => toggleFaq(i)}
+              aria-expanded={openFaqIndex === i}
+            >
+              <span>{faq.question}</span>
+              <svg 
+                class="faq-icon" 
+                class:rotated={openFaqIndex === i}
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {#if openFaqIndex === i}
+              <div class="faq-answer" transition:slide={{ duration: 300, easing: cubicOut }}>
+                <p>{faq.answer}</p>
+              </div>
+            {/if}
+          </div>
+        </RevealOnScroll>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINALE -->
+<section class="section-padding">
+  <div class="section-container">
+    <RevealOnScroll animation="scale">
+      <div class="final-cta">
+        <h2 class="cta-title">
+          Parliamo del tuo <span class="gradient-text">progetto</span>
+        </h2>
+        <p class="cta-subtitle">
+          Prenota una call gratuita di 30 minuti per analizzare insieme 
+          le opportunità di crescita per il tuo business.
+        </p>
+        <div class="cta-buttons">
+          <a href="/contatti" class="btn-primary-large">
+            Richiedi una consulenza gratuita
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
         </div>
+        <p class="cta-contact">
+          Oppure scrivici a <a href="mailto:hello@wearerighello.com" class="email-link">hello@wearerighello.com</a>
+        </p>
       </div>
     </RevealOnScroll>
   </div>
 </section>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    padding: 8rem 0 4rem;
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-section {
+      padding: 10rem 0 5rem;
+    }
+  }
+  
+  .eyebrow {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #D6487E;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-title {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+  }
+  
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--text-secondary);
+    max-width: 650px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+  
+  .cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #D6487E, #B83B6A);
+    color: white;
+    font-weight: 600;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    min-height: 52px;
+    font-size: 1rem;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(214, 72, 126, 0.4);
+  }
+  
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    min-height: 52px;
+    font-size: 1rem;
+  }
+  
+  :global([data-theme="light"]) .btn-secondary {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(214, 72, 126, 0.5);
+  }
+  
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 1.75rem;
+    border: 2px solid #D6487E;
+    color: #D6487E;
+    font-weight: 600;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    min-height: 48px;
+  }
+  
+  .btn-outline:hover {
+    background: #D6487E;
+    color: white;
+  }
+  
+  /* Sections */
+  .section-padding {
+    padding: 4rem 0;
+  }
+  
+  @media (min-width: 768px) {
+    .section-padding {
+      padding: 5rem 0;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding: 6rem 0;
+    }
+  }
+  
+  .bg-secondary {
+    background: var(--bg-secondary);
+  }
+  
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .section-subtitle {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #D6487E;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  
+  .section-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  
+  .section-intro {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  
+  /* Help Grid */
+  .help-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 640px) {
+    .help-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .help-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .help-card {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  :global([data-theme="light"]) .help-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: var(--border-color);
+  }
+  
+  .help-card:hover {
+    border-color: rgba(214, 72, 126, 0.3);
+    transform: translateY(-4px);
+  }
+  
+  .help-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  .help-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .help-desc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  
+  /* Pillars Grid */
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 640px) {
+    .pillars-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .pillars-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .pillar-card {
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .pillar-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  .pillar-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .pillar-desc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  
+  /* Case Studies */
+  .case-studies-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .case-studies-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .case-study-card {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    transition: all 0.3s ease;
+  }
+  
+  :global([data-theme="light"]) .case-study-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--border-color);
+  }
+  
+  .case-study-card:hover {
+    border-color: rgba(214, 72, 126, 0.3);
+  }
+  
+  .case-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #D6487E;
+    margin-bottom: 1rem;
+  }
+  
+  .case-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+  
+  .case-desc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .case-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  :global([data-theme="light"]) .case-metrics {
+    border-top-color: var(--border-color);
+  }
+  
+  .metric {
+    text-align: center;
+  }
+  
+  .metric-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #D6487E;
+  }
+  
+  .metric-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+  }
+  
+  /* Workflow */
+  .workflow-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .workflow-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .workflow-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .workflow-step {
+    position: relative;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  :global([data-theme="light"]) .workflow-step {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: var(--border-color);
+  }
+  
+  .workflow-step:hover {
+    border-color: rgba(214, 72, 126, 0.3);
+  }
+  
+  .step-number {
+    display: block;
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #D6487E, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  
+  .step-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .step-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  .step-duration {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    background: rgba(214, 72, 126, 0.1);
+    color: #D6487E;
+    border-radius: 9999px;
+  }
+  
+  /* Solutions */
+  .solutions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 640px) {
+    .solutions-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .solutions-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .solution-card {
+    position: relative;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  :global([data-theme="light"]) .solution-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--border-color);
+  }
+  
+  .solution-card:hover {
+    border-color: rgba(214, 72, 126, 0.3);
+    transform: translateY(-4px);
+  }
+  
+  .solution-card.highlighted {
+    border-color: #D6487E;
+    background: rgba(214, 72, 126, 0.05);
+  }
+  
+  .popular-badge {
+    position: absolute;
+    top: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.25rem 1rem;
+    background: linear-gradient(135deg, #D6487E, #B83B6A);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    white-space: nowrap;
+  }
+  
+  .solution-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  .solution-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .solution-desc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .solution-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    flex: 1;
+  }
+  
+  .solution-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .solution-features li svg {
+    margin-top: 0.125rem;
+  }
+  
+  .solution-cta {
+    display: block;
+    width: 100%;
+    padding: 0.875rem;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    min-height: 48px;
+  }
+  
+  :global([data-theme="light"]) .solution-cta {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: var(--border-color);
+  }
+  
+  .solution-cta:hover {
+    border-color: #D6487E;
+    color: #D6487E;
+  }
+  
+  .solution-cta.primary {
+    background: linear-gradient(135deg, #D6487E, #B83B6A);
+    border: none;
+    color: white;
+  }
+  
+  .solution-cta.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(214, 72, 126, 0.3);
+  }
+  
+  /* Testimonials */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .testimonial-card {
+    position: relative;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    transition: all 0.3s ease;
+  }
+  
+  :global([data-theme="light"]) .testimonial-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--border-color);
+  }
+  
+  .testimonial-card:hover {
+    border-color: rgba(214, 72, 126, 0.3);
+  }
+  
+  .quote-mark {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #D6487E, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.3;
+    position: absolute;
+    top: 0.5rem;
+    left: 1.5rem;
+  }
+  
+  .testimonial-quote {
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+    font-style: italic;
+  }
+  
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D6487E, #06B6D4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+  
+  .author-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .author-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  .author-role {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+  
+  /* FAQ */
+  .faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .faq-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  :global([data-theme="light"]) .faq-item {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--border-color);
+  }
+  
+  .faq-item:hover {
+    border-color: rgba(214, 72, 126, 0.3);
+  }
+  
+  .faq-item.open {
+    border-color: rgba(214, 72, 126, 0.5);
+  }
+  
+  .faq-question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    min-height: 56px;
+  }
+  
+  .faq-question:hover {
+    color: #D6487E;
+  }
+  
+  .faq-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    color: #D6487E;
+    transition: transform 0.3s ease;
+  }
+  
+  .faq-icon.rotated {
+    transform: rotate(180deg);
+  }
+  
+  .faq-answer {
+    padding: 0 1.5rem 1.25rem;
+  }
+  
+  .faq-answer p {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  
+  /* Final CTA */
+  .final-cta {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, rgba(214, 72, 126, 0.15), rgba(6, 182, 212, 0.1));
+    border-radius: 2rem;
+    border: 1px solid rgba(214, 72, 126, 0.2);
+  }
+  
+  .cta-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  
+  .cta-subtitle {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+  
+  .cta-buttons {
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn-primary-large {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem 2.5rem;
+    background: linear-gradient(135deg, #D6487E, #B83B6A);
+    color: white;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    min-height: 56px;
+  }
+  
+  .btn-primary-large:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(214, 72, 126, 0.4);
+  }
+  
+  .cta-contact {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+  }
+  
+  .email-link {
+    color: #D6487E;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+  }
+  
+  .email-link:hover {
+    opacity: 0.8;
+  }
+  
+  /* Utility classes */
+  .gradient-text {
+    background: linear-gradient(135deg, #D6487E, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .mt-12 {
+    margin-top: 3rem;
+  }
+</style>
