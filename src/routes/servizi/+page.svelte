@@ -7,21 +7,72 @@
   import { slide } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   
+  const departments = [
+    {
+      icon: '📱',
+      title: 'Content & Social Media',
+      tagline: 'Contenuti che convertono',
+      description: 'Creiamo contenuti che catturano l\'attenzione e generano risultati. Dalla strategia editoriale alla produzione di video, foto e copy per ogni piattaforma.',
+      services: [
+        'Social Media Management',
+        'Video Production (Reels, TikTok, YouTube)',
+        'Shooting fotografici',
+        'Copywriting & Storytelling',
+        'Piano editoriale strategico',
+        'Community management'
+      ],
+      color: '#D6487E',
+      featured: true
+    },
+    {
+      icon: '🎯',
+      title: 'Advertising & Performance',
+      tagline: 'Ogni euro tracciato',
+      description: 'Campagne pubblicitarie data-driven con tracking avanzato. Sappiamo esattamente dove va ogni euro e quanto ritorna.',
+      services: [
+        'Meta Ads (Facebook & Instagram)',
+        'Google Ads & YouTube Ads',
+        'TikTok Ads',
+        'Tracking & Attribution avanzato',
+        'A/B Testing continuo',
+        'Report e dashboard real-time'
+      ],
+      color: '#06B6D4',
+      featured: false
+    },
+    {
+      icon: '💻',
+      title: 'Digital Experience',
+      tagline: 'Infrastrutture digitali evolute',
+      description: 'Siti web, e-commerce e applicazioni custom. Tecnologie moderne per esperienze digitali che convertono.',
+      services: [
+        'Siti web & Landing page',
+        'E-commerce (Shopify, Custom)',
+        'Web App su misura',
+        'SEO tecnico & on-page',
+        'UX/UI Design',
+        'Integrazioni & Automazioni'
+      ],
+      color: '#8B5CF6',
+      featured: false
+    }
+  ];
+
   const helpPoints = [
     { 
-      icon: '🎯', 
-      title: 'Strategia Prima del Design', 
-      desc: 'SEO, performance, user journey e obiettivi di business sono parte del progetto fin dall\'inizio, non aggiunte dopo.'
+      icon: '🎬', 
+      title: 'Content-First Approach', 
+      desc: 'Il contenuto è il re. Partiamo sempre dalla strategia dei contenuti per costruire una presenza digitale che converte.'
     },
     { 
-      icon: '⚡', 
-      title: 'Performance dal Giorno Zero', 
-      desc: 'Impostiamo Analytics, tracking conversioni e dashboard prima ancora che il sito sia online. Zero dati persi.'
+      icon: '📊', 
+      title: 'Dati, Non Opinioni', 
+      desc: 'Ogni decisione è basata su dati reali. Tracking avanzato, A/B testing e ottimizzazione continua.'
     },
     { 
       icon: '🤝', 
-      title: 'Un Team, Tutte le Competenze', 
-      desc: 'Strategia, design, sviluppo, SEO: un team multidisciplinare che continua a far crescere il tuo progetto dopo il lancio.'
+      title: 'Un Team, Tre Dipartimenti', 
+      desc: 'Content, Advertising, Digital: competenze integrate che lavorano insieme per massimizzare i risultati.'
     },
     { 
       icon: '📱', 
@@ -29,14 +80,14 @@
       desc: 'Il 70%+ del traffico è mobile. Progettiamo per smartphone, poi adattiamo per desktop. Mai il contrario.'
     },
     { 
-      icon: '🧠', 
-      title: 'AI-Powered, Human-Validated', 
-      desc: 'Analisi, automazioni e ottimizzazioni: l\'AI accelera ogni fase, il team trasforma i dati in risultati concreti.'
+      icon: '🚀', 
+      title: 'Velocità di Esecuzione', 
+      desc: 'Dall\'idea alla pubblicazione in tempi record. Processi snelli e team dedicato al tuo progetto.'
     },
     { 
-      icon: '🔧', 
-      title: 'Proprietà Totale del Codice', 
-      desc: 'Repository, design system, documentazione: tutto è tuo. Piena trasparenza e controllo sul progetto.'
+      icon: '🎯', 
+      title: 'ROI Misurabile', 
+      desc: 'Ogni progetto ha KPI chiari. Sappiamo quanto investiamo e quanto ritorna. Sempre.'
     },
   ];
   
@@ -89,37 +140,7 @@
     { num: '04', title: 'Lancio & Ottimizzazione', desc: 'Deploy orchestrato, monitoring attivo, SEO tecnico, Analytics configurato. Supporto post-lancio e CRO continuo.', duration: 'Ongoing' },
   ];
   
-  const solutions = [
-    {
-      icon: '🌐',
-      title: 'Sito Vetrina',
-      description: 'Sito istituzionale moderno, veloce e ottimizzato SEO. Perfetto per professionisti e PMI.',
-      features: ['Design custom mobile-first', '5-10 pagine', 'Form contatti + Google Maps', 'SEO on-page', 'Analytics configurato'],
-      highlight: false
-    },
-    {
-      icon: '🛒',
-      title: 'E-Commerce',
-      description: 'Piattaforma vendita online con checkout ottimizzato, integrazioni e automazioni marketing.',
-      features: ['Shopify / WooCommerce / Custom', 'Catalogo prodotti illimitato', 'Gateway pagamento', 'Automazioni email', 'Dashboard vendite'],
-      highlight: true
-    },
-    {
-      icon: '⚡',
-      title: 'Web App Custom',
-      description: 'Applicazioni web su misura per processi aziendali, portali clienti e configuratori.',
-      features: ['Sviluppo Svelte/React', 'Backend Node/Python', 'Database cloud', 'API RESTful', 'Hosting gestito'],
-      highlight: false
-    },
-    {
-      icon: '📈',
-      title: 'Performance Marketing',
-      description: 'Campagne Meta, Google e TikTok Ads con tracking avanzato e ottimizzazione continua.',
-      features: ['Setup pixel completo', 'A/B testing creatività', 'Audience building', 'Report mensili', 'ROAS garantito'],
-      highlight: false
-    },
-  ];
-  
+    
   const testimonials = [
     {
       quote: 'Con Righello abbiamo finalmente un team che parla la nostra lingua. Risultati concreti, zero fumo.',
@@ -185,9 +206,9 @@
 
 <svelte:head>
   <title>Servizi Web & Digital - Righello | Venezia Mestre</title>
-  <meta name="description" content="Siti web, e-commerce e strategie digitali. Un team unico dalla strategia al codice. Scopri i servizi Righello a Venezia." />
-  <meta property="og:title" content="Servizi Web & Digital - Righello" />
-  <meta property="og:description" content="Dalla strategia al codice: un unico team per siti web, e-commerce e campagne advertising." />
+  <meta name="description" content="Content & Social Media, Advertising e Digital Experience: tre dipartimenti, un unico team. Scopri i servizi Righello a Venezia." />
+  <meta property="og:title" content="Servizi - Content, Advertising & Digital | Righello" />
+  <meta property="og:description" content="Tre dipartimenti integrati: Content & Social Media, Advertising & Performance, Digital Experience. Risultati misurabili." />
   <meta property="og:type" content="website" />
   
   {@html `<script type="application/ld+json">
@@ -228,16 +249,16 @@
     <RevealOnScroll animation="fly-up">
       <p class="eyebrow">I Nostri Servizi</p>
       <h1 class="hero-title">
-        Dalla Strategia alle Soluzioni Digitali.<br/>
+        Tre Dipartimenti.<br/>
         <span class="gradient-text">Un Unico Team.</span>
       </h1>
     </RevealOnScroll>
     
     <RevealOnScroll animation="fly-up" delay={100}>
       <p class="hero-subtitle">
-        Creiamo siti web, e-commerce e strategie digitali che portano 
-        risultati misurabili. Niente agenzie multiple, niente dispersioni: 
-        un solo interlocutore per ogni fase del progetto.
+        Content, Advertising e Digital Experience: competenze integrate 
+        che lavorano insieme per far crescere il tuo business. 
+        Un solo interlocutore, risultati misurabili.
       </p>
     </RevealOnScroll>
     
@@ -254,6 +275,56 @@
         </a>
       </div>
     </RevealOnScroll>
+  </div>
+</section>
+
+<!-- I 3 DIPARTIMENTI -->
+<section class="section-padding">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up">
+      <div class="section-header">
+        <p class="section-subtitle">I Nostri Dipartimenti</p>
+        <h2 class="section-title">
+          Tre Anime, <span class="gradient-text">Una Visione</span>
+        </h2>
+      </div>
+    </RevealOnScroll>
+    
+    <div class="departments-grid">
+      {#each departments as dept, i}
+        <RevealOnScroll animation="fly-up" stagger={100} index={i}>
+          <div class="department-card" class:featured={dept.featured} style="--dept-color: {dept.color}">
+            {#if dept.featured}
+              <span class="featured-badge">Il nostro cavallo di battaglia</span>
+            {/if}
+            <div class="dept-header">
+              <span class="dept-icon">{dept.icon}</span>
+              <div>
+                <h3 class="dept-title">{dept.title}</h3>
+                <p class="dept-tagline">{dept.tagline}</p>
+              </div>
+            </div>
+            <p class="dept-description">{dept.description}</p>
+            <ul class="dept-services">
+              {#each dept.services as service}
+                <li>
+                  <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {service}
+                </li>
+              {/each}
+            </ul>
+            <a href="/contatti" class="dept-cta" style="background: {dept.color}">
+              Scopri di più
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+        </RevealOnScroll>
+      {/each}
+    </div>
   </div>
 </section>
 
@@ -389,52 +460,6 @@
               <p class="step-desc">{step.desc}</p>
               <span class="step-duration">{step.duration}</span>
             </div>
-          </div>
-        </RevealOnScroll>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<!-- SOLUZIONI -->
-<section class="section-padding bg-secondary">
-  <div class="section-container">
-    <RevealOnScroll animation="fly-up">
-      <div class="section-header">
-        <p class="section-subtitle">I nostri pacchetti</p>
-        <h2 class="section-title">
-          Scegli la Tua <span class="gradient-text">Soluzione</span>
-        </h2>
-        <p class="section-intro">
-          Ogni progetto è diverso. Ecco i percorsi principali 
-          che possiamo attivare per costruire la tua casa digitale.
-        </p>
-      </div>
-    </RevealOnScroll>
-    
-    <div class="solutions-grid">
-      {#each solutions as solution, i}
-        <RevealOnScroll animation="scale" stagger={80} index={i}>
-          <div class="solution-card" class:highlighted={solution.highlight}>
-            {#if solution.highlight}
-              <span class="popular-badge">Più richiesto</span>
-            {/if}
-            <span class="solution-icon">{solution.icon}</span>
-            <h3 class="solution-title">{solution.title}</h3>
-            <p class="solution-desc">{solution.description}</p>
-            <ul class="solution-features">
-              {#each solution.features as feature}
-                <li>
-                  <svg class="w-4 h-4 text-righello-pink flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                  </svg>
-                  <span>{feature}</span>
-                </li>
-              {/each}
-            </ul>
-            <a href="/contatti" class="solution-cta" class:primary={solution.highlight}>
-              Richiedi info
-            </a>
           </div>
         </RevealOnScroll>
       {/each}
@@ -655,6 +680,152 @@
   .btn-outline:hover {
     background: #D6487E;
     color: white;
+  }
+
+  /* Departments Section */
+  .departments-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .departments-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  
+  .department-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  :global([data-theme="light"]) .department-card {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+  
+  .department-card:hover {
+    border-color: var(--dept-color, #D6487E);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+  
+  .department-card.featured {
+    border-color: rgba(214, 72, 126, 0.4);
+    background: linear-gradient(135deg, rgba(214, 72, 126, 0.1), rgba(214, 72, 126, 0.02));
+  }
+  
+  .featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #D6487E, #B83B6A);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 9999px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .dept-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .dept-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+  }
+  
+  .dept-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+  
+  .dept-tagline {
+    font-size: 1rem;
+    color: var(--dept-color, #D6487E);
+    font-weight: 500;
+  }
+  
+  .dept-description {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .dept-services {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    flex-grow: 1;
+  }
+  
+  .dept-services li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  :global([data-theme="light"]) .dept-services li {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .dept-services li:last-child {
+    border-bottom: none;
+  }
+  
+  .check-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--dept-color, #D6487E);
+    flex-shrink: 0;
+  }
+  
+  .dept-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    min-height: 48px;
+    text-align: center;
+  }
+  
+  .dept-cta:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
+  
+  .dept-cta svg {
+    width: 1.25rem;
+    height: 1.25rem;
   }
   
   /* Sections */
@@ -961,140 +1132,6 @@
     background: rgba(214, 72, 126, 0.1);
     color: #D6487E;
     border-radius: 9999px;
-  }
-  
-  /* Solutions */
-  .solutions-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  @media (min-width: 640px) {
-    .solutions-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (min-width: 1024px) {
-    .solutions-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  
-  .solution-card {
-    position: relative;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1.25rem;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  :global([data-theme="light"]) .solution-card {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: var(--border-color);
-  }
-  
-  .solution-card:hover {
-    border-color: rgba(214, 72, 126, 0.3);
-    transform: translateY(-4px);
-  }
-  
-  .solution-card.highlighted {
-    border-color: #D6487E;
-    background: rgba(214, 72, 126, 0.05);
-  }
-  
-  .popular-badge {
-    position: absolute;
-    top: -0.75rem;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0.25rem 1rem;
-    background: linear-gradient(135deg, #D6487E, #B83B6A);
-    color: white;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 9999px;
-    white-space: nowrap;
-  }
-  
-  .solution-icon {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 1rem;
-  }
-  
-  .solution-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-  }
-  
-  .solution-desc {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-  }
-  
-  .solution-features {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1.5rem 0;
-    flex: 1;
-  }
-  
-  .solution-features li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-    font-size: 1rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.5rem;
-  }
-  
-  .solution-features li svg {
-    margin-top: 0.125rem;
-  }
-  
-  .solution-cta {
-    display: block;
-    width: 100%;
-    padding: 0.875rem;
-    text-align: center;
-    font-weight: 600;
-    border-radius: 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-    min-height: 48px;
-  }
-  
-  :global([data-theme="light"]) .solution-cta {
-    background: rgba(0, 0, 0, 0.03);
-    border-color: var(--border-color);
-  }
-  
-  .solution-cta:hover {
-    border-color: #D6487E;
-    color: #D6487E;
-  }
-  
-  .solution-cta.primary {
-    background: linear-gradient(135deg, #D6487E, #B83B6A);
-    border: none;
-    color: white;
-  }
-  
-  .solution-cta.primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(214, 72, 126, 0.3);
   }
   
   /* Testimonials */
