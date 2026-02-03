@@ -228,7 +228,7 @@
     <RevealOnScroll animation="fly-up">
       <p class="eyebrow">I Nostri Servizi</p>
       <h1 class="hero-title">
-        Dalla Strategia al Codice.<br/>
+        Dalla Strategia alle Soluzioni Digitali.<br/>
         <span class="gradient-text">Un Unico Team.</span>
       </h1>
     </RevealOnScroll>
