@@ -31,8 +31,8 @@
         <h4 class="font-semibold text-lg mb-4">Contatti</h4>
         <ul class="space-y-3 text-gray-400">
           <li>
-            <a href="mailto:info@wearerighello.com" class="hover:text-righello-pink transition-colors">
-              info@wearerighello.com
+            <a href="mailto:hello@wearerighello.com" class="hover:text-righello-pink transition-colors">
+              hello@wearerighello.com
             </a>
           </li>
           <li>
