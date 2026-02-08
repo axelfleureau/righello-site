@@ -31,6 +31,39 @@
   let touchEndX = 0;
   const SWIPE_THRESHOLD = 50;
   let reducedMotion = false;
+  let loadedFrames: boolean[] = testimonials.map(() => false);
+
+  function markFrameLoaded(index: number) {
+    if (!loadedFrames[index]) {
+      loadedFrames[index] = true;
+      loadedFrames = [...loadedFrames];
+    }
+  }
+
+  function handleMetadataLoaded(index: number, video: HTMLVideoElement) {
+    video.currentTime = 0.1;
+  }
+
+  function handleSeeked(index: number, video: HTMLVideoElement) {
+    if (video.currentTime > 0) {
+      markFrameLoaded(index);
+    }
+  }
+
+  function handleCanPlay(index: number, video: HTMLVideoElement) {
+    if (video.readyState >= 3) {
+      markFrameLoaded(index);
+    }
+  }
+
+  function handleTimeUpdate(index: number, video: HTMLVideoElement) {
+    if (video.currentTime >= 0.1) {
+      markFrameLoaded(index);
+      if (index !== activeIndex) {
+        video.pause();
+      }
+    }
+  }
   
   function handleTouchStart(e: TouchEvent) {
     touchStartX = e.touches[0].clientX;
@@ -158,11 +191,27 @@
       if (containerEl) {
         observer.observe(containerEl);
       }
+
+      const fallbackTimer = setTimeout(() => {
+        if (!containerEl) return;
+        const videos = containerEl.querySelectorAll('video');
+        let changed = false;
+        videos.forEach((video, i) => {
+          if (!loadedFrames[i] && video.readyState >= 2) {
+            loadedFrames[i] = true;
+            changed = true;
+          }
+        });
+        if (changed) {
+          loadedFrames = [...loadedFrames];
+        }
+      }, 4000);
       
       return () => {
         stopAutoplay();
         window.removeEventListener('keydown', handleKeydown);
         observer?.disconnect();
+        clearTimeout(fallbackTimer);
       };
     }
   });
@@ -194,31 +243,41 @@
             style="--offset: {i - activeIndex}"
           >
             {#if testimonial.videoSrc}
-              <div class="video-gradient-bg"></div>
+              <div class="video-gradient-bg" class:frame-loaded={loadedFrames[i]}></div>
               {#if i === activeIndex}
                 <video
                   bind:this={videoElement}
-                  src={testimonial.videoSrc}
+                  src={testimonial.videoSrc + '#t=0.1'}
                   autoplay
                   muted
                   loop
                   playsinline
-                  preload="metadata"
+                  preload="auto"
                   class="video-element"
+                  class:frame-visible={loadedFrames[i]}
+                  on:loadedmetadata={(e) => handleMetadataLoaded(i, e.currentTarget)}
+                  on:seeked={(e) => handleSeeked(i, e.currentTarget)}
                   on:canplay={(e) => {
+                    handleCanPlay(i, e.currentTarget);
                     const video = e.currentTarget;
                     if (isInView) video.play().catch(() => {});
                   }}
+                  on:timeupdate={(e) => handleTimeUpdate(i, e.currentTarget)}
                 >
                   <track kind="captions" />
                 </video>
               {:else}
                 <video
-                  src={testimonial.videoSrc}
+                  src={testimonial.videoSrc + '#t=0.1'}
                   muted
                   playsinline
-                  preload="metadata"
+                  preload="auto"
                   class="video-element video-preview"
+                  class:frame-visible={loadedFrames[i]}
+                  on:loadedmetadata={(e) => handleMetadataLoaded(i, e.currentTarget)}
+                  on:seeked={(e) => handleSeeked(i, e.currentTarget)}
+                  on:canplay={(e) => handleCanPlay(i, e.currentTarget)}
+                  on:timeupdate={(e) => handleTimeUpdate(i, e.currentTarget)}
                 >
                   <track kind="captions" />
                 </video>
@@ -465,6 +524,12 @@
     animation: gradientShift 4s ease infinite;
     z-index: 0;
     border-radius: 1.25rem;
+    transition: opacity 0.5s ease;
+  }
+
+  .video-gradient-bg.frame-loaded {
+    opacity: 0;
+    pointer-events: none;
   }
   
   @keyframes gradientShift {
@@ -478,6 +543,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .video-element.frame-visible {
+    opacity: 1;
   }
   
   .video-thumbnail {

@@ -102,42 +102,42 @@
   
   const caseStudies = [
     {
-      badge: 'E-COMMERCE | Shopify Custom',
-      title: 'Brand Moda Veneto',
-      description: 'E-commerce da zero, ottimizzato per mobile e integrato con sistemi di magazzino esistenti.',
+      badge: 'CONTENT & SOCIAL | Food & Beverage',
+      title: 'Settore Food & Beverage',
+      description: 'Strategia editoriale completa con produzione video, shooting e gestione community per una catena di ristorazione in forte espansione.',
       metrics: [
-        { value: 180, suffix: '%', label: 'Conversioni in 6 mesi', prefix: '+' },
-        { value: 2.8, suffix: 's', label: 'Load time mobile' },
-        { value: 95, label: 'PageSpeed score' },
+        { value: 320, suffix: '%', label: 'Engagement rate in 6 mesi', prefix: '+' },
+        { value: 15, suffix: 'K', label: 'Nuovi follower organici', prefix: '+' },
+        { value: 2.4, suffix: 'M', label: 'Views sui contenuti video' },
       ]
     },
     {
-      badge: 'SERVIZI | Web App Custom',
-      title: 'Studio Professionale Mestre',
-      description: 'Portale clienti con prenotazioni, documenti e area riservata. Sviluppo custom in Svelte.',
+      badge: 'ADVERTISING & PERFORMANCE | Beauty & Wellness',
+      title: 'Settore Beauty & Wellness',
+      description: 'Campagne Meta e Google Ads con tracking avanzato, funnel ottimizzato e budget scaling progressivo su tre mercati regionali.',
       metrics: [
-        { value: 40, suffix: '%', label: 'Tempo gestione appuntamenti', prefix: '-' },
-        { value: 98, suffix: '%', label: 'Customer satisfaction' },
-        { value: 100, label: 'Lighthouse score' },
+        { value: 8.7, suffix: 'x', label: 'ROAS medio campagne' },
+        { value: 62, suffix: '%', label: 'Riduzione costo per lead', prefix: '-' },
+        { value: 140, suffix: '%', label: 'Crescita fatturato in 12 mesi', prefix: '+' },
       ]
     },
     {
-      badge: 'TURISMO | Sito Multilingua',
-      title: 'Agenzia Viaggi Venezia',
-      description: 'Sito multilingua (IT/EN/DE) con integrazione booking engine e SEO local avanzata.',
+      badge: 'DIGITAL EXPERIENCE | Hospitality',
+      title: 'Settore Hospitality',
+      description: 'Redesign completo del sito con UX ottimizzata per la prenotazione diretta, SEO tecnico e performance mobile al top.',
       metrics: [
-        { value: 250, suffix: '%', label: 'Traffico organico in 1 anno', prefix: '+' },
-        { value: 1, prefix: '#', label: 'Google per "tour venezia"' },
-        { value: 3, suffix: ' lingue', label: 'IT, EN, DE' },
+        { value: 185, suffix: '%', label: 'Tasso di conversione', prefix: '+' },
+        { value: 1.9, suffix: 's', label: 'Tempo di caricamento' },
+        { value: 210, suffix: '%', label: 'Traffico organico in 8 mesi', prefix: '+' },
       ]
     },
   ];
   
   const workflow = [
-    { num: '01', title: 'Strategia & Discovery', desc: 'Definiamo obiettivi, KPI, target, competitor e tecnologie. Brief tecnico e wireframe prima di ogni design.', duration: '1-2 settimane' },
-    { num: '02', title: 'Design & Prototipazione', desc: 'UI/UX in Figma, mobile-first, con design system riutilizzabile. Prototype interattivi per testare user journey.', duration: '2-3 settimane' },
-    { num: '03', title: 'Sviluppo & Testing', desc: 'Codice pulito (Svelte/React/TS), repository privato, ambienti staging/production. QA completo su tutti i device.', duration: '4-6 settimane' },
-    { num: '04', title: 'Lancio & Ottimizzazione', desc: 'Deploy orchestrato, monitoring attivo, SEO tecnico, Analytics configurato. Supporto post-lancio e CRO continuo.', duration: 'Ongoing' },
+    { num: '01', title: 'Analisi & Strategia', desc: 'Studiamo il tuo business, il pubblico e i competitor. Definiamo KPI, tone of voice, strategia dei contenuti e piano d\'azione su misura.', duration: '1-2 settimane' },
+    { num: '02', title: 'Produzione Creativa', desc: 'Shooting, video editing, copywriting e visual identity: creiamo tutti i contenuti per i tuoi canali social e le campagne adv.', duration: '2-3 settimane' },
+    { num: '03', title: 'Lancio & Campagne', desc: 'Pubblichiamo i contenuti e attiviamo le campagne advertising. A/B testing, ottimizzazione budget e monitoraggio performance in tempo reale.', duration: '2-4 settimane' },
+    { num: '04', title: 'Ottimizzazione & Crescita', desc: 'Report mensili dettagliati, ottimizzazione continua di contenuti e campagne, scaling di ciò che funziona ed esplorazione di nuovi canali.', duration: 'Ongoing' },
   ];
   
     
