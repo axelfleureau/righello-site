@@ -50,6 +50,37 @@
   let lightboxOpen = false;
   let lightboxVideo: string | null = null;
   let lightboxTitle = '';
+  let loadedFrames: boolean[] = items.map(() => false);
+
+  function markFrameLoaded(index: number) {
+    if (!loadedFrames[index]) {
+      loadedFrames[index] = true;
+      loadedFrames = [...loadedFrames];
+    }
+  }
+
+  function handleMetadataLoaded(index: number, video: HTMLVideoElement) {
+    video.currentTime = 0.1;
+  }
+
+  function handleSeeked(index: number, video: HTMLVideoElement) {
+    if (video.currentTime > 0) {
+      markFrameLoaded(index);
+    }
+  }
+
+  function handleCanPlay(index: number, video: HTMLVideoElement) {
+    if (video.readyState >= 3) {
+      markFrameLoaded(index);
+    }
+  }
+
+  function handleTimeUpdate(index: number, video: HTMLVideoElement) {
+    if (video.currentTime >= 0.1) {
+      markFrameLoaded(index);
+      video.pause();
+    }
+  }
   
   function handleMouseDown(e: MouseEvent) {
     isDragging = true;
@@ -147,8 +178,25 @@
   onMount(() => {
     if (browser) {
       window.addEventListener('keydown', handleKeydown);
+
+      const fallbackTimer = setTimeout(() => {
+        if (!container) return;
+        const videos = container.querySelectorAll('video');
+        let changed = false;
+        videos.forEach((video, i) => {
+          if (!loadedFrames[i] && video.readyState >= 2) {
+            loadedFrames[i] = true;
+            changed = true;
+          }
+        });
+        if (changed) {
+          loadedFrames = [...loadedFrames];
+        }
+      }, 4000);
+
       return () => {
         window.removeEventListener('keydown', handleKeydown);
+        clearTimeout(fallbackTimer);
       };
     }
   });
@@ -203,14 +251,19 @@
         >
           {#if item.videoSrc}
             <div class="video-wrapper">
-              <div class="video-gradient-bg"></div>
+              <div class="video-gradient-bg" class:frame-loaded={loadedFrames[i]}></div>
               <video 
                 class="card-media"
-                src={item.videoSrc}
+                class:frame-visible={loadedFrames[i]}
+                src={item.videoSrc + '#t=0.1'}
                 muted
                 loop
                 playsinline
-                preload="metadata"
+                preload="auto"
+                on:loadedmetadata={(e) => handleMetadataLoaded(i, e.currentTarget)}
+                on:seeked={(e) => handleSeeked(i, e.currentTarget)}
+                on:canplay={(e) => handleCanPlay(i, e.currentTarget)}
+                on:timeupdate={(e) => handleTimeUpdate(i, e.currentTarget)}
               >
                 <track kind="captions" />
               </video>
@@ -395,6 +448,12 @@
     background-size: 200% 200%;
     animation: gradientShift 4s ease infinite;
     z-index: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  .video-gradient-bg.frame-loaded {
+    opacity: 0;
+    pointer-events: none;
   }
   
   @keyframes gradientShift {
@@ -408,8 +467,13 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
+    transition: transform 0.6s ease, opacity 0.5s ease;
     z-index: 2;
+    opacity: 0;
+  }
+
+  .card-media.frame-visible {
+    opacity: 1;
   }
   
   .card-content:hover .card-media {
