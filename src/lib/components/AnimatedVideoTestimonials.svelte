@@ -1,9 +1,8 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
-  import { fade, fly, scale } from 'svelte/transition';
-  import { cubicOut } from 'svelte/easing';
-  
+  import { fade, scale } from 'svelte/transition';
+
   export let testimonials: {
     id: string;
     clientName: string;
@@ -13,12 +12,11 @@
     thumbnailSrc?: string;
     quote: string;
   }[];
-  
+
   export let autoplay = false;
   export let interval = 5000;
-  
+
   let activeIndex = 0;
-  let direction = 1;
   let intervalId: ReturnType<typeof setInterval> | null = null;
   let videoElement: HTMLVideoElement | null = null;
   let isHovering = false;
@@ -31,127 +29,92 @@
   let touchEndX = 0;
   const SWIPE_THRESHOLD = 50;
   let reducedMotion = false;
-  let loadedFrames: boolean[] = testimonials.map(() => false);
+  let videoLoaded = false;
 
-  function markFrameLoaded(index: number) {
-    if (!loadedFrames[index]) {
-      loadedFrames[index] = true;
-      loadedFrames = [...loadedFrames];
-    }
+  function generateRotations(): number[] {
+    return testimonials.map(() => (Math.random() - 0.5) * 20);
   }
 
-  function handleMetadataLoaded(index: number, video: HTMLVideoElement) {
-    video.currentTime = 0.1;
-  }
+  let rotations: number[] = generateRotations();
 
-  function handleSeeked(index: number, video: HTMLVideoElement) {
-    if (video.currentTime > 0) {
-      markFrameLoaded(index);
-    }
-  }
-
-  function handleCanPlay(index: number, video: HTMLVideoElement) {
-    if (video.readyState >= 3) {
-      markFrameLoaded(index);
-    }
-  }
-
-  function handleTimeUpdate(index: number, video: HTMLVideoElement) {
-    if (video.currentTime >= 0.1) {
-      markFrameLoaded(index);
-      if (index !== activeIndex) {
-        video.pause();
-      }
-    }
-  }
-  
-  function handleTouchStart(e: TouchEvent) {
-    touchStartX = e.touches[0].clientX;
-  }
-  
-  function handleTouchMove(e: TouchEvent) {
-    touchEndX = e.touches[0].clientX;
-  }
-  
-  function handleTouchEnd() {
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) > SWIPE_THRESHOLD) {
-      if (diff > 0) {
-        next();
-      } else {
-        prev();
-      }
-    }
-    touchStartX = 0;
-    touchEndX = 0;
-  }
-  
   $: activeTestimonial = testimonials[activeIndex];
-  
+  $: quoteWords = activeTestimonial.quote.split(/\s+/);
+
+  $: {
+    activeIndex;
+    videoLoaded = false;
+    rotations = generateRotations();
+  }
+
   $: if (videoElement && isInView && !lightboxOpen) {
     videoElement.play().catch(() => {});
   } else if (videoElement && (!isInView || lightboxOpen)) {
     videoElement.pause();
   }
-  
+
   function next() {
-    direction = 1;
     activeIndex = (activeIndex + 1) % testimonials.length;
   }
-  
+
   function prev() {
-    direction = -1;
     activeIndex = (activeIndex - 1 + testimonials.length) % testimonials.length;
   }
-  
-  function goTo(index: number) {
-    direction = index > activeIndex ? 1 : -1;
-    activeIndex = index;
-  }
-  
+
   function startAutoplay() {
     if (autoplay && !intervalId && isInView && !reducedMotion) {
       intervalId = setInterval(next, interval);
     }
   }
-  
+
   function stopAutoplay() {
     if (intervalId) {
       clearInterval(intervalId);
       intervalId = null;
     }
   }
-  
+
   function handleMouseEnter() {
     isHovering = true;
     stopAutoplay();
   }
-  
+
   function handleMouseLeave() {
     isHovering = false;
-    if (isInView) {
-      startAutoplay();
-    }
+    if (isInView) startAutoplay();
   }
-  
+
   function openLightbox() {
     if (!activeTestimonial.videoSrc) return;
     lightboxOpen = true;
     stopAutoplay();
     document.body.style.overflow = 'hidden';
   }
-  
+
   function closeLightbox() {
-    if (lightboxVideo) {
-      lightboxVideo.pause();
-    }
+    if (lightboxVideo) lightboxVideo.pause();
     lightboxOpen = false;
     document.body.style.overflow = '';
-    if (isInView) {
-      startAutoplay();
-    }
+    if (isInView) startAutoplay();
   }
-  
+
+  function handleTouchStart(e: TouchEvent) {
+    touchStartX = e.touches[0].clientX;
+  }
+
+  function handleTouchMove(e: TouchEvent) {
+    touchEndX = e.touches[0].clientX;
+  }
+
+  function handleTouchEnd() {
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > SWIPE_THRESHOLD) {
+      if (diff > 0) next();
+      else prev();
+    }
+    touchStartX = 0;
+    touchEndX = 0;
+  }
+
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Escape' && lightboxOpen) {
       closeLightbox();
@@ -161,70 +124,61 @@
       prev();
     }
   }
-  
+
+  function getCardStyle(i: number): string {
+    if (i === activeIndex) {
+      return 'transform: scale(1) rotate(0deg); opacity: 1; z-index: 10;';
+    }
+    const distance = Math.abs(i - activeIndex);
+    const wrappedDistance = Math.min(distance, testimonials.length - distance);
+    const rot = rotations[i] || 0;
+    const sc = Math.max(0.85, 1 - wrappedDistance * 0.05);
+    const op = Math.max(0.3, 0.7 - (wrappedDistance - 1) * 0.15);
+    const z = 10 - wrappedDistance;
+    return `transform: scale(${sc}) rotate(${rot}deg); opacity: ${op}; z-index: ${z};`;
+  }
+
+  function handleVideoCanPlay() {
+    videoLoaded = true;
+  }
+
   onMount(() => {
     if (browser) {
       reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      
       window.addEventListener('keydown', handleKeydown);
-      
+
       observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             isInView = entry.isIntersecting;
             if (isInView) {
               startAutoplay();
-              if (videoElement && !reducedMotion) {
-                videoElement.play().catch(() => {});
-              }
+              if (videoElement && !reducedMotion) videoElement.play().catch(() => {});
             } else if (!isHovering && !lightboxOpen) {
               stopAutoplay();
-              if (videoElement) {
-                videoElement.pause();
-              }
+              if (videoElement) videoElement.pause();
             }
           });
         },
         { threshold: 0.2 }
       );
-      
-      if (containerEl) {
-        observer.observe(containerEl);
-      }
 
-      const fallbackTimer = setTimeout(() => {
-        if (!containerEl) return;
-        const videos = containerEl.querySelectorAll('video');
-        let changed = false;
-        videos.forEach((video, i) => {
-          if (!loadedFrames[i] && video.readyState >= 2) {
-            loadedFrames[i] = true;
-            changed = true;
-          }
-        });
-        if (changed) {
-          loadedFrames = [...loadedFrames];
-        }
-      }, 4000);
-      
-      return () => {
-        stopAutoplay();
-        window.removeEventListener('keydown', handleKeydown);
-        observer?.disconnect();
-        clearTimeout(fallbackTimer);
-      };
+      if (containerEl) observer.observe(containerEl);
     }
   });
-  
+
   onDestroy(() => {
+    stopAutoplay();
+    if (browser) window.removeEventListener('keydown', handleKeydown);
     observer?.disconnect();
   });
 </script>
 
-<div class="animated-testimonials" bind:this={containerEl}>
-  <div class="testimonials-container">
-    <div 
-      class="video-showcase"
+<div class="avt" bind:this={containerEl}>
+  <div class="avt-container">
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+    <div
+      class="avt-left"
       on:mouseenter={handleMouseEnter}
       on:mouseleave={handleMouseLeave}
       on:touchstart={handleTouchStart}
@@ -233,147 +187,96 @@
       role="region"
       aria-label="Video testimonial"
     >
-      <div class="video-stack">
+      <div class="avt-stack">
         {#each testimonials as testimonial, i}
-          <div 
-            class="video-card"
-            class:active={i === activeIndex}
-            class:prev={i === (activeIndex - 1 + testimonials.length) % testimonials.length}
-            class:next={i === (activeIndex + 1) % testimonials.length}
-            style="--offset: {i - activeIndex}"
+          <div
+            class="avt-card"
+            class:avt-card--active={i === activeIndex}
+            style={getCardStyle(i)}
           >
-            {#if testimonial.videoSrc}
-              <div class="video-gradient-bg" class:frame-loaded={loadedFrames[i]}></div>
-              {#if i === activeIndex}
+            <div class="avt-card__placeholder">
+              <div class="avt-card__initial">
+                {testimonial.clientName.charAt(0)}
+              </div>
+            </div>
+
+            {#if i === activeIndex && testimonial.videoSrc}
+              {#key activeIndex}
                 <video
                   bind:this={videoElement}
-                  src={testimonial.videoSrc + '#t=0.1'}
+                  src={testimonial.videoSrc}
                   autoplay
                   muted
                   loop
                   playsinline
-                  preload="auto"
-                  class="video-element"
-                  class:frame-visible={loadedFrames[i]}
-                  on:loadedmetadata={(e) => handleMetadataLoaded(i, e.currentTarget)}
-                  on:seeked={(e) => handleSeeked(i, e.currentTarget)}
-                  on:canplay={(e) => {
-                    handleCanPlay(i, e.currentTarget);
-                    const video = e.currentTarget;
-                    if (isInView) video.play().catch(() => {});
-                  }}
-                  on:timeupdate={(e) => handleTimeUpdate(i, e.currentTarget)}
+                  preload="metadata"
+                  class="avt-card__video"
+                  class:avt-card__video--visible={videoLoaded}
+                  on:canplay={handleVideoCanPlay}
                 >
                   <track kind="captions" />
                 </video>
-              {:else}
-                <video
-                  src={testimonial.videoSrc + '#t=0.1'}
-                  muted
-                  playsinline
-                  preload="auto"
-                  class="video-element video-preview"
-                  class:frame-visible={loadedFrames[i]}
-                  on:loadedmetadata={(e) => handleMetadataLoaded(i, e.currentTarget)}
-                  on:seeked={(e) => handleSeeked(i, e.currentTarget)}
-                  on:canplay={(e) => handleCanPlay(i, e.currentTarget)}
-                  on:timeupdate={(e) => handleTimeUpdate(i, e.currentTarget)}
-                >
-                  <track kind="captions" />
-                </video>
-              {/if}
-            {:else}
-              <div class="quote-card">
-                <div class="avatar-large">
-                  {testimonial.clientName.charAt(0)}
-                </div>
-                <p class="quote-text">"{testimonial.quote}"</p>
-              </div>
+              {/key}
             {/if}
-            
-            <div class="card-gradient"></div>
-            
-            <div class="card-info">
-              <div class="stars">
-                {#each Array(5) as _}
-                  <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                {/each}
-              </div>
-              <p class="client-name">{testimonial.clientName}</p>
-              <p class="client-role">{testimonial.clientRole}</p>
-              <p class="client-company">{testimonial.company}</p>
-            </div>
-            
-            <div class="reel-badge">
-              <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor">
+
+            <div class="avt-card__gradient"></div>
+
+            <div class="avt-card__badge">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
                 <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
               </svg>
               Reel
             </div>
+
+            <div class="avt-card__info">
+              <p class="avt-card__name">{testimonial.clientName}</p>
+              <p class="avt-card__role">{testimonial.clientRole}</p>
+              <p class="avt-card__company">{testimonial.company}</p>
+            </div>
           </div>
         {/each}
       </div>
-      
+
       {#if activeTestimonial.videoSrc}
-        <button 
-          class="play-button"
+        <button
+          class="avt-play"
           on:click={openLightbox}
           aria-label="Guarda il video"
         >
-          <div class="play-icon">
+          <div class="avt-play__icon">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M8 5v14l11-7z" />
             </svg>
           </div>
-          <span class="play-text">Guarda</span>
+          <span class="avt-play__text">Guarda</span>
         </button>
       {/if}
     </div>
-    
-    <div class="content-panel">
+
+    <div class="avt-right">
       {#key activeIndex}
-        <div 
-          class="testimonial-content"
-          in:fly={{ x: direction * 40, duration: 400, easing: cubicOut }}
-          out:fade={{ duration: 200 }}
-        >
-          <blockquote class="quote">
-            "{activeTestimonial.quote}"
+        <div class="avt-content">
+          <h3 class="avt-content__name">{activeTestimonial.clientName}</h3>
+          <p class="avt-content__role">{activeTestimonial.clientRole}, {activeTestimonial.company}</p>
+
+          <blockquote class="avt-content__quote">
+            {#each quoteWords as word, wi}
+              <span
+                class="avt-word"
+                style="--word-index: {wi}"
+              >{word}&nbsp;</span>
+            {/each}
           </blockquote>
-          
-          <div class="author hide-mobile">
-            <div class="author-avatar">
-              {activeTestimonial.clientName.charAt(0)}
-            </div>
-            <div class="author-info">
-              <p class="author-name">{activeTestimonial.clientName}</p>
-              <p class="author-role">{activeTestimonial.clientRole}, {activeTestimonial.company}</p>
-            </div>
-          </div>
         </div>
       {/key}
-      
-      <div class="navigation">
-        <button class="nav-button prev" on:click={prev} aria-label="Precedente">
+
+      <div class="avt-nav">
+        <button class="avt-nav__btn avt-nav__btn--prev" on:click={prev} aria-label="Precedente">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
-        
-        <div class="dots">
-          {#each testimonials as _, i}
-            <button 
-              class="dot"
-              class:active={i === activeIndex}
-              on:click={() => goTo(i)}
-              aria-label="Vai alla testimonianza {i + 1}"
-            />
-          {/each}
-        </div>
-        
-        <button class="nav-button next" on:click={next} aria-label="Successivo">
+        <button class="avt-nav__btn avt-nav__btn--next" on:click={next} aria-label="Successivo">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M9 18l6-6-6-6" />
           </svg>
@@ -384,18 +287,19 @@
 </div>
 
 {#if lightboxOpen && activeTestimonial.videoSrc}
-  <div 
-    class="lightbox"
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div
+    class="avt-lightbox"
     transition:fade={{ duration: 200 }}
     on:click={closeLightbox}
     role="dialog"
     aria-modal="true"
     aria-label="Video player"
   >
-    <div class="lightbox-backdrop"></div>
-    
-    <button 
-      class="lightbox-close"
+    <div class="avt-lightbox__backdrop"></div>
+
+    <button
+      class="avt-lightbox__close"
       on:click={closeLightbox}
       aria-label="Chiudi"
     >
@@ -403,9 +307,10 @@
         <path d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
-    
-    <div 
-      class="lightbox-content"
+
+    <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+    <div
+      class="avt-lightbox__content"
       transition:scale={{ duration: 300, start: 0.9 }}
       on:click|stopPropagation
     >
@@ -416,18 +321,18 @@
         loop
         playsinline
         controls
-        class="lightbox-video"
+        class="avt-lightbox__video"
       >
         <track kind="captions" />
       </video>
-      
-      <div class="lightbox-info">
-        <div class="lightbox-avatar">
+
+      <div class="avt-lightbox__info">
+        <div class="avt-lightbox__avatar">
           {activeTestimonial.clientName.charAt(0)}
         </div>
         <div>
-          <p class="lightbox-name">{activeTestimonial.clientName}</p>
-          <p class="lightbox-role">{activeTestimonial.clientRole} - {activeTestimonial.company}</p>
+          <p class="avt-lightbox__name">{activeTestimonial.clientName}</p>
+          <p class="avt-lightbox__role">{activeTestimonial.clientRole} — {activeTestimonial.company}</p>
         </div>
       </div>
     </div>
@@ -435,249 +340,178 @@
 {/if}
 
 <style>
-  .animated-testimonials {
+  .avt {
     width: 100%;
   }
-  
-  .testimonials-container {
+
+  .avt-container {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.5rem;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1.5rem;
   }
-  
+
   @media (min-width: 1024px) {
-    .testimonials-container {
+    .avt-container {
       flex-direction: row;
       align-items: center;
-      gap: 6rem;
+      gap: 5rem;
     }
   }
-  
-  .video-showcase {
+
+  .avt-left {
     position: relative;
     flex-shrink: 0;
     width: 100%;
-    max-width: 320px;
+    max-width: 300px;
     margin: 0 auto;
+    padding: 1.5rem;
   }
-  
+
   @media (min-width: 1024px) {
-    .video-showcase {
+    .avt-left {
       width: 340px;
+      max-width: none;
       margin: 0;
+      padding: 2rem;
     }
   }
-  
-  .video-stack {
+
+  .avt-stack {
     position: relative;
     aspect-ratio: 9/16;
-    perspective: 1000px;
   }
-  
-  .video-card {
+
+  .avt-card {
     position: absolute;
     inset: 0;
     border-radius: 1.5rem;
     overflow: hidden;
-    background: var(--bg-tertiary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    transform: scale(0.9) translateX(calc(var(--offset) * 30px)) rotateY(calc(var(--offset) * -5deg));
-    opacity: 0.5;
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.4);
     transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
-    z-index: 0;
-  }
-  
-  .video-card.active {
-    transform: scale(1) translateX(0) rotateY(0);
-    opacity: 1;
-    pointer-events: auto;
-    z-index: 10;
-  }
-  
-  .video-card.prev {
-    transform: scale(0.85) translateX(-40px) rotateY(8deg);
-    opacity: 0.4;
-    z-index: 5;
-  }
-  
-  .video-card.next {
-    transform: scale(0.85) translateX(40px) rotateY(-8deg);
-    opacity: 0.4;
-    z-index: 5;
-  }
-  
-  .video-gradient-bg {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, 
-      rgba(214, 72, 126, 0.5) 0%, 
-      rgba(168, 85, 247, 0.4) 30%,
-      rgba(6, 182, 212, 0.5) 70%,
-      rgba(214, 72, 126, 0.4) 100%
-    );
-    background-size: 200% 200%;
-    animation: gradientShift 4s ease infinite;
-    z-index: 0;
-    border-radius: 1.25rem;
-    transition: opacity 0.5s ease;
+    will-change: transform, opacity;
   }
 
-  .video-gradient-bg.frame-loaded {
-    opacity: 0;
-    pointer-events: none;
+  .avt-card--active {
+    pointer-events: auto;
   }
-  
-  @keyframes gradientShift {
+
+  .avt-card__placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+      160deg,
+      rgba(214, 72, 126, 0.4) 0%,
+      rgba(120, 60, 160, 0.45) 35%,
+      rgba(6, 182, 212, 0.4) 70%,
+      rgba(214, 72, 126, 0.35) 100%
+    );
+    background-size: 250% 250%;
+    animation: placeholderShift 6s ease infinite;
+  }
+
+  @keyframes placeholderShift {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
   }
-  
-  .video-element {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+
+  .avt-card__initial {
+    font-size: 5rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.25);
+    text-transform: uppercase;
+    user-select: none;
+    line-height: 1;
   }
 
-  .video-element.frame-visible {
-    opacity: 1;
-  }
-  
-  .video-thumbnail {
+  .avt-card__video {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.6s ease;
   }
-  
-  .video-preview {
-    pointer-events: none;
+
+  .avt-card__video--visible {
+    opacity: 1;
   }
-  
-  .author.hide-mobile {
-    display: none !important;
-  }
-  
-  @media (min-width: 1024px) {
-    .author.hide-mobile {
-      display: flex !important;
-    }
-  }
-  
-  .video-placeholder-bg {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(214, 72, 126, 0.3) 0%, var(--bg-tertiary) 50%, rgba(6, 182, 212, 0.3) 100%);
-  }
-  
-  .quote-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(214, 72, 126, 0.2) 0%, var(--bg-tertiary) 50%, rgba(6, 182, 212, 0.2) 100%);
-  }
-  
-  .avatar-large {
-    width: 5rem;
-    height: 5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #D6487E, #06B6D4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 2rem;
-    box-shadow: 0 10px 30px rgba(214, 72, 126, 0.3);
-  }
-  
-  .quote-text {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.875rem;
-    line-height: 1.6;
-    font-style: italic;
-    text-align: center;
-  }
-  
-  .card-gradient {
+
+  .avt-card__gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 50%);
+    z-index: 2;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.2) 35%,
+      transparent 60%
+    );
     pointer-events: none;
   }
-  
-  .card-info {
+
+  .avt-card__badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 5;
+    padding: 0.3rem 0.6rem;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    line-height: 1;
+  }
+
+  .avt-card__badge svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .avt-card__info {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 1.5rem;
+    padding: 1.25rem;
     z-index: 5;
   }
-  
-  .stars {
-    display: flex;
-    gap: 0.25rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .star-icon {
-    width: 0.875rem;
-    height: 0.875rem;
-    color: #facc15;
-  }
-  
-  .client-name {
+
+  .avt-card__name {
     font-size: 1rem;
     font-weight: 600;
     color: white;
+    line-height: 1.3;
   }
-  
-  .client-role {
-    font-size: 0.75rem;
+
+  .avt-card__role {
+    font-size: 0.8125rem;
     color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.125rem;
   }
-  
-  .client-company {
+
+  .avt-card__company {
     font-size: 0.875rem;
     color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
     margin-top: 0.25rem;
   }
-  
-  .reel-badge {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    z-index: 10;
-    padding: 0.25rem 0.5rem;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-  
-  .badge-icon {
-    width: 0.75rem;
-    height: 0.75rem;
-  }
-  
-  .play-button {
+
+  .avt-play {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -689,173 +523,193 @@
     gap: 0.5rem;
     opacity: 0;
     transition: opacity 0.3s ease;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
   }
-  
-  .video-showcase:hover .play-button {
+
+  .avt-left:hover .avt-play {
     opacity: 1;
   }
-  
-  .play-icon {
+
+  @media (hover: none) {
+    .avt-play {
+      opacity: 1;
+    }
+  }
+
+  .avt-play__icon {
     width: 4rem;
     height: 4rem;
+    min-width: 44px;
+    min-height: 44px;
     border-radius: 50%;
     background: rgba(214, 72, 126, 0.9);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    transition: transform 0.3s ease, background 0.3s ease;
-    box-shadow: 0 10px 30px rgba(214, 72, 126, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 10px 30px rgba(214, 72, 126, 0.35);
   }
-  
-  .play-button:hover .play-icon {
+
+  .avt-play:hover .avt-play__icon {
     transform: scale(1.1);
-    background: #D6487E;
+    background-color: #D6487E;
   }
-  
-  .play-icon svg {
+
+  .avt-play__icon svg {
     width: 1.5rem;
     height: 1.5rem;
-    margin-left: 0.2rem;
+    margin-left: 0.15rem;
   }
-  
-  .play-text {
+
+  .avt-play__text {
     color: white;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
-  
-  .content-panel {
+
+  .avt-right {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 300px;
+    min-height: 280px;
   }
-  
-  .testimonial-content {
-    margin-bottom: 2rem;
+
+  .avt-content {
+    margin-bottom: 2.5rem;
   }
-  
-  .quote {
-    font-size: 1.25rem;
-    line-height: 1.7;
-    color: var(--text-primary);
-    margin-bottom: 2rem;
-    font-style: italic;
+
+  .avt-content__name {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    margin: 0 0 0.25rem;
+    line-height: 1.3;
   }
-  
+
   @media (min-width: 768px) {
-    .quote {
+    .avt-content__name {
       font-size: 1.5rem;
     }
   }
-  
-  .author {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+
+  .avt-content__role {
+    font-size: 1rem;
+    color: var(--text-secondary, #666);
+    margin: 0 0 1.5rem;
+    line-height: 1.4;
   }
-  
-  .author-avatar {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #D6487E, #06B6D4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 1.25rem;
-    box-shadow: 0 5px 15px rgba(214, 72, 126, 0.3);
-  }
-  
-  .author-name {
+
+  .avt-content__quote {
     font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--text-primary);
+    line-height: 1.75;
+    color: var(--text-primary, #111);
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-style: normal;
+    display: flex;
+    flex-wrap: wrap;
   }
-  
-  .author-role {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+
+  @media (min-width: 768px) {
+    .avt-content__quote {
+      font-size: 1.25rem;
+    }
   }
-  
-  .navigation {
+
+  .avt-word {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(5px);
+    animation: wordReveal 0.4s ease forwards;
+    animation-delay: calc(0.03s * var(--word-index));
+  }
+
+  @keyframes wordReveal {
+    0% {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(5px);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0px);
+      transform: translateY(0);
+    }
+  }
+
+  .avt-nav {
     display: flex;
     align-items: center;
+    gap: 0.75rem;
     justify-content: center;
-    gap: 1rem;
   }
-  
+
   @media (min-width: 1024px) {
-    .navigation {
+    .avt-nav {
       justify-content: flex-start;
     }
   }
-  
-  .nav-button {
-    width: 2.5rem;
-    height: 2.5rem;
+
+  .avt-nav__btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 44px;
+    min-height: 44px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-secondary);
+    color: var(--text-secondary, #666);
+    cursor: pointer;
     transition: all 0.3s ease;
+    padding: 0;
   }
-  
-  .nav-button:hover {
-    background: rgba(214, 72, 126, 0.2);
-    border-color: rgba(214, 72, 126, 0.5);
+
+  .avt-nav__btn:hover {
+    background: rgba(214, 72, 126, 0.15);
+    border-color: rgba(214, 72, 126, 0.4);
     color: #D6487E;
   }
-  
-  .nav-button svg {
+
+  .avt-nav__btn:hover svg {
+    transform: rotate(-12deg);
+  }
+
+  .avt-nav__btn--next:hover svg {
+    transform: rotate(12deg);
+  }
+
+  .avt-nav__btn svg {
     width: 1.25rem;
     height: 1.25rem;
+    transition: transform 0.3s ease;
   }
-  
-  .dots {
-    display: flex;
-    gap: 0.5rem;
+
+  :global([data-theme="light"]) .avt-nav__btn {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.1);
   }
-  
-  .dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+
+  :global([data-theme="light"]) .avt-nav__btn:hover {
+    background: rgba(214, 72, 126, 0.08);
+    border-color: rgba(214, 72, 126, 0.3);
   }
-  
-  .dot.active {
-    width: 1.5rem;
-    border-radius: 0.25rem;
-    background: linear-gradient(135deg, #D6487E, #06B6D4);
-  }
-  
-  .dot:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.4);
-  }
-  
-  :global([data-theme="light"]) .nav-button {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: var(--border-color);
-  }
-  
-  :global([data-theme="light"]) .dot {
-    background: rgba(0, 0, 0, 0.1);
-  }
-  
-  .lightbox {
+
+  .avt-lightbox {
     position: fixed;
     inset: 0;
     z-index: 100;
@@ -864,24 +718,28 @@
     justify-content: center;
     padding: 1rem;
   }
-  
-  .lightbox-backdrop {
+
+  .avt-lightbox__backdrop {
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
-  
-  .lightbox-close {
+
+  .avt-lightbox__close {
     position: absolute;
     top: 1rem;
     right: 1rem;
     z-index: 110;
     width: 3rem;
     height: 3rem;
+    min-width: 44px;
+    min-height: 44px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
     display: flex;
@@ -889,42 +747,43 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    padding: 0;
   }
-  
-  .lightbox-close:hover {
+
+  .avt-lightbox__close:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: scale(1.1);
   }
-  
-  .lightbox-close svg {
+
+  .avt-lightbox__close svg {
     width: 1.5rem;
     height: 1.5rem;
   }
-  
-  .lightbox-content {
+
+  .avt-lightbox__content {
     position: relative;
     z-index: 105;
     max-width: 400px;
     width: 100%;
   }
-  
-  .lightbox-video {
+
+  .avt-lightbox__video {
     width: 100%;
     aspect-ratio: 9/16;
     object-fit: cover;
     border-radius: 1.5rem;
-    box-shadow: 0 25px 100px rgba(214, 72, 126, 0.3);
+    box-shadow: 0 25px 100px rgba(214, 72, 126, 0.25);
   }
-  
-  .lightbox-info {
+
+  .avt-lightbox__info {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-top: 1.5rem;
-    padding: 0 0.5rem;
+    margin-top: 1.25rem;
+    padding: 0 0.25rem;
   }
-  
-  .lightbox-avatar {
+
+  .avt-lightbox__avatar {
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
@@ -935,22 +794,42 @@
     color: white;
     font-weight: 700;
     font-size: 1.25rem;
+    flex-shrink: 0;
   }
-  
-  .lightbox-name {
+
+  .avt-lightbox__name {
     color: white;
     font-weight: 600;
     font-size: 1rem;
   }
-  
-  .lightbox-role {
+
+  .avt-lightbox__role {
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.875rem;
   }
-  
+
   @media (prefers-reduced-motion: reduce) {
-    .video-card {
+    .avt-card {
       transition: none;
+    }
+
+    .avt-word {
+      animation: none;
+      opacity: 1;
+      filter: none;
+      transform: none;
+    }
+
+    .avt-card__placeholder {
+      animation: none;
+    }
+
+    .avt-nav__btn:hover svg {
+      transform: none;
+    }
+
+    .avt-nav__btn--next:hover svg {
+      transform: none;
     }
   }
 </style>

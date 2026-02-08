@@ -1,74 +1,198 @@
 <script lang="ts">
   const currentYear = new Date().getFullYear();
-  
+
+  const pageLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/servizi', label: 'Servizi' },
+    { href: '/progetti', label: 'Progetti' },
+    { href: '/chi-siamo', label: 'Chi siamo' },
+    { href: '/contatti', label: 'Contatti' },
+  ];
+
   const socialLinks = [
-    { href: 'https://www.instagram.com/wearerighello', label: 'Instagram', icon: 'instagram' },
-    { href: 'https://www.linkedin.com/company/righello', label: 'LinkedIn', icon: 'linkedin' },
+    { href: 'https://www.instagram.com/wearerighello', label: 'Instagram' },
+    { href: 'https://www.linkedin.com/company/righello', label: 'LinkedIn' },
+    { href: 'https://www.tiktok.com/@wearerighello', label: 'TikTok' },
   ];
 </script>
 
-<footer class="bg-black text-white py-16">
-  <div class="section-container">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
-      <div class="md:col-span-2">
-        <img src="/logo-full.png" alt="Righello" class="h-10 brightness-0 invert mb-6" />
-        <p class="text-gray-400 max-w-md">
-          Siamo un team dedicato e dinamico, uniti dalla passione per l'innovazione e l'eccellenza nel settore digitale.
-        </p>
+<footer class="footer">
+  <div class="footer-border"></div>
+  <div class="footer-content section-container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="/logo-full.png" alt="Righello" class="footer-logo" />
+        <p class="footer-copyright">© copyright Righello {currentYear}. Tutti i diritti riservati.</p>
       </div>
-      
-      <div>
-        <h4 class="font-semibold text-lg mb-4">Link</h4>
-        <ul class="space-y-3">
-          <li><a href="/" class="text-gray-400 hover:text-righello-pink transition-colors">Home</a></li>
-          <li><a href="/progetti" class="text-gray-400 hover:text-righello-pink transition-colors">Progetti</a></li>
-          <li><a href="/chi-siamo" class="text-gray-400 hover:text-righello-pink transition-colors">Chi siamo</a></li>
-          <li><a href="/contatti" class="text-gray-400 hover:text-righello-pink transition-colors">Contatti</a></li>
+
+      <div class="footer-column">
+        <h4 class="footer-heading">Pagine</h4>
+        <ul class="footer-links">
+          {#each pageLinks as link}
+            <li><a href={link.href}>{link.label}</a></li>
+          {/each}
         </ul>
       </div>
-      
-      <div>
-        <h4 class="font-semibold text-lg mb-4">Contatti</h4>
-        <ul class="space-y-3 text-gray-400">
-          <li>
-            <a href="mailto:hello@wearerighello.com" class="hover:text-righello-pink transition-colors">
-              hello@wearerighello.com
-            </a>
-          </li>
-          <li>
-            <div class="flex gap-4 mt-4">
-              {#each socialLinks as social}
-                <a 
-                  href={social.href} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-righello-pink transition-colors"
-                  aria-label={social.label}
-                >
-                  {#if social.icon === 'instagram'}
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                  {:else if social.icon === 'linkedin'}
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                    </svg>
-                  {/if}
-                </a>
-              {/each}
-            </div>
-          </li>
+
+      <div class="footer-column">
+        <h4 class="footer-heading">Social</h4>
+        <ul class="footer-links">
+          {#each socialLinks as link}
+            <li>
+              <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+            </li>
+          {/each}
         </ul>
       </div>
-    </div>
-    
-    <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="text-gray-500 text-sm">
-        &copy; {currentYear} Righello. Tutti i diritti riservati.
-      </p>
-      <p class="text-gray-500 text-sm">
-        P.IVA: 01979970934 | Via Pio X 21, Mestre - Venezia
-      </p>
+
+      <div class="footer-column">
+        <h4 class="footer-heading">Contatti</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@wearerighello.com">hello@wearerighello.com</a></li>
+          <li><span>Via Pio X 21, Mestre - Venezia</span></li>
+          <li><span>P.IVA: 01979970934</span></li>
+        </ul>
+      </div>
     </div>
   </div>
+
+  <div class="footer-giant-text" aria-hidden="true">Righello</div>
 </footer>
+
+<style>
+  .footer {
+    position: relative;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .footer-border {
+    height: 1px;
+    background-color: var(--border-color);
+  }
+
+  .footer-content {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .footer-logo {
+    height: 2rem;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  :global([data-theme="light"]) .footer-logo {
+    filter: brightness(0);
+  }
+
+  .footer-copyright {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    max-width: 280px;
+  }
+
+  .footer-heading {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-links li a,
+  .footer-links li span {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: color 0.2s ease;
+  }
+
+  .footer-links li a {
+    display: inline-block;
+    min-height: 28px;
+  }
+
+  .footer-links li a:hover {
+    color: #D6487E;
+  }
+
+  .footer-giant-text {
+    text-align: center;
+    font-size: clamp(8rem, 12vw, 15rem);
+    font-weight: 900;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.03);
+    user-select: none;
+    pointer-events: none;
+    position: relative;
+    transform: translateY(30%);
+    z-index: 0;
+  }
+
+  :global([data-theme="light"]) .footer-giant-text {
+    color: rgba(0, 0, 0, 0.04);
+  }
+
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+
+    .footer-content {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    .footer-links li a {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .footer-giant-text {
+      font-size: clamp(5rem, 18vw, 10rem);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>
