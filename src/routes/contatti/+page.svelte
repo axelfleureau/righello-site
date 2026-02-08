@@ -106,7 +106,7 @@
 
 <section class="pb-16 md:pb-24">
   <div class="section-container">
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-stretch">
       <div class="lg:col-span-2 space-y-8">
         <ScrollReveal animation="fade-up">
           <div class="contact-info-card p-6 rounded-2xl" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color);">
@@ -195,7 +195,7 @@
         </ScrollReveal>
       </div>
       
-      <div class="lg:col-span-3">
+      <div class="lg:col-span-3 form-column">
         <ScrollReveal animation="fade-up" delay={100}>
           <div class="form-card rounded-2xl md:rounded-3xl p-6 md:p-10" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color);">
             {#if submitted}
@@ -458,5 +458,33 @@
   .submit-btn:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+  }
+
+  .form-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-column :global(> div) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-column :global(.form-card) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-column :global(.form-card form) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-column :global(.form-card .form-textarea) {
+    flex: 1;
+    min-height: 120px;
   }
 </style>
