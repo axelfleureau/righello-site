@@ -235,12 +235,12 @@
               {#key activeIndex}
                 <video
                   bind:this={videoElement}
-                  src={testimonial.videoSrc}
+                  src={testimonial.videoSrc + '#t=0.1'}
                   autoplay
                   muted
                   loop
                   playsinline
-                  preload="metadata"
+                  preload="auto"
                   class="avt-card__video"
                   class:avt-card__video--visible={videoLoaded}
                   on:canplay={handleVideoCanPlay}
@@ -248,6 +248,12 @@
                   <track kind="captions" />
                 </video>
               {/key}
+
+              {#if !videoLoaded}
+                <div class="avt-card__loader">
+                  <div class="avt-card__spinner"></div>
+                </div>
+              {/if}
             {/if}
 
             {#if i === activeIndex}
@@ -439,35 +445,52 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(
-      160deg,
-      rgba(214, 72, 126, 0.4) 0%,
-      rgba(120, 60, 160, 0.45) 35%,
-      rgba(6, 182, 212, 0.4) 70%,
-      rgba(214, 72, 126, 0.35) 100%
-    );
-    background-size: 250% 250%;
-    animation: placeholderShift 6s ease infinite;
+    background: linear-gradient(110deg, #1a1a1a 25%, #2a2a2a 37%, #1a1a1a 63%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
   }
 
   .avt-card:not(.avt-card--active) .avt-card__placeholder {
-    background: linear-gradient(160deg, rgba(120, 60, 160, 0.3) 0%, rgba(80, 40, 120, 0.35) 100%);
+    background: #151515;
     background-size: 100% 100%;
     animation: none;
   }
 
-  @keyframes placeholderShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
   }
 
   .avt-card__initial {
     font-size: 5rem;
     font-weight: 800;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.12);
     text-transform: uppercase;
     user-select: none;
     line-height: 1;
+  }
+
+  .avt-card__loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .avt-card__spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 
   .avt-card__video {
@@ -861,6 +884,10 @@
     }
 
     .avt-card__placeholder {
+      animation: none;
+    }
+
+    .avt-card__spinner {
       animation: none;
     }
 

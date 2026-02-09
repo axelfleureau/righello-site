@@ -88,7 +88,6 @@
     }
   }
   
-  // Touch support for smooth mobile scrolling
   let touchStartX = 0;
   let touchScrollLeft = 0;
   let isTouching = false;
@@ -103,7 +102,6 @@
     if (!isTouching) return;
     const x = e.touches[0].pageX - container.offsetLeft;
     const walk = (touchStartX - x) * 1.2;
-    // Prevent vertical scroll when dragging horizontally
     if (Math.abs(walk) > 10) {
       e.preventDefault();
     }
@@ -114,166 +112,26 @@
     isTouching = false;
   }
   
-  let thumbnails: (string | null)[] = items.map(() => null);
-  let thumbnailReady: boolean[] = items.map(() => false);
-  let videoFallback: boolean[] = items.map(() => false);
   let videoRefs: (HTMLVideoElement | null)[] = items.map(() => null);
+  let videoLoaded: boolean[] = items.map(() => false);
+  let skeletonRefs: (HTMLElement | null)[] = items.map(() => null);
 
-  function extractFrame(videoSrc: string, index: number) {
-    const video = document.createElement('video');
-    video.crossOrigin = 'anonymous';
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = 'auto';
-    video.src = videoSrc;
-
-    let extracted = false;
-    let cleaned = false;
-
-    function cleanup() {
-      if (cleaned) return;
-      cleaned = true;
-      video.pause();
-      video.removeAttribute('src');
-      video.load();
-    }
-
-    function tryCapture() {
-      if (extracted) return;
-      if (video.videoWidth === 0 || video.videoHeight === 0) return;
-
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(video, 0, 0);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          if (dataUrl && dataUrl.length > 100) {
-            thumbnails[index] = dataUrl;
-            thumbnails = [...thumbnails];
-            thumbnailReady[index] = true;
-            thumbnailReady = [...thumbnailReady];
-            extracted = true;
-            cleanup();
-            return;
-          }
-        }
-      } catch {
-      }
-
-      if (!extracted) {
-        cleanup();
-        activateFallback(index);
-      }
-    }
-
-    video.addEventListener('loadedmetadata', () => {
-      video.currentTime = 0.1;
-    });
-
-    video.addEventListener('seeked', () => {
-      if (video.currentTime > 0) tryCapture();
-    });
-
-    video.addEventListener('error', () => {
-      cleanup();
-      activateFallback(index);
-    });
-
-    setTimeout(() => {
-      if (!extracted) {
-        video.play().then(() => {
-          setTimeout(() => {
-            tryCapture();
-            if (!extracted) {
-              cleanup();
-              activateFallback(index);
-            }
-          }, 300);
-        }).catch(() => {
-          cleanup();
-          activateFallback(index);
-        });
-      }
-    }, 2500);
+  function handleVideoLoaded(index: number) {
+    videoLoaded[index] = true;
+    videoLoaded = [...videoLoaded];
   }
 
-  function activateFallback(index: number) {
-    if (thumbnailReady[index]) return;
-    const video = videoRefs[index];
-    if (!video) return;
-
-    videoFallback[index] = true;
-    videoFallback = [...videoFallback];
-
-    video.preload = 'auto';
-    video.muted = true;
-
-    const onSeeked = () => {
-      if (video.currentTime > 0 && video.readyState >= 2) {
-        thumbnailReady[index] = true;
-        thumbnailReady = [...thumbnailReady];
-        video.removeEventListener('seeked', onSeeked);
-      }
-    };
-
-    const onTime = () => {
-      if (video.currentTime >= 0.05) {
-        thumbnailReady[index] = true;
-        thumbnailReady = [...thumbnailReady];
-        video.pause();
-        video.currentTime = 0.1;
-        video.removeEventListener('timeupdate', onTime);
-      }
-    };
-
-    video.addEventListener('seeked', onSeeked);
-    video.addEventListener('timeupdate', onTime);
-
-    if (video.readyState >= 2) {
-      video.currentTime = 0.1;
-    } else {
-      video.addEventListener('loadeddata', () => {
-        video.currentTime = 0.1;
-      }, { once: true });
-      video.load();
-    }
-
-    setTimeout(() => {
-      if (!thumbnailReady[index]) {
-        video.play().catch(() => {});
-      }
-    }, 1500);
+  function handleVideoError(index: number) {
+    videoLoaded[index] = true;
+    videoLoaded = [...videoLoaded];
   }
 
   onMount(() => {
     if (browser) {
       window.addEventListener('keydown', handleKeydown);
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              items.forEach((item, i) => {
-                if (item.videoSrc && !thumbnailReady[i]) {
-                  extractFrame(item.videoSrc, i);
-                }
-              });
-              observer.disconnect();
-            }
-          });
-        },
-        { rootMargin: '300px' }
-      );
-
-      const section = document.querySelector('.carousel-section');
-      if (section) observer.observe(section);
-
       return () => {
         window.removeEventListener('keydown', handleKeydown);
-        observer.disconnect();
       };
     }
   });
@@ -297,7 +155,6 @@
     role="list"
   >
     {#each items as item, i}
-      {@const videoEl = null}
       <div 
         class="carousel-card"
         style="--index: {i}"
@@ -317,26 +174,18 @@
         >
           {#if item.videoSrc}
             <div class="video-wrapper">
-              <div class="video-placeholder" class:hidden={thumbnailReady[i]}></div>
-              {#if thumbnails[i]}
-                <img 
-                  src={thumbnails[i]}
-                  alt={item.title}
-                  class="card-media card-thumbnail"
-                  class:thumbnail-visible={thumbnailReady[i]}
-                />
-              {/if}
+              <div class="video-skeleton" class:loaded={videoLoaded[i]} bind:this={skeletonRefs[i]}></div>
               <video 
                 bind:this={videoRefs[i]}
-                class="card-media"
-                class:card-video={!videoFallback[i]}
-                class:card-video-fallback={videoFallback[i]}
-                class:fallback-visible={videoFallback[i] && thumbnailReady[i]}
-                src={item.videoSrc}
+                class="card-media card-video-native"
+                class:video-ready={videoLoaded[i]}
+                src={item.videoSrc + '#t=0.1'}
                 muted
                 loop
                 playsinline
                 preload="metadata"
+                on:loadeddata={() => handleVideoLoaded(i)}
+                on:error={() => handleVideoError(i)}
               >
                 <track kind="captions" />
               </video>
@@ -506,13 +355,19 @@
     height: 100%;
   }
   
-  .video-placeholder {
+  .video-skeleton {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #D6487E 0%, #a855f7 50%, #06B6D4 100%);
-    background-size: 200% 200%;
-    animation: gradientMove 4s ease infinite;
+    background: linear-gradient(110deg, #1a1a1a 25%, #2a2a2a 37%, #1a1a1a 63%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
     z-index: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .video-skeleton.loaded {
+    opacity: 0;
+    pointer-events: none;
   }
   
   .card-media {
@@ -528,48 +383,18 @@
     backface-visibility: hidden;
   }
   
-  .card-thumbnail {
-    opacity: 0;
-    z-index: 1;
-    transition: opacity 0.4s ease;
-  }
-
-  .card-thumbnail.thumbnail-visible {
-    opacity: 1;
-  }
-
-  .card-video {
-    background: transparent;
-    object-fit: cover;
-    opacity: 0;
-    z-index: 3;
-    transition: opacity 0.3s ease;
-  }
-
-  .card-content:hover .card-video,
-  .card-content:active .card-video {
-    opacity: 1;
-  }
-
-  .card-video-fallback {
-    background: transparent;
-    object-fit: cover;
+  .card-video-native {
     opacity: 0;
     z-index: 2;
     transition: opacity 0.4s ease;
   }
 
-  .card-video-fallback.fallback-visible {
+  .card-video-native.video-ready {
     opacity: 1;
   }
 
-  .card-content:hover .card-video-fallback {
-    z-index: 3;
-  }
-  
-  .video-placeholder.hidden {
-    opacity: 0;
-    transition: opacity 0.4s ease;
+  .card-content:hover .card-video-native.video-ready {
+    transform: scale(1.05);
   }
   
   .card-content:hover .card-media {
@@ -590,6 +415,11 @@
     animation: gradientMove 4s ease infinite;
   }
   
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
   @keyframes gradientMove {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
