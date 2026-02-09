@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { theme } from '$lib/stores/theme';
+  
   const currentYear = new Date().getFullYear();
 
   const pageLinks = [
@@ -17,12 +19,20 @@
 </script>
 
 <footer class="footer">
-  <div class="footer-border"></div>
+  <div class="footer-top-border"></div>
+  
   <div class="footer-content section-container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <img src="/logo-full.png" alt="Righello" class="footer-logo" />
-        <p class="footer-copyright">© copyright Righello {currentYear}. Tutti i diritti riservati.</p>
+        <a href="/" class="footer-logo-link">
+          {#if $theme === 'dark'}
+            <img src="/logo-white.png" alt="Righello" class="footer-logo" />
+          {:else}
+            <img src="/logo-full.png" alt="Righello" class="footer-logo" />
+          {/if}
+        </a>
+        <p class="footer-tagline">Marketing, advertising e sviluppo digitale con un approccio data-driven.</p>
+        <p class="footer-copyright">© {currentYear} Righello. Tutti i diritti riservati.</p>
       </div>
 
       <div class="footer-column">
@@ -65,13 +75,11 @@
     background-color: var(--bg-primary);
     color: var(--text-primary);
     overflow: hidden;
-    padding-top: 0;
-    padding-bottom: 0;
   }
 
-  .footer-border {
+  .footer-top-border {
     height: 1px;
-    background-color: var(--border-color);
+    background: linear-gradient(90deg, transparent, var(--border-color) 20%, var(--border-color) 80%, transparent);
   }
 
   .footer-content {
@@ -90,24 +98,31 @@
   .footer-brand {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+
+  .footer-logo-link {
+    display: inline-flex;
+    align-items: center;
   }
 
   .footer-logo {
-    height: 2rem;
+    height: 1.75rem;
     width: auto;
-    filter: brightness(0) invert(1);
+    object-fit: contain;
   }
 
-  :global([data-theme="light"]) .footer-logo {
-    filter: brightness(0);
+  .footer-tagline {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    max-width: 280px;
   }
 
   .footer-copyright {
     color: var(--text-secondary);
-    font-size: 0.875rem;
-    line-height: 1.5;
-    max-width: 280px;
+    font-size: 0.8125rem;
+    opacity: 0.6;
   }
 
   .footer-heading {
@@ -116,7 +131,7 @@
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
   }
 
   .footer-links {
@@ -125,14 +140,14 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.625rem;
   }
 
   .footer-links li a,
   .footer-links li span {
     color: var(--text-secondary);
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     line-height: 1.5;
     transition: color 0.2s ease;
   }
@@ -148,7 +163,7 @@
 
   .footer-giant-text {
     text-align: center;
-    font-size: clamp(8rem, 12vw, 15rem);
+    font-size: clamp(7rem, 12vw, 14rem);
     font-weight: 900;
     line-height: 1;
     color: rgba(255, 255, 255, 0.03);
@@ -157,6 +172,7 @@
     position: relative;
     transform: translateY(30%);
     z-index: 0;
+    letter-spacing: -0.02em;
   }
 
   :global([data-theme="light"]) .footer-giant-text {
@@ -185,7 +201,7 @@
     }
 
     .footer-giant-text {
-      font-size: clamp(5rem, 18vw, 10rem);
+      font-size: clamp(4rem, 18vw, 8rem);
     }
   }
 
