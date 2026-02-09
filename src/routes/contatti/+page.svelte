@@ -66,13 +66,18 @@
 </script>
 
 <svelte:head>
-  <title>Contatti - Righello | Growth Agency Venezia</title>
-  <meta name="description" content="Contatta Righello per il tuo prossimo progetto. Risposta garantita in 24 ore. Sede: Via Pio X 21, Mestre - Venezia." />
-  <meta property="og:title" content="Contatti - Righello Growth Agency" />
-  <meta property="og:description" content="Contatta Righello per il tuo prossimo progetto. Risposta garantita in 24 ore." />
+  <title>Contatti | Righello Growth Agency</title>
+  <meta name="description" content="Contattaci per una consulenza gratuita. Risposta garantita in 24 ore. hello@wearerighello.com | Via Pio X 21, Mestre - Venezia." />
+  <meta property="og:title" content="Contatti | Righello Growth Agency" />
+  <meta property="og:description" content="Contattaci per una consulenza gratuita. Risposta garantita in 24 ore. hello@wearerighello.com | Via Pio X 21, Mestre - Venezia." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:url" content="https://www.wearerighello.com/contatti" />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contatti | Righello Growth Agency" />
+  <meta name="twitter:description" content="Contattaci per una consulenza gratuita. Risposta garantita in 24 ore. hello@wearerighello.com | Via Pio X 21, Mestre - Venezia." />
+  <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
 <section class="pt-24 md:pt-32 pb-12 md:pb-20">

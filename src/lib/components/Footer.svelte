@@ -53,9 +53,9 @@
       <div class="footer-brand">
         <a href="/" class="footer-logo-link" aria-label="Righello - Torna alla home">
           {#if $theme === 'dark'}
-            <img src="/logo-white.png" alt="Righello" class="footer-logo" loading="lazy" />
+            <img src="/logo-white.png" alt="Righello" class="footer-logo" loading="lazy" decoding="async" width="140" height="28" />
           {:else}
-            <img src="/logo-full.png" alt="Righello" class="footer-logo" loading="lazy" />
+            <img src="/logo-full.png" alt="Righello" class="footer-logo" loading="lazy" decoding="async" width="140" height="28" />
           {/if}
         </a>
         <p class="footer-tagline">Marketing, advertising e sviluppo digitale con un approccio data-driven.</p>

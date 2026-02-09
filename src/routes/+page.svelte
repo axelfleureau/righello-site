@@ -117,16 +117,17 @@
 </script>
 
 <svelte:head>
-  <title>Righello - Growth Agency | Marketing, Advertising & Digital Experience</title>
-  <meta name="description" content="Agenzia di marketing orientata ai risultati. Gestiamo social, creiamo contenuti e campagne pubblicitarie che generano conversioni misurabili." />
-  <meta property="og:title" content="Righello - Growth Agency" />
-  <meta property="og:description" content="Marketing, advertising e sviluppo digitale con un approccio data-driven. Ogni euro investito, ogni conversione tracciata." />
+  <title>Righello | Growth Agency – Marketing, Advertising e Digital Experience</title>
+  <meta name="description" content="Agenzia di marketing orientata ai risultati. Content & Social Media, Advertising & Performance, Digital Experience. Ogni euro investito, ogni conversione tracciata." />
+  <meta property="og:title" content="Righello | Growth Agency – Marketing, Advertising e Digital Experience" />
+  <meta property="og:description" content="Agenzia di marketing orientata ai risultati. Content & Social Media, Advertising & Performance, Digital Experience. Ogni euro investito, ogni conversione tracciata." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:url" content="https://www.wearerighello.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Righello - Growth Agency" />
-  <meta name="twitter:description" content="Marketing, advertising e sviluppo digitale con un approccio data-driven." />
+  <meta name="twitter:title" content="Righello | Growth Agency – Marketing, Advertising e Digital Experience" />
+  <meta name="twitter:description" content="Agenzia di marketing orientata ai risultati. Content & Social Media, Advertising & Performance, Digital Experience. Ogni euro investito, ogni conversione tracciata." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 

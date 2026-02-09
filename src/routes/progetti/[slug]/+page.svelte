@@ -38,15 +38,20 @@
 
 <svelte:head>
   {#if project}
-    <title>{project.title} - Righello</title>
+    <title>{project.title} | Righello Growth Agency</title>
     <meta name="description" content={project.description} />
-    <meta property="og:title" content={`${project.title} - Righello`} />
+    <meta property="og:title" content={`${project.title} | Righello Growth Agency`} />
     <meta property="og:description" content={project.description} />
     <meta property="og:image" content={project.image} />
+    <meta property="og:url" content={`https://www.wearerighello.com/progetti/${project.slug}`} />
     <meta property="og:type" content="article" />
+    <meta property="og:locale" content="it_IT" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${project.title} | Righello Growth Agency`} />
+    <meta name="twitter:description" content={project.description} />
+    <meta name="twitter:image" content={project.image} />
   {:else}
-    <title>Progetto non trovato - Righello</title>
+    <title>Progetto non trovato | Righello Growth Agency</title>
   {/if}
 </svelte:head>
 
@@ -89,6 +94,7 @@
               alt={project.title}
               class="hero-image"
               loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -160,6 +166,7 @@
                   alt={p.title}
                   class="related-image"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div class="related-meta">

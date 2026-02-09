@@ -113,13 +113,18 @@
 </script>
 
 <svelte:head>
-  <title>Chi Siamo - Righello | Growth Agency Venezia</title>
-  <meta name="description" content="Growth agency a Venezia. 3 dipartimenti integrati, un unico obiettivo: trasformare i tuoi dati in crescita misurabile. Scopri il team Righello." />
-  <meta property="og:title" content="Chi Siamo - Righello Growth Agency" />
-  <meta property="og:description" content="Un team dedicato e dinamico. 3 Co-Founder e un approccio data-driven al marketing digitale." />
+  <title>Chi Siamo | Righello Growth Agency</title>
+  <meta name="description" content="Scopri il team di Righello. Un'agenzia di marketing data-driven con sede a Mestre, Venezia. Content, Advertising e Digital Experience." />
+  <meta property="og:title" content="Chi Siamo | Righello Growth Agency" />
+  <meta property="og:description" content="Scopri il team di Righello. Un'agenzia di marketing data-driven con sede a Mestre, Venezia. Content, Advertising e Digital Experience." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:url" content="https://www.wearerighello.com/chi-siamo" />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chi Siamo | Righello Growth Agency" />
+  <meta name="twitter:description" content="Scopri il team di Righello. Un'agenzia di marketing data-driven con sede a Mestre, Venezia. Content, Advertising e Digital Experience." />
+  <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
 <section class="pt-24 pb-12 md:pt-32 md:pb-20">
@@ -197,6 +202,7 @@
                 alt={member.name}
                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
+                decoding="async"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>

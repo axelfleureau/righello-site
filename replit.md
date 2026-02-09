@@ -63,10 +63,18 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
 - Dynamic ARIA labels for the mobile menu.
 - Semantic HTML with appropriate roles.
 
+### Performance & SEO Optimizations (Feb 2026)
+- **HTTP Headers**: Cache-Control (immutable for hashed assets, stale-while-revalidate for HTML) + security headers (X-Content-Type-Options, Referrer-Policy, Permissions-Policy, X-XSS-Protection) via hooks.server.ts.
+- **Font Loading**: Google Fonts (Poppins) loaded non-blocking via preload+onload trick. Degular Display preloaded. Firebase Storage preconnected.
+- **SEO**: Complete meta tags (title, description, og:*, twitter:card) on all 6 pages with proper Italian locale.
+- **Bundle Cleanup**: Removed unused three.js, threlte, matter-js, Sentry, posthog from bundle. Removed Sentry vite plugin.
+- **Image/Video Best Practices**: loading="lazy", decoding="async", fetchpriority="high" (hero), video preload="metadata" for off-screen content.
+- **Video Thumbnails**: AppleCardsCarousel uses native video element with shimmer skeleton (replaced complex canvas extraction). AnimatedVideoTestimonials uses shimmer + loading spinner.
+
 ## External Dependencies
 
 - **GSAP**: For advanced scroll-triggered animations and complex timelines.
 - **ScrollTrigger (GSAP plugin)**: For scrollytelling effects and synchronizing animations with scroll position.
-- **Firebase Storage**: Used for hosting video assets like `caterina_4.mp4` and testimonial videos.
+- **Firebase Storage**: Used for hosting video assets like `caterina_4.mp4` and testimonial videos. Preconnect configured in app.html.
 - **Meta Pixel**: Integrated via `src/lib/tracking/metaPixel.ts` for analytics, tracking page views, leads, contacts, and content views. Activated by setting `PUBLIC_META_PIXEL_ID`.
 - **OGL**: WebGL library used for the RippleGrid background effect.

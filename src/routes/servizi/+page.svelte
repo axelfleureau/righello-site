@@ -135,6 +135,7 @@
   
   const workflow = [
     { num: '01', title: 'Analisi & Strategia', desc: 'Studiamo il tuo business, il pubblico e i competitor. Definiamo KPI, tone of voice, strategia dei contenuti e piano d\'azione su misura.', duration: '1-2 settimane' },
+
     { num: '02', title: 'Produzione Creativa', desc: 'Shooting, video editing, copywriting e visual identity: creiamo tutti i contenuti per i tuoi canali social e le campagne adv.', duration: '2-3 settimane' },
     { num: '03', title: 'Lancio & Campagne', desc: 'Pubblichiamo i contenuti e attiviamo le campagne advertising. A/B testing, ottimizzazione budget e monitoraggio performance in tempo reale.', duration: '2-4 settimane' },
     { num: '04', title: 'Ottimizzazione & Crescita', desc: 'Report mensili dettagliati, ottimizzazione continua di contenuti e campagne, scaling di ciò che funziona ed esplorazione di nuovi canali.', duration: 'Ongoing' },
@@ -205,11 +206,18 @@
 </script>
 
 <svelte:head>
-  <title>Servizi Web & Digital - Righello | Venezia Mestre</title>
-  <meta name="description" content="Content & Social Media, Advertising e Digital Experience: tre dipartimenti, un unico team. Scopri i servizi Righello a Venezia." />
-  <meta property="og:title" content="Servizi - Content, Advertising & Digital | Righello" />
-  <meta property="og:description" content="Tre dipartimenti integrati: Content & Social Media, Advertising & Performance, Digital Experience. Risultati misurabili." />
+  <title>Servizi | Righello Growth Agency</title>
+  <meta name="description" content="Content & Social Media, Advertising & Performance, Digital Experience. Scopri i nostri servizi di marketing digitale orientati ai risultati." />
+  <meta property="og:title" content="Servizi | Righello Growth Agency" />
+  <meta property="og:description" content="Content & Social Media, Advertising & Performance, Digital Experience. Scopri i nostri servizi di marketing digitale orientati ai risultati." />
+  <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:url" content="https://www.wearerighello.com/servizi" />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="it_IT" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Servizi | Righello Growth Agency" />
+  <meta name="twitter:description" content="Content & Social Media, Advertising & Performance, Digital Experience. Scopri i nostri servizi di marketing digitale orientati ai risultati." />
+  <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
   
   {@html `<script type="application/ld+json">
     {

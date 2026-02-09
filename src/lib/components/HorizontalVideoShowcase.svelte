@@ -259,7 +259,7 @@
                 muted
                 loop
                 playsinline
-                preload="auto"
+                preload="metadata"
                 on:loadedmetadata={(e) => handleMetadataLoaded(i, e.currentTarget)}
                 on:seeked={(e) => handleSeeked(i, e.currentTarget)}
                 on:canplay={(e) => handleCanPlay(i, e.currentTarget)}

@@ -14,13 +14,18 @@
 </script>
 
 <svelte:head>
-  <title>Progetti - Righello</title>
-  <meta name="description" content="Scopri i progetti realizzati da Righello Creative Lab." />
-  <meta property="og:title" content="Progetti - Righello Growth Agency" />
-  <meta property="og:description" content="Scopri i progetti realizzati per i nostri clienti. Risultati concreti e misurabili." />
+  <title>Progetti | Righello Growth Agency</title>
+  <meta name="description" content="Portfolio dei nostri progetti di marketing digitale. Case study con risultati concreti e misurabili per i nostri clienti." />
+  <meta property="og:title" content="Progetti | Righello Growth Agency" />
+  <meta property="og:description" content="Portfolio dei nostri progetti di marketing digitale. Case study con risultati concreti e misurabili per i nostri clienti." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:url" content="https://www.wearerighello.com/progetti" />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Progetti | Righello Growth Agency" />
+  <meta name="twitter:description" content="Portfolio dei nostri progetti di marketing digitale. Case study con risultati concreti e misurabili per i nostri clienti." />
+  <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
 <section class="pt-32 pb-20 md:pt-40 md:pb-24">
@@ -62,6 +67,8 @@
                   src={project.image} 
                   alt={project.title}
                   class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300"></div>
                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

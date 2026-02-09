@@ -85,9 +85,9 @@
     >
       <a href="/" class="flex items-center flex-shrink-0" on:click={closeMenu}>
         {#if $theme === 'dark'}
-          <img src="/logo-white.png" alt="Righello" class="h-7 md:h-8" />
+          <img src="/logo-white.png" alt="Righello" class="h-7 md:h-8" fetchpriority="high" decoding="async" />
         {:else}
-          <img src="/logo-full.png" alt="Righello" class="h-7 md:h-8" />
+          <img src="/logo-full.png" alt="Righello" class="h-7 md:h-8" fetchpriority="high" decoding="async" />
         {/if}
       </a>
       
