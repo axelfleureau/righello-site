@@ -31,8 +31,16 @@
   let reducedMotion = false;
   let videoLoaded = false;
 
+  let isMobile = false;
+
+  function checkMobile() {
+    if (browser) {
+      isMobile = window.innerWidth < 768;
+    }
+  }
+
   function generateRotations(): number[] {
-    return testimonials.map(() => (Math.random() - 0.5) * 20);
+    return testimonials.map(() => (Math.random() - 0.5) * (isMobile ? 8 : 20));
   }
 
   let rotations: number[] = generateRotations();
@@ -42,6 +50,7 @@
 
   $: {
     activeIndex;
+    isMobile;
     videoLoaded = false;
     rotations = generateRotations();
   }
@@ -132,6 +141,15 @@
     const distance = Math.abs(i - activeIndex);
     const wrappedDistance = Math.min(distance, testimonials.length - distance);
     const rot = rotations[i] || 0;
+
+    if (isMobile) {
+      if (wrappedDistance === 1) {
+        const sc = 0.92;
+        return `transform: scale(${sc}) rotate(${rot * 0.4}deg); opacity: 0.25; z-index: ${10 - wrappedDistance};`;
+      }
+      return `transform: scale(0.85) rotate(0deg); opacity: 0; z-index: 0; pointer-events: none;`;
+    }
+
     const sc = Math.max(0.85, 1 - wrappedDistance * 0.05);
     const op = Math.max(0.3, 0.7 - (wrappedDistance - 1) * 0.15);
     const z = 10 - wrappedDistance;
@@ -144,8 +162,10 @@
 
   onMount(() => {
     if (browser) {
+      checkMobile();
       reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       window.addEventListener('keydown', handleKeydown);
+      window.addEventListener('resize', checkMobile);
 
       observer = new IntersectionObserver(
         (entries) => {
@@ -169,7 +189,10 @@
 
   onDestroy(() => {
     stopAutoplay();
-    if (browser) window.removeEventListener('keydown', handleKeydown);
+    if (browser) {
+      window.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('resize', checkMobile);
+    }
     observer?.disconnect();
   });
 </script>
@@ -192,7 +215,9 @@
           <div
             class="avt-card"
             class:avt-card--active={i === activeIndex}
+            class:avt-card--hidden={isMobile && Math.min(Math.abs(i - activeIndex), testimonials.length - Math.abs(i - activeIndex)) > 1}
             style={getCardStyle(i)}
+            aria-hidden={i !== activeIndex}
           >
             <div class="avt-card__placeholder">
               <div class="avt-card__initial">
@@ -397,6 +422,11 @@
 
   .avt-card--active {
     pointer-events: auto;
+  }
+
+  .avt-card--hidden {
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .avt-card__placeholder {
