@@ -72,10 +72,10 @@
   const featuredProjects = projects.filter(p => p.featured);
   
   const stats = [
-    { value: 50, suffix: '+', label: 'Progetti completati' },
-    { value: 8, suffix: 'M+', label: 'Views generate' },
+    { value: 470, suffix: '+', label: 'Progetti completati' },
+    { value: 25, suffix: 'M+', label: 'Views generate' },
     { value: 98, suffix: '%', label: 'Clienti soddisfatti' },
-    { value: 8, suffix: '.5x', label: 'ROAS medio' },
+    { value: 8, suffix: '.5x', label: 'ROAS medio ads' },
   ];
   
   const credibilityBadges = [
