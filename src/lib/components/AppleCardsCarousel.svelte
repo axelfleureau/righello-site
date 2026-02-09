@@ -114,11 +114,36 @@
   }
   
   // Track which videos have loaded their first frame
-  let videoReady: { [key: number]: boolean } = {};
+  let videoReady: boolean[] = items.map(() => false);
   
   function markVideoReady(index: number) {
-    videoReady[index] = true;
-    videoReady = videoReady; // trigger reactivity
+    if (!videoReady[index]) {
+      videoReady[index] = true;
+      videoReady = [...videoReady];
+    }
+  }
+
+  function handleMetadataLoaded(index: number, video: HTMLVideoElement) {
+    video.currentTime = 0.1;
+  }
+
+  function handleSeeked(index: number, video: HTMLVideoElement) {
+    if (video.currentTime > 0) {
+      markVideoReady(index);
+    }
+  }
+
+  function handleCanPlay(index: number, video: HTMLVideoElement) {
+    if (video.readyState >= 3) {
+      markVideoReady(index);
+    }
+  }
+
+  function handleTimeUpdate(index: number, video: HTMLVideoElement) {
+    if (video.currentTime >= 0.1) {
+      markVideoReady(index);
+      video.pause();
+    }
   }
   
   onMount(() => {
@@ -177,12 +202,11 @@
                 muted
                 loop
                 playsinline
-                preload="auto"
-                on:loadedmetadata={(e) => {
-                  const video = e.currentTarget;
-                  video.currentTime = 0.5;
-                }}
-                on:seeked={() => markVideoReady(i)}
+                preload="metadata"
+                on:loadedmetadata={(e) => handleMetadataLoaded(i, e.currentTarget)}
+                on:seeked={(e) => handleSeeked(i, e.currentTarget)}
+                on:canplay={(e) => handleCanPlay(i, e.currentTarget)}
+                on:timeupdate={(e) => handleTimeUpdate(i, e.currentTarget)}
               >
                 <track kind="captions" />
               </video>

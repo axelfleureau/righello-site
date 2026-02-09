@@ -429,6 +429,38 @@
     pointer-events: none;
   }
 
+  .avt-card:not(.avt-card--active) .avt-card__badge {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .avt-card--active .avt-card__badge {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .avt-card:not(.avt-card--active) .avt-card__info {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .avt-card--active .avt-card__info {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .avt-card:not(.avt-card--active) .avt-card__gradient {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .avt-card--active .avt-card__gradient {
+    opacity: 1;
+    visibility: visible;
+  }
+
   .avt-card__placeholder {
     position: absolute;
     inset: 0;
