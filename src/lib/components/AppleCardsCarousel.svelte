@@ -53,6 +53,7 @@
         activeVideo.currentTime = 0;
       }
       activeVideo = video;
+      video.currentTime = 0;
       video.play().catch(() => {});
     }
   }
@@ -113,44 +114,166 @@
     isTouching = false;
   }
   
-  // Track which videos have loaded their first frame
-  let videoReady: boolean[] = items.map(() => false);
-  
-  function markVideoReady(index: number) {
-    if (!videoReady[index]) {
-      videoReady[index] = true;
-      videoReady = [...videoReady];
-    }
-  }
+  let thumbnails: (string | null)[] = items.map(() => null);
+  let thumbnailReady: boolean[] = items.map(() => false);
+  let videoFallback: boolean[] = items.map(() => false);
+  let videoRefs: (HTMLVideoElement | null)[] = items.map(() => null);
 
-  function handleMetadataLoaded(index: number, video: HTMLVideoElement) {
-    video.currentTime = 0.1;
-  }
+  function extractFrame(videoSrc: string, index: number) {
+    const video = document.createElement('video');
+    video.crossOrigin = 'anonymous';
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    video.src = videoSrc;
 
-  function handleSeeked(index: number, video: HTMLVideoElement) {
-    if (video.currentTime > 0) {
-      markVideoReady(index);
-    }
-  }
+    let extracted = false;
+    let cleaned = false;
 
-  function handleCanPlay(index: number, video: HTMLVideoElement) {
-    if (video.readyState >= 3) {
-      markVideoReady(index);
-    }
-  }
-
-  function handleTimeUpdate(index: number, video: HTMLVideoElement) {
-    if (video.currentTime >= 0.1) {
-      markVideoReady(index);
+    function cleanup() {
+      if (cleaned) return;
+      cleaned = true;
       video.pause();
+      video.removeAttribute('src');
+      video.load();
     }
+
+    function tryCapture() {
+      if (extracted) return;
+      if (video.videoWidth === 0 || video.videoHeight === 0) return;
+
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(video, 0, 0);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          if (dataUrl && dataUrl.length > 100) {
+            thumbnails[index] = dataUrl;
+            thumbnails = [...thumbnails];
+            thumbnailReady[index] = true;
+            thumbnailReady = [...thumbnailReady];
+            extracted = true;
+            cleanup();
+            return;
+          }
+        }
+      } catch {
+      }
+
+      if (!extracted) {
+        cleanup();
+        activateFallback(index);
+      }
+    }
+
+    video.addEventListener('loadedmetadata', () => {
+      video.currentTime = 0.1;
+    });
+
+    video.addEventListener('seeked', () => {
+      if (video.currentTime > 0) tryCapture();
+    });
+
+    video.addEventListener('error', () => {
+      cleanup();
+      activateFallback(index);
+    });
+
+    setTimeout(() => {
+      if (!extracted) {
+        video.play().then(() => {
+          setTimeout(() => {
+            tryCapture();
+            if (!extracted) {
+              cleanup();
+              activateFallback(index);
+            }
+          }, 300);
+        }).catch(() => {
+          cleanup();
+          activateFallback(index);
+        });
+      }
+    }, 2500);
   }
-  
+
+  function activateFallback(index: number) {
+    if (thumbnailReady[index]) return;
+    const video = videoRefs[index];
+    if (!video) return;
+
+    videoFallback[index] = true;
+    videoFallback = [...videoFallback];
+
+    video.preload = 'auto';
+    video.muted = true;
+
+    const onSeeked = () => {
+      if (video.currentTime > 0 && video.readyState >= 2) {
+        thumbnailReady[index] = true;
+        thumbnailReady = [...thumbnailReady];
+        video.removeEventListener('seeked', onSeeked);
+      }
+    };
+
+    const onTime = () => {
+      if (video.currentTime >= 0.05) {
+        thumbnailReady[index] = true;
+        thumbnailReady = [...thumbnailReady];
+        video.pause();
+        video.currentTime = 0.1;
+        video.removeEventListener('timeupdate', onTime);
+      }
+    };
+
+    video.addEventListener('seeked', onSeeked);
+    video.addEventListener('timeupdate', onTime);
+
+    if (video.readyState >= 2) {
+      video.currentTime = 0.1;
+    } else {
+      video.addEventListener('loadeddata', () => {
+        video.currentTime = 0.1;
+      }, { once: true });
+      video.load();
+    }
+
+    setTimeout(() => {
+      if (!thumbnailReady[index]) {
+        video.play().catch(() => {});
+      }
+    }, 1500);
+  }
+
   onMount(() => {
     if (browser) {
       window.addEventListener('keydown', handleKeydown);
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              items.forEach((item, i) => {
+                if (item.videoSrc && !thumbnailReady[i]) {
+                  extractFrame(item.videoSrc, i);
+                }
+              });
+              observer.disconnect();
+            }
+          });
+        },
+        { rootMargin: '300px' }
+      );
+
+      const section = document.querySelector('.carousel-section');
+      if (section) observer.observe(section);
+
       return () => {
         window.removeEventListener('keydown', handleKeydown);
+        observer.disconnect();
       };
     }
   });
@@ -194,19 +317,26 @@
         >
           {#if item.videoSrc}
             <div class="video-wrapper">
-              <div class="video-placeholder" class:hidden={videoReady[i]}></div>
+              <div class="video-placeholder" class:hidden={thumbnailReady[i]}></div>
+              {#if thumbnails[i]}
+                <img 
+                  src={thumbnails[i]}
+                  alt={item.title}
+                  class="card-media card-thumbnail"
+                  class:thumbnail-visible={thumbnailReady[i]}
+                />
+              {/if}
               <video 
+                bind:this={videoRefs[i]}
                 class="card-media"
-                class:video-loaded={videoReady[i]}
+                class:card-video={!videoFallback[i]}
+                class:card-video-fallback={videoFallback[i]}
+                class:fallback-visible={videoFallback[i] && thumbnailReady[i]}
                 src={item.videoSrc}
                 muted
                 loop
                 playsinline
                 preload="metadata"
-                on:loadedmetadata={(e) => handleMetadataLoaded(i, e.currentTarget)}
-                on:seeked={(e) => handleSeeked(i, e.currentTarget)}
-                on:canplay={(e) => handleCanPlay(i, e.currentTarget)}
-                on:timeupdate={(e) => handleTimeUpdate(i, e.currentTarget)}
               >
                 <track kind="captions" />
               </video>
@@ -398,18 +528,48 @@
     backface-visibility: hidden;
   }
   
-  video.card-media {
+  .card-thumbnail {
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  .card-thumbnail.thumbnail-visible {
+    opacity: 1;
+  }
+
+  .card-video {
     background: transparent;
     object-fit: cover;
     opacity: 0;
+    z-index: 3;
+    transition: opacity 0.3s ease;
   }
-  
-  video.card-media.video-loaded {
+
+  .card-content:hover .card-video,
+  .card-content:active .card-video {
     opacity: 1;
+  }
+
+  .card-video-fallback {
+    background: transparent;
+    object-fit: cover;
+    opacity: 0;
+    z-index: 2;
+    transition: opacity 0.4s ease;
+  }
+
+  .card-video-fallback.fallback-visible {
+    opacity: 1;
+  }
+
+  .card-content:hover .card-video-fallback {
+    z-index: 3;
   }
   
   .video-placeholder.hidden {
     opacity: 0;
+    transition: opacity 0.4s ease;
   }
   
   .card-content:hover .card-media {
@@ -442,15 +602,22 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.2);
-    opacity: 1;
+    background: rgba(0, 0, 0, 0);
+    opacity: 0;
     transition: opacity 0.3s ease, background 0.3s ease;
     z-index: 5;
   }
   
   .card-content:hover .play-overlay {
     opacity: 1;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  @media (hover: none) {
+    .play-overlay {
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.15);
+    }
   }
   
   .play-icon {
