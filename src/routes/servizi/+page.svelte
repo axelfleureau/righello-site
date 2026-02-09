@@ -343,11 +343,13 @@
     <div class="help-grid">
       {#each helpPoints as point, i}
         <RevealOnScroll animation="fly-up" stagger={80} index={i}>
-          <div class="help-card">
-            <span class="help-icon">{point.icon}</span>
-            <h3 class="help-title">{point.title}</h3>
-            <p class="help-desc">{point.desc}</p>
-          </div>
+          <GlowCard class="h-full">
+            <div class="help-card">
+              <span class="help-icon">{point.icon}</span>
+              <h3 class="help-title">{point.title}</h3>
+              <p class="help-desc">{point.desc}</p>
+            </div>
+          </GlowCard>
         </RevealOnScroll>
       {/each}
     </div>
@@ -401,22 +403,24 @@
     <div class="case-studies-grid">
       {#each caseStudies as study, i}
         <RevealOnScroll animation="fly-up" stagger={100} index={i}>
-          <div class="case-study-card">
-            <span class="case-badge">[ {study.badge} ]</span>
-            <h3 class="case-title">{study.title}</h3>
-            <p class="case-desc">{study.description}</p>
-            
-            <div class="case-metrics">
-              {#each study.metrics as metric}
-                <div class="metric">
-                  <strong class="metric-value">
-                    {metric.prefix || ''}<AnimatedCounter target={metric.value} duration={2000} />{metric.suffix || ''}
-                  </strong>
-                  <span class="metric-label">{metric.label}</span>
-                </div>
-              {/each}
+          <GlowCard class="h-full">
+            <div class="case-study-card">
+              <span class="case-badge">[ {study.badge} ]</span>
+              <h3 class="case-title">{study.title}</h3>
+              <p class="case-desc">{study.description}</p>
+              
+              <div class="case-metrics">
+                {#each study.metrics as metric}
+                  <div class="metric">
+                    <strong class="metric-value">
+                      {metric.prefix || ''}<AnimatedCounter target={metric.value} duration={2000} />{metric.suffix || ''}
+                    </strong>
+                    <span class="metric-label">{metric.label}</span>
+                  </div>
+                {/each}
+              </div>
             </div>
-          </div>
+          </GlowCard>
         </RevealOnScroll>
       {/each}
     </div>
@@ -905,7 +909,8 @@
 
   .help-grid :global(.reveal-wrapper),
   .help-grid :global(.reveal-content),
-  .help-grid :global(.reveal-placeholder) {
+  .help-grid :global(.reveal-placeholder),
+  .help-grid :global(.glow-card) {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -913,21 +918,7 @@
 
   .help-card {
     padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1rem;
-    transition: all 0.3s ease;
     flex: 1;
-  }
-  
-  :global([data-theme="light"]) .help-card {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: var(--border-color);
-  }
-  
-  .help-card:hover {
-    border-color: rgba(214, 72, 126, 0.3);
-    transform: translateY(-4px);
   }
   
   .help-icon {
@@ -967,6 +958,21 @@
       grid-template-columns: repeat(3, 1fr);
     }
   }
+
+  .pillars-grid > :global(*) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .pillars-grid :global(.reveal-wrapper),
+  .pillars-grid :global(.reveal-content),
+  .pillars-grid :global(.reveal-placeholder),
+  .pillars-grid :global(.glow-card) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
   
   .pillar-card {
     padding: 1.5rem;
@@ -1004,22 +1010,24 @@
       grid-template-columns: repeat(3, 1fr);
     }
   }
+
+  .case-studies-grid > :global(*) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .case-studies-grid :global(.reveal-wrapper),
+  .case-studies-grid :global(.reveal-content),
+  .case-studies-grid :global(.reveal-placeholder),
+  .case-studies-grid :global(.glow-card) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
   
   .case-study-card {
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1.25rem;
-    transition: all 0.3s ease;
-  }
-  
-  :global([data-theme="light"]) .case-study-card {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: var(--border-color);
-  }
-  
-  .case-study-card:hover {
-    border-color: rgba(214, 72, 126, 0.3);
   }
   
   .case-badge {

@@ -8,6 +8,7 @@ I prefer simple language.
 I want iterative development.
 Ask before making major changes.
 I want detailed explanations.
+**Component Library Philosophy**: Always build modular, reusable components. When a good UI pattern is created (cards, buttons, animations), extract it into a shared component in `src/lib/components/` so it can be reused across all pages. This ensures consistent design/layout and simpler maintenance. Avoid duplicating styles across pages — use the shared component instead.
 
 ## System Architecture
 

@@ -4,6 +4,7 @@
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import GlowCard from '$lib/components/GlowCard.svelte';
   
   $: project = projects.find(p => p.slug === $page.params.slug);
   $: relatedProjects = projects.filter(p => p.slug !== $page.params.slug).slice(0, 3);
@@ -107,11 +108,13 @@
       <div class="narrative-grid">
         {#each narrativeCards as card, i}
           <RevealOnScroll animation="fly-up" delay={i * 150} index={i}>
-            <div class="narrative-card">
-              <span class="narrative-number">{card.number}</span>
-              <h3 class="narrative-card-title">{card.title}</h3>
-              <p class="narrative-card-description">{card.description}</p>
-            </div>
+            <GlowCard class="h-full">
+              <div class="narrative-card">
+                <span class="narrative-number">{card.number}</span>
+                <h3 class="narrative-card-title">{card.title}</h3>
+                <p class="narrative-card-description">{card.description}</p>
+              </div>
+            </GlowCard>
           </RevealOnScroll>
         {/each}
       </div>
@@ -298,20 +301,23 @@
     }
   }
 
-  .narrative-card {
-    position: relative;
-    padding: 2.5rem 2rem;
-    border-radius: 1.25rem;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    transition: border-color 0.4s, box-shadow 0.4s, transform 0.3s;
-    height: 100%;
+  .narrative-grid > :global(*) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 
-  .narrative-card:hover {
-    border-color: var(--righello-pink, #e91e63);
-    box-shadow: 0 0 0 1px var(--righello-pink, #e91e63), 0 8px 32px rgba(233, 30, 99, 0.08);
-    transform: translateY(-4px);
+  .narrative-grid :global(.reveal-wrapper),
+  .narrative-grid :global(.reveal-content),
+  .narrative-grid :global(.reveal-placeholder),
+  .narrative-grid :global(.glow-card) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .narrative-card {
+    padding: 2.5rem 2rem;
   }
 
   .narrative-number {
