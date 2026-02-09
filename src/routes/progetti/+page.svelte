@@ -16,6 +16,11 @@
 <svelte:head>
   <title>Progetti - Righello</title>
   <meta name="description" content="Scopri i progetti realizzati da Righello Creative Lab." />
+  <meta property="og:title" content="Progetti - Righello Growth Agency" />
+  <meta property="og:description" content="Scopri i progetti realizzati per i nostri clienti. Risultati concreti e misurabili." />
+  <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 <section class="pt-32 pb-20 md:pt-40 md:pb-24">

@@ -34,6 +34,21 @@
   $: flyParams = { y: animation === 'fly-up' ? 40 : 0, x: animation === 'fly-left' ? -40 : animation === 'fly-right' ? 40 : 0, duration, delay: totalDelay, easing: cubicOut };
   $: scaleParams = { start: 0.9, duration, delay: totalDelay, easing: backOut };
   $: fadeParams = { duration, delay: totalDelay };
+  
+  function blurIn(node: Element, { duration = 600, delay = 0 }) {
+    return {
+      duration,
+      delay,
+      css: (t: number) => {
+        const eased = cubicOut(t);
+        return `
+          opacity: ${eased};
+          filter: blur(${(1 - eased) * 8}px);
+          transform: translateY(${(1 - eased) * 15}px);
+        `;
+      }
+    };
+  }
 </script>
 
 <div 
@@ -50,8 +65,12 @@
       <div class="reveal-content" in:scale={scaleParams}>
         <slot />
       </div>
+    {:else if animation === 'blur'}
+      <div class="reveal-content" in:blurIn={{ duration, delay: totalDelay }}>
+        <slot />
+      </div>
     {:else}
-      <div class="reveal-content" class:blur-reveal={animation === 'blur'} in:fade={fadeParams}>
+      <div class="reveal-content" in:fade={fadeParams}>
         <slot />
       </div>
     {/if}
@@ -74,21 +93,8 @@
   }
   
   .reveal-placeholder {
-    opacity: 0;
+    visibility: hidden;
     pointer-events: none;
     height: 100%;
-  }
-  
-  .blur-reveal {
-    animation: unblur 0.6s ease forwards;
-  }
-  
-  @keyframes unblur {
-    from {
-      filter: blur(10px);
-    }
-    to {
-      filter: blur(0);
-    }
   }
 </style>

@@ -58,6 +58,14 @@
 </div>
 
 <style>
+  .glow-card {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  .glow-card:hover {
+    transform: translateY(-4px);
+  }
+  
   .glow-card-bg {
     background: #0a0a0a;
   }

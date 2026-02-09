@@ -31,6 +31,34 @@
 
 <svelte:head>
   <meta name="theme-color" content="#050505" />
+  {@html `<script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Righello",
+    "legalName": "Righello S.r.l.",
+    "url": "https://www.wearerighello.com",
+    "logo": "https://www.wearerighello.com/logo-full.png",
+    "description": "Agenzia di marketing orientata ai risultati. Marketing, advertising e sviluppo digitale con un approccio data-driven.",
+    "email": "hello@wearerighello.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Via Pio X 21",
+      "addressLocality": "Mestre",
+      "addressRegion": "Venezia",
+      "addressCountry": "IT"
+    },
+    "sameAs": [
+      "https://www.instagram.com/wearerighello",
+      "https://www.linkedin.com/company/righello",
+      "https://www.tiktok.com/@wearerighello"
+    ],
+    "vatID": "IT01979970934",
+    "foundingDate": "2023",
+    "numberOfEmployees": {
+      "@type": "QuantitativeValue",
+      "value": 4
+    }
+  })}</script>`}
 </svelte:head>
 
 <div data-theme={$theme}>

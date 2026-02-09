@@ -138,10 +138,10 @@
   --space-3xl: 6rem;     /* 96px */
   --space-4xl: 8rem;     /* 128px */
   
-  /* Section Spacing - optimized for tighter layout */
-  --section-padding-sm: var(--space-lg);       /* 32px - mobile */
-  --section-padding-md: var(--space-xl);       /* 48px - tablet */
-  --section-padding-lg: var(--space-2xl);      /* 64px - desktop */
+  /* Section Spacing - generous for premium feel */
+  --section-padding-sm: 3rem;        /* 48px - mobile */
+  --section-padding-md: 5rem;        /* 80px - tablet */
+  --section-padding-lg: 7rem;        /* 112px - desktop */
   
   /* Container */
   --container-padding: var(--space-md);
@@ -333,6 +333,12 @@
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+  }
+  
+  .glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
   }
   
   [data-theme="light"] .glass-card {
@@ -576,6 +582,35 @@
   .stagger-4 { animation-delay: 0.4s; }
   .stagger-5 { animation-delay: 0.5s; }
   
+  .stagger-group > * {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: staggerReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .stagger-group > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger-group > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger-group > *:nth-child(3) { animation-delay: 0.15s; }
+  .stagger-group > *:nth-child(4) { animation-delay: 0.2s; }
+  .stagger-group > *:nth-child(5) { animation-delay: 0.25s; }
+  .stagger-group > *:nth-child(6) { animation-delay: 0.3s; }
+  .stagger-group > *:nth-child(n+7) { animation-delay: 0.35s; }
+
+  @keyframes staggerReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stagger-group > * {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+  
   .hover-lift {
     @apply transition-all duration-500;
   }
@@ -627,6 +662,26 @@
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
   
+  .hover-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .hover-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #D6487E;
+    transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hover-underline:hover::after {
+    width: 100%;
+  }
+
   .hero-animate {
     animation: heroFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     animation-delay: var(--delay, 0ms);

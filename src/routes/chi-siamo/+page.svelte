@@ -115,6 +115,11 @@
 <svelte:head>
   <title>Chi Siamo - Righello | Growth Agency Venezia</title>
   <meta name="description" content="Growth agency a Venezia. 3 dipartimenti integrati, un unico obiettivo: trasformare i tuoi dati in crescita misurabile. Scopri il team Righello." />
+  <meta property="og:title" content="Chi Siamo - Righello Growth Agency" />
+  <meta property="og:description" content="Un team dedicato e dinamico. 3 Co-Founder e un approccio data-driven al marketing digitale." />
+  <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 <section class="pt-24 pb-12 md:pt-32 md:pb-20">

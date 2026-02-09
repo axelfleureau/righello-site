@@ -119,6 +119,15 @@
 <svelte:head>
   <title>Righello - Growth Agency | Marketing, Advertising & Digital Experience</title>
   <meta name="description" content="Agenzia di marketing orientata ai risultati. Gestiamo social, creiamo contenuti e campagne pubblicitarie che generano conversioni misurabili." />
+  <meta property="og:title" content="Righello - Growth Agency" />
+  <meta property="og:description" content="Marketing, advertising e sviluppo digitale con un approccio data-driven. Ogni euro investito, ogni conversione tracciata." />
+  <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="it_IT" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Righello - Growth Agency" />
+  <meta name="twitter:description" content="Marketing, advertising e sviluppo digitale con un approccio data-driven." />
+  <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
 <AppleScrolly {credibilityBadges} />
@@ -131,7 +140,7 @@
       <div class="section-header">
         <p class="section-subtitle">Risultati reali</p>
         <h2 class="section-title max-w-4xl mx-auto">
-          I numeri che <span class="gradient-text">fanno la differenza</span>
+          Numeri, non <span class="gradient-text">promesse</span>
         </h2>
       </div>
     </RevealOnScroll>
@@ -160,7 +169,7 @@
         <p class="section-subtitle">I nostri servizi</p>
         <h2 class="section-title mb-4">Cosa <span class="gradient-text">facciamo</span></h2>
         <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-          Creiamo ecosistemi di conversione che trasformano views in clienti e fatturato ricorrente.
+          Tre dipartimenti integrati che lavorano insieme per trasformare il tuo marketing in un sistema di crescita misurabile.
         </p>
       </div>
     </RevealOnScroll>
@@ -333,11 +342,11 @@
           Pronto a <span class="gradient-text">crescere?</span>
         </h2>
         <p class="text-xl text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto">
-          Inizia oggi a trasformare il tuo business con strategie data-driven e risultati misurabili.
+          Ogni mese che passa senza una strategia è fatturato lasciato sul tavolo. Parliamo dei tuoi obiettivi e creiamo un piano d'azione concreto.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
           <MagneticButton href="/contatti" variant="primary" class="text-lg px-8 py-4">
-            Richiedi una consulenza gratuita
+            Prenota una call gratuita
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
