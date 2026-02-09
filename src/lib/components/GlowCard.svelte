@@ -52,7 +52,7 @@
     style="border-radius: {borderRadius};"
   ></div>
   
-  <div class="relative z-10 flex flex-col flex-1">
+  <div class="relative z-10" style="height: 100%;">
     <slot />
   </div>
 </div>

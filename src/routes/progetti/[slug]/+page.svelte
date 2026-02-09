@@ -302,18 +302,14 @@
   }
 
   .narrative-grid > :global(*) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    height: 100%;
   }
 
   .narrative-grid :global(.reveal-wrapper),
   .narrative-grid :global(.reveal-content),
   .narrative-grid :global(.reveal-placeholder),
   .narrative-grid :global(.glow-card) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    height: 100%;
   }
 
   .narrative-card {

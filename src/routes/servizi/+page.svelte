@@ -902,23 +902,18 @@
   }
   
   .help-grid > :global(*) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    height: 100%;
   }
 
   .help-grid :global(.reveal-wrapper),
   .help-grid :global(.reveal-content),
   .help-grid :global(.reveal-placeholder),
   .help-grid :global(.glow-card) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    height: 100%;
   }
 
   .help-card {
     padding: 1.5rem;
-    flex: 1;
   }
   
   .help-icon {
@@ -960,18 +955,14 @@
   }
 
   .pillars-grid > :global(*) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    height: 100%;
   }
 
   .pillars-grid :global(.reveal-wrapper),
   .pillars-grid :global(.reveal-content),
   .pillars-grid :global(.reveal-placeholder),
   .pillars-grid :global(.glow-card) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    height: 100%;
   }
   
   .pillar-card {
@@ -1012,18 +1003,14 @@
   }
 
   .case-studies-grid > :global(*) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    height: 100%;
   }
 
   .case-studies-grid :global(.reveal-wrapper),
   .case-studies-grid :global(.reveal-content),
   .case-studies-grid :global(.reveal-placeholder),
   .case-studies-grid :global(.glow-card) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    height: 100%;
   }
   
   .case-study-card {
