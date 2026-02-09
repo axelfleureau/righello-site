@@ -900,6 +900,15 @@
   .help-grid > :global(*) {
     display: flex;
     flex-direction: column;
+    flex: 1;
+  }
+
+  .help-grid :global(.reveal-wrapper),
+  .help-grid :global(.reveal-content),
+  .help-grid :global(.reveal-placeholder) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 
   .help-card {
