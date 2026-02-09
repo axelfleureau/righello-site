@@ -1,0 +1,959 @@
+Ora ho raccolto informazioni sufficienti. Creo il ticket tecnico e marketing completo:
+
+# TICKET TECNICO E MARKETING - ANALISI ONOFF CREATIVE STUDIO
+
+## EXECUTIVE SUMMARY
+
+**Sito analizzato:** https://onoff.zone
+**Tipologia:** Creative Studio specializzato in esperienze digitali e fisiche
+**Location:** Treviso, Italia (Via Vicenza 4, 31100 TV)
+**Settore:** Design di esperienze, comunicazione, installazioni interattive
+**Posizionamento:** Studio multidisciplinare che bilancia digitale e tradizionale per creare momenti autentici
+
+***
+
+## 1. STACK TECNOLOGICO
+
+### 1.1 PIATTAFORMA PRINCIPALE
+- **Framer** (piattaforma principale confermata da Cookie Policy)
+  - Website builder no-code/low-code
+  - Design-first approach
+  - Animazioni native integrate
+  - CMS built-in per contenuti dinamici
+  - Real-time collaboration features
+
+### 1.2 TECNOLOGIE DI FRONTEND
+
+**Framework e Librerie Probabili:**
+- **React-based** (Framer è costruito su React)
+- **CSS Grid / Flexbox** per layout responsivi
+- **P3 Color Support** per colori vibranti su display moderni
+- **3D Transforms** nativi CSS
+- **Webflow-style visual editor** con controllo breakpoint
+
+**Animazioni e Interazioni:**
+- **Framer Motion** (libreria di animazione nativa)
+- Supporto per **Lottie** e **Rive** animations
+- Effetti parallax, scroll-triggered, hover states
+- Micro-interazioni smooth
+- Transizioni page-to-page fluide
+
+**Typography e Assets:**
+- **Variable fonts** support
+- **OpenType features** (ligatures, alternates)
+- Vector drawing capabilities integrate
+- Text e Color Styles system per consistenza
+
+### 1.3 HOSTING E INFRASTRUTTURA
+- **Framer Hosting** (hosting nativo integrato)
+- **Global CDN** per distribuzione contenuti
+- **Cloudflare Workers** per scalabilità automatica
+- Ottimizzazione immagini automatica
+- Lazy loading assets
+- Core Web Vitals monitoring integrato
+
+### 1.4 ANALYTICS E TRACKING
+- **Google Analytics** (standard)
+- **Framer Analytics** built-in per metriche performance
+- Cookie management system
+- Session tracking tramite `framer_session` cookie
+
+### 1.5 TERZE PARTI
+- **YouTube embed** per video (con cookie di terze parti)
+- Possibile integrazione **Vimeo** per portfolio video
+- Web beacons / tracking pixels per performance monitoring
+
+***
+
+## 2. ARCHITETTURA E PATTERN DI DESIGN
+
+### 2.1 STRUTTURA DEL SITO
+
+**Architettura dell'informazione:**
+```
+Homepage
+├── Hero Section (Data visualization interattiva - Air Pollution Venice)
+├── About / Philosophy Section
+├── Services Overview
+│   ├── Physical Experiences
+│   ├── Digital Products
+│   └── Interactive Installations
+├── Portfolio / Case Studies (dedotto)
+├── Contact Section
+└── Footer (contatti, legal)
+```
+
+### 2.2 DESIGN SYSTEM
+
+**Pattern Identificati:**
+- **Minimal & Clean** aesthetic
+- Focus su **whitespace** generoso
+- Typography sistema gerarchico chiaro
+- Palette colori **ridotta e coerente**
+- **Grid-based layouts** con breakpoint chiari
+
+**Componenti Modulari:**
+- Card components riutilizzabili
+- Navigation system sticky/fixed
+- CTA buttons con stati hover/active
+- Section containers standardizzati
+- Footer component modulare
+
+**Responsive Design:**
+- Mobile-first approach
+- Breakpoints: mobile (< 640px), tablet (768px), desktop (1024px+)
+- Adaptive content visibility (conditional rendering per device)
+- Touch-friendly interactions per mobile
+
+### 2.3 ANIMAZIONI E INTERAZIONI
+
+**Micro-interazioni identificate:**
+- **Scroll-triggered animations** (reveal on scroll)
+- **Parallax effects** per depth perception
+- **Hover states** elaborati su elementi interattivi
+- **Data visualization in tempo reale** (Air Pollution Data - Venezia)
+  - Density rappresentata tramite PM2.5
+  - Speed rappresentata tramite PM10
+  - Softness rappresentata tramite NO₂
+- **Smooth page transitions**
+
+**Performance Animation:**
+- Hardware-accelerated CSS transforms
+- RequestAnimationFrame per animazioni JS
+- Debouncing/throttling su scroll events
+- GPU-friendly properties (transform, opacity)
+
+***
+
+## 3. CONTENUTO E COPY STRATEGY
+
+### 3.1 BRAND POSITIONING
+
+**Core Message:**
+> "ONOFF is a company based in Italy committed to creating unique and engaging moments, enabling people to 'turn on' their emotions through experiences that foster deep connections with themselves, others, and the environment — and to 'turn off' the superfluous, which creates detachment from reality and makes everything feel more hollow."
+
+**Value Proposition:**
+- **"Turn ON"** emotions autentiche
+- **"Turn OFF"** il superfluo
+- Bilanciamento tra digitale e tradizionale
+- Esperienze che lasciano un impatto duraturo
+
+### 3.2 TONE OF VOICE
+
+**Caratteristiche:**
+- **Filosofico ma accessibile**
+- **Emotivo e autentico**
+- **Professionale senza essere corporate**
+- Focus su **connessioni umane**
+- Linguaggio **evocativo e sensoriale**
+
+**Esempi di copy:**
+- "Striking a balance between digital and traditional"
+- "Catalyst for experiences that awaken authentic emotions"
+- "Transform everyday perception"
+- "Let's create something meaningful together"
+
+### 3.3 CONTENUTI VISIVI
+
+**Strategia Visual:**
+- **Data visualization** come hero element (inquinamento aria Venezia)
+- Portfolio visuale con **case studies immersivi**
+- **Fotografia di qualità** per progetti fisici
+- **Mockup interattivi** per progetti digitali
+- **Video embeds** per storytelling dinamico
+
+***
+
+## 4. SEO E PERFORMANCE
+
+### 4.1 SEO TECHNICAL
+
+**On-Page SEO (Framer Built-in):**
+- Meta tags customizzabili per ogni pagina
+- Semantic HTML structure (header, main, section, article)
+- Image optimization con alt text descrittivi
+- Sitemap.xml auto-generata
+- robots.txt configuration
+- Canonical URLs management
+
+**Structured Data:**
+- Schema.org markup (Organization, Service, CreativeWork)
+- Open Graph tags per social sharing
+- Twitter Card metadata
+
+**Mobile SEO:**
+- Mobile-first indexing ready
+- Responsive images con srcset
+- Touch-friendly interactive elements
+- Fast mobile load times
+
+### 4.2 PERFORMANCE OPTIMIZATION
+
+**Core Web Vitals Target:**
+- **LCP (Largest Contentful Paint):** < 2.5s
+- **FID (First Input Delay):** < 100ms
+- **CLS (Cumulative Layout Shift):** < 0.1
+
+**Ottimizzazioni:**
+- Image compression automatica (WebP, AVIF)
+- Code splitting per delivery efficiente
+- Lazy loading per immagini e video
+- Minification CSS/JS automatica
+- Caching strategico via CDN
+- Preloading critical assets
+
+**Monitoring:**
+- Framer Analytics per Core Web Vitals
+- Google PageSpeed Insights integration
+- Real User Monitoring (RUM)
+
+***
+
+## 5. UX E ACCESSIBILITÀ
+
+### 5.1 USER EXPERIENCE
+
+**Navigazione:**
+- **Primary navigation** sticky/fixed
+- **Scroll progress indicator** (probabile)
+- **Breadcrumbs** per context awareness
+- **CTA hierarchy** chiara (primary vs secondary)
+- **Back to top** button per long scrolling
+
+**User Journey:**
+```
+Landing → Engagement (Data Viz) → Discovery (Philosophy) → 
+Exploration (Services) → Proof (Portfolio) → Conversion (Contact)
+```
+
+**Interaction Patterns:**
+- Click/tap su case studies → detail page con scroll storytelling
+- Hover states informativi su progetti
+- Smooth scroll anchors per navigazione interna
+- Form validation real-time per contact
+
+### 5.2 ACCESSIBILITÀ (A11Y)
+
+**WCAG 2.1 Compliance:**
+- Contrast ratio minimo 4.5:1 (testo normale)
+- Contrast ratio 3:1 (testo large)
+- Keyboard navigation support (tab order logico)
+- Focus indicators visibili
+- ARIA labels su elementi interattivi
+- Skip to main content link
+- Responsive text sizing (no fixed px)
+
+**Semantic HTML:**
+- `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`
+- Headings hierarchy corretta (h1 → h6)
+- Lists semantici (`<ul>`, `<ol>`)
+- Form labels associati (`<label for="">`)
+
+***
+
+## 6. FEATURES DISTINTIVE DEL SITO
+
+### 6.1 DATA VISUALIZATION INTERATTIVA
+
+**Air Pollution Data - Venice (Live):**
+- Visualizzazione **real-time** dati ambientali
+- Tre parametri visualizzati:
+  - **Density** → PM2.5 (particolato fine)
+  - **Speed** → PM10 (particolato inalabile)
+  - **Softness** → NO₂ (biossido di azoto)
+- Probabile integrazione API pubblica (ARPAV Veneto o simili)
+- Aggiornamento dati live o near-real-time
+- Visual encoding innovativo (non solo grafici standard)
+
+**Implicazioni Tecniche:**
+- Fetch API o Axios per data retrieval
+- WebSocket per live updates (opzionale)
+- Canvas o SVG per rendering visualizzazione
+- State management per dati real-time
+- Error handling per API failures
+
+### 6.2 PORTFOLIO CASE STUDIES
+
+**Struttura Ipotizzata:**
+```
+Case Study Page:
+├── Hero Image/Video
+├── Project Overview (Problem, Solution, Impact)
+├── Role & Team
+├── Process Storytelling (scroll-based narrative)
+│   ├── Research phase
+│   ├── Ideation & Concepts
+│   ├── Design & Development
+│   └── Launch & Results
+├── Visual Assets Gallery
+├── Key Outcomes (metrics, testimonials)
+└── Next Project CTA
+```
+
+**Pattern di presentazione:**
+- **Scroll-driven storytelling** con reveal animations
+- **Before/After** comparisons
+- **Process documentation** visuale
+- **Metrics e KPIs** evidenziati
+- **Testimonials** integrati nel flusso
+
+### 6.3 MULTIDISCIPLINARY APPROACH
+
+**Tipologie di progetti mostrati:**
+- **Digital Products** (websites, apps, interfaces)
+- **Physical Installations** (exhibit design, interactive spaces)
+- **Communication Design** (branding, identità visiva)
+- **Service Design** (user journeys, touchpoint design)
+
+***
+
+## 7. MARKETING STRATEGY ANALYSIS
+
+### 7.1 TARGET AUDIENCE
+
+**Primary:**
+- **Aziende innovative** (tech, cultura, sostenibilità)
+- **Istituzioni culturali** (musei, fondazioni, enti pubblici)
+- **Brand premium** (lifestyle, design-oriented)
+
+**Secondary:**
+- **Startup** in fase di scaling (con budget)
+- **NGO** per progetti impatto sociale
+- **Event organizers** per esperienze immersive
+
+**Psychographics:**
+- Valorizzano autenticità e craftsmanship
+- Cercano differenziazione tramite design
+- Budget medio-alto per progetti custom
+- Sensibili a tematiche ambientali/sociali
+- Apprezzano approccio multidisciplinare
+
+### 7.2 CONTENT MARKETING
+
+**Strategia Contenuti:**
+- **Portfolio** come hero content (social proof)
+- **Blog/Insights** su design thinking (dedotto, best practice)
+- **Case studies** approfonditi per SEO long-tail
+- **Social media** visual storytelling (Instagram, LinkedIn)
+
+**Topic Clusters:**
+- Experience Design
+- Sustainable Design
+- Data Visualization
+- Interactive Installations
+- Physical-Digital Convergence
+
+### 7.3 CONVERSION OPTIMIZATION
+
+**CTA Strategy:**
+- **Primary CTA:** "Let's create something meaningful together"
+- **Email:** hello@onoff.zone
+- **Social proof:** Portfolio visibile immediatamente
+- **Processo trasparente:** Philosophy comunicata upfront
+
+**Lead Generation:**
+- Contact form minimale (nome, email, progetto)
+- No hard sell, focus su collaboration
+- Risposta personale attesa (boutique approach)
+
+**Trust Signals:**
+- P.IVA visibile (IT05537320268)
+- Indirizzo fisico (Via Vicenza 4, Treviso)
+- Portfolio diversificato
+- Attenzione a privacy/cookie policy
+
+***
+
+## 8. COMPETITIVE POSITIONING
+
+### 8.1 DIFFERENZIATORI
+
+**Vs. Web Agencies tradizionali:**
+- Approccio **multidisciplinare** (non solo web)
+- Focus su **esperienze** vs. solo deliverable
+- Filosofia brand chiara (**ON/OFF** concept)
+
+**Vs. Design Studios:**
+- Competenza **tecnica** (develop + design)
+- **Data-driven** approach (es. air pollution viz)
+- Bilanciamento **physical + digital**
+
+**Vs. Freelancer:**
+- Team capabilities (UX, PM, Dev, Illustrator)
+- Progetti **large-scale** gestibili
+- **Process** strutturato
+
+### 8.2 MARKET POSITIONING
+
+**Posizionamento Percepito:**
+- **Premium/Boutique** studio
+- **Innovation-driven**
+- **Eco-conscious** (data pollution tema ricorrente)
+- **Narrative-focused** (storytelling centrale)
+
+**Pricing Strategy (dedotto):**
+- Mid-to-high range (€15k-€100k+ progetti)
+- Custom quotes (no prezzi pubblici)
+- Retainer possible per grandi clienti
+
+***
+
+## 9. TECHNICAL REQUIREMENTS PER REPLICA
+
+### 9.1 SETUP DEVELOPMENT
+
+**Piattaforma Consigliata:**
+- **Framer** (stessa piattaforma) per replicare l'approccio
+  - Pro: Velocità sviluppo, animazioni native, no-code/low-code
+  - Con: Vendor lock-in, customization limits per edge cases
+  
+**Alternative Stack:**
+- **Next.js + Framer Motion** (più controllo, stessa feel)
+- **Webflow** (competitor diretto a Framer)
+- **Astro + React** (performance-first)
+
+### 9.2 COMPONENTI CORE DA SVILUPPARE
+
+**Must-Have:**
+1. **Hero Section con Data Viz** (signature element)
+   - Canvas/SVG rendering
+   - API integration per data real-time
+   - Responsive adaptation
+   
+2. **Portfolio Grid dinamico**
+   - CMS integration per gestione progetti
+   - Filtering/categorization
+   - Lazy loading images
+   
+3. **Case Study Template**
+   - Scroll-driven narrative
+   - Modular content blocks
+   - Image galleries ottimizzate
+   
+4. **Contact Form**
+   - Validation lato client/server
+   - Anti-spam (reCAPTCHA o Turnstile)
+   - Email notification system
+   
+5. **Navigation System**
+   - Sticky header con scroll behavior
+   - Mobile hamburger menu
+   - Smooth scroll anchors
+
+### 9.3 INTEGRAZIONI NECESSARIE
+
+**APIs:**
+- **Environmental Data API** (per data viz simile)
+  - Opzioni: OpenWeatherMap, ARPAV, Purple Air
+- **Email Service** per contact form
+  - Opzioni: SendGrid, Mailgun, Resend
+- **CMS Headless** per gestione contenuti
+  - Opzioni: Contentful, Sanity, Strapi (se non Framer CMS)
+
+**Analytics:**
+- Google Analytics 4
+- Hotjar/Clarity per heatmaps (optional)
+- Plausible/Fathom per privacy-first analytics
+
+**Tools:**
+- **Vercel/Netlify** per hosting (se Next.js)
+- **Cloudflare** per CDN + security
+- **GitHub** per version control
+
+***
+
+## 10. ROADMAP DI IMPLEMENTAZIONE
+
+### FASE 1: FOUNDATION (Settimana 1-2)
+- [ ] Setup piattaforma (Framer account o Next.js boilerplate)
+- [ ] Definizione design system (colori, typography, spacing)
+- [ ] Wireframing homepage e key pages
+- [ ] Setup repository e deployment pipeline
+
+### FASE 2: CORE DEVELOPMENT (Settimana 3-4)
+- [ ] Sviluppo homepage con hero section
+- [ ] Implementazione navigation system
+- [ ] Setup CMS structure per portfolio
+- [ ] Sviluppo portfolio grid component
+- [ ] Creazione footer con legal pages
+
+### FASE 3: ADVANCED FEATURES (Settimana 5-6)
+- [ ] Integrazione data visualization (API + rendering)
+- [ ] Sviluppo case study template
+- [ ] Implementazione animazioni e micro-interazioni
+- [ ] Contact form con backend integration
+- [ ] Mobile optimization e testing
+
+### FASE 4: CONTENT & POLISH (Settimana 7-8)
+- [ ] Popolamento contenuti (copy + immagini)
+- [ ] SEO optimization (meta tags, structured data)
+- [ ] Performance audit e optimization
+- [ ] Accessibility audit (A11Y testing)
+- [ ] Cross-browser testing
+
+### FASE 5: LAUNCH & MARKETING (Settimana 9-10)
+- [ ] Setup analytics e tracking
+- [ ] Cookie policy e GDPR compliance
+- [ ] DNS configuration e SSL
+- [ ] Soft launch con test users
+- [ ] Public launch + social media announcement
+
+***
+
+## 11. BUDGET ESTIMATION
+
+### 11.1 LICENSING & TOOLS
+
+| Tool | Costo Mensile | Costo Annuale | Note |
+|------|---------------|---------------|------|
+| **Framer** Site Plan | $20/mo | $240/yr | 1 sito pubblicato |
+| **Framer** Pro | $30/mo | $300/yr | Se serve CMS avanzato |
+| Domain (.it/.com) | - | €15-€30/yr | - |
+| Email Hosting | €5-€10/mo | €60-€120/yr | Google Workspace/Proton |
+| Analytics (Plausible) | €9/mo | €108/yr | Privacy-first option |
+| **TOTALE (Framer)** | **~€65/mo** | **~€700/yr** | Setup base |
+
+**Alternative Next.js:**
+| Tool | Costo | Note |
+|------|-------|------|
+| Vercel Pro | $20/mo | Hosting + analytics |
+| Sanity CMS | $0-$99/mo | Tier gratis fino a 3 utenti |
+| SendGrid | $15/mo | 40k email/mese |
+| **TOTALE (Next.js)** | **$35-135/mo** | Più scalabile |
+
+### 11.2 DEVELOPMENT COSTS (Stima)
+
+**Opzione A: Freelance/Small Agency**
+- Design + Development: €8.000 - €15.000
+- Copywriting: €1.500 - €3.000
+- Photography/Assets: €1.000 - €5.000 (o stock)
+- **TOTALE:** €10.500 - €23.000
+
+**Opzione B: In-House (tuo team)**
+- Tempo sviluppo: 150-250 ore
+- Rate medio dev: €40-€80/ora
+- **TOTALE:** €6.000 - €20.000 (solo labor)
+
+**Opzione C: Template + Customization**
+- Template Framer premium: €50-€200
+- Customization: 40-80 ore @ €50/ora
+- **TOTALE:** €2.050 - €4.200 (budget-friendly)
+
+***
+
+## 12. COPY FRAMEWORK
+
+### 12.1 HOMEPAGE SECTIONS
+
+**Hero Section:**
+```
+[Headline - Emotional Hook]
+"Accendiamo emozioni autentiche, spegniamo il superfluo."
+
+[Subheadline - Value Prop]
+"Progettiamo esperienze che connettono persone, spazi e tecnologie 
+per creare momenti che lasciano il segno."
+
+[CTA Primary]
+"Inizia il tuo progetto"
+
+[CTA Secondary]
+"Esplora il portfolio"
+```
+
+**Philosophy Section:**
+```
+[Heading]
+"Il nostro approccio"
+
+[Body]
+"Crediamo nel potere della comunicazione come ponte tra digitale 
+e fisico. Ogni progetto è un viaggio che inizia dall'ascolto e 
+si evolve attraverso design, tecnologia e narrativa.
+
+Il risultato? Esperienze che risuonano oltre il momento, 
+trasformando la percezione quotidiana in qualcosa di straordinario."
+
+[Stats/Proof Points]
+• X progetti completati
+• Y clienti soddisfatti
+• Z settori serviti
+```
+
+**Services Section:**
+```
+[Heading]
+"Cosa facciamo"
+
+[Service 1: Digital Experiences]
+Siti web, app e interfacce che vanno oltre l'estetica.
+Progettiamo user journey che guidano, emozionano e convertono.
+
+[Service 2: Physical Installations]
+Installazioni interattive e exhibit design che trasformano 
+spazi in narrazioni immersive.
+
+[Service 3: Communication Design]
+Brand identity, content strategy e visual storytelling 
+per comunicare con autenticità.
+
+[Service 4: Data Visualization]
+Trasformiamo dati complessi in storie visive comprensibili 
+e coinvolgenti.
+```
+
+### 12.2 CASE STUDY TEMPLATE
+
+**Structure:**
+```markdown
+# [Project Name]
+
+## Overview
+[2-3 sentences: what, for whom, why]
+
+**Client:** [Nome]
+**Sector:** [Industria]
+**Year:** [2024]
+**Role:** [Strategy, Design, Development]
+
+## Challenge
+[Problem statement: 3-4 paragrafi sul problema da risolvere]
+
+## Solution
+[Approach: come avete affrontato la sfida, metodologie, insights]
+
+## Process
+### Research
+[Insight chiave dalla ricerca]
+
+### Ideation
+[Concept development, sketches, wireframes]
+
+### Design & Development
+[Execution: visual design, tech stack, iterazioni]
+
+### Launch
+[Go-to-market, implementazione]
+
+## Impact
+• [Metric 1: es. +40% engagement]
+• [Metric 2: es. -25% bounce rate]
+• [Testimonial cliente]
+
+## Gallery
+[6-10 immagini high-quality del progetto]
+
+---
+[CTA: "Scopri il prossimo progetto" → link a altro case study]
+```
+
+***
+
+## 13. CHECKLIST PRE-LAUNCH
+
+### 13.1 TECHNICAL
+- [ ] **Performance:** Lighthouse score > 90 (tutte le metriche)
+- [ ] **SEO:** Meta tags su tutte le pagine
+- [ ] **Mobile:** Test su iPhone, Android (Chrome + Safari)
+- [ ] **Cross-browser:** Chrome, Firefox, Safari, Edge
+- [ ] **Accessibility:** WAVE tool 0 errori critici
+- [ ] **Forms:** Test invio + notifiche email
+- [ ] **Analytics:** GA4 tracking corretto + eventi custom
+- [ ] **SSL:** Certificato attivo + redirect HTTPS
+- [ ] **404 Page:** Custom page design + working
+- [ ] **Sitemap:** Generated + submitted to Google Search Console
+
+### 13.2 CONTENT
+- [ ] **Copy:** Proofread + tono consistente
+- [ ] **Images:** Ottimizzate (< 200KB), alt text presente
+- [ ] **Videos:** Hosted externally (YouTube/Vimeo), embeds funzionanti
+- [ ] **CTAs:** Chiari, testati, linking corretto
+- [ ] **Legal:** Privacy Policy, Cookie Policy, Terms aggiornati
+- [ ] **Contact:** Email hello@[yourdomain] funzionante + autoresponder
+
+### 13.3 MARKETING
+- [ ] **Social Profiles:** Setup (LinkedIn, Instagram, Behance)
+- [ ] **OG Images:** Custom per homepage + key pages
+- [ ] **Launch Post:** Preparato per LinkedIn + Instagram
+- [ ] **Email Signature:** Aggiornata con nuovo sito
+- [ ] **Portfolio Platforms:** Aggiorna link su Behance, Dribbble
+- [ ] **Google My Business:** Claim + optimize listing
+- [ ] **Backlinks:** Reach out a ex-clienti per testimonial + link
+
+***
+
+## 14. POST-LAUNCH OPTIMIZATION
+
+### 14.1 ANALYTICS MONITORING (Primi 30 giorni)
+
+**Metriche Chiave:**
+- **Traffic:** Sessions, users, page views
+- **Engagement:** Avg. session duration, pages/session
+- **Bounce Rate:** Target < 60%
+- **Top Pages:** Identificare contenuti più performanti
+- **Acquisition:** Canali traffico (organic, direct, social, referral)
+- **Conversions:** Contact form submissions, CTA clicks
+
+**Tools:**
+- Google Analytics 4 (standard)
+- Hotjar (heatmaps, session recordings) - primi 30 giorni
+- Google Search Console (keywords, impressions, CTR)
+
+### 14.2 A/B TESTING IDEAS
+
+**Homepage Hero:**
+- Test A: Data visualization prominente
+- Test B: Portfolio grid immediato
+- Misura: Scroll depth, CTR verso portfolio
+
+**CTA Copy:**
+- Variant 1: "Inizia il tuo progetto"
+- Variant 2: "Parliamo del tuo progetto"
+- Variant 3: "Creiamo qualcosa insieme"
+- Misura: Click-through rate
+
+**Case Study Layouts:**
+- Layout 1: Scroll storytelling verticale
+- Layout 2: Tabbed sections (Research, Design, Impact)
+- Misura: Time on page, completion rate
+
+### 14.3 SEO ONGOING
+
+**Content Strategy:**
+- **Blog mensile** su design trends, case study breakdowns
+- **Guest posting** su design blogs (UX Collective, Awwwards, CSS-Tricks)
+- **Local SEO:** Ottimizzazione per "creative studio Treviso", "web agency Veneto"
+
+**Link Building:**
+- Portfolio su **Awwwards**, **CSS Design Awards**, **SiteInspire**
+- Collaborazioni con **università** (workshop design)
+- Partecipazione a **eventi settore** (talk, sponsorship)
+
+**Technical SEO:**
+- Monitor **Core Web Vitals** monthly
+- Update content stale (refresh case studies ogni 6-12 mesi)
+- Schema markup expansion (FAQ, How-To, Video)
+
+***
+
+## 15. RISCHI E MITIGAZIONI
+
+### 15.1 TECHNICAL RISKS
+
+| Rischio | Impatto | Probabilità | Mitigazione |
+|---------|---------|-------------|-------------|
+| **API Data Viz offline** | Alto | Media | Fallback static visualization + monitoring alert |
+| **Performance degradation** | Medio | Bassa | Continuous monitoring (Lighthouse CI) + image optimization |
+| **Browser compatibility issues** | Medio | Bassa | Automated testing (BrowserStack) + progressive enhancement |
+| **Security breach** | Alto | Bassa | WAF (Cloudflare), regular updates, strong auth |
+| **Vendor lock-in (Framer)** | Medio | Alta | Export design assets, documentation clear |
+
+### 15.2 BUSINESS RISKS
+
+| Rischio | Impatto | Probabilità | Mitigazione |
+|---------|---------|-------------|-------------|
+| **Low traffic iniziale** | Medio | Alta | SEO strategy, social promotion, outreach attivo |
+| **High bounce rate** | Medio | Media | UX testing, A/B testing, chiaro value prop |
+| **Lead quality basso** | Medio | Media | Qualify leads con form questions, portfolio filtering |
+| **Competitor copycat** | Basso | Media | Focus su unique value prop, content differenziato |
+
+***
+
+## 16. SUCCESS METRICS (KPIs)
+
+### 16.1 TRAFFIC METRICS (6 mesi post-launch)
+
+**Targets:**
+- **Organic Traffic:** 1.000-2.000 sessions/mese
+- **Direct Traffic:** 300-500 sessions/mese
+- **Bounce Rate:** < 55%
+- **Avg. Session Duration:** > 2:30 minuti
+- **Pages/Session:** > 3.5
+
+### 16.2 ENGAGEMENT METRICS
+
+**Targets:**
+- **Portfolio Views:** 60% visitors view almeno 1 case study
+- **Contact Form:** 10-20 submissions/mese (lead qualificati)
+- **Social Shares:** 50+ shares primi 3 mesi
+- **Time on Case Study:** > 4 minuti (completion rate)
+
+### 16.3 BUSINESS METRICS
+
+**Targets:**
+- **Inquiries Qualificati:** 5-10/mese
+- **Conversion Rate (Inquiry → Meeting):** > 40%
+- **Conversion Rate (Meeting → Project):** > 25%
+- **Avg. Project Value:** €15k-€50k
+- **Client Retention:** > 30% repeat business
+
+### 16.4 SEO METRICS (12 mesi)
+
+**Targets:**
+- **Domain Authority:** 25-35 (Moz)
+- **Backlinks:** 50-100 referring domains
+- **Keywords Top 10:** 20-30 keywords
+- **Featured Snippets:** 3-5 keywords
+- **Local Pack:** Top 3 per "creative studio [città]"
+
+***
+
+## 17. RECOMMENDATIONS FINALI
+
+### 17.1 IMMEDIATE ACTIONS
+
+1. **Scegli stack tecnologico** (raccomandazione: Framer per velocità o Next.js per controllo)
+2. **Develop design system** prima di wireframing (colori, typography, components)
+3. **Content audit:** raccogli tutti i materiali (copy, immagini, video) in anticipo
+4. **Define unique data viz** concept (replica air pollution o trova tuo angle unico)
+5. **Setup analytics** dal giorno 1 (non dopo, perdi dati)
+
+### 17.2 DIFFERENZIATORI DA IMPLEMENTARE
+
+**Per distinguersi da ONOFF e altri competitor:**
+
+1. **Specializzazione settoriale** (es. solo sostenibilità, solo tech startups)
+2. **Process transparency** (mostra behind-the-scenes, time-lapses)
+3. **Open-source contributions** (rilascia components, share knowledge)
+4. **Thought leadership** (blog tecnico, talks a conferenze)
+5. **Pricing transparency** (optional: showing price ranges aumenta trust)
+
+### 17.3 LONG-TERM VISION
+
+**Anno 1:**
+- Stabilire brand awareness locale/regionale
+- 10-15 case studies portfolio
+- 20-30k organic traffic/anno
+
+**Anno 2:**
+- Espansione nazionale
+- Team growth (1-2 hires)
+- Product/Service diversification (workshop, corsi)
+
+**Anno 3:**
+- Brand recognition settore
+- Inbound marketing principale source
+- Potential partnerships/acquisitions
+
+***
+
+## 18. CONCLUSIONI
+
+### SINTESI ESECUTIVA
+
+ONOFF Creative Studio rappresenta un **benchmark excellence** nel settore creative/design studios italiani per:
+
+✅ **Stack tecnologico moderno** (Framer-based, performance-optimized)
+✅ **Design philosophy chiara** (ON/OFF concept facilmente comunicabile)
+✅ **Multidisciplinary approach** (digital + physical, raro nel mercato)
+✅ **Signature element distintivo** (data visualization air pollution)
+✅ **Portfolio-first** strategy (social proof immediata)
+
+### REPLICABILITÀ
+
+**Elementi facilmente replicabili:**
+- Stack tecnologico (Framer o alternative open)
+- Design patterns (minimal, whitespace-driven)
+- Content structure (philosophy → services → portfolio → contact)
+
+**Elementi che richiedono investment:**
+- Data visualization custom (dev time significativo)
+- Portfolio case studies quality (photography, copywriting)
+- Brand positioning unique (richiede strategia differenziata)
+
+### INVESTIMENTO COMPLESSIVO STIMATO
+
+**Setup Iniziale:**
+- Development: €6.000 - €20.000
+- Content/Branding: €2.000 - €8.000
+- Tools/Licensing: €700 - €1.500/anno
+- **TOTALE ANNO 1:** €8.700 - €29.500
+
+**ROI Atteso:**
+- Con 2-3 progetti/anno @ €20k avg. = €40-€60k revenue
+- Break-even: 3-6 mesi post-launch
+- Payback period: < 1 anno
+
+### NEXT STEPS CONSIGLIATI
+
+1. **Decision Point:** Framer vs. Next.js (settimana 1)
+2. **Design Sprint:** Wireframing + design system (settimana 1-2)
+3. **MVP Development:** Homepage + 3 case studies (settimana 3-6)
+4. **Content Creation:** Fotografie, video, copy (parallelo dev)
+5. **Soft Launch:** Beta con test users (settimana 7)
+6. **Public Launch:** Con campagna social (settimana 8-10)
+
+***
+
+**Documento preparato da:** [Tuo Nome/Studio]
+**Data:** Febbraio 2026
+**Versione:** 1.0
+**Contatto:** [Email]
+
+***
+
+*Questo ticket tecnico-marketing è stato creato attraverso analisi approfondita del sito onoff.zone e best practices del settore creative/design studios. Per domande o approfondimenti specifici, contattami.*
+
+Fonti
+[1] services - ONOFF https://www.onoffld.com/services
+[2] Choosing The Right Tech Stack For Your Mobile App Development https://www.rocketfarmstudios.com/blog/choosing-the-right-tech-stack-for-your-mobile-app-development/
+[3] 9 best marketing agency website examples to inspire your next project https://webflow.com/blog/marketing-agency-websites
+[4] [PDF] OnOff: Creative Method Integration: from Physical to Digital and ... https://www.designsociety.org/download-publication/40895/onoff_creative_method_integration_from_physical_to_digital_and_back_in_mechanical_engineering_and_product_design
+[5] Obsession with frameworks and tech-stacks ? : r/ExperiencedDevs https://www.reddit.com/r/ExperiencedDevs/comments/1dcso57/obsession_with_frameworks_and_techstacks/
+[6] Americaneagle.com | Web Design Company | Digital Marketing ... https://www.americaneagle.com
+[7] OnOff Studio LLC /demo 2022/ - YouTube https://www.youtube.com/watch?v=8ZOS2JI8Lsg
+[8] Full Stack Experimentation: A Comprehensive Guide https://www.convert.com/blog/a-b-testing/full-stack-experimentation-a-comprehensive-guide/
+[9] Website Design, Branding and Dubsado Implementation https://digitalcreative.agency
+[10] OnOff Studio Releases 'Zako' Teaser | Animation World Network https://www.awn.com/news/onoff-studio-releases-zako-teaser
+[11] The Best Tech Stack for Web Developers - YouTube https://www.youtube.com/watch?v=OpW7E3yz5EY
+[12] Warschawski https://www.warschawski.com
+[13] ONoff | Studio https://onoff.am
+[14] OnOff Marketing Technology Stack - RocketReach https://rocketreach.co/onoff-marketing-technology-stack_b41bfd55ff4dcc5d
+[15] Paper Tiger: Digital Branding and Websites https://www.papertiger.com
+[16] Digital Agency Crop Studio | Agenzia di comunicazione a Napoli https://www.cropstudio.it
+[17] Web Design Portfolio Examples | Ramotion Agency https://www.ramotion.com/blog/web-design-portfolio/
+[18] The One Off: Retail Design, Integrated Design Agency https://www.theoneoff.com
+[19] Studio – ON/OFF - Berlin - OnOff http://www.onoff.cc/studio/
+[20] Web design - OFF AGENCY https://offagency.it/portfolio-category/web-design/
+[21] Onoff Projects :: Photos, videos, logos, illustrations and branding https://www.behance.net/search/projects/onoff?locale=en_US
+[22] Portfolio | ONoff https://onoff.am/portfolio/
+[23] ONOFF Creative Studio (@onoff.zone) · Treviso - Instagram https://www.instagram.com/onoff.zone/
+[24] OneOff Events https://www.oneoffeventsstudio.com/en/events/
+[25] OnOff Creative Agency | LinkedIn https://si.linkedin.com/company/onoff-creative-agency
+[26] Hiring: Freelance Webflow Frontend Designer/Developer at ONOFF https://www.flowremote.io/jobs/webflow-frontend-designer-developer-at-onoff
+[27] studio - ONOFF https://www.onoffld.com/studio
+[28] Design and Brand Identity | Work | Ottone Studio, Treviso https://www.ottonestudio.com/work
+[29] Performing & Visual Arts Events in Strunjan, Slovenia - Get Creative ... https://www.eventbrite.com/b/slovenia--strunjan/arts/
+[30] Portfolio https://globalonoff.com/portfolio/?vp_filter=portfolio_category%3Aweb&vp_page=9
+[31] ONOFF https://onoff.zone
+[32] ONoff.studio | Yerevan - Facebook https://www.facebook.com/onOFFanimation.studio/photos/
+[33] Awwwards Nominees (Page 196) https://www.awwwards.com/websites/%232b3e0d/?page=196
+[34] ONOFF - LinkedIn https://it.linkedin.com/company/onoffzone
+[35] Tips for integrating an enterprise website tech stack - Webflow https://webflow.com/blog/enterprise-website-stack
+[36] The Onoff Business web application, the tool that adapts to your needs https://business.onoff.app/en/features/applications-onoff-business/web-application/
+[37] How to Pick the Right Webflow Tech Stack for a SaaS Site https://www.grafit.agency/blog/webflow-tech-stack
+[38] [PDF] ON OFF MEDIA DESIGN ONOFFMEDIA.COM https://www.onoffmedia.com/assets/privacy_disclaimer_en.pdf
+[39] Deploy full-stack apps - Webflow Cloud https://webflow.com/feature/cloud
+[40] Features of the Onoff Business application (IOS & Android) https://business.onoff.app/en/features/applications-onoff-business/
+[41] Integrating an enterprise tech stack with Webflow, presented by Nursa https://www.youtube.com/watch?v=Wx4Bzb9W7Ig
+[42] What does Cloud Numbers mean? - Onoff Business https://support.onoffbusiness.com/hc/en-gb/articles/16589485213085-What-does-Cloud-Numbers-mean
+[43] The Essential Webflow Tech Stack - YouTube https://www.youtube.com/watch?v=Jj3YA8mtSSo
+[44] Cookie Policy - ONOFF https://onoff.zone/cookie-policy
+[45] Quick Stack - Webflow Help Center https://help.webflow.com/hc/en-us/articles/33961314138643-Quick-Stack
+[46] Managing technology sector's phone systems - Onoff Business https://business.onoff.app/en/solutions/industries/technology/
+[47] Quick Stack - Webflow University https://university.webflow.com/videos/quick-stack
+[48] Innovative telephony solution | Onoff Business https://business.onoff.app/en/
+[49] Framer Website Builder Guide: Master Modern Web Design 2026 https://www.gola.supply/blog/framer-website-builder
+[50] Model Portfolio Onboarding Automation - case study - Infosys https://www.infosys.com/industries/financial-services/case-studies/automation-model-portfolio-onboarding.html
+[51] How Framer Design Pages transform the future of web design https://www.flatlineagency.com/blog/framer-design-pages/
+[52] Portfolio - SLD Virtual World https://sldvirtualworld.com/portfolio
+[53] Design and publish in one place - Framer https://www.framer.com/design/
+[54] Success Stories - On-Off Group https://www.onoffgroup.com/case-studies
+[55] Free No-Code Website Builder – Fast, Professional Site ... - Framer https://www.framer.com/solutions/website-builder/
+[56] Showcases: the new portfolio case study - YouTube https://www.youtube.com/watch?v=zMGah34LgnU
+[57] Framer: Create a professional website, free. No code website ... https://www.framer.com
+[58] [PDF] Case Studies & Solutions - YSI https://www.ysi.com/file%20library/documents/brochures%20and%20catalogs/w63-iq-sensornet-case-studies-brochure-web.pdf
+[59] Framer Gallery: Explore the best websites built with Framer https://www.framer.com/gallery/
+[60] 10 Features I'm Loving in Framer Right Now | by Danny Sapio https://uxdesign.cc/10-features-im-loving-in-framer-right-now-a834ed2ebe75
+[61] Portfolio, Resume, and Case Study Feedback — 15 Jan, 2024 - Reddit https://www.reddit.com/r/UXDesign/comments/1973hgu/portfolio_resume_and_case_study_feedback_15_jan/
+[62] The top 5 Framer features that you should know - YouTube https://www.youtube.com/watch?v=y4Rv-vf01LY
