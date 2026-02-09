@@ -39,20 +39,27 @@
     }
   }
 
-  function generateRotations(): number[] {
-    return testimonials.map(() => (Math.random() - 0.5) * (isMobile ? 8 : 20));
-  }
-
-  let rotations: number[] = generateRotations();
-
   $: activeTestimonial = testimonials[activeIndex];
   $: quoteWords = activeTestimonial.quote.split(/\s+/);
+
+  function getWrappedDistance(i: number): number {
+    const distance = Math.abs(i - activeIndex);
+    return Math.min(distance, testimonials.length - distance);
+  }
+
+  function getRelativePosition(i: number): number {
+    const diff = i - activeIndex;
+    const len = testimonials.length;
+    if (diff === 0) return 0;
+    if (diff === 1 || diff === -(len - 1)) return 1;
+    if (diff === -1 || diff === (len - 1)) return -1;
+    return diff > 0 ? 2 : -2;
+  }
 
   $: {
     activeIndex;
     isMobile;
     videoLoaded = false;
-    rotations = generateRotations();
   }
 
   $: if (videoElement && isInView && !lightboxOpen) {
@@ -135,25 +142,25 @@
   }
 
   function getCardStyle(i: number): string {
+    const wd = getWrappedDistance(i);
+    const pos = getRelativePosition(i);
+
     if (i === activeIndex) {
-      return 'transform: scale(1) rotate(0deg); opacity: 1; z-index: 10;';
-    }
-    const distance = Math.abs(i - activeIndex);
-    const wrappedDistance = Math.min(distance, testimonials.length - distance);
-    const rot = rotations[i] || 0;
-
-    if (isMobile) {
-      if (wrappedDistance === 1) {
-        const sc = 0.92;
-        return `transform: scale(${sc}) rotate(${rot * 0.4}deg); opacity: 0.25; z-index: ${10 - wrappedDistance};`;
-      }
-      return `transform: scale(0.85) rotate(0deg); opacity: 0; z-index: 0; pointer-events: none;`;
+      return 'transform: scale(1) rotate(0deg) translateX(0); opacity: 1; z-index: 10;';
     }
 
-    const sc = Math.max(0.85, 1 - wrappedDistance * 0.05);
-    const op = Math.max(0.3, 0.7 - (wrappedDistance - 1) * 0.15);
-    const z = 10 - wrappedDistance;
-    return `transform: scale(${sc}) rotate(${rot}deg); opacity: ${op}; z-index: ${z};`;
+    if (wd > 1 || isMobile) {
+      return 'visibility: hidden; opacity: 0; pointer-events: none; z-index: 0; transform: scale(0.85) rotate(0deg);';
+    }
+
+    if (pos === -1) {
+      return 'transform: scale(0.9) rotate(-5deg) translateX(-8%); opacity: 0.5; z-index: 8; pointer-events: none;';
+    }
+    if (pos === 1) {
+      return 'transform: scale(0.9) rotate(5deg) translateX(8%); opacity: 0.5; z-index: 8; pointer-events: none;';
+    }
+
+    return 'visibility: hidden; opacity: 0; pointer-events: none; z-index: 0; transform: scale(0.85) rotate(0deg);';
   }
 
   function handleVideoCanPlay() {
@@ -215,7 +222,6 @@
           <div
             class="avt-card"
             class:avt-card--active={i === activeIndex}
-            class:avt-card--hidden={isMobile && Math.min(Math.abs(i - activeIndex), testimonials.length - Math.abs(i - activeIndex)) > 1}
             style={getCardStyle(i)}
             aria-hidden={i !== activeIndex}
           >
@@ -244,20 +250,22 @@
               {/key}
             {/if}
 
-            <div class="avt-card__gradient"></div>
+            {#if i === activeIndex}
+              <div class="avt-card__gradient"></div>
 
-            <div class="avt-card__badge">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-              </svg>
-              Reel
-            </div>
+              <div class="avt-card__badge">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                  <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                </svg>
+                Reel
+              </div>
 
-            <div class="avt-card__info">
-              <p class="avt-card__name">{testimonial.clientName}</p>
-              <p class="avt-card__role">{testimonial.clientRole}</p>
-              <p class="avt-card__company">{testimonial.company}</p>
-            </div>
+              <div class="avt-card__info">
+                <p class="avt-card__name">{testimonial.clientName}</p>
+                <p class="avt-card__role">{testimonial.clientRole}</p>
+                <p class="avt-card__company">{testimonial.company}</p>
+              </div>
+            {/if}
           </div>
         {/each}
       </div>
@@ -424,42 +432,6 @@
     pointer-events: auto;
   }
 
-  .avt-card--hidden {
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .avt-card:not(.avt-card--active) .avt-card__badge {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .avt-card--active .avt-card__badge {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .avt-card:not(.avt-card--active) .avt-card__info {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .avt-card--active .avt-card__info {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .avt-card:not(.avt-card--active) .avt-card__gradient {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .avt-card--active .avt-card__gradient {
-    opacity: 1;
-    visibility: visible;
-  }
 
   .avt-card__placeholder {
     position: absolute;
@@ -476,6 +448,12 @@
     );
     background-size: 250% 250%;
     animation: placeholderShift 6s ease infinite;
+  }
+
+  .avt-card:not(.avt-card--active) .avt-card__placeholder {
+    background: linear-gradient(160deg, rgba(120, 60, 160, 0.3) 0%, rgba(80, 40, 120, 0.35) 100%);
+    background-size: 100% 100%;
+    animation: none;
   }
 
   @keyframes placeholderShift {
