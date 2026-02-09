@@ -66,7 +66,7 @@
               target="_blank"
               rel="noopener noreferrer"
               class="social-icon-link"
-              aria-label="{social.label}"
+              aria-label={social.label}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d={social.icon} />
@@ -85,7 +85,7 @@
         </ul>
       </nav>
 
-      <nav class="footer-column" aria-label="Social media">
+      <nav class="footer-column footer-social-col" aria-label="Social media">
         <h4 class="footer-heading">Social</h4>
         <ul class="footer-links">
           {#each socialLinks as link}
@@ -109,10 +109,10 @@
 
   <div class="footer-bottom section-container">
     <div class="footer-bottom-inner">
-      <p class="footer-copyright">© {currentYear} Righello S.r.l. Tutti i diritti riservati.</p>
+      <p class="footer-copyright">&copy; {currentYear} Righello S.r.l. Tutti i diritti riservati.</p>
       <nav class="footer-legal" aria-label="Link legali">
         {#each legalLinks as link, i}
-          {#if i > 0}<span class="legal-separator" aria-hidden="true">·</span>{/if}
+          {#if i > 0}<span class="legal-separator" aria-hidden="true">&middot;</span>{/if}
           <a href={link.href}>{link.label}</a>
         {/each}
       </nav>
@@ -305,7 +305,7 @@
     line-height: 1.5;
     transition: color 0.2s ease;
     display: inline-block;
-    min-height: 28px;
+    padding: 0.125rem 0;
   }
 
   .footer-links li a:hover {
@@ -332,7 +332,7 @@
     line-height: 1.5;
     transition: color 0.2s ease;
     display: inline-block;
-    min-height: 28px;
+    padding: 0.125rem 0;
   }
 
   .contact-link:hover {
@@ -407,6 +407,8 @@
     justify-content: center;
     width: 2.25rem;
     height: 2.25rem;
+    min-width: 44px;
+    min-height: 44px;
     border-radius: 0.5rem;
     border: 1px solid var(--border-color);
     background: transparent;
@@ -445,55 +447,123 @@
     color: rgba(0, 0, 0, 0.04);
   }
 
+  /* ── Mobile: compact, premium layout ── */
   @media (max-width: 768px) {
     .footer-cta {
-      padding-top: 3rem;
+      padding-top: 2.5rem;
       padding-bottom: 2rem;
     }
 
     .cta-inner {
       flex-direction: column;
       text-align: center;
-      padding: 1.5rem;
+      padding: 1.5rem 1.25rem;
+      gap: 1.25rem;
+    }
+
+    .cta-title {
+      font-size: 1.25rem;
+    }
+
+    .cta-subtitle {
+      font-size: 0.875rem;
+    }
+
+    .footer-main {
+      padding-bottom: 2rem;
     }
 
     .footer-grid {
       grid-template-columns: 1fr 1fr;
-      gap: 2.5rem;
+      gap: 1.75rem 1.5rem;
     }
 
     .footer-brand {
       grid-column: 1 / -1;
+      gap: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
     }
 
-    .footer-links li a,
-    .contact-link {
+    .footer-tagline {
+      font-size: 0.875rem;
+      max-width: none;
+    }
+
+    .footer-social-col {
+      display: none;
+    }
+
+    .footer-heading {
+      margin-bottom: 0.75rem;
+      font-size: 0.6875rem;
+    }
+
+    .footer-links {
+      gap: 0.25rem;
+    }
+
+    .footer-links li a {
+      font-size: 0.875rem;
       min-height: 44px;
       display: inline-flex;
       align-items: center;
     }
 
+    .contact-link {
+      font-size: 0.875rem;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      word-break: break-all;
+    }
+
+    .contact-text {
+      font-size: 0.8125rem;
+    }
+
+    .footer-address {
+      gap: 0.25rem;
+    }
+
+    .footer-bottom {
+      padding-bottom: 1.5rem;
+    }
+
     .footer-bottom-inner {
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-direction: column;
+      gap: 0.75rem;
       text-align: center;
+      padding-top: 1.25rem;
     }
 
     .footer-copyright {
-      width: 100%;
-      order: 3;
-      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      order: 2;
+    }
+
+    .footer-legal {
+      order: 1;
+    }
+
+    .footer-legal a {
+      font-size: 0.75rem;
+    }
+
+    .back-to-top {
+      display: none;
     }
 
     .footer-giant-text {
-      font-size: clamp(4rem, 18vw, 8rem);
+      font-size: clamp(3.5rem, 18vw, 7rem);
     }
   }
 
-  @media (max-width: 480px) {
+  /* ── Very small screens ── */
+  @media (max-width: 380px) {
     .footer-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
     }
   }
 </style>
