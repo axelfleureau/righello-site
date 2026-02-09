@@ -897,12 +897,18 @@
     }
   }
   
+  .help-grid > :global(*) {
+    display: flex;
+    flex-direction: column;
+  }
+
   .help-card {
     padding: 1.5rem;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 1rem;
     transition: all 0.3s ease;
+    flex: 1;
   }
   
   :global([data-theme="light"]) .help-card {
