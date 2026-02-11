@@ -31,35 +31,11 @@
   let reducedMotion = false;
   let videoLoaded = false;
 
-  let isMobile = false;
-
-  function checkMobile() {
-    if (browser) {
-      isMobile = window.innerWidth < 768;
-    }
-  }
-
   $: activeTestimonial = testimonials[activeIndex];
   $: quoteWords = activeTestimonial.quote.split(/\s+/);
-  $: cardStyles = testimonials.map((_, i) => getCardStyle(i));
-
-  function getWrappedDistance(i: number): number {
-    const distance = Math.abs(i - activeIndex);
-    return Math.min(distance, testimonials.length - distance);
-  }
-
-  function getRelativePosition(i: number): number {
-    const diff = i - activeIndex;
-    const len = testimonials.length;
-    if (diff === 0) return 0;
-    if (diff === 1 || diff === -(len - 1)) return 1;
-    if (diff === -1 || diff === (len - 1)) return -1;
-    return diff > 0 ? 2 : -2;
-  }
 
   $: {
     activeIndex;
-    isMobile;
     videoLoaded = false;
   }
 
@@ -142,38 +118,14 @@
     }
   }
 
-  function getCardStyle(i: number): string {
-    const wd = getWrappedDistance(i);
-    const pos = getRelativePosition(i);
-
-    if (i === activeIndex) {
-      return 'transform: scale(1) rotate(0deg) translateX(0); opacity: 1; z-index: 10;';
-    }
-
-    if (wd > 1 || isMobile) {
-      return 'visibility: hidden; opacity: 0; pointer-events: none; z-index: 0; transform: scale(0.85) rotate(0deg);';
-    }
-
-    if (pos === -1) {
-      return 'transform: scale(0.9) rotate(-5deg) translateX(-8%); opacity: 0.5; z-index: 8; pointer-events: none;';
-    }
-    if (pos === 1) {
-      return 'transform: scale(0.9) rotate(5deg) translateX(8%); opacity: 0.5; z-index: 8; pointer-events: none;';
-    }
-
-    return 'visibility: hidden; opacity: 0; pointer-events: none; z-index: 0; transform: scale(0.85) rotate(0deg);';
-  }
-
   function handleVideoCanPlay() {
     videoLoaded = true;
   }
 
   onMount(() => {
     if (browser) {
-      checkMobile();
       reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       window.addEventListener('keydown', handleKeydown);
-      window.addEventListener('resize', checkMobile);
 
       observer = new IntersectionObserver(
         (entries) => {
@@ -199,7 +151,6 @@
     stopAutoplay();
     if (browser) {
       window.removeEventListener('keydown', handleKeydown);
-      window.removeEventListener('resize', checkMobile);
     }
     observer?.disconnect();
   });
@@ -219,37 +170,30 @@
       aria-label="Video testimonial"
     >
       <div class="avt-stack">
-        {#each testimonials as testimonial, i}
-          <div
-            class="avt-card"
-            class:avt-card--active={i === activeIndex}
-            style={cardStyles[i]}
-            aria-hidden={i !== activeIndex}
-          >
+        {#key activeIndex}
+          <div class="avt-card avt-card--active" transition:fade={{ duration: 300 }}>
             <div class="avt-card__placeholder">
               <div class="avt-card__initial">
-                {testimonial.clientName.charAt(0)}
+                {activeTestimonial.clientName.charAt(0)}
               </div>
             </div>
 
-            {#if i === activeIndex && testimonial.videoSrc}
-              {#key activeIndex}
-                <video
-                  bind:this={videoElement}
-                  src={testimonial.videoSrc + '#t=0.1'}
-                  autoplay
-                  muted
-                  loop
-                  playsinline
-                  preload="auto"
-                  class="avt-card__video"
-                  class:avt-card__video--visible={videoLoaded}
-                  on:canplay={handleVideoCanPlay}
-                  on:loadeddata={handleVideoCanPlay}
-                >
-                  <track kind="captions" />
-                </video>
-              {/key}
+            {#if activeTestimonial.videoSrc}
+              <video
+                bind:this={videoElement}
+                src={activeTestimonial.videoSrc + '#t=0.1'}
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+                class="avt-card__video"
+                class:avt-card__video--visible={videoLoaded}
+                on:canplay={handleVideoCanPlay}
+                on:loadeddata={handleVideoCanPlay}
+              >
+                <track kind="captions" />
+              </video>
 
               {#if !videoLoaded}
                 <div class="avt-card__loader">
@@ -258,23 +202,32 @@
               {/if}
             {/if}
 
-            {#if i === activeIndex}
-              <div class="avt-card__gradient"></div>
+            <div class="avt-card__gradient"></div>
 
-              <div class="avt-card__badge">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-                  <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                </svg>
-                Reel
-              </div>
+            <div class="avt-card__badge">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+              </svg>
+              Reel
+            </div>
 
-              <div class="avt-card__info">
-                <p class="avt-card__name">{testimonial.clientName}</p>
-                <p class="avt-card__role">{testimonial.clientRole}</p>
-                <p class="avt-card__company">{testimonial.company}</p>
-              </div>
-            {/if}
+            <div class="avt-card__info">
+              <p class="avt-card__name">{activeTestimonial.clientName}</p>
+              <p class="avt-card__role">{activeTestimonial.clientRole}</p>
+              <p class="avt-card__company">{activeTestimonial.company}</p>
+            </div>
           </div>
+        {/key}
+      </div>
+
+      <div class="avt-dots">
+        {#each testimonials as _, i}
+          <button
+            class="avt-dot"
+            class:avt-dot--active={i === activeIndex}
+            on:click={() => activeIndex = i}
+            aria-label="Testimonianza {i + 1}"
+          />
         {/each}
       </div>
 
@@ -423,6 +376,8 @@
   .avt-stack {
     position: relative;
     aspect-ratio: 9/16;
+    border-radius: 1.5rem;
+    overflow: hidden;
   }
 
   .avt-card {
@@ -431,15 +386,11 @@
     border-radius: 1.5rem;
     overflow: hidden;
     box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.4);
-    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-    will-change: transform, opacity;
   }
 
   .avt-card--active {
     pointer-events: auto;
   }
-
 
   .avt-card__placeholder {
     position: absolute;
@@ -450,12 +401,6 @@
     background: linear-gradient(110deg, #1a1a1a 25%, #2a2a2a 37%, #1a1a1a 63%);
     background-size: 200% 100%;
     animation: shimmer 1.5s ease-in-out infinite;
-  }
-
-  .avt-card:not(.avt-card--active) .avt-card__placeholder {
-    background: #151515;
-    background-size: 100% 100%;
-    animation: none;
   }
 
   @keyframes shimmer {
@@ -574,6 +519,55 @@
     color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
     margin-top: 0.25rem;
+  }
+
+  .avt-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .avt-dot {
+    width: 8px;
+    height: 8px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0;
+    position: relative;
+  }
+
+  .avt-dot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .avt-dot--active::before {
+    width: 10px;
+    height: 10px;
+    background: #D6487E;
+    box-shadow: 0 0 10px rgba(214, 72, 126, 0.4);
+  }
+
+  :global([data-theme="light"]) .avt-dot::before {
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  :global([data-theme="light"]) .avt-dot--active::before {
+    background: #D6487E;
   }
 
   .avt-play {
@@ -874,10 +868,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .avt-card {
-      transition: none;
-    }
-
     .avt-word {
       animation: none;
       opacity: 1;

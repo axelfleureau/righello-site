@@ -244,7 +244,7 @@
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
-<section id="testimonial" class="section-padding relative overflow-hidden">
+<section id="testimonial" class="py-8 md:py-12 lg:py-16 relative overflow-hidden">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -260,7 +260,7 @@
   <AnimatedVideoTestimonials testimonials={videoTestimonials} />
 </section>
 
-<section id="clienti" class="section-padding overflow-hidden relative">
+<section id="clienti" class="pt-4 md:pt-8 pb-8 md:pb-12 lg:pb-16 overflow-hidden relative">
   <div class="absolute inset-0 bg-gradient-to-r from-righello-pink/10 via-transparent to-righello-pink/10"></div>
   <div class="absolute top-0 left-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
   <div class="absolute bottom-0 right-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
