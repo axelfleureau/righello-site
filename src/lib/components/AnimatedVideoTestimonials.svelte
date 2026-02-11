@@ -107,6 +107,8 @@
     if (isInView) startAutoplay();
   }
 
+  let stackEl: HTMLElement;
+
   function handleTouchStart(e: TouchEvent) {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
@@ -127,7 +129,10 @@
   }
 
   function handleTouchEnd() {
-    if (!isSwiping) return;
+    if (!isSwiping) {
+      if (activeTestimonial.videoSrc) openLightbox();
+      return;
+    }
     const diff = touchStartX - touchEndX;
     if (Math.abs(diff) > SWIPE_THRESHOLD) {
       if (diff > 0) next();
@@ -190,18 +195,14 @@
 
 <div class="avt" bind:this={containerEl}>
   <div class="avt-container">
-    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
     <div
       class="avt-left"
       on:mouseenter={handleMouseEnter}
       on:mouseleave={handleMouseLeave}
-      on:touchstart={handleTouchStart}
-      on:touchmove|nonpassive={handleTouchMove}
-      on:touchend={handleTouchEnd}
       role="region"
       aria-label="Video testimonial"
     >
-      <div class="avt-stack">
+      <div class="avt-stack" bind:this={stackEl}>
         {#each testimonials as testimonial, i}
           {@const order = getStackOrder(i)}
           {@const isActive = order === 0}
@@ -289,6 +290,14 @@
             </div>
           {/if}
         {/each}
+
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <div
+          class="avt-touch-overlay"
+          on:touchstart={handleTouchStart}
+          on:touchmove|nonpassive={handleTouchMove}
+          on:touchend={handleTouchEnd}
+        ></div>
       </div>
 
       {#if activeTestimonial.videoSrc}
@@ -321,16 +330,6 @@
           </svg>
         </button>
       </div>
-
-      <p class="avt-swipe-hint">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
-          <path d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-        </svg>
-        Scorri per navigare
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
-          <path d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </p>
     </div>
 
     <div class="avt-right">
@@ -451,7 +450,6 @@
     max-width: 300px;
     margin: 0 auto;
     padding: 1.5rem 1.5rem 0.75rem;
-    touch-action: pan-y;
   }
 
   @media (min-width: 1024px) {
@@ -463,12 +461,26 @@
     }
   }
 
+  .avt-touch-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    touch-action: pan-y;
+    cursor: pointer;
+  }
+
+  @media (min-width: 1024px) {
+    .avt-touch-overlay {
+      display: none;
+    }
+  }
+
   .avt-mobile-nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
   }
 
   @media (min-width: 1024px) {
@@ -477,25 +489,16 @@
     }
   }
 
-  .avt-swipe-hint {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    font-size: 0.75rem;
-    color: var(--text-secondary, #888);
-    opacity: 0.6;
+  .avt-mobile-nav .avt-nav__btn {
+    width: 3rem;
+    height: 3rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
   }
 
-  .avt-swipe-hint svg {
-    opacity: 0.5;
-  }
-
-  @media (min-width: 1024px) {
-    .avt-swipe-hint {
-      display: none;
-    }
+  :global([data-theme="light"]) .avt-mobile-nav .avt-nav__btn {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.12);
   }
 
   .avt-stack {
@@ -695,7 +698,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 20;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
@@ -707,14 +710,14 @@
     padding: 0;
   }
 
-  .avt-left:hover .avt-play {
-    opacity: 1;
+  @media (min-width: 1024px) {
+    .avt-play {
+      display: flex;
+    }
   }
 
-  @media (hover: none) {
-    .avt-play {
-      opacity: 1;
-    }
+  .avt-left:hover .avt-play {
+    opacity: 1;
   }
 
   .avt-play__icon {
