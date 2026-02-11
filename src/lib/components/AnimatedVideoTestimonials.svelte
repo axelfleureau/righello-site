@@ -26,8 +26,11 @@
   let isInView = false;
   let observer: IntersectionObserver | null = null;
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchEndX = 0;
-  const SWIPE_THRESHOLD = 50;
+  let touchEndY = 0;
+  let isSwiping = false;
+  const SWIPE_THRESHOLD = 40;
   let reducedMotion = false;
   let videoLoaded = false;
   let isAnimating = false;
@@ -106,20 +109,35 @@
 
   function handleTouchStart(e: TouchEvent) {
     touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchEndX = touchStartX;
+    touchEndY = touchStartY;
+    isSwiping = false;
   }
 
   function handleTouchMove(e: TouchEvent) {
     touchEndX = e.touches[0].clientX;
+    touchEndY = e.touches[0].clientY;
+    const dx = Math.abs(touchEndX - touchStartX);
+    const dy = Math.abs(touchEndY - touchStartY);
+    if (dx > dy && dx > 10) {
+      isSwiping = true;
+      e.preventDefault();
+    }
   }
 
   function handleTouchEnd() {
+    if (!isSwiping) return;
     const diff = touchStartX - touchEndX;
     if (Math.abs(diff) > SWIPE_THRESHOLD) {
       if (diff > 0) next();
       else prev();
     }
     touchStartX = 0;
+    touchStartY = 0;
     touchEndX = 0;
+    touchEndY = 0;
+    isSwiping = false;
   }
 
   function handleKeydown(e: KeyboardEvent) {
@@ -178,7 +196,7 @@
       on:mouseenter={handleMouseEnter}
       on:mouseleave={handleMouseLeave}
       on:touchstart={handleTouchStart}
-      on:touchmove={handleTouchMove}
+      on:touchmove|nonpassive={handleTouchMove}
       on:touchend={handleTouchEnd}
       role="region"
       aria-label="Video testimonial"
@@ -287,6 +305,32 @@
           <span class="avt-play__text">Guarda</span>
         </button>
       {/if}
+
+      <div class="avt-mobile-nav">
+        <button class="avt-nav__btn avt-nav__btn--prev" on:click={prev} aria-label="Precedente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <span class="avt-nav__counter">
+          {activeIndex + 1}<span class="avt-nav__separator">/</span>{testimonials.length}
+        </span>
+        <button class="avt-nav__btn avt-nav__btn--next" on:click={next} aria-label="Successivo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+
+      <p class="avt-swipe-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+          <path d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+        </svg>
+        Scorri per navigare
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+          <path d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </p>
     </div>
 
     <div class="avt-right">
@@ -306,7 +350,7 @@
         </div>
       {/key}
 
-      <div class="avt-nav">
+      <div class="avt-nav avt-nav--desktop">
         <button class="avt-nav__btn avt-nav__btn--prev" on:click={prev} aria-label="Precedente">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M15 18l-6-6 6-6" />
@@ -406,7 +450,8 @@
     width: 100%;
     max-width: 300px;
     margin: 0 auto;
-    padding: 1.5rem 1.5rem 2rem;
+    padding: 1.5rem 1.5rem 0.75rem;
+    touch-action: pan-y;
   }
 
   @media (min-width: 1024px) {
@@ -415,6 +460,41 @@
       max-width: none;
       margin: 0;
       padding: 2rem 2rem 2.5rem;
+    }
+  }
+
+  .avt-mobile-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    .avt-mobile-nav {
+      display: none;
+    }
+  }
+
+  .avt-swipe-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary, #888);
+    opacity: 0.6;
+  }
+
+  .avt-swipe-hint svg {
+    opacity: 0.5;
+  }
+
+  @media (min-width: 1024px) {
+    .avt-swipe-hint {
+      display: none;
     }
   }
 
@@ -769,8 +849,13 @@
     justify-content: center;
   }
 
+  .avt-nav--desktop {
+    display: none;
+  }
+
   @media (min-width: 1024px) {
-    .avt-nav {
+    .avt-nav--desktop {
+      display: flex;
       justify-content: flex-start;
     }
   }
