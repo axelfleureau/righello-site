@@ -28,7 +28,7 @@
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
-<section class="pt-32 pb-20 md:pt-40 md:pb-24">
+<section id="portfolio" class="pt-32 pb-20 md:pt-40 md:pb-24">
   <div class="section-container">
     <ScrollReveal>
       <div class="section-header">

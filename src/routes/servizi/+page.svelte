@@ -7,6 +7,8 @@
   import { slide } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   
+  const deptSlugs = ['content-social', 'advertising', 'digital-experience'];
+  
   const departments = [
     {
       icon: '📱',
@@ -252,7 +254,7 @@
 </svelte:head>
 
 <!-- HERO SECTION -->
-<section class="hero-section">
+<section id="servizi-hero" class="hero-section">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <p class="eyebrow">I Nostri Servizi</p>
@@ -287,7 +289,7 @@
 </section>
 
 <!-- I 3 DIPARTIMENTI -->
-<section class="section-padding">
+<section id="dipartimenti" class="section-padding">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -301,7 +303,7 @@
     <div class="departments-grid">
       {#each departments as dept, i}
         <RevealOnScroll animation="fly-up" stagger={100} index={i}>
-          <div class="department-card" class:featured={dept.featured} style="--dept-color: {dept.color}">
+          <div id={deptSlugs[i]} class="department-card" class:featured={dept.featured} style="--dept-color: {dept.color}">
             {#if dept.featured}
               <span class="featured-badge">Il nostro cavallo di battaglia</span>
             {/if}
@@ -337,7 +339,7 @@
 </section>
 
 <!-- IN COSA TI AIUTIAMO -->
-<section class="section-padding bg-secondary">
+<section id="cosa-facciamo" class="section-padding bg-secondary">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -365,7 +367,7 @@
 </section>
 
 <!-- PERCHÉ RIGHELLO -->
-<section class="section-padding">
+<section id="perche-righello" class="section-padding">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -397,7 +399,7 @@
 </section>
 
 <!-- CASE STUDIES -->
-<section class="section-padding bg-secondary">
+<section id="case-studies" class="section-padding bg-secondary">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -447,7 +449,7 @@
 </section>
 
 <!-- COME LAVORIAMO -->
-<section class="section-padding">
+<section id="come-lavoriamo" class="section-padding">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -480,7 +482,7 @@
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="section-padding">
+<section id="testimonials" class="section-padding">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -514,7 +516,7 @@
 </section>
 
 <!-- FAQ -->
-<section class="section-padding bg-secondary">
+<section id="faq" class="section-padding bg-secondary">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -561,7 +563,7 @@
 </section>
 
 <!-- CTA FINALE -->
-<section class="section-padding">
+<section id="cta" class="section-padding">
   <div class="section-container">
     <RevealOnScroll animation="scale">
       <div class="final-cta">

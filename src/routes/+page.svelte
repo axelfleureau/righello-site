@@ -135,7 +135,7 @@
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
-<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
+<section id="risultati" class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -163,7 +163,7 @@
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
-<section class="section-padding relative">
+<section id="servizi" class="section-padding relative">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -244,7 +244,7 @@
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
-<section class="section-padding relative overflow-hidden">
+<section id="testimonial" class="section-padding relative overflow-hidden">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
@@ -260,7 +260,7 @@
   <AnimatedVideoTestimonials testimonials={videoTestimonials} />
 </section>
 
-<section class="section-padding overflow-hidden relative">
+<section id="clienti" class="section-padding overflow-hidden relative">
   <div class="absolute inset-0 bg-gradient-to-r from-righello-pink/10 via-transparent to-righello-pink/10"></div>
   <div class="absolute top-0 left-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
   <div class="absolute bottom-0 right-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
@@ -299,7 +299,7 @@
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
-<section class="relative" style="background: var(--bg-secondary);">
+<section id="metodo" class="relative" style="background: var(--bg-secondary);">
   <StickyScrollReveal 
     title="Il nostro metodo"
     subtitle="Come lavoriamo"
@@ -333,7 +333,7 @@
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
-<section class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
+<section id="contattaci" class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
   <div class="absolute inset-0 cta-gradient"></div>
   
   <div class="section-container relative z-10">

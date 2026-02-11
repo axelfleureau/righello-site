@@ -127,7 +127,7 @@
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
-<section class="pt-24 pb-12 md:pt-32 md:pb-20">
+<section id="chi-siamo-hero" class="pt-24 pb-12 md:pt-32 md:pb-20">
   <div class="section-container">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
       <div class="order-2 lg:order-1">
@@ -180,7 +180,7 @@
   <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 </div>
 
-<section class="section-padding" style="background-color: var(--bg-secondary);">
+<section id="team" class="section-padding" style="background-color: var(--bg-secondary);">
   <div class="section-container">
     <ScrollReveal>
       <div class="section-header">
@@ -218,7 +218,7 @@
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
-<section class="section-padding">
+<section id="dipartimenti" class="section-padding">
   <div class="section-container">
     <ScrollReveal>
       <div class="section-header">

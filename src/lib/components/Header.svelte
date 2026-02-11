@@ -119,7 +119,7 @@
                 <div class="dropdown-content">
                   {#each departments as dept}
                     <a 
-                      href="/servizi?tab={dept.id}" 
+                      href="/servizi#{dept.id}" 
                       class="dropdown-item"
                       on:click={() => serviziHovered = false}
                     >
@@ -196,7 +196,7 @@
             <div class="mobile-submenu" class:mobile-submenu-open={mobileServiziOpen}>
               {#each departments as dept}
                 <a 
-                  href="/servizi?tab={dept.id}" 
+                  href="/servizi#{dept.id}" 
                   class="mobile-submenu-item"
                   on:click={closeMenu}
                 >

@@ -80,7 +80,7 @@
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
-<section class="pt-24 md:pt-32 pb-12 md:pb-20">
+<section id="contatti-hero" class="pt-24 md:pt-32 pb-12 md:pb-20">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header text-center">
@@ -97,7 +97,7 @@
   </div>
 </section>
 
-<section class="pb-16 md:pb-24">
+<section id="form" class="pb-16 md:pb-24">
   <div class="section-container">
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-stretch">
       <div class="lg:col-span-2 space-y-8">
