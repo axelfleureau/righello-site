@@ -41,6 +41,7 @@
 
   $: activeTestimonial = testimonials[activeIndex];
   $: quoteWords = activeTestimonial.quote.split(/\s+/);
+  $: cardStyles = testimonials.map((_, i) => getCardStyle(i));
 
   function getWrappedDistance(i: number): number {
     const distance = Math.abs(i - activeIndex);
@@ -222,7 +223,7 @@
           <div
             class="avt-card"
             class:avt-card--active={i === activeIndex}
-            style={getCardStyle(i)}
+            style={cardStyles[i]}
             aria-hidden={i !== activeIndex}
           >
             <div class="avt-card__placeholder">
@@ -244,6 +245,7 @@
                   class="avt-card__video"
                   class:avt-card__video--visible={videoLoaded}
                   on:canplay={handleVideoCanPlay}
+                  on:loadeddata={handleVideoCanPlay}
                 >
                   <track kind="captions" />
                 </video>
