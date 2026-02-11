@@ -4,6 +4,7 @@ export interface Project {
   slug: string;
   description: string;
   image: string;
+  videoUrl?: string;
   categories: string[];
   featured?: boolean;
 }
