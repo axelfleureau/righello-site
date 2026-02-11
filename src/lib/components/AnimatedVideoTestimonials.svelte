@@ -30,6 +30,7 @@
   const SWIPE_THRESHOLD = 50;
   let reducedMotion = false;
   let videoLoaded = false;
+  let isAnimating = false;
 
   $: activeTestimonial = testimonials[activeIndex];
   $: quoteWords = activeTestimonial.quote.split(/\s+/);
@@ -45,12 +46,25 @@
     videoElement.pause();
   }
 
+  function getStackOrder(cardIndex: number): number {
+    const total = testimonials.length;
+    let diff = cardIndex - activeIndex;
+    if (diff < 0) diff += total;
+    return diff;
+  }
+
   function next() {
+    if (isAnimating) return;
+    isAnimating = true;
     activeIndex = (activeIndex + 1) % testimonials.length;
+    setTimeout(() => { isAnimating = false; }, 550);
   }
 
   function prev() {
+    if (isAnimating) return;
+    isAnimating = true;
     activeIndex = (activeIndex - 1 + testimonials.length) % testimonials.length;
+    setTimeout(() => { isAnimating = false; }, 550);
   }
 
   function startAutoplay() {
@@ -170,64 +184,92 @@
       aria-label="Video testimonial"
     >
       <div class="avt-stack">
-        {#key activeIndex}
-          <div class="avt-card avt-card--active" transition:fade={{ duration: 300 }}>
-            <div class="avt-card__placeholder">
-              <div class="avt-card__initial">
-                {activeTestimonial.clientName.charAt(0)}
-              </div>
-            </div>
+        {#each testimonials as testimonial, i}
+          {@const order = getStackOrder(i)}
+          {@const isActive = order === 0}
+          {@const isVisible = order <= 3}
+          {#if isVisible}
+            <div
+              class="avt-card"
+              class:avt-card--active={isActive}
+              class:avt-card--behind={!isActive}
+              style="
+                --stack-index: {order};
+                --offset-y: {order * 14}px;
+                --offset-x: {order * 6}px;
+                --card-scale: {1 - order * 0.05};
+                --card-rotate: {order * 2}deg;
+                --card-opacity: {isActive ? 1 : Math.max(0.15, 1 - order * 0.25)};
+                z-index: {20 - order};
+              "
+            >
+              {#if isActive}
+                <div class="avt-card__placeholder">
+                  <div class="avt-card__initial">
+                    {testimonial.clientName.charAt(0)}
+                  </div>
+                </div>
 
-            {#if activeTestimonial.videoSrc}
-              <video
-                bind:this={videoElement}
-                src={activeTestimonial.videoSrc + '#t=0.1'}
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="auto"
-                class="avt-card__video"
-                class:avt-card__video--visible={videoLoaded}
-                on:canplay={handleVideoCanPlay}
-                on:loadeddata={handleVideoCanPlay}
-              >
-                <track kind="captions" />
-              </video>
+                {#if testimonial.videoSrc}
+                  {#key activeIndex}
+                    <video
+                      bind:this={videoElement}
+                      src={testimonial.videoSrc + '#t=0.1'}
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      preload="auto"
+                      class="avt-card__video"
+                      class:avt-card__video--visible={videoLoaded}
+                      on:canplay={handleVideoCanPlay}
+                      on:loadeddata={handleVideoCanPlay}
+                    >
+                      <track kind="captions" />
+                    </video>
+                  {/key}
 
-              {#if !videoLoaded}
-                <div class="avt-card__loader">
-                  <div class="avt-card__spinner"></div>
+                  {#if !videoLoaded}
+                    <div class="avt-card__loader">
+                      <div class="avt-card__spinner"></div>
+                    </div>
+                  {/if}
+                {/if}
+
+                <div class="avt-card__gradient"></div>
+
+                <div class="avt-card__badge">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                    <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                  </svg>
+                  Reel
+                </div>
+
+                <div class="avt-card__info">
+                  <p class="avt-card__name">{testimonial.clientName}</p>
+                  <p class="avt-card__role">{testimonial.clientRole}</p>
+                  <p class="avt-card__company">{testimonial.company}</p>
+                </div>
+              {:else}
+                <div class="avt-card__bg">
+                  {#if testimonial.videoSrc}
+                    <video
+                      src={testimonial.videoSrc + '#t=0.5'}
+                      muted
+                      playsinline
+                      preload="metadata"
+                      class="avt-card__bg-video"
+                    >
+                      <track kind="captions" />
+                    </video>
+                  {/if}
+                  <div class="avt-card__bg-initial">
+                    {testimonial.clientName.charAt(0)}
+                  </div>
                 </div>
               {/if}
-            {/if}
-
-            <div class="avt-card__gradient"></div>
-
-            <div class="avt-card__badge">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-              </svg>
-              Reel
             </div>
-
-            <div class="avt-card__info">
-              <p class="avt-card__name">{activeTestimonial.clientName}</p>
-              <p class="avt-card__role">{activeTestimonial.clientRole}</p>
-              <p class="avt-card__company">{activeTestimonial.company}</p>
-            </div>
-          </div>
-        {/key}
-      </div>
-
-      <div class="avt-dots">
-        {#each testimonials as _, i}
-          <button
-            class="avt-dot"
-            class:avt-dot--active={i === activeIndex}
-            on:click={() => activeIndex = i}
-            aria-label="Testimonianza {i + 1}"
-          />
+          {/if}
         {/each}
       </div>
 
@@ -249,7 +291,7 @@
 
     <div class="avt-right">
       {#key activeIndex}
-        <div class="avt-content">
+        <div class="avt-content" class:avt-content--entering={true}>
           <h3 class="avt-content__name">{activeTestimonial.clientName}</h3>
           <p class="avt-content__role">{activeTestimonial.clientRole}, {activeTestimonial.company}</p>
 
@@ -270,6 +312,9 @@
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
+        <span class="avt-nav__counter">
+          {activeIndex + 1}<span class="avt-nav__separator">/</span>{testimonials.length}
+        </span>
         <button class="avt-nav__btn avt-nav__btn--next" on:click={next} aria-label="Successivo">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M9 18l6-6-6-6" />
@@ -361,7 +406,7 @@
     width: 100%;
     max-width: 300px;
     margin: 0 auto;
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 2rem;
   }
 
   @media (min-width: 1024px) {
@@ -369,15 +414,13 @@
       width: 340px;
       max-width: none;
       margin: 0;
-      padding: 2rem;
+      padding: 2rem 2rem 2.5rem;
     }
   }
 
   .avt-stack {
     position: relative;
     aspect-ratio: 9/16;
-    border-radius: 1.5rem;
-    overflow: hidden;
   }
 
   .avt-card {
@@ -385,11 +428,26 @@
     inset: 0;
     border-radius: 1.5rem;
     overflow: hidden;
-    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.4);
+    transform-origin: center bottom;
+    transform: translateY(var(--offset-y)) translateX(var(--offset-x)) rotate(var(--card-rotate)) scale(var(--card-scale));
+    opacity: var(--card-opacity);
+    transition: transform 0.55s cubic-bezier(0.32, 0.72, 0, 1),
+                opacity 0.55s cubic-bezier(0.32, 0.72, 0, 1),
+                filter 0.55s cubic-bezier(0.32, 0.72, 0, 1);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
 
   .avt-card--active {
     pointer-events: auto;
+    box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .avt-card--behind {
+    pointer-events: none;
+    box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.3);
+    filter: brightness(0.7);
   }
 
   .avt-card__placeholder {
@@ -401,6 +459,36 @@
     background: linear-gradient(110deg, #1a1a1a 25%, #2a2a2a 37%, #1a1a1a 63%);
     background-size: 200% 100%;
     animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  .avt-card__bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    overflow: hidden;
+  }
+
+  .avt-card__bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+  }
+
+  .avt-card__bg-initial {
+    position: relative;
+    z-index: 1;
+    font-size: 4rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.08);
+    text-transform: uppercase;
+    user-select: none;
+    line-height: 1;
   }
 
   @keyframes shimmer {
@@ -521,55 +609,6 @@
     margin-top: 0.25rem;
   }
 
-  .avt-dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1.25rem;
-  }
-
-  .avt-dot {
-    width: 8px;
-    height: 8px;
-    min-width: 44px;
-    min-height: 44px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0;
-    position: relative;
-  }
-
-  .avt-dot::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-  }
-
-  .avt-dot--active::before {
-    width: 10px;
-    height: 10px;
-    background: #D6487E;
-    box-shadow: 0 0 10px rgba(214, 72, 126, 0.4);
-  }
-
-  :global([data-theme="light"]) .avt-dot::before {
-    background: rgba(0, 0, 0, 0.15);
-  }
-
-  :global([data-theme="light"]) .avt-dot--active::before {
-    background: #D6487E;
-  }
-
   .avt-play {
     position: absolute;
     top: 50%;
@@ -647,6 +686,21 @@
     margin-bottom: 2.5rem;
   }
 
+  .avt-content--entering {
+    animation: contentSlideIn 0.5s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+
+  @keyframes contentSlideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .avt-content__name {
     font-size: 1.375rem;
     font-weight: 700;
@@ -711,7 +765,7 @@
   .avt-nav {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
     justify-content: center;
   }
 
@@ -719,6 +773,21 @@
     .avt-nav {
       justify-content: flex-start;
     }
+  }
+
+  .avt-nav__counter {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary, #666);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.05em;
+    min-width: 3rem;
+    text-align: center;
+  }
+
+  .avt-nav__separator {
+    margin: 0 0.15rem;
+    opacity: 0.4;
   }
 
   .avt-nav__btn {
@@ -766,6 +835,18 @@
   :global([data-theme="light"]) .avt-nav__btn:hover {
     background: rgba(214, 72, 126, 0.08);
     border-color: rgba(214, 72, 126, 0.3);
+  }
+
+  :global([data-theme="light"]) .avt-card__bg {
+    background: linear-gradient(135deg, #e8e8f0 0%, #d8d8e8 50%, #c8c8d8 100%);
+  }
+
+  :global([data-theme="light"]) .avt-card__bg-initial {
+    color: rgba(0, 0, 0, 0.06);
+  }
+
+  :global([data-theme="light"]) .avt-card--behind {
+    filter: brightness(0.92);
   }
 
   .avt-lightbox {
@@ -873,6 +954,14 @@
       opacity: 1;
       filter: none;
       transform: none;
+    }
+
+    .avt-card {
+      transition: none;
+    }
+
+    .avt-content--entering {
+      animation: none;
     }
 
     .avt-card__placeholder {
