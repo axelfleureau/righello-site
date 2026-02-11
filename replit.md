@@ -58,6 +58,16 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
     - `/contatti` (Contact): Animated contact form.
 - **Mobile Optimizations**: Hero section is mobile-first (not fixed 100vh), PhoneMockup maintains constant size, GSAP ScrollTrigger pinning is disabled on smaller screens, stacked layouts for mobile, and safe area support for iOS.
 
+### Navigation & Anchor Links (Feb 2026)
+- **Smooth Scroll**: Global `scroll-behavior: smooth` with `scroll-padding-top: 6rem` for fixed header offset.
+- **Section IDs**: All pages have semantic `id` attributes on major sections for deep linking and anchor navigation.
+  - `/servizi`: `#servizi-hero`, `#dipartimenti`, `#content-social`, `#advertising`, `#digital-experience`, `#cosa-facciamo`, `#perche-righello`, `#case-studies`, `#come-lavoriamo`, `#testimonials`, `#faq`, `#cta`
+  - `/` (Homepage): `#risultati`, `#servizi`, `#testimonial`, `#clienti`, `#metodo`, `#contattaci`
+  - `/chi-siamo`: `#chi-siamo-hero`, `#team`, `#dipartimenti`
+  - `/contatti`: `#contatti-hero`, `#form`
+  - `/progetti`: `#portfolio`
+- **Header Dropdown**: Servizi dropdown links use `href="/servizi#{dept.id}"` for direct anchor navigation to department cards.
+
 ### Accessibility
 - Support for `prefers-reduced-motion` for all animated components.
 - Dynamic ARIA labels for the mobile menu.
