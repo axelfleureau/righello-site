@@ -128,7 +128,13 @@
     </div>
   </div>
 
-  <div class="footer-giant-text" aria-hidden="true">Righello</div>
+  <div class="footer-giant-logo" aria-hidden="true">
+    {#if $theme === 'dark'}
+      <img src="/logo-white.png" alt="" class="footer-giant-logo-img" loading="lazy" decoding="async" />
+    {:else}
+      <img src="/logo-full.png" alt="" class="footer-giant-logo-img" loading="lazy" decoding="async" />
+    {/if}
+  </div>
 </footer>
 
 <style>
@@ -429,22 +435,36 @@
     outline-offset: 2px;
   }
 
-  .footer-giant-text {
-    text-align: center;
-    font-size: clamp(7rem, 12vw, 14rem);
-    font-weight: 900;
-    line-height: 1;
-    color: rgba(255, 255, 255, 0.03);
+  .footer-giant-logo {
     user-select: none;
     pointer-events: none;
     position: relative;
-    transform: translateY(30%);
     z-index: 0;
-    letter-spacing: -0.02em;
+    transform: translateY(25%);
+    max-width: var(--container-max, 1280px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding, 1rem);
+    padding-right: var(--container-padding, 1rem);
+    opacity: 0.04;
   }
 
-  :global([data-theme="light"]) .footer-giant-text {
-    color: rgba(0, 0, 0, 0.04);
+  .footer-giant-logo-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  @media (min-width: 640px) {
+    .footer-giant-logo {
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
+  }
+
+  :global([data-theme="light"]) .footer-giant-logo {
+    opacity: 0.06;
   }
 
   /* ── Mobile: compact, premium layout ── */
@@ -554,8 +574,8 @@
       display: none;
     }
 
-    .footer-giant-text {
-      font-size: clamp(3.5rem, 18vw, 7rem);
+    .footer-giant-logo {
+      transform: translateY(20%);
     }
   }
 
