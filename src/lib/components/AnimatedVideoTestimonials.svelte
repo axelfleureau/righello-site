@@ -229,25 +229,25 @@
               on:click={() => isActive && activeTestimonial.videoSrc && openLightbox()}
               on:keydown={(e) => isActive && (e.key === 'Enter' || e.key === ' ') && activeTestimonial.videoSrc && openLightbox()}
             >
-              {#if isActive}
-                {#if testimonial.videoSrc}
-                  <img
-                    src={getThumbnailUrl(testimonial.videoSrc)}
-                    alt={testimonial.clientName}
-                    class="avt-card__thumbnail"
-                    loading="eager"
-                    decoding="async"
-                  />
-                {:else}
-                  <div class="avt-card__placeholder">
-                    <div class="avt-card__initial">
-                      {testimonial.clientName.charAt(0)}
+              {#key `${i}-${isActive}`}
+                {#if isActive}
+                  {#if testimonial.videoSrc}
+                    <img
+                      src={getThumbnailUrl(testimonial.videoSrc)}
+                      alt={testimonial.clientName}
+                      class="avt-card__thumbnail"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  {:else}
+                    <div class="avt-card__placeholder">
+                      <div class="avt-card__initial">
+                        {testimonial.clientName.charAt(0)}
+                      </div>
                     </div>
-                  </div>
-                {/if}
+                  {/if}
 
-                {#if testimonial.videoSrc}
-                  {#key activeIndex}
+                  {#if testimonial.videoSrc}
                     <video
                       bind:this={videoElement}
                       src={testimonial.videoSrc}
@@ -263,39 +263,39 @@
                     >
                       <track kind="captions" />
                     </video>
-                  {/key}
-                {/if}
-
-                <div class="avt-card__gradient"></div>
-
-                <div class="avt-card__badge">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-                    <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                  </svg>
-                  Reel
-                </div>
-
-                <div class="avt-card__info">
-                  <p class="avt-card__name">{testimonial.clientName}</p>
-                  <p class="avt-card__role">{testimonial.clientRole}</p>
-                  <p class="avt-card__company">{testimonial.company}</p>
-                </div>
-              {:else}
-                <div class="avt-card__bg">
-                  {#if testimonial.videoSrc}
-                    <img
-                      src={getThumbnailUrl(testimonial.videoSrc)}
-                      alt={testimonial.clientName}
-                      class="avt-card__bg-thumb"
-                      loading="lazy"
-                      decoding="async"
-                    />
                   {/if}
-                  <div class="avt-card__bg-initial">
-                    {testimonial.clientName.charAt(0)}
+
+                  <div class="avt-card__gradient"></div>
+
+                  <div class="avt-card__badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                      <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                    </svg>
+                    Reel
                   </div>
-                </div>
-              {/if}
+
+                  <div class="avt-card__info">
+                    <p class="avt-card__name">{testimonial.clientName}</p>
+                    <p class="avt-card__role">{testimonial.clientRole}</p>
+                    <p class="avt-card__company">{testimonial.company}</p>
+                  </div>
+                {:else}
+                  <div class="avt-card__bg">
+                    {#if testimonial.videoSrc}
+                      <img
+                        src={getThumbnailUrl(testimonial.videoSrc)}
+                        alt={testimonial.clientName}
+                        class="avt-card__bg-thumb"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    {/if}
+                    <div class="avt-card__bg-initial">
+                      {testimonial.clientName.charAt(0)}
+                    </div>
+                  </div>
+                {/if}
+              {/key}
             </div>
           {/if}
         {/each}
