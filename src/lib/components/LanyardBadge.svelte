@@ -69,52 +69,67 @@
     cardPosition.set({ x: 0, y: 0 });
   }
   
-  // Touch handlers for mobile
   let touchStartX = 0;
   let touchStartY = 0;
-  
+  let touchActive = false;
+  let touchTimer: ReturnType<typeof setTimeout> | null = null;
+  const TOUCH_HOLD_MS = 300;
+
   function handleTouchStart(e: TouchEvent) {
     if (!container) return;
-    isDragging = true;
-    isHovered = true;
     const touch = e.touches[0];
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
-    
-    const rect = container.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    mouseX = (touch.clientX - centerX) / (rect.width / 2);
-    mouseY = (touch.clientY - centerY) / (rect.height / 2);
+    touchActive = false;
+
+    touchTimer = setTimeout(() => {
+      touchActive = true;
+      isDragging = true;
+      isHovered = true;
+      const rect = container.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      mouseX = (touch.clientX - centerX) / (rect.width / 2);
+      mouseY = (touch.clientY - centerY) / (rect.height / 2);
+    }, TOUCH_HOLD_MS);
   }
-  
+
   function handleTouchMove(e: TouchEvent) {
-    if (!container || !isDragging) return;
-    e.preventDefault(); // Prevent scroll interference
+    if (!container) return;
     const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStartX);
+    const dy = Math.abs(touch.clientY - touchStartY);
+
+    if (!touchActive && (dx > 10 || dy > 10)) {
+      if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; }
+      return;
+    }
+
+    if (!touchActive) return;
+
+    e.preventDefault();
     const rect = container.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    
     mouseX = (touch.clientX - centerX) / (rect.width / 2);
     mouseY = (touch.clientY - centerY) / (rect.height / 2);
-    
-    // More responsive drag on mobile
+
     cardPosition.set({ x: mouseX * 60, y: mouseY * 60 });
     cardRotation.set({ x: -mouseY * 20, y: mouseX * 20 });
     swingVelocity += (touch.clientX - touchStartX) * 0.02;
-    
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
   }
-  
+
   function handleTouchEnd() {
+    if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; }
+    touchActive = false;
     isDragging = false;
     isHovered = false;
     cardPosition.set({ x: 0, y: 0 });
     cardRotation.set({ x: 0, y: 0 });
   }
-  
+
   function handleTouchCancel() {
     handleTouchEnd();
   }
@@ -214,7 +229,7 @@
     align-items: center;
     justify-content: flex-start;
     padding-top: 20px;
-    touch-action: none;
+    touch-action: pan-y;
     user-select: none;
   }
   

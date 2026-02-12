@@ -176,7 +176,7 @@
   </div>
 </section>
 
-<div class="mt-8 md:mt-12">
+<div class="mt-16 md:mt-24">
   <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 </div>
 
