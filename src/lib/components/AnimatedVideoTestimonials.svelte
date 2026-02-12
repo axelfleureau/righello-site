@@ -38,6 +38,10 @@
   $: activeTestimonial = testimonials[activeIndex];
   $: quoteWords = activeTestimonial.quote.split(/\s+/);
 
+  function getThumbnailUrl(videoSrc: string): string {
+    return `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
+  }
+
   $: {
     activeIndex;
     videoLoaded = false;
@@ -223,11 +227,21 @@
               "
             >
               {#if isActive}
-                <div class="avt-card__placeholder">
-                  <div class="avt-card__initial">
-                    {testimonial.clientName.charAt(0)}
+                {#if testimonial.videoSrc}
+                  <img
+                    src={getThumbnailUrl(testimonial.videoSrc)}
+                    alt={testimonial.clientName}
+                    class="avt-card__thumbnail"
+                    loading="eager"
+                    decoding="async"
+                  />
+                {:else}
+                  <div class="avt-card__placeholder">
+                    <div class="avt-card__initial">
+                      {testimonial.clientName.charAt(0)}
+                    </div>
                   </div>
-                </div>
+                {/if}
 
                 {#if testimonial.videoSrc}
                   {#key activeIndex}
@@ -247,12 +261,6 @@
                       <track kind="captions" />
                     </video>
                   {/key}
-
-                  {#if !videoLoaded}
-                    <div class="avt-card__loader">
-                      <div class="avt-card__spinner"></div>
-                    </div>
-                  {/if}
                 {/if}
 
                 <div class="avt-card__gradient"></div>
@@ -272,15 +280,13 @@
               {:else}
                 <div class="avt-card__bg">
                   {#if testimonial.videoSrc}
-                    <video
-                      src={testimonial.videoSrc + '#t=0.5'}
-                      muted
-                      playsinline
-                      preload="metadata"
-                      class="avt-card__bg-video"
-                    >
-                      <track kind="captions" />
-                    </video>
+                    <img
+                      src={getThumbnailUrl(testimonial.videoSrc)}
+                      alt={testimonial.clientName}
+                      class="avt-card__bg-thumb"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   {/if}
                   <div class="avt-card__bg-initial">
                     {testimonial.clientName.charAt(0)}
@@ -533,6 +539,15 @@
     filter: brightness(0.7);
   }
 
+  .avt-card__thumbnail {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
   .avt-card__placeholder {
     position: absolute;
     inset: 0;
@@ -554,13 +569,13 @@
     overflow: hidden;
   }
 
-  .avt-card__bg-video {
+  .avt-card__bg-thumb {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.6;
+    opacity: 0.7;
   }
 
   .avt-card__bg-initial {
@@ -586,29 +601,6 @@
     text-transform: uppercase;
     user-select: none;
     line-height: 1;
-  }
-
-  .avt-card__loader {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
-    pointer-events: none;
-  }
-
-  .avt-card__spinner {
-    width: 24px;
-    height: 24px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
   }
 
   .avt-card__video {
@@ -1053,10 +1045,6 @@
     }
 
     .avt-card__placeholder {
-      animation: none;
-    }
-
-    .avt-card__spinner {
       animation: none;
     }
 
