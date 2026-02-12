@@ -247,12 +247,12 @@
                   {#key activeIndex}
                     <video
                       bind:this={videoElement}
-                      src={testimonial.videoSrc + '#t=0.1'}
+                      src={testimonial.videoSrc}
                       autoplay
                       muted
                       loop
                       playsinline
-                      preload="auto"
+                      preload="metadata"
                       class="avt-card__video"
                       class:avt-card__video--visible={videoLoaded}
                       on:canplay={handleVideoCanPlay}
