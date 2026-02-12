@@ -429,12 +429,28 @@
     overflow: hidden;
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
+
+  .apple-scrolly::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    background: linear-gradient(to bottom, transparent 0%, var(--bg-primary) 100%);
+    z-index: 5;
+    pointer-events: none;
+  }
   
   @media (min-width: 1024px) {
     .apple-scrolly {
       height: 100vh;
       height: 100svh;
       min-height: 700px;
+    }
+
+    .apple-scrolly::after {
+      height: 220px;
     }
   }
   
