@@ -567,7 +567,7 @@
   <div class="section-container">
     <RevealOnScroll animation="scale">
       <div class="final-cta">
-        <h2 class="cta-title">
+        <h2 class="section-title">
           Parliamo del tuo <span class="gradient-text">progetto</span>
         </h2>
         <p class="cta-subtitle">

@@ -339,7 +339,7 @@
   <div class="section-container relative z-10">
     <RevealOnScroll animation="scale">
       <div class="glass-card rounded-3xl p-8 md:p-16 text-center max-w-4xl mx-auto">
-        <h2 class="heading-lg mb-6">
+        <h2 class="section-title mb-6">
           Pronto a <span class="gradient-text">crescere?</span>
         </h2>
         <p class="text-xl text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto">

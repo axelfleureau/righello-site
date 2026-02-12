@@ -108,7 +108,7 @@
   <section class="narrative-section">
     <div class="section-container">
       <RevealOnScroll animation="fly-up">
-        <h2 class="heading-lg narrative-heading">Il Progetto</h2>
+        <h2 class="section-title narrative-heading">Il Progetto</h2>
       </RevealOnScroll>
 
       <div class="narrative-grid">
@@ -134,7 +134,7 @@
     <div class="section-container">
       <RevealOnScroll animation="scale">
         <div class="cta-card">
-          <h2 class="cta-title">Hai un progetto simile?</h2>
+          <h2 class="section-title">Hai un progetto simile?</h2>
           <p class="cta-description">Raccontaci la tua idea. Insieme possiamo trasformarla in qualcosa di straordinario.</p>
           <MagneticButton href="/contatti" variant="primary">
             Parliamone
@@ -153,7 +153,7 @@
   <section class="related-section">
     <div class="section-container">
       <RevealOnScroll animation="fly-up">
-        <h2 class="heading-lg related-heading">Altri progetti</h2>
+        <h2 class="section-title related-heading">Altri progetti</h2>
       </RevealOnScroll>
 
       <div class="related-grid">
@@ -186,7 +186,7 @@
 {:else}
   <section class="not-found-section">
     <div class="section-container" style="text-align: center;">
-      <h1 class="heading-lg" style="margin-bottom: 1.5rem;">Progetto non trovato</h1>
+      <h1 class="section-title" style="margin-bottom: 1.5rem;">Progetto non trovato</h1>
       <p class="not-found-text">Il progetto che stai cercando non esiste.</p>
       <MagneticButton href="/progetti" variant="primary">Torna ai progetti</MagneticButton>
     </div>

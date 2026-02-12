@@ -318,7 +318,7 @@
 <section class="section-padding bg-black text-white">
   <div class="section-container text-center">
     <ScrollReveal animation="fade-up">
-      <h2 class="text-2xl md:text-3xl font-bold mb-4">Preferisci Scriverci Direttamente?</h2>
+      <h2 class="section-title mb-4">Preferisci Scriverci Direttamente?</h2>
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={100}>
       <p class="text-lg text-gray-400 mb-8">
