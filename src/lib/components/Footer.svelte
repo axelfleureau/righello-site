@@ -1,6 +1,7 @@
 <script lang="ts">
   import { theme } from '$lib/stores/theme';
   import { browser } from '$app/environment';
+  import MagneticButton from './MagneticButton.svelte';
 
   const currentYear = new Date().getFullYear();
 
@@ -39,12 +40,12 @@
         <h3 class="cta-title">Hai un progetto in mente?</h3>
         <p class="cta-subtitle">Rispondiamo entro 24 ore. Preventivo gratuito e personalizzato.</p>
       </div>
-      <a href="/contatti" class="cta-button">
+      <MagneticButton href="/contatti" variant="primary">
         Parliamone
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="w-5 h-5 ml-2 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
-      </a>
+      </MagneticButton>
     </div>
   </div>
 
@@ -178,32 +179,6 @@
   .cta-subtitle {
     font-size: 0.9375rem;
     color: var(--text-secondary);
-  }
-
-  .cta-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    background: #D6487E;
-    color: white;
-    font-weight: 600;
-    font-size: 0.9375rem;
-    white-space: nowrap;
-    text-decoration: none;
-    transition: background 0.2s ease, transform 0.2s ease;
-    min-height: 44px;
-  }
-
-  .cta-button:hover {
-    background: #c23d6f;
-    transform: translateY(-1px);
-  }
-
-  .cta-button:focus-visible {
-    outline: 2px solid #D6487E;
-    outline-offset: 2px;
   }
 
   .footer-main {

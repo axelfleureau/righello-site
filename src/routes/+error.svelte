@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import MagneticButton from '$lib/components/MagneticButton.svelte';
 </script>
 
 <svelte:head>
@@ -16,6 +17,6 @@
       <p class="text-2xl text-gray-600 mb-8">Si è verificato un errore</p>
       <p class="text-gray-500 mb-8">Ci scusiamo per l'inconveniente.</p>
     {/if}
-    <a href="/" class="btn-primary">Torna alla home</a>
+    <MagneticButton href="/" variant="primary">Torna alla home</MagneticButton>
   </div>
 </section>

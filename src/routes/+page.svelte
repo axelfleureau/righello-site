@@ -18,6 +18,9 @@
   import PesoSection from '$lib/components/PesoSection.svelte';
   import RippleGrid from '$lib/components/RippleGrid.svelte';
   import { onMount } from 'svelte';
+  import { env } from '$env/dynamic/public';
+  
+  const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
   
   const homepageServices = departments.map(dept => ({
     id: dept.id,
@@ -346,7 +349,7 @@
           Ogni mese che passa senza una strategia è fatturato lasciato sul tavolo. Parliamo dei tuoi obiettivi e creiamo un piano d'azione concreto.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <MagneticButton href="/contatti" variant="primary" class="text-lg px-8 py-4">
+          <MagneticButton href={schedulingUrl} variant="primary" class="text-lg px-8 py-4">
             Prenota una call gratuita
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -363,11 +366,5 @@
     background: 
       radial-gradient(ellipse at center, rgba(214, 72, 126, 0.15) 0%, transparent 60%),
       radial-gradient(ellipse at 20% 80%, rgba(214, 72, 126, 0.1) 0%, transparent 50%);
-  }
-  
-  @media (max-width: 768px) {
-    .heading-lg {
-      font-size: 2rem;
-    }
   }
 </style>

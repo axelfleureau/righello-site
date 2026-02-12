@@ -6,6 +6,9 @@
   import FAQ from '$lib/components/FAQ.svelte';
   import { slide } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
+  import { env } from '$env/dynamic/public';
+  
+  const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
   
   const deptSlugs = ['content-social', 'advertising', 'digital-experience'];
   
@@ -274,15 +277,15 @@
     
     <RevealOnScroll animation="fly-up" delay={200}>
       <div class="cta-group">
-        <a href="/contatti" class="btn-primary">
+        <MagneticButton href={schedulingUrl} variant="primary">
           Richiedi un Preventivo
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
-        </a>
-        <a href="/progetti" class="btn-secondary">
+        </MagneticButton>
+        <MagneticButton href="/progetti" variant="secondary">
           Vedi i Progetti
-        </a>
+        </MagneticButton>
       </div>
     </RevealOnScroll>
   </div>
@@ -437,12 +440,12 @@
     
     <RevealOnScroll animation="fly-up">
       <div class="text-center mt-12">
-        <a href="/progetti" class="btn-outline">
+        <MagneticButton href="/progetti" variant="secondary">
           Vedi tutti i progetti
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
-        </a>
+        </MagneticButton>
       </div>
     </RevealOnScroll>
   </div>
@@ -575,12 +578,12 @@
           le opportunità di crescita per il tuo business.
         </p>
         <div class="cta-buttons">
-          <a href="/contatti" class="btn-primary-large">
+          <MagneticButton href={schedulingUrl} variant="primary" class="text-lg px-8 py-4">
             Richiedi una consulenza gratuita
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </a>
+          </MagneticButton>
         </div>
         <p class="cta-contact">
           Oppure scrivici a <a href="mailto:hello@wearerighello.com" class="email-link">hello@wearerighello.com</a>
