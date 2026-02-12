@@ -4,3 +4,8 @@ updates:
     directory: '/'
     schedule:
       interval: 'monthly'
+    ignore:
+      - dependency-name: 'tailwindcss'
+        versions: ['>=4.0.0']
+      - dependency-name: '@tailwindcss/*'
+        versions: ['>=4.0.0']
