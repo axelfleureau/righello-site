@@ -14,6 +14,10 @@ const ALLOWED_HOSTS = [
   'storage.googleapis.com',
 ];
 
+const ALLOWED_PATTERNS = [
+  /\.firebasestorage\.app$/,
+];
+
 if (!existsSync(CACHE_DIR)) {
   mkdirSync(CACHE_DIR, { recursive: true });
 }
@@ -22,9 +26,11 @@ function isAllowedUrl(urlString: string): boolean {
   try {
     const url = new URL(urlString);
     if (url.protocol !== 'https:') return false;
-    return ALLOWED_HOSTS.some(
+    if (ALLOWED_HOSTS.some(
       (host) => url.hostname === host || url.hostname.endsWith(`.${host}`)
-    );
+    )) return true;
+    if (ALLOWED_PATTERNS.some((pattern) => pattern.test(url.hostname))) return true;
+    return false;
   } catch {
     return false;
   }

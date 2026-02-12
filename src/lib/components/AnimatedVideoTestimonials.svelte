@@ -30,7 +30,7 @@
   let touchEndX = 0;
   let touchEndY = 0;
   let isSwiping = false;
-  const SWIPE_THRESHOLD = 40;
+  const SWIPE_THRESHOLD = 25;
   let reducedMotion = false;
   let videoLoaded = false;
   let isAnimating = false;
@@ -134,7 +134,7 @@
 
   function handleTouchEnd() {
     if (!isSwiping) {
-      if (activeTestimonial.videoSrc) openLightbox();
+      next();
       return;
     }
     const diff = touchStartX - touchEndX;
@@ -225,6 +225,9 @@
                 --card-opacity: {isActive ? 1 : Math.max(0.15, 1 - order * 0.25)};
                 z-index: {20 - order};
               "
+              {...(isActive ? { role: 'button', tabindex: 0 } : {})}
+              on:click={() => isActive && activeTestimonial.videoSrc && openLightbox()}
+              on:keydown={(e) => isActive && (e.key === 'Enter' || e.key === ' ') && activeTestimonial.videoSrc && openLightbox()}
             >
               {#if isActive}
                 {#if testimonial.videoSrc}

@@ -59,27 +59,12 @@
     }
   }
 
-  function handleMetadataLoaded(index: number, video: HTMLVideoElement) {
-    video.currentTime = 0.1;
-  }
-
-  function handleSeeked(index: number, video: HTMLVideoElement) {
-    if (video.currentTime > 0) {
-      markFrameLoaded(index);
-    }
+  function getThumbnailUrl(videoSrc: string): string {
+    return `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
   }
 
   function handleCanPlay(index: number, video: HTMLVideoElement) {
-    if (video.readyState >= 3) {
-      markFrameLoaded(index);
-    }
-  }
-
-  function handleTimeUpdate(index: number, video: HTMLVideoElement) {
-    if (video.currentTime >= 0.1) {
-      markFrameLoaded(index);
-      video.pause();
-    }
+    markFrameLoaded(index);
   }
   
   function handleMouseDown(e: MouseEvent) {
@@ -179,24 +164,8 @@
     if (browser) {
       window.addEventListener('keydown', handleKeydown);
 
-      const fallbackTimer = setTimeout(() => {
-        if (!container) return;
-        const videos = container.querySelectorAll('video');
-        let changed = false;
-        videos.forEach((video, i) => {
-          if (!loadedFrames[i] && video.readyState >= 2) {
-            loadedFrames[i] = true;
-            changed = true;
-          }
-        });
-        if (changed) {
-          loadedFrames = [...loadedFrames];
-        }
-      }, 4000);
-
       return () => {
         window.removeEventListener('keydown', handleKeydown);
-        clearTimeout(fallbackTimer);
       };
     }
   });
@@ -251,19 +220,22 @@
         >
           {#if item.videoSrc}
             <div class="video-wrapper">
-              <div class="video-gradient-bg" class:frame-loaded={loadedFrames[i]}></div>
+              <img
+                src={getThumbnailUrl(item.videoSrc)}
+                alt={item.title}
+                class="card-media card-poster"
+                loading="lazy"
+                decoding="async"
+              />
               <video 
-                class="card-media"
-                class:frame-visible={loadedFrames[i]}
-                src={item.videoSrc + '#t=0.1'}
+                class="card-media card-video-layer"
+                class:video-playing={loadedFrames[i]}
+                src={item.videoSrc}
                 muted
                 loop
                 playsinline
-                preload="metadata"
-                on:loadedmetadata={(e) => handleMetadataLoaded(i, e.currentTarget)}
-                on:seeked={(e) => handleSeeked(i, e.currentTarget)}
+                preload="none"
                 on:canplay={(e) => handleCanPlay(i, e.currentTarget)}
-                on:timeupdate={(e) => handleTimeUpdate(i, e.currentTarget)}
               >
                 <track kind="captions" />
               </video>
@@ -436,43 +408,31 @@
     height: 100%;
   }
   
-  .video-gradient-bg {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, 
-      rgba(214, 72, 126, 0.5) 0%, 
-      rgba(168, 85, 247, 0.4) 30%,
-      rgba(6, 182, 212, 0.5) 70%,
-      rgba(214, 72, 126, 0.4) 100%
-    );
-    background-size: 200% 200%;
-    animation: gradientShift 4s ease infinite;
-    z-index: 1;
-    transition: opacity 0.5s ease;
+  .card-media {
+    transition: transform 0.6s ease;
   }
 
-  .video-gradient-bg.frame-loaded {
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-  
-  .card-media {
+  .card-poster {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease, opacity 0.5s ease;
-    z-index: 2;
-    opacity: 0;
+    z-index: 0;
   }
 
-  .card-media.frame-visible {
+  .card-video-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .card-video-layer.video-playing {
     opacity: 1;
   }
   

@@ -2,6 +2,10 @@
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   
+  function getThumbnailUrl(videoSrc: string): string {
+    return `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
+  }
+
   export let title = '';
   export let items: {
     title: string;
@@ -114,7 +118,7 @@
   
   let videoRefs: (HTMLVideoElement | null)[] = items.map(() => null);
   let videoLoaded: boolean[] = items.map(() => false);
-  let skeletonRefs: (HTMLElement | null)[] = items.map(() => null);
+
 
   function handleVideoLoaded(index: number) {
     videoLoaded[index] = true;
@@ -174,17 +178,23 @@
         >
           {#if item.videoSrc}
             <div class="video-wrapper">
-              <div class="video-skeleton" class:loaded={videoLoaded[i]} bind:this={skeletonRefs[i]}></div>
+              <img
+                src={getThumbnailUrl(item.videoSrc)}
+                alt={item.title}
+                class="card-media card-poster"
+                loading="lazy"
+                decoding="async"
+              />
               <video 
                 bind:this={videoRefs[i]}
                 class="card-media card-video-native"
                 class:video-ready={videoLoaded[i]}
-                src={item.videoSrc + '#t=0.1'}
+                src={item.videoSrc}
                 muted
                 loop
                 playsinline
-                preload="metadata"
-                on:loadeddata={() => handleVideoLoaded(i)}
+                preload="none"
+                on:canplay={() => handleVideoLoaded(i)}
                 on:error={() => handleVideoError(i)}
               >
                 <track kind="captions" />
@@ -355,19 +365,13 @@
     height: 100%;
   }
   
-  .video-skeleton {
+  .card-poster {
     position: absolute;
     inset: 0;
-    background: linear-gradient(110deg, #1a1a1a 25%, #2a2a2a 37%, #1a1a1a 63%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s ease-in-out infinite;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     z-index: 0;
-    transition: opacity 0.4s ease;
-  }
-
-  .video-skeleton.loaded {
-    opacity: 0;
-    pointer-events: none;
   }
   
   .card-media {
@@ -415,11 +419,6 @@
     animation: gradientMove 4s ease infinite;
   }
   
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
   @keyframes gradientMove {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
