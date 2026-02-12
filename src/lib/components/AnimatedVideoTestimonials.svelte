@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
-  import { fade, scale } from 'svelte/transition';
+  import { fade, scale, fly } from 'svelte/transition';
 
   export let testimonials: {
     id: string;
@@ -246,52 +246,54 @@
 
         <div class="avt-card-overlay" aria-hidden="true">
           {#key activeIndex}
-            {#if activeTestimonial.videoSrc}
-              <img
-                src={getThumbnailUrl(activeTestimonial.videoSrc)}
-                alt={activeTestimonial.clientName}
-                class="avt-card__thumbnail"
-                loading="eager"
-                decoding="async"
-              />
-              <video
-                bind:this={videoElement}
-                src={activeTestimonial.videoSrc}
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                class="avt-card__video"
-                class:avt-card__video--visible={videoLoaded}
-                on:canplay={handleVideoCanPlay}
-                on:loadeddata={handleVideoCanPlay}
-              >
-                <track kind="captions" />
-              </video>
-            {:else}
-              <div class="avt-card__placeholder">
-                <div class="avt-card__initial">
-                  {activeTestimonial.clientName.charAt(0)}
+            <div class="avt-card-content" in:fly={{ y: 30, duration: 450, delay: 150 }} out:fly={{ y: -40, x: -25, duration: 350 }}>
+              {#if activeTestimonial.videoSrc}
+                <img
+                  src={getThumbnailUrl(activeTestimonial.videoSrc)}
+                  alt={activeTestimonial.clientName}
+                  class="avt-card__thumbnail"
+                  loading="eager"
+                  decoding="async"
+                />
+                <video
+                  bind:this={videoElement}
+                  src={activeTestimonial.videoSrc}
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  class="avt-card__video"
+                  class:avt-card__video--visible={videoLoaded}
+                  on:canplay={handleVideoCanPlay}
+                  on:loadeddata={handleVideoCanPlay}
+                >
+                  <track kind="captions" />
+                </video>
+              {:else}
+                <div class="avt-card__placeholder">
+                  <div class="avt-card__initial">
+                    {activeTestimonial.clientName.charAt(0)}
+                  </div>
                 </div>
+              {/if}
+
+              <div class="avt-card__gradient"></div>
+
+              <div class="avt-card__badge" style="display: {activeTestimonial.videoSrc ? 'flex' : 'none'}">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                  <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                </svg>
+                Recensione
               </div>
-            {/if}
+
+              <div class="avt-card__info">
+                <p class="avt-card__name">{activeTestimonial.clientName}</p>
+                <p class="avt-card__role">{activeTestimonial.clientRole}</p>
+                <p class="avt-card__company">{activeTestimonial.company}</p>
+              </div>
+            </div>
           {/key}
-
-          <div class="avt-card__gradient"></div>
-
-          <div class="avt-card__badge" style="display: {activeTestimonial.videoSrc ? 'flex' : 'none'}">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-              <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-            </svg>
-            Reel
-          </div>
-
-          <div class="avt-card__info">
-            <p class="avt-card__name">{activeTestimonial.clientName}</p>
-            <p class="avt-card__role">{activeTestimonial.clientRole}</p>
-            <p class="avt-card__company">{activeTestimonial.company}</p>
-          </div>
         </div>
 
         <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -516,6 +518,13 @@
     border-radius: 1.5rem;
     overflow: hidden;
     pointer-events: none;
+  }
+
+  .avt-card-content {
+    position: absolute;
+    inset: 0;
+    border-radius: 1.5rem;
+    overflow: hidden;
   }
 
   .avt-card {
