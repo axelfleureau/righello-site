@@ -211,94 +211,88 @@
           {@const order = getStackOrder(i)}
           {@const isActive = order === 0}
           {@const isVisible = order <= 3}
-          {#if isVisible}
-            <div
-              class="avt-card"
-              class:avt-card--active={isActive}
-              class:avt-card--behind={!isActive}
-              style="
-                --stack-index: {order};
-                --offset-y: {order * 14}px;
-                --offset-x: {order * 6}px;
-                --card-scale: {1 - order * 0.05};
-                --card-rotate: {order * 2}deg;
-                --card-opacity: {isActive ? 1 : Math.max(0.15, 1 - order * 0.25)};
-                z-index: {20 - order};
-              "
-              {...(isActive ? { role: 'button', tabindex: 0 } : {})}
-              on:click={() => isActive && activeTestimonial.videoSrc && openLightbox()}
-              on:keydown={(e) => isActive && (e.key === 'Enter' || e.key === ' ') && activeTestimonial.videoSrc && openLightbox()}
-            >
-              {#key `${i}-${isActive}`}
-                {#if isActive}
-                  {#if testimonial.videoSrc}
-                    <img
-                      src={getThumbnailUrl(testimonial.videoSrc)}
-                      alt={testimonial.clientName}
-                      class="avt-card__thumbnail"
-                      loading="eager"
-                      decoding="async"
-                    />
-                  {:else}
-                    <div class="avt-card__placeholder">
-                      <div class="avt-card__initial">
-                        {testimonial.clientName.charAt(0)}
-                      </div>
-                    </div>
-                  {/if}
-
-                  {#if testimonial.videoSrc}
-                    <video
-                      bind:this={videoElement}
-                      src={testimonial.videoSrc}
-                      autoplay
-                      muted
-                      loop
-                      playsinline
-                      preload="metadata"
-                      class="avt-card__video"
-                      class:avt-card__video--visible={videoLoaded}
-                      on:canplay={handleVideoCanPlay}
-                      on:loadeddata={handleVideoCanPlay}
-                    >
-                      <track kind="captions" />
-                    </video>
-                  {/if}
-
-                  <div class="avt-card__gradient"></div>
-
-                  <div class="avt-card__badge">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-                      <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                    </svg>
-                    Reel
-                  </div>
-
-                  <div class="avt-card__info">
-                    <p class="avt-card__name">{testimonial.clientName}</p>
-                    <p class="avt-card__role">{testimonial.clientRole}</p>
-                    <p class="avt-card__company">{testimonial.company}</p>
-                  </div>
-                {:else}
-                  <div class="avt-card__bg">
-                    {#if testimonial.videoSrc}
-                      <img
-                        src={getThumbnailUrl(testimonial.videoSrc)}
-                        alt={testimonial.clientName}
-                        class="avt-card__bg-thumb"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    {/if}
-                    <div class="avt-card__bg-initial">
-                      {testimonial.clientName.charAt(0)}
-                    </div>
-                  </div>
-                {/if}
-              {/key}
+          <div
+            class="avt-card"
+            class:avt-card--active={isActive}
+            class:avt-card--behind={!isActive}
+            style="
+              {!isVisible ? 'display: none;' : ''}
+              --stack-index: {order};
+              --offset-y: {order * 14}px;
+              --offset-x: {order * 6}px;
+              --card-scale: {1 - order * 0.05};
+              --card-rotate: {order * 2}deg;
+              --card-opacity: {isActive ? 1 : Math.max(0.15, 1 - order * 0.25)};
+              z-index: {20 - order};
+            "
+            role={isActive ? 'button' : undefined}
+            tabindex={isActive ? 0 : undefined}
+            on:click={() => isActive && activeTestimonial.videoSrc && openLightbox()}
+            on:keydown={(e) => isActive && (e.key === 'Enter' || e.key === ' ') && activeTestimonial.videoSrc && openLightbox()}
+          >
+            <img
+              src={testimonial.videoSrc ? getThumbnailUrl(testimonial.videoSrc) : ''}
+              alt={testimonial.clientName}
+              class="avt-card__bg-thumb"
+              style="display: {testimonial.videoSrc ? 'block' : 'none'}"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="avt-card__bg-initial">
+              {testimonial.clientName.charAt(0)}
             </div>
-          {/if}
+          </div>
         {/each}
+
+        <div class="avt-card-overlay" aria-hidden="true">
+          {#key activeIndex}
+            {#if activeTestimonial.videoSrc}
+              <img
+                src={getThumbnailUrl(activeTestimonial.videoSrc)}
+                alt={activeTestimonial.clientName}
+                class="avt-card__thumbnail"
+                loading="eager"
+                decoding="async"
+              />
+              <video
+                bind:this={videoElement}
+                src={activeTestimonial.videoSrc}
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                class="avt-card__video"
+                class:avt-card__video--visible={videoLoaded}
+                on:canplay={handleVideoCanPlay}
+                on:loadeddata={handleVideoCanPlay}
+              >
+                <track kind="captions" />
+              </video>
+            {:else}
+              <div class="avt-card__placeholder">
+                <div class="avt-card__initial">
+                  {activeTestimonial.clientName.charAt(0)}
+                </div>
+              </div>
+            {/if}
+          {/key}
+
+          <div class="avt-card__gradient"></div>
+
+          <div class="avt-card__badge" style="display: {activeTestimonial.videoSrc ? 'flex' : 'none'}">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+              <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+            </svg>
+            Reel
+          </div>
+
+          <div class="avt-card__info">
+            <p class="avt-card__name">{activeTestimonial.clientName}</p>
+            <p class="avt-card__role">{activeTestimonial.clientRole}</p>
+            <p class="avt-card__company">{activeTestimonial.company}</p>
+          </div>
+        </div>
 
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div
@@ -515,11 +509,21 @@
     aspect-ratio: 9/16;
   }
 
+  .avt-card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 21;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
   .avt-card {
     position: absolute;
     inset: 0;
     border-radius: 1.5rem;
     overflow: hidden;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     transform-origin: center bottom;
     transform: translateY(var(--offset-y)) translateX(var(--offset-x)) rotate(var(--card-rotate)) scale(var(--card-scale));
     opacity: var(--card-opacity);
@@ -562,16 +566,6 @@
     animation: shimmer 1.5s ease-in-out infinite;
   }
 
-  .avt-card__bg {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    overflow: hidden;
-  }
-
   .avt-card__bg-thumb {
     position: absolute;
     inset: 0;
@@ -582,8 +576,12 @@
   }
 
   .avt-card__bg-initial {
-    position: relative;
+    position: absolute;
+    inset: 0;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 4rem;
     font-weight: 800;
     color: rgba(255, 255, 255, 0.08);
@@ -918,10 +916,6 @@
   :global([data-theme="light"]) .avt-nav__btn:hover {
     background: rgba(214, 72, 126, 0.08);
     border-color: rgba(214, 72, 126, 0.3);
-  }
-
-  :global([data-theme="light"]) .avt-card__bg {
-    background: linear-gradient(135deg, #e8e8f0 0%, #d8d8e8 50%, #c8c8d8 100%);
   }
 
   :global([data-theme="light"]) .avt-card__bg-initial {
