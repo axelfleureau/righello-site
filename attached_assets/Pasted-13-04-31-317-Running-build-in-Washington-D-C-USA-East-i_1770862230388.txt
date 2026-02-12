@@ -1,0 +1,42 @@
+13:04:31.317 Running build in Washington, D.C., USA (East) – iad1
+13:04:31.319 Build machine configuration: 2 cores, 8 GB
+13:04:31.526 Cloning github.com/axelfleureau/righello-site (Branch: dependabot/npm_and_yarn/tailwindcss-4.1.18, Commit: 81cd8c9)
+13:04:35.349 Cloning completed: 3.823s
+13:04:35.505 Restored build cache from previous deployment (EPMRjtbK3C9PXmcxPzZWHffiPAiC)
+13:04:35.981 Warning: Due to "engines": { "node": "20.x" } in your `package.json` file, the Node.js Version defined in your Project Settings ("24.x") will not apply, Node.js Version "20.x" will be used instead. Learn More: https://vercel.link/node-version
+13:04:35.982 Running "vercel build"
+13:04:36.823 Vercel CLI 50.15.1
+13:04:37.483 Warning: Due to "engines": { "node": "20.x" } in your `package.json` file, the Node.js Version defined in your Project Settings ("24.x") will not apply, Node.js Version "20.x" will be used instead. Learn More: https://vercel.link/node-version
+13:04:37.490 Running "install" command: `npm ci --prefer-offline --no-audit --no-fund`...
+13:04:38.734 npm error code ERESOLVE
+13:04:38.735 npm error ERESOLVE could not resolve
+13:04:38.735 npm error
+13:04:38.735 npm error While resolving: @significa/svelte-ui@0.0.34
+13:04:38.735 npm error Found: tailwindcss@4.1.18
+13:04:38.736 npm error node_modules/tailwindcss
+13:04:38.736 npm error   dev tailwindcss@"^4.1.18" from the root project
+13:04:38.736 npm error   peer tailwindcss@">=3.2.0" from @tailwindcss/container-queries@0.1.1
+13:04:38.736 npm error   node_modules/@tailwindcss/container-queries
+13:04:38.736 npm error     dev @tailwindcss/container-queries@"^0.1.1" from the root project
+13:04:38.736 npm error   1 more (@tailwindcss/typography)
+13:04:38.737 npm error
+13:04:38.737 npm error Could not resolve dependency:
+13:04:38.737 npm error peer tailwindcss@"^3.3.3" from @significa/svelte-ui@0.0.34
+13:04:38.737 npm error node_modules/@significa/svelte-ui
+13:04:38.737 npm error   @significa/svelte-ui@"^0.0.34" from the root project
+13:04:38.737 npm error
+13:04:38.737 npm error Conflicting peer dependency: tailwindcss@3.4.19
+13:04:38.738 npm error node_modules/tailwindcss
+13:04:38.738 npm error   peer tailwindcss@"^3.3.3" from @significa/svelte-ui@0.0.34
+13:04:38.738 npm error   node_modules/@significa/svelte-ui
+13:04:38.738 npm error     @significa/svelte-ui@"^0.0.34" from the root project
+13:04:38.738 npm error
+13:04:38.738 npm error Fix the upstream dependency conflict, or retry
+13:04:38.738 npm error this command with --force or --legacy-peer-deps
+13:04:38.738 npm error to accept an incorrect (and potentially broken) dependency resolution.
+13:04:38.739 npm error
+13:04:38.739 npm error
+13:04:38.739 npm error For a full report see:
+13:04:38.739 npm error /vercel/.npm/_logs/2026-02-12T02_04_37_627Z-eresolve-report.txt
+13:04:38.741 npm error A complete log of this run can be found in: /vercel/.npm/_logs/2026-02-12T02_04_37_627Z-debug-0.log
+13:04:38.754 Error: Command "npm ci --prefer-offline --no-audit --no-fund" exited with 1
