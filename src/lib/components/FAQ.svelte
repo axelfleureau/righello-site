@@ -16,7 +16,7 @@
     },
     {
       question: "Lavorate con aziende di ogni dimensione?",
-      answer: "Sì, lavoriamo con startup, PMI e grandi aziende. Adattiamo strategie e budget alle esigenze specifiche di ogni cliente. La cosa importante per noi è la volontà di crescere e investire nel digitale."
+      answer: "Sì, lavoriamo con startup, PMI, grandi aziende e anche con la Pubblica Amministrazione. Adattiamo strategie e budget alle esigenze specifiche di ogni cliente. La cosa importante per noi è la volontà di crescere e investire nel digitale."
     },
     {
       question: "Come funziona il processo di onboarding?",
