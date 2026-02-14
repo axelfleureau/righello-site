@@ -8,7 +8,6 @@
   const pageLinks = [
     { href: '/', label: 'Home' },
     { href: '/servizi', label: 'Servizi' },
-    { href: '/progetti', label: 'Progetti' },
     { href: '/chi-siamo', label: 'Chi siamo' },
     { href: '/contatti', label: 'Contatti' },
   ];
