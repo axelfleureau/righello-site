@@ -201,16 +201,13 @@
               </video>
             </div>
             <button 
-              class="play-overlay"
+              class="play-btn-float"
               on:click|stopPropagation={() => item.videoSrc && openLightbox(item.videoSrc, item.title)}
               aria-label="Play video fullscreen"
             >
-              <div class="play-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-              <span class="play-label">Play</span>
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
             </button>
           {:else if item.imageSrc}
             <img 
@@ -424,74 +421,46 @@
     50% { background-position: 100% 50%; }
   }
   
-  .play-overlay {
+  .play-btn-float {
     position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0);
-    opacity: 0;
-    transition: opacity 0.3s ease, background 0.3s ease;
-    z-index: 5;
-  }
-  
-  .card-content:hover .play-overlay {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.35);
-  }
-
-  @media (hover: none) {
-    .play-overlay {
-      opacity: 1;
-      background: rgba(0, 0, 0, 0.15);
-    }
-  }
-  
-  .play-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(214, 72, 126, 0.9);
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 40px;
+    height: 40px;
+    background: rgba(214, 72, 126, 0.85);
     backdrop-filter: blur(10px);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(214, 72, 126, 0.4);
+    border: none;
+    cursor: pointer;
+    z-index: 6;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(214, 72, 126, 0.3);
   }
-  
-  .play-icon svg {
-    width: 24px;
-    height: 24px;
-    margin-left: 3px;
+
+  .play-btn-float svg {
+    width: 18px;
+    height: 18px;
+    margin-left: 2px;
   }
-  
-  .play-overlay:hover .play-icon {
+
+  .play-btn-float:hover {
     transform: scale(1.15);
-    box-shadow: 0 15px 40px rgba(214, 72, 126, 0.5);
+    box-shadow: 0 8px 25px rgba(214, 72, 126, 0.5);
   }
-  
-  .play-label {
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 0.5rem;
-    opacity: 0.9;
-  }
-  
+
   .card-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 5rem 1.25rem 1.25rem;
+    padding: 5rem 1rem 1rem;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
     pointer-events: none;
+    z-index: 5;
   }
   
   .card-category {
