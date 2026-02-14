@@ -105,19 +105,15 @@
   function handleTouchStart(e: TouchEvent) {
     isTouching = true;
     wasDragged = false;
-    touchStartX = e.touches[0].pageX - container.offsetLeft;
-    touchScrollLeft = container.scrollLeft;
+    touchStartX = e.touches[0].pageX;
   }
   
   function handleTouchMove(e: TouchEvent) {
     if (!isTouching) return;
-    const x = e.touches[0].pageX - container.offsetLeft;
-    const walk = (touchStartX - x) * 1.2;
-    if (Math.abs(walk) > 10) {
+    const dx = Math.abs(e.touches[0].pageX - touchStartX);
+    if (dx > 10) {
       wasDragged = true;
-      e.preventDefault();
     }
-    container.scrollLeft = touchScrollLeft + walk;
   }
   
   function handleTouchEnd() {
@@ -399,6 +395,7 @@
     width: 100%;
     height: 100%;
     cursor: pointer;
+    touch-action: pan-x;
   }
   
   .card-poster {
@@ -444,6 +441,8 @@
     opacity: 0;
     z-index: 2;
     transition: opacity 0.4s ease;
+    pointer-events: none;
+    touch-action: pan-x;
   }
 
   .card-video-native.video-ready {
