@@ -28,7 +28,7 @@
       title: 'Neura',
       subtitle: 'Come migliorare le difficoltà di apprendimento',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/neura_final.mp4?alt=media&token=27642e9f-c14b-49eb-b8e3-e802f4abdcb4',
-      category: 'Branding'
+      category: 'Salute'
     },
     {
       title: 'Ricci Group',
