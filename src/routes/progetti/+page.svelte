@@ -14,17 +14,17 @@
 </script>
 
 <svelte:head>
-  <title>Progetti | Righello Growth Agency</title>
-  <meta name="description" content="Portfolio dei nostri progetti di marketing digitale. Case study con risultati concreti e misurabili per i nostri clienti." />
-  <meta property="og:title" content="Progetti | Righello Growth Agency" />
-  <meta property="og:description" content="Portfolio dei nostri progetti di marketing digitale. Case study con risultati concreti e misurabili per i nostri clienti." />
+  <title>Progetti | Righello – Portfolio Marketing, Web & Software</title>
+  <meta name="description" content="Portfolio di progetti di marketing digitale, sviluppo web e software. Case study con risultati concreti: siti, app, campagne adv e automazioni." />
+  <meta property="og:title" content="Progetti | Righello – Portfolio Marketing, Web & Software" />
+  <meta property="og:description" content="Portfolio di progetti di marketing digitale, sviluppo web e software. Case study con risultati concreti: siti, app, campagne adv e automazioni." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
   <meta property="og:url" content="https://www.wearerighello.com/progetti" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Progetti | Righello Growth Agency" />
-  <meta name="twitter:description" content="Portfolio dei nostri progetti di marketing digitale. Case study con risultati concreti e misurabili per i nostri clienti." />
+  <meta name="twitter:title" content="Progetti | Righello – Portfolio Marketing, Web & Software" />
+  <meta name="twitter:description" content="Portfolio di progetti di marketing digitale, sviluppo web e software. Case study con risultati concreti: siti, app, campagne adv e automazioni." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
@@ -35,7 +35,7 @@
         <p class="section-subtitle">I nostri progetti</p>
         <h1 class="section-title">Una selezione dei nostri <span class="gradient-text"><TechWord>lavori</TechWord></span></h1>
         <p class="text-lg md:text-xl text-[var(--text-secondary)] mb-12">
-          I migliori progetti realizzati per i nostri clienti, dai contenuti al web design fino alle soluzioni software personalizzate.
+          Progetti di marketing digitale, sviluppo web e automazione realizzati per i nostri clienti nel Nord Italia e all'estero.
         </p>
       </div>
     </ScrollReveal>

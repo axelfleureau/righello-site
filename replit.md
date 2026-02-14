@@ -1,7 +1,7 @@
 # Righello - Growth Agency Website
 
 ## Overview
-This project is for Righello, an Italian growth agency focused on measurable results and data-driven growth. The website aims to showcase their expertise in content creation, advertising, and digital experience, transforming data into tangible growth. The business vision is to position Righello as a leading agency that delivers high ROAS and traceable conversions, emphasizing a numerical and data-centric approach.
+This project is for Righello, an Italian growth agency focused on measurable results and data-driven growth. The website showcases their three core competencies: **Marketing & Social Media**, **Advertising & Automazione**, and **Sviluppo Web & Software**. Based in Nord Italia (Mestre, Venezia) with projects across Europe. The business vision is to position Righello as a leading agency that delivers high ROAS, traceable conversions, and custom software solutions with a data-centric approach.
 
 ## User Preferences
 I prefer simple language.

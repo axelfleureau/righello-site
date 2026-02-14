@@ -120,17 +120,17 @@
 </script>
 
 <svelte:head>
-  <title>Righello | Growth Agency – Marketing, Advertising e Digital Experience</title>
-  <meta name="description" content="Agenzia di marketing orientata ai risultati. Content & Social Media, Advertising & Performance, Digital Experience. Ogni euro investito, ogni conversione tracciata." />
-  <meta property="og:title" content="Righello | Growth Agency – Marketing, Advertising e Digital Experience" />
-  <meta property="og:description" content="Agenzia di marketing orientata ai risultati. Content & Social Media, Advertising & Performance, Digital Experience. Ogni euro investito, ogni conversione tracciata." />
+  <title>Righello | Growth Agency – Marketing, Sviluppo Web & Automazione</title>
+  <meta name="description" content="Agenzia di marketing digitale, sviluppo web e automazione con sede nel Nord Italia. Strategie data-driven, software su misura e campagne advertising con risultati misurabili." />
+  <meta property="og:title" content="Righello | Growth Agency – Marketing, Sviluppo Web & Automazione" />
+  <meta property="og:description" content="Agenzia di marketing digitale, sviluppo web e automazione con sede nel Nord Italia. Strategie data-driven, software su misura e campagne advertising con risultati misurabili." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
   <meta property="og:url" content="https://www.wearerighello.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Righello | Growth Agency – Marketing, Advertising e Digital Experience" />
-  <meta name="twitter:description" content="Agenzia di marketing orientata ai risultati. Content & Social Media, Advertising & Performance, Digital Experience. Ogni euro investito, ogni conversione tracciata." />
+  <meta name="twitter:title" content="Righello | Growth Agency – Marketing, Sviluppo Web & Automazione" />
+  <meta name="twitter:description" content="Agenzia di marketing digitale, sviluppo web e automazione con sede nel Nord Italia. Strategie data-driven, software su misura e campagne advertising con risultati misurabili." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
@@ -173,7 +173,7 @@
         <p class="section-subtitle">I nostri servizi</p>
         <h2 class="section-title mb-4">Cosa <span class="gradient-text">facciamo</span></h2>
         <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-          Tre dipartimenti integrati che lavorano insieme per trasformare il tuo marketing in un sistema di crescita misurabile.
+          Marketing, sviluppo web e automazione: tre competenze integrate che trasformano il tuo business in un sistema di crescita misurabile.
         </p>
       </div>
     </RevealOnScroll>

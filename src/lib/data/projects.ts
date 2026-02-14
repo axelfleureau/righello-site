@@ -104,9 +104,9 @@ export interface Department {
 export const departments: Department[] = [
   {
     id: 'content-social',
-    name: 'Content & Social Media',
-    tagline: 'Contenuti che convertono',
-    description: 'Creiamo e gestiamo la tua presenza social con strategie data-driven. Ogni contenuto è pensato per generare engagement reale e conversioni misurabili.',
+    name: 'Marketing & Social Media',
+    tagline: 'Strategie che generano risultati',
+    description: 'Strategie di marketing integrate e gestione completa dei social media. Dalla pianificazione editoriale alla produzione di contenuti, ogni azione è pensata per generare engagement reale e conversioni misurabili.',
     icon: 'camera',
     services: [
       {
@@ -143,9 +143,9 @@ export const departments: Department[] = [
   },
   {
     id: 'advertising',
-    name: 'Advertising & Performance',
-    tagline: 'Ogni euro tracciato',
-    description: 'Campagne pubblicitarie ottimizzate per il massimo ritorno sull\'investimento. Tracking avanzato, A/B testing continuo e reportistica trasparente.',
+    name: 'Advertising & Automazione',
+    tagline: 'Ogni euro tracciato, ogni processo ottimizzato',
+    description: 'Campagne pubblicitarie data-driven con tracking avanzato, combinate con automazioni intelligenti per ottimizzare i processi di marketing e vendita. Massimo ritorno, minimo spreco.',
     icon: 'target',
     services: [
       {
@@ -178,13 +178,18 @@ export const departments: Department[] = [
         description: 'Report mensili dettagliati con modelli di attribuzione avanzati per capire cosa genera realmente valore.',
         icon: 'report',
       },
+      {
+        title: 'Marketing Automation',
+        description: 'Workflow automatizzati per lead nurturing, email marketing e CRM integration. Processi che lavorano per te 24/7.',
+        icon: 'automation',
+      },
     ],
   },
   {
     id: 'digital-experience',
-    name: 'Digital Experience',
-    tagline: 'Infrastrutture digitali evolute',
-    description: 'Progettiamo siti web, e-commerce e applicazioni con un approccio sistemico. Soluzioni integrate, scalabili e potenziate dall\'intelligenza artificiale.',
+    name: 'Sviluppo Web & Software',
+    tagline: 'Soluzioni digitali su misura',
+    description: 'Progettiamo e sviluppiamo siti web, e-commerce, web app e software custom. Soluzioni scalabili, integrate e potenziate dall\'intelligenza artificiale per far crescere il tuo business.',
     icon: 'code',
     services: [
       {

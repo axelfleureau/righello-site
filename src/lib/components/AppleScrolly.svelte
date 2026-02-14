@@ -17,21 +17,21 @@
   const slides = [
     {
       step: '01',
-      title: 'Content che converte',
-      description: 'Reel, stories e campagne UGC con risultati misurabili. Ogni contenuto è progettato per trasformare follower in clienti.',
+      title: 'Marketing & Social Media',
+      description: 'Strategie di marketing, contenuti e campagne social con risultati misurabili. Ogni azione è progettata per trasformare follower in clienti.',
       position: 'left',
       icon: '🎬'
     },
     {
       step: '02',
-      title: 'Advertising di precisione',
-      description: 'Meta Ads, Google Ads, TikTok Ads. Ogni euro investito è tracciato, ottimizzato e moltiplicato per massimizzare il ROAS.',
+      title: 'Advertising & Automazione',
+      description: 'Meta Ads, Google Ads, TikTok Ads + workflow automatizzati. Ogni euro è tracciato, ogni processo ottimizzato per massimizzare il ROAS.',
       position: 'right',
       icon: '📊'
     },
     {
       step: '03',
-      title: 'Digital Experience',
+      title: 'Sviluppo Web & Software',
       description: 'Siti web, e-commerce e web app che convertono. Design system, automazioni AI e integrazioni per scalare.',
       position: 'left',
       icon: '💻'

@@ -15,9 +15,9 @@
   const departments = [
     {
       icon: '📱',
-      title: 'Content & Social Media',
-      tagline: 'Contenuti che convertono',
-      description: 'Creiamo contenuti che catturano l\'attenzione e generano risultati. Dalla strategia editoriale alla produzione di video, foto e copy per ogni piattaforma.',
+      title: 'Marketing & Social Media',
+      tagline: 'Strategie che generano risultati',
+      description: 'Strategie di marketing integrate e gestione completa dei social media. Dalla pianificazione editoriale alla produzione di contenuti, ogni azione è pensata per generare engagement reale e conversioni misurabili.',
       services: [
         'Social Media Management',
         'Video Production (Reels, TikTok, YouTube)',
@@ -31,25 +31,26 @@
     },
     {
       icon: '🎯',
-      title: 'Advertising & Performance',
-      tagline: 'Ogni euro tracciato',
-      description: 'Campagne pubblicitarie data-driven con tracking avanzato. Sappiamo esattamente dove va ogni euro e quanto ritorna.',
+      title: 'Advertising & Automazione',
+      tagline: 'Ogni euro tracciato, ogni processo ottimizzato',
+      description: 'Campagne pubblicitarie data-driven con tracking avanzato, combinate con automazioni intelligenti per ottimizzare i processi di marketing e vendita. Massimo ritorno, minimo spreco.',
       services: [
         'Meta Ads (Facebook & Instagram)',
         'Google Ads & YouTube Ads',
         'TikTok Ads',
         'Tracking & Attribution avanzato',
         'A/B Testing continuo',
-        'Report e dashboard real-time'
+        'Report e dashboard real-time',
+        'Marketing Automation'
       ],
       color: '#06B6D4',
       featured: false
     },
     {
       icon: '💻',
-      title: 'Digital Experience',
-      tagline: 'Infrastrutture digitali evolute',
-      description: 'Siti web, e-commerce e applicazioni custom. Tecnologie moderne per esperienze digitali che convertono.',
+      title: 'Sviluppo Web & Software',
+      tagline: 'Soluzioni digitali su misura',
+      description: 'Progettiamo e sviluppiamo siti web, e-commerce, web app e software custom. Soluzioni scalabili, integrate e potenziate dall\'intelligenza artificiale per far crescere il tuo business.',
       services: [
         'Siti web & Landing page',
         'E-commerce (Shopify, Custom)',
@@ -77,7 +78,7 @@
     { 
       icon: '🤝', 
       title: 'Un Team, Tre Dipartimenti', 
-      desc: 'Content, Advertising, Digital: competenze integrate che lavorano insieme per massimizzare i risultati.'
+      desc: 'Marketing, Advertising, Sviluppo: competenze integrate che lavorano insieme per massimizzare i risultati.'
     },
     { 
       icon: '📱', 
@@ -102,12 +103,12 @@
     { icon: '📊', title: 'Dati e KPI Chiari', desc: 'Ogni progetto ha obiettivi misurabili: traffico, conversioni, performance.' },
     { icon: '🔄', title: 'Supporto Continuo', desc: 'Non ci fermiamo al lancio: aggiornamenti, SEO, ottimizzazioni ongoing.' },
     { icon: '🤖', title: 'AI × Human', desc: 'Automazioni intelligenti per velocità, esperienza umana per qualità.' },
-    { icon: '🌍', title: 'Local Expertise', desc: 'Conosciamo il mercato Veneto, parliamo la tua lingua, siamo sempre raggiungibili.' },
+    { icon: '🌍', title: 'Nord Italia & Oltre', desc: 'Base nel Nord Italia, operiamo in tutta Europa. Conosciamo il mercato locale, parliamo la tua lingua.' },
   ];
   
   const caseStudies = [
     {
-      badge: 'CONTENT & SOCIAL | Food & Beverage',
+      badge: 'MARKETING & SOCIAL | Food & Beverage',
       title: 'Settore Food & Beverage',
       description: 'Strategia editoriale completa con produzione video, shooting e gestione community per una catena di ristorazione in forte espansione.',
       metrics: [
@@ -117,7 +118,7 @@
       ]
     },
     {
-      badge: 'ADVERTISING & PERFORMANCE | Beauty & Wellness',
+      badge: 'ADVERTISING & AUTOMAZIONE | Beauty & Wellness',
       title: 'Settore Beauty & Wellness',
       description: 'Campagne Meta e Google Ads con tracking avanzato, funnel ottimizzato e budget scaling progressivo su tre mercati regionali.',
       metrics: [
@@ -127,7 +128,7 @@
       ]
     },
     {
-      badge: 'DIGITAL EXPERIENCE | Hospitality',
+      badge: 'SVILUPPO WEB & SOFTWARE | Hospitality',
       title: 'Settore Hospitality',
       description: 'Redesign completo del sito con UX ottimizzata per la prenotazione diretta, SEO tecnico e performance mobile al top.',
       metrics: [
@@ -179,7 +180,7 @@
     },
     {
       question: "Lavorate solo con aziende del Veneto?",
-      answer: "No, lavoriamo con clienti in tutta Italia e anche all'estero. La nostra sede è a Mestre-Venezia, ma gestiamo progetti da remoto con call regolari e strumenti collaborativi."
+      answer: "No, la nostra base è nel Nord Italia ma lavoriamo con clienti in tutta Europa. Gestiamo progetti da remoto con call regolari e strumenti collaborativi, e ci spostiamo sul posto quando serve."
     },
     {
       question: "Posso mantenere il sito da solo dopo il lancio?",
@@ -211,17 +212,17 @@
 </script>
 
 <svelte:head>
-  <title>Servizi | Righello Growth Agency</title>
-  <meta name="description" content="Content & Social Media, Advertising & Performance, Digital Experience. Scopri i nostri servizi di marketing digitale orientati ai risultati." />
-  <meta property="og:title" content="Servizi | Righello Growth Agency" />
-  <meta property="og:description" content="Content & Social Media, Advertising & Performance, Digital Experience. Scopri i nostri servizi di marketing digitale orientati ai risultati." />
+  <title>Servizi | Righello – Marketing, Sviluppo Web & Automazione</title>
+  <meta name="description" content="Marketing & Social Media, Advertising & Automazione, Sviluppo Web & Software. Servizi integrati di marketing digitale, sviluppo software e automazione per il tuo business." />
+  <meta property="og:title" content="Servizi | Righello – Marketing, Sviluppo Web & Automazione" />
+  <meta property="og:description" content="Marketing & Social Media, Advertising & Automazione, Sviluppo Web & Software. Servizi integrati di marketing digitale, sviluppo software e automazione per il tuo business." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
   <meta property="og:url" content="https://www.wearerighello.com/servizi" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Servizi | Righello Growth Agency" />
-  <meta name="twitter:description" content="Content & Social Media, Advertising & Performance, Digital Experience. Scopri i nostri servizi di marketing digitale orientati ai risultati." />
+  <meta name="twitter:title" content="Servizi | Righello – Marketing, Sviluppo Web & Automazione" />
+  <meta name="twitter:description" content="Marketing & Social Media, Advertising & Automazione, Sviluppo Web & Software. Servizi integrati di marketing digitale, sviluppo software e automazione per il tuo business." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
   
   {@html `<script type="application/ld+json">
@@ -249,7 +250,8 @@
           {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Siti Web"}},
           {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "E-Commerce"}},
           {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Web App Custom"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Performance Marketing"}}
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Marketing Automation"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Sviluppo Software Custom"}}
         ]
       }
     }
@@ -269,7 +271,7 @@
     
     <RevealOnScroll animation="fly-up" delay={100}>
       <p class="hero-subtitle">
-        Content, Advertising e Digital Experience: competenze integrate 
+        Marketing, Sviluppo Web e Automazione: competenze integrate 
         che lavorano insieme per far crescere il tuo business. 
         Un solo interlocutore, risultati misurabili.
       </p>

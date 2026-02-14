@@ -19,9 +19,9 @@
   let submitted = false;
   
   const services = [
-    'Content & Social Media',
-    'Advertising & Performance',
-    'Digital Experience',
+    'Marketing & Social Media',
+    'Advertising & Automazione',
+    'Sviluppo Web & Software',
     'Progetto Completo',
     'Altro',
   ];
@@ -41,7 +41,7 @@
     },
     {
       question: 'Lavorate solo con aziende del Veneto?',
-      answer: 'No, lavoriamo con clienti in tutta Italia e all\'estero. La sede a Mestre e un vantaggio per chi e in zona.',
+      answer: 'No, la nostra base è nel Nord Italia ma lavoriamo con clienti in tutta Europa. Ci spostiamo anche all\'estero quando serve. La sede a Mestre è un vantaggio per chi è in zona.',
     },
     {
       question: 'Posso prenotare una call conoscitiva?',
@@ -66,17 +66,17 @@
 </script>
 
 <svelte:head>
-  <title>Contatti | Righello Growth Agency</title>
-  <meta name="description" content="Contattaci per una consulenza gratuita. Risposta garantita in 24 ore. hello@wearerighello.com | Via Pio X 21, Mestre - Venezia." />
-  <meta property="og:title" content="Contatti | Righello Growth Agency" />
-  <meta property="og:description" content="Contattaci per una consulenza gratuita. Risposta garantita in 24 ore. hello@wearerighello.com | Via Pio X 21, Mestre - Venezia." />
+  <title>Contatti | Righello – Agenzia Marketing & Sviluppo Web</title>
+  <meta name="description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 24 ore. hello@wearerighello.com | Mestre, Venezia." />
+  <meta property="og:title" content="Contatti | Righello – Agenzia Marketing & Sviluppo Web" />
+  <meta property="og:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 24 ore. hello@wearerighello.com | Mestre, Venezia." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
   <meta property="og:url" content="https://www.wearerighello.com/contatti" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Contatti | Righello Growth Agency" />
-  <meta name="twitter:description" content="Contattaci per una consulenza gratuita. Risposta garantita in 24 ore. hello@wearerighello.com | Via Pio X 21, Mestre - Venezia." />
+  <meta name="twitter:title" content="Contatti | Righello – Agenzia Marketing & Sviluppo Web" />
+  <meta name="twitter:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 24 ore. hello@wearerighello.com | Mestre, Venezia." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 

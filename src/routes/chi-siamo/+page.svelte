@@ -37,23 +37,23 @@
   
   const departments = [
     {
-      title: 'Content & Social Media',
+      title: 'Marketing & Social Media',
       subtitle: 'Il nostro cavallo di battaglia',
-      description: 'Strategia editoriale, shooting, video, copy. Contenuti che generano engagement misurabile e community attive.',
+      description: 'Strategie di marketing, piano editoriale, shooting, video, copy. Contenuti che generano engagement misurabile e community attive.',
       icon: '🎬',
       highlight: true,
     },
     {
-      title: 'Advertising & Performance',
-      subtitle: 'ROAS tracciabile',
-      description: 'Campagne Meta, Google, TikTok. Budget ottimizzati, conversioni tracciate, scaling data-driven.',
+      title: 'Advertising & Automazione',
+      subtitle: 'ROAS tracciabile + processi automatizzati',
+      description: 'Campagne Meta, Google, TikTok. Budget ottimizzati, conversioni tracciate, workflow automatizzati e scaling data-driven.',
       icon: '📈',
       highlight: false,
     },
     {
-      title: 'Digital Experience',
-      subtitle: 'Design + Performance',
-      description: 'Siti web, e-commerce, web app. Mobile-first, SEO integrato, performance eccellenti.',
+      title: 'Sviluppo Web & Software',
+      subtitle: 'Design + Performance + Codice',
+      description: 'Siti web, e-commerce, web app e software custom. Mobile-first, SEO integrato, automazioni intelligenti.',
       icon: '💻',
       highlight: false,
     },
@@ -113,17 +113,17 @@
 </script>
 
 <svelte:head>
-  <title>Chi Siamo | Righello Growth Agency</title>
-  <meta name="description" content="Scopri il team di Righello. Un'agenzia di marketing data-driven con sede a Mestre, Venezia. Content, Advertising e Digital Experience." />
-  <meta property="og:title" content="Chi Siamo | Righello Growth Agency" />
-  <meta property="og:description" content="Scopri il team di Righello. Un'agenzia di marketing data-driven con sede a Mestre, Venezia. Content, Advertising e Digital Experience." />
+  <title>Chi Siamo | Righello – Growth Agency Nord Italia</title>
+  <meta name="description" content="Growth agency con sede a Mestre, Venezia. Esperti in marketing digitale, sviluppo web e automazione. Operiamo nel Nord Italia e all'estero." />
+  <meta property="og:title" content="Chi Siamo | Righello – Growth Agency Nord Italia" />
+  <meta property="og:description" content="Growth agency con sede a Mestre, Venezia. Esperti in marketing digitale, sviluppo web e automazione. Operiamo nel Nord Italia e all'estero." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
   <meta property="og:url" content="https://www.wearerighello.com/chi-siamo" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chi Siamo | Righello Growth Agency" />
-  <meta name="twitter:description" content="Scopri il team di Righello. Un'agenzia di marketing data-driven con sede a Mestre, Venezia. Content, Advertising e Digital Experience." />
+  <meta name="twitter:title" content="Chi Siamo | Righello – Growth Agency Nord Italia" />
+  <meta name="twitter:description" content="Growth agency con sede a Mestre, Venezia. Esperti in marketing digitale, sviluppo web e automazione. Operiamo nel Nord Italia e all'estero." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
@@ -140,7 +140,7 @@
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={100}>
           <p class="text-lg md:text-xl mb-6" style="color: var(--text-secondary);">
-            Siamo una <TechWord>growth agency</TechWord> nata dall'unione di tre Co-Founder con competenze complementari: strategia, creatività e tecnologia. Un team compatto che lavora insieme ogni giorno.
+            Siamo una <TechWord>growth agency</TechWord> specializzata in marketing digitale, sviluppo web e automazione. Tre Co-Founder con competenze complementari — strategia, creatività e tecnologia — con base nel Nord Italia e progetti in tutta Europa.
           </p>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={200}>
@@ -225,7 +225,7 @@
         <p class="section-subtitle">I 3 Dipartimenti</p>
         <h2 class="section-title text-center mb-4">Tre Anime, Un Unico Team</h2>
         <p class="text-lg md:text-xl text-center max-w-3xl mx-auto mb-12" style="color: var(--text-secondary);">
-          Content, Advertising, Digital Experience: competenze integrate per progetti completi.
+          Marketing, Advertising e Sviluppo Software: competenze integrate per progetti completi.
         </p>
       </div>
     </ScrollReveal>
