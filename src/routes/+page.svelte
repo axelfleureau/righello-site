@@ -31,14 +31,6 @@
   
   const videoTestimonials = [
     {
-      id: '1',
-      clientName: 'Tubaro & Co',
-      clientRole: 'Agenzia Immobiliare',
-      company: 'Tubaro & Co',
-      quote: 'Un\'agenzia che capisce davvero il settore immobiliare.',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_1134.mp4?alt=media&token=636702a8-8849-4eb6-97ce-be802e849bc3',
-    },
-    {
       id: '2',
       clientName: 'Clara Falomo',
       clientRole: 'Avvocato',
