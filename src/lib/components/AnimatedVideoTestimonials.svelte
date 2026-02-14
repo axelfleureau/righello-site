@@ -134,7 +134,9 @@
 
   function handleTouchEnd() {
     if (!isSwiping) {
-      next();
+      if (activeTestimonial.videoSrc) {
+        openLightbox();
+      }
       return;
     }
     const diff = touchStartX - touchEndX;
