@@ -41,6 +41,12 @@
       subtitle: 'Per noi il cibo è una cosa seria',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/MgGrill_1%201.mp4?alt=media&token=25f4eb3e-6b63-46de-916a-6eba1a9802a0',
       category: 'Food'
+    },
+    {
+      title: 'Scuola Sci Piancavallo',
+      subtitle: 'Tutto gratis al open day della scuola!',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/promo6dicembre%201.MOV?alt=media&token=96556913-1bc3-4e5d-9305-b62e64628f9a',
+      category: 'Sport'
     }
   ];
 </script>
