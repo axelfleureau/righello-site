@@ -489,8 +489,9 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 4rem 1.25rem 1.25rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
+    padding: 5rem 1.25rem 1.25rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
+    pointer-events: none;
   }
   
   .card-category {

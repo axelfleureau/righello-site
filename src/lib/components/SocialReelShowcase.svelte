@@ -7,26 +7,26 @@
   
   const reelItems = [
     {
-      title: 'Scuola Sci Piancavallo',
-      subtitle: 'Content video per promozione corsi',
+      title: 'Ricci Group × Scuola Sci Piancavallo',
+      subtitle: 'Partnership per la promozione dei corsi di sci',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/ricci_scuolasci.mp4?alt=media&token=1456b789-c161-45e2-9414-23074ce7fd53',
-      category: 'Reel'
+      category: 'Partnership'
     },
     {
       title: '3R Technology',
-      subtitle: 'Video fast replace prodotto',
+      subtitle: 'Sostituzione fulminea di uno schermo',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/3r_fast_replace.mp4?alt=media&token=def7dcaa-231d-42ff-bf40-9ffef861a6ba',
       category: 'Product'
     },
     {
-      title: 'Reguta Wines',
-      subtitle: 'Vendemmio - campagna social',
+      title: 'Reguta',
+      subtitle: '#IOVENDEMMIOVOLENTIERI2025',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/vendemmioPOCOvolentieri.mp4?alt=media&token=76867423-5c67-4676-ae0e-a151d3e56325',
       category: 'Social'
     },
     {
       title: 'Neura',
-      subtitle: 'Brand video finale',
+      subtitle: 'Come migliorare le difficoltà di apprendimento',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/neura_final.mp4?alt=media&token=27642e9f-c14b-49eb-b8e3-e802f4abdcb4',
       category: 'Branding'
     }
