@@ -11,6 +11,15 @@
   $: filteredProjects = selectedCategory === 'all' 
     ? projects 
     : projects.filter(p => p.categories.includes(selectedCategory));
+
+  function getThumbnailUrl(videoSrc: string): string {
+    return `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
+  }
+
+  function getCategoryLabel(cat: string): string {
+    const found = categories.find(c => c.id === cat);
+    return found ? found.label : cat;
+  }
 </script>
 
 <svelte:head>
@@ -58,35 +67,46 @@
       {#each filteredProjects as project, i (project.id)}
         <ScrollReveal animation="fade-up" delay={i * 80}>
           <TiltCard>
-            <a 
-              href="/progetti/{project.slug}" 
-              class="group block"
-            >
+            <div class="project-card group">
               <div class="relative overflow-hidden rounded-2xl aspect-[4/3] mb-4">
-                <img 
-                  src={project.image} 
-                  alt={project.title}
-                  class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300"></div>
-                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span class="bg-white text-black px-4 py-2 rounded-full font-medium text-sm transform scale-90 group-hover:scale-100 transition-transform duration-300">
-                    Vedi progetto
-                  </span>
-                </div>
+                {#if project.videoUrl}
+                  <img 
+                    src={getThumbnailUrl(project.videoUrl)} 
+                    alt={project.title}
+                    class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                    loading="lazy"
+                    decoding="async"
+                    on:error={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.add('project-fallback--visible'); }}
+                  />
+                  <div class="project-fallback">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>
+                    <span class="project-fallback__name">{project.title}</span>
+                  </div>
+                {:else if project.image}
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                {:else}
+                  <div class="project-fallback project-fallback--visible">
+                    <span class="project-fallback__name">{project.title}</span>
+                  </div>
+                {/if}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
               </div>
               <div class="flex flex-wrap gap-2 mb-2">
                 {#each project.categories as cat}
                   <span class="text-xs font-medium text-righello-pink">
-                    {cat === 'content' ? 'Content' : cat === 'photo-video' ? 'Foto&Video' : cat === 'web' ? 'Web' : cat === 'branding' ? 'Branding' : cat === 'software' ? 'Software' : cat}
+                    {getCategoryLabel(cat)}
                   </span>
                 {/each}
               </div>
               <h3 class="text-xl font-semibold group-hover:text-righello-pink transition-colors">{project.title}</h3>
               <p class="text-[var(--text-secondary)] mt-2">{project.description}</p>
-            </a>
+            </div>
           </TiltCard>
         </ScrollReveal>
       {/each}
@@ -95,3 +115,35 @@
 </section>
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+
+<style>
+  .project-card {
+    cursor: default;
+  }
+
+  .project-fallback {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  :global(.project-fallback--visible) {
+    display: flex !important;
+  }
+
+  .project-fallback__name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    padding: 0 1rem;
+  }
+</style>
