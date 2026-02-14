@@ -269,6 +269,21 @@
         </div>
       </article>
     {/each}
+    
+    <article class="carousel-card cta-card-wrapper" role="listitem">
+      <a href="/contatti" class="cta-end-card">
+        <div class="cta-end-card__inner">
+          <div class="cta-end-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+              <path d="M12 4v16m0 0l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="cta-end-card__title">E molto altro<br/>in arrivo</p>
+          <p class="cta-end-card__subtitle">Nuovi progetti ogni mese</p>
+          <span class="cta-end-card__btn">Scopri di più</span>
+        </div>
+      </a>
+    </article>
   </div>
 </section>
 
@@ -610,5 +625,78 @@
     font-weight: 600;
     color: white;
     text-align: center;
+  }
+
+  .cta-end-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, rgba(214, 72, 126, 0.08), rgba(6, 182, 212, 0.08));
+    border: 1.5px dashed rgba(214, 72, 126, 0.3);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cta-end-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(214, 72, 126, 0.6);
+    background: linear-gradient(135deg, rgba(214, 72, 126, 0.12), rgba(6, 182, 212, 0.12));
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(214, 72, 126, 0.1);
+  }
+
+  .cta-end-card__inner {
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .cta-end-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(214, 72, 126, 0.1);
+    color: #D6487E;
+    margin-bottom: 1rem;
+    animation: pulseIcon 2s ease-in-out infinite;
+  }
+
+  @keyframes pulseIcon {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  .cta-end-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-end-card__subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-end-card__btn {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #D6487E, #06B6D4);
+    border-radius: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .cta-end-card:hover .cta-end-card__btn {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(214, 72, 126, 0.4);
   }
 </style>

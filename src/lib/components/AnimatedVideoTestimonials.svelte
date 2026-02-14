@@ -369,6 +369,11 @@
           </svg>
         </button>
       </div>
+
+      <div class="avt-cta-more">
+        <p class="avt-cta-more__text">...e molto altro in arrivo</p>
+        <a href="/contatti" class="avt-cta-more__link">Vuoi sapere di più?</a>
+      </div>
     </div>
   </div>
 </div>
@@ -863,6 +868,42 @@
       display: flex;
       justify-content: flex-start;
     }
+  }
+
+  .avt-cta-more {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .avt-cta-more__text {
+    font-size: 0.9375rem;
+    color: var(--text-secondary, #999);
+    font-style: italic;
+  }
+
+  .avt-cta-more__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #D6487E;
+    text-decoration: none;
+    padding: 0.375rem 0.875rem;
+    border-radius: 2rem;
+    border: 1px solid rgba(214, 72, 126, 0.3);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .avt-cta-more__link:hover {
+    background: rgba(214, 72, 126, 0.1);
+    border-color: rgba(214, 72, 126, 0.6);
+    transform: translateX(2px);
   }
 
   .avt-nav__counter {
