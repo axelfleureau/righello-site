@@ -184,7 +184,11 @@
                 class="card-media card-poster"
                 loading="lazy"
                 decoding="async"
+                on:error={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.add('thumb-fallback--visible'); }}
               />
+              <div class="thumb-fallback">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>
+              </div>
               <video 
                 bind:this={videoRefs[i]}
                 class="card-media card-video-native"
@@ -369,6 +373,23 @@
     height: 100%;
     object-fit: cover;
     z-index: 0;
+  }
+
+  .thumb-fallback {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  :global(.thumb-fallback--visible) {
+    display: flex !important;
   }
   
   .card-media {
