@@ -16,6 +16,18 @@
   export let autoplay = false;
   export let interval = 5000;
 
+  const ctaItem = {
+    id: '__cta__',
+    clientName: '',
+    clientRole: '',
+    company: '',
+    videoSrc: undefined as string | undefined,
+    quote: '',
+    isCta: true
+  };
+
+  $: allItems = [...testimonials, ctaItem];
+
   let activeIndex = 0;
   let intervalId: ReturnType<typeof setInterval> | null = null;
   let videoElement: HTMLVideoElement | null = null;
@@ -35,8 +47,10 @@
   let videoLoaded = false;
   let isAnimating = false;
 
-  $: activeTestimonial = testimonials[activeIndex];
-  $: quoteWords = activeTestimonial.quote.split(/\s+/);
+  $: activeItem = allItems[activeIndex];
+  $: activeTestimonial = activeItem;
+  $: isCtaActive = 'isCta' in activeItem && (activeItem as any).isCta === true;
+  $: quoteWords = activeTestimonial.quote ? activeTestimonial.quote.split(/\s+/) : [];
 
   function getThumbnailUrl(videoSrc: string): string {
     return `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
@@ -54,7 +68,7 @@
   }
 
   function getStackOrder(cardIndex: number): number {
-    const total = testimonials.length;
+    const total = allItems.length;
     let diff = cardIndex - activeIndex;
     if (diff < 0) diff += total;
     return diff;
@@ -63,14 +77,14 @@
   function next() {
     if (isAnimating) return;
     isAnimating = true;
-    activeIndex = (activeIndex + 1) % testimonials.length;
+    activeIndex = (activeIndex + 1) % allItems.length;
     setTimeout(() => { isAnimating = false; }, 550);
   }
 
   function prev() {
     if (isAnimating) return;
     isAnimating = true;
-    activeIndex = (activeIndex - 1 + testimonials.length) % testimonials.length;
+    activeIndex = (activeIndex - 1 + allItems.length) % allItems.length;
     setTimeout(() => { isAnimating = false; }, 550);
   }
 
@@ -134,7 +148,7 @@
 
   function handleTouchEnd() {
     if (!isSwiping) {
-      if (activeTestimonial.videoSrc) {
+      if (!isCtaActive && activeTestimonial.videoSrc) {
         openLightbox();
       }
       return;
@@ -209,14 +223,16 @@
       aria-label="Video testimonial"
     >
       <div class="avt-stack" bind:this={stackEl}>
-        {#each testimonials as testimonial, i}
+        {#each allItems as item, i}
           {@const order = getStackOrder(i)}
           {@const isActive = order === 0}
           {@const isVisible = order <= 3}
+          {@const isCta = 'isCta' in item && item.isCta}
           <div
             class="avt-card"
             class:avt-card--active={isActive}
             class:avt-card--behind={!isActive}
+            class:avt-card--cta={isCta}
             style="
               {!isVisible ? 'display: none;' : ''}
               --stack-index: {order};
@@ -227,29 +243,46 @@
               --card-opacity: {isActive ? 1 : Math.max(0.15, 1 - order * 0.25)};
               z-index: {20 - order};
             "
-            role={isActive ? 'button' : undefined}
+            role={isActive && !isCta ? 'button' : undefined}
             tabindex={isActive ? 0 : undefined}
-            on:click={() => isActive && activeTestimonial.videoSrc && openLightbox()}
-            on:keydown={(e) => isActive && (e.key === 'Enter' || e.key === ' ') && activeTestimonial.videoSrc && openLightbox()}
+            on:click={() => isActive && !isCta && activeTestimonial.videoSrc && openLightbox()}
+            on:keydown={(e) => isActive && !isCta && (e.key === 'Enter' || e.key === ' ') && activeTestimonial.videoSrc && openLightbox()}
           >
-            <img
-              src={testimonial.videoSrc ? getThumbnailUrl(testimonial.videoSrc) : ''}
-              alt={testimonial.clientName}
-              class="avt-card__bg-thumb"
-              style="display: {testimonial.videoSrc ? 'block' : 'none'}"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="avt-card__bg-initial">
-              {testimonial.clientName.charAt(0)}
-            </div>
+            {#if isCta}
+              <div class="avt-card__cta-bg">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32" opacity="0.15"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              </div>
+            {:else}
+              <img
+                src={item.videoSrc ? getThumbnailUrl(item.videoSrc) : ''}
+                alt={item.clientName}
+                class="avt-card__bg-thumb"
+                style="display: {item.videoSrc ? 'block' : 'none'}"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="avt-card__bg-initial">
+                {item.clientName.charAt(0)}
+              </div>
+            {/if}
           </div>
         {/each}
 
         <div class="avt-card-overlay" aria-hidden="true">
           {#key activeIndex}
             <div class="avt-card-content" in:fly={{ y: 30, duration: 450, delay: 150 }} out:fly={{ y: -40, x: -25, duration: 350 }}>
-              {#if activeTestimonial.videoSrc}
+              {#if isCtaActive}
+                <div class="avt-cta-card">
+                  <div class="avt-cta-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40">
+                      <path d="M12 4v16m0 0l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <p class="avt-cta-card__title">E molto altro<br/>in arrivo</p>
+                  <p class="avt-cta-card__subtitle">Nuove recensioni ogni mese</p>
+                  <a href="/contatti" class="avt-cta-card__btn">Vuoi sapere di più?</a>
+                </div>
+              {:else if activeTestimonial.videoSrc}
                 <img
                   src={getThumbnailUrl(activeTestimonial.videoSrc)}
                   alt={activeTestimonial.clientName}
@@ -284,20 +317,22 @@
                 </div>
               {/if}
 
-              <div class="avt-card__gradient"></div>
+              {#if !isCtaActive}
+                <div class="avt-card__gradient"></div>
 
-              <div class="avt-card__badge" style="display: {activeTestimonial.videoSrc ? 'flex' : 'none'}">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-                  <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                </svg>
-                Recensione
-              </div>
+                <div class="avt-card__badge" style="display: {activeTestimonial.videoSrc ? 'flex' : 'none'}">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                    <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                  </svg>
+                  Recensione
+                </div>
 
-              <div class="avt-card__info">
-                <p class="avt-card__name">{activeTestimonial.clientName}</p>
-                <p class="avt-card__role">{activeTestimonial.clientRole}</p>
-                <p class="avt-card__company">{activeTestimonial.company}</p>
-              </div>
+                <div class="avt-card__info">
+                  <p class="avt-card__name">{activeTestimonial.clientName}</p>
+                  <p class="avt-card__role">{activeTestimonial.clientRole}</p>
+                  <p class="avt-card__company">{activeTestimonial.company}</p>
+                </div>
+              {/if}
             </div>
           {/key}
         </div>
@@ -311,7 +346,7 @@
         ></div>
       </div>
 
-      {#if activeTestimonial.videoSrc}
+      {#if activeTestimonial.videoSrc && !isCtaActive}
         <button
           class="avt-play"
           on:click={openLightbox}
@@ -333,7 +368,7 @@
           </svg>
         </button>
         <span class="avt-nav__counter">
-          {activeIndex + 1}<span class="avt-nav__separator">/</span>{testimonials.length}
+          {activeIndex + 1}<span class="avt-nav__separator">/</span>{allItems.length}
         </span>
         <button class="avt-nav__btn avt-nav__btn--next" on:click={next} aria-label="Successivo">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -346,17 +381,23 @@
     <div class="avt-right">
       {#key activeIndex}
         <div class="avt-content" class:avt-content--entering={true}>
-          <h3 class="avt-content__name">{activeTestimonial.clientName}</h3>
-          <p class="avt-content__role">{activeTestimonial.clientRole}, {activeTestimonial.company}</p>
-
-          <blockquote class="avt-content__quote">
-            {#each quoteWords as word, wi}
-              <span
-                class="avt-word"
-                style="--word-index: {wi}"
-              >{word}&nbsp;</span>
-            {/each}
-          </blockquote>
+          {#if isCtaActive}
+            <h3 class="avt-content__name">Vuoi essere il prossimo?</h3>
+            <p class="avt-content__role">Contattaci per raccontare la tua esperienza</p>
+            <blockquote class="avt-content__quote">
+              {#each 'Ogni mese aggiungiamo nuove storie di clienti soddisfatti. La prossima potrebbe essere la tua.'.split(/\s+/) as word, wi}
+                <span class="avt-word" style="--word-index: {wi}">{word}&nbsp;</span>
+              {/each}
+            </blockquote>
+          {:else}
+            <h3 class="avt-content__name">{activeTestimonial.clientName}</h3>
+            <p class="avt-content__role">{activeTestimonial.clientRole}, {activeTestimonial.company}</p>
+            <blockquote class="avt-content__quote">
+              {#each quoteWords as word, wi}
+                <span class="avt-word" style="--word-index: {wi}">{word}&nbsp;</span>
+              {/each}
+            </blockquote>
+          {/if}
         </div>
       {/key}
 
@@ -367,18 +408,13 @@
           </svg>
         </button>
         <span class="avt-nav__counter">
-          {activeIndex + 1}<span class="avt-nav__separator">/</span>{testimonials.length}
+          {activeIndex + 1}<span class="avt-nav__separator">/</span>{allItems.length}
         </span>
         <button class="avt-nav__btn avt-nav__btn--next" on:click={next} aria-label="Successivo">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M9 18l6-6-6-6" />
           </svg>
         </button>
-      </div>
-
-      <div class="avt-cta-more">
-        <p class="avt-cta-more__text">...e molto altro in arrivo</p>
-        <a href="/contatti" class="avt-cta-more__link">Vuoi sapere di più?</a>
       </div>
     </div>
   </div>
@@ -893,40 +929,76 @@
     }
   }
 
-  .avt-cta-more {
+  .avt-card--cta {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  }
+
+  .avt-card__cta-bg {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  }
+
+  .avt-cta-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 0.75rem;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: linear-gradient(135deg, rgba(214, 72, 126, 0.08) 0%, rgba(6, 182, 212, 0.06) 100%);
+    border: 1px solid rgba(214, 72, 126, 0.15);
+    border-radius: inherit;
+    text-align: center;
+    padding: 1.5rem;
   }
 
-  .avt-cta-more__text {
-    font-size: 0.9375rem;
+  .avt-cta-card__icon {
+    color: #D6487E;
+    opacity: 0.7;
+    animation: cta-bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes cta-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .avt-cta-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary, #fff);
+    line-height: 1.3;
+  }
+
+  .avt-cta-card__subtitle {
+    font-size: 0.875rem;
     color: var(--text-secondary, #999);
-    font-style: italic;
   }
 
-  .avt-cta-more__link {
+  .avt-cta-card__btn {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: #D6487E;
     text-decoration: none;
-    padding: 0.375rem 0.875rem;
+    padding: 0.5rem 1.25rem;
     border-radius: 2rem;
-    border: 1px solid rgba(214, 72, 126, 0.3);
+    border: 1px solid rgba(214, 72, 126, 0.4);
     transition: all 0.3s ease;
-    white-space: nowrap;
+    margin-top: 0.5rem;
   }
 
-  .avt-cta-more__link:hover {
-    background: rgba(214, 72, 126, 0.1);
-    border-color: rgba(214, 72, 126, 0.6);
-    transform: translateX(2px);
+  .avt-cta-card__btn:hover {
+    background: rgba(214, 72, 126, 0.15);
+    border-color: rgba(214, 72, 126, 0.7);
+    transform: scale(1.05);
   }
 
   .avt-nav__counter {
