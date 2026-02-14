@@ -7,16 +7,12 @@
   
   const faqs = [
     {
-      question: "Quanto costa lavorare con Righello?",
-      answer: "Ogni progetto è personalizzato sulle tue esigenze. Offriamo pacchetti a partire da €2.000/mese per la gestione social, mentre per progetti di advertising e sviluppo web prepariamo preventivi su misura. Prenota una call gratuita per discutere del tuo budget e obiettivi."
-    },
-    {
       question: "Quali risultati posso aspettarmi?",
       answer: "I risultati variano in base al settore e agli obiettivi, ma i nostri clienti vedono in media un aumento del 340% dell'engagement e un ROAS di 8.5x sulle campagne advertising. Forniamo report mensili dettagliati con KPI trasparenti."
     },
     {
       question: "Quanto tempo ci vuole per vedere i primi risultati?",
-      answer: "Per i social media, i primi miglioramenti sono visibili entro 2-4 settimane. Per le campagne advertising, ottimizziamo continuamente e i risultati significativi arrivano in 4-8 settimane. I progetti web richiedono 4-12 settimane a seconda della complessità."
+      answer: "I primi miglioramenti si vedono dai 3 mesi. In questo periodo costruiamo le fondamenta: strategia, contenuti, campagne ottimizzate e tracking. Dopo i primi 3 mesi i risultati crescono in modo esponenziale mese dopo mese."
     },
     {
       question: "Lavorate con aziende di ogni dimensione?",

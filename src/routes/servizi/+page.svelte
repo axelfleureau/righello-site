@@ -171,8 +171,8 @@
 
   const faqs = [
     {
-      question: "Quanto costa un progetto con Righello?",
-      answer: "Ogni progetto è personalizzato. Siti vetrina partono da €3.000, e-commerce da €8.000, web app custom da €15.000. Per campagne advertising, investimenti minimi consigliati da €1.500/mese. Prenota una call gratuita per un preventivo su misura."
+      question: "Quanto tempo ci vuole per vedere i risultati?",
+      answer: "I primi miglioramenti si vedono dai 3 mesi. In questo periodo costruiamo le fondamenta: strategia, contenuti, campagne e tracking. Per i siti web, i tempi di sviluppo variano da 4 a 12 settimane a seconda della complessità."
     },
     {
       question: "Quanto tempo ci vuole per un sito web?",
