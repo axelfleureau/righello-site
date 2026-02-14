@@ -29,6 +29,12 @@
       subtitle: 'Come migliorare le difficoltà di apprendimento',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/neura_final.mp4?alt=media&token=27642e9f-c14b-49eb-b8e3-e802f4abdcb4',
       category: 'Branding'
+    },
+    {
+      title: 'Ricci Group',
+      subtitle: 'Basta spendere in carburante, scegli Hyundai i20',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/copy_18236D6E-2553-4BF8-AC9F-112535ECB0E6%201.MOV?alt=media&token=3f1905cf-a165-424e-83d2-dde3b8c7841c',
+      category: 'Automotive'
     }
   ];
 </script>
