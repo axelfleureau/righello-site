@@ -14,6 +14,9 @@
     imageSrc?: string;
     posterSrc?: string;
     category?: string;
+    isCta?: boolean;
+    ctaHref?: string;
+    ctaLabel?: string;
   }[] = [];
   
   let container: HTMLElement;
@@ -186,7 +189,25 @@
             handleVideoLeave(video);
           }}
         >
-          {#if item.videoSrc}
+          {#if item.isCta}
+            <div class="cta-card-inner">
+              <div class="cta-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </div>
+              <h3 class="cta-card-title">{item.title}</h3>
+              {#if item.subtitle}
+                <p class="cta-card-subtitle">{item.subtitle}</p>
+              {/if}
+              {#if item.ctaHref}
+                <a href={item.ctaHref} class="cta-card-btn">
+                  {item.ctaLabel || 'Scopri di più'}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cta-card-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              {/if}
+            </div>
+          {:else if item.videoSrc}
             <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
             <div class="video-wrapper" on:click={() => handleCardClick(item.videoSrc, item.title)}>
               <img
@@ -237,6 +258,7 @@
             </div>
           {/if}
           
+          {#if !item.isCta}
           <div class="card-overlay">
             {#if item.category}
               <span class="card-category">{item.category}</span>
@@ -246,6 +268,7 @@
               <p class="card-subtitle">{item.subtitle}</p>
             {/if}
           </div>
+          {/if}
         </div>
       </div>
     {/each}
@@ -587,5 +610,86 @@
     font-weight: 600;
     color: white;
     text-align: center;
+  }
+
+  .cta-card-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: linear-gradient(160deg, rgba(214, 72, 126, 0.12) 0%, rgba(20, 20, 20, 0.95) 60%);
+    border: 1px solid rgba(214, 72, 126, 0.25);
+    border-radius: inherit;
+    gap: 1rem;
+  }
+
+  .cta-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid rgba(214, 72, 126, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: ctaPulse 2.5s ease-in-out infinite;
+  }
+
+  .cta-card-icon svg {
+    width: 28px;
+    height: 28px;
+    color: #D6487E;
+  }
+
+  @keyframes ctaPulse {
+    0%, 100% { transform: scale(1); border-color: rgba(214, 72, 126, 0.4); }
+    50% { transform: scale(1.08); border-color: rgba(214, 72, 126, 0.7); }
+  }
+
+  .cta-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+  }
+
+  .cta-card-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #999);
+    line-height: 1.5;
+    max-width: 180px;
+  }
+
+  .cta-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    border: 1px solid rgba(214, 72, 126, 0.4);
+    color: #D6487E;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .cta-card-btn:hover {
+    background: rgba(214, 72, 126, 0.15);
+    border-color: rgba(214, 72, 126, 0.7);
+  }
+
+  .cta-card-arrow {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .cta-card-btn:hover .cta-card-arrow {
+    transform: translateX(3px);
   }
 </style>

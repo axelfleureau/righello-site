@@ -47,6 +47,13 @@
       subtitle: 'Tutto gratis al open day della scuola!',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/promo6dicembre%201.MOV?alt=media&token=96556913-1bc3-4e5d-9305-b62e64628f9a',
       category: 'Sport'
+    },
+    {
+      title: '...e molto altro in arrivo',
+      subtitle: 'Nuovi contenuti ogni mese',
+      isCta: true,
+      ctaHref: '/contatti',
+      ctaLabel: 'Vuoi sapere di più?'
     }
   ];
 </script>
@@ -65,51 +72,4 @@
   </div>
   
   <AppleCardsCarousel items={reelItems} />
-
-  <div class="social-cta-more">
-    <p class="social-cta-more__text">...e molto altro in arrivo</p>
-    <a href="/contatti" class="social-cta-more__link">Vuoi sapere di più?</a>
-  </div>
 </section>
-
-<style>
-  .social-cta-more {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .social-cta-more__text {
-    font-size: 0.9375rem;
-    color: var(--text-secondary, #999);
-    font-style: italic;
-  }
-
-  .social-cta-more__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: #D6487E;
-    text-decoration: none;
-    padding: 0.375rem 0.875rem;
-    border-radius: 2rem;
-    border: 1px solid rgba(214, 72, 126, 0.3);
-    transition: all 0.3s ease;
-    white-space: nowrap;
-  }
-
-  .social-cta-more__link:hover {
-    background: rgba(214, 72, 126, 0.1);
-    border-color: rgba(214, 72, 126, 0.6);
-    transform: translateX(2px);
-  }
-</style>
