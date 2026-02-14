@@ -24,7 +24,7 @@
     },
     {
       question: "Posso disdire in qualsiasi momento?",
-      answer: "Lasciamo massima flessibilità ai nostri clienti. Tuttavia, è importante sapere che lavoriamo spesso con mesi di anticipo: prepariamo strategie, contenuti e materiali che richiedono tempo e risorse. Stiamo lavorando su come la tua azienda si presenta e comunica ai propri clienti — subito dopo il prodotto, è la cosa più importante. Per questo chiediamo sempre un confronto aperto per trovare la soluzione migliore per entrambi."
+      answer: "Nessun vincolo rigido: la flessibilità per noi è un valore. C'è però una cosa che chiediamo di considerare. Quando collaboriamo, pianifichiamo con mesi di anticipo — strategie, contenuti, materiali — perché il nostro lavoro riguarda il modo in cui la tua azienda si presenta e parla ai suoi clienti. Dopo il prodotto, non esiste nulla di più importante. Per questo, prima di qualsiasi decisione, preferiamo sempre un confronto diretto: nella nostra esperienza, le migliori soluzioni nascono dal dialogo."
     }
   ];
   
