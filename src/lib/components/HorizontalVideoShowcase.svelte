@@ -17,6 +17,12 @@
   
   export let items: VideoItem[] = [
     {
+      title: 'Quinto della Luna',
+      subtitle: 'Azienda agricola',
+      category: 'Agricoltura',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/quintodellaluna%201.mov?alt=media&token=9d2fea38-515a-44ee-b9d5-006fefdb7ada'
+    },
+    {
       title: 'Geom. Mauro Poles',
       subtitle: 'Video Showcase',
       category: 'Corporate',
