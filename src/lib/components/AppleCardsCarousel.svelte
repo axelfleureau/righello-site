@@ -177,7 +177,8 @@
           }}
         >
           {#if item.videoSrc}
-            <div class="video-wrapper">
+            <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+            <div class="video-wrapper" on:click={() => item.videoSrc && openLightbox(item.videoSrc, item.title)}>
               <img
                 src={getThumbnailUrl(item.videoSrc)}
                 alt={item.title}
@@ -364,6 +365,7 @@
     inset: 0;
     width: 100%;
     height: 100%;
+    cursor: pointer;
   }
   
   .card-poster {
