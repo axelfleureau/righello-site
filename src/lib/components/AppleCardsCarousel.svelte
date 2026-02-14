@@ -18,6 +18,7 @@
   
   let container: HTMLElement;
   let isDragging = false;
+  let wasDragged = false;
   let startX = 0;
   let scrollLeft = 0;
   let activeVideo: HTMLVideoElement | null = null;
@@ -27,6 +28,7 @@
   
   function handleMouseDown(e: MouseEvent) {
     isDragging = true;
+    wasDragged = false;
     container.style.cursor = 'grabbing';
     startX = e.pageX - container.offsetLeft;
     scrollLeft = container.scrollLeft;
@@ -37,6 +39,7 @@
     e.preventDefault();
     const x = e.pageX - container.offsetLeft;
     const walk = (x - startX) * 1.5;
+    if (Math.abs(walk) > 5) wasDragged = true;
     container.scrollLeft = scrollLeft - walk;
   }
   
@@ -98,6 +101,7 @@
   
   function handleTouchStart(e: TouchEvent) {
     isTouching = true;
+    wasDragged = false;
     touchStartX = e.touches[0].pageX - container.offsetLeft;
     touchScrollLeft = container.scrollLeft;
   }
@@ -107,6 +111,7 @@
     const x = e.touches[0].pageX - container.offsetLeft;
     const walk = (touchStartX - x) * 1.2;
     if (Math.abs(walk) > 10) {
+      wasDragged = true;
       e.preventDefault();
     }
     container.scrollLeft = touchScrollLeft + walk;
@@ -114,6 +119,11 @@
   
   function handleTouchEnd() {
     isTouching = false;
+  }
+  
+  function handleCardClick(videoSrc: string | undefined, title: string) {
+    if (wasDragged || isDragging) return;
+    if (videoSrc) openLightbox(videoSrc, title);
   }
   
   let videoRefs: (HTMLVideoElement | null)[] = items.map(() => null);
@@ -178,7 +188,7 @@
         >
           {#if item.videoSrc}
             <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-            <div class="video-wrapper" on:click={() => item.videoSrc && openLightbox(item.videoSrc, item.title)}>
+            <div class="video-wrapper" on:click={() => handleCardClick(item.videoSrc, item.title)}>
               <img
                 src={getThumbnailUrl(item.videoSrc)}
                 alt={item.title}
@@ -207,7 +217,7 @@
             </div>
             <button 
               class="play-btn-float"
-              on:click|stopPropagation={() => item.videoSrc && openLightbox(item.videoSrc, item.title)}
+              on:click|stopPropagation={() => handleCardClick(item.videoSrc, item.title)}
               aria-label="Play video fullscreen"
             >
               <svg viewBox="0 0 24 24" fill="currentColor">
