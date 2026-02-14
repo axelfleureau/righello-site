@@ -150,22 +150,22 @@
     
   const testimonials = [
     {
-      quote: 'Con Righello abbiamo finalmente un team che parla la nostra lingua. Risultati concreti, zero fumo.',
-      name: 'Marco Rossi',
-      role: 'CEO',
-      company: 'Brand Moda Veneto'
+      quote: 'Un team giovane e specializzato che ha capito subito le nostre esigenze. Ci hanno costruito un sito web su misura per gestire il nostro portafoglio immobiliare — funzionale, veloce e pensato per convertire.',
+      name: 'Tubaro & Co',
+      role: 'Immobiliare',
+      company: 'Tubaro & Co'
     },
     {
-      quote: 'Il portale clienti ha dimezzato il tempo di gestione appuntamenti. ROI in 3 mesi.',
-      name: 'Laura Bianchi',
-      role: 'Founder',
-      company: 'Studio Professionale'
+      quote: 'Righello è il nostro punto di forza. Grazie a loro riusciamo a comunicare davvero il valore del nostro lavoro e a creare un legame autentico con i nostri clienti. Non è solo marketing, è relazione.',
+      name: 'Reguta',
+      role: 'Azienda Vitivinicola',
+      company: 'Reguta'
     },
     {
-      quote: 'Dal lancio del nuovo sito, il traffico organico è triplicato. Ora siamo primi su Google.',
-      name: 'Andrea Verdi',
-      role: 'Marketing Manager',
-      company: 'Agenzia Viaggi Venezia'
+      quote: 'Attenti, veloci, concreti. In Righello abbiamo trovato un partner che non offre pacchetti standard, ma soluzioni su misura per farci crescere. Ogni mese vediamo i numeri salire.',
+      name: '3R Technology',
+      role: 'Riparazioni & Tecnologia',
+      company: '3R Technology'
     },
   ];
 
@@ -510,7 +510,7 @@
               </div>
               <div class="author-info">
                 <strong class="author-name">{testimonial.name}</strong>
-                <span class="author-role">{testimonial.role}, {testimonial.company}</span>
+                <span class="author-role">{testimonial.role}</span>
               </div>
             </div>
           </div>
