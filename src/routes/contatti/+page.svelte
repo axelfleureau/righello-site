@@ -37,7 +37,7 @@
   const faqs = [
     {
       question: 'Quanto tempo ci vuole per una risposta?',
-      answer: 'Rispondiamo entro 24 ore lavorative. Per progetti urgenti, indicalo nel messaggio.',
+      answer: 'Rispondiamo entro 72 ore lavorative. Per progetti urgenti, indicalo nel messaggio.',
     },
     {
       question: 'Lavorate solo con aziende del Veneto?',
@@ -67,16 +67,16 @@
 
 <svelte:head>
   <title>Contatti | Righello – Agenzia Marketing & Sviluppo Web</title>
-  <meta name="description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 24 ore. hello@wearerighello.com | Mestre, Venezia." />
+  <meta name="description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 72 ore. hello@wearerighello.com | Mestre, Venezia." />
   <meta property="og:title" content="Contatti | Righello – Agenzia Marketing & Sviluppo Web" />
-  <meta property="og:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 24 ore. hello@wearerighello.com | Mestre, Venezia." />
+  <meta property="og:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 72 ore. hello@wearerighello.com | Mestre, Venezia." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png" />
   <meta property="og:url" content="https://www.wearerighello.com/contatti" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Contatti | Righello – Agenzia Marketing & Sviluppo Web" />
-  <meta name="twitter:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 24 ore. hello@wearerighello.com | Mestre, Venezia." />
+  <meta name="twitter:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 72 ore. hello@wearerighello.com | Mestre, Venezia." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
@@ -90,7 +90,7 @@
           <span class="block"><Highlight variant="pink">Prossimo Progetto</Highlight></span>
         </h1>
         <p class="text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--text-secondary);">
-          Risposta garantita in <TechWord>24 ore</TechWord>. Preventivo gratuito e personalizzato in 48 ore.
+          Risposta garantita in <TechWord>72 ore</TechWord>. Preventivo gratuito e personalizzato.
         </p>
       </div>
     </RevealOnScroll>
@@ -182,7 +182,7 @@
                 </div>
                 <h3 class="text-2xl font-bold mb-4">Messaggio Inviato!</h3>
                 <p class="text-lg mb-2" style="color: var(--text-secondary);">
-                  Ti risponderemo entro 24 ore.
+                  Ti risponderemo entro 72 ore.
                 </p>
                 <p class="text-base mb-8" style="color: var(--text-secondary);">
                   Nel frattempo, visita il nostro sito per scoprire i nostri progetti.
@@ -322,7 +322,7 @@
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={100}>
       <p class="text-lg text-gray-400 mb-8">
-        Nessun problema. Mandaci una mail e ti risponderemo entro 24 ore.
+        Nessun problema. Mandaci una mail e ti risponderemo entro 72 ore.
       </p>
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={200}>

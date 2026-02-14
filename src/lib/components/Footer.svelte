@@ -37,7 +37,7 @@
     <div class="cta-inner">
       <div class="cta-text">
         <h3 class="cta-title">Hai un progetto in mente?</h3>
-        <p class="cta-subtitle">Rispondiamo entro 24 ore. Preventivo gratuito e personalizzato.</p>
+        <p class="cta-subtitle">Rispondiamo entro 72 ore. Preventivo gratuito e personalizzato.</p>
       </div>
       <MagneticButton href="/contatti" variant="primary">
         Parliamone

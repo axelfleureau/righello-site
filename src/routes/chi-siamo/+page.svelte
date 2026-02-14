@@ -351,7 +351,7 @@
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={100}>
       <p class="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-        Risposta garantita in 24 ore. Parliamo del tuo progetto e vediamo come possiamo aiutarti.
+        Risposta garantita in 72 ore. Parliamo del tuo progetto e vediamo come possiamo aiutarti.
       </p>
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={200}>
