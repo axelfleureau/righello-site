@@ -177,7 +177,7 @@
   });
 </script>
 
-<section class="section-padding overflow-hidden" aria-labelledby="horizontal-video-title">
+<section class="section-padding overflow-hidden" style="padding-bottom: 1.5rem;" aria-labelledby="horizontal-video-title">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <header class="section-header">
