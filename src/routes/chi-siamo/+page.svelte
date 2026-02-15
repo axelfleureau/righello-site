@@ -127,9 +127,9 @@
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
 </svelte:head>
 
-<section id="chi-siamo-hero" class="pt-24 pb-12 md:pt-32 md:pb-20">
+<section id="chi-siamo-hero" class="pt-20 pb-8 md:pt-32 md:pb-20">
   <div class="section-container">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-16 items-center">
       <div class="order-2 lg:order-1">
         <ScrollReveal animation="fade-up">
           <p class="section-subtitle text-left">Chi Siamo</p>

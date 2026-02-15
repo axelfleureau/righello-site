@@ -223,12 +223,12 @@
   .lanyard-container {
     position: relative;
     width: 100%;
-    height: 500px;
+    height: 380px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 20px;
+    padding-top: 5px;
     touch-action: pan-y;
     user-select: none;
   }
@@ -295,8 +295,8 @@
   }
   
   .badge-card {
-    width: 280px;
-    height: 380px;
+    width: 250px;
+    height: 340px;
     transform-style: preserve-3d;
     will-change: transform;
     margin-top: -5px;
