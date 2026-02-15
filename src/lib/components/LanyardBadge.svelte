@@ -223,19 +223,25 @@
   .lanyard-container {
     position: relative;
     width: 100%;
-    height: 380px;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 5px;
+    padding-top: 0;
     touch-action: pan-y;
     user-select: none;
+    transform: scale(0.8);
+    transform-origin: top center;
+    margin-bottom: -80px;
   }
   
   @media (min-width: 768px) {
     .lanyard-container {
       height: 600px;
+      transform: scale(1);
+      margin-bottom: 0;
+      padding-top: 20px;
     }
   }
   
@@ -295,8 +301,8 @@
   }
   
   .badge-card {
-    width: 250px;
-    height: 340px;
+    width: 280px;
+    height: 380px;
     transform-style: preserve-3d;
     will-change: transform;
     margin-top: -5px;
