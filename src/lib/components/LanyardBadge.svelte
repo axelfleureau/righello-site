@@ -1,169 +1,200 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
-  import { tweened } from 'svelte/motion';
-  import { cubicOut } from 'svelte/easing';
-  
+  import { spring } from 'svelte/motion';
+
   export let logoSrc: string = '/logo-white.png';
   export let title: string = 'Righello';
   export let subtitle: string = 'Growth Agency';
-  
-  let canvas: HTMLCanvasElement;
+
   let container: HTMLElement;
-  let animationId: number;
   let isDragging = false;
   let isHovered = false;
-  
-  const cardRotation = tweened({ x: 0, y: 0 }, { duration: 800, easing: cubicOut });
-  const cardPosition = tweened({ x: 0, y: 0 }, { duration: 400, easing: cubicOut });
-  
-  let mouseX = 0;
-  let mouseY = 0;
-  let velocityX = 0;
-  let velocityY = 0;
+  let animationId: number;
+  let reducedMotion = false;
+
+  const SPRING_FOLLOW = { stiffness: 0.15, damping: 0.6 };
+  const SPRING_BOUNCE = { stiffness: 0.04, damping: 0.18 };
+  const SPRING_DEFAULT = { stiffness: 0.08, damping: 0.35 };
+
+  const rotX = spring(0, SPRING_DEFAULT);
+  const rotY = spring(0, SPRING_DEFAULT);
+  const rotZ = spring(0, { stiffness: 0.06, damping: 0.25 });
+  const posX = spring(0, SPRING_DEFAULT);
+  const posY = spring(0, SPRING_DEFAULT);
+
   let swingAngle = 0;
   let swingVelocity = 0;
-  
   const SWING_DAMPING = 0.97;
-  const SWING_STIFFNESS = 0.02;
-  const GRAVITY_INFLUENCE = 0.001;
-  
+  const SWING_STIFFNESS = 0.015;
+
   function handleMouseMove(e: MouseEvent) {
     if (!container) return;
     const rect = container.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    
-    mouseX = (e.clientX - centerX) / (rect.width / 2);
-    mouseY = (e.clientY - centerY) / (rect.height / 2);
-    
+    const mx = (e.clientX - centerX) / (rect.width / 2);
+    const my = (e.clientY - centerY) / (rect.height / 2);
+
     if (isDragging) {
-      cardPosition.set({ x: mouseX * 50, y: mouseY * 50 });
-      swingVelocity += mouseX * 0.5;
+      posX.set(mx * 60, SPRING_FOLLOW);
+      posY.set(my * 50, SPRING_FOLLOW);
+      rotX.set(-my * 25, SPRING_FOLLOW);
+      rotY.set(mx * 25, SPRING_FOLLOW);
+      rotZ.set(mx * 8, SPRING_FOLLOW);
+      swingVelocity += mx * 0.4;
     } else if (isHovered) {
-      cardRotation.set({ x: -mouseY * 15, y: mouseX * 15 });
+      rotX.set(-my * 15, SPRING_DEFAULT);
+      rotY.set(mx * 15, SPRING_DEFAULT);
     }
   }
-  
+
   function handleMouseDown() {
     isDragging = true;
     if (container) container.style.cursor = 'grabbing';
   }
-  
+
   function handleMouseUp() {
     isDragging = false;
     if (container) container.style.cursor = isHovered ? 'grab' : 'default';
-    cardPosition.set({ x: 0, y: 0 });
+    posX.set(0, SPRING_BOUNCE);
+    posY.set(0, SPRING_BOUNCE);
+    rotX.set(0, SPRING_BOUNCE);
+    rotY.set(0, SPRING_BOUNCE);
+    rotZ.set(0, SPRING_BOUNCE);
   }
-  
+
   function handleMouseEnter() {
     isHovered = true;
     if (container && !isDragging) container.style.cursor = 'grab';
   }
-  
+
   function handleMouseLeave() {
     isHovered = false;
     isDragging = false;
     if (container) container.style.cursor = 'default';
-    cardRotation.set({ x: 0, y: 0 });
-    cardPosition.set({ x: 0, y: 0 });
+    rotX.set(0, SPRING_BOUNCE);
+    rotY.set(0, SPRING_BOUNCE);
+    rotZ.set(0, SPRING_BOUNCE);
+    posX.set(0, SPRING_BOUNCE);
+    posY.set(0, SPRING_BOUNCE);
   }
-  
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchActive = false;
-  let touchTimer: ReturnType<typeof setTimeout> | null = null;
-  const TOUCH_HOLD_MS = 300;
+
+  let lastTouchX = 0;
+  let lastTouchY = 0;
+  let touchEngaged = false;
+  let touchStartTime = 0;
 
   function handleTouchStart(e: TouchEvent) {
     if (!container) return;
     const touch = e.touches[0];
-    touchStartX = touch.clientX;
-    touchStartY = touch.clientY;
-    touchActive = false;
-
-    touchTimer = setTimeout(() => {
-      touchActive = true;
-      isDragging = true;
-      isHovered = true;
-      const rect = container.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      mouseX = (touch.clientX - centerX) / (rect.width / 2);
-      mouseY = (touch.clientY - centerY) / (rect.height / 2);
-    }, TOUCH_HOLD_MS);
+    lastTouchX = touch.clientX;
+    lastTouchY = touch.clientY;
+    touchStartTime = Date.now();
+    touchEngaged = false;
   }
 
   function handleTouchMove(e: TouchEvent) {
     if (!container) return;
     const touch = e.touches[0];
-    const dx = Math.abs(touch.clientX - touchStartX);
-    const dy = Math.abs(touch.clientY - touchStartY);
+    const dx = Math.abs(touch.clientX - lastTouchX);
+    const dy = Math.abs(touch.clientY - lastTouchY);
 
-    if (!touchActive && (dx > 10 || dy > 10)) {
-      if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; }
-      return;
+    if (!touchEngaged) {
+      if (dx > dy && dx > 8) {
+        touchEngaged = true;
+        isDragging = true;
+        isHovered = true;
+      } else if (dy > 8) {
+        return;
+      } else {
+        return;
+      }
     }
 
-    if (!touchActive) return;
-
+    if (!touchEngaged) return;
     e.preventDefault();
+
     const rect = container.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    mouseX = (touch.clientX - centerX) / (rect.width / 2);
-    mouseY = (touch.clientY - centerY) / (rect.height / 2);
+    const mx = (touch.clientX - centerX) / (rect.width / 2);
+    const my = (touch.clientY - centerY) / (rect.height / 2);
 
-    cardPosition.set({ x: mouseX * 60, y: mouseY * 60 });
-    cardRotation.set({ x: -mouseY * 20, y: mouseX * 20 });
-    swingVelocity += (touch.clientX - touchStartX) * 0.02;
-    touchStartX = touch.clientX;
-    touchStartY = touch.clientY;
+    const deltaX = touch.clientX - lastTouchX;
+
+    posX.set(mx * 70, SPRING_FOLLOW);
+    posY.set(my * 50, SPRING_FOLLOW);
+    rotX.set(-my * 25, SPRING_FOLLOW);
+    rotY.set(mx * 25, SPRING_FOLLOW);
+    rotZ.set(mx * 10, SPRING_FOLLOW);
+    swingVelocity += deltaX * 0.03;
+
+    lastTouchX = touch.clientX;
+    lastTouchY = touch.clientY;
   }
 
   function handleTouchEnd() {
-    if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; }
-    touchActive = false;
+    if (touchEngaged || (Date.now() - touchStartTime < 200)) {
+      if (!touchEngaged && Date.now() - touchStartTime < 200) {
+        swingVelocity += (Math.random() - 0.5) * 4;
+        rotY.set((Math.random() - 0.5) * 20, SPRING_FOLLOW);
+        rotZ.set((Math.random() - 0.5) * 8, SPRING_FOLLOW);
+        setTimeout(() => {
+          rotY.set(0, SPRING_BOUNCE);
+          rotZ.set(0, SPRING_BOUNCE);
+        }, 100);
+      }
+    }
+
     isDragging = false;
     isHovered = false;
-    cardPosition.set({ x: 0, y: 0 });
-    cardRotation.set({ x: 0, y: 0 });
+    touchEngaged = false;
+
+    posX.set(0, SPRING_BOUNCE);
+    posY.set(0, SPRING_BOUNCE);
+    rotX.set(0, SPRING_BOUNCE);
+    rotY.set(0, SPRING_BOUNCE);
+    rotZ.set(0, SPRING_BOUNCE);
   }
 
   function handleTouchCancel() {
     handleTouchEnd();
   }
-  
+
   function animate() {
+    if (reducedMotion) return;
     swingVelocity -= swingAngle * SWING_STIFFNESS;
-    swingVelocity += Math.sin(Date.now() * GRAVITY_INFLUENCE) * 0.01;
+    swingVelocity += Math.sin(Date.now() * 0.001) * 0.008;
     swingVelocity *= SWING_DAMPING;
     swingAngle += swingVelocity;
-    
     animationId = requestAnimationFrame(animate);
   }
-  
+
   onMount(() => {
     if (!browser) return;
-    animationId = requestAnimationFrame(animate);
-    
+    reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion) {
+      swingVelocity = 1.5;
+      animationId = requestAnimationFrame(animate);
+    }
     return () => {
       if (animationId) cancelAnimationFrame(animationId);
     };
   });
-  
+
   onDestroy(() => {
     if (animationId) cancelAnimationFrame(animationId);
   });
-  
+
   $: cardStyle = `
     transform: 
       perspective(1000px)
-      translateX(${$cardPosition.x}px)
-      translateY(${$cardPosition.y}px)
-      rotateX(${$cardRotation.x}deg)
-      rotateY(${$cardRotation.y + swingAngle * 2}deg)
-      rotateZ(${swingAngle}deg);
+      translateX(${$posX}px)
+      translateY(${$posY}px)
+      rotateX(${$rotX}deg)
+      rotateY(${$rotY + swingAngle * 2}deg)
+      rotateZ(${$rotZ + swingAngle}deg);
   `;
 </script>
 
@@ -175,8 +206,8 @@
   on:mouseup={handleMouseUp}
   on:mouseleave={handleMouseLeave}
   on:mouseenter={handleMouseEnter}
-  on:touchstart={handleTouchStart}
-  on:touchmove={handleTouchMove}
+  on:touchstart|passive={handleTouchStart}
+  on:touchmove|nonpassive={handleTouchMove}
   on:touchend={handleTouchEnd}
   on:touchcancel={handleTouchCancel}
   role="presentation"
