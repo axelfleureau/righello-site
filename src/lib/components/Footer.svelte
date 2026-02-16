@@ -29,7 +29,6 @@
 
   const legalLinks = [
     { href: 'https://www.iubenda.com/privacy-policy/47301653', label: 'Privacy Policy', external: true },
-    { href: '/cookie', label: 'Cookie Policy' },
   ];
 
   function scrollToTop() {
