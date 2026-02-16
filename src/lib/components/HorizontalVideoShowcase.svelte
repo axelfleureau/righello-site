@@ -359,13 +359,20 @@
   .carousel-container {
     display: flex;
     gap: 1.5rem;
-    padding: 2rem 6%;
+    padding: 2rem var(--container-padding);
     overflow-x: auto;
     scroll-behavior: smooth;
     cursor: grab;
     -ms-overflow-style: none;
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
+  }
+  
+  @media (min-width: 640px) {
+    .carousel-container {
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
   }
   
   .carousel-container::-webkit-scrollbar {

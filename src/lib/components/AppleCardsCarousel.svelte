@@ -314,14 +314,21 @@
     font-size: clamp(1.75rem, 4vw, 3rem);
     font-weight: 700;
     color: var(--text-primary);
-    padding: 0 6%;
+    padding: 0 var(--container-padding);
     margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .carousel-title {
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
   }
   
   .carousel-container {
     display: flex;
     gap: 1.25rem;
-    padding: 1rem 6% 2rem;
+    padding: 1rem var(--container-padding) 2rem;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
@@ -333,6 +340,13 @@
     touch-action: pan-x;
     transform: translateZ(0);
     backface-visibility: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .carousel-container {
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
   }
   
   .carousel-container::-webkit-scrollbar {
