@@ -184,6 +184,13 @@
       reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       window.addEventListener('keydown', handleKeydown);
 
+      testimonials.forEach((t) => {
+        if (t.videoSrc) {
+          const img = new Image();
+          img.src = getThumbnailUrl(t.videoSrc);
+        }
+      });
+
       observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -258,7 +265,8 @@
                 alt={item.clientName}
                 class="avt-card__bg-thumb"
                 style="display: {item.videoSrc ? 'block' : 'none'}"
-                loading="lazy"
+                loading="eager"
+                fetchpriority="low"
                 decoding="async"
               />
               <div class="avt-card__bg-initial">
