@@ -174,29 +174,29 @@
 <style>
   .phone-container {
     position: relative;
-    width: 280px;
-    height: 560px;
+    width: 270px;
+    height: 540px;
     cursor: pointer;
   }
   
   @media (min-width: 480px) {
     .phone-container {
-      width: 300px;
-      height: 600px;
+      width: 285px;
+      height: 570px;
     }
   }
   
   @media (min-width: 768px) {
     .phone-container {
-      width: 300px;
-      height: 600px;
+      width: 285px;
+      height: 570px;
     }
   }
   
   @media (min-width: 1024px) {
     .phone-container {
-      width: 320px;
-      height: 640px;
+      width: 300px;
+      height: 600px;
     }
   }
   

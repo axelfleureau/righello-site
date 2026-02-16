@@ -849,18 +849,18 @@
   
   /* Sections */
   .section-padding {
-    padding: 4rem 0;
+    padding: var(--section-padding-sm) 0;
   }
   
   @media (min-width: 768px) {
     .section-padding {
-      padding: 5rem 0;
+      padding: var(--section-padding-md) 0;
     }
   }
   
   @media (min-width: 1024px) {
     .section-padding {
-      padding: 6rem 0;
+      padding: var(--section-padding-lg) 0;
     }
   }
   

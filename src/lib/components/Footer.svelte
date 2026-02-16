@@ -1,9 +1,18 @@
 <script lang="ts">
   import { theme } from '$lib/stores/theme';
   import { browser } from '$app/environment';
+  import { onMount } from 'svelte';
   import MagneticButton from './MagneticButton.svelte';
 
   const currentYear = new Date().getFullYear();
+
+  onMount(() => {
+    if (browser && !document.querySelector('script[src*="iubenda.js"]')) {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.iubenda.com/iubenda.js';
+      document.body.appendChild(s);
+    }
+  });
 
   const pageLinks = [
     { href: '/', label: 'Home' },
@@ -19,7 +28,7 @@
   ];
 
   const legalLinks = [
-    { href: '/privacy', label: 'Privacy Policy' },
+    { href: 'https://www.iubenda.com/privacy-policy/47301653', label: 'Privacy Policy', external: true },
     { href: '/cookie', label: 'Cookie Policy' },
   ];
 
@@ -113,7 +122,11 @@
       <nav class="footer-legal" aria-label="Link legali">
         {#each legalLinks as link, i}
           {#if i > 0}<span class="legal-separator" aria-hidden="true">&middot;</span>{/if}
-          <a href={link.href}>{link.label}</a>
+          {#if link.external}
+            <a href={link.href} class="iubenda-white iubenda-noiframe iubenda-embed" title={link.label} target="_blank" rel="noopener noreferrer">{link.label}</a>
+          {:else}
+            <a href={link.href}>{link.label}</a>
+          {/if}
         {/each}
       </nav>
       <button

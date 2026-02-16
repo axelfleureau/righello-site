@@ -17,7 +17,8 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
 
 ### Design System
 - **Spacing Scale**: Consistent spacing is achieved with a base of 8px, defining CSS variables from `0.5rem` to `8rem`.
-- **Section Spacing**: Responsive vertical padding for sections is defined with `--section-padding-sm` (48px mobile), `--section-padding-md` (64px tablet), and `--section-padding-lg` (96px desktop).
+- **Section Spacing**: Responsive vertical padding for sections is defined with `--section-padding-sm` (40px mobile), `--section-padding-md` (56px tablet), and `--section-padding-lg` (80px desktop).
+- **Iubenda Integration**: Cookie Solution widget loaded via app.html, Privacy Policy link in footer uses Iubenda embed modal. Script `iubenda.js` loaded dynamically in Footer component.
 - **Typography Scale**: A consistent typographic scale from `--text-xs` to `--text-6xl` is used.
 - **Brand Colors (Dual Theme)**: The default theme is dark mode, with a light/dark switch. Key brand colors are Righello Pink (`#D6487E`) and Accent Cyan (`#06B6D4`), used in gradients for hero text and accents. Dark mode features a primary background of `#050505`, while light mode uses `#f8fafc`.
 
