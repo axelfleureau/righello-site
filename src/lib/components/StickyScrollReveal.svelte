@@ -147,20 +147,20 @@
 
 <style>
   .sticky-scroll-section {
-    padding: var(--section-padding-sm) 1.5rem;
-    max-width: 1400px;
+    padding: var(--section-padding-sm) var(--container-padding, 1.5rem);
+    max-width: var(--container-max, 1280px);
     margin: 0 auto;
   }
   
   @media (min-width: 768px) {
     .sticky-scroll-section {
-      padding: var(--section-padding-md) 1.5rem;
+      padding: var(--section-padding-md) var(--space-lg, 1.5rem);
     }
   }
   
   @media (min-width: 1024px) {
     .sticky-scroll-section {
-      padding: var(--section-padding-lg) 1.5rem;
+      padding: var(--section-padding-lg) var(--space-lg, 1.5rem);
     }
   }
   
