@@ -334,7 +334,7 @@
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
+    touch-action: pan-x pan-y;
     transform: translateZ(0);
     backface-visibility: hidden;
   }
@@ -406,7 +406,7 @@
     width: 100%;
     height: 100%;
     cursor: pointer;
-    touch-action: pan-x;
+    touch-action: pan-x pan-y;
   }
   
   .card-poster {
@@ -453,7 +453,7 @@
     z-index: 2;
     transition: opacity 0.4s ease;
     pointer-events: none;
-    touch-action: pan-x;
+    touch-action: pan-x pan-y;
   }
 
   .card-video-native.video-ready {
