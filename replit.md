@@ -83,6 +83,16 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
 - **Video Thumbnails**: AppleCardsCarousel uses native video element with shimmer skeleton (replaced complex canvas extraction). AnimatedVideoTestimonials uses shimmer + loading spinner.
 - **Static Video Thumbnails**: Pre-generated at development time via `scripts/generate-thumbnails.js` (FFmpeg-based). Thumbnails saved as static JPEG files in `static/thumbnails/` with MD5-hashed filenames. Centralized mapping in `src/lib/data/thumbnail-map.ts` provides `getThumbnailUrl()` helper used by all video components (AnimatedVideoTestimonials, AppleCardsCarousel, HorizontalVideoShowcase, progetti page). Falls back to `/api/video-thumbnail` for unmapped URLs. To add new videos: update the VIDEO_URLS array in the script and run `node scripts/generate-thumbnails.js`.
 
+### Contact Form & Email (Feb 2026)
+- **Contact Form API**: `/api/contact` endpoint processes form submissions with OpenAI GPT-5.2 enhancement.
+- **SendGrid Integration**: Via Replit connector pattern (`src/lib/server/sendgrid.ts`). Sends branded HTML emails.
+- **OpenAI Integration**: Via Replit AI Integrations (`src/lib/server/openai.ts`). Enhances client confirmation email and generates lead analysis.
+- **Email Flow**: 
+  - Client confirmation email (from connector sender / hello@wearerighello.com) with branded HTML template, Righello logo, pink accents.
+  - Team summary email to edis@, paolo@, axel@wearerighello.com with all form data + AI lead analysis. Includes replyTo set to client's email.
+- **Fallback**: If OpenAI fails, emails send without enhancement. If SendGrid fails, user sees error message.
+- **Logo URLs in emails**: Dark theme `https://www.wearerighello.com/logo-white.png`, Light theme `https://www.wearerighello.com/logo-full.png`.
+
 ## External Dependencies
 
 - **GSAP**: For advanced scroll-triggered animations and complex timelines.
