@@ -81,7 +81,7 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
 - **Bundle Cleanup**: Removed unused three.js, threlte, matter-js, Sentry, posthog from bundle. Removed Sentry vite plugin.
 - **Image/Video Best Practices**: loading="lazy", decoding="async", fetchpriority="high" (hero), video preload="metadata" for off-screen content.
 - **Video Thumbnails**: AppleCardsCarousel uses native video element with shimmer skeleton (replaced complex canvas extraction). AnimatedVideoTestimonials uses shimmer + loading spinner.
-- **Server-Side Thumbnails**: FFmpeg-based endpoint at `/api/projects/[id]/thumbnail` extracts frames from project videos. Uses fluent-ffmpeg with URL allowlist (Firebase Storage only), MD5-hashed cache keys for invalidation, 30s timeout, and disk-based caching in `.thumbnail-cache/`.
+- **Static Video Thumbnails**: Pre-generated at development time via `scripts/generate-thumbnails.js` (FFmpeg-based). Thumbnails saved as static JPEG files in `static/thumbnails/` with MD5-hashed filenames. Centralized mapping in `src/lib/data/thumbnail-map.ts` provides `getThumbnailUrl()` helper used by all video components (AnimatedVideoTestimonials, AppleCardsCarousel, HorizontalVideoShowcase, progetti page). Falls back to `/api/video-thumbnail` for unmapped URLs. To add new videos: update the VIDEO_URLS array in the script and run `node scripts/generate-thumbnails.js`.
 
 ## External Dependencies
 
