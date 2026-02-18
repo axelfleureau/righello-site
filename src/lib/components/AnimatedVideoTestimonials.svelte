@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import { fade, scale, fly } from 'svelte/transition';
+  import { getThumbnailUrl } from '$lib/data/thumbnail-map';
 
   export let testimonials: {
     id: string;
@@ -51,10 +52,6 @@
   $: activeTestimonial = activeItem;
   $: isCtaActive = 'isCta' in activeItem && (activeItem as any).isCta === true;
   $: quoteWords = activeTestimonial.quote ? activeTestimonial.quote.split(/\s+/) : [];
-
-  function getThumbnailUrl(videoSrc: string): string {
-    return `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
-  }
 
   $: {
     activeIndex;

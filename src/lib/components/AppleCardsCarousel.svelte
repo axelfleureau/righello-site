@@ -1,10 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
-  
-  function getThumbnailUrl(videoSrc: string): string {
-    return `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
-  }
+  import { getThumbnailUrl } from '$lib/data/thumbnail-map';
 
   export let title = '';
   export let items: {

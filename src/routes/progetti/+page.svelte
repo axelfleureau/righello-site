@@ -5,16 +5,13 @@
   import Highlight from '$lib/components/Highlight.svelte';
   import TechWord from '$lib/components/TechWord.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
+  import { getThumbnailUrl } from '$lib/data/thumbnail-map';
   
   let selectedCategory = 'all';
   
   $: filteredProjects = selectedCategory === 'all' 
     ? projects 
     : projects.filter(p => p.categories.includes(selectedCategory));
-
-  function getThumbnailUrl(videoSrc: string): string {
-    return `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
-  }
 
   function getCategoryLabel(cat: string): string {
     const found = categories.find(c => c.id === cat);

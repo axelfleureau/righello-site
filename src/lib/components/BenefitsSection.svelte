@@ -247,7 +247,7 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    max-width: 1000px;
+    max-width: var(--container-max, 1280px);
     margin: 0 auto;
   }
   

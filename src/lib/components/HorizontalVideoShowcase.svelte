@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import RevealOnScroll from './RevealOnScroll.svelte';
+  import { getThumbnailUrl } from '$lib/data/thumbnail-map';
   
   export let title = "Creiamo esperienze memorabili";
   export let subtitle = "Video Production";
@@ -63,10 +64,6 @@
       loadedFrames[index] = true;
       loadedFrames = [...loadedFrames];
     }
-  }
-
-  function getThumbnailUrl(videoSrc: string): string {
-    return `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
   }
 
   function handleCanPlay(index: number, video: HTMLVideoElement) {
