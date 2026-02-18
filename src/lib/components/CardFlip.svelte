@@ -158,7 +158,7 @@
     transition: z-index 0s 0.3s;
     isolation: isolate;
     transform-style: flat;
-    contain: layout style paint;
+    contain: layout style;
   }
   
   .card-flip-wrapper:hover,

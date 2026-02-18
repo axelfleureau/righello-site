@@ -243,7 +243,7 @@
 <style>
   .peso-section {
     background: var(--bg-secondary, #0a0a0a);
-    overflow: hidden;
+    overflow: visible;
   }
   
   .section-header {
