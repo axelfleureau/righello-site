@@ -146,7 +146,6 @@
 
 <style>
   .card-flip-wrapper {
-    perspective: 2000px;
     min-height: 420px;
     height: auto;
     width: 100%;
@@ -156,9 +155,6 @@
     position: relative;
     z-index: 1;
     transition: z-index 0s 0.3s;
-    isolation: isolate;
-    transform-style: flat;
-    transform: translateZ(0);
   }
   
   .card-flip-wrapper:hover,
@@ -180,11 +176,12 @@
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
+    transform: perspective(2000px) rotateY(0deg);
     transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .card-flip-wrapper.flipped .card-inner {
-    transform: rotateY(180deg);
+    transform: perspective(2000px) rotateY(180deg);
   }
   
   .card-face {
