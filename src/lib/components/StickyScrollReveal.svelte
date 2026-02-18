@@ -307,8 +307,8 @@
     gap: 1.5rem;
     padding: 1.5rem;
     border-radius: 1rem;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    background: transparent;
+    border: 1px solid transparent;
     transition: all 0.4s ease;
   }
   
@@ -343,20 +343,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
     background: linear-gradient(135deg, #D6487E 0%, #a855f7 100%);
     color: white;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
   
   @media (min-width: 1024px) {
     .step-number {
-      width: 4rem;
-      height: 4rem;
-      font-size: 1.25rem;
+      width: 5rem;
+      height: 5rem;
+      font-size: 1.5rem;
     }
   }
   
