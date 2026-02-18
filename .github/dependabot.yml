@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "@sveltejs/adapter-vercel"
+        versions: [">=4.0.0"]
+      - dependency-name: "@sveltejs/adapter-node"
+        versions: [">=2.0.0"]
+      - dependency-name: "@sveltejs/kit"
+        versions: [">=2.0.0"]
+      - dependency-name: "svelte"
+        versions: [">=5.0.0"]
