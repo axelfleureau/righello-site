@@ -110,7 +110,6 @@
           <div 
             class="visual-panel"
             class:active={activeIndex === i}
-            style="background: {item.color || defaultColors[i % defaultColors.length]}"
           >
             {#if item.imageSrc}
               <img src={item.imageSrc} alt={item.title} class="visual-image" />
@@ -227,9 +226,8 @@
     position: sticky;
     top: 15vh;
     height: 70vh;
-    border-radius: 1.5rem;
+    border-radius: 0;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   }
   
   .visual-panel {
@@ -257,7 +255,7 @@
   }
   
   .visual-icon {
-    font-size: 8rem;
+    font-size: 12rem;
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
   }
   
@@ -329,9 +327,9 @@
     .content-item.active {
       opacity: 1;
       transform: scale(1);
-      background: transparent;
-      border-color: transparent;
-      box-shadow: none;
+      background: rgba(214, 72, 126, 0.08);
+      border-color: rgba(214, 72, 126, 0.3);
+      box-shadow: 0 0 30px rgba(214, 72, 126, 0.15);
     }
   }
   
@@ -354,9 +352,9 @@
   
   @media (min-width: 1024px) {
     .step-number {
-      width: 6rem;
-      height: 6rem;
-      font-size: 1.75rem;
+      width: 4rem;
+      height: 4rem;
+      font-size: 1.25rem;
     }
   }
   
