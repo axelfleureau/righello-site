@@ -329,9 +329,9 @@
     .content-item.active {
       opacity: 1;
       transform: scale(1);
-      background: rgba(214, 72, 126, 0.08);
-      border-color: rgba(214, 72, 126, 0.3);
-      box-shadow: 0 0 30px rgba(214, 72, 126, 0.15);
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
     }
   }
   
@@ -354,9 +354,9 @@
   
   @media (min-width: 1024px) {
     .step-number {
-      width: 5rem;
-      height: 5rem;
-      font-size: 1.5rem;
+      width: 6rem;
+      height: 6rem;
+      font-size: 1.75rem;
     }
   }
   
