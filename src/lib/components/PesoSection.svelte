@@ -14,7 +14,8 @@
       description: 'Massima copertura e targeting, ma percepita come meno credibile',
       features: ['CTR ottimizzato', 'CPL tracciato', 'ROAS continuo', 'A/B Testing'],
       color: '#D6487E',
-      buttonText: 'Scopri Paid'
+      buttonText: 'Scopri Paid',
+      buttonHref: '/contatti'
     },
     {
       id: 'earned',
@@ -23,7 +24,8 @@
       description: 'Rassegna stampa, menzioni, recensioni non pagate',
       features: ['Menzioni tracking', 'Sentiment analysis', 'PR digitale', 'Influencer UGC'],
       color: '#06B6D4',
-      buttonText: 'Scopri Earned'
+      buttonText: 'Scopri Earned',
+      buttonHref: '/contatti'
     },
     {
       id: 'shared',
@@ -32,7 +34,8 @@
       description: 'Social media organici: like, commenti, condivisioni e community building',
       features: ['Engagement rate', 'Crescita community', 'Content virali', 'Brand ambassador'],
       color: '#A855F7',
-      buttonText: 'Scopri Shared'
+      buttonText: 'Scopri Shared',
+      buttonHref: '/contatti'
     },
     {
       id: 'owned',
@@ -41,7 +44,8 @@
       description: 'Controllo del messaggio, base SEO, hub per contenuti da distribuire',
       features: ['Traffico organico', 'Lead generation', 'Email automation', 'Conversioni'],
       color: '#22C55E',
-      buttonText: 'Scopri Owned'
+      buttonText: 'Scopri Owned',
+      buttonHref: '/contatti'
     }
   ];
   
@@ -161,6 +165,7 @@
             features={card.features}
             color={card.color}
             buttonText={card.buttonText}
+            buttonHref={card.buttonHref}
           />
         {/each}
       </div>
