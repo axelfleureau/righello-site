@@ -92,6 +92,12 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
   - Team summary email to edis@, paolo@, axel@wearerighello.com with all form data + AI lead analysis. Includes replyTo set to client's email.
 - **Fallback**: If OpenAI fails, emails send without enhancement. If SendGrid fails, user sees error message.
 - **Logo URLs in emails**: Dark theme `https://www.wearerighello.com/logo-white.png`, Light theme `https://www.wearerighello.com/logo-full.png`.
+- **Email Marketing Optimizations (Feb 2026)**:
+  - Client email: Dark mode meta tags, hidden preheader, green checkmark icon (table-based for Outlook), "Messaggio Ricevuto!" heading, "Prossimi Step" 3-step section, social proof line, improved CTA → `/progetti`, Instagram/LinkedIn/Privacy links in footer, responsive padding via `@media`.
+  - Team email: Budget-based priority badge (Alta/Media/Standard) with numeric parsing (handles €10k, 10.000, 10000 formats), Italian timestamp, colored budget badge, "Rispondi al Cliente" quick-action button, restructured AI analysis section.
+  - GPT prompts: Enhanced client copywriter prompt (no generic phrases, premium tone, max 3 paragraphs). Structured lead analysis with SCORE 1-10, PRIORITÀ, PROFILO, AZIONE CONSIGLIATA, SEGNALI CHIAVE.
+  - Subject lines: Client `"${name}, messaggio ricevuto ✓ — Righello"` (shorter). Team includes priority label.
+  - Security: `escHtml()` sanitizes all user inputs in HTML templates, `encodeURIComponent()` for mailto hrefs.
 
 ## External Dependencies
 
