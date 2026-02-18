@@ -233,7 +233,7 @@
 
 <style>
   .header-container {
-    max-width: 1200px;
+    max-width: var(--container-max, 1280px);
     transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   

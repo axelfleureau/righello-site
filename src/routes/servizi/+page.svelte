@@ -1251,7 +1251,7 @@
   
   /* FAQ */
   .faq-list {
-    max-width: 800px;
+    max-width: var(--container-max, 1280px);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
