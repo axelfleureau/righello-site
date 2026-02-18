@@ -340,15 +340,15 @@
   </div>
 </section>
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="black" />
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--direct-section-bg)" />
 
-<section class="section-padding bg-black text-white">
+<section class="section-padding direct-section">
   <div class="section-container text-center">
     <ScrollReveal animation="fade-up">
       <h2 class="section-title mb-4">Preferisci Scriverci Direttamente?</h2>
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={100}>
-      <p class="text-lg text-gray-400 mb-8">
+      <p class="text-lg direct-section-text mb-8">
         Nessun problema. Mandaci una mail e ti risponderemo entro 72 ore.
       </p>
     </ScrollReveal>
@@ -484,5 +484,25 @@
     color: #ef4444;
     font-size: 0.9rem;
     line-height: 1.4;
+  }
+
+  .direct-section {
+    --direct-section-bg: #000000;
+    background-color: var(--direct-section-bg);
+    color: #ffffff;
+  }
+
+  :global([data-theme="light"]) .direct-section {
+    --direct-section-bg: #f1f5f9;
+    background-color: var(--direct-section-bg);
+    color: var(--text-primary);
+  }
+
+  .direct-section-text {
+    color: #9ca3af;
+  }
+
+  :global([data-theme="light"]) .direct-section-text {
+    color: #64748b;
   }
 </style>
