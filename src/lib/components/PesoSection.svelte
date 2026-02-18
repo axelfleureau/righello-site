@@ -333,6 +333,8 @@
     justify-items: center;
     isolation: isolate;
     position: relative;
+    transform-style: flat;
+    overflow: visible;
   }
   
   @media (min-width: 640px) {
