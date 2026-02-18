@@ -1,0 +1,35 @@
+09:30:11.495 Running build in Washington, D.C., USA (East) – iad1
+09:30:11.496 Build machine configuration: 2 cores, 8 GB
+09:30:11.661 Cloning github.com/axelfleureau/righello-site (Branch: dependabot/npm_and_yarn/eslint-plugin-svelte-3.15.0, Commit: 5da723b)
+09:30:14.774 Cloning completed: 3.113s
+09:30:14.920 Restored build cache from previous deployment (9YKAk2jSjApCeKvMAtFpbwwTM5FA)
+09:30:15.196 Warning: Due to "engines": { "node": "20.x" } in your `package.json` file, the Node.js Version defined in your Project Settings ("24.x") will not apply, Node.js Version "20.x" will be used instead. Learn More: https://vercel.link/node-version
+09:30:15.197 Running "vercel build"
+09:30:15.835 Vercel CLI 50.18.2
+09:30:16.542 Warning: Due to "engines": { "node": "20.x" } in your `package.json` file, the Node.js Version defined in your Project Settings ("24.x") will not apply, Node.js Version "20.x" will be used instead. Learn More: https://vercel.link/node-version
+09:30:16.549 Running "install" command: `npm ci --prefer-offline --no-audit --no-fund`...
+09:30:17.416 npm error code EUSAGE
+09:30:17.417 npm error
+09:30:17.419 npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+09:30:17.419 npm error
+09:30:17.419 npm error Missing: picomatch@4.0.3 from lock file
+09:30:17.419 npm error
+09:30:17.420 npm error Clean install a project
+09:30:17.420 npm error
+09:30:17.420 npm error Usage:
+09:30:17.420 npm error npm ci
+09:30:17.421 npm error
+09:30:17.421 npm error Options:
+09:30:17.421 npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+09:30:17.421 npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+09:30:17.421 npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+09:30:17.422 npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+09:30:17.422 npm error [--no-bin-links] [--no-fund] [--dry-run]
+09:30:17.422 npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+09:30:17.422 npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+09:30:17.422 npm error
+09:30:17.422 npm error aliases: clean-install, ic, install-clean, isntall-clean
+09:30:17.422 npm error
+09:30:17.423 npm error Run "npm help ci" for more info
+09:30:17.423 npm error A complete log of this run can be found in: /vercel/.npm/_logs/2026-02-18T22_30_16_673Z-debug-0.log
+09:30:17.430 Error: Command "npm ci --prefer-offline --no-audit --no-fund" exited with 1

@@ -13,3 +13,7 @@ updates:
         versions: [">=2.0.0"]
       - dependency-name: "svelte"
         versions: [">=5.0.0"]
+      - dependency-name: "eslint-plugin-svelte"
+        versions: [">=3.0.0"]
+      - dependency-name: "vite-plugin-mkcert"
+        versions: [">=2.0.0"]
