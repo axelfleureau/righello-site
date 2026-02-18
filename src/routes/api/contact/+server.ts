@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getUncachableSendGridClient } from '$lib/server/sendgrid';
-import { openai } from '$lib/server/openai';
+import { getOpenAI } from '$lib/server/openai';
 
 const FROM_EMAIL = 'hello@wearerighello.com';
 const TEAM_EMAILS = ['edis@wearerighello.com', 'paolo@wearerighello.com', 'axel@wearerighello.com'];
@@ -37,7 +37,7 @@ function validateForm(data: unknown): ContactForm | null {
 
 async function enhanceClientEmail(form: ContactForm): Promise<string> {
   try {
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-5.2',
       messages: [
         {
@@ -71,7 +71,7 @@ Riscrivi questo messaggio come corpo di un'email di conferma inviata al cliente.
 
 async function generateLeadAnalysis(form: ContactForm): Promise<string> {
   try {
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-5.2',
       messages: [
         {

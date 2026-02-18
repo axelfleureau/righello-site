@@ -1,0 +1,262 @@
+09:23:55.761 Running build in Washington, D.C., USA (East) – iad1
+09:23:55.761 Build machine configuration: 2 cores, 8 GB
+09:23:55.991 Cloning github.com/axelfleureau/righello-site (Branch: main, Commit: db1d5e7)
+09:24:01.875 Cloning completed: 5.884s
+09:24:02.034 Restored build cache from previous deployment (CYf2srXgAa8UTi1MzTM81ei9dAST)
+09:24:02.440 Warning: Due to "engines": { "node": "20.x" } in your `package.json` file, the Node.js Version defined in your Project Settings ("24.x") will not apply, Node.js Version "20.x" will be used instead. Learn More: https://vercel.link/node-version
+09:24:02.441 Running "vercel build"
+09:24:03.185 Vercel CLI 50.18.2
+09:24:04.259 Warning: Due to "engines": { "node": "20.x" } in your `package.json` file, the Node.js Version defined in your Project Settings ("24.x") will not apply, Node.js Version "20.x" will be used instead. Learn More: https://vercel.link/node-version
+09:24:04.266 Running "install" command: `npm ci --prefer-offline --no-audit --no-fund`...
+09:24:08.100 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+09:24:08.364 npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+09:24:08.760 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+09:24:09.279 npm warn deprecated gauge@3.0.2: This package is no longer supported.
+09:24:09.599 npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+09:24:09.920 npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+09:24:09.961 npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+09:24:10.049 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+09:24:10.051 npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+09:24:10.086 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+09:24:12.107 npm warn deprecated fluent-ffmpeg@2.1.3: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+09:24:14.307 
+09:24:14.307 added 458 packages in 10s
+09:24:14.562 
+09:24:14.562 > significa.co@0.0.1-development prebuild
+09:24:14.562 > svelte-kit sync
+09:24:14.562 
+09:24:15.810 
+09:24:15.811 > significa.co@0.0.1-development build
+09:24:15.811 > vite build
+09:24:15.811 
+09:24:17.254 
+09:24:17.254 [36mvite v4.5.5 [32mbuilding SSR bundle for production...[36m[39m
+09:24:17.311 transforming...
+09:24:18.461 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:629:2 Unused CSS selector ".btn-primary"
+09:24:18.462 627:   }
+09:24:18.462 628:   
+09:24:18.463 629:   .btn-primary {
+09:24:18.463        ^
+09:24:18.463 630:     display: inline-flex;
+09:24:18.463 631:     align-items: center;
+09:24:18.463 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:643:2 Unused CSS selector ".btn-primary:hover"
+09:24:18.464 641:   }
+09:24:18.464 642:   
+09:24:18.464 643:   .btn-primary:hover {
+09:24:18.464        ^
+09:24:18.464 644:     transform: translateY(-2px);
+09:24:18.464 645:     box-shadow: 0 10px 30px rgba(214, 72, 126, 0.4);
+09:24:18.465 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:648:2 Unused CSS selector ".btn-secondary"
+09:24:18.465 646:   }
+09:24:18.465 647:   
+09:24:18.465 648:   .btn-secondary {
+09:24:18.465        ^
+09:24:18.466 649:     display: inline-flex;
+09:24:18.466 650:     align-items: center;
+09:24:18.466 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:663:2 Unused CSS selector ":global([data-theme="light"]) .btn-secondary"
+09:24:18.466 661:   }
+09:24:18.466 662:   
+09:24:18.466 663:   :global([data-theme="light"]) .btn-secondary {
+09:24:18.467        ^
+09:24:18.467 664:     background: rgba(0, 0, 0, 0.05);
+09:24:18.467 665:     border-color: rgba(0, 0, 0, 0.1);
+09:24:18.467 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:668:2 Unused CSS selector ".btn-secondary:hover"
+09:24:18.467 666:   }
+09:24:18.468 667:   
+09:24:18.468 668:   .btn-secondary:hover {
+09:24:18.468        ^
+09:24:18.468 669:     background: rgba(255, 255, 255, 0.15);
+09:24:18.468 670:     border-color: rgba(214, 72, 126, 0.5);
+09:24:18.468 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:673:2 Unused CSS selector ".btn-outline"
+09:24:18.469 671:   }
+09:24:18.469 672:   
+09:24:18.469 673:   .btn-outline {
+09:24:18.469        ^
+09:24:18.469 674:     display: inline-flex;
+09:24:18.469 675:     align-items: center;
+09:24:18.470 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:685:2 Unused CSS selector ".btn-outline:hover"
+09:24:18.470 683:   }
+09:24:18.475 684:   
+09:24:18.476 685:   .btn-outline:hover {
+09:24:18.476        ^
+09:24:18.476 686:     background: #D6487E;
+09:24:18.476 687:     color: white;
+09:24:18.476 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:1321:2 Unused CSS selector ".cta-title"
+09:24:18.477 1319:   }
+09:24:18.477 1320:   
+09:24:18.477 1321:   .cta-title {
+09:24:18.477         ^
+09:24:18.477 1322:     font-size: clamp(1.75rem, 4vw, 2.5rem);
+09:24:18.477 1323:     font-weight: 800;
+09:24:18.478 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:1340:2 Unused CSS selector ".btn-primary-large"
+09:24:18.478 1338:   }
+09:24:18.478 1339:   
+09:24:18.478 1340:   .btn-primary-large {
+09:24:18.478         ^
+09:24:18.478 1341:     display: inline-flex;
+09:24:18.479 1342:     align-items: center;
+09:24:18.479 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:1354:2 Unused CSS selector ".btn-primary-large:hover"
+09:24:18.479 1352:   }
+09:24:18.479 1353:   
+09:24:18.479 1354:   .btn-primary-large:hover {
+09:24:18.479         ^
+09:24:18.479 1355:     transform: translateY(-2px);
+09:24:18.479 1356:     box-shadow: 0 15px 40px rgba(214, 72, 126, 0.4);
+09:24:18.596 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/progetti/[slug]/+page.svelte:364:2 Unused CSS selector ".cta-title"
+09:24:18.597 362:   }
+09:24:18.597 363: 
+09:24:18.597 364:   .cta-title {
+09:24:18.597        ^
+09:24:18.601 365:     font-size: 2rem;
+09:24:18.602 366:     font-weight: 700;
+09:24:18.602 10:24:18 PM [vite-plugin-svelte] /vercel/path0/src/routes/progetti/[slug]/+page.svelte:493:4 Unused CSS selector ".cta-title"
+09:24:18.602 491:     }
+09:24:18.602 492: 
+09:24:18.603 493:     .cta-title {
+09:24:18.603          ^
+09:24:18.603 494:       font-size: 1.625rem;
+09:24:18.603 495:     }
+09:24:19.244 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/Footer.svelte:34:23 A11y: Redundant role 'contentinfo'
+09:24:19.244 32: </script>
+09:24:19.245 33: 
+09:24:19.245 34: <footer class="footer" role="contentinfo">
+09:24:19.245                            ^
+09:24:19.245 35:   <div class="footer-top-border"></div>
+09:24:19.245 36: 
+09:24:19.246 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/MagneticButton.svelte:44:0 A11y: <svelte:element> with mousemove, mouseenter, mouseleave, click handlers must have an ARIA role
+09:24:19.246 42: </script>
+09:24:19.246 43: 
+09:24:19.246 44: <svelte:element
+09:24:19.246     ^
+09:24:19.247 45:   this={href ? 'a' : 'button'}
+09:24:19.247 46:   bind:this={element}
+09:24:19.726 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/AnimatedVideoTestimonials.svelte:222:10 A11y: noninteractive element cannot have nonnegative tabIndex value
+09:24:19.729 220:           {@const isVisible = order <= 3}
+09:24:19.730 221:           {@const isCta = 'isCta' in item && item.isCta}
+09:24:19.730 222:           <div
+09:24:19.730                ^
+09:24:19.730 223:             class="avt-card"
+09:24:19.731 224:             class:avt-card--active={isActive}
+09:24:19.731 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/AnimatedVideoTestimonials.svelte:417:2 A11y: Non-interactive element <div> should not be assigned mouse or keyboard event listeners.
+09:24:19.731 415: {#if lightboxOpen && activeTestimonial.videoSrc}
+09:24:19.731 416:   <!-- svelte-ignore a11y-click-events-have-key-events -->
+09:24:19.731 417:   <div
+09:24:19.731        ^
+09:24:19.731 418:     class="avt-lightbox"
+09:24:19.732 419:     transition:fade={{ duration: 200 }}
+09:24:19.928 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/HorizontalVideoShowcase.svelte:187:8 A11y: <div> with mouseenter, mouseleave handlers must have an ARIA role
+09:24:19.929 185:         role="listitem"
+09:24:19.929 186:       >
+09:24:19.929 187:         <div 
+09:24:19.929              ^
+09:24:19.930 188:           class="card-content"
+09:24:19.930 189:           on:mouseenter={(e) => {
+09:24:19.930 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/HorizontalVideoShowcase.svelte:167:2 A11y: noninteractive element cannot have nonnegative tabIndex value
+09:24:19.930 165:   </div>
+09:24:19.930 166:   
+09:24:19.930 167:   <div 
+09:24:19.931        ^
+09:24:19.931 168:     bind:this={container}
+09:24:19.931 169:     class="carousel-container"
+09:24:19.931 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/HorizontalVideoShowcase.svelte:167:2 A11y: Non-interactive element <div> should not be assigned mouse or keyboard event listeners.
+09:24:19.931 165:   </div>
+09:24:19.931 166:   
+09:24:19.931 167:   <div 
+09:24:19.932        ^
+09:24:19.932 168:     bind:this={container}
+09:24:19.932 169:     class="carousel-container"
+09:24:19.932 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/HorizontalVideoShowcase.svelte:290:4 A11y: visible, non-interactive elements with an on:click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as <button type="button"> or <a> might be more appropriate. See https://svelte.dev/docs/accessibility-warnings#a11y-click-events-have-key-events for more details.
+09:24:19.932 288:     </button>
+09:24:19.932 289:     
+09:24:19.932 290:     <div class="lightbox-content" on:click|stopPropagation>
+09:24:19.933          ^
+09:24:19.933 291:       <video 
+09:24:19.933 292:         src={lightboxVideo}
+09:24:19.933 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/HorizontalVideoShowcase.svelte:290:4 A11y: <div> with click handler must have an ARIA role
+09:24:19.933 288:     </button>
+09:24:19.933 289:     
+09:24:19.933 290:     <div class="lightbox-content" on:click|stopPropagation>
+09:24:19.934          ^
+09:24:19.934 291:       <video 
+09:24:19.934 292:         src={lightboxVideo}
+09:24:19.934 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/HorizontalVideoShowcase.svelte:273:2 A11y: visible, non-interactive elements with an on:click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as <button type="button"> or <a> might be more appropriate. See https://svelte.dev/docs/accessibility-warnings#a11y-click-events-have-key-events for more details.
+09:24:19.934 271: 
+09:24:19.934 272: {#if lightboxOpen && lightboxVideo}
+09:24:19.934 273:   <div 
+09:24:19.935        ^
+09:24:19.935 274:     class="lightbox"
+09:24:19.935 275:     on:click={closeLightbox}
+09:24:19.935 10:24:19 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/HorizontalVideoShowcase.svelte:273:2 A11y: Non-interactive element <div> should not be assigned mouse or keyboard event listeners.
+09:24:19.935 271: 
+09:24:19.935 272: {#if lightboxOpen && lightboxVideo}
+09:24:19.936 273:   <div 
+09:24:19.936        ^
+09:24:19.936 274:     class="lightbox"
+09:24:19.936 275:     on:click={closeLightbox}
+09:24:19.951 Browserslist: caniuse-lite is outdated. Please run:
+09:24:19.951   npx update-browserslist-db@latest
+09:24:19.951   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+09:24:21.720 10:24:21 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/AppleCardsCarousel.svelte:146:8 A11y: <div> with mouseenter, mouseleave handlers must have an ARIA role
+09:24:21.720 144:         role="listitem"
+09:24:21.720 145:       >
+09:24:21.721 146:         <div 
+09:24:21.721              ^
+09:24:21.721 147:           class="card-content"
+09:24:21.721 148:           on:mouseenter={(e) => {
+09:24:21.721 10:24:21 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/AppleCardsCarousel.svelte:128:2 A11y: Non-interactive element <div> should not be assigned mouse or keyboard event listeners.
+09:24:21.721 126:   {/if}
+09:24:21.722 127:   
+09:24:21.722 128:   <div 
+09:24:21.722        ^
+09:24:21.722 129:     bind:this={container}
+09:24:21.722 130:     class="carousel-container"
+09:24:21.722 10:24:21 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/AppleCardsCarousel.svelte:262:4 A11y: visible, non-interactive elements with an on:click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as <button type="button"> or <a> might be more appropriate. See https://svelte.dev/docs/accessibility-warnings#a11y-click-events-have-key-events for more details.
+09:24:21.722 260:     </button>
+09:24:21.722 261:     
+09:24:21.723 262:     <div class="lightbox-content" on:click|stopPropagation>
+09:24:21.723          ^
+09:24:21.723 263:       <video 
+09:24:21.723 264:         src={lightboxVideo}
+09:24:21.723 10:24:21 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/AppleCardsCarousel.svelte:262:4 A11y: <div> with click handler must have an ARIA role
+09:24:21.723 260:     </button>
+09:24:21.723 261:     
+09:24:21.723 262:     <div class="lightbox-content" on:click|stopPropagation>
+09:24:21.724          ^
+09:24:21.724 263:       <video 
+09:24:21.724 264:         src={lightboxVideo}
+09:24:21.724 10:24:21 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/AppleCardsCarousel.svelte:245:2 A11y: visible, non-interactive elements with an on:click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as <button type="button"> or <a> might be more appropriate. See https://svelte.dev/docs/accessibility-warnings#a11y-click-events-have-key-events for more details.
+09:24:21.724 243: 
+09:24:21.724 244: {#if lightboxOpen && lightboxVideo}
+09:24:21.724 245:   <div 
+09:24:21.724        ^
+09:24:21.725 246:     class="lightbox"
+09:24:21.725 247:     on:click={closeLightbox}
+09:24:21.725 10:24:21 PM [vite-plugin-svelte] /vercel/path0/src/lib/components/AppleCardsCarousel.svelte:245:2 A11y: Non-interactive element <div> should not be assigned mouse or keyboard event listeners.
+09:24:21.725 243: 
+09:24:21.725 244: {#if lightboxOpen && lightboxVideo}
+09:24:21.725 245:   <div 
+09:24:21.725        ^
+09:24:21.725 246:     class="lightbox"
+09:24:21.725 247:     on:click={closeLightbox}
+09:24:23.679 [32m✓[39m 168 modules transformed.
+09:24:23.811 rendering chunks...
+09:24:25.230 
+09:24:25.230 node:internal/event_target:1105
+09:24:25.230   process.nextTick(() => { throw err; });
+09:24:25.230                            ^
+09:24:25.232 Error: Missing credentials. Please pass an `apiKey`, or set the `OPENAI_API_KEY` environment variable.
+09:24:25.232     at new OpenAI (file:///vercel/path0/node_modules/openai/client.mjs:91:19)
+09:24:25.233     at file:///vercel/path0/.svelte-kit/output/server/entries/endpoints/api/contact/_server.ts.js:32:16
+09:24:25.233     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+09:24:25.233     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+09:24:25.233     at async analyse (file:///vercel/path0/node_modules/@sveltejs/kit/src/core/postbuild/analyse.js:83:16)
+09:24:25.233     at async MessagePort.<anonymous> (file:///vercel/path0/node_modules/@sveltejs/kit/src/utils/fork.js:22:16)
+09:24:25.233 Emitted 'error' event on Worker instance at:
+09:24:25.233     at [kOnErrorMessage] (node:internal/worker:333:10)
+09:24:25.233     at [kOnMessage] (node:internal/worker:344:37)
+09:24:25.233     at MessagePort.<anonymous> (node:internal/worker:233:57)
+09:24:25.233     at [nodejs.internal.kHybridDispatch] (node:internal/event_target:831:20)
+09:24:25.233     at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28)
+09:24:25.234 
+09:24:25.234 Node.js v20.20.0
+09:24:25.263 Error: Command "npm run build" exited with 1
