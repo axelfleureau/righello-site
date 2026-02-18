@@ -54,14 +54,32 @@
   ];
   
   
+  let errorMessage = '';
+
   async function handleSubmit(e: Event) {
     e.preventDefault();
     isSubmitting = true;
-    
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    submitted = true;
-    isSubmitting = false;
+    errorMessage = '';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await res.json();
+
+      if (res.ok && result.success) {
+        submitted = true;
+      } else {
+        errorMessage = result.error || 'Si è verificato un errore. Riprova più tardi.';
+      }
+    } catch {
+      errorMessage = 'Errore di connessione. Controlla la tua rete e riprova.';
+    } finally {
+      isSubmitting = false;
+    }
   }
 </script>
 
@@ -301,6 +319,15 @@
                   {/if}
                 </button>
                 
+                {#if errorMessage}
+                  <div class="error-alert" role="alert">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{errorMessage}</span>
+                  </div>
+                {/if}
+
                 <p class="text-sm text-center" style="color: var(--text-secondary);">
                   Inviando questo form accetti la nostra privacy policy.
                 </p>
@@ -444,5 +471,18 @@
   .form-column :global(.form-card .form-textarea) {
     flex: 1;
     min-height: 120px;
+  }
+
+  .error-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: 0.75rem;
+    background-color: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
 </style>
