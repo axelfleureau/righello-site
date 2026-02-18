@@ -555,7 +555,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    max-width: 400px;
+    max-width: 480px;
     opacity: 0;
     z-index: 20;
     min-height: clamp(200px, 30svh, 300px);
