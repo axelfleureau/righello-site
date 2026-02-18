@@ -487,7 +487,7 @@
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
-    max-width: 1200px;
+    max-width: var(--container-max, 1280px);
     margin: 0 auto;
     padding: 0 1.5rem;
   }
