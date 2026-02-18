@@ -340,17 +340,17 @@
   </div>
 </section>
 
-<SectionDivider fromColor="var(--bg-secondary)" toColor="black" />
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-tertiary)" />
 
-<section class="section-padding bg-black text-white">
+<section class="section-padding" style="background-color: var(--bg-tertiary);">
   <div class="section-container text-center">
     <ScrollReveal animation="fade-up">
       <div class="section-header">
-        <h2 class="section-title mb-4"><Highlight variant="white">Pronto a Crescere?</Highlight></h2>
+        <h2 class="section-title mb-4"><Highlight>Pronto a Crescere?</Highlight></h2>
       </div>
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={100}>
-      <p class="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+      <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto" style="color: var(--text-secondary);">
         Risposta garantita in 72 ore. Parliamo del tuo progetto e vediamo come possiamo aiutarti.
       </p>
     </ScrollReveal>
@@ -368,7 +368,7 @@
       </div>
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={300}>
-      <p class="text-gray-500 mt-8 text-base">
+      <p class="mt-8 text-base" style="color: var(--text-muted);">
         Via Pio X 21, Mestre - Venezia
       </p>
     </ScrollReveal>
