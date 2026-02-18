@@ -13,25 +13,25 @@
       name: 'Edis Bali',
       role: 'CEO & Co-Founder',
       description: 'Visione strategica e leadership. Trasforma obiettivi di business in roadmap concrete.',
-      image: 'https://media.licdn.com/dms/image/v2/D4E03AQFmzA8fci2Xzg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1689747511935?e=2147483647&v=beta&t=njDDPRAlkuTdPZ4-lHdX5-jmUOwCE3yHSmZT1hObD3g',
+      image: '/team-edis.jpg',
     },
     {
       name: 'Paolo Aileni',
       role: 'COO & Co-Founder',
       description: 'Operations e project management. Garantisce delivery puntuale e qualità costante.',
-      image: 'https://media.licdn.com/dms/image/v2/D4D03AQEj2D2Uau6SpA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1709029011948?e=2147483647&v=beta&t=AgY-7keSBNvLJNPs4yfE_cuqsQZJvKJ-3zSJmQW_XSM',
+      image: '/team-paolo.jpg',
     },
     {
       name: 'Axel N. L. Fleureau',
       role: 'CTO & Co-Founder',
       description: 'Architettura tecnica e sviluppo. Dal design system al codice production-ready.',
-      image: 'https://media.licdn.com/dms/image/v2/D4D03AQEnQn3YkM4SOg/profile-displayphoto-scale_200_200/B4DZmll4RKJUAc-/0/1759419796053?e=2147483647&v=beta&t=l0q0CBPngcCeVJ4uj0EDlaQMxhaR5KwzGzF2iG7VfH0',
+      image: '/team-axel.jpg',
     },
     {
       name: 'Omar ElKharroubi',
       role: 'Agente di Commercio',
       description: 'Sviluppo business e relazioni. Collega le esigenze dei clienti alle nostre soluzioni.',
-      image: 'https://media.licdn.com/dms/image/v2/D4D03AQHhMfFy7JwGOA/profile-displayphoto-shrink_200_200/B4DZSKszguGkAc-/0/1737493790150?e=2147483647&v=beta&t=s0WGUzhI05rWepCkJACr604VdaJ4nHooezxycJCUpgs',
+      image: '/team-omar.jpg',
     },
   ];
   
