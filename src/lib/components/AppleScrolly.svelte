@@ -565,11 +565,11 @@
   }
   
   .slide-left {
-    left: 8%;
+    left: 6%;
   }
   
   .slide-right {
-    right: 8%;
+    right: 6%;
   }
   
   @media (max-width: 1023px) {
