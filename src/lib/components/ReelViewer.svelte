@@ -11,7 +11,7 @@
 
   let currentIndex = activeIndex;
   let videoEl: HTMLVideoElement | null = null;
-  let isMuted = true;
+  let isMuted = false;
   let isPlaying = true;
   let showPlayPause = false;
   let playPauseIcon: 'play' | 'pause' = 'pause';
@@ -135,16 +135,8 @@
     }
   }
 
-  let hasInteracted = false;
-
   function togglePlayPause() {
     if (!videoEl) return;
-
-    if (!hasInteracted) {
-      hasInteracted = true;
-      isMuted = false;
-      videoEl.muted = false;
-    }
 
     if (videoEl.paused) {
       videoEl.play().catch(() => {});
@@ -175,9 +167,15 @@
 
   function handleVideoReady() {
     if (!videoEl || !open) return;
-    videoEl.muted = isMuted;
-    videoEl.play().catch(() => {});
-    isPlaying = true;
+    videoEl.muted = true;
+    videoEl.play().then(() => {
+      if (videoEl && !isMuted) {
+        videoEl.muted = false;
+      }
+      isPlaying = true;
+    }).catch(() => {
+      isPlaying = false;
+    });
   }
 
   function handleTouchStart(e: TouchEvent) {
