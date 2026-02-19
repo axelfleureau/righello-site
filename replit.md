@@ -47,6 +47,7 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
     - **CardFlip**: 3D flip animation on hover with pulsing circles, keyboard accessible (Enter/Space), aria-label support.
     - **PesoSection**: 4 quadrants PESO with real data (Croce del Sud, Mangio case studies), stat cards with animated counters, colored chips (P=pink, E=cyan, S=purple, O=green).
     - **StatCard, CaseStudyCard**: Support components for PESO section with animated counters and category tags.
+    - **ReelViewer**: Instagram Reels-style fullscreen video player. Vertical 9:16 video with dark overlay, username (@righello_agency), caption, decorative action icons (heart/comment/share/bookmark), progress bar, swipe navigation between videos, tap play/pause, focus trap, `prefers-reduced-motion` support. Used by `AppleCardsCarousel` when `useReelViewer={true}` prop is set (enabled in SocialReelShowcase).
 
 ### Feature Specifications
 - **Service Departments**: The website categorizes services into three main areas: Content & Social Media, Advertising & Performance, and Digital Experience.

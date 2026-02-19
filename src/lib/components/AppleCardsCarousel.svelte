@@ -2,8 +2,10 @@
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import { getThumbnailUrl } from '$lib/data/thumbnail-map';
+  import ReelViewer from './ReelViewer.svelte';
 
   export let title = '';
+  export let useReelViewer = false;
   export let items: {
     title: string;
     subtitle?: string;
@@ -25,6 +27,10 @@
   let lightboxOpen = false;
   let lightboxVideo: string | null = null;
   let lightboxTitle = '';
+  let reelViewerOpen = false;
+  let reelViewerIndex = 0;
+  
+  $: reelItems = items.filter(i => i.videoSrc && !i.isCta);
   
   function handleMouseDown(e: MouseEvent) {
     isDragging = true;
@@ -117,9 +123,21 @@
     isTouching = false;
   }
   
-  function handleCardClick(videoSrc: string | undefined, title: string) {
+  function handleCardClick(videoSrc: string | undefined, title: string, itemIndex?: number) {
     if (wasDragged || isDragging) return;
-    if (videoSrc) openLightbox(videoSrc, title);
+    if (!videoSrc) return;
+    
+    if (useReelViewer) {
+      const reelIdx = reelItems.findIndex(i => i.videoSrc === videoSrc);
+      reelViewerIndex = reelIdx >= 0 ? reelIdx : 0;
+      reelViewerOpen = true;
+    } else {
+      openLightbox(videoSrc, title);
+    }
+  }
+  
+  function closeReelViewer() {
+    reelViewerOpen = false;
   }
   
   let videoRefs: (HTMLVideoElement | null)[] = items.map(() => null);
@@ -299,6 +317,15 @@
       <h3 class="lightbox-title">{lightboxTitle}</h3>
     </div>
   </div>
+{/if}
+
+{#if useReelViewer}
+  <ReelViewer 
+    items={reelItems} 
+    activeIndex={reelViewerIndex} 
+    open={reelViewerOpen} 
+    on:close={closeReelViewer} 
+  />
 {/if}
 
 <style>

@@ -71,5 +71,5 @@
     </RevealOnScroll>
   </div>
   
-  <AppleCardsCarousel items={reelItems} />
+  <AppleCardsCarousel items={reelItems} useReelViewer={true} />
 </section>
