@@ -183,8 +183,7 @@
             end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
-            scrub: 0.3,
-            anticipatePin: 1,
+            scrub: 0.5,
             snap: {
               snapTo: 'labels',
               duration: { min: 0.2, max: 0.5 },
@@ -192,6 +191,14 @@
               ease: 'power1.inOut',
             },
             invalidateOnRefresh: true,
+            onEnter: (self) => {
+              const spacer = self.spacer;
+              if (spacer) spacer.style.zIndex = '50';
+            },
+            onLeaveBack: (self) => {
+              const spacer = self.spacer;
+              if (spacer) spacer.style.zIndex = '';
+            },
           }
         });
 
@@ -232,9 +239,16 @@
             end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
-            scrub: 0.3,
-            anticipatePin: 1,
+            scrub: 0.5,
             invalidateOnRefresh: true,
+            onEnter: (self) => {
+              const spacer = self.spacer;
+              if (spacer) spacer.style.zIndex = '50';
+            },
+            onLeaveBack: (self) => {
+              const spacer = self.spacer;
+              if (spacer) spacer.style.zIndex = '';
+            },
           }
         });
 
@@ -429,10 +443,6 @@
     border: none;
   }
 
-  :global(.pin-spacer:has(.easter-egg-section)),
-  :global(.pin-spacer:has(.mobile-section)) {
-    z-index: 50 !important;
-  }
 
   .easter-egg-section .sky-container,
   .easter-egg-section .window-container {
