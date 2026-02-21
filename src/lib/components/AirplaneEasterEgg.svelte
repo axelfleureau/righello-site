@@ -19,8 +19,12 @@
   let mFinalText: HTMLElement;
   let mDiscountReveal: HTMLElement;
 
+  let preloadZone: HTMLElement;
+
   let ctx: any = null;
   let copied = false;
+  let imagesLoaded = false;
+  let preloadObserver: IntersectionObserver | null = null;
 
   const DISCOUNT_CODE = 'scrollerevenue26';
   const WA_NUMBER = '393393998351';
@@ -28,6 +32,38 @@
     `Ciao! Sono interessato/a a collaborare con Righello. Ho trovato il codice sconto "${DISCOUNT_CODE}" sul vostro sito. Vorrei saperne di più!`
   );
   const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
+
+  const skyWebp = '/sky-easter-egg.webp';
+  const skyJpg = '/sky-easter-egg.jpg';
+  const windowWebp = '/window-easter-egg.webp';
+  const windowPng = '/window-easter-egg.png';
+
+  function preloadImages(): Promise<void> {
+    if (imagesLoaded) return Promise.resolve();
+
+    let supportsWebp = false;
+    try {
+      supportsWebp = document.createElement('canvas')
+        .toDataURL('image/webp')
+        .indexOf('data:image/webp') === 0;
+    } catch {
+      supportsWebp = false;
+    }
+
+    const skyUrl = supportsWebp ? skyWebp : skyJpg;
+    const windowUrl = supportsWebp ? windowWebp : windowPng;
+
+    const loadImage = (src: string) => new Promise<void>((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      img.src = src;
+    });
+
+    return Promise.all([loadImage(skyUrl), loadImage(windowUrl)])
+      .then(() => { imagesLoaded = true; })
+      .catch(() => { imagesLoaded = true; });
+  }
 
   function copyToClipboard() {
     if (!browser) return;
@@ -67,6 +103,19 @@
   onMount(async () => {
     if (!browser) return;
 
+    if (preloadZone) {
+      preloadObserver = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) {
+            preloadImages();
+            preloadObserver?.disconnect();
+          }
+        },
+        { rootMargin: '800px 0px' }
+      );
+      preloadObserver.observe(preloadZone);
+    }
+
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
@@ -74,7 +123,8 @@
     const { ScrollTrigger } = await import('gsap/ScrollTrigger');
     gsap.registerPlugin(ScrollTrigger);
 
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await preloadImages();
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     const isDesktop = window.matchMedia('(min-width: 768px)').matches;
 
@@ -253,10 +303,13 @@
 
   onDestroy(() => {
     ctx?.revert();
+    preloadObserver?.disconnect();
   });
 </script>
 
 <div class="easter-egg-blend" aria-hidden="true"></div>
+
+<div bind:this={preloadZone} class="preload-trigger" aria-hidden="true"></div>
 
 <div bind:this={emojiZone} class="emoji-transition-zone" aria-hidden="true">
   <span class="emoji-float emoji-left emoji-1">👀</span>
@@ -268,13 +321,19 @@
 </div>
 
 <!-- Desktop scrollytelling -->
-<section bind:this={sectionEl} class="easter-egg-section desktop-only">
+<section bind:this={sectionEl} class="easter-egg-section desktop-only" class:images-ready={imagesLoaded}>
   <div class="section-top-gradient" aria-hidden="true"></div>
   <div bind:this={skyContainer} class="sky-container">
-    <img src="/sky-easter-egg.jpg" alt="" loading="lazy" decoding="async" draggable="false" />
+    <picture>
+      <source srcset={skyWebp} type="image/webp" />
+      <img src={skyJpg} alt="" decoding="async" draggable="false" />
+    </picture>
   </div>
   <div bind:this={windowContainer} class="window-container">
-    <img src="/window-easter-egg.png" alt="" loading="lazy" decoding="async" draggable="false" />
+    <picture>
+      <source srcset={windowWebp} type="image/webp" />
+      <img src={windowPng} alt="" decoding="async" draggable="false" />
+    </picture>
   </div>
 
   <div bind:this={introText} class="easter-text intro-text">
@@ -303,14 +362,20 @@
   </div>
 </section>
 
-<!-- Mobile scrollytelling (same layered approach as desktop) -->
-<section bind:this={mSectionEl} class="easter-egg-section mobile-section">
+<!-- Mobile scrollytelling -->
+<section bind:this={mSectionEl} class="easter-egg-section mobile-section" class:images-ready={imagesLoaded}>
   <div class="section-top-gradient" aria-hidden="true"></div>
   <div bind:this={mSkyContainer} class="sky-container">
-    <img src="/sky-easter-egg.jpg" alt="" loading="lazy" decoding="async" draggable="false" />
+    <picture>
+      <source srcset={skyWebp} type="image/webp" />
+      <img src={skyJpg} alt="" decoding="async" draggable="false" />
+    </picture>
   </div>
   <div bind:this={mWindowContainer} class="window-container">
-    <img src="/window-easter-egg.png" alt="" loading="lazy" decoding="async" draggable="false" />
+    <picture>
+      <source srcset={windowWebp} type="image/webp" />
+      <img src={windowPng} alt="" decoding="async" draggable="false" />
+    </picture>
   </div>
 
   <div bind:this={mIntroText} class="easter-text intro-text">
@@ -349,10 +414,18 @@
     z-index: 1;
   }
 
+  .preload-trigger {
+    position: relative;
+    width: 100%;
+    height: 1px;
+    pointer-events: none;
+  }
+
   .emoji-transition-zone {
     position: relative;
     width: 100%;
-    height: 80svh;
+    height: 80vh;
+    height: 80dvh;
     background: var(--bg-primary);
     overflow: hidden;
     display: flex;
@@ -382,10 +455,22 @@
   .easter-egg-section {
     position: relative;
     width: 100%;
-    height: 100svh;
+    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     background: var(--bg-primary);
     perspective: 1000px;
+  }
+
+  .easter-egg-section .sky-container,
+  .easter-egg-section .window-container {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .easter-egg-section.images-ready .sky-container,
+  .easter-egg-section.images-ready .window-container {
+    opacity: 1;
   }
 
   .section-top-gradient {
@@ -413,7 +498,8 @@
   }
 
   .sky-container {
-    height: 350svh;
+    height: 350vh;
+    height: 350dvh;
     z-index: 1;
   }
 
@@ -425,7 +511,8 @@
   }
 
   .window-container {
-    height: 100svh;
+    height: 100vh;
+    height: 100dvh;
     z-index: 2;
   }
 
@@ -521,7 +608,8 @@
     }
 
     .emoji-transition-zone {
-      height: 70svh;
+      height: 70vh;
+      height: 70dvh;
     }
 
     .emoji-float {
@@ -537,7 +625,8 @@
 
     .mobile-section {
       display: block;
-      height: 100svh;
+      height: 100vh;
+      height: 100dvh;
       overflow: hidden;
     }
 
@@ -605,10 +694,12 @@
     }
 
     .easter-egg-section .window-container {
+      opacity: 1 !important;
       transform: scale(2.5) !important;
     }
 
     .easter-egg-section .sky-container {
+      opacity: 1 !important;
       transform: translateY(-30%) !important;
     }
 
