@@ -12,7 +12,8 @@
   let discountReveal: HTMLElement;
 
   let mSectionEl: HTMLElement;
-  let mWindowFrame: HTMLElement;
+  let mSkyContainer: HTMLElement;
+  let mWindowContainer: HTMLElement;
   let mIntroText: HTMLElement;
   let mMidText: HTMLElement;
   let mFinalText: HTMLElement;
@@ -167,12 +168,14 @@
           }
         });
       } else {
-        if (!mSectionEl) return;
+        if (!mSectionEl || !mSkyContainer || !mWindowContainer) return;
 
         const vh = window.innerHeight;
+        const skyHeight = mSkyContainer.offsetHeight;
+        const skyMoveDistance = skyHeight - vh;
 
         gsap.set(mIntroText, { opacity: 0, y: 50 });
-        gsap.set(mWindowFrame, { opacity: 0, scale: 0.6 });
+        gsap.set(mWindowContainer, { scale: 1 });
         gsap.set(mMidText, { opacity: 0, y: 50 });
         gsap.set(mFinalText, { opacity: 0, y: 50 });
         gsap.set(mDiscountReveal, { opacity: 0, y: 30, scale: 0.9 });
@@ -180,12 +183,22 @@
         ScrollTrigger.create({
           trigger: mSectionEl,
           start: 'top top',
-          end: `+=${vh * 2.5}px`,
+          end: `+=${vh * 3}px`,
           pin: true,
           pinSpacing: true,
           scrub: 0.8,
           onUpdate: (self) => {
             const progress = self.progress;
+
+            let windowScale;
+            if (progress <= 0.5) {
+              windowScale = 1 + (progress / 0.5) * 3;
+            } else {
+              windowScale = 4;
+            }
+            gsap.set(mWindowContainer, { scale: windowScale });
+
+            gsap.set(mSkyContainer, { y: -progress * skyMoveDistance });
 
             if (progress <= 0.15) {
               const p = progress / 0.15;
@@ -199,23 +212,9 @@
               gsap.set(mIntroText, { opacity: 0 });
             }
 
-            if (progress >= 0.15 && progress <= 0.35) {
-              const p = (progress - 0.15) / 0.2;
-              gsap.set(mWindowFrame, { opacity: Math.min(1, p * 2), scale: 0.6 + 0.4 * Math.min(1, p * 1.5) });
-            } else if (progress > 0.35 && progress <= 0.55) {
-              gsap.set(mWindowFrame, { opacity: 1, scale: 1 });
-            } else if (progress > 0.55 && progress <= 0.65) {
-              const p = (progress - 0.55) / 0.1;
-              gsap.set(mWindowFrame, { opacity: 1 - p * 0.7, scale: 1 + p * 0.1 });
-            } else if (progress > 0.65) {
-              gsap.set(mWindowFrame, { opacity: 0.3, scale: 1.1 });
-            } else {
-              gsap.set(mWindowFrame, { opacity: 0, scale: 0.6 });
-            }
-
-            if (progress >= 0.4 && progress <= 0.55) {
-              const p = (progress - 0.4) / 0.15;
-              gsap.set(mMidText, { opacity: p, y: 50 * (1 - p) });
+            if (progress >= 0.35 && progress <= 0.55) {
+              const p = (progress - 0.35) / 0.2;
+              gsap.set(mMidText, { opacity: Math.min(1, p * 2), y: 50 * (1 - p) });
             } else if (progress > 0.55 && progress <= 0.65) {
               gsap.set(mMidText, { opacity: 1, y: 0 });
             } else if (progress > 0.65 && progress <= 0.75) {
@@ -227,8 +226,8 @@
               gsap.set(mMidText, { opacity: 0, y: 50 });
             }
 
-            if (progress >= 0.65 && progress <= 0.8) {
-              const p = (progress - 0.65) / 0.15;
+            if (progress >= 0.6 && progress <= 0.8) {
+              const p = (progress - 0.6) / 0.2;
               gsap.set(mFinalText, { opacity: Math.min(1, p * 1.5), y: 50 * (1 - p) });
             } else if (progress > 0.8) {
               gsap.set(mFinalText, { opacity: 1, y: 0 });
@@ -270,6 +269,7 @@
 
 <!-- Desktop scrollytelling -->
 <section bind:this={sectionEl} class="easter-egg-section desktop-only">
+  <div class="section-top-gradient" aria-hidden="true"></div>
   <div bind:this={skyContainer} class="sky-container">
     <img src="/sky-easter-egg.jpg" alt="" loading="lazy" decoding="async" draggable="false" />
   </div>
@@ -303,34 +303,31 @@
   </div>
 </section>
 
-<!-- Mobile scrollytelling -->
+<!-- Mobile scrollytelling (same layered approach as desktop) -->
 <section bind:this={mSectionEl} class="easter-egg-section mobile-section">
-  <div class="mobile-sky-bg">
-    <img src="/sky-easter-egg.jpg" alt="" decoding="async" draggable="false" />
+  <div class="section-top-gradient" aria-hidden="true"></div>
+  <div bind:this={mSkyContainer} class="sky-container">
+    <img src="/sky-easter-egg.jpg" alt="" loading="lazy" decoding="async" draggable="false" />
+  </div>
+  <div bind:this={mWindowContainer} class="window-container">
+    <img src="/window-easter-egg.png" alt="" loading="lazy" decoding="async" draggable="false" />
   </div>
 
-  <div bind:this={mIntroText} class="m-text m-intro">
+  <div bind:this={mIntroText} class="easter-text intro-text">
     <h2>Sei ancora qui?</h2>
     <p>Allora sei davvero interessato!</p>
   </div>
 
-  <div bind:this={mWindowFrame} class="m-window-frame">
-    <img src="/window-easter-egg.png" alt="Finestrino aereo" decoding="async" draggable="false" />
-    <div class="m-window-sky">
-      <img src="/sky-easter-egg.jpg" alt="" decoding="async" draggable="false" />
-    </div>
-  </div>
-
-  <div bind:this={mMidText} class="m-text m-mid">
+  <div bind:this={mMidText} class="easter-text mid-text">
     <p>Per te che hai scrollato fino a qui, uno sconto che ti aiuterà a raggiungere i risultati che hai sempre sognato.</p>
   </div>
 
-  <div bind:this={mFinalText} class="m-text m-final">
+  <div bind:this={mFinalText} class="easter-text final-text">
     <h2>Prendi il volo con il team di Righello!</h2>
   </div>
 
-  <div bind:this={mDiscountReveal} class="m-discount">
-    <span class="m-discount-label">Codice sconto da comunicare in fase di preventivo</span>
+  <div bind:this={mDiscountReveal} class="discount-reveal">
+    <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
     <a href={WA_URL} class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp" rel="noopener noreferrer">
       {#if copied}
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -347,7 +344,7 @@
     position: relative;
     width: 100%;
     height: 200px;
-    background: linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-primary) 100%);
+    background: var(--bg-primary);
     pointer-events: none;
     z-index: 1;
   }
@@ -389,6 +386,17 @@
     overflow: hidden;
     background: var(--bg-primary);
     perspective: 1000px;
+  }
+
+  .section-top-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+    z-index: 15;
+    pointer-events: none;
   }
 
   .mobile-section {
@@ -507,112 +515,6 @@
     transform: scale(0.97);
   }
 
-  /* ===== MOBILE SECTION ===== */
-
-  .mobile-sky-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    opacity: 0.15;
-  }
-
-  .mobile-sky-bg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .m-text {
-    position: absolute;
-    z-index: 10;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 85%;
-    max-width: 400px;
-    pointer-events: none;
-    will-change: transform, opacity;
-  }
-
-  .m-text h2 {
-    font-size: clamp(1.5rem, 7vw, 2rem);
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    line-height: 1.2;
-  }
-
-  .m-text p {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
-
-  .m-window-frame {
-    position: absolute;
-    z-index: 5;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 85%;
-    max-width: 380px;
-    aspect-ratio: 16 / 9;
-    border-radius: 1rem;
-    overflow: hidden;
-    will-change: transform, opacity;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-  }
-
-  .m-window-frame > img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 2;
-  }
-
-  .m-window-sky {
-    position: absolute;
-    top: 11%;
-    left: 31%;
-    width: 38%;
-    height: 76%;
-    border-radius: 42% / 46%;
-    overflow: hidden;
-    z-index: 1;
-  }
-
-  .m-window-sky img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .m-discount {
-    position: absolute;
-    z-index: 10;
-    left: 50%;
-    top: 65%;
-    transform: translate(-50%, 0);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    width: 90%;
-    pointer-events: auto;
-    will-change: transform, opacity;
-  }
-
-  .m-discount-label {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    text-align: center;
-    max-width: 300px;
-    line-height: 1.4;
-  }
-
   @media (max-width: 767px) {
     .easter-egg-blend {
       height: 100px;
@@ -637,6 +539,27 @@
       display: block;
       height: 100svh;
       overflow: hidden;
+    }
+
+    .section-top-gradient {
+      height: 80px;
+    }
+
+    .easter-text h2 {
+      font-size: clamp(1.375rem, 6vw, 1.75rem);
+    }
+
+    .easter-text p {
+      font-size: 1rem;
+    }
+
+    .discount-code {
+      font-size: 1.125rem;
+      padding: 0.875rem 1.75rem;
+    }
+
+    .discount-label {
+      max-width: 280px;
     }
   }
 
@@ -676,16 +599,9 @@
 
   @media (prefers-reduced-motion: reduce) {
     .easter-egg-section .easter-text,
-    .easter-egg-section .discount-reveal,
-    .m-text,
-    .m-window-frame,
-    .m-discount {
+    .easter-egg-section .discount-reveal {
       opacity: 1 !important;
-      transform: translate(-50%, -50%) !important;
-    }
-
-    .m-discount {
-      transform: translate(-50%, 0) !important;
+      transform: translateX(-50%) !important;
     }
 
     .easter-egg-section .window-container {
