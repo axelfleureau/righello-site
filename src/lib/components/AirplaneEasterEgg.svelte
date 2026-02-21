@@ -184,6 +184,7 @@
             pin: true,
             pinSpacing: true,
             scrub: 0.5,
+            anticipatePin: 0.3,
             snap: {
               snapTo: 'labels',
               duration: { min: 0.2, max: 0.5 },
@@ -220,6 +221,8 @@
 
         tl.addLabel('discount', 0.82);
         tl.to(discountReveal, { opacity: 1, scale: 1, duration: 0.1, ease: 'none' }, 0.82);
+
+        tl.to(sectionEl, { opacity: 0, duration: 0.07, ease: 'none' }, 0.93);
         tl.addLabel('end', 1);
 
       } else {
@@ -240,6 +243,7 @@
             pin: true,
             pinSpacing: true,
             scrub: 0.5,
+            anticipatePin: 0.3,
             invalidateOnRefresh: true,
             onEnter: (self) => {
               const spacer = self.spacer;
@@ -270,6 +274,8 @@
 
         tl.addLabel('discount', 0.82);
         tl.to(mDiscountReveal, { opacity: 1, y: 0, scale: 1, duration: 0.1, ease: 'none' }, 0.82);
+
+        tl.to(mSectionEl, { opacity: 0, duration: 0.07, ease: 'none' }, 0.93);
         tl.addLabel('end', 1);
       }
     });
