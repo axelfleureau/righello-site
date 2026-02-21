@@ -210,6 +210,7 @@
               sectionEl.style.left = '0';
               sectionEl.style.width = '100%';
               sectionEl.style.zIndex = '40';
+              sectionEl.style.transform = 'none';
             },
             onEnterBack: () => {
               sectionEl.style.position = '';
@@ -217,6 +218,7 @@
               sectionEl.style.left = '';
               sectionEl.style.width = '';
               sectionEl.style.zIndex = '';
+              sectionEl.style.transform = '';
             },
           }
         });
@@ -278,6 +280,7 @@
               mSectionEl.style.left = '0';
               mSectionEl.style.width = '100%';
               mSectionEl.style.zIndex = '40';
+              mSectionEl.style.transform = 'none';
             },
             onEnterBack: () => {
               mSectionEl.style.position = '';
@@ -285,6 +288,7 @@
               mSectionEl.style.left = '';
               mSectionEl.style.width = '';
               mSectionEl.style.zIndex = '';
+              mSectionEl.style.transform = '';
             },
           }
         });
