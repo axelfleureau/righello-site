@@ -395,7 +395,7 @@
 
   .emoji-float {
     position: absolute;
-    font-size: 2.5rem;
+    font-size: 4rem;
     opacity: 0;
     will-change: transform, opacity;
     user-select: none;
@@ -588,7 +588,7 @@
     }
 
     .emoji-float {
-      font-size: 2rem;
+      font-size: 3rem;
     }
 
     .emoji-left { left: 6%; }
@@ -648,13 +648,13 @@
     }
 
     .emoji-float {
-      font-size: 3rem;
+      font-size: 4.5rem;
     }
   }
 
   @media (min-width: 1025px) {
     .emoji-float {
-      font-size: 3.5rem;
+      font-size: 5rem;
     }
 
     .emoji-left { left: 12%; }
