@@ -183,6 +183,7 @@
             end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
+            pinType: 'transform',
             scrub: true,
             snap: {
               snapTo: 'labels',
@@ -231,6 +232,7 @@
             end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
+            pinType: 'transform',
             scrub: true,
             invalidateOnRefresh: true,
           }
