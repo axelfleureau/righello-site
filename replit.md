@@ -78,7 +78,7 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
 
 ### Performance & SEO Optimizations (Feb 2026)
 - **HTTP Headers**: Cache-Control (immutable for hashed assets, stale-while-revalidate for HTML) + security headers (X-Content-Type-Options, Referrer-Policy, Permissions-Policy, X-XSS-Protection) via hooks.server.ts.
-- **Font Loading**: Google Fonts (Poppins) loaded non-blocking via preload+onload trick. Degular Display preloaded. Firebase Storage preconnected.
+- **Font Loading**: Degular Display preloaded (Semibold + Bold). Poppins removed (unused). Firebase Storage preconnected.
 - **SEO**: Complete meta tags (title, description, og:*, twitter:card) on all 6 pages with proper Italian locale.
 - **Bundle Cleanup**: Removed unused three.js, threlte, matter-js, Sentry, posthog from bundle. Removed Sentry vite plugin.
 - **Image/Video Best Practices**: loading="lazy", decoding="async", fetchpriority="high" (hero), video preload="metadata" for off-screen content.
