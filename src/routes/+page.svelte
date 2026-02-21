@@ -116,7 +116,7 @@
   <meta name="description" content="Agenzia di marketing digitale, sviluppo web e automazione con sede nel Nord Italia. Strategie data-driven, software su misura e campagne advertising con risultati misurabili." />
   <meta property="og:title" content="Righello | Growth Agency – Marketing, Sviluppo Web & Automazione" />
   <meta property="og:description" content="Agenzia di marketing digitale, sviluppo web e automazione con sede nel Nord Italia. Strategie data-driven, software su misura e campagne advertising con risultati misurabili." />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=2" />
+  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta property="og:url" content="https://www.wearerighello.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />

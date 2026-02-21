@@ -216,7 +216,7 @@
   <meta name="description" content="Marketing & Social Media, Advertising & Automazione, Sviluppo Web & Software. Servizi integrati di marketing digitale, sviluppo software e automazione per il tuo business." />
   <meta property="og:title" content="Servizi | Righello – Marketing, Sviluppo Web & Automazione" />
   <meta property="og:description" content="Marketing & Social Media, Advertising & Automazione, Sviluppo Web & Software. Servizi integrati di marketing digitale, sviluppo software e automazione per il tuo business." />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=2" />
+  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta property="og:url" content="https://www.wearerighello.com/servizi" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />

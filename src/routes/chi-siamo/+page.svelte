@@ -117,7 +117,7 @@
   <meta name="description" content="Growth agency con sede a Mestre, Venezia. Esperti in marketing digitale, sviluppo web e automazione. Operiamo nel Nord Italia e all'estero." />
   <meta property="og:title" content="Chi Siamo | Righello – Growth Agency Nord Italia" />
   <meta property="og:description" content="Growth agency con sede a Mestre, Venezia. Esperti in marketing digitale, sviluppo web e automazione. Operiamo nel Nord Italia e all'estero." />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=2" />
+  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta property="og:url" content="https://www.wearerighello.com/chi-siamo" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
