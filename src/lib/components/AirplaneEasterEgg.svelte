@@ -183,8 +183,8 @@
             end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
-            pinType: 'transform',
             scrub: true,
+            anticipatePin: 0.5,
             snap: {
               snapTo: 'labels',
               duration: { min: 0.2, max: 0.5 },
@@ -232,8 +232,8 @@
             end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
-            pinType: 'transform',
             scrub: true,
+            anticipatePin: 0.5,
             invalidateOnRefresh: true,
           }
         });
@@ -426,6 +426,9 @@
     margin: 0;
     padding: 0;
     border: none;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .easter-egg-section .sky-container,
