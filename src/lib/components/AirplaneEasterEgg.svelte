@@ -183,8 +183,8 @@
             end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
-            scrub: true,
-            anticipatePin: 0.5,
+            scrub: 0.3,
+            anticipatePin: 1,
             snap: {
               snapTo: 'labels',
               duration: { min: 0.2, max: 0.5 },
@@ -232,8 +232,8 @@
             end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
-            scrub: true,
-            anticipatePin: 0.5,
+            scrub: 0.3,
+            anticipatePin: 1,
             invalidateOnRefresh: true,
           }
         });
