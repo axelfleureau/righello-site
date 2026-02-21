@@ -182,8 +182,6 @@
         const LABEL_OFFSET = PHASE / 2;
         const TEXT_OFFSET = 0.06;
         const MOTION_END = PHASE * 4;
-        const FADE_START = MOTION_END;
-        const FADE_DUR = 1 - FADE_START;
 
         const L_INTRO    = LABEL_OFFSET;
         const L_MID      = PHASE + LABEL_OFFSET;
@@ -234,7 +232,6 @@
         tl.addLabel('discount', L_DISCOUNT);
         tl.to(discountReveal, { opacity: 1, scale: 1, duration: ENTER_DUR, ease: 'none' }, L_DISCOUNT - TEXT_OFFSET);
 
-        tl.to(sectionEl, { opacity: 0, duration: FADE_DUR, ease: 'none' }, FADE_START);
         tl.addLabel('end', 1);
 
       } else {
@@ -253,8 +250,6 @@
         const LABEL_OFFSET = PHASE / 2;
         const TEXT_OFFSET = 0.06;
         const MOTION_END = PHASE * 4;
-        const FADE_START = MOTION_END;
-        const FADE_DUR = 1 - FADE_START;
 
         const L_INTRO    = LABEL_OFFSET;
         const L_MID      = PHASE + LABEL_OFFSET;
@@ -299,7 +294,6 @@
         tl.addLabel('discount', L_DISCOUNT);
         tl.to(mDiscountReveal, { opacity: 1, y: 0, scale: 1, duration: ENTER_DUR, ease: 'none' }, L_DISCOUNT - TEXT_OFFSET);
 
-        tl.to(mSectionEl, { opacity: 0, duration: FADE_DUR, ease: 'none' }, FADE_START);
         tl.addLabel('end', 1);
       }
     });
