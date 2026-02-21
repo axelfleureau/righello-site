@@ -24,14 +24,14 @@
   <meta name="description" content="Portfolio di progetti di marketing digitale, sviluppo web e software. Case study con risultati concreti: siti, app, campagne adv e automazioni." />
   <meta property="og:title" content="Progetti | Righello – Portfolio Marketing, Web & Software" />
   <meta property="og:description" content="Portfolio di progetti di marketing digitale, sviluppo web e software. Case study con risultati concreti: siti, app, campagne adv e automazioni." />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=2" />
   <meta property="og:url" content="https://www.wearerighello.com/progetti" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Progetti | Righello – Portfolio Marketing, Web & Software" />
   <meta name="twitter:description" content="Portfolio di progetti di marketing digitale, sviluppo web e software. Case study con risultati concreti: siti, app, campagne adv e automazioni." />
-  <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
+  <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
 </svelte:head>
 
 <section id="portfolio" class="pt-32 pb-20 md:pt-40 md:pb-24">

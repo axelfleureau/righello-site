@@ -88,14 +88,14 @@
   <meta name="description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 72 ore. hello@wearerighello.com | Mestre, Venezia." />
   <meta property="og:title" content="Contatti | Righello – Agenzia Marketing & Sviluppo Web" />
   <meta property="og:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 72 ore. hello@wearerighello.com | Mestre, Venezia." />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png" />
+  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=2" />
   <meta property="og:url" content="https://www.wearerighello.com/contatti" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Contatti | Righello – Agenzia Marketing & Sviluppo Web" />
   <meta name="twitter:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 72 ore. hello@wearerighello.com | Mestre, Venezia." />
-  <meta name="twitter:image" content="https://www.wearerighello.com/og.png" />
+  <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
 </svelte:head>
 
 <section id="contatti-hero" class="pt-24 md:pt-32 pb-12 md:pb-20">
