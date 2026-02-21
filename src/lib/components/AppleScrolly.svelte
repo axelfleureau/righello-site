@@ -573,28 +573,9 @@
   }
 
   @media (min-width: 1024px) {
-    .slide-left {
-      max-width: calc(75% - 6% - 180px);
-    }
+    .slide-left,
     .slide-right {
-      max-width: calc(25% - 6% - 180px);
-    }
-  }
-
-  @media (min-width: 1024px) and (max-width: 1399px) {
-    .slide-right {
-      right: auto;
-      left: 6%;
-      max-width: calc(75% - 6% - 180px);
-    }
-  }
-
-  @media (min-width: 1400px) {
-    .slide-left {
-      max-width: 480px;
-    }
-    .slide-right {
-      max-width: 480px;
+      max-width: min(480px, calc(50% - 6% - 170px));
     }
   }
   
