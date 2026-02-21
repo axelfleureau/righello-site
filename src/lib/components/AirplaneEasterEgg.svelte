@@ -11,6 +11,23 @@
   let discountReveal: HTMLElement;
   let ctx: any = null;
   let mounted = false;
+  let copied = false;
+
+  const DISCOUNT_CODE = 'scrollerevenue26';
+  const WA_NUMBER = '393393998351';
+
+  function handleDiscountClick() {
+    if (browser) {
+      navigator.clipboard.writeText(DISCOUNT_CODE).catch(() => {});
+      copied = true;
+      setTimeout(() => { copied = false; }, 2000);
+
+      const msg = encodeURIComponent(
+        `Ciao! Sono interessato/a a collaborare con Righello. Ho trovato il codice sconto "${DISCOUNT_CODE}" sul vostro sito. Vorrei saperne di più!`
+      );
+      window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank', 'noopener');
+    }
+  }
 
   onMount(async () => {
     if (!browser) return;
@@ -133,7 +150,14 @@
 
     <div bind:this={discountReveal} class="discount-reveal">
       <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
-      <span class="discount-code">scrollerevenue26</span>
+      <button class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp">
+        {#if copied}
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Copiato!
+        {:else}
+          {DISCOUNT_CODE}
+        {/if}
+      </button>
     </div>
   </div>
 </section>
@@ -252,19 +276,35 @@
   }
 
   .discount-code {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     background: #D6487E;
     color: #ffffff;
     font-size: clamp(1.125rem, 3vw, 1.5rem);
     font-weight: 700;
+    font-family: inherit;
     padding: 0.875rem 2rem;
     border-radius: 9999px;
+    border: none;
     letter-spacing: 0.05em;
     min-height: 44px;
     min-width: 44px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(214, 72, 126, 0.4);
-    user-select: all;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .discount-code:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 28px rgba(214, 72, 126, 0.5);
+  }
+
+  .discount-code:active {
+    transform: scale(0.97);
   }
 
   @media (max-width: 767px) {
