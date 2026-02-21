@@ -152,6 +152,7 @@
 <style>
   .footer {
     position: relative;
+    z-index: 1;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     overflow-x: clip;

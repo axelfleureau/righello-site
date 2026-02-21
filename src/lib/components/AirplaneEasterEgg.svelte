@@ -418,6 +418,7 @@
 
   .easter-egg-section {
     position: relative;
+    z-index: 50;
     width: 100%;
     height: 100vh;
     height: 100dvh;
@@ -429,6 +430,13 @@
     will-change: transform;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+  }
+
+  :global(.pin-spacer:has(.easter-egg-section)),
+  :global(.pin-spacer:has(.mobile-section)) {
+    z-index: 50 !important;
+    overflow: hidden !important;
+    background: var(--bg-primary) !important;
   }
 
   .easter-egg-section .sky-container,
@@ -605,9 +613,12 @@
 
     .mobile-section {
       display: block;
+      position: relative;
+      z-index: 50;
       height: 100vh;
       height: 100dvh;
       overflow: hidden;
+      background: var(--bg-primary);
     }
 
     .section-top-gradient {
