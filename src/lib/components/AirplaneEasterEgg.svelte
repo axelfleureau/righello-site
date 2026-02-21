@@ -131,26 +131,33 @@
     ctx = gsap.context(() => {
       const emojiEls = emojiZone?.querySelectorAll('.emoji-float');
       if (emojiEls && emojiEls.length > 0) {
-        gsap.set(emojiEls, { opacity: 0, scale: 0.5, y: 40 });
-        ScrollTrigger.create({
-          trigger: emojiZone,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          scrub: 0.8,
-          onUpdate: (self) => {
-            const p = self.progress;
-            emojiEls.forEach((el, i) => {
-              const stagger = i * 0.12;
-              const local = Math.max(0, Math.min(1, (p - stagger) / 0.3));
-              const fadeOut = p > 0.7 ? Math.max(0, 1 - (p - 0.7) / 0.3) : 1;
-              gsap.set(el, {
-                opacity: local * fadeOut,
-                scale: 0.5 + local * 0.5,
-                y: 40 * (1 - local),
-                rotation: (i % 2 === 0 ? 1 : -1) * 10 * (1 - local)
-              });
-            });
+        const emojiTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: emojiZone,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            scrub: 1.5,
+            fastScrollEnd: true,
           }
+        });
+
+        emojiEls.forEach((el, i) => {
+          gsap.set(el, { opacity: 0, scale: 0.5, y: 40, rotation: (i % 2 === 0 ? 1 : -1) * 10, force3D: true });
+
+          const enterStart = i * 0.08;
+          const enterDur = 0.2;
+          const holdDur = 0.15;
+          const exitDur = 0.15;
+
+          emojiTl.to(el, {
+            opacity: 1, scale: 1, y: 0, rotation: 0,
+            duration: enterDur, ease: 'power2.out'
+          }, enterStart);
+
+          emojiTl.to(el, {
+            opacity: 0, scale: 0.8, y: -20,
+            duration: exitDur, ease: 'power2.in'
+          }, enterStart + enterDur + holdDur);
         });
       }
 
@@ -161,62 +168,35 @@
         const vh = window.innerHeight;
         const skyMoveDistance = skyHeight - vh;
 
-        gsap.set(introText, { opacity: 0, yPercent: 30 });
-        gsap.set(midText, { opacity: 0, yPercent: 30 });
-        gsap.set(finalText, { opacity: 0, yPercent: 30 });
-        gsap.set(discountReveal, { opacity: 0, scale: 0.8 });
+        gsap.set([introText, midText, finalText], { opacity: 0, yPercent: 30, force3D: true });
+        gsap.set(discountReveal, { opacity: 0, scale: 0.8, force3D: true });
 
-        ScrollTrigger.create({
-          trigger: sectionEl,
-          start: 'top top',
-          end: `+=${vh * 3}px`,
-          pin: true,
-          pinSpacing: true,
-          scrub: 1,
-          onUpdate: (self) => {
-            const progress = self.progress;
-
-            let windowScale;
-            if (progress <= 0.5) {
-              windowScale = 1 + (progress / 0.5) * 3;
-            } else {
-              windowScale = 4;
-            }
-            gsap.set(windowContainer, { scale: windowScale });
-            gsap.set(skyContainer, { y: -progress * skyMoveDistance });
-
-            if (progress >= 0.05 && progress <= 0.3) {
-              const p = (progress - 0.05) / 0.25;
-              gsap.set(introText, { opacity: p < 0.5 ? p * 2 : 2 - p * 2, yPercent: 30 * (1 - p) });
-            } else {
-              gsap.set(introText, { opacity: 0 });
-            }
-
-            if (progress >= 0.35 && progress <= 0.6) {
-              const p = (progress - 0.35) / 0.25;
-              gsap.set(midText, { opacity: p < 0.5 ? p * 2 : 2 - p * 2, yPercent: 30 * (1 - p) });
-            } else {
-              gsap.set(midText, { opacity: 0 });
-            }
-
-            if (progress >= 0.6 && progress <= 0.85) {
-              const p = (progress - 0.6) / 0.25;
-              const fadeIn = Math.min(1, p * 3);
-              gsap.set(finalText, { opacity: fadeIn, yPercent: 30 * (1 - p) });
-            } else if (progress > 0.85) {
-              gsap.set(finalText, { opacity: 1, yPercent: 0 });
-            } else {
-              gsap.set(finalText, { opacity: 0 });
-            }
-
-            if (progress >= 0.7) {
-              const p = (progress - 0.7) / 0.3;
-              gsap.set(discountReveal, { opacity: Math.min(1, p * 2), scale: 0.8 + 0.2 * Math.min(1, p * 2) });
-            } else {
-              gsap.set(discountReveal, { opacity: 0, scale: 0.8 });
-            }
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionEl,
+            start: 'top top',
+            end: `+=${vh * 3}px`,
+            pin: true,
+            pinSpacing: true,
+            scrub: 1.5,
+            fastScrollEnd: true,
+            anticipatePin: 1,
           }
         });
+
+        tl.to(windowContainer, { scale: 4, duration: 0.5, ease: 'none', force3D: true }, 0);
+        tl.to(skyContainer, { y: -skyMoveDistance, duration: 1, ease: 'none', force3D: true }, 0);
+
+        tl.to(introText, { opacity: 1, yPercent: 0, duration: 0.1, ease: 'power2.out' }, 0.05);
+        tl.to(introText, { opacity: 0, yPercent: -10, duration: 0.1, ease: 'power2.in' }, 0.2);
+
+        tl.to(midText, { opacity: 1, yPercent: 0, duration: 0.1, ease: 'power2.out' }, 0.35);
+        tl.to(midText, { opacity: 0, yPercent: -10, duration: 0.1, ease: 'power2.in' }, 0.5);
+
+        tl.to(finalText, { opacity: 1, yPercent: 0, duration: 0.15, ease: 'power2.out' }, 0.6);
+
+        tl.to(discountReveal, { opacity: 1, scale: 1, duration: 0.15, ease: 'back.out(1.5)' }, 0.7);
+
       } else {
         if (!mSectionEl || !mSkyContainer || !mWindowContainer) return;
 
@@ -224,79 +204,35 @@
         const skyHeight = mSkyContainer.offsetHeight;
         const skyMoveDistance = skyHeight - vh;
 
-        gsap.set(mIntroText, { opacity: 0, y: 50 });
-        gsap.set(mWindowContainer, { scale: 1 });
-        gsap.set(mMidText, { opacity: 0, y: 50 });
-        gsap.set(mFinalText, { opacity: 0, y: 50 });
-        gsap.set(mDiscountReveal, { opacity: 0, y: 30, scale: 0.9 });
+        gsap.set([mIntroText, mMidText, mFinalText], { opacity: 0, y: 50, force3D: true });
+        gsap.set(mDiscountReveal, { opacity: 0, y: 30, scale: 0.9, force3D: true });
+        gsap.set(mWindowContainer, { scale: 1, force3D: true });
 
-        ScrollTrigger.create({
-          trigger: mSectionEl,
-          start: 'top top',
-          end: `+=${vh * 3}px`,
-          pin: true,
-          pinSpacing: true,
-          scrub: 0.8,
-          onUpdate: (self) => {
-            const progress = self.progress;
-
-            let windowScale;
-            if (progress <= 0.5) {
-              windowScale = 1 + (progress / 0.5) * 3;
-            } else {
-              windowScale = 4;
-            }
-            gsap.set(mWindowContainer, { scale: windowScale });
-
-            gsap.set(mSkyContainer, { y: -progress * skyMoveDistance });
-
-            if (progress <= 0.15) {
-              const p = progress / 0.15;
-              gsap.set(mIntroText, { opacity: p, y: 50 * (1 - p) });
-            } else if (progress <= 0.25) {
-              gsap.set(mIntroText, { opacity: 1, y: 0 });
-            } else if (progress <= 0.35) {
-              const p = (progress - 0.25) / 0.1;
-              gsap.set(mIntroText, { opacity: 1 - p, y: -30 * p });
-            } else {
-              gsap.set(mIntroText, { opacity: 0 });
-            }
-
-            if (progress >= 0.35 && progress <= 0.55) {
-              const p = (progress - 0.35) / 0.2;
-              gsap.set(mMidText, { opacity: Math.min(1, p * 2), y: 50 * (1 - p) });
-            } else if (progress > 0.55 && progress <= 0.65) {
-              gsap.set(mMidText, { opacity: 1, y: 0 });
-            } else if (progress > 0.65 && progress <= 0.75) {
-              const p = (progress - 0.65) / 0.1;
-              gsap.set(mMidText, { opacity: 1 - p, y: -30 * p });
-            } else if (progress > 0.75) {
-              gsap.set(mMidText, { opacity: 0 });
-            } else {
-              gsap.set(mMidText, { opacity: 0, y: 50 });
-            }
-
-            if (progress >= 0.6 && progress <= 0.8) {
-              const p = (progress - 0.6) / 0.2;
-              gsap.set(mFinalText, { opacity: Math.min(1, p * 1.5), y: 50 * (1 - p) });
-            } else if (progress > 0.8) {
-              gsap.set(mFinalText, { opacity: 1, y: 0 });
-            } else {
-              gsap.set(mFinalText, { opacity: 0, y: 50 });
-            }
-
-            if (progress >= 0.75) {
-              const p = (progress - 0.75) / 0.25;
-              gsap.set(mDiscountReveal, {
-                opacity: Math.min(1, p * 2),
-                y: 30 * (1 - Math.min(1, p * 2)),
-                scale: 0.9 + 0.1 * Math.min(1, p * 2)
-              });
-            } else {
-              gsap.set(mDiscountReveal, { opacity: 0, y: 30, scale: 0.9 });
-            }
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: mSectionEl,
+            start: 'top top',
+            end: `+=${vh * 3}px`,
+            pin: true,
+            pinSpacing: true,
+            scrub: 1.5,
+            fastScrollEnd: true,
+            anticipatePin: 1,
           }
         });
+
+        tl.to(mWindowContainer, { scale: 4, duration: 0.5, ease: 'none', force3D: true }, 0);
+        tl.to(mSkyContainer, { y: -skyMoveDistance, duration: 1, ease: 'none', force3D: true }, 0);
+
+        tl.to(mIntroText, { opacity: 1, y: 0, duration: 0.1, ease: 'power2.out' }, 0.05);
+        tl.to(mIntroText, { opacity: 0, y: -30, duration: 0.08, ease: 'power2.in' }, 0.2);
+
+        tl.to(mMidText, { opacity: 1, y: 0, duration: 0.1, ease: 'power2.out' }, 0.35);
+        tl.to(mMidText, { opacity: 0, y: -30, duration: 0.08, ease: 'power2.in' }, 0.55);
+
+        tl.to(mFinalText, { opacity: 1, y: 0, duration: 0.15, ease: 'power2.out' }, 0.6);
+
+        tl.to(mDiscountReveal, { opacity: 1, y: 0, scale: 1, duration: 0.15, ease: 'back.out(1.5)' }, 0.75);
       }
     });
   });
@@ -441,6 +377,8 @@
     user-select: none;
     pointer-events: none;
     filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .emoji-left { left: 8%; }
@@ -459,7 +397,6 @@
     height: 100dvh;
     overflow: hidden;
     background: var(--bg-primary);
-    perspective: 1000px;
   }
 
   .easter-egg-section .sky-container,
@@ -495,6 +432,9 @@
     left: 0;
     width: 100%;
     will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .sky-container {
@@ -508,6 +448,8 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .window-container {
@@ -527,6 +469,9 @@
     transform: translateX(-50%);
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 0, 0, 0.3);
     pointer-events: none;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .easter-text h2 {
@@ -557,6 +502,9 @@
     align-items: center;
     gap: 0.75rem;
     pointer-events: auto;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .discount-label {
