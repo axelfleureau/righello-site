@@ -427,16 +427,11 @@
     margin: 0;
     padding: 0;
     border: none;
-    will-change: transform;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
   }
 
   :global(.pin-spacer:has(.easter-egg-section)),
   :global(.pin-spacer:has(.mobile-section)) {
     z-index: 50 !important;
-    overflow: hidden !important;
-    background: var(--bg-primary) !important;
   }
 
   .easter-egg-section .sky-container,
