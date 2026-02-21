@@ -39,7 +39,6 @@
 </script>
 
 <footer class="footer" role="contentinfo">
-  <div class="footer-spacer"></div>
   <div class="footer-top-border"></div>
 
   <div class="footer-cta section-container">
@@ -157,15 +156,6 @@
     color: var(--text-primary);
     overflow-x: hidden;
     overflow-y: visible;
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-
-  .footer-spacer {
-    flex: 1;
   }
 
   .footer-top-border {
