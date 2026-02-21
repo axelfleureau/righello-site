@@ -124,7 +124,12 @@
     gsap.registerPlugin(ScrollTrigger);
 
     await preloadImages();
-    await new Promise(resolve => setTimeout(resolve, 100));
+
+    await new Promise<void>(resolve => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => resolve());
+      });
+    });
 
     const isDesktop = window.matchMedia('(min-width: 768px)').matches;
 
@@ -179,7 +184,6 @@
             pin: true,
             pinSpacing: true,
             scrub: true,
-            anticipatePin: 1,
             snap: {
               snapTo: 'labels',
               duration: { min: 0.2, max: 0.5 },
@@ -228,7 +232,6 @@
             pin: true,
             pinSpacing: true,
             scrub: true,
-            anticipatePin: 1,
             invalidateOnRefresh: true,
           }
         });
@@ -254,6 +257,8 @@
         tl.addLabel('end', 1);
       }
     });
+
+    ScrollTrigger.refresh();
   });
 
   onDestroy(() => {
@@ -416,6 +421,9 @@
     height: 100dvh;
     overflow: hidden;
     background: var(--bg-primary);
+    margin: 0;
+    padding: 0;
+    border: none;
   }
 
   .easter-egg-section .sky-container,
