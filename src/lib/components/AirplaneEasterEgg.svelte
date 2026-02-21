@@ -136,36 +136,36 @@
             trigger: emojiZone,
             start: 'top 80%',
             end: 'bottom 20%',
-            scrub: 1.5,
-            fastScrollEnd: true,
+            scrub: true,
           }
         });
 
         emojiEls.forEach((el, i) => {
           gsap.set(el, { opacity: 0, scale: 0.5, y: 40, rotation: (i % 2 === 0 ? 1 : -1) * 10, force3D: true });
 
-          const enterStart = i * 0.08;
-          const enterDur = 0.2;
-          const holdDur = 0.15;
-          const exitDur = 0.15;
+          const enterStart = i * 0.1;
+          const enterDur = 0.15;
+          const holdDur = 0.2;
+          const exitDur = 0.12;
 
           emojiTl.to(el, {
             opacity: 1, scale: 1, y: 0, rotation: 0,
-            duration: enterDur, ease: 'power2.out'
+            duration: enterDur, ease: 'none'
           }, enterStart);
 
           emojiTl.to(el, {
             opacity: 0, scale: 0.8, y: -20,
-            duration: exitDur, ease: 'power2.in'
+            duration: exitDur, ease: 'none'
           }, enterStart + enterDur + holdDur);
         });
       }
+
+      const vh = window.innerHeight;
 
       if (isDesktop) {
         if (!sectionEl || !skyContainer || !windowContainer) return;
 
         const skyHeight = skyContainer.offsetHeight;
-        const vh = window.innerHeight;
         const skyMoveDistance = skyHeight - vh;
 
         gsap.set([introText, midText, finalText], { opacity: 0, yPercent: 30, force3D: true });
@@ -175,32 +175,44 @@
           scrollTrigger: {
             trigger: sectionEl,
             start: 'top top',
-            end: `+=${vh * 3}px`,
+            end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
-            scrub: 1.5,
-            fastScrollEnd: true,
+            scrub: true,
             anticipatePin: 1,
+            snap: {
+              snapTo: 'labels',
+              duration: { min: 0.2, max: 0.5 },
+              delay: 0.15,
+              ease: 'power1.inOut',
+            },
+            invalidateOnRefresh: true,
           }
         });
 
-        tl.to(windowContainer, { scale: 4, duration: 0.5, ease: 'none', force3D: true }, 0);
-        tl.to(skyContainer, { y: -skyMoveDistance, duration: 1, ease: 'none', force3D: true }, 0);
+        tl.addLabel('start', 0);
 
-        tl.to(introText, { opacity: 1, yPercent: 0, duration: 0.1, ease: 'power2.out' }, 0.05);
-        tl.to(introText, { opacity: 0, yPercent: -10, duration: 0.1, ease: 'power2.in' }, 0.2);
+        tl.to(windowContainer, { scale: 4, duration: 0.85, ease: 'none', force3D: true }, 0);
+        tl.to(skyContainer, { y: -skyMoveDistance, duration: 0.95, ease: 'none', force3D: true }, 0);
 
-        tl.to(midText, { opacity: 1, yPercent: 0, duration: 0.1, ease: 'power2.out' }, 0.35);
-        tl.to(midText, { opacity: 0, yPercent: -10, duration: 0.1, ease: 'power2.in' }, 0.5);
+        tl.addLabel('intro', 0.1);
+        tl.to(introText, { opacity: 1, yPercent: 0, duration: 0.08, ease: 'none' }, 0.1);
+        tl.to(introText, { opacity: 0, yPercent: -15, duration: 0.08, ease: 'none' }, 0.24);
 
-        tl.to(finalText, { opacity: 1, yPercent: 0, duration: 0.15, ease: 'power2.out' }, 0.6);
+        tl.addLabel('mid', 0.36);
+        tl.to(midText, { opacity: 1, yPercent: 0, duration: 0.08, ease: 'none' }, 0.36);
+        tl.to(midText, { opacity: 0, yPercent: -15, duration: 0.08, ease: 'none' }, 0.52);
 
-        tl.to(discountReveal, { opacity: 1, scale: 1, duration: 0.15, ease: 'back.out(1.5)' }, 0.7);
+        tl.addLabel('final', 0.64);
+        tl.to(finalText, { opacity: 1, yPercent: 0, duration: 0.1, ease: 'none' }, 0.64);
+
+        tl.addLabel('discount', 0.82);
+        tl.to(discountReveal, { opacity: 1, scale: 1, duration: 0.1, ease: 'none' }, 0.82);
+        tl.addLabel('end', 1);
 
       } else {
         if (!mSectionEl || !mSkyContainer || !mWindowContainer) return;
 
-        const vh = window.innerHeight;
         const skyHeight = mSkyContainer.offsetHeight;
         const skyMoveDistance = skyHeight - vh;
 
@@ -212,27 +224,34 @@
           scrollTrigger: {
             trigger: mSectionEl,
             start: 'top top',
-            end: `+=${vh * 3}px`,
+            end: `+=${vh * 5}`,
             pin: true,
             pinSpacing: true,
-            scrub: 1.5,
-            fastScrollEnd: true,
+            scrub: true,
             anticipatePin: 1,
+            invalidateOnRefresh: true,
           }
         });
 
-        tl.to(mWindowContainer, { scale: 4, duration: 0.5, ease: 'none', force3D: true }, 0);
-        tl.to(mSkyContainer, { y: -skyMoveDistance, duration: 1, ease: 'none', force3D: true }, 0);
+        tl.addLabel('start', 0);
 
-        tl.to(mIntroText, { opacity: 1, y: 0, duration: 0.1, ease: 'power2.out' }, 0.05);
-        tl.to(mIntroText, { opacity: 0, y: -30, duration: 0.08, ease: 'power2.in' }, 0.2);
+        tl.to(mWindowContainer, { scale: 4, duration: 0.85, ease: 'none', force3D: true }, 0);
+        tl.to(mSkyContainer, { y: -skyMoveDistance, duration: 0.95, ease: 'none', force3D: true }, 0);
 
-        tl.to(mMidText, { opacity: 1, y: 0, duration: 0.1, ease: 'power2.out' }, 0.35);
-        tl.to(mMidText, { opacity: 0, y: -30, duration: 0.08, ease: 'power2.in' }, 0.55);
+        tl.addLabel('intro', 0.1);
+        tl.to(mIntroText, { opacity: 1, y: 0, duration: 0.08, ease: 'none' }, 0.1);
+        tl.to(mIntroText, { opacity: 0, y: -30, duration: 0.08, ease: 'none' }, 0.24);
 
-        tl.to(mFinalText, { opacity: 1, y: 0, duration: 0.15, ease: 'power2.out' }, 0.6);
+        tl.addLabel('mid', 0.36);
+        tl.to(mMidText, { opacity: 1, y: 0, duration: 0.08, ease: 'none' }, 0.36);
+        tl.to(mMidText, { opacity: 0, y: -30, duration: 0.08, ease: 'none' }, 0.52);
 
-        tl.to(mDiscountReveal, { opacity: 1, y: 0, scale: 1, duration: 0.15, ease: 'back.out(1.5)' }, 0.75);
+        tl.addLabel('final', 0.64);
+        tl.to(mFinalText, { opacity: 1, y: 0, duration: 0.1, ease: 'none' }, 0.64);
+
+        tl.addLabel('discount', 0.82);
+        tl.to(mDiscountReveal, { opacity: 1, y: 0, scale: 1, duration: 0.1, ease: 'none' }, 0.82);
+        tl.addLabel('end', 1);
       }
     });
   });
