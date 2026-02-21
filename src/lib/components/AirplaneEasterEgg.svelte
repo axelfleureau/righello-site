@@ -19,6 +19,9 @@
   let mFinalText: HTMLElement;
   let mDiscountReveal: HTMLElement;
 
+  let desktopWrapper: HTMLElement;
+  let mobileWrapper: HTMLElement;
+
   let preloadZone: HTMLElement;
 
   let ctx: any = null;
@@ -188,15 +191,14 @@
         const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
         const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
 
+        if (desktopWrapper) desktopWrapper.style.height = `${vh * 6}px`;
+
         const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: sectionEl,
+            trigger: desktopWrapper,
             start: 'top top',
-            end: `+=${vh * 5}`,
-            pin: true,
-            pinSpacing: true,
+            end: 'bottom bottom',
             scrub: 0.5,
-            anticipatePin: 0.3,
             snap: {
               snapTo: 'labels',
               duration: { min: 0.2, max: 0.5 },
@@ -204,14 +206,6 @@
               ease: 'power1.inOut',
             },
             invalidateOnRefresh: true,
-            onEnter: (self) => {
-              const spacer = self.spacer;
-              if (spacer) spacer.style.zIndex = '40';
-            },
-            onLeaveBack: (self) => {
-              const spacer = self.spacer;
-              if (spacer) spacer.style.zIndex = '';
-            },
           }
         });
 
@@ -256,24 +250,15 @@
         const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
         const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
 
+        if (mobileWrapper) mobileWrapper.style.height = `${vh * 6}px`;
+
         const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: mSectionEl,
+            trigger: mobileWrapper,
             start: 'top top',
-            end: `+=${vh * 5}`,
-            pin: true,
-            pinSpacing: true,
+            end: 'bottom bottom',
             scrub: 0.5,
-            anticipatePin: 0.3,
             invalidateOnRefresh: true,
-            onEnter: (self) => {
-              const spacer = self.spacer;
-              if (spacer) spacer.style.zIndex = '40';
-            },
-            onLeaveBack: (self) => {
-              const spacer = self.spacer;
-              if (spacer) spacer.style.zIndex = '';
-            },
           }
         });
 
@@ -321,88 +306,92 @@
 </div>
 
 <!-- Desktop scrollytelling -->
-<section bind:this={sectionEl} class="easter-egg-section desktop-only" class:images-ready={imagesLoaded}>
-  <div class="section-top-gradient" aria-hidden="true"></div>
-  <div bind:this={skyContainer} class="sky-container">
-    <picture>
-      <source srcset={skyWebp} type="image/webp" />
-      <img src={skyJpg} alt="" decoding="async" draggable="false" />
-    </picture>
-  </div>
-  <div bind:this={windowContainer} class="window-container">
-    <picture>
-      <source srcset={windowWebp} type="image/webp" />
-      <img src={windowPng} alt="" decoding="async" draggable="false" />
-    </picture>
-  </div>
+<div bind:this={desktopWrapper} class="scroll-wrapper desktop-only">
+  <section bind:this={sectionEl} class="easter-egg-section" class:images-ready={imagesLoaded}>
+    <div class="section-top-gradient" aria-hidden="true"></div>
+    <div bind:this={skyContainer} class="sky-container">
+      <picture>
+        <source srcset={skyWebp} type="image/webp" />
+        <img src={skyJpg} alt="" decoding="async" draggable="false" />
+      </picture>
+    </div>
+    <div bind:this={windowContainer} class="window-container">
+      <picture>
+        <source srcset={windowWebp} type="image/webp" />
+        <img src={windowPng} alt="" decoding="async" draggable="false" />
+      </picture>
+    </div>
 
-  <div bind:this={introText} class="easter-text intro-text">
-    <h2>Sei ancora qui?</h2>
-    <p>Allora sei davvero interessato!</p>
-  </div>
+    <div bind:this={introText} class="easter-text intro-text">
+      <h2>Sei ancora qui?</h2>
+      <p>Allora sei davvero interessato!</p>
+    </div>
 
-  <div bind:this={midText} class="easter-text mid-text">
-    <p>Per te che hai scrollato fino a qui, uno sconto che ti aiuterà a raggiungere i risultati che hai sempre sognato.</p>
-  </div>
+    <div bind:this={midText} class="easter-text mid-text">
+      <p>Per te che hai scrollato fino a qui, uno sconto che ti aiuterà a raggiungere i risultati che hai sempre sognato.</p>
+    </div>
 
-  <div bind:this={finalText} class="easter-text final-text">
-    <h2>Prendi il volo con il team di Righello!</h2>
-  </div>
+    <div bind:this={finalText} class="easter-text final-text">
+      <h2>Prendi il volo con il team di Righello!</h2>
+    </div>
 
-  <div bind:this={discountReveal} class="discount-reveal">
-    <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
-    <a href={WA_URL} class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp" rel="noopener noreferrer">
-      {#if copied}
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-        Copiato!
-      {:else}
-        {DISCOUNT_CODE}
-      {/if}
-    </a>
-  </div>
-</section>
+    <div bind:this={discountReveal} class="discount-reveal">
+      <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
+      <a href={WA_URL} class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp" rel="noopener noreferrer">
+        {#if copied}
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Copiato!
+        {:else}
+          {DISCOUNT_CODE}
+        {/if}
+      </a>
+    </div>
+  </section>
+</div>
 
 <!-- Mobile scrollytelling -->
-<section bind:this={mSectionEl} class="easter-egg-section mobile-section" class:images-ready={imagesLoaded}>
-  <div class="section-top-gradient" aria-hidden="true"></div>
-  <div bind:this={mSkyContainer} class="sky-container">
-    <picture>
-      <source srcset={skyWebp} type="image/webp" />
-      <img src={skyJpg} alt="" decoding="async" draggable="false" />
-    </picture>
-  </div>
-  <div bind:this={mWindowContainer} class="window-container">
-    <picture>
-      <source srcset={windowWebp} type="image/webp" />
-      <img src={windowPng} alt="" decoding="async" draggable="false" />
-    </picture>
-  </div>
+<div bind:this={mobileWrapper} class="scroll-wrapper mobile-section-wrapper">
+  <section bind:this={mSectionEl} class="easter-egg-section mobile-section-inner" class:images-ready={imagesLoaded}>
+    <div class="section-top-gradient" aria-hidden="true"></div>
+    <div bind:this={mSkyContainer} class="sky-container">
+      <picture>
+        <source srcset={skyWebp} type="image/webp" />
+        <img src={skyJpg} alt="" decoding="async" draggable="false" />
+      </picture>
+    </div>
+    <div bind:this={mWindowContainer} class="window-container">
+      <picture>
+        <source srcset={windowWebp} type="image/webp" />
+        <img src={windowPng} alt="" decoding="async" draggable="false" />
+      </picture>
+    </div>
 
-  <div bind:this={mIntroText} class="easter-text intro-text">
-    <h2>Sei ancora qui?</h2>
-    <p>Allora sei davvero interessato!</p>
-  </div>
+    <div bind:this={mIntroText} class="easter-text intro-text">
+      <h2>Sei ancora qui?</h2>
+      <p>Allora sei davvero interessato!</p>
+    </div>
 
-  <div bind:this={mMidText} class="easter-text mid-text">
-    <p>Per te che hai scrollato fino a qui, uno sconto che ti aiuterà a raggiungere i risultati che hai sempre sognato.</p>
-  </div>
+    <div bind:this={mMidText} class="easter-text mid-text">
+      <p>Per te che hai scrollato fino a qui, uno sconto che ti aiuterà a raggiungere i risultati che hai sempre sognato.</p>
+    </div>
 
-  <div bind:this={mFinalText} class="easter-text final-text">
-    <h2>Prendi il volo con il team di Righello!</h2>
-  </div>
+    <div bind:this={mFinalText} class="easter-text final-text">
+      <h2>Prendi il volo con il team di Righello!</h2>
+    </div>
 
-  <div bind:this={mDiscountReveal} class="discount-reveal">
-    <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
-    <a href={WA_URL} class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp" rel="noopener noreferrer">
-      {#if copied}
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-        Copiato!
-      {:else}
-        {DISCOUNT_CODE}
-      {/if}
-    </a>
-  </div>
-</section>
+    <div bind:this={mDiscountReveal} class="discount-reveal">
+      <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
+      <a href={WA_URL} class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp" rel="noopener noreferrer">
+        {#if copied}
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Copiato!
+        {:else}
+          {DISCOUNT_CODE}
+        {/if}
+      </a>
+    </div>
+  </section>
+</div>
 
 <style>
   .easter-egg-blend {
@@ -454,9 +443,14 @@
   .emoji-5 { top: 73%; }
   .emoji-6 { top: 90%; }
 
-  .easter-egg-section {
+  .scroll-wrapper {
     position: relative;
     z-index: 40;
+  }
+
+  .easter-egg-section {
+    position: sticky;
+    top: 0;
     width: 100%;
     height: 100vh;
     height: 100dvh;
@@ -490,7 +484,7 @@
     pointer-events: none;
   }
 
-  .mobile-section {
+  .mobile-section-wrapper {
     display: none;
   }
 
@@ -640,14 +634,12 @@
       display: none !important;
     }
 
-    .mobile-section {
+    .mobile-section-wrapper {
       display: block;
-      position: relative;
-      z-index: 40;
-      height: 100vh;
-      height: 100dvh;
-      overflow: hidden;
-      background: var(--bg-primary);
+    }
+
+    .mobile-section-inner {
+      display: block;
     }
 
     .section-top-gradient {
@@ -673,7 +665,7 @@
   }
 
   @media (min-width: 768px) {
-    .mobile-section {
+    .mobile-section-wrapper {
       display: none !important;
     }
   }
