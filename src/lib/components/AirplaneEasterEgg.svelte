@@ -10,6 +10,7 @@
   let midText: HTMLElement;
   let finalText: HTMLElement;
   let discountReveal: HTMLElement;
+  let desktopWrapper: HTMLElement;
 
   let mSectionEl: HTMLElement;
   let mSkyContainer: HTMLElement;
@@ -18,6 +19,7 @@
   let mMidText: HTMLElement;
   let mFinalText: HTMLElement;
   let mDiscountReveal: HTMLElement;
+  let mobileWrapper: HTMLElement;
 
   let preloadZone: HTMLElement;
 
@@ -188,15 +190,14 @@
         const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
         const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
 
+        if (desktopWrapper) desktopWrapper.style.height = `${vh * 6}px`;
+
         const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: sectionEl,
+            trigger: desktopWrapper,
             start: 'top top',
-            end: `+=${vh * 5}`,
-            pin: true,
-            pinSpacing: true,
+            end: 'bottom bottom',
             scrub: 0.5,
-            anticipatePin: 0.3,
             snap: {
               snapTo: 'labels',
               duration: { min: 0.2, max: 0.5 },
@@ -204,22 +205,6 @@
               ease: 'power1.inOut',
             },
             invalidateOnRefresh: true,
-            onLeave: () => {
-              sectionEl.style.position = 'fixed';
-              sectionEl.style.top = '0';
-              sectionEl.style.left = '0';
-              sectionEl.style.width = '100%';
-              sectionEl.style.zIndex = '40';
-              sectionEl.style.transform = 'none';
-            },
-            onEnterBack: () => {
-              sectionEl.style.position = '';
-              sectionEl.style.top = '';
-              sectionEl.style.left = '';
-              sectionEl.style.width = '';
-              sectionEl.style.zIndex = '';
-              sectionEl.style.transform = '';
-            },
           }
         });
 
@@ -264,32 +249,15 @@
         const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
         const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
 
+        if (mobileWrapper) mobileWrapper.style.height = `${vh * 6}px`;
+
         const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: mSectionEl,
+            trigger: mobileWrapper,
             start: 'top top',
-            end: `+=${vh * 5}`,
-            pin: true,
-            pinSpacing: true,
+            end: 'bottom bottom',
             scrub: 0.5,
-            anticipatePin: 0.3,
             invalidateOnRefresh: true,
-            onLeave: () => {
-              mSectionEl.style.position = 'fixed';
-              mSectionEl.style.top = '0';
-              mSectionEl.style.left = '0';
-              mSectionEl.style.width = '100%';
-              mSectionEl.style.zIndex = '40';
-              mSectionEl.style.transform = 'none';
-            },
-            onEnterBack: () => {
-              mSectionEl.style.position = '';
-              mSectionEl.style.top = '';
-              mSectionEl.style.left = '';
-              mSectionEl.style.width = '';
-              mSectionEl.style.zIndex = '';
-              mSectionEl.style.transform = '';
-            },
           }
         });
 
@@ -337,7 +305,8 @@
 </div>
 
 <!-- Desktop scrollytelling -->
-<section bind:this={sectionEl} class="easter-egg-section desktop-only" class:images-ready={imagesLoaded}>
+<div bind:this={desktopWrapper} class="scroll-wrapper desktop-only">
+<section bind:this={sectionEl} class="easter-egg-section" class:images-ready={imagesLoaded}>
     <div class="section-top-gradient" aria-hidden="true"></div>
     <div bind:this={skyContainer} class="sky-container">
       <picture>
@@ -377,9 +346,11 @@
       </a>
     </div>
 </section>
+</div>
 
 <!-- Mobile scrollytelling -->
-<section bind:this={mSectionEl} class="easter-egg-section mobile-section" class:images-ready={imagesLoaded}>
+<div bind:this={mobileWrapper} class="scroll-wrapper mobile-only">
+<section bind:this={mSectionEl} class="easter-egg-section" class:images-ready={imagesLoaded}>
     <div class="section-top-gradient" aria-hidden="true"></div>
     <div bind:this={mSkyContainer} class="sky-container">
       <picture>
@@ -419,6 +390,7 @@
       </a>
     </div>
 </section>
+</div>
 
 <style>
   .easter-egg-blend {
@@ -470,9 +442,14 @@
   .emoji-5 { top: 73%; }
   .emoji-6 { top: 90%; }
 
-  .easter-egg-section {
+  .scroll-wrapper {
     position: relative;
     z-index: 40;
+  }
+
+  .easter-egg-section {
+    position: sticky;
+    top: 0;
     width: 100%;
     height: 100vh;
     height: 100dvh;
@@ -504,10 +481,6 @@
     background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
     z-index: 15;
     pointer-events: none;
-  }
-
-  .mobile-section {
-    display: none;
   }
 
   .sky-container,
@@ -656,14 +629,8 @@
       display: none !important;
     }
 
-    .mobile-section {
+    .mobile-only {
       display: block;
-      position: relative;
-      z-index: 40;
-      height: 100vh;
-      height: 100dvh;
-      overflow: hidden;
-      background: var(--bg-primary);
     }
 
     .section-top-gradient {
@@ -689,7 +656,7 @@
   }
 
   @media (min-width: 768px) {
-    .mobile-section {
+    .mobile-only {
       display: none !important;
     }
   }
