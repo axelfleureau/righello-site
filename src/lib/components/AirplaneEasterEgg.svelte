@@ -347,7 +347,7 @@
     position: relative;
     width: 100%;
     height: 200px;
-    background: linear-gradient(to bottom, rgba(5, 5, 5, 1) 0%, #f5f5f5 100%);
+    background: linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-primary) 100%);
     pointer-events: none;
     z-index: 1;
   }
@@ -356,7 +356,7 @@
     position: relative;
     width: 100%;
     height: 80svh;
-    background: #f5f5f5;
+    background: var(--bg-primary);
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -387,7 +387,7 @@
     width: 100%;
     height: 100svh;
     overflow: hidden;
-    background: #f5f5f5;
+    background: var(--bg-primary);
     perspective: 1000px;
   }
 
@@ -538,14 +538,14 @@
   .m-text h2 {
     font-size: clamp(1.5rem, 7vw, 2rem);
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
     line-height: 1.2;
   }
 
   .m-text p {
     font-size: 1rem;
-    color: #4a4a5a;
+    color: var(--text-secondary);
     line-height: 1.6;
   }
 
@@ -606,7 +606,7 @@
   }
 
   .m-discount-label {
-    color: #4a4a5a;
+    color: var(--text-secondary);
     font-size: 1rem;
     text-align: center;
     max-width: 300px;
