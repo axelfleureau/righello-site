@@ -2,10 +2,12 @@
   import '$styles/index.css';
   import Header from '$lib/components/Header.svelte';
   import Footer from '$lib/components/Footer.svelte';
+  import AirplaneEasterEgg from '$lib/components/AirplaneEasterEgg.svelte';
   import { theme } from '$lib/stores/theme';
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import { afterNavigate } from '$app/navigation';
+  import { page } from '$app/stores';
   import { initMetaPixel, trackPageView } from '$lib/tracking/metaPixel';
   
   const PUBLIC_META_PIXEL_ID = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
@@ -67,4 +69,7 @@
     <slot />
   </main>
   <Footer />
+  {#if $page.url.pathname === '/'}
+    <AirplaneEasterEgg />
+  {/if}
 </div>
