@@ -10,17 +10,17 @@
   let finalText: HTMLElement;
   let discountReveal: HTMLElement;
   let ctx: any = null;
-  let isMobile = false;
+  let mounted = false;
 
   onMount(async () => {
     if (!browser) return;
-
-    isMobile = window.innerWidth < 768;
+    mounted = true;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
-    if (isMobile) return;
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    if (!isDesktop) return;
 
     const gsap = (await import('gsap')).default;
     const { ScrollTrigger } = await import('gsap/ScrollTrigger');
@@ -102,30 +102,39 @@
 
 <div class="easter-egg-blend" aria-hidden="true"></div>
 
-<section bind:this={sectionEl} class="easter-egg-section" class:is-mobile={isMobile}>
+<section bind:this={sectionEl} class="easter-egg-section">
   <div bind:this={skyContainer} class="sky-container">
-    <img src="/sky-easter-egg.jpg" alt="" loading="lazy" draggable="false" />
+    <img src="/sky-easter-egg.jpg" alt="" loading="lazy" decoding="async" draggable="false" />
   </div>
   <div bind:this={windowContainer} class="window-container">
-    <img src="/window-easter-egg.png" alt="" loading="lazy" draggable="false" />
+    <img src="/window-easter-egg.png" alt="" loading="lazy" decoding="async" draggable="false" />
   </div>
 
-  <div bind:this={introText} class="easter-text intro-text">
-    <h2>Sei ancora qui?</h2>
-    <p>Allora sei davvero interessato!</p>
-  </div>
+  <div class="mobile-content">
+    <div bind:this={introText} class="easter-text intro-text">
+      <h2>Sei ancora qui?</h2>
+      <p>Allora sei davvero interessato!</p>
+    </div>
 
-  <div bind:this={midText} class="easter-text mid-text">
-    <p>Per te che hai scrollato fino a qui, uno sconto che ti aiuterà a raggiungere i risultati che hai sempre sognato.</p>
-  </div>
+    <div class="window-mobile-frame">
+      <img src="/window-easter-egg.png" alt="" loading="lazy" decoding="async" draggable="false" />
+      <div class="window-sky-peek">
+        <img src="/sky-easter-egg.jpg" alt="" loading="lazy" decoding="async" draggable="false" />
+      </div>
+    </div>
 
-  <div bind:this={finalText} class="easter-text final-text">
-    <h2>Prendi il volo con il team di Righello!</h2>
-  </div>
+    <div bind:this={midText} class="easter-text mid-text">
+      <p>Per te che hai scrollato fino a qui, uno sconto che ti aiuterà a raggiungere i risultati che hai sempre sognato.</p>
+    </div>
 
-  <div bind:this={discountReveal} class="discount-reveal">
-    <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
-    <span class="discount-code">scrollerevenue26</span>
+    <div bind:this={finalText} class="easter-text final-text">
+      <h2>Prendi il volo con il team di Righello!</h2>
+    </div>
+
+    <div bind:this={discountReveal} class="discount-reveal">
+      <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
+      <span class="discount-code">scrollerevenue26</span>
+    </div>
   </div>
 </section>
 
@@ -162,7 +171,8 @@
     z-index: 1;
   }
 
-  .sky-container img {
+  .sky-container img,
+  .window-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -173,10 +183,12 @@
     z-index: 2;
   }
 
-  .window-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .mobile-content {
+    display: none;
+  }
+
+  .window-mobile-frame {
+    display: none;
   }
 
   .easter-text {
@@ -255,59 +267,136 @@
     user-select: all;
   }
 
-  .easter-egg-section.is-mobile {
-    height: auto;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 1.5rem;
-    gap: 2rem;
+  @media (max-width: 767px) {
+    .easter-egg-blend {
+      height: 120px;
+    }
+
+    .easter-egg-section {
+      height: auto;
+      min-height: auto;
+      overflow: visible;
+      perspective: none;
+    }
+
+    .sky-container,
+    .window-container {
+      display: none;
+    }
+
+    .mobile-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: calc(2rem + env(safe-area-inset-top, 0px)) calc(1.25rem + env(safe-area-inset-right, 0px)) calc(3rem + env(safe-area-inset-bottom, 0px)) calc(1.25rem + env(safe-area-inset-left, 0px));
+      gap: 1.5rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .window-mobile-frame {
+      display: block;
+      position: relative;
+      width: 80%;
+      max-width: 280px;
+      aspect-ratio: 4 / 3;
+      margin: 0.5rem 0;
+    }
+
+    .window-mobile-frame > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      z-index: 2;
+    }
+
+    .window-sky-peek {
+      position: absolute;
+      top: 12%;
+      left: 18%;
+      width: 64%;
+      height: 68%;
+      border-radius: 30% / 40%;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .window-sky-peek img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .easter-text {
+      position: relative;
+      left: auto;
+      top: auto;
+      transform: none;
+      opacity: 1;
+      color: #1a1a2e;
+      text-shadow: none;
+      max-width: 100%;
+      padding: 0;
+    }
+
+    .easter-text h2 {
+      font-size: clamp(1.375rem, 6vw, 1.75rem);
+      color: #1a1a2e;
+    }
+
+    .easter-text p {
+      font-size: 1rem;
+      color: #4a4a5a;
+      line-height: 1.6;
+    }
+
+    .discount-reveal {
+      position: relative;
+      left: auto;
+      top: auto;
+      transform: none;
+      opacity: 1;
+      width: 100%;
+    }
+
+    .discount-label {
+      color: #4a4a5a;
+      text-shadow: none;
+      font-size: 1rem;
+    }
+
+    .discount-code {
+      font-size: 1.125rem;
+      padding: 0.875rem 1.75rem;
+    }
   }
 
-  .easter-egg-section.is-mobile .sky-container {
-    position: absolute;
-    height: 100%;
-    top: 0;
-    left: 0;
-  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .easter-egg-section {
+      height: 100svh;
+    }
 
-  .easter-egg-section.is-mobile .window-container {
-    position: relative;
-    width: 90%;
-    max-width: 400px;
-    height: auto;
-    aspect-ratio: 1;
-    transform: scale(1.5);
-    margin: 2rem 0;
-  }
+    .easter-text h2 {
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+    }
 
-  .easter-egg-section.is-mobile .window-container img {
-    object-fit: contain;
-  }
+    .easter-text p {
+      font-size: clamp(0.9375rem, 2vw, 1.125rem);
+    }
 
-  .easter-egg-section.is-mobile .easter-text {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    opacity: 1 !important;
-  }
-
-  .easter-egg-section.is-mobile .discount-reveal {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    opacity: 1 !important;
+    .discount-code {
+      font-size: 1.25rem;
+      padding: 0.75rem 1.5rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .easter-egg-section .easter-text,
     .easter-egg-section .discount-reveal {
       opacity: 1 !important;
-      transform: none !important;
+      transform: translateX(-50%) !important;
     }
 
     .easter-egg-section .window-container {
@@ -316,6 +405,13 @@
 
     .easter-egg-section .sky-container {
       transform: translateY(-30%) !important;
+    }
+  }
+
+  @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+    .easter-egg-section .easter-text,
+    .easter-egg-section .discount-reveal {
+      transform: none !important;
     }
   }
 </style>
