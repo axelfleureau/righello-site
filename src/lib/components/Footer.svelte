@@ -427,7 +427,7 @@
     pointer-events: none;
     position: relative;
     z-index: 0;
-    transform: translateY(25%);
+    transform: translateY(10%);
     max-width: var(--container-max, 1280px);
     margin-left: auto;
     margin-right: auto;
@@ -562,7 +562,7 @@
     }
 
     .footer-giant-logo {
-      transform: translateY(20%);
+      transform: translateY(5%);
     }
   }
 
