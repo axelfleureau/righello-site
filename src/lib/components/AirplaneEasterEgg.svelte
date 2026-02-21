@@ -182,7 +182,7 @@
         const LABEL_OFFSET = PHASE / 2;
         const TEXT_OFFSET = 0.06;
         const MOTION_END = PHASE * 4;
-        const FADE_START = MOTION_END + PHASE;
+        const FADE_START = MOTION_END;
         const FADE_DUR = 1 - FADE_START;
 
         const L_INTRO    = LABEL_OFFSET;
@@ -253,7 +253,7 @@
         const LABEL_OFFSET = PHASE / 2;
         const TEXT_OFFSET = 0.06;
         const MOTION_END = PHASE * 4;
-        const FADE_START = MOTION_END + PHASE;
+        const FADE_START = MOTION_END;
         const FADE_DUR = 1 - FADE_START;
 
         const L_INTRO    = LABEL_OFFSET;
