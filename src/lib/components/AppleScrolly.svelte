@@ -571,6 +571,32 @@
   .slide-right {
     right: 6%;
   }
+
+  @media (min-width: 1024px) {
+    .slide-left {
+      max-width: calc(75% - 6% - 180px);
+    }
+    .slide-right {
+      max-width: calc(25% - 6% - 180px);
+    }
+  }
+
+  @media (min-width: 1024px) and (max-width: 1399px) {
+    .slide-right {
+      right: auto;
+      left: 6%;
+      max-width: calc(75% - 6% - 180px);
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .slide-left {
+      max-width: 480px;
+    }
+    .slide-right {
+      max-width: 480px;
+    }
+  }
   
   @media (max-width: 1023px) {
     .slide {
@@ -579,7 +605,7 @@
   }
   
   .slide-title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(1.75rem, 3.5vw, 4.5rem);
     font-weight: 800;
     line-height: 1.05;
     margin-bottom: 1.25rem;
@@ -591,7 +617,7 @@
   }
   
   .slide-description {
-    font-size: 1.125rem;
+    font-size: clamp(0.95rem, 1.1vw, 1.125rem);
     color: var(--text-secondary);
     line-height: 1.6;
   }
