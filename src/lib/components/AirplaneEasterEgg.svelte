@@ -207,10 +207,18 @@
             onEnter: (self) => {
               const spacer = self.spacer;
               if (spacer) spacer.style.zIndex = '50';
+              sectionEl.style.visibility = 'visible';
+            },
+            onLeave: () => {
+              sectionEl.style.visibility = 'hidden';
+            },
+            onEnterBack: () => {
+              sectionEl.style.visibility = 'visible';
             },
             onLeaveBack: (self) => {
               const spacer = self.spacer;
               if (spacer) spacer.style.zIndex = '';
+              sectionEl.style.visibility = 'visible';
             },
           }
         });
@@ -269,10 +277,18 @@
             onEnter: (self) => {
               const spacer = self.spacer;
               if (spacer) spacer.style.zIndex = '50';
+              mSectionEl.style.visibility = 'visible';
+            },
+            onLeave: () => {
+              mSectionEl.style.visibility = 'hidden';
+            },
+            onEnterBack: () => {
+              mSectionEl.style.visibility = 'visible';
             },
             onLeaveBack: (self) => {
               const spacer = self.spacer;
               if (spacer) spacer.style.zIndex = '';
+              mSectionEl.style.visibility = 'visible';
             },
           }
         });
