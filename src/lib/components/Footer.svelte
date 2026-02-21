@@ -154,7 +154,8 @@
     position: relative;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
   }
 
   .footer-top-border {

@@ -387,7 +387,7 @@
     height: 80vh;
     height: 80dvh;
     background: var(--bg-primary);
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -407,7 +407,7 @@
 
   .emoji-left { left: 8%; }
   .emoji-right { right: 8%; }
-  .emoji-1 { top: 5%; }
+  .emoji-1 { top: 8%; }
   .emoji-2 { top: 22%; }
   .emoji-3 { top: 39%; }
   .emoji-4 { top: 56%; }
