@@ -146,15 +146,42 @@
 <div class="easter-egg-blend" aria-hidden="true"></div>
 
 <section bind:this={sectionEl} class="easter-egg-section">
-  <div bind:this={skyContainer} class="sky-container">
+  <!-- Desktop: absolute-positioned layers for GSAP scrollytelling -->
+  <div bind:this={skyContainer} class="sky-container desktop-only">
     <img src="/sky-easter-egg.jpg" alt="" loading="lazy" decoding="async" draggable="false" />
   </div>
-  <div bind:this={windowContainer} class="window-container">
+  <div bind:this={windowContainer} class="window-container desktop-only">
     <img src="/window-easter-egg.png" alt="" loading="lazy" decoding="async" draggable="false" />
   </div>
 
+  <div bind:this={introText} class="easter-text intro-text desktop-only">
+    <h2>Sei ancora qui?</h2>
+    <p>Allora sei davvero interessato!</p>
+  </div>
+
+  <div bind:this={midText} class="easter-text mid-text desktop-only">
+    <p>Per te che hai scrollato fino a qui, uno sconto che ti aiuterà a raggiungere i risultati che hai sempre sognato.</p>
+  </div>
+
+  <div bind:this={finalText} class="easter-text final-text desktop-only">
+    <h2>Prendi il volo con il team di Righello!</h2>
+  </div>
+
+  <div bind:this={discountReveal} class="discount-reveal desktop-only">
+    <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
+    <a href={WA_URL} class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp" rel="noopener noreferrer">
+      {#if copied}
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        Copiato!
+      {:else}
+        {DISCOUNT_CODE}
+      {/if}
+    </a>
+  </div>
+
+  <!-- Mobile: stacked static layout -->
   <div class="mobile-content">
-    <div bind:this={introText} class="easter-text intro-text">
+    <div class="easter-text intro-text">
       <h2>Sei ancora qui?</h2>
       <p>Allora sei davvero interessato!</p>
     </div>
@@ -166,15 +193,15 @@
       </div>
     </div>
 
-    <div bind:this={midText} class="easter-text mid-text">
+    <div class="easter-text mid-text">
       <p>Per te che hai scrollato fino a qui, uno sconto che ti aiuterà a raggiungere i risultati che hai sempre sognato.</p>
     </div>
 
-    <div bind:this={finalText} class="easter-text final-text">
+    <div class="easter-text final-text">
       <h2>Prendi il volo con il team di Righello!</h2>
     </div>
 
-    <div bind:this={discountReveal} class="discount-reveal">
+    <div class="discount-reveal">
       <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
       <a href={WA_URL} class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp" rel="noopener noreferrer">
         {#if copied}
@@ -239,6 +266,10 @@
 
   .window-mobile-frame {
     display: none;
+  }
+
+  .discount-reveal.desktop-only {
+    display: flex;
   }
 
   .easter-text {
@@ -347,9 +378,8 @@
       perspective: none;
     }
 
-    .sky-container,
-    .window-container {
-      display: none;
+    .desktop-only {
+      display: none !important;
     }
 
     .mobile-content {
