@@ -154,7 +154,7 @@
     position: relative;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    overflow-x: hidden;
+    overflow-x: clip;
     overflow-y: visible;
   }
 
