@@ -15,18 +15,44 @@
 
   const DISCOUNT_CODE = 'scrollerevenue26';
   const WA_NUMBER = '393393998351';
+  const WA_MSG = encodeURIComponent(
+    `Ciao! Sono interessato/a a collaborare con Righello. Ho trovato il codice sconto "${DISCOUNT_CODE}" sul vostro sito. Vorrei saperne di più!`
+  );
+  const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
 
-  function handleDiscountClick() {
-    if (browser) {
-      navigator.clipboard.writeText(DISCOUNT_CODE).catch(() => {});
-      copied = true;
-      setTimeout(() => { copied = false; }, 2000);
-
-      const msg = encodeURIComponent(
-        `Ciao! Sono interessato/a a collaborare con Righello. Ho trovato il codice sconto "${DISCOUNT_CODE}" sul vostro sito. Vorrei saperne di più!`
-      );
-      window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank', 'noopener');
+  function copyToClipboard() {
+    if (!browser) return;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(DISCOUNT_CODE).catch(() => fallbackCopy());
+      } else {
+        fallbackCopy();
+      }
+    } catch {
+      fallbackCopy();
     }
+    copied = true;
+    setTimeout(() => { copied = false; }, 2500);
+  }
+
+  function fallbackCopy() {
+    const el = document.createElement('textarea');
+    el.value = DISCOUNT_CODE;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
+
+  function handleDiscountClick(e: MouseEvent) {
+    e.preventDefault();
+    copyToClipboard();
+    setTimeout(() => {
+      window.location.href = WA_URL;
+    }, 300);
   }
 
   onMount(async () => {
@@ -150,14 +176,14 @@
 
     <div bind:this={discountReveal} class="discount-reveal">
       <span class="discount-label">Codice sconto da comunicare in fase di preventivo</span>
-      <button class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp">
+      <a href={WA_URL} class="discount-code" on:click={handleDiscountClick} aria-label="Copia codice sconto e contattaci su WhatsApp" rel="noopener noreferrer">
         {#if copied}
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
           Copiato!
         {:else}
           {DISCOUNT_CODE}
         {/if}
-      </button>
+      </a>
     </div>
   </div>
 </section>
@@ -292,10 +318,12 @@
     min-height: 44px;
     min-width: 44px;
     text-align: center;
+    text-decoration: none;
     box-shadow: 0 4px 20px rgba(214, 72, 126, 0.4);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   .discount-code:hover {
