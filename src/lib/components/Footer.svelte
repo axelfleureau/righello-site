@@ -427,7 +427,7 @@
     pointer-events: none;
     position: relative;
     z-index: 0;
-    transform: translateY(10%);
+    transform: translateY(0%);
     max-width: var(--container-max, 1280px);
     margin-left: auto;
     margin-right: auto;
