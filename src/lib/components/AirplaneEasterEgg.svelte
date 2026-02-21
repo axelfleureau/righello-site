@@ -206,19 +206,11 @@
             invalidateOnRefresh: true,
             onEnter: (self) => {
               const spacer = self.spacer;
-              if (spacer) spacer.style.zIndex = '50';
-              sectionEl.style.visibility = 'visible';
-            },
-            onLeave: () => {
-              sectionEl.style.visibility = 'hidden';
-            },
-            onEnterBack: () => {
-              sectionEl.style.visibility = 'visible';
+              if (spacer) spacer.style.zIndex = '40';
             },
             onLeaveBack: (self) => {
               const spacer = self.spacer;
               if (spacer) spacer.style.zIndex = '';
-              sectionEl.style.visibility = 'visible';
             },
           }
         });
@@ -276,19 +268,11 @@
             invalidateOnRefresh: true,
             onEnter: (self) => {
               const spacer = self.spacer;
-              if (spacer) spacer.style.zIndex = '50';
-              mSectionEl.style.visibility = 'visible';
-            },
-            onLeave: () => {
-              mSectionEl.style.visibility = 'hidden';
-            },
-            onEnterBack: () => {
-              mSectionEl.style.visibility = 'visible';
+              if (spacer) spacer.style.zIndex = '40';
             },
             onLeaveBack: (self) => {
               const spacer = self.spacer;
               if (spacer) spacer.style.zIndex = '';
-              mSectionEl.style.visibility = 'visible';
             },
           }
         });
@@ -472,7 +456,7 @@
 
   .easter-egg-section {
     position: relative;
-    z-index: 50;
+    z-index: 40;
     width: 100%;
     height: 100vh;
     height: 100dvh;
@@ -659,7 +643,7 @@
     .mobile-section {
       display: block;
       position: relative;
-      z-index: 50;
+      z-index: 40;
       height: 100vh;
       height: 100dvh;
       overflow: hidden;
