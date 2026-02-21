@@ -187,9 +187,9 @@
     </div>
 
     <div class="window-mobile-frame">
-      <img src="/window-easter-egg.png" alt="" loading="lazy" decoding="async" draggable="false" />
+      <img src="/window-easter-egg.png" alt="Finestrino aereo" decoding="async" draggable="false" />
       <div class="window-sky-peek">
-        <img src="/sky-easter-egg.jpg" alt="" loading="lazy" decoding="async" draggable="false" />
+        <img src="/sky-easter-egg.jpg" alt="Cielo visto dal finestrino" decoding="async" draggable="false" />
       </div>
     </div>
 
@@ -395,10 +395,12 @@
     .window-mobile-frame {
       display: block;
       position: relative;
-      width: 80%;
-      max-width: 280px;
-      aspect-ratio: 4 / 3;
+      width: 90%;
+      max-width: 400px;
+      aspect-ratio: 16 / 9;
       margin: 0.5rem 0;
+      border-radius: 1rem;
+      overflow: hidden;
     }
 
     .window-mobile-frame > img {
@@ -406,17 +408,17 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       z-index: 2;
     }
 
     .window-sky-peek {
       position: absolute;
-      top: 12%;
-      left: 18%;
-      width: 64%;
-      height: 68%;
-      border-radius: 30% / 40%;
+      top: 11%;
+      left: 31%;
+      width: 38%;
+      height: 76%;
+      border-radius: 42% / 46%;
       overflow: hidden;
       z-index: 1;
     }
