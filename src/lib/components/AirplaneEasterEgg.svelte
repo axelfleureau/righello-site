@@ -176,6 +176,20 @@
         gsap.set([introText, midText, finalText], { opacity: 0, yPercent: 30, force3D: true });
         gsap.set(discountReveal, { opacity: 0, scale: 0.8, force3D: true });
 
+        const PHASE = 0.20;
+        const ENTER_DUR = 0.05;
+        const EXIT_DUR = 0.05;
+        const LABEL_OFFSET = PHASE / 2;
+        const TEXT_OFFSET = 0.06;
+        const MOTION_END = PHASE * 4;
+        const FADE_START = MOTION_END + PHASE;
+        const FADE_DUR = 1 - FADE_START;
+
+        const L_INTRO    = LABEL_OFFSET;
+        const L_MID      = PHASE + LABEL_OFFSET;
+        const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
+        const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
+
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: sectionEl,
@@ -203,26 +217,24 @@
           }
         });
 
-        tl.addLabel('start', 0);
+        tl.to(windowContainer, { scale: 4, duration: MOTION_END, ease: 'none', force3D: true }, 0);
+        tl.to(skyContainer, { y: -skyMoveDistance, duration: MOTION_END, ease: 'none', force3D: true }, 0);
 
-        tl.to(windowContainer, { scale: 4, duration: 0.85, ease: 'none', force3D: true }, 0);
-        tl.to(skyContainer, { y: -skyMoveDistance, duration: 0.95, ease: 'none', force3D: true }, 0);
+        tl.addLabel('intro', L_INTRO);
+        tl.to(introText, { opacity: 1, yPercent: 0, duration: ENTER_DUR, ease: 'none' }, L_INTRO - TEXT_OFFSET);
+        tl.to(introText, { opacity: 0, yPercent: -15, duration: EXIT_DUR, ease: 'none' }, L_INTRO + TEXT_OFFSET);
 
-        tl.addLabel('intro', 0.1);
-        tl.to(introText, { opacity: 1, yPercent: 0, duration: 0.08, ease: 'none' }, 0.1);
-        tl.to(introText, { opacity: 0, yPercent: -15, duration: 0.08, ease: 'none' }, 0.24);
+        tl.addLabel('mid', L_MID);
+        tl.to(midText, { opacity: 1, yPercent: 0, duration: ENTER_DUR, ease: 'none' }, L_MID - TEXT_OFFSET);
+        tl.to(midText, { opacity: 0, yPercent: -15, duration: EXIT_DUR, ease: 'none' }, L_MID + TEXT_OFFSET);
 
-        tl.addLabel('mid', 0.36);
-        tl.to(midText, { opacity: 1, yPercent: 0, duration: 0.08, ease: 'none' }, 0.36);
-        tl.to(midText, { opacity: 0, yPercent: -15, duration: 0.08, ease: 'none' }, 0.52);
+        tl.addLabel('final', L_FINAL);
+        tl.to(finalText, { opacity: 1, yPercent: 0, duration: ENTER_DUR, ease: 'none' }, L_FINAL - TEXT_OFFSET);
 
-        tl.addLabel('final', 0.64);
-        tl.to(finalText, { opacity: 1, yPercent: 0, duration: 0.1, ease: 'none' }, 0.64);
+        tl.addLabel('discount', L_DISCOUNT);
+        tl.to(discountReveal, { opacity: 1, scale: 1, duration: ENTER_DUR, ease: 'none' }, L_DISCOUNT - TEXT_OFFSET);
 
-        tl.addLabel('discount', 0.82);
-        tl.to(discountReveal, { opacity: 1, scale: 1, duration: 0.1, ease: 'none' }, 0.82);
-
-        tl.to(sectionEl, { opacity: 0, duration: 0.07, ease: 'none' }, 0.93);
+        tl.to(sectionEl, { opacity: 0, duration: FADE_DUR, ease: 'none' }, FADE_START);
         tl.addLabel('end', 1);
 
       } else {
@@ -234,6 +246,20 @@
         gsap.set([mIntroText, mMidText, mFinalText], { opacity: 0, y: 50, force3D: true });
         gsap.set(mDiscountReveal, { opacity: 0, y: 30, scale: 0.9, force3D: true });
         gsap.set(mWindowContainer, { scale: 1, force3D: true });
+
+        const PHASE = 0.20;
+        const ENTER_DUR = 0.05;
+        const EXIT_DUR = 0.05;
+        const LABEL_OFFSET = PHASE / 2;
+        const TEXT_OFFSET = 0.06;
+        const MOTION_END = PHASE * 4;
+        const FADE_START = MOTION_END + PHASE;
+        const FADE_DUR = 1 - FADE_START;
+
+        const L_INTRO    = LABEL_OFFSET;
+        const L_MID      = PHASE + LABEL_OFFSET;
+        const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
+        const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -256,26 +282,24 @@
           }
         });
 
-        tl.addLabel('start', 0);
+        tl.to(mWindowContainer, { scale: 4, duration: MOTION_END, ease: 'none', force3D: true }, 0);
+        tl.to(mSkyContainer, { y: -skyMoveDistance, duration: MOTION_END, ease: 'none', force3D: true }, 0);
 
-        tl.to(mWindowContainer, { scale: 4, duration: 0.85, ease: 'none', force3D: true }, 0);
-        tl.to(mSkyContainer, { y: -skyMoveDistance, duration: 0.95, ease: 'none', force3D: true }, 0);
+        tl.addLabel('intro', L_INTRO);
+        tl.to(mIntroText, { opacity: 1, y: 0, duration: ENTER_DUR, ease: 'none' }, L_INTRO - TEXT_OFFSET);
+        tl.to(mIntroText, { opacity: 0, y: -30, duration: EXIT_DUR, ease: 'none' }, L_INTRO + TEXT_OFFSET);
 
-        tl.addLabel('intro', 0.1);
-        tl.to(mIntroText, { opacity: 1, y: 0, duration: 0.08, ease: 'none' }, 0.1);
-        tl.to(mIntroText, { opacity: 0, y: -30, duration: 0.08, ease: 'none' }, 0.24);
+        tl.addLabel('mid', L_MID);
+        tl.to(mMidText, { opacity: 1, y: 0, duration: ENTER_DUR, ease: 'none' }, L_MID - TEXT_OFFSET);
+        tl.to(mMidText, { opacity: 0, y: -30, duration: EXIT_DUR, ease: 'none' }, L_MID + TEXT_OFFSET);
 
-        tl.addLabel('mid', 0.36);
-        tl.to(mMidText, { opacity: 1, y: 0, duration: 0.08, ease: 'none' }, 0.36);
-        tl.to(mMidText, { opacity: 0, y: -30, duration: 0.08, ease: 'none' }, 0.52);
+        tl.addLabel('final', L_FINAL);
+        tl.to(mFinalText, { opacity: 1, y: 0, duration: ENTER_DUR, ease: 'none' }, L_FINAL - TEXT_OFFSET);
 
-        tl.addLabel('final', 0.64);
-        tl.to(mFinalText, { opacity: 1, y: 0, duration: 0.1, ease: 'none' }, 0.64);
+        tl.addLabel('discount', L_DISCOUNT);
+        tl.to(mDiscountReveal, { opacity: 1, y: 0, scale: 1, duration: ENTER_DUR, ease: 'none' }, L_DISCOUNT - TEXT_OFFSET);
 
-        tl.addLabel('discount', 0.82);
-        tl.to(mDiscountReveal, { opacity: 1, y: 0, scale: 1, duration: 0.1, ease: 'none' }, 0.82);
-
-        tl.to(mSectionEl, { opacity: 0, duration: 0.07, ease: 'none' }, 0.93);
+        tl.to(mSectionEl, { opacity: 0, duration: FADE_DUR, ease: 'none' }, FADE_START);
         tl.addLabel('end', 1);
       }
     });
