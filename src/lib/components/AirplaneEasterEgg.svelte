@@ -407,12 +407,12 @@
 
   .emoji-left { left: 8%; }
   .emoji-right { right: 8%; }
-  .emoji-1 { top: 12%; }
-  .emoji-2 { top: 25%; }
-  .emoji-3 { top: 42%; }
-  .emoji-4 { top: 58%; }
-  .emoji-5 { top: 72%; }
-  .emoji-6 { top: 85%; }
+  .emoji-1 { top: 5%; }
+  .emoji-2 { top: 22%; }
+  .emoji-3 { top: 39%; }
+  .emoji-4 { top: 56%; }
+  .emoji-5 { top: 73%; }
+  .emoji-6 { top: 90%; }
 
   .easter-egg-section {
     position: relative;
