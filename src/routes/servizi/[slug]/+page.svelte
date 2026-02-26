@@ -74,7 +74,7 @@
     <RevealOnScroll animation="fly-up" delay={100}>
       <h1 class="hero-title">
         {service.titleLine1}<br/>
-        <span class="highlight-text">{service.titleHighlight}</span>
+        <span class="gradient-text">{service.titleHighlight}</span>
       </h1>
     </RevealOnScroll>
     <RevealOnScroll animation="fly-up" delay={200}>
@@ -196,35 +196,34 @@
   }
 
   .hero-eyebrow {
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .hero-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2rem, 6vw, 4rem);
     font-weight: 800;
     line-height: 1.1;
     color: var(--text-primary);
     margin-bottom: 1.5rem;
   }
 
-  .highlight-text {
-    display: inline-block;
-    background: #D6487E;
-    color: white;
-    padding: 0.1em 0.3em;
-    -webkit-text-fill-color: white;
+  .gradient-text {
+    background: linear-gradient(135deg, #D6487E, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .hero-subtitle {
-    font-size: clamp(1.0625rem, 2vw, 1.25rem);
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
     color: var(--text-secondary);
     line-height: 1.7;
-    max-width: 600px;
-    margin: 0 auto 2rem;
+    max-width: 650px;
+    margin: 0 auto 2.5rem;
   }
 
   .hero-cta {
@@ -239,12 +238,40 @@
     display: inline-block;
   }
 
+  .section-padding {
+    padding: var(--section-padding-sm) 0;
+  }
+
+  @media (min-width: 768px) {
+    .section-padding {
+      padding: var(--section-padding-md) 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding: var(--section-padding-lg) 0;
+    }
+  }
+
   .services-section {
-    padding: 6rem 1.5rem;
+    padding: var(--section-padding-sm) 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .services-section {
+      padding: var(--section-padding-md) 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .services-section {
+      padding: var(--section-padding-lg) 1.5rem;
+    }
   }
 
   .section-container {
-    max-width: 1280px;
+    max-width: var(--container-max, 1280px);
     margin: 0 auto;
   }
 
@@ -254,10 +281,10 @@
   }
 
   .section-subtitle {
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     color: #D6487E;
     margin-bottom: 0.75rem;
   }
@@ -266,12 +293,13 @@
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 800;
     color: var(--text-primary);
+    margin-bottom: 1rem;
   }
 
   .services-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   @media (min-width: 640px) {
@@ -289,18 +317,20 @@
   .service-card {
     padding: 2rem;
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
     transition: all 0.3s ease;
   }
 
   :global([data-theme="light"]) .service-card {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: var(--border-color);
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.08);
   }
 
   .service-card:hover {
     border-color: var(--dept-color, #D6487E);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   }
 
   .service-icon-wrap {
@@ -314,7 +344,7 @@
   }
 
   .service-card-title {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 0.75rem;
@@ -327,8 +357,20 @@
   }
 
   .workflow-section {
-    padding: 6rem 1.5rem;
-    background: var(--bg-secondary, rgba(255, 255, 255, 0.02));
+    padding: var(--section-padding-sm) 1.5rem;
+    background: var(--bg-secondary);
+  }
+
+  @media (min-width: 768px) {
+    .workflow-section {
+      padding: var(--section-padding-md) 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .workflow-section {
+      padding: var(--section-padding-lg) 1.5rem;
+    }
   }
 
   .workflow-grid {
@@ -353,18 +395,20 @@
     position: relative;
     padding: 1.5rem;
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
     transition: all 0.3s ease;
   }
 
   :global([data-theme="light"]) .workflow-step {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: var(--border-color);
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.08);
   }
 
   .workflow-step:hover {
     border-color: var(--dept-color, rgba(214, 72, 126, 0.3));
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   }
 
   .step-number {
@@ -394,7 +438,19 @@
   }
 
   .final-cta-section {
-    padding: 6rem 1.5rem;
+    padding: var(--section-padding-sm) 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .final-cta-section {
+      padding: var(--section-padding-md) 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .final-cta-section {
+      padding: var(--section-padding-lg) 1.5rem;
+    }
   }
 
   .final-cta {
