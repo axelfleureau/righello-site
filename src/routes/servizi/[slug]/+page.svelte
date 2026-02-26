@@ -74,7 +74,7 @@
     <RevealOnScroll animation="fly-up" delay={100}>
       <h1 class="hero-title">
         {service.titleLine1}<br/>
-        <span class="gradient-text">{service.titleHighlight}</span>
+        <span class="highlight-text">{service.titleHighlight}</span>
       </h1>
     </RevealOnScroll>
     <RevealOnScroll animation="fly-up" delay={200}>
@@ -211,11 +211,12 @@
     margin-bottom: 1.5rem;
   }
 
-  .gradient-text {
-    background: linear-gradient(135deg, #D6487E, #06B6D4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .highlight-text {
+    background: #D6487E;
+    color: white;
+    display: inline-block;
+    padding: 0.05em 0.3em;
+    -webkit-text-fill-color: white;
   }
 
   .hero-subtitle {

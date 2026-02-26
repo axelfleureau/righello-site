@@ -3,100 +3,56 @@
   import GlowCard from '$lib/components/GlowCard.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
-  import FAQ from '$lib/components/FAQ.svelte';
   import RippleGrid from '$lib/components/RippleGrid.svelte';
-  import GridScan from '$lib/components/GridScan.svelte';
   import { slide } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import { env } from '$env/dynamic/public';
   
   const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
-  
-  const deptSlugs = ['marketing', 'advertising', 'web'];
 
   const departments = [
     {
+      slug: 'marketing',
       icon: '📱',
       title: 'Marketing & Social Media',
-      tagline: 'Strategie che generano risultati',
-      description: 'Strategie di marketing integrate e gestione completa dei social media. Dalla pianificazione editoriale alla produzione di contenuti, ogni azione è pensata per generare engagement reale e conversioni misurabili.',
-      services: [
-        'Social Media Management',
-        'Video Production (Reels, TikTok, YouTube)',
-        'Shooting fotografici',
-        'Copywriting & Storytelling',
-        'Piano editoriale strategico',
-        'Community management'
-      ],
       color: '#D6487E',
-      featured: true
+      subServices: [
+        { title: 'Social Media Management', desc: 'Strategia, piano editoriale e community management per tutti i tuoi canali social.' },
+        { title: 'Video Production', desc: 'Reel, TikTok, YouTube: produzione video con storytelling ed editing professionale.' },
+        { title: 'Copywriting & Shooting', desc: 'Testi persuasivi, shooting fotografici e contenuti visivi per campagne e branding.' }
+      ]
     },
     {
+      slug: 'advertising',
       icon: '🎯',
       title: 'Advertising & Automazione',
-      tagline: 'Ogni euro tracciato, ogni processo ottimizzato',
-      description: 'Campagne pubblicitarie data-driven con tracking avanzato, combinate con automazioni intelligenti per ottimizzare i processi di marketing e vendita. Massimo ritorno, minimo spreco.',
-      services: [
-        'Meta Ads (Facebook & Instagram)',
-        'Google Ads & YouTube Ads',
-        'TikTok Ads',
-        'Tracking & Attribution avanzato',
-        'A/B Testing continuo',
-        'Report e dashboard real-time',
-        'Marketing Automation'
-      ],
       color: '#06B6D4',
-      featured: false
+      subServices: [
+        { title: 'Meta & Google Ads', desc: 'Campagne Facebook, Instagram e Google Ads con targeting avanzato e scaling progressivo.' },
+        { title: 'Tracking & Attribution', desc: 'Setup pixel, server-side tracking, GA4 e dashboard per tracciare ogni conversione.' },
+        { title: 'Marketing Automation', desc: 'Workflow automatizzati per lead nurturing, email marketing e CRM integration.' }
+      ]
     },
     {
+      slug: 'web',
       icon: '💻',
       title: 'Sviluppo Web & Software',
-      tagline: 'Soluzioni digitali su misura',
-      description: 'Progettiamo e sviluppiamo siti web, e-commerce, web app e software custom. Soluzioni scalabili, integrate e potenziate dall\'intelligenza artificiale per far crescere il tuo business.',
-      services: [
-        'Siti web & Landing page',
-        'E-commerce (Shopify, Custom)',
-        'Web App su misura',
-        'SEO tecnico & on-page',
-        'UX/UI Design',
-        'Integrazioni & Automazioni'
-      ],
       color: '#8B5CF6',
-      featured: false
+      subServices: [
+        { title: 'Siti Web & E-Commerce', desc: 'Siti istituzionali, landing page, e-commerce Shopify e custom ottimizzati per conversioni.' },
+        { title: 'Web App & Software', desc: 'Applicazioni web custom, portali clienti, configuratori e dashboard di business intelligence.' },
+        { title: 'SEO & UX/UI Design', desc: 'SEO tecnico, interfacce intuitive, prototipi interattivi e design system modulari.' }
+      ]
     }
   ];
 
   const helpPoints = [
-    { 
-      icon: '🎬', 
-      title: 'Content-First Approach', 
-      desc: 'Il contenuto è il re. Partiamo sempre dalla strategia dei contenuti per costruire una presenza digitale che converte.'
-    },
-    { 
-      icon: '📊', 
-      title: 'Dati, Non Opinioni', 
-      desc: 'Ogni decisione è basata su dati reali. Tracking avanzato, A/B testing e ottimizzazione continua.'
-    },
-    { 
-      icon: '🤝', 
-      title: 'Un Team, Tre Dipartimenti', 
-      desc: 'Marketing, Advertising, Sviluppo: competenze integrate che lavorano insieme per massimizzare i risultati.'
-    },
-    { 
-      icon: '📱', 
-      title: 'Mobile-First, Sempre', 
-      desc: 'Il 70%+ del traffico è mobile. Progettiamo per smartphone, poi adattiamo per desktop. Mai il contrario.'
-    },
-    { 
-      icon: '🚀', 
-      title: 'Velocità di Esecuzione', 
-      desc: 'Dall\'idea alla pubblicazione in tempi record. Processi snelli e team dedicato al tuo progetto.'
-    },
-    { 
-      icon: '🎯', 
-      title: 'ROI Misurabile', 
-      desc: 'Ogni progetto ha KPI chiari. Sappiamo quanto investiamo e quanto ritorna. Sempre.'
-    },
+    { icon: '🎬', title: 'Content-First Approach', desc: 'Il contenuto è il re. Partiamo sempre dalla strategia dei contenuti per costruire una presenza digitale che converte.' },
+    { icon: '📊', title: 'Dati, Non Opinioni', desc: 'Ogni decisione è basata su dati reali. Tracking avanzato, A/B testing e ottimizzazione continua.' },
+    { icon: '🤝', title: 'Un Team, Tre Dipartimenti', desc: 'Marketing, Advertising, Sviluppo: competenze integrate che lavorano insieme per massimizzare i risultati.' },
+    { icon: '📱', title: 'Mobile-First, Sempre', desc: 'Il 70%+ del traffico è mobile. Progettiamo per smartphone, poi adattiamo per desktop. Mai il contrario.' },
+    { icon: '🚀', title: 'Velocità di Esecuzione', desc: 'Dall\'idea alla pubblicazione in tempi record. Processi snelli e team dedicato al tuo progetto.' },
+    { icon: '🎯', title: 'ROI Misurabile', desc: 'Ogni progetto ha KPI chiari. Sappiamo quanto investiamo e quanto ritorna. Sempre.' },
   ];
   
   const pillars = [
@@ -143,12 +99,10 @@
   
   const workflow = [
     { num: '01', title: 'Analisi & Strategia', desc: 'Studiamo il tuo business, il pubblico e i competitor. Definiamo KPI, tone of voice, strategia dei contenuti e piano d\'azione su misura.', duration: '1-2 settimane' },
-
     { num: '02', title: 'Produzione Creativa', desc: 'Shooting, video editing, copywriting e visual identity: creiamo tutti i contenuti per i tuoi canali social e le campagne adv.', duration: '2-3 settimane' },
     { num: '03', title: 'Lancio & Campagne', desc: 'Pubblichiamo i contenuti e attiviamo le campagne advertising. A/B testing, ottimizzazione budget e monitoraggio performance in tempo reale.', duration: '2-4 settimane' },
     { num: '04', title: 'Ottimizzazione & Crescita', desc: 'Report mensili dettagliati, ottimizzazione continua di contenuti e campagne, scaling di ciò che funziona ed esplorazione di nuovi canali.', duration: 'Ongoing' },
   ];
-  
     
   const testimonials = [
     {
@@ -263,18 +217,15 @@
 <!-- HERO SECTION -->
 <section id="servizi-hero" class="hero-section">
   <div class="hero-ripple-bg">
-    <GridScan
-      sensitivity={0.55}
-      lineThickness={1}
-      linesColor="#392e4e"
-      gridScale={0.1}
-      scanColor="#D6487E"
-      scanOpacity={0.4}
-      enablePost={true}
-      bloomIntensity={0.6}
-      chromaticAberration={0.002}
-      noiseIntensity={0.01}
-      scanOnClick={true}
+    <RippleGrid
+      mouseInteraction={true}
+      gridColor="#D6487E"
+      opacity={0.2}
+      rippleIntensity={0.04}
+      gridSize={12}
+      gridThickness={18}
+      fadeDistance={1.8}
+      vignetteStrength={2.5}
     />
   </div>
   <div class="section-container hero-content">
@@ -282,7 +233,7 @@
       <p class="eyebrow">I Nostri Servizi</p>
       <h1 class="hero-title">
         Tre Dipartimenti.<br/>
-        <span class="gradient-text">Un Unico Team.</span>
+        <span class="highlight-text">Un Unico Team.</span>
       </h1>
     </RevealOnScroll>
     
@@ -310,49 +261,42 @@
   </div>
 </section>
 
-<!-- I 3 DIPARTIMENTI -->
+<!-- I 3 DIPARTIMENTI — Stacked Service Blocks -->
 <section id="dipartimenti" class="section-padding">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
         <p class="section-subtitle">I Nostri Dipartimenti</p>
         <h2 class="section-title">
-          Tre Anime, <span class="gradient-text">Una Visione</span>
+          Tre Anime, <span class="highlight-text">Una Visione</span>
         </h2>
       </div>
     </RevealOnScroll>
     
-    <div class="departments-grid">
+    <div class="service-blocks">
       {#each departments as dept, i}
-        <RevealOnScroll animation="fly-up" stagger={100} index={i}>
-          <div class="department-card" class:featured={dept.featured} style="--dept-color: {dept.color}">
-            {#if dept.featured}
-              <span class="featured-badge">Il nostro cavallo di battaglia</span>
-            {/if}
-            <div class="dept-header">
-              <span class="dept-icon">{dept.icon}</span>
-              <div>
-                <h3 class="dept-title">{dept.title}</h3>
-                <p class="dept-tagline">{dept.tagline}</p>
+        <RevealOnScroll animation="fly-up" stagger={120} index={i}>
+          <div class="service-block" style="--dept-color: {dept.color}">
+            <div class="service-block-header">
+              <div class="service-block-left">
+                <span class="service-block-icon" style="background: {dept.color}20; border-color: {dept.color}40">{dept.icon}</span>
+                <h3 class="service-block-title">{dept.title}</h3>
               </div>
+              <a href="/servizi/{dept.slug}" class="discover-link" style="color: {dept.color}">
+                Scopri di più
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
             </div>
-            <p class="dept-description">{dept.description}</p>
-            <ul class="dept-services">
-              {#each dept.services as service}
-                <li>
-                  <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  {service}
-                </li>
+            <div class="sub-services-grid">
+              {#each dept.subServices as sub}
+                <div class="sub-service">
+                  <h4 class="sub-service-title">{sub.title}</h4>
+                  <p class="sub-service-desc">{sub.desc}</p>
+                </div>
               {/each}
-            </ul>
-            <a href="/servizi/{deptSlugs[i]}" class="dept-cta" style="background: {dept.color}">
-              Scopri di più
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
+            </div>
           </div>
         </RevealOnScroll>
       {/each}
@@ -367,7 +311,7 @@
       <div class="section-header">
         <p class="section-subtitle">Cosa facciamo</p>
         <h2 class="section-title">
-          In Cosa Possiamo <span class="gradient-text">Aiutarti</span>
+          In Cosa Possiamo <span class="highlight-text">Aiutarti</span>
         </h2>
       </div>
     </RevealOnScroll>
@@ -395,7 +339,7 @@
       <div class="section-header">
         <p class="section-subtitle">I nostri punti di forza</p>
         <h2 class="section-title">
-          Perché Scegliere <span class="gradient-text">Righello</span>
+          Perché Scegliere <span class="highlight-text">Righello</span>
         </h2>
         <p class="section-intro">
           Non solo sviluppo: uniamo strategia, design e performance 
@@ -427,7 +371,7 @@
       <div class="section-header">
         <p class="section-subtitle">I nostri risultati</p>
         <h2 class="section-title">
-          Risultati Concreti, <span class="gradient-text">Non Promesse</span>
+          Risultati Concreti, <span class="highlight-text">Non Promesse</span>
         </h2>
       </div>
     </RevealOnScroll>
@@ -477,7 +421,7 @@
       <div class="section-header">
         <p class="section-subtitle">Il nostro processo</p>
         <h2 class="section-title">
-          Dal Brief al Lancio <span class="gradient-text">(e Oltre)</span>
+          Dal Brief al Lancio <span class="highlight-text">(e Oltre)</span>
         </h2>
         <p class="section-intro">
           Un flusso chiaro che unisce strategia, design, sviluppo 
@@ -510,7 +454,7 @@
       <div class="section-header">
         <p class="section-subtitle">Cosa dicono di noi</p>
         <h2 class="section-title">
-          I Clienti <span class="gradient-text">Parlano</span>
+          I Clienti <span class="highlight-text">Parlano</span>
         </h2>
       </div>
     </RevealOnScroll>
@@ -544,7 +488,7 @@
       <div class="section-header">
         <p class="section-subtitle">FAQ</p>
         <h2 class="section-title">
-          Domande <span class="gradient-text">Frequenti</span>
+          Domande <span class="highlight-text">Frequenti</span>
         </h2>
       </div>
     </RevealOnScroll>
@@ -590,7 +534,7 @@
     <RevealOnScroll animation="scale">
       <div class="final-cta">
         <h2 class="section-title">
-          Parliamo del tuo <span class="gradient-text">progetto</span>
+          Parliamo del tuo <span class="highlight-text">progetto</span>
         </h2>
         <p class="cta-subtitle">
           Prenota una call gratuita di 30 minuti per analizzare insieme 
@@ -613,7 +557,6 @@
 </section>
 
 <style>
-  /* Hero Section */
   .hero-section {
     position: relative;
     padding: 8rem 0 4rem;
@@ -677,212 +620,129 @@
     justify-content: center;
     gap: 1rem;
   }
-  
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #D6487E, #B83B6A);
-    color: white;
-    font-weight: 600;
-    border-radius: 9999px;
-    transition: all 0.3s ease;
-    min-height: 52px;
-    font-size: 1rem;
-  }
-  
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(214, 72, 126, 0.4);
-  }
-  
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
-    font-weight: 600;
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-    min-height: 52px;
-    font-size: 1rem;
-  }
-  
-  :global([data-theme="light"]) .btn-secondary {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.1);
-  }
-  
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(214, 72, 126, 0.5);
-  }
-  
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.875rem 1.75rem;
-    border: 2px solid #D6487E;
-    color: #D6487E;
-    font-weight: 600;
-    border-radius: 9999px;
-    transition: all 0.3s ease;
-    min-height: 48px;
-  }
-  
-  .btn-outline:hover {
+
+  .highlight-text {
     background: #D6487E;
     color: white;
+    display: inline-block;
+    padding: 0.05em 0.3em;
+    -webkit-text-fill-color: white;
   }
 
-  /* Departments Section */
-  .departments-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  @media (min-width: 768px) {
-    .departments-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-  }
-  
-  .department-card {
-    position: relative;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1.5rem;
-    padding: 2rem;
-    transition: all 0.3s ease;
+  /* Service Blocks — OnOff Style */
+  .service-blocks {
     display: flex;
     flex-direction: column;
+    gap: 1.5rem;
   }
-  
-  :global([data-theme="light"]) .department-card {
-    background: rgba(0, 0, 0, 0.02);
-    border-color: rgba(0, 0, 0, 0.08);
+
+  .service-block {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
   }
-  
-  .department-card:hover {
+
+  :global([data-theme="light"]) .service-block {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: var(--border-color);
+  }
+
+  .service-block:hover {
     border-color: var(--dept-color, #D6487E);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   }
-  
-  .department-card.featured {
-    border-color: rgba(214, 72, 126, 0.4);
-    background: linear-gradient(135deg, rgba(214, 72, 126, 0.1), rgba(214, 72, 126, 0.02));
-  }
-  
-  .featured-badge {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #D6487E, #B83B6A);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.4rem 1rem;
-    border-radius: 9999px;
-    white-space: nowrap;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  
-  .dept-header {
+
+  .service-block-header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
   }
-  
-  .dept-icon {
-    font-size: 2.5rem;
+
+  .service-block-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .service-block-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
     flex-shrink: 0;
+    border: 1px solid;
   }
-  
-  .dept-title {
+
+  .service-block-title {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 0.25rem;
   }
-  
-  .dept-tagline {
-    font-size: 1rem;
-    color: var(--dept-color, #D6487E);
-    font-weight: 500;
+
+  @media (min-width: 768px) {
+    .service-block-title {
+      font-size: 1.5rem;
+    }
   }
-  
-  .dept-description {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-  }
-  
-  .dept-services {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1.5rem;
-    flex-grow: 1;
-  }
-  
-  .dept-services li {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1rem;
-    color: var(--text-secondary);
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  
-  :global([data-theme="light"]) .dept-services li {
-    border-bottom-color: rgba(0, 0, 0, 0.05);
-  }
-  
-  .dept-services li:last-child {
-    border-bottom: none;
-  }
-  
-  .check-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--dept-color, #D6487E);
-    flex-shrink: 0;
-  }
-  
-  .dept-cta {
+
+  .discover-link {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 0.5rem;
-    padding: 0.875rem 1.5rem;
-    color: white;
     font-weight: 600;
     font-size: 1rem;
-    border-radius: 9999px;
-    transition: all 0.3s ease;
-    min-height: 48px;
-    text-align: center;
+    transition: opacity 0.2s ease, gap 0.2s ease;
+    white-space: nowrap;
+    min-height: 44px;
+    padding: 0.5rem 0;
   }
-  
-  .dept-cta:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.1);
+
+  .discover-link:hover {
+    opacity: 0.8;
+    gap: 0.75rem;
   }
-  
-  .dept-cta svg {
-    width: 1.25rem;
-    height: 1.25rem;
+
+  .sub-services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .sub-services-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .sub-service {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  :global([data-theme="light"]) .sub-service {
+    border-top-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .sub-service-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.375rem;
+  }
+
+  .sub-service-desc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
   }
   
   /* Sections */
@@ -904,6 +764,12 @@
   
   .bg-secondary {
     background: var(--bg-secondary);
+  }
+
+  .section-container {
+    max-width: var(--container-max, 1280px);
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
   
   .section-header {
@@ -1370,13 +1236,6 @@
     border: 1px solid rgba(214, 72, 126, 0.2);
   }
   
-  .cta-title {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-  }
-  
   .cta-subtitle {
     font-size: 1.0625rem;
     color: var(--text-secondary);
@@ -1387,25 +1246,6 @@
   
   .cta-buttons {
     margin-bottom: 1.5rem;
-  }
-  
-  .btn-primary-large {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem 2.5rem;
-    background: linear-gradient(135deg, #D6487E, #B83B6A);
-    color: white;
-    font-weight: 600;
-    font-size: 1.0625rem;
-    border-radius: 9999px;
-    transition: all 0.3s ease;
-    min-height: 56px;
-  }
-  
-  .btn-primary-large:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(214, 72, 126, 0.4);
   }
   
   .cta-contact {
@@ -1421,14 +1261,6 @@
   
   .email-link:hover {
     opacity: 0.8;
-  }
-  
-  /* Utility classes */
-  .gradient-text {
-    background: linear-gradient(135deg, #D6487E, #06B6D4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
   
   .text-center {

@@ -448,6 +448,7 @@ void main(){
     let leaveTimer: ReturnType<typeof setTimeout> | null = null;
 
     const onMove = (e: MouseEvent) => {
+      if (!containerEl) return;
       if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
       const rect = containerEl.getBoundingClientRect();
       lookTargetX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
