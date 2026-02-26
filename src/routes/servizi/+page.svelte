@@ -269,7 +269,7 @@
       <p class="eyebrow">I Nostri Servizi</p>
       <h1 class="hero-title">
         Tre Dipartimenti.<br/>
-        <span class="highlight-text">Un Unico Team.</span>
+        <span class="gradient-text">Un Unico Team.</span>
       </h1>
     </RevealOnScroll>
     
@@ -641,14 +641,6 @@
     line-height: 1.1;
     margin-bottom: 1.5rem;
     color: var(--text-primary);
-  }
-  
-  .highlight-text {
-    background: #D6487E;
-    color: white;
-    -webkit-text-fill-color: white;
-    display: inline-block;
-    padding: 0.1em 0.3em;
   }
   
   .hero-subtitle {
