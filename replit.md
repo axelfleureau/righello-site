@@ -49,12 +49,14 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
     - **StatCard, CaseStudyCard**: Support components for PESO section with animated counters and category tags.
     - **ReelViewer**: Instagram Reels-style fullscreen video player. Vertical 9:16 video with dark overlay, username (@righello_agency), caption, decorative action icons (heart/comment/share/bookmark), progress bar, swipe navigation between videos, tap play/pause, focus trap, `prefers-reduced-motion` support. Used by `AppleCardsCarousel` when `useReelViewer={true}` prop is set (enabled in SocialReelShowcase).
     - **AirplaneEasterEgg**: Hidden easter egg section after the footer (homepage only). Features emoji transition zone (80svh on desktop, 70svh on mobile) with 6 floating emojis (👀💭🤔✈️🤫) that fade in/scale/rotate via GSAP ScrollTrigger with stagger. Desktop: GSAP scrollytelling with airplane window scaling 1x→4x, sky parallax, pinned 3vh scroll. Mobile: Separate GSAP scrollytelling (2.5vh pinned scroll) with staged animations — intro text fade, window frame scale 0.6→1.0 with shadow, mid/final text reveals, discount code scale-in. Discount code `scrollerevenue26` copies to clipboard + WhatsApp link. Always-light background, `prefers-reduced-motion` support. Rendered conditionally via `$page.url.pathname === '/'` in layout.
+    - **CustomCursor**: Global custom animated cursor (dot 8px Righello Pink + ring 36px semi-transparent border) with lerp physics. Ring lags behind dot for fluid feel. Scales up 1.5x on hover over interactive elements (a, button, [role="button"], input, textarea, select, .cursor-hover). Click pulse animation. Hidden on touch devices via `matchMedia('(pointer: coarse)')`. Respects `prefers-reduced-motion`. Mounted globally in `+layout.svelte` with `{#if browser}` guard. `pointer-events: none`, `z-index: 9999`.
 
 ### Feature Specifications
 - **Service Departments**: The website categorizes services into three main areas: Content & Social Media, Advertising & Performance, and Digital Experience.
 - **Page Structure**:
     - `/` (Homepage): Fullscreen hero, animated statistics, services, video testimonials, client marquee.
-    - `/servizi` (Services): Modern tabbed interface for the three departments.
+    - `/servizi` (Services): OnOff Studio-inspired overview with RippleGrid hero, pink-highlighted title text, and stacked horizontal service blocks linking to detail pages.
+    - `/servizi/[slug]` (Service Detail): Dynamic route for 3 departments (marketing, advertising, web). Hero with RippleGrid + highlighted word, 6 service cards in 3x2 grid, workflow steps, CTA. Data in `src/lib/data/service-details.ts`.
     - `/progetti` (Projects): Project gallery with category filters and 3D tilt effects.
     - `/progetti/[slug]` (Project Detail).
     - `/chi-siamo` (About Us): Team presentation and animated statistics.
@@ -69,7 +71,7 @@ The website is built with SvelteKit 1.x, styled using TailwindCSS. It utilizes a
   - `/chi-siamo`: `#chi-siamo-hero`, `#team`, `#dipartimenti`
   - `/contatti`: `#contatti-hero`, `#form`
   - `/progetti`: `#portfolio`
-- **Header Dropdown**: Servizi dropdown links use `href="/servizi#{dept.id}"` for direct anchor navigation to department cards.
+- **Header Dropdown**: Servizi dropdown links navigate to individual department detail pages (`/servizi/marketing`, `/servizi/advertising`, `/servizi/web`) using a `departmentSlugs` mapping in Header.svelte.
 
 ### Accessibility
 - Support for `prefers-reduced-motion` for all animated components.

@@ -4,63 +4,46 @@
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
   import FAQ from '$lib/components/FAQ.svelte';
+  import RippleGrid from '$lib/components/RippleGrid.svelte';
   import { slide } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import { env } from '$env/dynamic/public';
   
   const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
   
-  const deptSlugs = ['content-social', 'advertising', 'digital-experience'];
-  
   const departments = [
     {
-      icon: '📱',
+      icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
       title: 'Marketing & Social Media',
-      tagline: 'Strategie che generano risultati',
-      description: 'Strategie di marketing integrate e gestione completa dei social media. Dalla pianificazione editoriale alla produzione di contenuti, ogni azione è pensata per generare engagement reale e conversioni misurabili.',
-      services: [
-        'Social Media Management',
-        'Video Production (Reels, TikTok, YouTube)',
-        'Shooting fotografici',
-        'Copywriting & Storytelling',
-        'Piano editoriale strategico',
-        'Community management'
-      ],
+      slug: 'marketing',
       color: '#D6487E',
-      featured: true
+      subServices: [
+        { title: 'Social Media Management', desc: 'Strategia, pianificazione editoriale e community management per i tuoi canali social.' },
+        { title: 'Video Production', desc: 'Reel, TikTok, YouTube: produzione video completa con storytelling e editing professionale.' },
+        { title: 'Copywriting & Contenuti', desc: 'Testi persuasivi, shooting fotografici e piano editoriale strategico su misura.' }
+      ]
     },
     {
-      icon: '🎯',
+      icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
       title: 'Advertising & Automazione',
-      tagline: 'Ogni euro tracciato, ogni processo ottimizzato',
-      description: 'Campagne pubblicitarie data-driven con tracking avanzato, combinate con automazioni intelligenti per ottimizzare i processi di marketing e vendita. Massimo ritorno, minimo spreco.',
-      services: [
-        'Meta Ads (Facebook & Instagram)',
-        'Google Ads & YouTube Ads',
-        'TikTok Ads',
-        'Tracking & Attribution avanzato',
-        'A/B Testing continuo',
-        'Report e dashboard real-time',
-        'Marketing Automation'
-      ],
+      slug: 'advertising',
       color: '#06B6D4',
-      featured: false
+      subServices: [
+        { title: 'Meta & Google Ads', desc: 'Campagne data-driven con targeting avanzato e scaling progressivo per massimizzare il ROAS.' },
+        { title: 'Tracking & Attribution', desc: 'Setup pixel, server-side tracking, GA4 e dashboard personalizzate per ogni touchpoint.' },
+        { title: 'Marketing Automation', desc: 'Workflow automatizzati per lead nurturing, email marketing e CRM integration.' }
+      ]
     },
     {
-      icon: '💻',
+      icon: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
       title: 'Sviluppo Web & Software',
-      tagline: 'Soluzioni digitali su misura',
-      description: 'Progettiamo e sviluppiamo siti web, e-commerce, web app e software custom. Soluzioni scalabili, integrate e potenziate dall\'intelligenza artificiale per far crescere il tuo business.',
-      services: [
-        'Siti web & Landing page',
-        'E-commerce (Shopify, Custom)',
-        'Web App su misura',
-        'SEO tecnico & on-page',
-        'UX/UI Design',
-        'Integrazioni & Automazioni'
-      ],
+      slug: 'web',
       color: '#8B5CF6',
-      featured: false
+      subServices: [
+        { title: 'Siti Web & E-Commerce', desc: 'Siti istituzionali, landing page e piattaforme e-commerce ottimizzate per conversioni.' },
+        { title: 'Web App Custom', desc: 'Applicazioni web su misura, portali clienti, configuratori e dashboard di business intelligence.' },
+        { title: 'SEO & UX/UI Design', desc: 'SEO tecnico e on-page, interfacce intuitive e design system modulari per il tuo brand.' }
+      ]
     }
   ];
 
@@ -260,12 +243,15 @@
 
 <!-- HERO SECTION -->
 <section id="servizi-hero" class="hero-section">
-  <div class="section-container">
+  <div class="hero-ripple-bg">
+    <RippleGrid mouseInteraction={true} gridColor="#D6487E" opacity={0.2} />
+  </div>
+  <div class="section-container hero-content">
     <RevealOnScroll animation="fly-up">
       <p class="eyebrow">I Nostri Servizi</p>
       <h1 class="hero-title">
         Tre Dipartimenti.<br/>
-        <span class="gradient-text">Un Unico Team.</span>
+        <span class="highlight-text">Un Unico Team.</span>
       </h1>
     </RevealOnScroll>
     
@@ -300,42 +286,39 @@
       <div class="section-header">
         <p class="section-subtitle">I Nostri Dipartimenti</p>
         <h2 class="section-title">
-          Tre Anime, <span class="gradient-text">Una Visione</span>
+          Tre Anime, <span class="highlight-text">Una Visione</span>
         </h2>
       </div>
     </RevealOnScroll>
     
-    <div class="departments-grid">
+    <div class="service-blocks">
       {#each departments as dept, i}
         <RevealOnScroll animation="fly-up" stagger={100} index={i}>
-          <div id={deptSlugs[i]} class="department-card" class:featured={dept.featured} style="--dept-color: {dept.color}">
-            {#if dept.featured}
-              <span class="featured-badge">Il nostro cavallo di battaglia</span>
-            {/if}
-            <div class="dept-header">
-              <span class="dept-icon">{dept.icon}</span>
-              <div>
-                <h3 class="dept-title">{dept.title}</h3>
-                <p class="dept-tagline">{dept.tagline}</p>
-              </div>
-            </div>
-            <p class="dept-description">{dept.description}</p>
-            <ul class="dept-services">
-              {#each dept.services as service}
-                <li>
-                  <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          <div class="service-block" style="--dept-color: {dept.color}">
+            <div class="service-block-header">
+              <div class="service-block-header-left">
+                <div class="service-block-icon" style="background: {dept.color}">
+                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d={dept.icon} />
                   </svg>
-                  {service}
-                </li>
+                </div>
+                <h3 class="service-block-title">{dept.title}</h3>
+              </div>
+              <a href="/servizi/{dept.slug}" class="discover-link" style="color: {dept.color}">
+                Scopri di più
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+            <div class="sub-services-grid">
+              {#each dept.subServices as sub}
+                <div class="sub-service">
+                  <h4 class="sub-service-title">{sub.title}</h4>
+                  <p class="sub-service-desc">{sub.desc}</p>
+                </div>
               {/each}
-            </ul>
-            <a href="/contatti" class="dept-cta" style="background: {dept.color}">
-              Scopri di più
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
+            </div>
           </div>
         </RevealOnScroll>
       {/each}
@@ -598,14 +581,28 @@
 <style>
   /* Hero Section */
   .hero-section {
+    position: relative;
     padding: 8rem 0 4rem;
     text-align: center;
+    overflow: hidden;
   }
   
   @media (min-width: 768px) {
     .hero-section {
       padding: 10rem 0 5rem;
     }
+  }
+  
+  .hero-ripple-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: auto;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 1;
   }
   
   .eyebrow {
@@ -623,6 +620,14 @@
     line-height: 1.1;
     margin-bottom: 1.5rem;
     color: var(--text-primary);
+  }
+  
+  .highlight-text {
+    background: #D6487E;
+    color: white;
+    -webkit-text-fill-color: white;
+    display: inline-block;
+    padding: 0.1em 0.3em;
   }
   
   .hero-subtitle {
@@ -701,150 +706,115 @@
     color: white;
   }
 
-  /* Departments Section */
-  .departments-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  @media (min-width: 768px) {
-    .departments-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-  }
-  
-  .department-card {
-    position: relative;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1.5rem;
-    padding: 2rem;
-    transition: all 0.3s ease;
+  /* Service Blocks (OnOff style) */
+  .service-blocks {
     display: flex;
     flex-direction: column;
+    gap: 1.5rem;
   }
   
-  :global([data-theme="light"]) .department-card {
+  .service-block {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
+  }
+  
+  :global([data-theme="light"]) .service-block {
     background: rgba(0, 0, 0, 0.02);
     border-color: rgba(0, 0, 0, 0.08);
   }
   
-  .department-card:hover {
+  .service-block:hover {
     border-color: var(--dept-color, #D6487E);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   }
   
-  .department-card.featured {
-    border-color: rgba(214, 72, 126, 0.4);
-    background: linear-gradient(135deg, rgba(214, 72, 126, 0.1), rgba(214, 72, 126, 0.02));
-  }
-  
-  .featured-badge {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #D6487E, #B83B6A);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.4rem 1rem;
-    border-radius: 9999px;
-    white-space: nowrap;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  
-  .dept-header {
+  .service-block-header {
     display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .dept-icon {
-    font-size: 2.5rem;
-    flex-shrink: 0;
-  }
-  
-  .dept-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.25rem;
-  }
-  
-  .dept-tagline {
-    font-size: 1rem;
-    color: var(--dept-color, #D6487E);
-    font-weight: 500;
-  }
-  
-  .dept-description {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 1.5rem;
   }
   
-  .dept-services {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1.5rem;
-    flex-grow: 1;
-  }
-  
-  .dept-services li {
+  .service-block-header-left {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    font-size: 1rem;
-    color: var(--text-secondary);
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 1rem;
   }
   
-  :global([data-theme="light"]) .dept-services li {
-    border-bottom-color: rgba(0, 0, 0, 0.05);
-  }
-  
-  .dept-services li:last-child {
-    border-bottom: none;
-  }
-  
-  .check-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--dept-color, #D6487E);
+  .service-block-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
   }
   
-  .dept-cta {
+  .service-block-icon svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+  }
+  
+  .service-block-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  
+  .discover-link {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 0.5rem;
-    padding: 0.875rem 1.5rem;
-    color: white;
     font-weight: 600;
     font-size: 1rem;
-    border-radius: 9999px;
-    transition: all 0.3s ease;
-    min-height: 48px;
-    text-align: center;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
   }
   
-  .dept-cta:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.1);
+  .discover-link:hover {
+    opacity: 0.8;
   }
   
-  .dept-cta svg {
+  .discover-link svg {
     width: 1.25rem;
     height: 1.25rem;
+  }
+  
+  .sub-services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .sub-services-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .sub-service-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.375rem;
+  }
+  
+  .sub-service-desc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  
+  @media (max-width: 767px) {
+    .service-block-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
   }
   
   /* Sections */

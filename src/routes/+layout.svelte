@@ -3,6 +3,7 @@
   import Header from '$lib/components/Header.svelte';
   import Footer from '$lib/components/Footer.svelte';
   import AirplaneEasterEgg from '$lib/components/AirplaneEasterEgg.svelte';
+  import CustomCursor from '$lib/components/CustomCursor.svelte';
   import { theme } from '$lib/stores/theme';
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
@@ -64,6 +65,9 @@
 </svelte:head>
 
 <div data-theme={$theme}>
+  {#if browser}
+    <CustomCursor />
+  {/if}
   <Header />
   <main class="min-h-screen" style="background-color: var(--bg-primary);">
     <slot />

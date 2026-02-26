@@ -25,6 +25,12 @@
     'advertising': '🎯',
     'digital-experience': '💻'
   };
+
+  const departmentSlugs: Record<string, string> = {
+    'content-social': 'marketing',
+    'advertising': 'advertising',
+    'digital-experience': 'web'
+  };
   
   function toggleMenu() {
     mobileMenuOpen = !mobileMenuOpen;
@@ -118,7 +124,7 @@
                 <div class="dropdown-content">
                   {#each departments as dept}
                     <a 
-                      href="/servizi#{dept.id}" 
+                      href="/servizi/{departmentSlugs[dept.id] || dept.id}" 
                       class="dropdown-item"
                       on:click={() => serviziHovered = false}
                     >
@@ -195,7 +201,7 @@
             <div class="mobile-submenu" class:mobile-submenu-open={mobileServiziOpen}>
               {#each departments as dept}
                 <a 
-                  href="/servizi#{dept.id}" 
+                  href="/servizi/{departmentSlugs[dept.id] || dept.id}" 
                   class="mobile-submenu-item"
                   on:click={closeMenu}
                 >
