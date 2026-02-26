@@ -5,6 +5,7 @@
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
   import FAQ from '$lib/components/FAQ.svelte';
   import RippleGrid from '$lib/components/RippleGrid.svelte';
+  import GridScan from '$lib/components/GridScan.svelte';
   import { slide } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import { env } from '$env/dynamic/public';
@@ -262,7 +263,19 @@
 <!-- HERO SECTION -->
 <section id="servizi-hero" class="hero-section">
   <div class="hero-ripple-bg">
-    <RippleGrid mouseInteraction={true} gridColor="#D6487E" opacity={0.2} />
+    <GridScan
+      sensitivity={0.55}
+      lineThickness={1}
+      linesColor="#392e4e"
+      gridScale={0.1}
+      scanColor="#D6487E"
+      scanOpacity={0.4}
+      enablePost={true}
+      bloomIntensity={0.6}
+      chromaticAberration={0.002}
+      noiseIntensity={0.01}
+      scanOnClick={true}
+    />
   </div>
   <div class="section-container hero-content">
     <RevealOnScroll animation="fly-up">
@@ -624,6 +637,13 @@
   .hero-content {
     position: relative;
     z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero-content :global(a),
+  .hero-content :global(button),
+  .hero-content :global([role="button"]) {
+    pointer-events: auto;
   }
   
   .eyebrow {

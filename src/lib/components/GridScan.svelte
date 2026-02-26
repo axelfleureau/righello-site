@@ -335,20 +335,34 @@ void main(){
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
 
-    const THREE = await import('three');
+    let THREE: any;
+    try {
+      THREE = await import('three');
+    } catch {
+      return;
+    }
 
     let composer: any = null;
     let bloomEffect: any = null;
     let chromaEffect: any = null;
 
+    const w = containerEl.clientWidth;
+    const h = containerEl.clientHeight;
+    if (w === 0 || h === 0) return;
+
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(containerEl.clientWidth, containerEl.clientHeight);
+    renderer.setSize(w, h);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.NoToneMapping;
     renderer.setClearColor(0x000000, 0);
     renderer.autoClear = false;
     containerEl.appendChild(renderer.domElement);
 
-    const srgbColor = (hex: string) => new THREE.Color(hex).convertSRGBToLinear();
+    const srgbColor = (hex: string) => {
+      const c = new THREE.Color(hex);
+      return c;
+    };
 
     const s = clamp(sensitivity, 0, 1);
     const skewScale = lerp(0.06, 0.2, s);
@@ -422,7 +436,8 @@ void main(){
         const effectPass = new pp.EffectPass(camera, bloomEffect, chromaEffect);
         effectPass.renderToScreen = true;
         composer.addPass(effectPass);
-      } catch {
+      } catch (e) {
+        console.warn('[GridScan] postprocessing init failed, falling back to basic render:', e);
         composer = null;
       }
     }
@@ -462,7 +477,7 @@ void main(){
       uniforms.uScanCount.value = scanStarts.length;
     };
 
-    containerEl.addEventListener('mousemove', onMove);
+    document.addEventListener('mousemove', onMove);
     containerEl.addEventListener('mouseenter', onEnter);
     containerEl.addEventListener('mouseleave', onLeave);
     if (scanOnClick) containerEl.addEventListener('click', onClick);
@@ -502,7 +517,7 @@ void main(){
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('resize', onResize);
-      containerEl.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mousemove', onMove);
       containerEl.removeEventListener('mouseenter', onEnter);
       containerEl.removeEventListener('mouseleave', onLeave);
       if (scanOnClick) containerEl.removeEventListener('click', onClick);
@@ -535,5 +550,6 @@ void main(){
     display: block;
     width: 100% !important;
     height: 100% !important;
+    pointer-events: none;
   }
 </style>
