@@ -68,11 +68,15 @@
   {#if browser}
     <CustomCursor />
   {/if}
-  <Header />
+  {#if !$page.url.pathname.startsWith('/busadelsauc')}
+    <Header />
+  {/if}
   <main class="min-h-screen" style="background-color: var(--bg-primary);">
     <slot />
   </main>
-  <Footer />
+  {#if !$page.url.pathname.startsWith('/busadelsauc')}
+    <Footer />
+  {/if}
   {#if $page.url.pathname === '/'}
     <AirplaneEasterEgg />
   {/if}
