@@ -304,10 +304,10 @@
     mouseInteraction={true}
     mouseInteractionRadius={1.2}
   />
-  <div class="absolute inset-0 noise-overlay opacity-20"></div>
+  <div class="absolute inset-0 noise-overlay opacity-20 pointer-events-none"></div>
   
   <!-- Step Progress Indicator (Desktop only) -->
-  <div class="step-indicator">
+  <div class="step-indicator" style="pointer-events: auto;">
     <div class="step-line">
       <div class="step-progress" style="height: {(activeStep / slides.length) * 100}%"></div>
     </div>
@@ -334,7 +334,7 @@
   </div>
   
   <!-- Main content with CSS Grid layout -->
-  <div class="scrolly-content">
+  <div class="scrolly-content" style="pointer-events: none;">
     <!-- Hero text column -->
     <div bind:this={heroContent} class="hero-text">
       <p class="text-sm md:text-base uppercase tracking-[0.3em] text-righello-pink mb-6 font-medium">
@@ -494,6 +494,7 @@
     flex-shrink: 0;
     max-width: 100%;
     text-align: center;
+    pointer-events: auto;
   }
   
   @media (min-width: 1024px) {
@@ -512,6 +513,7 @@
     align-items: center;
     flex-shrink: 0;
     --phone-offset: 0;
+    pointer-events: auto;
   }
   
   @media (min-width: 1024px) {
