@@ -264,13 +264,13 @@
   <div class="hero-ripple-bg">
     <RippleGrid
       gridColor="#D6487E"
-      opacity={0.15}
+      opacity={0.25}
       gridSize={12}
       gridThickness={18}
-      rippleIntensity={0.02}
+      rippleIntensity={0.03}
       fadeDistance={1.8}
       vignetteStrength={2.5}
-      glowIntensity={0.1}
+      glowIntensity={0.15}
       mouseInteraction={true}
       mouseInteractionRadius={1.2}
     />
