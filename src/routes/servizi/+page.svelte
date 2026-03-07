@@ -614,6 +614,11 @@
   /* Hero Section */
   .hero-section {
     position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 8rem 0 4rem;
     text-align: center;
     overflow: hidden;
