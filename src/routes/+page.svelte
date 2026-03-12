@@ -19,6 +19,10 @@
   import RippleGrid from '$lib/components/RippleGrid.svelte';
   import { onMount } from 'svelte';
   import { env } from '$env/dynamic/public';
+  import type { PageData } from './$types';
+
+  export let data: PageData;
+  export let form: Record<string, unknown> | null = null;
   
   const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
   

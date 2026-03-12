@@ -39,7 +39,7 @@
     activeVideo = id;
     const ref = getVideoRef(id);
     if (ref) {
-      ref.play();
+      ref.play().catch(() => {});
     }
   }
   

@@ -10,7 +10,10 @@
   import { afterNavigate } from '$app/navigation';
   import { page } from '$app/stores';
   import { initMetaPixel, trackPageView } from '$lib/tracking/metaPixel';
-  
+  import type { LayoutData } from './$types';
+
+  export let data: LayoutData;
+
   const PUBLIC_META_PIXEL_ID = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
   
   onMount(() => {
