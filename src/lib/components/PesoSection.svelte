@@ -121,7 +121,7 @@
   };
 </script>
 
-<section class="peso-section section-padding">
+<section id="pesoframework" class="peso-section section-padding">
   <div class="section-container">
     <RevealOnScroll>
       <div class="section-header">
