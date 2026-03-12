@@ -121,10 +121,10 @@
   };
 </script>
 
-<section id="pesoframework" class="peso-section section-padding">
+<section class="peso-section section-padding">
   <div class="section-container">
     <RevealOnScroll>
-      <div class="section-header">
+      <div id="pesoframework" class="section-header">
         <span class="section-subtitle">Il Metodo</span>
         <h2 class="section-title">PESO Framework</h2>
         <p class="section-description">
@@ -249,6 +249,7 @@
   .section-header {
     text-align: center;
     margin-bottom: 2.5rem;
+    scroll-margin-top: 100px;
   }
   
   .section-subtitle {
