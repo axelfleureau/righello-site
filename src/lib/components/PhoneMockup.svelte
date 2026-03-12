@@ -6,6 +6,7 @@
   
   export let videoSrc: string | null = null;
   export let showPlaceholder = true;
+  export let muted: boolean = true;
   
   let mounted = false;
   let isHovered = false;
@@ -52,6 +53,9 @@
     videoError = true;
   }
   
+  // Reactively sync muted prop → video element property
+  $: if (videoElement) videoElement.muted = muted;
+
   onMount(() => {
     mounted = true;
     

@@ -7,6 +7,11 @@
   
   export let credibilityBadges: { icon: string; label: string }[] = [];
   export let partnerNames: string[] = [];
+
+  let videoMuted = true;
+  let audioUnlocked = false;
+  let audioActiveVisible = false;
+  let audioObserver: IntersectionObserver | null = null;
   
   const heroSlide = {
     subtitle: 'Growth Agency',
@@ -88,6 +93,15 @@
     // The phone mockup handles its own loading state
   }
   
+  function unlockAudio() {
+    if (!audioUnlocked) {
+      audioUnlocked = true;
+      videoMuted = false;
+      audioActiveVisible = true;
+      setTimeout(() => { audioActiveVisible = false; }, 2500);
+    }
+  }
+
   onMount(async () => {
     if (!browser) return;
     
@@ -95,6 +109,26 @@
     await tick();
     
     if (!container) return;
+
+    // --- Audio management ---
+    // Unlock audio on first wheel event (user gesture required by browsers)
+    window.addEventListener('wheel', unlockAudio, { once: true, passive: true });
+
+    // Mute/unmute based on whether the hero is in viewport
+    audioObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Re-enter viewport: unmute if user had already unlocked audio
+          if (audioUnlocked) videoMuted = false;
+        } else {
+          // Left viewport: always mute
+          videoMuted = true;
+        }
+      });
+    }, { threshold: 0.2 });
+
+    audioObserver.observe(container);
+    // --- end audio management ---
     
     // Single initialization - wait for window load
     const init = async () => {
@@ -288,6 +322,8 @@
   
   onDestroy(() => {
     ctx?.revert();
+    audioObserver?.disconnect();
+    if (browser) window.removeEventListener('wheel', unlockAudio);
   });
 </script>
 
@@ -390,7 +426,30 @@
     
     <!-- Phone column - positioned via CSS Grid, no absolute positioning -->
     <div bind:this={phoneWrapper} class="phone-area">
-      <PhoneMockup videoSrc="https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_7229_compressed_crf29.mp4?alt=media&token=7d33f220-059e-4297-ae4e-7539d57ebdf8" />
+      <PhoneMockup 
+        videoSrc="https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_7229_compressed_crf29.mp4?alt=media&token=7d33f220-059e-4297-ae4e-7539d57ebdf8"
+        muted={videoMuted}
+      />
+      <!-- Audio state indicators -->
+      {#if audioActiveVisible}
+        <div class="audio-badge audio-on" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+          Audio attivato
+        </div>
+      {:else if !audioUnlocked}
+        <div class="audio-badge audio-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          Scorri per audio
+        </div>
+      {/if}
     </div>
     
     <!-- Slides overlay -->
@@ -764,6 +823,67 @@
   
   :global([data-theme="light"]) .slide-step-badge {
     background: rgba(214, 72, 126, 0.1);
+  }
+
+  /* Audio state badges */
+  .audio-badge {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    pointer-events: none;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .audio-hint {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.5);
+    animation: audio-hint-pulse 3s ease-in-out infinite;
+  }
+
+  .audio-on {
+    background: rgba(214, 72, 126, 0.2);
+    border: 1px solid rgba(214, 72, 126, 0.4);
+    color: #D6487E;
+    animation: audio-on-in 0.4s ease both, audio-on-out 0.5s ease 2s both;
+  }
+
+  .audio-icon {
+    width: 0.85rem;
+    height: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  @keyframes audio-hint-pulse {
+    0%, 100% { opacity: 0.5; }
+    50%       { opacity: 1; }
+  }
+
+  @keyframes audio-on-in {
+    from { opacity: 0; transform: translateX(-50%) scale(0.9); }
+    to   { opacity: 1; transform: translateX(-50%) scale(1); }
+  }
+
+  @keyframes audio-on-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+
+  :global([data-theme="light"]) .audio-hint {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.4);
   }
 
   /* Partners strip */
