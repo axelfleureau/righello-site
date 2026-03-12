@@ -6,6 +6,7 @@
   import RippleGrid from './RippleGrid.svelte';
   
   export let credibilityBadges: { icon: string; label: string }[] = [];
+  export let partnerNames: string[] = [];
   
   const heroSlide = {
     subtitle: 'Growth Agency',
@@ -389,7 +390,7 @@
     
     <!-- Phone column - positioned via CSS Grid, no absolute positioning -->
     <div bind:this={phoneWrapper} class="phone-area">
-      <PhoneMockup videoSrc="https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/caterina_4.mp4?alt=media&token=82ca60f4-1a84-4682-9e90-c65a50421daa" />
+      <PhoneMockup videoSrc="https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_7229_compressed_crf29.mp4?alt=media&token=7d33f220-059e-4297-ae4e-7539d57ebdf8" />
     </div>
     
     <!-- Slides overlay -->
@@ -415,6 +416,20 @@
     {/each}
   </div>
   
+  {#if partnerNames.length > 0}
+    <div class="partners-strip" aria-hidden="true">
+      <p class="partners-label">Tra i nostri clienti</p>
+      <div class="partners-marquee-wrapper">
+        <div class="partners-marquee">
+          {#each [...partnerNames, ...partnerNames] as name}
+            <span class="partner-name">{name}</span>
+            <span class="partner-sep">·</span>
+          {/each}
+        </div>
+      </div>
+    </div>
+  {/if}
+
   <div class="scroll-hint">
     <div class="scroll-indicator">
       <div class="scroll-dot"></div>
@@ -749,5 +764,81 @@
   
   :global([data-theme="light"]) .slide-step-badge {
     background: rgba(214, 72, 126, 0.1);
+  }
+
+  /* Partners strip */
+  .partners-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 6;
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.625rem;
+    mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+    animation: partners-fade-in 1.2s ease 0.8s both;
+    pointer-events: none;
+  }
+
+  @keyframes partners-fade-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .partners-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-secondary, rgba(255,255,255,0.4));
+    opacity: 0.6;
+    margin: 0;
+  }
+
+  .partners-marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  }
+
+  .partners-marquee {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: max-content;
+    animation: partners-scroll 35s linear infinite;
+  }
+
+  @keyframes partners-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .partner-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-primary, rgba(255,255,255,0.7));
+    opacity: 0.55;
+    white-space: nowrap;
+    padding: 0 0.5rem;
+    letter-spacing: 0.03em;
+    transition: opacity 0.2s;
+  }
+
+  .partner-sep {
+    color: #D6487E;
+    opacity: 0.45;
+    font-size: 0.6rem;
+    padding: 0 0.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .partners-marquee {
+      animation: none;
+    }
   }
 </style>

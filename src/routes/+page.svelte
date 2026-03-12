@@ -78,6 +78,12 @@
     { icon: 'google', label: 'Google Partner' },
     { icon: 'star', label: '5.0 Rating' },
   ];
+
+  const heroPartnerNames = [
+    'Barcolana', 'Comune di Pordenone', 'Ippodromo Merano', 'Reguta', 'Ricci Group',
+    'Riviera Resort Hotel', 'Quellenhof', 'Scuola Sci Piancavallo', '3R Technology',
+    'Tenuta Polvaro', 'VIP Motors', 'Zanutta', 'La Busa del Sauc', 'Ardea',
+  ];
   
   const processSteps = [
     {
@@ -126,7 +132,7 @@
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
 </svelte:head>
 
-<AppleScrolly {credibilityBadges} />
+<AppleScrolly {credibilityBadges} partnerNames={heroPartnerNames} />
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
