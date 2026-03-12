@@ -177,8 +177,9 @@
                 const progress = self.progress;
                 const slideIndex = Math.floor(progress * totalSlides);
                 
-                // Update active step for step indicator
-                activeStep = Math.max(0, Math.min(slideIndex, slides.length));
+                // Update active step only when it changes (avoid Svelte re-renders every frame)
+                const newStep = Math.max(0, Math.min(slideIndex, slides.length));
+                if (newStep !== activeStep) activeStep = newStep;
                 
                 // Hero content fade out (0 to 0.2 progress)
                 if (progress < 0.2) {
@@ -489,10 +490,9 @@
     </div>
   {/if}
 
-  <div class="scroll-hint">
-    <div class="scroll-indicator">
-      <div class="scroll-dot"></div>
-    </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-hint-line"></div>
+    <span class="scroll-hint-text">SCROLL</span>
   </div>
 </section>
 
@@ -593,6 +593,7 @@
   @media (min-width: 1024px) {
     .phone-area {
       /* Position phone absolutely - GSAP controls exact position */
+      will-change: transform, opacity;
       position: absolute;
       /* Initial state: right side of viewport (before GSAP takes over) */
       left: 75%;
@@ -679,60 +680,53 @@
     line-height: 1.6;
   }
   
+  /* Vertical scroll hint – left edge, no overlap with partners strip */
   .scroll-hint {
     position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 1.5rem;
+    bottom: 22%;
     z-index: 20;
-    animation: float 3s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-10px); }
-  }
-  
-  .scroll-indicator {
-    width: 24px;
-    height: 40px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 9999px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    opacity: 0.45;
+    pointer-events: none;
   }
-  
-  .scroll-dot {
-    width: 6px;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 9999px;
-    margin-top: 8px;
-    animation: bounce 1s ease-in-out infinite;
+
+  .scroll-hint-line {
+    width: 1px;
+    height: 3rem;
+    background: linear-gradient(to bottom, var(--text-secondary, rgba(255,255,255,0.5)), transparent);
+    transform-origin: top;
+    animation: scroll-line-drop 2.4s ease-in-out infinite;
   }
-  
-  :global([data-theme="light"]) .scroll-indicator {
-    border-color: rgba(0, 0, 0, 0.2);
+
+  .scroll-hint-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 0.6rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-secondary, rgba(255,255,255,0.5));
+    font-weight: 500;
   }
-  
-  :global([data-theme="light"]) .scroll-dot {
-    background-color: rgba(0, 0, 0, 0.3);
+
+  @keyframes scroll-line-drop {
+    0%   { transform: scaleY(0); opacity: 0; transform-origin: top; }
+    45%  { transform: scaleY(1); opacity: 1; transform-origin: top; }
+    55%  { transform: scaleY(1); opacity: 1; transform-origin: bottom; }
+    100% { transform: scaleY(0); opacity: 0; transform-origin: bottom; }
   }
-  
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(6px); }
-  }
-  
-  @media (max-width: 768px) {
+
+  @media (max-width: 1023px) {
     .scroll-hint {
       display: none;
     }
   }
-  
+
   .desc-char {
     display: inline-block;
-    will-change: opacity, transform;
   }
   
   /* Step Progress Indicator */
