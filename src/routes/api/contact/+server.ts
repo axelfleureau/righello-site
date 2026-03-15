@@ -57,7 +57,7 @@ function getLeadPriority(budget: string): { label: string; color: string; bg: st
 async function enhanceClientEmail(form: ContactForm): Promise<string> {
   try {
     const completion = await getOpenAI().chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-5.2',
       messages: [
         {
           role: 'system',
@@ -82,7 +82,7 @@ Riscrivi come corpo di un'email di conferma. REGOLE:
 - Massimo 3 paragrafi brevi`
         }
       ],
-      max_tokens: 500,
+      max_completion_tokens: 500,
     });
     return completion.choices[0]?.message?.content || '';
   } catch (err) {
@@ -94,7 +94,7 @@ Riscrivi come corpo di un'email di conferma. REGOLE:
 async function generateLeadAnalysis(form: ContactForm): Promise<string> {
   try {
     const completion = await getOpenAI().chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-5.2',
       messages: [
         {
           role: 'system',
@@ -120,7 +120,7 @@ FORMATO RICHIESTO (rispetta esattamente):
 ⚡ SEGNALI CHIAVE: [2-3 segnali rilevanti separati da virgola]`
         }
       ],
-      max_tokens: 400,
+      max_completion_tokens: 400,
     });
     return completion.choices[0]?.message?.content || '';
   } catch (err) {
