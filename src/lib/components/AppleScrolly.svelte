@@ -431,26 +431,6 @@
         videoSrc="https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_7229_compressed_crf29.mp4?alt=media&token=7d33f220-059e-4297-ae4e-7539d57ebdf8"
         muted={videoMuted}
       />
-      <!-- Audio state indicators -->
-      {#if audioActiveVisible}
-        <div class="audio-badge audio-on" aria-live="polite">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-          </svg>
-          Audio attivato
-        </div>
-      {:else if !audioUnlocked}
-        <div class="audio-badge audio-hint">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-            <line x1="23" y1="9" x2="17" y2="15"/>
-            <line x1="17" y1="9" x2="23" y2="15"/>
-          </svg>
-          Scorri per audio
-        </div>
-      {/if}
     </div>
     
     <!-- Slides overlay -->
@@ -487,6 +467,27 @@
           {/each}
         </div>
       </div>
+    </div>
+  {/if}
+
+  <!-- Audio state badges – section-level, above partners strip -->
+  {#if audioActiveVisible}
+    <div class="audio-badge audio-on" aria-live="polite">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      </svg>
+      Audio attivato
+    </div>
+  {:else if !audioUnlocked}
+    <div class="audio-badge audio-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <line x1="23" y1="9" x2="17" y2="15"/>
+        <line x1="17" y1="9" x2="23" y2="15"/>
+      </svg>
+      Scorri per audio
     </div>
   {/if}
 
@@ -819,12 +820,12 @@
     background: rgba(214, 72, 126, 0.1);
   }
 
-  /* Audio state badges */
+  /* Audio state badges – section-level, right side above partners strip */
   .audio-badge {
     position: absolute;
-    bottom: 0.75rem;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 2rem;
+    bottom: 7rem;
+    z-index: 10;
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -865,8 +866,8 @@
   }
 
   @keyframes audio-on-in {
-    from { opacity: 0; transform: translateX(-50%) scale(0.9); }
-    to   { opacity: 1; transform: translateX(-50%) scale(1); }
+    from { opacity: 0; transform: scale(0.9) translateY(4px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
   }
 
   @keyframes audio-on-out {
