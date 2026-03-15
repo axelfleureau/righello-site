@@ -5,7 +5,7 @@ export function intersectionObserver(
     IntersectionObserverInit | undefined
   ]
 ) {
-  const observer = new IntersectionObserver(
+  const observer = new IntersectionObserver( 
     ([entry], observer) => callback(entry, observer),
     options
   );
