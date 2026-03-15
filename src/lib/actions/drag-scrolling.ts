@@ -7,7 +7,7 @@ export const dragScrolling = (
     onInteraction?: VoidFunction;
   }
 ) => {
-  if (options.isActive) {
+  if (options.isActive) { 
     // state
     let dragging = false;
     let hasInteracted = false;
