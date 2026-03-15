@@ -111,8 +111,9 @@
     if (!container) return;
 
     // --- Audio management ---
-    // Unlock audio on first wheel event (user gesture required by browsers)
+    // Unlock audio on first user gesture (wheel on desktop, touchstart on mobile)
     window.addEventListener('wheel', unlockAudio, { once: true, passive: true });
+    window.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
 
     // Mute/unmute based on whether the hero is in viewport
     audioObserver = new IntersectionObserver((entries) => {
@@ -324,7 +325,10 @@
   onDestroy(() => {
     ctx?.revert();
     audioObserver?.disconnect();
-    if (browser) window.removeEventListener('wheel', unlockAudio);
+    if (browser) {
+      window.removeEventListener('wheel', unlockAudio);
+      window.removeEventListener('touchstart', unlockAudio);
+    }
   });
 </script>
 
