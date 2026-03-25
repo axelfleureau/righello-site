@@ -134,79 +134,89 @@ void main() {
   
   onMount(async () => {
     if (!browser || !container) return;
-    
-    const { Renderer, Program, Triangle, Mesh } = await import('ogl');
-    
-    renderer = new Renderer({
-      dpr: Math.min(window.devicePixelRatio, 2),
-      alpha: true
-    });
-    
-    const gl = renderer.gl;
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.canvas.style.width = '100%';
-    gl.canvas.style.height = '100%';
-    container.appendChild(gl.canvas);
-    
-    uniforms = {
-      iTime: { value: 0 },
-      iResolution: { value: [1, 1] },
-      enableRainbow: { value: enableRainbow },
-      gridColor: { value: hexToRgb(gridColor) },
-      rippleIntensity: { value: rippleIntensity },
-      gridSize: { value: gridSize },
-      gridThickness: { value: gridThickness },
-      fadeDistance: { value: fadeDistance },
-      vignetteStrength: { value: vignetteStrength },
-      glowIntensity: { value: glowIntensity },
-      opacity: { value: opacity },
-      gridRotation: { value: gridRotation },
-      mouseInteraction: { value: mouseInteraction },
-      mousePosition: { value: [0.5, 0.5] },
-      mouseInfluence: { value: 0 },
-      mouseInteractionRadius: { value: mouseInteractionRadius }
-    };
-    
-    const geometry = new Triangle(gl);
-    const program = new Program(gl, { vertex: vert, fragment: frag, uniforms });
-    const mesh = new Mesh(gl, { geometry, program });
-    
-    function resize() {
-      if (!container) return;
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      renderer.setSize(w, h);
-      uniforms.iResolution.value = [w, h];
-    }
-    
-    function render(t: number) {
-      uniforms.iTime.value = t * 0.001;
+
+    try {
+      const { Renderer, Program, Triangle, Mesh } = await import('ogl');
       
-      const lerpFactor = 0.1;
-      mousePosition.x += (targetMouse.x - mousePosition.x) * lerpFactor;
-      mousePosition.y += (targetMouse.y - mousePosition.y) * lerpFactor;
+      renderer = new Renderer({
+        dpr: Math.min(window.devicePixelRatio, 2),
+        alpha: true
+      });
       
-      const currentInfluence = uniforms.mouseInfluence.value;
-      uniforms.mouseInfluence.value += (mouseInfluence - currentInfluence) * 0.05;
-      uniforms.mousePosition.value = [mousePosition.x, mousePosition.y];
-      
-      renderer.render({ scene: mesh });
-      animationId = requestAnimationFrame(render);
-    }
-    
-    window.addEventListener('resize', resize);
-    resize();
-    animationId = requestAnimationFrame(render);
-    
-    return () => {
-      window.removeEventListener('resize', resize);
-      if (animationId) cancelAnimationFrame(animationId);
-      renderer?.gl?.getExtension('WEBGL_lose_context')?.loseContext();
-      if (gl.canvas.parentElement) {
-        gl.canvas.parentElement.removeChild(gl.canvas);
+      const gl = renderer.gl;
+
+      if (!gl) {
+        console.warn('RippleGrid: WebGL context not available, skipping animation.');
+        return;
       }
-    };
+
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.canvas.style.width = '100%';
+      gl.canvas.style.height = '100%';
+      container.appendChild(gl.canvas);
+      
+      uniforms = {
+        iTime: { value: 0 },
+        iResolution: { value: [1, 1] },
+        enableRainbow: { value: enableRainbow },
+        gridColor: { value: hexToRgb(gridColor) },
+        rippleIntensity: { value: rippleIntensity },
+        gridSize: { value: gridSize },
+        gridThickness: { value: gridThickness },
+        fadeDistance: { value: fadeDistance },
+        vignetteStrength: { value: vignetteStrength },
+        glowIntensity: { value: glowIntensity },
+        opacity: { value: opacity },
+        gridRotation: { value: gridRotation },
+        mouseInteraction: { value: mouseInteraction },
+        mousePosition: { value: [0.5, 0.5] },
+        mouseInfluence: { value: 0 },
+        mouseInteractionRadius: { value: mouseInteractionRadius }
+      };
+      
+      const geometry = new Triangle(gl);
+      const program = new Program(gl, { vertex: vert, fragment: frag, uniforms });
+      const mesh = new Mesh(gl, { geometry, program });
+      
+      function resize() {
+        if (!container) return;
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        renderer.setSize(w, h);
+        uniforms.iResolution.value = [w, h];
+      }
+      
+      function render(t: number) {
+        uniforms.iTime.value = t * 0.001;
+        
+        const lerpFactor = 0.1;
+        mousePosition.x += (targetMouse.x - mousePosition.x) * lerpFactor;
+        mousePosition.y += (targetMouse.y - mousePosition.y) * lerpFactor;
+        
+        const currentInfluence = uniforms.mouseInfluence.value;
+        uniforms.mouseInfluence.value += (mouseInfluence - currentInfluence) * 0.05;
+        uniforms.mousePosition.value = [mousePosition.x, mousePosition.y];
+        
+        renderer.render({ scene: mesh });
+        animationId = requestAnimationFrame(render);
+      }
+      
+      window.addEventListener('resize', resize);
+      resize();
+      animationId = requestAnimationFrame(render);
+      
+      return () => {
+        window.removeEventListener('resize', resize);
+        if (animationId) cancelAnimationFrame(animationId);
+        renderer?.gl?.getExtension('WEBGL_lose_context')?.loseContext();
+        if (gl.canvas.parentElement) {
+          gl.canvas.parentElement.removeChild(gl.canvas);
+        }
+      };
+    } catch (err) {
+      console.warn('RippleGrid: failed to initialize WebGL renderer:', err instanceof Error ? err.message : String(err));
+    }
   });
   
   onDestroy(() => {
