@@ -91,8 +91,30 @@ Riscrivi come corpo di un'email di conferma. REGOLE:
   }
 }
 
-async function generateLeadAnalysis(form: ContactForm): Promise<string> {
-  try {
+function buildFallbackAnalysis(form: ContactForm, priority: { label: string }): string {
+  const budgetNote = form.budget ? `Budget dichiarato: ${form.budget}` : 'Budget non specificato';
+  const serviceNote = form.service ? `Servizio richiesto: ${form.service}` : 'Servizio non specificato';
+  const msgWords = form.message.trim().split(/\s+/).length;
+  const detailLevel = msgWords > 50 ? 'Messaggio dettagliato (alto interesse)' : msgWords > 20 ? 'Messaggio moderato' : 'Messaggio breve';
+  const hasCompany = form.company ? `Azienda: ${form.company}` : 'Nessuna azienda specificata';
+
+  return [
+    `🎯 PRIORITÀ: ${priority.label}`,
+    `💡 PROFILO: ${hasCompany} — ${serviceNote}`,
+    `⚡ SEGNALI CHIAVE: ${budgetNote}, ${detailLevel}`,
+    `🚀 AZIONE CONSIGLIATA: Rispondere entro 24 ore con proposta personalizzata.`,
+    `ℹ️ Nota: analisi AI non disponibile — dati calcolati automaticamente.`,
+  ].join('\n');
+}
+
+async function generateLeadAnalysis(form: ContactForm, priority: { label: string }): Promise<string> {
+  const TIMEOUT_MS = 15000;
+
+  const timeoutPromise = new Promise<string>((_, reject) =>
+    setTimeout(() => reject(new Error('OpenAI timeout')), TIMEOUT_MS)
+  );
+
+  const analysisPromise = (async (): Promise<string> => {
     const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-5.2',
       messages: [
@@ -123,9 +145,16 @@ FORMATO RICHIESTO (rispetta esattamente):
       max_completion_tokens: 400,
     });
     return completion.choices[0]?.message?.content || '';
+  })();
+
+  try {
+    const result = await Promise.race([analysisPromise, timeoutPromise]);
+    if (result && result.trim().length > 0) return result;
+    console.warn('OpenAI lead analysis returned empty — using fallback');
+    return buildFallbackAnalysis(form, priority);
   } catch (err) {
-    console.error('OpenAI lead analysis failed:', err);
-    return '';
+    console.error('OpenAI lead analysis failed:', err instanceof Error ? err.message : err);
+    return buildFallbackAnalysis(form, priority);
   }
 }
 
@@ -257,7 +286,7 @@ function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, priority: {
   const analysisSection = leadAnalysis
     ? `<tr>
         <td style="padding: 24px; background-color: #FFF5F8; border-radius: 12px; border-left: 4px solid #D6487E; margin-top: 24px;">
-          <h3 style="margin: 0 0 12px 0; font-size: 16px; color: #D6487E; font-weight: 700;">Analisi Automatica</h3>
+          <h3 style="margin: 0 0 12px 0; font-size: 16px; color: #D6487E; font-weight: 700;">🤖 Analisi AI del Lead</h3>
           ${leadAnalysis.split('\n').filter(p => p.trim()).map(p => `<p style="margin: 0 0 8px 0; font-size: 14px; line-height: 1.6; color: #555555;">${p}</p>`).join('')}
         </td>
       </tr>`
@@ -386,7 +415,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
   const [enhancedBody, leadAnalysis] = await Promise.all([
     enhanceClientEmail(form),
-    generateLeadAnalysis(form),
+    generateLeadAnalysis(form, priority),
   ]);
 
   const clientHtml = buildClientEmailHtml(form, enhancedBody);
