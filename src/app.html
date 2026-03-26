@@ -9,6 +9,18 @@
       gtag('js', new Date());
       gtag('config', 'AW-18003003969');
     </script>
+    <script>
+      // Suppress non-Error uncaught exceptions and unhandled rejections.
+      // Uses addEventListener (cannot be overridden by third-party scripts like GTM).
+      // Targets: OGL WebGL errors, old libraries that throw strings/null/undefined.
+      // Real application errors are always proper Error instances and pass through.
+      window.addEventListener('error', function(e) {
+        if (!e.error || !(e.error instanceof Error)) { e.preventDefault(); }
+      }, true);
+      window.addEventListener('unhandledrejection', function(e) {
+        if (e.reason == null || !(e.reason instanceof Error)) { e.preventDefault(); }
+      });
+    </script>
     <meta charset="utf-8" />
     <link rel="icon" type="image/x-icon" href="%sveltekit.assets%/favicon.ico" />
     <link rel="icon" type="image/png" sizes="192x192" href="%sveltekit.assets%/icon-192.png" />

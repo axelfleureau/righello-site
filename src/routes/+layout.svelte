@@ -22,6 +22,19 @@
     if (PUBLIC_META_PIXEL_ID) {
       initMetaPixel(PUBLIC_META_PIXEL_ID);
     }
+
+    // Backup handler: suppress non-Error unhandled rejections from WebGL libs (OGL).
+    // The primary handler is in app.html (inline script, runs before any module).
+    function handleUnhandledRejection(event: PromiseRejectionEvent) {
+      if (!(event.reason instanceof Error)) {
+        event.preventDefault();
+      }
+    }
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+
+    return () => {
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    };
   });
   
   afterNavigate(() => {

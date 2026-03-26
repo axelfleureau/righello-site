@@ -188,18 +188,25 @@ void main() {
       }
       
       function render(t: number) {
-        uniforms.iTime.value = t * 0.001;
-        
-        const lerpFactor = 0.1;
-        mousePosition.x += (targetMouse.x - mousePosition.x) * lerpFactor;
-        mousePosition.y += (targetMouse.y - mousePosition.y) * lerpFactor;
-        
-        const currentInfluence = uniforms.mouseInfluence.value;
-        uniforms.mouseInfluence.value += (mouseInfluence - currentInfluence) * 0.05;
-        uniforms.mousePosition.value = [mousePosition.x, mousePosition.y];
-        
-        renderer.render({ scene: mesh });
-        animationId = requestAnimationFrame(render);
+        try {
+          uniforms.iTime.value = t * 0.001;
+          
+          const lerpFactor = 0.1;
+          mousePosition.x += (targetMouse.x - mousePosition.x) * lerpFactor;
+          mousePosition.y += (targetMouse.y - mousePosition.y) * lerpFactor;
+          
+          const currentInfluence = uniforms.mouseInfluence.value;
+          uniforms.mouseInfluence.value += (mouseInfluence - currentInfluence) * 0.05;
+          uniforms.mousePosition.value = [mousePosition.x, mousePosition.y];
+          
+          renderer.render({ scene: mesh });
+          animationId = requestAnimationFrame(render);
+        } catch (renderErr) {
+          // Stop the loop silently — OGL may throw non-Error strings on GPU/WebGL
+          // failures (e.g. shader errors, context loss). Cancelling is the right action.
+          console.warn('RippleGrid: render loop error, stopping.',
+            renderErr instanceof Error ? renderErr.message : String(renderErr));
+        }
       }
       
       window.addEventListener('resize', resize);
