@@ -17,6 +17,7 @@
   let container: HTMLElement;
   let activeIndex = 0;
   let scrollHandler: (() => void) | null = null;
+  let rafPending = false;
   
   onMount(() => {
     if (!browser || typeof window === 'undefined') return;
@@ -58,7 +59,12 @@
       }
       
       scrollHandler = () => {
-        requestAnimationFrame(calculateActiveIndex);
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(() => {
+          calculateActiveIndex();
+          rafPending = false;
+        });
       };
       
       window.addEventListener('scroll', scrollHandler, { passive: true });

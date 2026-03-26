@@ -362,6 +362,7 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
     transform: translateZ(0);
     backface-visibility: hidden;
   }

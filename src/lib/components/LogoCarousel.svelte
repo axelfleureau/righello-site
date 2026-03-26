@@ -27,6 +27,7 @@
   let seqWidth = 0;
   let copyCount = 2;
   let isHovered = false;
+  let isVisible = true;
   let offset = 0;
   let velocity = 0;
   let animationId: number;
@@ -51,6 +52,12 @@
   }
   
   function animate(timestamp: number) {
+    if (!isVisible) {
+      lastTimestamp = null;
+      animationId = requestAnimationFrame(animate);
+      return;
+    }
+
     if (lastTimestamp === null) {
       lastTimestamp = timestamp;
     }
@@ -90,11 +97,20 @@
     
     if (container) resizeObserver.observe(container);
     if (seqElement) resizeObserver.observe(seqElement);
+
+    const visibilityObserver = new IntersectionObserver(
+      (entries) => {
+        isVisible = entries[0]?.isIntersecting ?? true;
+      },
+      { rootMargin: '100px' }
+    );
+    if (container) visibilityObserver.observe(container);
     
     animationId = requestAnimationFrame(animate);
     
     return () => {
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
       if (animationId) cancelAnimationFrame(animationId);
     };
   });

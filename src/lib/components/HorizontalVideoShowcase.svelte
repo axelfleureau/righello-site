@@ -150,17 +150,34 @@
   }
   
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchScrollLeft = 0;
+  let touchDragDirection: 'horizontal' | 'vertical' | null = null;
+  let hasTouchDragged = false;
   
   function handleTouchStart(e: TouchEvent) {
-    touchStartX = e.touches[0].pageX - container.offsetLeft;
+    touchStartX = e.touches[0].pageX;
+    touchStartY = e.touches[0].pageY;
     touchScrollLeft = container.scrollLeft;
+    touchDragDirection = null;
+    hasTouchDragged = false;
   }
   
   function handleTouchMove(e: TouchEvent) {
-    const x = e.touches[0].pageX - container.offsetLeft;
-    const walk = (touchStartX - x) * 1.2;
-    container.scrollLeft = touchScrollLeft + walk;
+    const x = e.touches[0].pageX;
+    const y = e.touches[0].pageY;
+    const dx = x - touchStartX;
+    const dy = y - touchStartY;
+
+    if (touchDragDirection === null && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+      touchDragDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
+    }
+
+    if (touchDragDirection === 'horizontal') {
+      e.preventDefault();
+      container.scrollLeft = touchScrollLeft - dx;
+      if (Math.abs(dx) > 8) hasTouchDragged = true;
+    }
   }
   
   onMount(() => {
@@ -197,7 +214,7 @@
     on:mouseup={handleMouseUp}
     on:mouseleave={handleMouseLeave}
     on:touchstart={handleTouchStart}
-    on:touchmove={handleTouchMove}
+    on:touchmove|nonpassive={handleTouchMove}
     on:keydown={handleContainerKeydown}
     tabindex="0"
     role="list"
@@ -249,7 +266,7 @@
             </div>
             <button 
               class="play-overlay"
-              on:click|stopPropagation={() => item.videoSrc && openLightbox(item.videoSrc, item.title)}
+              on:click|stopPropagation={() => { if (!hasTouchDragged && item.videoSrc) openLightbox(item.videoSrc, item.title); }}
               aria-label="Riproduci video {item.title}"
             >
               <div class="play-icon">
@@ -363,6 +380,8 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    touch-action: pan-y;
   }
   
   @media (min-width: 640px) {
