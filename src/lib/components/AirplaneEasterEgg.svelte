@@ -172,9 +172,6 @@
       if (isDesktop) {
         if (!sectionEl || !skyContainer || !windowContainer) return;
 
-        const skyHeight = skyContainer.offsetHeight;
-        const skyMoveDistance = skyHeight - vh;
-
         gsap.set([introText, midText, finalText], { opacity: 0, yPercent: 30, force3D: true });
         gsap.set(discountReveal, { opacity: 0, scale: 0.8, force3D: true });
 
@@ -209,7 +206,12 @@
         });
 
         tl.to(windowContainer, { scale: 4, duration: MOTION_END, ease: 'none', force3D: true }, 0);
-        tl.to(skyContainer, { y: -skyMoveDistance, duration: MOTION_END, ease: 'none', force3D: true }, 0);
+        // Arrow function: GSAP re-evaluates on invalidateOnRefresh. Extra 4px ensures sky
+        // always overlaps the viewport bottom (prevents black strip from subpixel rounding).
+        tl.to(skyContainer, {
+          y: () => -(Math.max(0, skyContainer.offsetHeight - window.innerHeight - 4)),
+          duration: MOTION_END, ease: 'none', force3D: true
+        }, 0);
 
         tl.addLabel('intro', L_INTRO);
         tl.to(introText, { opacity: 1, yPercent: 0, duration: ENTER_DUR, ease: 'none' }, L_INTRO - TEXT_OFFSET);
@@ -229,9 +231,6 @@
 
       } else {
         if (!mSectionEl || !mSkyContainer || !mWindowContainer) return;
-
-        const skyHeight = mSkyContainer.offsetHeight;
-        const skyMoveDistance = skyHeight - vh;
 
         gsap.set([mIntroText, mMidText, mFinalText], { opacity: 0, y: 50, force3D: true });
         gsap.set(mDiscountReveal, { opacity: 0, y: 30, scale: 0.9, force3D: true });
@@ -262,7 +261,10 @@
         });
 
         tl.to(mWindowContainer, { scale: 4, duration: MOTION_END, ease: 'none', force3D: true }, 0);
-        tl.to(mSkyContainer, { y: -skyMoveDistance, duration: MOTION_END, ease: 'none', force3D: true }, 0);
+        tl.to(mSkyContainer, {
+          y: () => -(Math.max(0, mSkyContainer.offsetHeight - window.innerHeight - 4)),
+          duration: MOTION_END, ease: 'none', force3D: true
+        }, 0);
 
         tl.addLabel('intro', L_INTRO);
         tl.to(mIntroText, { opacity: 1, y: 0, duration: ENTER_DUR, ease: 'none' }, L_INTRO - TEXT_OFFSET);
@@ -308,6 +310,7 @@
 <div bind:this={desktopWrapper} class="scroll-wrapper desktop-only">
 <section bind:this={sectionEl} class="easter-egg-section" class:images-ready={imagesLoaded}>
     <div class="section-top-gradient" aria-hidden="true"></div>
+    <div class="section-bottom-gradient" aria-hidden="true"></div>
     <div bind:this={skyContainer} class="sky-container">
       <picture>
         <source srcset={skyWebp} type="image/webp" />
@@ -352,6 +355,7 @@
 <div bind:this={mobileWrapper} class="scroll-wrapper mobile-only">
 <section bind:this={mSectionEl} class="easter-egg-section" class:images-ready={imagesLoaded}>
     <div class="section-top-gradient" aria-hidden="true"></div>
+    <div class="section-bottom-gradient" aria-hidden="true"></div>
     <div bind:this={mSkyContainer} class="sky-container">
       <picture>
         <source srcset={skyWebp} type="image/webp" />
@@ -479,6 +483,17 @@
     width: 100%;
     height: 120px;
     background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+    z-index: 15;
+    pointer-events: none;
+  }
+
+  .section-bottom-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(to top, var(--bg-primary) 0%, transparent 100%);
     z-index: 15;
     pointer-events: none;
   }
