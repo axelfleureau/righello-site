@@ -36,6 +36,7 @@
     isDragging = true;
     wasDragged = false;
     container.style.cursor = 'grabbing';
+    container.dataset.dragging = 'true';
     startX = e.pageX - container.offsetLeft;
     scrollLeft = container.scrollLeft;
   }
@@ -52,11 +53,13 @@
   function handleMouseUp() {
     isDragging = false;
     container.style.cursor = 'grab';
+    delete container.dataset.dragging;
   }
   
   function handleMouseLeave() {
     isDragging = false;
     container.style.cursor = 'grab';
+    delete container.dataset.dragging;
   }
   
   function handleVideoHover(e: MouseEvent, video: HTMLVideoElement | null) {
@@ -355,16 +358,12 @@
     padding: 1rem var(--container-padding) 2rem;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
     cursor: grab;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x pan-y;
+    scroll-snap-type: x proximity;
+    touch-action: pan-x;
     overscroll-behavior-x: contain;
-    transform: translateZ(0);
-    backface-visibility: hidden;
   }
 
   @media (min-width: 640px) {
@@ -416,16 +415,21 @@
     overflow: hidden;
     background: var(--bg-tertiary);
     transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease;
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
   }
   
   .card-content:hover {
+    will-change: transform;
     transform: translate3d(0, -10px, 0) scale(1.02);
     box-shadow: 
       0 30px 60px rgba(0, 0, 0, 0.4),
       0 0 40px rgba(214, 72, 126, 0.2);
+  }
+
+  /* Disable hover lift while drag-scrolling to prevent flicker */
+  .carousel-container[data-dragging] .card-content:hover {
+    transform: none;
+    box-shadow: none;
+    will-change: auto;
   }
   
   .video-wrapper {
@@ -472,8 +476,6 @@
     transition: transform 0.4s ease, opacity 0.3s ease;
     z-index: 2;
     opacity: 1;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
   }
   
   .card-video-native {

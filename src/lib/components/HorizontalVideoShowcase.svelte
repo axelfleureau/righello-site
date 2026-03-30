@@ -73,6 +73,7 @@
   function handleMouseDown(e: MouseEvent) {
     isDragging = true;
     container.style.cursor = 'grabbing';
+    container.dataset.dragging = 'true';
     startX = e.pageX - container.offsetLeft;
     scrollLeft = container.scrollLeft;
   }
@@ -88,11 +89,13 @@
   function handleMouseUp() {
     isDragging = false;
     container.style.cursor = 'grab';
+    delete container.dataset.dragging;
   }
   
   function handleMouseLeave() {
     isDragging = false;
     container.style.cursor = 'grab';
+    delete container.dataset.dragging;
   }
   
   function handleVideoHover(e: MouseEvent, video: HTMLVideoElement | null) {
@@ -375,13 +378,12 @@
     gap: 1.5rem;
     padding: 2rem var(--container-padding);
     overflow-x: auto;
-    scroll-behavior: smooth;
     cursor: grab;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
     overscroll-behavior-x: contain;
-    touch-action: pan-y;
+    touch-action: pan-x;
   }
   
   @media (min-width: 640px) {
@@ -439,14 +441,21 @@
     overflow: hidden;
     background: var(--bg-tertiary);
     transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
-    will-change: transform;
   }
   
   .card-content:hover {
+    will-change: transform;
     transform: translateY(-8px) scale(1.02);
     box-shadow: 
       0 25px 50px rgba(0, 0, 0, 0.4),
       0 0 30px rgba(214, 72, 126, 0.15);
+  }
+
+  /* Disable hover lift while drag-scrolling to prevent flicker */
+  .carousel-container[data-dragging] .card-content:hover {
+    transform: none;
+    box-shadow: none;
+    will-change: auto;
   }
   
   .video-wrapper {
