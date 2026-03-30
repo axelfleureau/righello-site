@@ -73,6 +73,7 @@
   function handleMouseDown(e: MouseEvent) {
     isDragging = true;
     container.style.cursor = 'grabbing';
+    container.style.scrollSnapType = 'none';
     container.dataset.dragging = 'true';
     startX = e.pageX - container.offsetLeft;
     scrollLeft = container.scrollLeft;
@@ -89,12 +90,14 @@
   function handleMouseUp() {
     isDragging = false;
     container.style.cursor = 'grab';
+    container.style.scrollSnapType = '';
     delete container.dataset.dragging;
   }
   
   function handleMouseLeave() {
     isDragging = false;
     container.style.cursor = 'grab';
+    container.style.scrollSnapType = '';
     delete container.dataset.dragging;
   }
   
@@ -164,8 +167,13 @@
     touchScrollLeft = container.scrollLeft;
     touchDragDirection = null;
     hasTouchDragged = false;
+    container.style.scrollSnapType = 'none';
   }
   
+  function handleTouchEnd() {
+    container.style.scrollSnapType = '';
+  }
+
   function handleTouchMove(e: TouchEvent) {
     const x = e.touches[0].pageX;
     const y = e.touches[0].pageY;
@@ -218,6 +226,8 @@
     on:mouseleave={handleMouseLeave}
     on:touchstart={handleTouchStart}
     on:touchmove|nonpassive={handleTouchMove}
+    on:touchend={handleTouchEnd}
+    on:touchcancel={handleTouchEnd}
     on:keydown={handleContainerKeydown}
     tabindex="0"
     role="list"
@@ -423,14 +433,8 @@
   }
   
   @keyframes cardEnter {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
   
   .card-content {
@@ -508,10 +512,6 @@
 
   .card-video-layer.video-playing {
     opacity: 1;
-  }
-  
-  .card-content:hover .card-media {
-    transform: scale(1.05);
   }
   
   .card-placeholder {

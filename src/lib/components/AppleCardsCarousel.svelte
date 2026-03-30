@@ -36,6 +36,7 @@
     isDragging = true;
     wasDragged = false;
     container.style.cursor = 'grabbing';
+    container.style.scrollSnapType = 'none';
     container.dataset.dragging = 'true';
     startX = e.pageX - container.offsetLeft;
     scrollLeft = container.scrollLeft;
@@ -53,12 +54,14 @@
   function handleMouseUp() {
     isDragging = false;
     container.style.cursor = 'grab';
+    container.style.scrollSnapType = '';
     delete container.dataset.dragging;
   }
   
   function handleMouseLeave() {
     isDragging = false;
     container.style.cursor = 'grab';
+    container.style.scrollSnapType = '';
     delete container.dataset.dragging;
   }
   
@@ -112,6 +115,7 @@
     isTouching = true;
     wasDragged = false;
     touchStartX = e.touches[0].pageX;
+    container.style.scrollSnapType = 'none';
   }
   
   function handleTouchMove(e: TouchEvent) {
@@ -124,6 +128,12 @@
   
   function handleTouchEnd() {
     isTouching = false;
+    container.style.scrollSnapType = '';
+  }
+
+  function handleTouchCancel() {
+    isTouching = false;
+    container.style.scrollSnapType = '';
   }
   
   function handleCardClick(videoSrc: string | undefined, title: string, itemIndex?: number) {
@@ -183,6 +193,7 @@
     on:touchstart={handleTouchStart}
     on:touchmove={handleTouchMove}
     on:touchend={handleTouchEnd}
+    on:touchcancel={handleTouchCancel}
     role="list"
   >
     {#each items as item, i}
@@ -397,14 +408,8 @@
   }
   
   @keyframes cardEnter {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
   
   .card-content {
@@ -490,14 +495,6 @@
     opacity: 1;
   }
 
-  .card-content:hover .card-video-native.video-ready {
-    transform: scale(1.05);
-  }
-  
-  .card-content:hover .card-media {
-    transform: scale(1.05);
-  }
-  
   .card-placeholder {
     width: 100%;
     height: 100%;
