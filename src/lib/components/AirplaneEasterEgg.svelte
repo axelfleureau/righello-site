@@ -174,7 +174,6 @@
 
         gsap.set([introText, midText, finalText], { opacity: 0, yPercent: 30, force3D: true });
         gsap.set(discountReveal, { opacity: 0, scale: 0.8, force3D: true });
-
         const PHASE = 0.20;
         const ENTER_DUR = 0.05;
         const EXIT_DUR = 0.05;
@@ -211,7 +210,15 @@
           }
         });
 
-        tl.to(windowContainer, { scale: 4, duration: MOTION_END, ease: 'none', force3D: true }, 0);
+        // fromTo explicitly locks the from-state (scale 1.35) so invalidateOnRefresh
+        // always re-uses it instead of re-capturing whatever mid-animation scale is
+        // currently on the element. transformOrigin at 50% 55% keeps the oval window
+        // centred during the zoom while hiding the dark airplane ceiling at the top.
+        tl.fromTo(windowContainer,
+          { scale: 1.35, transformOrigin: '50% 55%', force3D: true },
+          { scale: 4, duration: MOTION_END, ease: 'none', force3D: true },
+          0
+        );
         // Arrow function: GSAP re-evaluates on invalidateOnRefresh.
         // Buffer is proportional to viewport height (0.5%, min 8px) so sub-pixel
         // rounding on high-DPI / very large screens never reveals the black strip.
