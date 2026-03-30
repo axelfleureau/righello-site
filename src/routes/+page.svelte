@@ -35,14 +35,6 @@
   
   const videoTestimonials = [
     {
-      id: '2',
-      clientName: 'Clara Falomo',
-      clientRole: 'Avvocato',
-      company: 'Studio Avv. Clara Falomo',
-      quote: 'Professionalità e risultati concreti per il mio studio legale.',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_6534.mp4?alt=media&token=946280ac-3891-4a87-989a-d2804ad61080',
-    },
-    {
       id: '3',
       clientName: 'Ardea',
       clientRole: 'Scuola Nautica e Guida auto',
@@ -65,6 +57,14 @@
       company: 'Reguta Vini',
       quote: 'La strategia social ha portato +180% di engagement.',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_8682.mp4?alt=media&token=a4376902-a831-4804-9817-cc6d5ce3cac2',
+    },
+    {
+      id: '2',
+      clientName: 'Clara Falomo',
+      clientRole: 'Avvocato',
+      company: 'Studio Avv. Clara Falomo',
+      quote: 'Professionalità e risultati concreti per il mio studio legale.',
+      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_6534.mp4?alt=media&token=946280ac-3891-4a87-989a-d2804ad61080',
     },
   ];
   

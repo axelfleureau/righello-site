@@ -577,6 +577,12 @@
     inset: 0;
     border-radius: 1.5rem;
     overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Re-enable clicks on the CTA link inside the overlay */
+  .avt-cta-card__btn {
+    pointer-events: auto;
   }
 
   .avt-card {
