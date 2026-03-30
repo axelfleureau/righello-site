@@ -202,14 +202,24 @@
               ease: 'power1.inOut',
             },
             invalidateOnRefresh: true,
+            // onRefresh fires before GSAP recalculates trigger positions:
+            // keeps wrapper height in sync after resize (e.g. full-screening on a large monitor).
+            onRefresh() {
+              const newVh = window.innerHeight;
+              if (desktopWrapper) desktopWrapper.style.height = `${newVh * 6}px`;
+            },
           }
         });
 
         tl.to(windowContainer, { scale: 4, duration: MOTION_END, ease: 'none', force3D: true }, 0);
-        // Arrow function: GSAP re-evaluates on invalidateOnRefresh. Extra 4px ensures sky
-        // always overlaps the viewport bottom (prevents black strip from subpixel rounding).
+        // Arrow function: GSAP re-evaluates on invalidateOnRefresh.
+        // Buffer is proportional to viewport height (0.5%, min 8px) so sub-pixel
+        // rounding on high-DPI / very large screens never reveals the black strip.
         tl.to(skyContainer, {
-          y: () => -(Math.max(0, skyContainer.offsetHeight - window.innerHeight - 4)),
+          y: () => {
+            const buf = Math.max(8, Math.round(window.innerHeight * 0.005));
+            return -(Math.max(0, skyContainer.offsetHeight - window.innerHeight - buf));
+          },
           duration: MOTION_END, ease: 'none', force3D: true
         }, 0);
 
@@ -257,12 +267,19 @@
             end: 'bottom bottom',
             scrub: 0.5,
             invalidateOnRefresh: true,
+            onRefresh() {
+              const newVh = window.innerHeight;
+              if (mobileWrapper) mobileWrapper.style.height = `${newVh * 6}px`;
+            },
           }
         });
 
         tl.to(mWindowContainer, { scale: 4, duration: MOTION_END, ease: 'none', force3D: true }, 0);
         tl.to(mSkyContainer, {
-          y: () => -(Math.max(0, mSkyContainer.offsetHeight - window.innerHeight - 4)),
+          y: () => {
+            const buf = Math.max(8, Math.round(window.innerHeight * 0.005));
+            return -(Math.max(0, mSkyContainer.offsetHeight - window.innerHeight - buf));
+          },
           duration: MOTION_END, ease: 'none', force3D: true
         }, 0);
 
@@ -702,6 +719,73 @@
 
     .emoji-left { left: 12%; }
     .emoji-right { right: 12%; }
+  }
+
+  /* ── Large screens (1440px+) ──────────────────────────────────────────── */
+  @media (min-width: 1440px) {
+    .easter-text {
+      max-width: 760px;
+    }
+
+    .discount-label {
+      max-width: 420px;
+      font-size: clamp(1rem, 1.5vw, 1.125rem);
+    }
+
+    .section-top-gradient {
+      height: 160px;
+    }
+
+    .section-bottom-gradient {
+      height: 120px;
+    }
+
+    .emoji-float {
+      font-size: 9rem;
+    }
+
+    .emoji-left { left: 14%; }
+    .emoji-right { right: 14%; }
+  }
+
+  /* ── Very large screens (1920px+) ─────────────────────────────────────── */
+  @media (min-width: 1920px) {
+    .easter-text {
+      max-width: 960px;
+    }
+
+    .easter-text h2 {
+      font-size: clamp(2.5rem, 3.5vw, 4rem);
+    }
+
+    .easter-text p {
+      font-size: clamp(1.25rem, 1.75vw, 1.625rem);
+    }
+
+    .discount-label {
+      max-width: 500px;
+      font-size: clamp(1.125rem, 1.25vw, 1.25rem);
+    }
+
+    .discount-code {
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      padding: 1rem 2.5rem;
+    }
+
+    .section-top-gradient {
+      height: 200px;
+    }
+
+    .section-bottom-gradient {
+      height: 160px;
+    }
+
+    .emoji-float {
+      font-size: 10rem;
+    }
+
+    .emoji-left { left: 16%; }
+    .emoji-right { right: 16%; }
   }
 
   @media (prefers-reduced-motion: reduce) {
