@@ -157,38 +157,33 @@
   
   let touchStartX = 0;
   let touchStartY = 0;
-  let touchScrollLeft = 0;
   let touchDragDirection: 'horizontal' | 'vertical' | null = null;
   let hasTouchDragged = false;
   
+  // Touch handlers: browser handles both pan-x (carousel) and pan-y (page scroll)
+  // natively via `touch-action: pan-x pan-y`. We only track drag distance here
+  // to distinguish a tap (open lightbox) from a swipe (scroll).
   function handleTouchStart(e: TouchEvent) {
     touchStartX = e.touches[0].pageX;
     touchStartY = e.touches[0].pageY;
-    touchScrollLeft = container.scrollLeft;
     touchDragDirection = null;
     hasTouchDragged = false;
-    container.style.scrollSnapType = 'none';
   }
   
   function handleTouchEnd() {
-    container.style.scrollSnapType = '';
+    touchDragDirection = null;
   }
 
   function handleTouchMove(e: TouchEvent) {
-    const x = e.touches[0].pageX;
-    const y = e.touches[0].pageY;
-    const dx = x - touchStartX;
-    const dy = y - touchStartY;
-
+    const dx = e.touches[0].pageX - touchStartX;
+    const dy = e.touches[0].pageY - touchStartY;
     if (touchDragDirection === null && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
       touchDragDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
     }
-
-    if (touchDragDirection === 'horizontal') {
-      e.preventDefault();
-      container.scrollLeft = touchScrollLeft - dx;
-      if (Math.abs(dx) > 8) hasTouchDragged = true;
+    if (touchDragDirection === 'horizontal' && Math.abs(dx) > 8) {
+      hasTouchDragged = true;
     }
+    // No e.preventDefault() — browser handles scroll natively via touch-action
   }
   
   onMount(() => {
@@ -205,7 +200,7 @@
 <section class="section-padding overflow-hidden" style="padding-bottom: 1.5rem;" aria-labelledby="horizontal-video-title">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
-      <header class="section-header">
+      <header class="section-header hvs-header">
         <p class="section-subtitle">{subtitle}</p>
         <h2 id="horizontal-video-title" class="section-title-highlight mb-4">
           <span class="highlight-box">{title}</span>
@@ -225,7 +220,7 @@
     on:mouseup={handleMouseUp}
     on:mouseleave={handleMouseLeave}
     on:touchstart={handleTouchStart}
-    on:touchmove|nonpassive={handleTouchMove}
+    on:touchmove={handleTouchMove}
     on:touchend={handleTouchEnd}
     on:touchcancel={handleTouchEnd}
     on:keydown={handleContainerKeydown}
@@ -393,7 +388,22 @@
     scrollbar-width: none;
     scroll-snap-type: x proximity;
     overscroll-behavior-x: contain;
-    touch-action: pan-x;
+    /* pan-x pan-y: browser handles both horizontal (carousel) and vertical (page)
+       scroll natively — eliminates the vertical-scroll block on touch. */
+    touch-action: pan-x pan-y;
+  }
+
+  /* Tighter vertical spacing on mobile — the global section-header margin-bottom
+     (3rem) + carousel top padding (2rem) created ~80px of gap on small screens. */
+  @media (max-width: 639px) {
+    .hvs-header {
+      margin-bottom: 1.5rem;
+    }
+    .carousel-container {
+      padding-top: 0.75rem;
+      padding-bottom: 1rem;
+      gap: 1rem;
+    }
   }
   
   @media (min-width: 640px) {
