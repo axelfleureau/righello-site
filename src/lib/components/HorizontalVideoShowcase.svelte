@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import RevealOnScroll from './RevealOnScroll.svelte';
-  import { getThumbnailUrl } from '$lib/data/thumbnail-map';
+  import { getThumbnailUrl, getYoutubeThumbnailUrl } from '$lib/data/thumbnail-map';
   
   export let title = "Creiamo esperienze memorabili";
   export let subtitle = "Video Production";
@@ -12,6 +12,7 @@
     title: string;
     subtitle: string;
     videoSrc?: string;
+    youtubeId?: string;
     posterSrc?: string;
     category: string;
   }
@@ -27,25 +28,25 @@
       title: 'Geom. Mauro Poles',
       subtitle: 'Video Showcase',
       category: 'Corporate',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/poles-geometra.firebasestorage.app/o/viedo%20architetto.mp4?alt=media&token=a8a22a02-99d5-4d70-8991-654df9be3379'
+      youtubeId: 'vBgqFc_Dls8'
     },
     {
       title: 'Living Door',
       subtitle: 'Capannone industriale',
       category: 'Industrial',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/poles-geometra.firebasestorage.app/o/20.mp4?alt=media&token=5f0c2e7e-5086-4739-981e-b56083866e81'
+      youtubeId: 'b5WBbuzS5lM'
     },
     {
       title: 'Riviera Resort Hotel',
       subtitle: 'Lignano Sabbiadoro',
       category: 'Hospitality',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/ennevi-6f853.firebasestorage.app/o/ennevi_1.mp4?alt=media&token=31325f81-6c72-4ae7-8b12-f9ab2d9a75ae'
+      youtubeId: '2rS-ZnjuBjo'
     },
     {
       title: 'Hotel Miramare',
       subtitle: 'Lignano Sabbiadoro',
       category: 'Hospitality',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/ennevi-6f853.firebasestorage.app/o/ennevi_2.mp4?alt=media&token=601d71c1-deac-41f5-b49a-68c986b700c6'
+      youtubeId: 'rpXZDOoJzqU'
     }
   ];
   
@@ -56,6 +57,7 @@
   let activeVideo: HTMLVideoElement | null = null;
   let lightboxOpen = false;
   let lightboxVideo: string | null = null;
+  let lightboxYoutubeId: string | null = null;
   let lightboxTitle = '';
   let loadedFrames: boolean[] = items.map(() => false);
 
@@ -122,10 +124,10 @@
     }
   }
   
-  function openLightbox(videoSrc: string, itemTitle: string) {
-    if (!videoSrc) return;
-    lightboxVideo = videoSrc;
-    lightboxTitle = itemTitle;
+  function openLightbox(item: VideoItem) {
+    lightboxYoutubeId = item.youtubeId ?? null;
+    lightboxVideo = item.youtubeId ? null : (item.videoSrc ?? null);
+    lightboxTitle = item.title;
     lightboxOpen = true;
     document.body.style.overflow = 'hidden';
   }
@@ -133,6 +135,7 @@
   function closeLightbox() {
     lightboxOpen = false;
     lightboxVideo = null;
+    lightboxYoutubeId = null;
     lightboxTitle = '';
     document.body.style.overflow = '';
   }
@@ -246,10 +249,10 @@
             if (video) handleVideoLeave(video);
           }}
         >
-          {#if item.videoSrc}
+          {#if item.youtubeId || item.videoSrc}
             <div class="video-wrapper">
               <img
-                src={getThumbnailUrl(item.videoSrc)}
+                src={item.youtubeId ? getYoutubeThumbnailUrl(item.youtubeId) : getThumbnailUrl(item.videoSrc || '')}
                 alt={item.title}
                 class="card-media card-poster"
                 loading="lazy"
@@ -259,22 +262,24 @@
               <div class="thumb-fallback">
                 <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>
               </div>
-              <video 
-                class="card-media card-video-layer"
-                class:video-playing={loadedFrames[i]}
-                src={item.videoSrc}
-                muted
-                loop
-                playsinline
-                preload="none"
-                on:canplay={(e) => handleCanPlay(i, e.currentTarget)}
-              >
-                <track kind="captions" />
-              </video>
+              {#if item.videoSrc && !item.youtubeId}
+                <video 
+                  class="card-media card-video-layer"
+                  class:video-playing={loadedFrames[i]}
+                  src={item.videoSrc}
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  on:canplay={(e) => handleCanPlay(i, e.currentTarget)}
+                >
+                  <track kind="captions" />
+                </video>
+              {/if}
             </div>
             <button 
               class="play-overlay"
-              on:click|stopPropagation={() => { if (!hasTouchDragged && item.videoSrc) openLightbox(item.videoSrc, item.title); }}
+              on:click|stopPropagation={() => { if (!hasTouchDragged) openLightbox(item); }}
               aria-label="Riproduci video {item.title}"
             >
               <div class="play-icon">
@@ -319,7 +324,7 @@
   </div>
 </section>
 
-{#if lightboxOpen && lightboxVideo}
+{#if lightboxOpen && (lightboxVideo || lightboxYoutubeId)}
   <div 
     class="lightbox"
     on:click={closeLightbox}
@@ -338,15 +343,25 @@
     </button>
     
     <div class="lightbox-content" on:click|stopPropagation>
-      <video 
-        src={lightboxVideo}
-        autoplay
-        controls
-        playsinline
-        class="lightbox-video"
-      >
-        <track kind="captions" />
-      </video>
+      {#if lightboxYoutubeId}
+        <iframe
+          src="https://www.youtube.com/embed/{lightboxYoutubeId}?autoplay=1&rel=0"
+          class="lightbox-video"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+          title={lightboxTitle}
+        ></iframe>
+      {:else}
+        <video 
+          src={lightboxVideo}
+          autoplay
+          controls
+          playsinline
+          class="lightbox-video"
+        >
+          <track kind="captions" />
+        </video>
+      {/if}
       <h3 class="lightbox-title">{lightboxTitle}</h3>
     </div>
   </div>

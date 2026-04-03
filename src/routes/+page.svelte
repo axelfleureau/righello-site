@@ -57,6 +57,7 @@
       company: 'Reguta Vini',
       quote: 'La strategia social ha portato +180% di engagement.',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_8682.mp4?alt=media&token=a4376902-a831-4804-9817-cc6d5ce3cac2',
+      youtubeId: '4Ndme0QfXrk',
     },
     {
       id: '2',

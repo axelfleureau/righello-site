@@ -5,7 +5,7 @@
   import Highlight from '$lib/components/Highlight.svelte';
   import TechWord from '$lib/components/TechWord.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
-  import { getThumbnailUrl } from '$lib/data/thumbnail-map';
+  import { getThumbnailUrl, getYoutubeThumbnailUrl } from '$lib/data/thumbnail-map';
   
   let selectedCategory = 'all';
   
@@ -66,9 +66,9 @@
           <TiltCard>
             <div class="project-card group">
               <div class="relative overflow-hidden rounded-2xl aspect-[4/3] mb-4">
-                {#if project.videoUrl}
+                {#if project.videoUrl || project.youtubeId}
                   <img 
-                    src={getThumbnailUrl(project.videoUrl)} 
+                    src={project.youtubeId ? getYoutubeThumbnailUrl(project.youtubeId) : getThumbnailUrl(project.videoUrl || '')} 
                     alt={project.title}
                     class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
                     loading="lazy"

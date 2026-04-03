@@ -34,7 +34,8 @@ The website features a modern UI/UX with interactive elements and advanced anima
 
 -   **GSAP**: For complex and scroll-triggered animations.
 -   **ScrollTrigger (GSAP plugin)**: For synchronizing animations with scroll position (scrollytelling).
--   **Firebase Storage**: Used for hosting video assets.
+-   **Firebase Storage**: Used for hosting video assets (Quinto della Luna only — all other videos migrated to YouTube).
+-   **YouTube**: 12 of 13 project videos migrated to YouTube. `youtubeId` field added to `Project` interface and data. All video components (`HorizontalVideoShowcase`, `AppleCardsCarousel`, `AnimatedVideoTestimonials`, `SocialReelShowcase`, `ReelViewer`) support both Firebase (`videoSrc`) and YouTube (`youtubeId`) items. Thumbnails served from `img.youtube.com/vi/{id}/hqdefault.jpg`; lightboxes use `<iframe>` embed with autoplay. YouTube preconnect hints added to `app.html`.
 -   **Meta Pixel**: Integrated for tracking analytics, page views, leads, contacts, and content views.
 -   **OGL**: WebGL library powering the RippleGrid background effect.
 -   **OpenAI**: Integrated via Replit AI Integrations for enhancing contact form lead analysis and client confirmation emails.

@@ -9,43 +9,43 @@
     {
       title: 'Ricci Group × Scuola Sci Piancavallo',
       subtitle: 'Partnership per la promozione dei corsi di sci',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/ricci_scuolasci.mp4?alt=media&token=1456b789-c161-45e2-9414-23074ce7fd53',
+      youtubeId: '2EAJzZjnGUo',
       category: 'Partnership'
     },
     {
       title: '3R Technology',
       subtitle: 'Sostituzione fulminea di uno schermo',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/3r_fast_replace.mp4?alt=media&token=def7dcaa-231d-42ff-bf40-9ffef861a6ba',
+      youtubeId: 'q0hHmap4xkM',
       category: 'Product'
     },
     {
       title: 'Reguta',
       subtitle: '#IOVENDEMMIOVOLENTIERI2025',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/vendemmioPOCOvolentieri.mp4?alt=media&token=76867423-5c67-4676-ae0e-a151d3e56325',
+      youtubeId: 'Yrq9lMebfUQ',
       category: 'Social'
     },
     {
       title: 'Neura',
       subtitle: 'Come migliorare le difficoltà di apprendimento',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/neura_final.mp4?alt=media&token=27642e9f-c14b-49eb-b8e3-e802f4abdcb4',
+      youtubeId: 'SzTxXsg27OM',
       category: 'Salute'
     },
     {
       title: 'Ricci Group',
       subtitle: 'Basta spendere in carburante, scegli Hyundai i20',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/copy_18236D6E-2553-4BF8-AC9F-112535ECB0E6%201.MOV?alt=media&token=3f1905cf-a165-424e-83d2-dde3b8c7841c',
+      youtubeId: '6oCjVbhG7Es',
       category: 'Automotive'
     },
     {
       title: 'MgGrill',
       subtitle: 'Per noi il cibo è una cosa seria',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/MgGrill_1%201.mp4?alt=media&token=25f4eb3e-6b63-46de-916a-6eba1a9802a0',
+      youtubeId: 'R4IzWaHu8z8',
       category: 'Food'
     },
     {
       title: 'Scuola Sci Piancavallo',
       subtitle: 'Tutto gratis al open day della scuola!',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/promo6dicembre%201.MOV?alt=media&token=96556913-1bc3-4e5d-9305-b62e64628f9a',
+      youtubeId: 'VZ-BqtFqx6w',
       category: 'Sport'
     },
     {

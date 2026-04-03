@@ -3,7 +3,7 @@
   import { fade } from 'svelte/transition';
   import { browser } from '$app/environment';
 
-  export let items: { title: string; subtitle?: string; videoSrc?: string; category?: string }[] = [];
+  export let items: { title: string; subtitle?: string; videoSrc?: string; youtubeId?: string; category?: string }[] = [];
   export let activeIndex: number = 0;
   export let open: boolean = false;
 
@@ -55,9 +55,13 @@
     dispatch('close');
   }
 
+  function hasMedia(item: typeof items[0]) {
+    return !!(item.videoSrc || item.youtubeId);
+  }
+
   function goTo(index: number, direction: 'up' | 'down') {
     if (index < 0 || index >= items.length) return;
-    if (!items[index].videoSrc) return;
+    if (!hasMedia(items[index])) return;
 
     transitionDirection = direction;
     transitioning = true;
@@ -77,7 +81,7 @@
 
   function goPrev() {
     for (let i = currentIndex - 1; i >= 0; i--) {
-      if (items[i].videoSrc) {
+      if (hasMedia(items[i])) {
         goTo(i, 'up');
         return;
       }
@@ -86,7 +90,7 @@
 
   function goNext() {
     for (let i = currentIndex + 1; i < items.length; i++) {
-      if (items[i].videoSrc) {
+      if (hasMedia(items[i])) {
         goTo(i, 'down');
         return;
       }
@@ -211,10 +215,10 @@
     hasPrev = false;
     hasNext = false;
     for (let i = currentIndex - 1; i >= 0; i--) {
-      if (items[i].videoSrc) { hasPrev = true; break; }
+      if (hasMedia(items[i])) { hasPrev = true; break; }
     }
     for (let i = currentIndex + 1; i < items.length; i++) {
-      if (items[i].videoSrc) { hasNext = true; break; }
+      if (hasMedia(items[i])) { hasNext = true; break; }
     }
   }
 
@@ -295,8 +299,16 @@
       {/if}
 
       <div class="video-container" class:transitioning class:slide-up={transitionDirection === 'up'} class:slide-down={transitionDirection === 'down'}>
-        {#if currentItem?.videoSrc}
-          {#key currentIndex}
+        {#key currentIndex}
+          {#if currentItem?.youtubeId}
+            <iframe
+              src="https://www.youtube.com/embed/{currentItem.youtubeId}?autoplay=1&loop=1&playlist={currentItem.youtubeId}&rel=0&controls=1&mute={isMuted ? 1 : 0}"
+              class="reel-video reel-iframe"
+              allow="autoplay; fullscreen"
+              allowfullscreen
+              title={currentItem.title}
+            ></iframe>
+          {:else if currentItem?.videoSrc}
             <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
             <div class="video-tap-area" on:click={togglePlayPause}>
               <video
@@ -312,8 +324,8 @@
                 <track kind="captions" />
               </video>
             </div>
-          {/key}
-        {/if}
+          {/if}
+        {/key}
 
         {#if showPlayPause}
           <div class="play-pause-indicator" class:fading={showPlayPause}>
@@ -531,6 +543,11 @@
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .reel-iframe {
+    border: none;
+    object-fit: unset;
   }
 
   .play-pause-indicator {

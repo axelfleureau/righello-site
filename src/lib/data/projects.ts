@@ -5,6 +5,7 @@ export interface Project {
   description: string;
   image: string;
   videoUrl?: string;
+  youtubeId?: string;
   categories: string[];
   featured?: boolean;
 }
@@ -25,6 +26,7 @@ export const projects: Project[] = [
     slug: 'ricci-group',
     description: 'Social media management, content production e campagne advertising per il gruppo automotive con sedi nel Nord Italia.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/ricci_scuolasci.mp4?alt=media&token=1456b789-c161-45e2-9414-23074ce7fd53',
+    youtubeId: '2EAJzZjnGUo',
     image: '',
     categories: ['content', 'advertising'],
     featured: true,
@@ -35,6 +37,7 @@ export const projects: Project[] = [
     slug: 'reguta',
     description: 'Gestione social media e content production per la storica cantina veneta. Campagne virali e storytelling enogastronomico.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/vendemmioPOCOvolentieri.mp4?alt=media&token=76867423-5c67-4676-ae0e-a151d3e56325',
+    youtubeId: 'Yrq9lMebfUQ',
     image: '',
     categories: ['content'],
     featured: true,
@@ -55,6 +58,7 @@ export const projects: Project[] = [
     slug: 'riviera-resort',
     description: 'Video production per il resort a Lignano Sabbiadoro. Riprese aeree, interni e atmosfera per il settore hospitality.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/ennevi-6f853.firebasestorage.app/o/ennevi_1.mp4?alt=media&token=31325f81-6c72-4ae7-8b12-f9ab2d9a75ae',
+    youtubeId: '2rS-ZnjuBjo',
     image: '',
     categories: ['photo-video'],
     featured: true,
@@ -65,6 +69,7 @@ export const projects: Project[] = [
     slug: 'hotel-miramare',
     description: 'Produzione video e contenuti visivi per l\'hotel a Lignano Sabbiadoro. Racconto dell\'esperienza ospite.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/ennevi-6f853.firebasestorage.app/o/ennevi_2.mp4?alt=media&token=601d71c1-deac-41f5-b49a-68c986b700c6',
+    youtubeId: 'rpXZDOoJzqU',
     image: '',
     categories: ['photo-video'],
   },
@@ -74,6 +79,7 @@ export const projects: Project[] = [
     slug: '3r-technology',
     description: 'Content production e social media per il centro riparazioni tecnologiche. Reel virali e contenuti engaging.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/3r_fast_replace.mp4?alt=media&token=def7dcaa-231d-42ff-bf40-9ffef861a6ba',
+    youtubeId: 'q0hHmap4xkM',
     image: '',
     categories: ['content'],
   },
@@ -83,6 +89,7 @@ export const projects: Project[] = [
     slug: 'neura',
     description: 'Branding, social media e content strategy per la startup che sviluppa soluzioni per ragazzi con DSA e difficoltà di apprendimento.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/neura_final.mp4?alt=media&token=27642e9f-c14b-49eb-b8e3-e802f4abdcb4',
+    youtubeId: 'SzTxXsg27OM',
     image: '',
     categories: ['content', 'branding'],
   },
@@ -92,6 +99,7 @@ export const projects: Project[] = [
     slug: 'mggrill',
     description: 'Social media management e content production per il ristorante. Storytelling food e reel creativi.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/MgGrill_1%201.mp4?alt=media&token=25f4eb3e-6b63-46de-916a-6eba1a9802a0',
+    youtubeId: 'R4IzWaHu8z8',
     image: '',
     categories: ['content'],
   },
@@ -101,6 +109,7 @@ export const projects: Project[] = [
     slug: 'scuola-sci-piancavallo',
     description: 'Gestione social, campagne promozionali e video content per la scuola sci. Open day, eventi e promozione corsi.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/promo6dicembre%201.MOV?alt=media&token=96556913-1bc3-4e5d-9305-b62e64628f9a',
+    youtubeId: 'VZ-BqtFqx6w',
     image: '',
     categories: ['content', 'advertising'],
   },
@@ -110,6 +119,7 @@ export const projects: Project[] = [
     slug: 'mauro-poles',
     description: 'Video corporate e showcase professionale per lo studio tecnico. Produzione video istituzionale.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/poles-geometra.firebasestorage.app/o/viedo%20architetto.mp4?alt=media&token=a8a22a02-99d5-4d70-8991-654df9be3379',
+    youtubeId: 'vBgqFc_Dls8',
     image: '',
     categories: ['photo-video'],
   },
@@ -119,6 +129,7 @@ export const projects: Project[] = [
     slug: 'living-door',
     description: 'Video production industriale per Living Door. Riprese del capannone e produzione per il settore manifatturiero.',
     videoUrl: 'https://firebasestorage.googleapis.com/v0/b/poles-geometra.firebasestorage.app/o/20.mp4?alt=media&token=5f0c2e7e-5086-4739-981e-b56083866e81',
+    youtubeId: 'b5WBbuzS5lM',
     image: '',
     categories: ['photo-video'],
   },

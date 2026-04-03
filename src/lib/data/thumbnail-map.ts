@@ -21,3 +21,7 @@ export const thumbnailMap: Record<string, string> = {
 export function getThumbnailUrl(videoSrc: string): string {
   return thumbnailMap[videoSrc] || `/api/video-thumbnail?url=${encodeURIComponent(videoSrc)}`;
 }
+
+export function getYoutubeThumbnailUrl(youtubeId: string): string {
+  return `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+}

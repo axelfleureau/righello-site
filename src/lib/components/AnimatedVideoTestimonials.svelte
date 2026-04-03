@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import { fade, scale, fly } from 'svelte/transition';
-  import { getThumbnailUrl } from '$lib/data/thumbnail-map';
+  import { getThumbnailUrl, getYoutubeThumbnailUrl } from '$lib/data/thumbnail-map';
 
   export let testimonials: {
     id: string;
@@ -10,6 +10,7 @@
     clientRole: string;
     company: string;
     videoSrc?: string;
+    youtubeId?: string;
     thumbnailSrc?: string;
     quote: string;
   }[];
@@ -109,14 +110,14 @@
   }
 
   function openLightbox() {
-    if (!activeTestimonial.videoSrc) return;
+    if (!activeTestimonial.videoSrc && !activeTestimonial.youtubeId) return;
     lightboxOpen = true;
     stopAutoplay();
     document.body.style.overflow = 'hidden';
   }
 
   function closeLightbox() {
-    if (lightboxVideo) lightboxVideo.pause();
+    if (lightboxVideo && !activeTestimonial.youtubeId) lightboxVideo.pause();
     lightboxOpen = false;
     document.body.style.overflow = '';
     if (isInView) startAutoplay();
@@ -145,7 +146,7 @@
 
   function handleTouchEnd() {
     if (!isSwiping) {
-      if (!isCtaActive && activeTestimonial.videoSrc) {
+      if (!isCtaActive && (activeTestimonial.videoSrc || activeTestimonial.youtubeId)) {
         openLightbox();
       }
       return;
@@ -182,8 +183,10 @@
       window.addEventListener('keydown', handleKeydown);
 
       testimonials.forEach((t) => {
-        if (t.videoSrc) {
-          const img = new Image();
+        const img = new Image();
+        if (t.youtubeId) {
+          img.src = getYoutubeThumbnailUrl(t.youtubeId);
+        } else if (t.videoSrc) {
           img.src = getThumbnailUrl(t.videoSrc);
         }
       });
@@ -249,8 +252,8 @@
             "
             role={isActive && !isCta ? 'button' : undefined}
             tabindex={isActive ? 0 : undefined}
-            on:click={() => isActive && !isCta && activeTestimonial.videoSrc && openLightbox()}
-            on:keydown={(e) => isActive && !isCta && (e.key === 'Enter' || e.key === ' ') && activeTestimonial.videoSrc && openLightbox()}
+            on:click={() => isActive && !isCta && (activeTestimonial.videoSrc || activeTestimonial.youtubeId) && openLightbox()}
+            on:keydown={(e) => isActive && !isCta && (e.key === 'Enter' || e.key === ' ') && (activeTestimonial.videoSrc || activeTestimonial.youtubeId) && openLightbox()}
           >
             {#if isCta}
               <div class="avt-card__cta-bg">
@@ -258,10 +261,10 @@
               </div>
             {:else}
               <img
-                src={item.videoSrc ? getThumbnailUrl(item.videoSrc) : ''}
+                src={item.youtubeId ? getYoutubeThumbnailUrl(item.youtubeId) : (item.videoSrc ? getThumbnailUrl(item.videoSrc) : '')}
                 alt={item.clientName}
                 class="avt-card__bg-thumb"
-                style="display: {item.videoSrc ? 'block' : 'none'}"
+                style="display: {(item.videoSrc || item.youtubeId) ? 'block' : 'none'}"
                 loading="eager"
                 fetchpriority="low"
                 decoding="async"
@@ -287,9 +290,9 @@
                   <p class="avt-cta-card__subtitle">Nuove recensioni ogni mese</p>
                   <a href="/contatti" class="avt-cta-card__btn">Vuoi sapere di più?</a>
                 </div>
-              {:else if activeTestimonial.videoSrc}
+              {:else if activeTestimonial.videoSrc || activeTestimonial.youtubeId}
                 <img
-                  src={getThumbnailUrl(activeTestimonial.videoSrc)}
+                  src={activeTestimonial.youtubeId ? getYoutubeThumbnailUrl(activeTestimonial.youtubeId) : getThumbnailUrl(activeTestimonial.videoSrc || '')}
                   alt={activeTestimonial.clientName}
                   class="avt-card__thumbnail"
                   loading="eager"
@@ -325,7 +328,7 @@
               {#if !isCtaActive}
                 <div class="avt-card__gradient"></div>
 
-                <div class="avt-card__badge" style="display: {activeTestimonial.videoSrc ? 'flex' : 'none'}">
+                <div class="avt-card__badge" style="display: {(activeTestimonial.videoSrc || activeTestimonial.youtubeId) ? 'flex' : 'none'}">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
                     <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
                   </svg>
@@ -351,7 +354,7 @@
         ></div>
       </div>
 
-      {#if activeTestimonial.videoSrc && !isCtaActive}
+      {#if (activeTestimonial.videoSrc || activeTestimonial.youtubeId) && !isCtaActive}
         <button
           class="avt-play"
           on:click={openLightbox}
@@ -425,7 +428,7 @@
   </div>
 </div>
 
-{#if lightboxOpen && activeTestimonial.videoSrc}
+{#if lightboxOpen && (activeTestimonial.videoSrc || activeTestimonial.youtubeId)}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div
     class="avt-lightbox"
@@ -453,17 +456,27 @@
       transition:scale={{ duration: 300, start: 0.9 }}
       on:click|stopPropagation
     >
-      <video
-        bind:this={lightboxVideo}
-        src={activeTestimonial.videoSrc}
-        autoplay
-        loop
-        playsinline
-        controls
-        class="avt-lightbox__video"
-      >
-        <track kind="captions" />
-      </video>
+      {#if activeTestimonial.youtubeId}
+        <iframe
+          src="https://www.youtube.com/embed/{activeTestimonial.youtubeId}?autoplay=1&rel=0"
+          class="avt-lightbox__video"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+          title={activeTestimonial.clientName}
+        ></iframe>
+      {:else}
+        <video
+          bind:this={lightboxVideo}
+          src={activeTestimonial.videoSrc}
+          autoplay
+          loop
+          playsinline
+          controls
+          class="avt-lightbox__video"
+        >
+          <track kind="captions" />
+        </video>
+      {/if}
 
       <div class="avt-lightbox__info">
         <div class="avt-lightbox__avatar">
