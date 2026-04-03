@@ -175,4 +175,18 @@
   .hidden {
     opacity: 0;
   }
+
+  :global([id*="iubenda"], [id*="iubenda"] *,
+          [class*="iubenda"], [class*="iubenda"] *) {
+    cursor: auto !important;
+  }
+
+  :global([id*="iubenda"] a,
+          [id*="iubenda"] button,
+          [id*="iubenda"] [role="button"],
+          [class*="iubenda"] a,
+          [class*="iubenda"] button,
+          [class*="iubenda"] [role="button"]) {
+    cursor: pointer !important;
+  }
 </style>
