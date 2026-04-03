@@ -302,7 +302,7 @@
         {#key currentIndex}
           {#if currentItem?.youtubeId}
             <iframe
-              src="https://www.youtube.com/embed/{currentItem.youtubeId}?autoplay=1&loop=1&playlist={currentItem.youtubeId}&rel=0&controls=1&mute={isMuted ? 1 : 0}"
+              src="https://www.youtube.com/embed/{currentItem.youtubeId}?autoplay=1&loop=1&playlist={currentItem.youtubeId}&rel=0&controls=0&modestbranding=1&playsinline=1&mute={isMuted ? 1 : 0}"
               class="reel-video reel-iframe"
               allow="autoplay; fullscreen"
               allowfullscreen
