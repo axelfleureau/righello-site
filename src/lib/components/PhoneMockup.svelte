@@ -298,8 +298,9 @@
     top: 50%;
     left: 50%;
     width: 100%;
-    height: 115%;
-    transform: translate(-50%, -50%);
+    height: 100%;
+    transform: translate(-50%, -50%) scale(1.35);
+    transform-origin: center center;
     border: 0;
     pointer-events: none;
   }
