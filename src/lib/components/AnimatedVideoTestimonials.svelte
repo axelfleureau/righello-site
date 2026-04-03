@@ -140,7 +140,7 @@
     const dy = Math.abs(touchEndY - touchStartY);
     if (dx > dy && dx > 10) {
       isSwiping = true;
-      e.preventDefault();
+      // No preventDefault: touch-action: pan-y on container handles vertical scroll natively
     }
   }
 
@@ -349,7 +349,7 @@
         <div
           class="avt-touch-overlay"
           on:touchstart={handleTouchStart}
-          on:touchmove|nonpassive={handleTouchMove}
+          on:touchmove|passive={handleTouchMove}
           on:touchend={handleTouchEnd}
         ></div>
       </div>

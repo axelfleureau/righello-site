@@ -74,8 +74,8 @@
 <svelte:window 
   on:mousemove={handleMouseMove}
   on:mouseup={handleMouseUp}
-  on:touchmove={handleTouchMove}
-  on:touchend={handleTouchEnd}
+  on:touchmove|passive={handleTouchMove}
+  on:touchend|passive={handleTouchEnd}
 />
 
 <div

@@ -389,7 +389,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
     scroll-snap-type: x proximity;
-    touch-action: pan-x;
+    touch-action: pan-x pan-y;
     overscroll-behavior-x: contain;
   }
 
