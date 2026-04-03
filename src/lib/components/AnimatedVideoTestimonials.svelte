@@ -458,7 +458,7 @@
     >
       {#if activeTestimonial.youtubeId}
         <iframe
-          src="https://www.youtube.com/embed/{activeTestimonial.youtubeId}?autoplay=1&rel=0"
+          src="https://www.youtube.com/embed/{activeTestimonial.youtubeId}?autoplay=1&rel=0&controls=0&modestbranding=1&playsinline=1&loop=1&playlist={activeTestimonial.youtubeId}"
           class="avt-lightbox__video"
           allow="autoplay; fullscreen"
           allowfullscreen

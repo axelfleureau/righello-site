@@ -327,9 +327,9 @@
     <div class="lightbox-content" on:click|stopPropagation>
       {#if lightboxYoutubeId}
         <iframe
-          src="https://www.youtube.com/embed/{lightboxYoutubeId}?autoplay=1&rel=0"
+          src="https://www.youtube.com/embed/{lightboxYoutubeId}?autoplay=1&rel=0&controls=0&modestbranding=1&playsinline=1&loop=1&playlist={lightboxYoutubeId}"
           class="lightbox-video"
-          allow="autoplay; fullscreen"
+          allow="autoplay; fullscreen; encrypted-media"
           allowfullscreen
           title={lightboxTitle}
         ></iframe>
