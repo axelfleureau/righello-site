@@ -41,6 +41,7 @@
       company: 'Ardea',
       quote: 'Hanno trasformato la nostra comunicazione digitale.',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_8017.mp4?alt=media&token=0f46ee6d-5bcd-4bfc-b341-eb41aae609d1',
+      youtubeId: 'Wf3aN6uTolM',
     },
     {
       id: '4',
@@ -66,6 +67,7 @@
       company: 'Studio Avv. Clara Falomo',
       quote: 'Professionalità e risultati concreti per il mio studio legale.',
       videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_6534.mp4?alt=media&token=946280ac-3891-4a87-989a-d2804ad61080',
+      youtubeId: 'kG0uofbW2cU',
     },
   ];
   

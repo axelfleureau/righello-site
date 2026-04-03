@@ -5,6 +5,7 @@
   import { browser } from '$app/environment';
   
   export let videoSrc: string | null = null;
+  export let youtubeId: string | null = null;
   export let showPlaceholder = true;
   export let muted: boolean = true;
   
@@ -99,7 +100,16 @@
         <div class="phone-notch"></div>
         
         <div class="phone-screen">
-          {#if videoSrc}
+          {#if youtubeId}
+            <iframe
+              src="https://www.youtube.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1"
+              title="Righello video"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              class="w-full h-full object-cover"
+              style="border:0; pointer-events:none;"
+            ></iframe>
+          {:else if videoSrc}
             {#if videoLoading}
               <div class="video-skeleton" transition:fade={{ duration: 300 }}>
                 <div class="skeleton-shimmer"></div>

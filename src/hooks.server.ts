@@ -42,7 +42,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   response.headers.set('X-Frame-Options', 'SAMEORIGIN');
   response.headers.set(
     'Content-Security-Policy',
-    "frame-ancestors 'self'; frame-src 'self' https://la-busa-del-sauc.vercel.app"
+    "frame-ancestors 'self'; frame-src 'self' https://la-busa-del-sauc.vercel.app https://www.youtube.com https://www.youtube-nocookie.com"
   );
 
   return response;

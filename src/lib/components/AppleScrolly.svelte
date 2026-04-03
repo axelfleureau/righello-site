@@ -432,7 +432,7 @@
     <!-- Phone column - positioned via CSS Grid, no absolute positioning -->
     <div bind:this={phoneWrapper} class="phone-area">
       <PhoneMockup 
-        videoSrc="https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_7229_compressed_crf29.mp4?alt=media&token=7d33f220-059e-4297-ae4e-7539d57ebdf8"
+        youtubeId="Rj5N4BMF-Vw"
         muted={videoMuted}
       />
     </div>
