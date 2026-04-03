@@ -101,14 +101,15 @@
         
         <div class="phone-screen">
           {#if youtubeId}
-            <iframe
-              src="https://www.youtube.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1"
-              title="Righello video"
-              frameborder="0"
-              allow="autoplay; encrypted-media"
-              class="w-full h-full object-cover"
-              style="border:0; pointer-events:none;"
-            ></iframe>
+            <div class="yt-crop-wrapper">
+              <iframe
+                src="https://www.youtube.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080"
+                title="Righello video"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                class="yt-iframe"
+              ></iframe>
+            </div>
           {:else if videoSrc}
             {#if videoLoading}
               <div class="video-skeleton" transition:fade={{ duration: 300 }}>
@@ -284,6 +285,23 @@
     border-radius: 36px;
     overflow: hidden;
     position: relative;
+  }
+
+  .yt-crop-wrapper {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .yt-iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 115%;
+    transform: translate(-50%, -50%);
+    border: 0;
+    pointer-events: none;
   }
   
   .phone-home-indicator {
