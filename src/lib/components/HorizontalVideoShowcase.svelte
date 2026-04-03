@@ -47,6 +47,12 @@
       subtitle: 'Lignano Sabbiadoro',
       category: 'Hospitality',
       youtubeId: 'rpXZDOoJzqU'
+    },
+    {
+      title: 'Zanutta',
+      subtitle: 'Proof of Work',
+      category: 'Corporate',
+      youtubeId: 'Xz2G9BqWI50'
     }
   ];
   
