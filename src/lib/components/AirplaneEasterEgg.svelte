@@ -170,6 +170,8 @@
       const vh = window.innerHeight;
 
       if (isDesktop) {
+        if (desktopWrapper) desktopWrapper.style.height = `${vh * 6}px`;
+
         if (!sectionEl || !skyContainer || !windowContainer) return;
 
         gsap.set([introText, midText, finalText], { opacity: 0, yPercent: 30, force3D: true });
@@ -185,8 +187,6 @@
         const L_MID      = PHASE + LABEL_OFFSET;
         const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
         const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
-
-        if (desktopWrapper) desktopWrapper.style.height = `${vh * 6}px`;
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -247,6 +247,8 @@
         tl.addLabel('end', 1);
 
       } else {
+        if (mobileWrapper) mobileWrapper.style.height = `${vh * 6}px`;
+
         if (!mSectionEl || !mSkyContainer || !mWindowContainer) return;
 
         gsap.set([mIntroText, mMidText, mFinalText], { opacity: 0, y: 50, force3D: true });
@@ -262,8 +264,6 @@
         const L_MID      = PHASE + LABEL_OFFSET;
         const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
         const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
-
-        if (mobileWrapper) mobileWrapper.style.height = `${vh * 6}px`;
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -478,6 +478,7 @@
   .scroll-wrapper {
     position: relative;
     z-index: 40;
+    min-height: 600vh;
   }
 
   .easter-egg-section {
