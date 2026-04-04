@@ -195,12 +195,28 @@
     // No e.preventDefault() — browser handles scroll natively via touch-action
   }
   
+  function handleWheel(e: WheelEvent) {
+    if (!container) return;
+    // If the user is already scrolling horizontally (trackpad), let it through
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    if (maxScroll <= 0) return;
+    // At the boundaries, allow the page to scroll normally
+    const atStart = container.scrollLeft <= 0;
+    const atEnd = container.scrollLeft >= maxScroll - 1;
+    if ((atStart && e.deltaY < 0) || (atEnd && e.deltaY > 0)) return;
+    e.preventDefault();
+    container.scrollBy({ left: e.deltaY * 1.5, behavior: 'auto' });
+  }
+
   onMount(() => {
     if (browser) {
       window.addEventListener('keydown', handleKeydown);
+      container?.addEventListener('wheel', handleWheel, { passive: false });
 
       return () => {
         window.removeEventListener('keydown', handleKeydown);
+        container?.removeEventListener('wheel', handleWheel);
       };
     }
   });
@@ -475,6 +491,7 @@
     border-radius: 1rem;
     overflow: hidden;
     background: var(--bg-tertiary);
+    cursor: pointer;
     transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
   }
   
@@ -486,8 +503,10 @@
       0 0 30px rgba(214, 72, 126, 0.15);
   }
 
-  /* Disable hover lift while drag-scrolling to prevent flicker */
-  .carousel-container[data-dragging] .card-content:hover {
+  /* Disable hover lift + restore grab cursor while drag-scrolling */
+  .carousel-container:global([data-dragging]) .card-content,
+  .carousel-container:global([data-dragging]) .card-content:hover {
+    cursor: grabbing;
     transform: none;
     box-shadow: none;
     will-change: auto;
