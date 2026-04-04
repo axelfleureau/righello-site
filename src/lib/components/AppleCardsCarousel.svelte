@@ -327,7 +327,7 @@
     <div class="lightbox-content" on:click|stopPropagation>
       {#if lightboxYoutubeId}
         <iframe
-          src="https://www.youtube.com/embed/{lightboxYoutubeId}?autoplay=1&rel=0&controls=0&modestbranding=1&playsinline=1&loop=1&playlist={lightboxYoutubeId}"
+          src="https://www.youtube.com/embed/{lightboxYoutubeId}?autoplay=1&rel=0&controls=0&modestbranding=1&playsinline=1&loop=1&playlist={lightboxYoutubeId}&iv_load_policy=3"
           class="lightbox-video"
           allow="autoplay; fullscreen; encrypted-media"
           allowfullscreen
@@ -646,15 +646,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 100%;
-    max-height: 100%;
+    width: min(95vw, 860px);
   }
   
   .lightbox-video {
-    max-width: min(400px, 90vw);
-    max-height: 80vh;
+    width: 100%;
+    aspect-ratio: 16/9;
     border-radius: 1rem;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    display: block;
   }
   
   .lightbox-title {

@@ -458,7 +458,7 @@
     >
       {#if activeTestimonial.youtubeId}
         <iframe
-          src="https://www.youtube.com/embed/{activeTestimonial.youtubeId}?autoplay=1&rel=0&controls=0&modestbranding=1&playsinline=1&loop=1&playlist={activeTestimonial.youtubeId}"
+          src="https://www.youtube.com/embed/{activeTestimonial.youtubeId}?autoplay=1&rel=0&controls=0&modestbranding=1&playsinline=1&loop=1&playlist={activeTestimonial.youtubeId}&iv_load_policy=3"
           class="avt-lightbox__video"
           allow="autoplay; fullscreen"
           allowfullscreen
@@ -1149,16 +1149,15 @@
   .avt-lightbox__content {
     position: relative;
     z-index: 105;
-    max-width: 400px;
-    width: 100%;
+    width: min(95vw, 860px);
   }
 
   .avt-lightbox__video {
     width: 100%;
-    aspect-ratio: 9/16;
-    object-fit: cover;
+    aspect-ratio: 16/9;
     border-radius: 1.5rem;
     box-shadow: 0 25px 100px rgba(214, 72, 126, 0.25);
+    display: block;
   }
 
   .avt-lightbox__info {
