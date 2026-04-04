@@ -251,8 +251,6 @@
 
         gsap.set([mIntroText, mMidText, mFinalText], { opacity: 0, y: 50, force3D: true });
         gsap.set(mDiscountReveal, { opacity: 0, y: 30, scale: 0.9, force3D: true });
-        gsap.set(mWindowContainer, { scale: 1, force3D: true });
-
         const PHASE = 0.20;
         const ENTER_DUR = 0.05;
         const EXIT_DUR = 0.05;
@@ -281,7 +279,14 @@
           }
         });
 
-        tl.to(mWindowContainer, { scale: 4, duration: MOTION_END, ease: 'none', force3D: true }, 0);
+        // fromTo locks the from-state so invalidateOnRefresh always re-uses
+        // scale:1 + transformOrigin:'50% 55%' instead of re-capturing whatever
+        // mid-animation scale is on the element (same pattern as desktop).
+        tl.fromTo(mWindowContainer,
+          { scale: 1, transformOrigin: '50% 55%', force3D: true },
+          { scale: 4, duration: MOTION_END, ease: 'none', force3D: true },
+          0
+        );
         tl.to(mSkyContainer, {
           y: () => {
             const buf = Math.max(8, Math.round(window.innerHeight * 0.005));
