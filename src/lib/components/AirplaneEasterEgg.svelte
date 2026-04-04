@@ -566,11 +566,12 @@
     z-index: 10;
     color: #ffffff;
     text-align: center;
-    max-width: 600px;
-    padding: 0 1.5rem;
+    width: 90%;
+    max-width: 1000px;
+    padding: 0 2rem;
     left: 50%;
     transform: translateX(-50%);
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.7), 0 0 60px rgba(0, 0, 0, 0.4);
     pointer-events: none;
     will-change: transform, opacity;
     backface-visibility: hidden;
@@ -578,32 +579,46 @@
   }
 
   .easter-text h2 {
-    font-size: clamp(1.75rem, 5vw, 3rem);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    line-height: 1.05;
   }
 
   .easter-text p {
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
     line-height: 1.5;
     font-weight: 400;
   }
 
-  .intro-text { top: 35%; }
-  .mid-text { top: 40%; }
-  .final-text { top: 30%; }
+  /* Mid-text gets a larger, more statement-like treatment */
+  .mid-text p {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    line-height: 1.35;
+    font-weight: 400;
+  }
+
+  /* Final text is the hero moment — biggest type */
+  .final-text h2 {
+    font-size: clamp(3rem, 7.5vw, 5.5rem);
+    line-height: 0.95;
+    margin-bottom: 0;
+  }
+
+  .intro-text { top: 38%; }
+  .mid-text   { top: 36%; }
+  .final-text { top: 22%; }
 
   .discount-reveal {
     position: absolute;
     z-index: 10;
-    top: 55%;
+    top: 62%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
     pointer-events: auto;
     will-change: transform, opacity;
     backface-visibility: hidden;
@@ -612,11 +627,11 @@
 
   .discount-label {
     color: #ffffff;
-    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-size: clamp(0.9rem, 2vw, 1.0625rem);
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     text-align: center;
-    max-width: 320px;
-    line-height: 1.4;
+    max-width: 360px;
+    line-height: 1.45;
   }
 
   .discount-code {
@@ -682,12 +697,24 @@
       height: 80px;
     }
 
+    .easter-text {
+      width: 92%;
+    }
+
     .easter-text h2 {
-      font-size: clamp(1.375rem, 6vw, 1.75rem);
+      font-size: clamp(1.75rem, 7vw, 2.375rem);
     }
 
     .easter-text p {
-      font-size: 1rem;
+      font-size: clamp(1rem, 4vw, 1.1875rem);
+    }
+
+    .mid-text p {
+      font-size: clamp(1.125rem, 5vw, 1.5rem);
+    }
+
+    .final-text h2 {
+      font-size: clamp(2rem, 9vw, 3rem);
     }
 
     .discount-code {
@@ -696,7 +723,8 @@
     }
 
     .discount-label {
-      max-width: 280px;
+      max-width: 300px;
+      font-size: 0.9375rem;
     }
   }
 
@@ -708,11 +736,19 @@
 
   @media (min-width: 768px) and (max-width: 1024px) {
     .easter-text h2 {
-      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-size: clamp(2rem, 4.5vw, 3rem);
     }
 
     .easter-text p {
-      font-size: clamp(0.9375rem, 2vw, 1.125rem);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+    }
+
+    .mid-text p {
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    }
+
+    .final-text h2 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
     }
 
     .discount-code {
@@ -737,12 +773,16 @@
   /* ── Large screens (1440px+) ──────────────────────────────────────────── */
   @media (min-width: 1440px) {
     .easter-text {
-      max-width: 760px;
+      max-width: 1100px;
+    }
+
+    .final-text h2 {
+      font-size: clamp(4rem, 7vw, 6.5rem);
     }
 
     .discount-label {
-      max-width: 420px;
-      font-size: clamp(1rem, 1.5vw, 1.125rem);
+      max-width: 440px;
+      font-size: clamp(1rem, 1.25vw, 1.125rem);
     }
 
     .section-top-gradient {
@@ -764,24 +804,32 @@
   /* ── Very large screens (1920px+) ─────────────────────────────────────── */
   @media (min-width: 1920px) {
     .easter-text {
-      max-width: 960px;
+      max-width: 1280px;
     }
 
     .easter-text h2 {
-      font-size: clamp(2.5rem, 3.5vw, 4rem);
+      font-size: clamp(3rem, 5vw, 5.5rem);
     }
 
     .easter-text p {
-      font-size: clamp(1.25rem, 1.75vw, 1.625rem);
+      font-size: clamp(1.25rem, 1.75vw, 1.75rem);
+    }
+
+    .mid-text p {
+      font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+    }
+
+    .final-text h2 {
+      font-size: clamp(4.5rem, 6vw, 7rem);
     }
 
     .discount-label {
-      max-width: 500px;
-      font-size: clamp(1.125rem, 1.25vw, 1.25rem);
+      max-width: 520px;
+      font-size: clamp(1rem, 1.1vw, 1.25rem);
     }
 
     .discount-code {
-      font-size: clamp(1.5rem, 2vw, 2rem);
+      font-size: clamp(1.5rem, 1.75vw, 2rem);
       padding: 1rem 2.5rem;
     }
 
