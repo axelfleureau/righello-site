@@ -103,7 +103,7 @@
           {#if youtubeId}
             <div class="yt-crop-wrapper">
               <iframe
-                src="https://www.youtube.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080"
+                src="https://www.youtube-nocookie.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080&hd=1"
                 title="Righello video"
                 frameborder="0"
                 allow="autoplay; encrypted-media"

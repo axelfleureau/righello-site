@@ -30,6 +30,14 @@
   function handleMouseOver(e: MouseEvent) {
     const related = e.relatedTarget as HTMLElement | null;
     const target = e.target as HTMLElement;
+
+    if ((target as HTMLElement).tagName === 'IFRAME') {
+      document.body.style.cursor = 'auto';
+      document.documentElement.style.cursor = 'auto';
+      isVisible = false;
+      return;
+    }
+
     if (target?.closest(INTERACTIVE_SELECTOR) && !related?.closest(INTERACTIVE_SELECTOR)) {
       isHovering = true;
     }
@@ -38,6 +46,14 @@
   function handleMouseOut(e: MouseEvent) {
     const related = e.relatedTarget as HTMLElement | null;
     const target = e.target as HTMLElement;
+
+    if ((target as HTMLElement).tagName === 'IFRAME') {
+      document.body.style.cursor = 'none';
+      document.documentElement.style.cursor = 'none';
+      isVisible = true;
+      return;
+    }
+
     if (target?.closest(INTERACTIVE_SELECTOR) && !related?.closest(INTERACTIVE_SELECTOR)) {
       isHovering = false;
     }

@@ -458,7 +458,7 @@
     >
       {#if activeTestimonial.youtubeId}
         <iframe
-          src="https://www.youtube.com/embed/{activeTestimonial.youtubeId}?autoplay=1&rel=0&controls=0&modestbranding=1&playsinline=1&loop=1&playlist={activeTestimonial.youtubeId}&iv_load_policy=3"
+          src="https://www.youtube-nocookie.com/embed/{activeTestimonial.youtubeId}?autoplay=1&rel=0&controls=1&modestbranding=1&playsinline=1&loop=1&playlist={activeTestimonial.youtubeId}&iv_load_policy=3"
           class="avt-lightbox__video"
           allow="autoplay; fullscreen"
           allowfullscreen
