@@ -144,6 +144,7 @@
             start: 'top 80%',
             end: 'bottom 20%',
             scrub: true,
+            invalidateOnRefresh: true,
           }
         });
 
@@ -314,6 +315,13 @@
     });
 
     ScrollTrigger.refresh();
+
+    const onFullLoad = () => ScrollTrigger.refresh();
+    if (document.readyState === 'complete') {
+      onFullLoad();
+    } else {
+      window.addEventListener('load', onFullLoad, { once: true });
+    }
   });
 
   onDestroy(() => {
