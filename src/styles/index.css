@@ -180,10 +180,17 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
     scroll-padding-top: 6rem;
     font-size: 18px;
     background-color: var(--bg-primary);
+  }
+
+  /* Smooth scroll only on pointer-fine (mouse) devices — prevents conflict
+     with iOS/iPadOS native momentum scrolling on touch screens */
+  @media (hover: hover) and (pointer: fine) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
   
   body {

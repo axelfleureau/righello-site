@@ -14,6 +14,7 @@
   let videoLoading = true;
   let videoError = false;
   let videoElement: HTMLVideoElement;
+  let iframeEl: HTMLIFrameElement;
   
   const rotation = spring({ x: 0, y: 0 }, {
     stiffness: 0.05,
@@ -66,14 +67,42 @@
     }
     
     // Fallback timeout: hide skeleton after 8 seconds even if video hasn't loaded
-    // This prevents permanent skeleton on slow connections
     const fallbackTimeout = setTimeout(() => {
       if (videoLoading && videoSrc) {
         videoLoading = false;
       }
     }, 8000);
+
+    // YouTube loop fallback for iOS/iPadOS where loop=1&playlist trick sometimes fails.
+    // Listens for YouTube state changes via postMessage and manually restarts when ended.
+    function handleYTMessage(e: MessageEvent) {
+      if (!iframeEl || e.source !== iframeEl.contentWindow) return;
+      try {
+        const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+        // YouTube sends info: 0 when video ends (state "ended")
+        if (data.event === 'onStateChange' && data.info === 0) {
+          iframeEl.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }),
+            '*'
+          );
+          iframeEl.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+            '*'
+          );
+        }
+      } catch {
+        // ignore malformed messages
+      }
+    }
+
+    if (youtubeId) {
+      window.addEventListener('message', handleYTMessage, { passive: true });
+    }
     
-    return () => clearTimeout(fallbackTimeout);
+    return () => {
+      clearTimeout(fallbackTimeout);
+      window.removeEventListener('message', handleYTMessage);
+    };
   });
 </script>
 
@@ -103,7 +132,8 @@
           {#if youtubeId}
             <div class="yt-crop-wrapper">
               <iframe
-                src="https://www.youtube-nocookie.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080&hd=1"
+                bind:this={iframeEl}
+                src="https://www.youtube-nocookie.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080&hd=1&enablejsapi=1"
                 title="Righello video"
                 frameborder="0"
                 allow="autoplay; encrypted-media"
