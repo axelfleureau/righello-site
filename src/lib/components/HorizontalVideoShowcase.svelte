@@ -377,8 +377,10 @@
     
     <div class="lightbox-content" on:click|stopPropagation>
       {#if lightboxYoutubeId}
+        <!-- mute=1 is required for cross-origin iframe autoplay on all major
+             browsers. The user can unmute via the YouTube player controls. -->
         <iframe
-          src="https://www.youtube-nocookie.com/embed/{lightboxYoutubeId}?autoplay=1&rel=0&controls=1&modestbranding=1&playsinline=1&loop=1&playlist={lightboxYoutubeId}&iv_load_policy=3"
+          src="https://www.youtube-nocookie.com/embed/{lightboxYoutubeId}?autoplay=1&mute=1&rel=0&controls=1&modestbranding=1&playsinline=1&loop=1&playlist={lightboxYoutubeId}&iv_load_policy=3"
           class="lightbox-video"
           allow="autoplay; fullscreen; encrypted-media"
           allowfullscreen
