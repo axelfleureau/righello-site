@@ -13,6 +13,7 @@
   let isHovered = false;
   let videoLoading = true;
   let videoError = false;
+  let containerEl: HTMLElement;
   let videoElement: HTMLVideoElement;
   let iframeEl: HTMLIFrameElement;
   // YouTube-specific state
@@ -64,18 +65,24 @@
   // Reactively sync muted prop → video element property
   $: if (videoElement) videoElement.muted = muted;
 
-  // Reactively sync muted prop → YouTube iframe via postMessage (unMute command).
-  // Works on Android Chrome where audio policy allows programmatic unmute after
-  // user interaction. On iOS Safari this won't take effect (OS restriction).
-  $: if (iframeEl && youtubeId && ytPlaying && !muted) {
-    iframeEl.contentWindow?.postMessage(
-      JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
-      '*'
-    );
-    iframeEl.contentWindow?.postMessage(
-      JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }),
-      '*'
-    );
+  // Reactively sync muted prop → YouTube iframe via postMessage.
+  // Sends both mute AND unMute so the iframe audio tracks the prop correctly.
+  $: if (iframeEl && youtubeId && ytPlaying) {
+    if (muted) {
+      iframeEl.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: 'mute', args: [] }),
+        '*'
+      );
+    } else {
+      iframeEl.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
+        '*'
+      );
+      iframeEl.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }),
+        '*'
+      );
+    }
   }
 
   onMount(() => {
@@ -132,15 +139,50 @@
     if (youtubeId) {
       window.addEventListener('message', handleYTMessage, { passive: true });
     }
-    
+
+    // Pause the video when the phone scrolls out of view, resume on re-entry.
+    // This handles both native <video> and YouTube iframe.
+    let visibilityObserver: IntersectionObserver | null = null;
+    if (containerEl) {
+      visibilityObserver = new IntersectionObserver(
+        (entries) => {
+          const isVisible = entries[0]?.isIntersecting;
+          if (isVisible) {
+            // Resume
+            if (videoElement) videoElement.play().catch(() => {});
+            if (iframeEl && youtubeId) {
+              iframeEl.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+                '*'
+              );
+            }
+          } else {
+            // Pause
+            if (videoElement) videoElement.pause();
+            if (iframeEl && youtubeId) {
+              iframeEl.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
+                '*'
+              );
+            }
+          }
+        },
+        // 10% threshold: pause as soon as 90% of the phone is off screen
+        { threshold: 0.1 }
+      );
+      visibilityObserver.observe(containerEl);
+    }
+
     return () => {
       clearTimeout(fallbackTimeout);
       window.removeEventListener('message', handleYTMessage);
+      visibilityObserver?.disconnect();
     };
   });
 </script>
 
 <div 
+  bind:this={containerEl}
   class="phone-container"
   on:mousemove={handleMouseMove}
   on:mouseleave={handleMouseLeave}
