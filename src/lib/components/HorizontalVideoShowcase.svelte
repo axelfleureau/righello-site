@@ -66,6 +66,10 @@
   let lightboxYoutubeId: string | null = null;
   let lightboxTitle = '';
   let loadedFrames: boolean[] = items.map(() => false);
+  // Wheel→horizontal conversion only fires when the mouse is over the carousel.
+  // Without this guard, scrolling the page with the cursor near the carousel
+  // would steal the event and jump the cards sideways.
+  let isHovered = false;
 
   function markFrameLoaded(index: number) {
     if (!loadedFrames[index]) {
@@ -196,7 +200,7 @@
   }
   
   function handleWheel(e: WheelEvent) {
-    if (!container) return;
+    if (!container || !isHovered) return;
     // If the user is already scrolling horizontally (trackpad), let it through
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
     const maxScroll = container.scrollWidth - container.clientWidth;
@@ -206,7 +210,7 @@
     const atEnd = container.scrollLeft >= maxScroll - 1;
     if ((atStart && e.deltaY < 0) || (atEnd && e.deltaY > 0)) return;
     e.preventDefault();
-    container.scrollBy({ left: e.deltaY * 1.5, behavior: 'auto' });
+    container.scrollBy({ left: e.deltaY, behavior: 'auto' });
   }
 
   onMount(() => {
@@ -249,7 +253,8 @@
     on:mousedown={handleMouseDown}
     on:mousemove={handleMouseMove}
     on:mouseup={handleMouseUp}
-    on:mouseleave={handleMouseLeave}
+    on:mouseleave={() => { handleMouseLeave(); isHovered = false; }}
+    on:mouseenter={() => { isHovered = true; }}
     on:touchstart={handleTouchStart}
     on:touchmove={handleTouchMove}
     on:touchend={handleTouchEnd}

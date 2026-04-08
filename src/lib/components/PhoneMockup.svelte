@@ -150,10 +150,9 @@
 >
   <div 
     class="phone-wrapper phone-entrance"
-    class:phone-wrapper-3d={!isTouch}
     style={!isTouch
-      ? `transform: perspective(1000px) rotateX(${$rotation.x}deg) rotateY(${$rotation.y}deg) translateX(${$position.x}px) translateY(${$position.y}px);`
-      : ''}
+      ? `transform-style: preserve-3d; transform: perspective(1000px) rotateX(${$rotation.x}deg) rotateY(${$rotation.y}deg) translateX(${$position.x}px) translateY(${$position.y}px);`
+      : 'transform-style: flat;'}
   >
       <div class="phone-frame">
         <div class="phone-notch"></div>
@@ -292,13 +291,6 @@
     transition: transform 0.1s ease-out;
   }
 
-  /* Only enable preserve-3d on desktop (pointer:fine) devices.
-     On iOS Safari, preserve-3d causes the GPU compositor to freeze
-     video frames inside the iframe while audio continues playing. */
-  .phone-wrapper-3d {
-    transform-style: preserve-3d;
-  }
-  
   .phone-entrance {
     animation: phoneScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
     opacity: 0;

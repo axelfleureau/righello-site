@@ -31,6 +31,8 @@
   let lightboxTitle = '';
   let reelViewerOpen = false;
   let reelViewerIndex = 0;
+  // Guard: only convert wheel→horizontal when mouse is actually over the carousel.
+  let isHovered = false;
   
   $: reelItems = items.filter(i => (i.videoSrc || i.youtubeId) && !i.isCta);
   
@@ -172,7 +174,7 @@
   }
 
   function handleWheel(e: WheelEvent) {
-    if (!container) return;
+    if (!container || !isHovered) return;
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
     const maxScroll = container.scrollWidth - container.clientWidth;
     if (maxScroll <= 0) return;
@@ -180,7 +182,7 @@
     const atEnd = container.scrollLeft >= maxScroll - 1;
     if ((atStart && e.deltaY < 0) || (atEnd && e.deltaY > 0)) return;
     e.preventDefault();
-    container.scrollBy({ left: e.deltaY * 1.5, behavior: 'auto' });
+    container.scrollBy({ left: e.deltaY, behavior: 'auto' });
   }
 
   onMount(() => {
@@ -213,7 +215,8 @@
     on:mousedown={handleMouseDown}
     on:mousemove={handleMouseMove}
     on:mouseup={handleMouseUp}
-    on:mouseleave={handleMouseLeave}
+    on:mouseleave={() => { handleMouseLeave(); isHovered = false; }}
+    on:mouseenter={() => { isHovered = true; }}
     on:touchstart={handleTouchStart}
     on:touchmove={handleTouchMove}
     on:touchend={handleTouchEnd}

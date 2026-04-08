@@ -345,7 +345,7 @@
         <div class="bottom-overlay">
           <div class="bottom-info">
             <div class="username-row">
-              <span class="username">@righello_agency</span>
+              <span class="username">@wearerighello</span>
               <span class="verified-dot"></span>
             </div>
             {#if currentItem}
