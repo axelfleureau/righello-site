@@ -30,6 +30,13 @@ The website features a modern UI/UX with interactive elements and advanced anima
 - **Performance & SEO**: Optimized HTTP headers for caching, font preloading, comprehensive meta tags, and best practices for image/video loading. Static video thumbnails are pre-generated.
 - **Contact Form**: An API endpoint (`/api/contact`) processes form submissions, leveraging OpenAI GPT for lead analysis and SendGrid for sending branded HTML emails to clients and internal teams.
 
+## Performance Optimizations Applied
+- **WOFF2 fonts**: All 14 Degular Display OTF fonts converted to WOFF2 (~50% smaller per file). `@font-face` declarations and `<link rel="preload">` updated to WOFF2.
+- **RippleGrid lazy init**: WebGL (OGL) initialization deferred via `IntersectionObserver` — only starts when the FAQ section scrolls into view, saving CPU during page hydration.
+- **Iubenda async**: Added `async` attribute to the Iubenda script in `app.html` to prevent blocking the `load` event.
+- **Wheel handler scoped to pointer:fine**: `AppleCardsCarousel` and `HorizontalVideoShowcase` only attach the `wheel→horizontal-scroll` handler on non-touch devices, preventing synthetic wheel events during touch momentum from blocking page scroll inertia.
+- **Deleted unused static asset**: `hero-video.mp4` (11MB) removed from `static/` — it was unreferenced in code.
+
 ## External Dependencies
 
 -   **GSAP**: For complex and scroll-triggered animations.

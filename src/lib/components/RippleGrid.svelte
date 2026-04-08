@@ -132,7 +132,7 @@ void main() {
     gl_FragColor = vec4(color * t * finalFade * opacity, alpha);
 }`;
   
-  onMount(async () => {
+  async function initWebGL() {
     if (!browser || !container) return;
 
     try {
@@ -212,8 +212,9 @@ void main() {
       window.addEventListener('resize', resize);
       resize();
       animationId = requestAnimationFrame(render);
-      
-      return () => {
+
+      // Store cleanup so onDestroy can call it
+      _cleanup = () => {
         window.removeEventListener('resize', resize);
         if (animationId) cancelAnimationFrame(animationId);
         renderer?.gl?.getExtension('WEBGL_lose_context')?.loseContext();
@@ -224,10 +225,35 @@ void main() {
     } catch (err) {
       console.warn('RippleGrid: failed to initialize WebGL renderer:', err instanceof Error ? err.message : String(err));
     }
+  }
+
+  let _cleanup: (() => void) | undefined;
+
+  onMount(() => {
+    if (!browser || !container) return;
+    // Defer WebGL initialization until the grid enters the viewport.
+    // This avoids starting the expensive OGL render loop at page-load time
+    // and saves CPU during initial hydration.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          initWebGL();
+        }
+      },
+      { rootMargin: '200px' } // pre-load 200px before reaching the section
+    );
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+      _cleanup?.();
+    };
   });
   
   onDestroy(() => {
     if (animationId) cancelAnimationFrame(animationId);
+    _cleanup?.();
   });
   
   function handleMouseMove(e: MouseEvent) {
