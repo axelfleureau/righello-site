@@ -350,7 +350,7 @@
     <div class="lightbox-content" on:click|stopPropagation>
       {#if lightboxYoutubeId}
         <iframe
-          src="https://www.youtube.com/embed/{lightboxYoutubeId}?autoplay=1&rel=0&controls=0&modestbranding=1&playsinline=1&loop=1&playlist={lightboxYoutubeId}&iv_load_policy=3"
+          src="https://www.youtube-nocookie.com/embed/{lightboxYoutubeId}?autoplay=1&mute=1&rel=0&controls=1&modestbranding=1&playsinline=1&loop=1&playlist={lightboxYoutubeId}&iv_load_policy=3"
           class="lightbox-video"
           allow="autoplay; fullscreen; encrypted-media"
           allowfullscreen

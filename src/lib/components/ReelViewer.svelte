@@ -11,7 +11,11 @@
 
   let currentIndex = activeIndex;
   let videoEl: HTMLVideoElement | null = null;
-  let isMuted = false;
+  let iframeEl: HTMLIFrameElement | null = null;
+  // Start muted so the YouTube iframe can autoplay on desktop (browsers block
+  // unmuted autoplay). The user can unmute via the mute button, just like
+  // Instagram Reels itself.
+  let isMuted = true;
   let isPlaying = true;
   let showPlayPause = false;
   let playPauseIcon: 'play' | 'pause' = 'pause';
@@ -30,6 +34,7 @@
   $: currentItem = items[currentIndex];
   $: if (open) {
     currentIndex = activeIndex;
+    isMuted = true;
   }
 
   $: if (open && browser) {
@@ -159,9 +164,18 @@
   }
 
   function toggleMute() {
-    if (!videoEl) return;
     isMuted = !isMuted;
-    videoEl.muted = isMuted;
+    if (videoEl) {
+      videoEl.muted = isMuted;
+    }
+    if (iframeEl && currentItem?.youtubeId) {
+      // Toggle mute on the YouTube iframe via postMessage
+      const func = isMuted ? 'mute' : 'unMute';
+      iframeEl.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func, args: [] }),
+        '*'
+      );
+    }
   }
 
   function handleTimeUpdate() {
@@ -302,7 +316,8 @@
         {#key currentIndex}
           {#if currentItem?.youtubeId}
             <iframe
-              src="https://www.youtube-nocookie.com/embed/{currentItem.youtubeId}?autoplay=1&loop=1&playlist={currentItem.youtubeId}&rel=0&controls=0&modestbranding=1&playsinline=1&mute={isMuted ? 1 : 0}"
+              bind:this={iframeEl}
+              src="https://www.youtube-nocookie.com/embed/{currentItem.youtubeId}?autoplay=1&loop=1&playlist={currentItem.youtubeId}&rel=0&controls=0&modestbranding=1&playsinline=1&mute={isMuted ? 1 : 0}&enablejsapi=1"
               class="reel-video reel-iframe"
               allow="autoplay; fullscreen"
               allowfullscreen
