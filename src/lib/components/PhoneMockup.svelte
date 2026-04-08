@@ -17,6 +17,10 @@
   let iframeEl: HTMLIFrameElement;
   // YouTube-specific state
   let ytPlaying = false; // true once YouTube fires onStateChange(1) = playing
+  // On touch/mobile devices we disable the 3D perspective tilt entirely.
+  // iOS Safari cannot composite video frames inside a preserve-3d layer —
+  // the result is frozen video with audio still playing (GPU compositor bug).
+  let isTouch = false;
   
   const rotation = spring({ x: 0, y: 0 }, {
     stiffness: 0.05,
@@ -76,6 +80,10 @@
 
   onMount(() => {
     mounted = true;
+    // Detect touch/mobile: pointer:coarse means no mouse hover capability.
+    // On these devices we skip the 3D tilt entirely to avoid the iOS Safari
+    // compositor bug where video freezes inside a preserve-3d layer.
+    isTouch = window.matchMedia('(pointer: coarse)').matches;
     
     // If video is already cached/ready, update loading state
     if (videoElement && videoElement.readyState >= 3) {
@@ -142,14 +150,10 @@
 >
   <div 
     class="phone-wrapper phone-entrance"
-    style="
-      transform: 
-        perspective(1000px) 
-        rotateX({$rotation.x}deg) 
-        rotateY({$rotation.y}deg)
-        translateX({$position.x}px)
-        translateY({$position.y}px);
-    "
+    class:phone-wrapper-3d={!isTouch}
+    style={!isTouch
+      ? `transform: perspective(1000px) rotateX(${$rotation.x}deg) rotateY(${$rotation.y}deg) translateX(${$position.x}px) translateY(${$position.y}px);`
+      : ''}
   >
       <div class="phone-frame">
         <div class="phone-notch"></div>
@@ -285,8 +289,14 @@
     position: relative;
     width: 100%;
     height: 100%;
-    transform-style: preserve-3d;
     transition: transform 0.1s ease-out;
+  }
+
+  /* Only enable preserve-3d on desktop (pointer:fine) devices.
+     On iOS Safari, preserve-3d causes the GPU compositor to freeze
+     video frames inside the iframe while audio continues playing. */
+  .phone-wrapper-3d {
+    transform-style: preserve-3d;
   }
   
   .phone-entrance {
