@@ -186,7 +186,13 @@
   onMount(() => {
     if (browser) {
       window.addEventListener('keydown', handleKeydown);
-      container?.addEventListener('wheel', handleWheel, { passive: false });
+      // Attach wheel→horizontal-scroll only on pointer-fine (mouse/trackpad) devices.
+      // On touch devices, the momentum phase generates synthetic wheel events;
+      // if those hit this handler mid-scroll the preventDefault() call kills page
+      // inertia, causing the "jerk and stop" friction on mobile.
+      if (window.matchMedia('(pointer: fine)').matches) {
+        container?.addEventListener('wheel', handleWheel, { passive: false });
+      }
 
       return () => {
         window.removeEventListener('keydown', handleKeydown);

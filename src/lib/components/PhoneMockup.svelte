@@ -15,6 +15,8 @@
   let videoError = false;
   let videoElement: HTMLVideoElement;
   let iframeEl: HTMLIFrameElement;
+  // YouTube-specific state
+  let ytPlaying = false; // true once YouTube fires onStateChange(1) = playing
   
   const rotation = spring({ x: 0, y: 0 }, {
     stiffness: 0.05,
@@ -58,6 +60,20 @@
   // Reactively sync muted prop → video element property
   $: if (videoElement) videoElement.muted = muted;
 
+  // Reactively sync muted prop → YouTube iframe via postMessage (unMute command).
+  // Works on Android Chrome where audio policy allows programmatic unmute after
+  // user interaction. On iOS Safari this won't take effect (OS restriction).
+  $: if (iframeEl && youtubeId && ytPlaying && !muted) {
+    iframeEl.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
+      '*'
+    );
+    iframeEl.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }),
+      '*'
+    );
+  }
+
   onMount(() => {
     mounted = true;
     
@@ -79,16 +95,22 @@
       if (!iframeEl || e.source !== iframeEl.contentWindow) return;
       try {
         const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-        // YouTube sends info: 0 when video ends (state "ended")
-        if (data.event === 'onStateChange' && data.info === 0) {
-          iframeEl.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }),
-            '*'
-          );
-          iframeEl.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
-            '*'
-          );
+        if (data.event === 'onStateChange') {
+          // state 1 = playing: video is live, thumbnail placeholder can be hidden
+          if (data.info === 1 && !ytPlaying) {
+            ytPlaying = true;
+          }
+          // state 0 = ended: loop manually (iOS/iPadOS workaround for loop=1 unreliability)
+          if (data.info === 0) {
+            iframeEl.contentWindow?.postMessage(
+              JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }),
+              '*'
+            );
+            iframeEl.contentWindow?.postMessage(
+              JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+              '*'
+            );
+          }
         }
       } catch {
         // ignore malformed messages
@@ -131,6 +153,15 @@
         <div class="phone-screen">
           {#if youtubeId}
             <div class="yt-crop-wrapper">
+              {#if !ytPlaying}
+                <img
+                  src="https://img.youtube.com/vi/{youtubeId}/hqdefault.jpg"
+                  alt=""
+                  aria-hidden="true"
+                  class="yt-thumbnail"
+                  transition:fade={{ duration: 400 }}
+                />
+              {/if}
               <iframe
                 bind:this={iframeEl}
                 src="https://www.youtube-nocookie.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080&hd=1&enablejsapi=1"
@@ -138,6 +169,7 @@
                 frameborder="0"
                 allow="autoplay; encrypted-media"
                 class="yt-iframe"
+                class:yt-iframe-hidden={!ytPlaying}
               ></iframe>
             </div>
           {:else if videoSrc}
@@ -332,6 +364,23 @@
     transform: translate(-50%, -50%) scale(1.35);
     transform-origin: center center;
     border: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  /* Hidden while the video hasn't fired its first onStateChange(1) */
+  .yt-iframe-hidden {
+    opacity: 0;
+  }
+
+  /* YouTube thumbnail shown while the iframe is loading */
+  .yt-thumbnail {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
     pointer-events: none;
   }
   
