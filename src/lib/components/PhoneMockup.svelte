@@ -97,23 +97,39 @@
       videoLoading = false;
     }
     
-    // Fallback timeout: hide skeleton after 8 seconds even if video hasn't loaded
+    // Fallback timeout: show iframe after 3 s even if onStateChange(1) never fired.
+    // Keeps the experience responsive — at worst the user sees a paused frame
+    // rather than a black screen for many seconds.
     const fallbackTimeout = setTimeout(() => {
       if (videoLoading && videoSrc) {
         videoLoading = false;
       }
-      // Also show YouTube iframe after timeout even if onStateChange(1) never fired
       if (!ytPlaying && youtubeId) {
         ytPlaying = true;
       }
-    }, 8000);
+    }, 3000);
 
-    // YouTube loop fallback for iOS/iPadOS where loop=1&playlist trick sometimes fails.
-    // Listens for YouTube state changes via postMessage and manually restarts when ended.
+    // YouTube postMessage handler:
+    // - onReady: player fully initialised → send mute + playVideo (reliable autoplay trigger)
+    // - onStateChange(1): playing → reveal iframe, hide thumbnail
+    // - onStateChange(0): ended → loop manually (iOS workaround for loop=1 unreliability)
     function handleYTMessage(e: MessageEvent) {
       if (!iframeEl || e.source !== iframeEl.contentWindow) return;
       try {
         const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+
+        if (data.event === 'onReady') {
+          // Player API is ready: send mute first, then play.
+          // This is the most reliable way to trigger autoplay — the URL autoplay=1
+          // param alone can be ignored when enablejsapi=1 is present.
+          iframeEl.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*'
+          );
+          iframeEl.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
+          );
+        }
+
         if (data.event === 'onStateChange') {
           // state 1 = playing: video is live, thumbnail placeholder can be hidden
           if (data.info === 1 && !ytPlaying) {
