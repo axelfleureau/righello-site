@@ -141,23 +141,19 @@
     }
 
     // Pause the video when the phone scrolls out of view, resume on re-entry.
-    // This handles both native <video> and YouTube iframe.
+    // IMPORTANT: never send playVideo on the initial intersection callback
+    // (phone visible at page load) — this interrupts YouTube's own autoplay
+    // sequence and causes it to call loadNewVideoConfig multiple times.
+    // We only resume after the phone has actually left the viewport at least once.
+    let hasBeenHidden = false;
     let visibilityObserver: IntersectionObserver | null = null;
     if (containerEl) {
       visibilityObserver = new IntersectionObserver(
         (entries) => {
           const isVisible = entries[0]?.isIntersecting;
-          if (isVisible) {
-            // Resume
-            if (videoElement) videoElement.play().catch(() => {});
-            if (iframeEl && youtubeId) {
-              iframeEl.contentWindow?.postMessage(
-                JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
-                '*'
-              );
-            }
-          } else {
-            // Pause
+          if (!isVisible) {
+            // Phone left viewport → pause
+            hasBeenHidden = true;
             if (videoElement) videoElement.pause();
             if (iframeEl && youtubeId) {
               iframeEl.contentWindow?.postMessage(
@@ -165,9 +161,19 @@
                 '*'
               );
             }
+          } else if (hasBeenHidden) {
+            // Phone returned to viewport (after being hidden) → resume
+            if (videoElement) videoElement.play().catch(() => {});
+            if (iframeEl && youtubeId) {
+              iframeEl.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+                '*'
+              );
+            }
           }
+          // isVisible && !hasBeenHidden → initial page load, do nothing
+          // YouTube handles its own autoplay via the autoplay=1 URL param
         },
-        // 10% threshold: pause as soon as 90% of the phone is off screen
         { threshold: 0.1 }
       );
       visibilityObserver.observe(containerEl);
@@ -216,7 +222,7 @@
                 src="https://www.youtube-nocookie.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080&hd=1&enablejsapi=1"
                 title="Righello video"
                 frameborder="0"
-                allow="autoplay; encrypted-media"
+                allow="autoplay; fullscreen; encrypted-media"
                 class="yt-iframe"
                 class:yt-iframe-hidden={!ytPlaying}
               ></iframe>
