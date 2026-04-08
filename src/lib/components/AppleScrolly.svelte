@@ -99,6 +99,21 @@
       videoMuted = false;
       audioActiveVisible = true;
       setTimeout(() => { audioActiveVisible = false; }, 2500);
+
+      // Send unMute directly to all YouTube iframes *synchronously* inside the
+      // user-gesture context (touchstart / wheel). On iOS Safari, postMessage
+      // must be called inside the gesture; relying on Svelte reactive updates
+      // (async microtask) is too late and the command gets silently ignored.
+      if (browser) {
+        document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube"]').forEach(iframe => {
+          iframe.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*'
+          );
+          iframe.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*'
+          );
+        });
+      }
     }
   }
 

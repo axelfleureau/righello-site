@@ -87,6 +87,10 @@
       if (videoLoading && videoSrc) {
         videoLoading = false;
       }
+      // Also show YouTube iframe after timeout even if onStateChange(1) never fired
+      if (!ytPlaying && youtubeId) {
+        ytPlaying = true;
+      }
     }, 8000);
 
     // YouTube loop fallback for iOS/iPadOS where loop=1&playlist trick sometimes fails.
