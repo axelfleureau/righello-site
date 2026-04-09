@@ -97,9 +97,7 @@
       videoLoading = false;
     }
     
-    // Fallback timeout: show iframe after 4.5 s even if onStateChange(1) never fired.
-    // 4500ms = 3000ms for loading + 1500ms to account for the quality-settle delay
-    // we apply after onStateChange(1) before revealing the iframe.
+    // Fallback timeout: show iframe after 3 s even if onStateChange(1) never fired.
     const fallbackTimeout = setTimeout(() => {
       if (videoLoading && videoSrc) {
         videoLoading = false;
@@ -107,7 +105,7 @@
       if (!ytPlaying && youtubeId) {
         ytPlaying = true;
       }
-    }, 4500);
+    }, 3000);
 
     // True once YouTube fires onStateChange(3=buffering) or (1=playing).
     // Prevents sending a redundant playVideo after autoplay=1 already started the video,
@@ -115,8 +113,8 @@
     let hasReceivedFirstPlay = false;
 
     // YouTube postMessage handler:
-    // - onReady: mute + HD quality + delayed playVideo (only if autoplay didn't fire)
-    // - onStateChange(1): playing → wait 1.5s for quality to settle, then reveal iframe
+    // - onReady: mute + delayed playVideo (only if autoplay didn't fire)
+    // - onStateChange(1): playing → reveal iframe immediately (CSS opacity transition handles smoothness)
     // - onStateChange(0): ended → loop manually (iOS workaround for loop=1 unreliability)
     function handleYTMessage(e: MessageEvent) {
       if (!iframeEl || e.source !== iframeEl.contentWindow) return;
@@ -127,10 +125,6 @@
           // Mute first (required for cross-origin autoplay policy)
           iframeEl.contentWindow?.postMessage(
             JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*'
-          );
-          // Request 1080p from the very start
-          iframeEl.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'setPlaybackQuality', args: ['hd1080'] }), '*'
           );
           // Wait 150ms: if autoplay=1 in the URL already started buffering/playing,
           // hasReceivedFirstPlay will be true and we skip the explicit playVideo.
@@ -150,15 +144,12 @@
           if (data.info === 3 || data.info === 1) {
             hasReceivedFirstPlay = true;
           }
-          // state 1 = playing: re-assert HD quality, then reveal after 1.5s.
-          // The delay avoids showing the blurry low-quality frame YouTube always
-          // starts with before adaptive bitrate switches up to 1080p.
+          // state 1 = playing: reveal iframe immediately.
+          // The 300% iframe CSS trick already tells YouTube to serve 720p/1080p,
+          // so no need to wait for quality to settle — reveal without artificial delay.
           if (data.info === 1) {
-            iframeEl?.contentWindow?.postMessage(
-              JSON.stringify({ event: 'command', func: 'setPlaybackQuality', args: ['hd1080'] }), '*'
-            );
             if (!ytPlaying) {
-              setTimeout(() => { ytPlaying = true; }, 1500);
+              ytPlaying = true;
             }
           }
           // state 0 = ended: loop manually (iOS/iPadOS workaround for loop=1 unreliability)

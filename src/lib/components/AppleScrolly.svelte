@@ -480,7 +480,7 @@
       <p class="partners-label">Tra i nostri clienti</p>
       <div class="partners-marquee-wrapper">
         <div class="partners-marquee">
-          {#each [...partnerNames, ...partnerNames] as name}
+          {#each [0,1,2,3,4,5].flatMap(() => partnerNames) as name}
             <span class="partner-name">{name}</span>
             <span class="partner-sep">·</span>
           {/each}
@@ -949,7 +949,7 @@
 
   @keyframes partners-scroll {
     from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    to   { transform: translateX(calc(-100% / 6)); }
   }
 
   .partner-name {
