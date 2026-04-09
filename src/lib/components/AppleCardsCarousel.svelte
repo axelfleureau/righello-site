@@ -31,8 +31,6 @@
   let lightboxTitle = '';
   let reelViewerOpen = false;
   let reelViewerIndex = 0;
-  // Guard: only convert wheel→horizontal when mouse is actually over the carousel.
-  let isHovered = false;
   
   $: reelItems = items.filter(i => (i.videoSrc || i.youtubeId) && !i.isCta);
   
@@ -173,32 +171,11 @@
     videoLoaded = [...videoLoaded];
   }
 
-  function handleWheel(e: WheelEvent) {
-    if (!container || !isHovered) return;
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-    const maxScroll = container.scrollWidth - container.clientWidth;
-    if (maxScroll <= 0) return;
-    const atStart = container.scrollLeft <= 0;
-    const atEnd = container.scrollLeft >= maxScroll - 1;
-    if ((atStart && e.deltaY < 0) || (atEnd && e.deltaY > 0)) return;
-    e.preventDefault();
-    container.scrollBy({ left: e.deltaY, behavior: 'auto' });
-  }
-
   onMount(() => {
     if (browser) {
       window.addEventListener('keydown', handleKeydown);
-      // Attach wheel→horizontal-scroll only on pointer-fine (mouse/trackpad) devices.
-      // On touch devices, the momentum phase generates synthetic wheel events;
-      // if those hit this handler mid-scroll the preventDefault() call kills page
-      // inertia, causing the "jerk and stop" friction on mobile.
-      if (window.matchMedia('(pointer: fine)').matches) {
-        container?.addEventListener('wheel', handleWheel, { passive: false });
-      }
-
       return () => {
         window.removeEventListener('keydown', handleKeydown);
-        container?.removeEventListener('wheel', handleWheel);
       };
     }
   });
@@ -215,8 +192,7 @@
     on:mousedown={handleMouseDown}
     on:mousemove={handleMouseMove}
     on:mouseup={handleMouseUp}
-    on:mouseleave={() => { handleMouseLeave(); isHovered = false; }}
-    on:mouseenter={() => { isHovered = true; }}
+    on:mouseleave={handleMouseLeave}
     on:touchstart={handleTouchStart}
     on:touchmove={handleTouchMove}
     on:touchend={handleTouchEnd}

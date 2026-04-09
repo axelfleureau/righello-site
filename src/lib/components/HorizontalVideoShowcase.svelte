@@ -66,10 +66,6 @@
   let lightboxYoutubeId: string | null = null;
   let lightboxTitle = '';
   let loadedFrames: boolean[] = items.map(() => false);
-  // Wheel→horizontal conversion only fires when the mouse is over the carousel.
-  // Without this guard, scrolling the page with the cursor near the carousel
-  // would steal the event and jump the cards sideways.
-  let isHovered = false;
 
   function markFrameLoaded(index: number) {
     if (!loadedFrames[index]) {
@@ -199,34 +195,11 @@
     // No e.preventDefault() — browser handles scroll natively via touch-action
   }
   
-  function handleWheel(e: WheelEvent) {
-    if (!container || !isHovered) return;
-    // If the user is already scrolling horizontally (trackpad), let it through
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-    const maxScroll = container.scrollWidth - container.clientWidth;
-    if (maxScroll <= 0) return;
-    // At the boundaries, allow the page to scroll normally
-    const atStart = container.scrollLeft <= 0;
-    const atEnd = container.scrollLeft >= maxScroll - 1;
-    if ((atStart && e.deltaY < 0) || (atEnd && e.deltaY > 0)) return;
-    e.preventDefault();
-    container.scrollBy({ left: e.deltaY, behavior: 'auto' });
-  }
-
   onMount(() => {
     if (browser) {
       window.addEventListener('keydown', handleKeydown);
-      // Attach wheel→horizontal-scroll only on pointer-fine (mouse/trackpad) devices.
-      // On touch devices, the momentum phase generates synthetic wheel events;
-      // if those hit this handler mid-scroll the preventDefault() call kills page
-      // inertia, causing the "jerk and stop" friction on mobile.
-      if (window.matchMedia('(pointer: fine)').matches) {
-        container?.addEventListener('wheel', handleWheel, { passive: false });
-      }
-
       return () => {
         window.removeEventListener('keydown', handleKeydown);
-        container?.removeEventListener('wheel', handleWheel);
       };
     }
   });
@@ -253,8 +226,7 @@
     on:mousedown={handleMouseDown}
     on:mousemove={handleMouseMove}
     on:mouseup={handleMouseUp}
-    on:mouseleave={() => { handleMouseLeave(); isHovered = false; }}
-    on:mouseenter={() => { isHovered = true; }}
+    on:mouseleave={handleMouseLeave}
     on:touchstart={handleTouchStart}
     on:touchmove={handleTouchMove}
     on:touchend={handleTouchEnd}
