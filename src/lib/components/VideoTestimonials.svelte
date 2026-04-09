@@ -67,6 +67,7 @@
     lightboxContent = testimonial;
     lightboxOpen = true;
     document.body.style.overflow = 'hidden';
+    document.dispatchEvent(new CustomEvent('righello:lightbox-open'));
     
     if (activeVideo) {
       pauseVideo(activeVideo);
@@ -80,6 +81,7 @@
     lightboxOpen = false;
     lightboxContent = null;
     document.body.style.overflow = '';
+    document.dispatchEvent(new CustomEvent('righello:lightbox-close'));
   }
   
   function handleKeydown(e: KeyboardEvent) {

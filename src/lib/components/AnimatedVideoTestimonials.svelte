@@ -110,6 +110,7 @@
   }
 
   function openLightbox() {
+    document.dispatchEvent(new CustomEvent('righello:lightbox-open'));
     if (!activeTestimonial.videoSrc && !activeTestimonial.youtubeId) return;
     lightboxOpen = true;
     stopAutoplay();
@@ -120,6 +121,7 @@
     if (lightboxVideo && !activeTestimonial.youtubeId) lightboxVideo.pause();
     lightboxOpen = false;
     document.body.style.overflow = '';
+    document.dispatchEvent(new CustomEvent('righello:lightbox-close'));
     if (isInView) startAutoplay();
   }
 

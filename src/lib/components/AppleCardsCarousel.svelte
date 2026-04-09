@@ -95,6 +95,7 @@
     lightboxTitle = item.title;
     lightboxOpen = true;
     document.body.style.overflow = 'hidden';
+    document.dispatchEvent(new CustomEvent('righello:lightbox-open'));
   }
   
   function closeLightbox() {
@@ -103,6 +104,7 @@
     lightboxYoutubeId = null;
     lightboxTitle = '';
     document.body.style.overflow = '';
+    document.dispatchEvent(new CustomEvent('righello:lightbox-close'));
   }
   
   function handleKeydown(e: KeyboardEvent) {
@@ -148,6 +150,7 @@
       const reelIdx = reelItems.findIndex(i => (i.youtubeId && i.youtubeId === item.youtubeId) || (i.videoSrc && i.videoSrc === item.videoSrc));
       reelViewerIndex = reelIdx >= 0 ? reelIdx : 0;
       reelViewerOpen = true;
+      document.dispatchEvent(new CustomEvent('righello:lightbox-open'));
     } else {
       openLightbox(item);
     }
@@ -155,6 +158,7 @@
   
   function closeReelViewer() {
     reelViewerOpen = false;
+    document.dispatchEvent(new CustomEvent('righello:lightbox-close'));
   }
   
   let videoRefs: (HTMLVideoElement | null)[] = items.map(() => null);

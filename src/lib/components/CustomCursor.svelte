@@ -12,22 +12,40 @@
   let shouldRender = false;
   let prefersReducedMotion = false;
   let rafId: number;
+  let isLightboxOpen = false;
 
   const INTERACTIVE_SELECTOR = 'a, button, [role="button"], input, textarea, select, .cursor-hover';
   const RING_LERP = 0.15;
 
+  function handleLightboxOpen() {
+    isLightboxOpen = true;
+    isVisible = false;
+    isHovering = false;
+    document.body.style.cursor = 'auto';
+    document.documentElement.style.cursor = 'auto';
+  }
+
+  function handleLightboxClose() {
+    isLightboxOpen = false;
+    document.body.style.cursor = 'none';
+    document.documentElement.style.cursor = 'none';
+  }
+
   function handleMouseMove(e: MouseEvent) {
+    if (isLightboxOpen) return;
     dotX = e.clientX;
     dotY = e.clientY;
     if (!isVisible) isVisible = true;
   }
 
   function handleMouseDown() {
+    if (isLightboxOpen) return;
     isClicking = true;
     setTimeout(() => { isClicking = false; }, 150);
   }
 
   function handleMouseOver(e: MouseEvent) {
+    if (isLightboxOpen) return;
     const related = e.relatedTarget as HTMLElement | null;
     const target = e.target as HTMLElement;
 
@@ -44,6 +62,7 @@
   }
 
   function handleMouseOut(e: MouseEvent) {
+    if (isLightboxOpen) return;
     const related = e.relatedTarget as HTMLElement | null;
     const target = e.target as HTMLElement;
 
@@ -96,6 +115,8 @@
     document.addEventListener('mouseout', handleMouseOut);
     document.documentElement.addEventListener('mouseleave', handleMouseLeave);
     document.documentElement.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('righello:lightbox-open', handleLightboxOpen as EventListener);
+    document.addEventListener('righello:lightbox-close', handleLightboxClose as EventListener);
 
     rafId = requestAnimationFrame(animate);
   });
@@ -117,6 +138,8 @@
     document.removeEventListener('mouseout', handleMouseOut);
     document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
     document.documentElement.removeEventListener('mouseenter', handleMouseEnter);
+    document.removeEventListener('righello:lightbox-open', handleLightboxOpen as EventListener);
+    document.removeEventListener('righello:lightbox-close', handleLightboxClose as EventListener);
 
     if (rafId) cancelAnimationFrame(rafId);
   });
