@@ -97,9 +97,9 @@
       videoLoading = false;
     }
     
-    // Fallback timeout: show iframe after 3 s even if onStateChange(1) never fired.
-    // Keeps the experience responsive — at worst the user sees a paused frame
-    // rather than a black screen for many seconds.
+    // Fallback timeout: show iframe after 4.5 s even if onStateChange(1) never fired.
+    // 4500ms = 3000ms for loading + 1500ms to account for the quality-settle delay
+    // we apply after onStateChange(1) before revealing the iframe.
     const fallbackTimeout = setTimeout(() => {
       if (videoLoading && videoSrc) {
         videoLoading = false;
@@ -107,11 +107,16 @@
       if (!ytPlaying && youtubeId) {
         ytPlaying = true;
       }
-    }, 3000);
+    }, 4500);
+
+    // True once YouTube fires onStateChange(3=buffering) or (1=playing).
+    // Prevents sending a redundant playVideo after autoplay=1 already started the video,
+    // which would cause loadNewVideoConfig → restart → "sparisce e ricarica" glitch.
+    let hasReceivedFirstPlay = false;
 
     // YouTube postMessage handler:
-    // - onReady: player fully initialised → send mute + playVideo (reliable autoplay trigger)
-    // - onStateChange(1): playing → reveal iframe, hide thumbnail
+    // - onReady: mute + HD quality + delayed playVideo (only if autoplay didn't fire)
+    // - onStateChange(1): playing → wait 1.5s for quality to settle, then reveal iframe
     // - onStateChange(0): ended → loop manually (iOS workaround for loop=1 unreliability)
     function handleYTMessage(e: MessageEvent) {
       if (!iframeEl || e.source !== iframeEl.contentWindow) return;
@@ -119,21 +124,42 @@
         const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
 
         if (data.event === 'onReady') {
-          // Player API is ready: send mute first, then play.
-          // This is the most reliable way to trigger autoplay — the URL autoplay=1
-          // param alone can be ignored when enablejsapi=1 is present.
+          // Mute first (required for cross-origin autoplay policy)
           iframeEl.contentWindow?.postMessage(
             JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*'
           );
+          // Request 1080p from the very start
           iframeEl.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
+            JSON.stringify({ event: 'command', func: 'setPlaybackQuality', args: ['hd1080'] }), '*'
           );
+          // Wait 150ms: if autoplay=1 in the URL already started buffering/playing,
+          // hasReceivedFirstPlay will be true and we skip the explicit playVideo.
+          // Without this guard, sending playVideo while autoplay is in flight triggers
+          // a loadNewVideoConfig restart — the visible "sparisce e ricarica" glitch.
+          setTimeout(() => {
+            if (!hasReceivedFirstPlay) {
+              iframeEl?.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
+              );
+            }
+          }, 150);
         }
 
         if (data.event === 'onStateChange') {
-          // state 1 = playing: video is live, thumbnail placeholder can be hidden
-          if (data.info === 1 && !ytPlaying) {
-            ytPlaying = true;
+          // Track first play to avoid sending a duplicate playVideo
+          if (data.info === 3 || data.info === 1) {
+            hasReceivedFirstPlay = true;
+          }
+          // state 1 = playing: re-assert HD quality, then reveal after 1.5s.
+          // The delay avoids showing the blurry low-quality frame YouTube always
+          // starts with before adaptive bitrate switches up to 1080p.
+          if (data.info === 1) {
+            iframeEl?.contentWindow?.postMessage(
+              JSON.stringify({ event: 'command', func: 'setPlaybackQuality', args: ['hd1080'] }), '*'
+            );
+            if (!ytPlaying) {
+              setTimeout(() => { ytPlaying = true; }, 1500);
+            }
           }
           // state 0 = ended: loop manually (iOS/iPadOS workaround for loop=1 unreliability)
           if (data.info === 0) {
@@ -429,9 +455,13 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 100%;
-    transform: translate(-50%, -50%) scale(1.35);
+    /* 300% of the container = ~750px wide so YouTube detects a large viewport
+       and serves 720p/1080p instead of 360p. The scale(0.45) brings it back to
+       the same visual size as the old width:100% + scale(1.35) combo:
+       250px * 3 * 0.45 = 337px ≈ 250px * 1.35 = 337px */
+    width: 300%;
+    height: 300%;
+    transform: translate(-50%, -50%) scale(0.45);
     transform-origin: center center;
     border: 0;
     pointer-events: none;
