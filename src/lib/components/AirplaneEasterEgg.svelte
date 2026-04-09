@@ -145,11 +145,19 @@
       if (!sectionEl) missingRefs.push('sectionEl');
       if (!skyContainer) missingRefs.push('skyContainer');
       if (!windowContainer) missingRefs.push('windowContainer');
+      if (!introText) missingRefs.push('introText');
+      if (!midText) missingRefs.push('midText');
+      if (!finalText) missingRefs.push('finalText');
+      if (!discountReveal) missingRefs.push('discountReveal');
     } else {
       if (!mobileWrapper) missingRefs.push('mobileWrapper');
       if (!mSectionEl) missingRefs.push('mSectionEl');
       if (!mSkyContainer) missingRefs.push('mSkyContainer');
       if (!mWindowContainer) missingRefs.push('mWindowContainer');
+      if (!mIntroText) missingRefs.push('mIntroText');
+      if (!mMidText) missingRefs.push('mMidText');
+      if (!mFinalText) missingRefs.push('mFinalText');
+      if (!mDiscountReveal) missingRefs.push('mDiscountReveal');
     }
     if (missingRefs.length > 0) {
       console.warn('[AirplaneEasterEgg] Missing DOM refs, skipping GSAP init:', missingRefs);
