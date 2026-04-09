@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
   import { browser } from '$app/environment';
 
   let sectionEl: HTMLElement;
@@ -126,6 +126,8 @@
     gsap.registerPlugin(ScrollTrigger);
 
     await preloadImages();
+    // Flush Svelte DOM update so `images-ready` class is applied before GSAP reads layout
+    await tick();
 
     await new Promise<void>(resolve => {
       requestAnimationFrame(() => {
@@ -134,6 +136,25 @@
     });
 
     const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+
+    // Guard: ensure all required DOM refs are available before entering GSAP context
+    const missingRefs: string[] = [];
+    if (!emojiZone) missingRefs.push('emojiZone');
+    if (isDesktop) {
+      if (!desktopWrapper) missingRefs.push('desktopWrapper');
+      if (!sectionEl) missingRefs.push('sectionEl');
+      if (!skyContainer) missingRefs.push('skyContainer');
+      if (!windowContainer) missingRefs.push('windowContainer');
+    } else {
+      if (!mobileWrapper) missingRefs.push('mobileWrapper');
+      if (!mSectionEl) missingRefs.push('mSectionEl');
+      if (!mSkyContainer) missingRefs.push('mSkyContainer');
+      if (!mWindowContainer) missingRefs.push('mWindowContainer');
+    }
+    if (missingRefs.length > 0) {
+      console.warn('[AirplaneEasterEgg] Missing DOM refs, skipping GSAP init:', missingRefs);
+      return;
+    }
 
     ctx = gsap.context(() => {
       const emojiEls = emojiZone?.querySelectorAll('.emoji-float');
@@ -314,13 +335,16 @@
       }
     });
 
-    ScrollTrigger.refresh();
-
-    const onFullLoad = () => ScrollTrigger.refresh();
+    // Delay refresh so AppleScrolly's pin spacer (which extends scroll height) is
+    // guaranteed to be inserted before we recalculate trigger positions.
+    // 300ms covers the 100ms layout-stability delay in AppleScrolly.init() plus its
+    // own ScrollTrigger.refresh() — without this, AirplaneEasterEgg triggers fire at
+    // wrong scroll offsets and the animations never run.
+    const scheduleRefresh = () => setTimeout(() => ScrollTrigger.refresh(), 300);
     if (document.readyState === 'complete') {
-      onFullLoad();
+      scheduleRefresh();
     } else {
-      window.addEventListener('load', onFullLoad, { once: true });
+      window.addEventListener('load', scheduleRefresh, { once: true });
     }
   });
 
