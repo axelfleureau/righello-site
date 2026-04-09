@@ -27,6 +27,8 @@
   let copied = false;
   let imagesLoaded = false;
   let preloadObserver: IntersectionObserver | null = null;
+  let refreshTimeout: ReturnType<typeof setTimeout> | null = null;
+  let loadListener: (() => void) | null = null;
 
   const DISCOUNT_CODE = 'scrollerevenue26';
   const WA_NUMBER = '393393998351';
@@ -348,10 +350,13 @@
     // 300ms covers the 100ms layout-stability delay in AppleScrolly.init() plus its
     // own ScrollTrigger.refresh() — without this, AirplaneEasterEgg triggers fire at
     // wrong scroll offsets and the animations never run.
-    const scheduleRefresh = () => setTimeout(() => ScrollTrigger.refresh(), 300);
+    const scheduleRefresh = () => {
+      refreshTimeout = setTimeout(() => ScrollTrigger.refresh(), 300);
+    };
     if (document.readyState === 'complete') {
       scheduleRefresh();
     } else {
+      loadListener = scheduleRefresh;
       window.addEventListener('load', scheduleRefresh, { once: true });
     }
   });
@@ -359,6 +364,8 @@
   onDestroy(() => {
     ctx?.revert();
     preloadObserver?.disconnect();
+    if (refreshTimeout !== null) clearTimeout(refreshTimeout);
+    if (loadListener !== null) window.removeEventListener('load', loadListener);
   });
 </script>
 
