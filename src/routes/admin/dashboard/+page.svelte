@@ -45,6 +45,11 @@
   let uploadProgress = 0;
   let fileInput: HTMLInputElement;
 
+  function handleFileChange(e: Event) {
+    const files = (e.target as HTMLInputElement).files;
+    uploadFile = files?.[0] ?? null;
+  }
+
   function isTestimonialSection(s: Section) {
     return s === 'testimonials';
   }
@@ -228,16 +233,22 @@
                 <!-- Edit form -->
                 <div style="padding: 1.25rem; display: flex; flex-direction: column; gap: 0.875rem;">
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                    {#each [['title','Titolo'],['subtitle','Sottotitolo'],['category','Categoria'],['order','Ordine']] as [field, label]}
-                      <div>
-                        <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">{label}</label>
-                        <input
-                          type={field === 'order' ? 'number' : 'text'}
-                          bind:value={editForm[field]}
-                          style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.5rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;"
-                        />
-                      </div>
-                    {/each}
+                    <div>
+                      <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">Titolo</label>
+                      <input type="text" bind:value={editForm.title} style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.5rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;" />
+                    </div>
+                    <div>
+                      <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">Sottotitolo</label>
+                      <input type="text" bind:value={editForm.subtitle} style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.5rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;" />
+                    </div>
+                    <div>
+                      <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">Categoria</label>
+                      <input type="text" bind:value={editForm.category} style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.5rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;" />
+                    </div>
+                    <div>
+                      <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">Ordine</label>
+                      <input type="number" bind:value={editForm.order} style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.5rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;" />
+                    </div>
                     {#if isTestimonialSection(activeSection)}
                       {#each [['clientName','Nome cliente'],['clientRole','Ruolo'],['company','Azienda'],['quote','Citazione']] as [field, label]}
                         <div style="grid-column: {field === 'quote' ? 'span 2' : ''};">
@@ -303,16 +314,22 @@
       {/if}
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; margin-bottom: 1.25rem;">
-        {#each [['title','Titolo *'],['subtitle','Sottotitolo'],['category','Categoria'],['order','Ordine (numerico)']] as [field, label]}
-          <div>
-            <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">{label}</label>
-            <input
-              type={field === 'order' ? 'number' : 'text'}
-              bind:value={uploadFields[field]}
-              style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.625rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;"
-            />
-          </div>
-        {/each}
+        <div>
+          <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">Titolo *</label>
+          <input type="text" bind:value={uploadFields.title} style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.625rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;" />
+        </div>
+        <div>
+          <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">Sottotitolo</label>
+          <input type="text" bind:value={uploadFields.subtitle} style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.625rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;" />
+        </div>
+        <div>
+          <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">Categoria</label>
+          <input type="text" bind:value={uploadFields.category} style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.625rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;" />
+        </div>
+        <div>
+          <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.25rem;">Ordine (numerico)</label>
+          <input type="number" bind:value={uploadFields.order} style="width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.625rem 0.75rem; color: #fff; font-size: 0.875rem; box-sizing: border-box;" />
+        </div>
 
         {#if isTestimonialSection(activeSection)}
           {#each [['clientName','Nome cliente'],['clientRole','Ruolo'],['company','Azienda'],['quote','Citazione']] as [field, label]}
@@ -348,7 +365,7 @@
             type="file"
             accept="video/mp4,video/quicktime,video/webm,video/*"
             style="display: none;"
-            on:change={(e) => { const files = (e.target as HTMLInputElement).files; uploadFile = files?.[0] ?? null; }}
+            on:change={handleFileChange}
           />
         </div>
       </div>

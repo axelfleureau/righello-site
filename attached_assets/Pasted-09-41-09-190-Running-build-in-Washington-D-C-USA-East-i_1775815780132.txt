@@ -1,0 +1,141 @@
+09:41:09.190 Running build in Washington, D.C., USA (East) – iad1
+09:41:09.191 Build machine configuration: 2 cores, 8 GB
+09:41:09.353 Cloning github.com/axelfleureau/righello-site (Branch: main, Commit: b88b759)
+09:41:20.581 Cloning completed: 11.228s
+09:41:20.739 Restored build cache from previous deployment (CNGjx7xDBPYaXwchNQPoCSorHGBG)
+09:41:21.029 Warning: Due to "engines": { "node": "20.x" } in your `package.json` file, the Node.js Version defined in your Project Settings ("24.x") will not apply, Node.js Version "20.x" will be used instead. Learn More: https://vercel.link/node-version
+09:41:21.030 Running "vercel build"
+09:41:21.716 Vercel CLI 50.42.0
+09:41:22.392 Warning: Due to "engines": { "node": "20.x" } in your `package.json` file, the Node.js Version defined in your Project Settings ("24.x") will not apply, Node.js Version "20.x" will be used instead. Learn More: https://vercel.link/node-version
+09:41:22.410 Running "install" command: `npm ci --prefer-offline --no-audit --no-fund`...
+09:41:26.685 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+09:41:27.068 npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+09:41:27.329 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+09:41:27.954 npm warn deprecated gauge@3.0.2: This package is no longer supported.
+09:41:28.237 npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+09:41:28.512 npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+09:41:28.529 npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+09:41:28.642 npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+09:41:28.658 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+09:41:28.683 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+09:41:30.939 npm warn deprecated fluent-ffmpeg@2.1.3: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+09:41:33.623 
+09:41:33.623 added 473 packages in 11s
+09:41:34.016 
+09:41:34.017 > significa.co@0.0.1-development prebuild
+09:41:34.017 > svelte-kit sync
+09:41:34.017 
+09:41:35.425 
+09:41:35.425 > significa.co@0.0.1-development build
+09:41:35.425 > vite build
+09:41:35.425 
+09:41:37.359 
+09:41:37.360 [36mvite v4.5.5 [32mbuilding SSR bundle for production...[36m[39m
+09:41:37.461 transforming...
+09:41:38.382 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/+page.svelte:22:11 Page has unused export property 'form'. If it is for external reference only, please consider using `export const form`
+09:41:38.383 20: import { env } from "$env/dynamic/public";
+09:41:38.383 21: export let data;
+09:41:38.383 22: export let form = null;
+09:41:38.383                ^
+09:41:38.383 23: const schedulingUrl = env.PUBLIC_SCHEDULING_URL || "/contatti";
+09:41:38.383 24: const homepageServices = departments.map((dept) => ({
+09:41:38.383 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:670:2 Unused CSS selector ".btn-primary"
+09:41:38.384 668:   }
+09:41:38.384 669:   
+09:41:38.384 670:   .btn-primary {
+09:41:38.384        ^
+09:41:38.384 671:     display: inline-flex;
+09:41:38.384 672:     align-items: center;
+09:41:38.384 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:684:2 Unused CSS selector ".btn-primary:hover"
+09:41:38.384 682:   }
+09:41:38.385 683:   
+09:41:38.385 684:   .btn-primary:hover {
+09:41:38.385        ^
+09:41:38.385 685:     transform: translateY(-2px);
+09:41:38.385 686:     box-shadow: 0 10px 30px rgba(214, 72, 126, 0.4);
+09:41:38.390 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:689:2 Unused CSS selector ".btn-secondary"
+09:41:38.390 687:   }
+09:41:38.390 688:   
+09:41:38.391 689:   .btn-secondary {
+09:41:38.391        ^
+09:41:38.391 690:     display: inline-flex;
+09:41:38.391 691:     align-items: center;
+09:41:38.391 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:704:2 Unused CSS selector ":global([data-theme="light"]) .btn-secondary"
+09:41:38.391 702:   }
+09:41:38.392 703:   
+09:41:38.392 704:   :global([data-theme="light"]) .btn-secondary {
+09:41:38.392        ^
+09:41:38.392 705:     background: rgba(0, 0, 0, 0.05);
+09:41:38.392 706:     border-color: rgba(0, 0, 0, 0.1);
+09:41:38.392 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:709:2 Unused CSS selector ".btn-secondary:hover"
+09:41:38.393 707:   }
+09:41:38.393 708:   
+09:41:38.393 709:   .btn-secondary:hover {
+09:41:38.393        ^
+09:41:38.393 710:     background: rgba(255, 255, 255, 0.15);
+09:41:38.394 711:     border-color: rgba(214, 72, 126, 0.5);
+09:41:38.394 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:714:2 Unused CSS selector ".btn-outline"
+09:41:38.396 712:   }
+09:41:38.396 713:   
+09:41:38.396 714:   .btn-outline {
+09:41:38.396        ^
+09:41:38.397 715:     display: inline-flex;
+09:41:38.397 716:     align-items: center;
+09:41:38.399 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:726:2 Unused CSS selector ".btn-outline:hover"
+09:41:38.399 724:   }
+09:41:38.399 725:   
+09:41:38.400 726:   .btn-outline:hover {
+09:41:38.400        ^
+09:41:38.400 727:     background: #D6487E;
+09:41:38.400 728:     color: white;
+09:41:38.400 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:1362:2 Unused CSS selector ".cta-title"
+09:41:38.400 1360:   }
+09:41:38.400 1361:   
+09:41:38.400 1362:   .cta-title {
+09:41:38.400         ^
+09:41:38.400 1363:     font-size: clamp(1.75rem, 4vw, 2.5rem);
+09:41:38.401 1364:     font-weight: 800;
+09:41:38.401 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:1381:2 Unused CSS selector ".btn-primary-large"
+09:41:38.401 1379:   }
+09:41:38.401 1380:   
+09:41:38.401 1381:   .btn-primary-large {
+09:41:38.401         ^
+09:41:38.401 1382:     display: inline-flex;
+09:41:38.401 1383:     align-items: center;
+09:41:38.401 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/servizi/+page.svelte:1395:2 Unused CSS selector ".btn-primary-large:hover"
+09:41:38.401 1393:   }
+09:41:38.402 1394:   
+09:41:38.402 1395:   .btn-primary-large:hover {
+09:41:38.402         ^
+09:41:38.402 1396:     transform: translateY(-2px);
+09:41:38.402 1397:     box-shadow: 0 15px 40px rgba(214, 72, 126, 0.4);
+09:41:38.460 7:41:38 AM [vite-plugin-svelte] /vercel/path0/src/routes/+layout.svelte:12:11 Layout has unused export property 'data'. If it is for external reference only, please consider using `export const data`
+09:41:38.461 10: import { page } from "$app/stores";
+09:41:38.461 11: import { initMetaPixel, trackPageView } from "$lib/tracking/metaPixel";
+09:41:38.462 12: export let data;
+09:41:38.462                ^
+09:41:38.462 13: const PUBLIC_META_PIXEL_ID = import.meta.env.PUBLIC_META_PIXEL_ID;
+09:41:38.462 14: onMount(() => {
+09:41:38.488 [32m✓[39m 54 modules transformed.
+09:41:38.497 [32m✓ built in 1.14s[39m
+09:41:38.499 [31m[vite-plugin-svelte] /vercel/path0/src/routes/admin/dashboard/+page.svelte:332:56 Unexpected token[39m
+09:41:38.499 file: [36m/vercel/path0/src/routes/admin/dashboard/+page.svelte:332:56[39m
+09:41:38.499 [33m 330 |              accept="video/mp4,video/quicktime,video/webm,video/*"
+09:41:38.500  331 |              style="display: none;"
+09:41:38.500  332 |              on:change={(e) => { const files = (e.target as HTMLInputElement).files; uploadFile = files?.[0] ?? null; }}
+09:41:38.500                                                                 ^
+09:41:38.500  333 |            />
+09:41:38.500  334 |          </div>[39m
+09:41:38.501 [31merror during build:
+09:41:38.501 ParseError: Unexpected token
+09:41:38.501     at error (file:///vercel/path0/node_modules/svelte/src/compiler/utils/error.js:56:16)
+09:41:38.502     at Parser.error (file:///vercel/path0/node_modules/svelte/src/compiler/parse/index.js:143:3)
+09:41:38.502     at Parser.acorn_error (file:///vercel/path0/node_modules/svelte/src/compiler/parse/index.js:130:8)
+09:41:38.502     at read_expression (file:///vercel/path0/node_modules/svelte/src/compiler/parse/read/expression.js:36:10)
+09:41:38.502     at read_sequence (file:///vercel/path0/node_modules/svelte/src/compiler/parse/state/tag.js:565:23)
+09:41:38.502     at read_attribute_value (file:///vercel/path0/node_modules/svelte/src/compiler/parse/state/tag.js:485:11)
+09:41:38.502     at read_attribute (file:///vercel/path0/node_modules/svelte/src/compiler/parse/state/tag.js:352:11)
+09:41:38.503     at tag (file:///vercel/path0/node_modules/svelte/src/compiler/parse/state/tag.js:166:22)
+09:41:38.503     at new Parser (file:///vercel/path0/node_modules/svelte/src/compiler/parse/index.js:91:12)
+09:41:38.503     at parse (file:///vercel/path0/node_modules/svelte/src/compiler/parse/index.js:268:17)[39m
+09:41:38.527 Error: Command "npm run build" exited with 1
