@@ -33,43 +33,6 @@
     icon: dept.icon === 'camera' ? 'sparkles' : dept.icon === 'target' ? 'target' : 'code',
   }));
   
-  const videoTestimonials = [
-    {
-      id: '3',
-      clientName: 'Ardea',
-      clientRole: 'Scuola Nautica e Guida auto',
-      company: 'Ardea',
-      quote: 'Hanno trasformato la nostra comunicazione digitale.',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_8017.mp4?alt=media&token=0f46ee6d-5bcd-4bfc-b341-eb41aae609d1',
-      youtubeId: 'Wf3aN6uTolM',
-    },
-    {
-      id: '4',
-      clientName: '3R Technology',
-      clientRole: 'Technology',
-      company: '3R Technology',
-      quote: 'Marketing digitale efficace per il nostro settore tech.',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_8537.mp4?alt=media&token=029ac90a-7f59-4577-9066-b22594257f31',
-    },
-    {
-      id: '5',
-      clientName: 'Reguta Vini',
-      clientRole: 'Cantina',
-      company: 'Reguta Vini',
-      quote: 'La strategia social ha portato +180% di engagement.',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_8682.mp4?alt=media&token=a4376902-a831-4804-9817-cc6d5ce3cac2',
-      youtubeId: '4Ndme0QfXrk',
-    },
-    {
-      id: '2',
-      clientName: 'Clara Falomo',
-      clientRole: 'Avvocato',
-      company: 'Studio Avv. Clara Falomo',
-      quote: 'Professionalità e risultati concreti per il mio studio legale.',
-      videoSrc: 'https://firebasestorage.googleapis.com/v0/b/righello-site.firebasestorage.app/o/IMG_6534.mp4?alt=media&token=946280ac-3891-4a87-989a-d2804ad61080',
-      youtubeId: 'kG0uofbW2cU',
-    },
-  ];
   
   const featuredProjects = projects.filter(p => p.featured);
   
@@ -139,7 +102,12 @@
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
 </svelte:head>
 
-<AppleScrolly {credibilityBadges} partnerNames={heroPartnerNames} />
+<AppleScrolly 
+  {credibilityBadges} 
+  partnerNames={heroPartnerNames}
+  heroVideoCloudinaryUrl={data.heroVideo?.cloudinaryUrl}
+  heroVideoYoutubeId={data.heroVideo?.youtubeId ?? 'Rj5N4BMF-Vw'}
+/>
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
@@ -247,6 +215,7 @@
     title="Creiamo esperienze memorabili"
     subtitle="Video Production"
     description="Video istituzionali, contenuti dimostrativi e proof of work per raccontare il tuo brand"
+    items={data.showcaseItems}
   />
 </div>
 
@@ -265,7 +234,7 @@
     </RevealOnScroll>
   </div>
   
-  <AnimatedVideoTestimonials testimonials={videoTestimonials} />
+  <AnimatedVideoTestimonials testimonials={data.testimonialItems} />
 </section>
 
 <section id="clienti" class="pt-4 md:pt-8 pb-8 md:pb-12 lg:pb-16 overflow-hidden relative">
@@ -296,7 +265,7 @@
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
 <div class="relative" style="background: var(--bg-secondary);">
-  <SocialReelShowcase />
+  <SocialReelShowcase externalItems={data.reelItems} />
 </div>
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />

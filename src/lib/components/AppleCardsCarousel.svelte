@@ -10,9 +10,12 @@
     title: string;
     subtitle?: string;
     videoSrc?: string;
+    cloudinaryUrl?: string;
+    cloudinaryPublicId?: string;
     youtubeId?: string;
     imageSrc?: string;
     posterSrc?: string;
+    thumbnailUrl?: string;
     category?: string;
     isCta?: boolean;
     ctaHref?: string;
@@ -32,7 +35,7 @@
   let reelViewerOpen = false;
   let reelViewerIndex = 0;
   
-  $: reelItems = items.filter(i => (i.videoSrc || i.youtubeId) && !i.isCta);
+  $: reelItems = items.filter(i => (i.cloudinaryUrl || i.videoSrc || i.youtubeId) && !i.isCta);
   
   function handleMouseDown(e: MouseEvent) {
     isDragging = true;
@@ -89,9 +92,9 @@
     }
   }
   
-  function openLightbox(item: { title: string; videoSrc?: string; youtubeId?: string }) {
+  function openLightbox(item: { title: string; videoSrc?: string; cloudinaryUrl?: string; youtubeId?: string }) {
     lightboxYoutubeId = item.youtubeId ?? null;
-    lightboxVideo = item.youtubeId ? null : (item.videoSrc ?? null);
+    lightboxVideo = item.youtubeId ? null : (item.cloudinaryUrl ?? item.videoSrc ?? null);
     lightboxTitle = item.title;
     lightboxOpen = true;
     document.body.style.overflow = 'hidden';
@@ -142,12 +145,16 @@
     container.style.scrollSnapType = '';
   }
   
-  function handleCardClick(item: { title: string; videoSrc?: string; youtubeId?: string }, itemIndex?: number) {
+  function handleCardClick(item: { title: string; videoSrc?: string; cloudinaryUrl?: string; youtubeId?: string }, itemIndex?: number) {
     if (wasDragged || isDragging) return;
-    if (!item.videoSrc && !item.youtubeId) return;
+    if (!item.cloudinaryUrl && !item.videoSrc && !item.youtubeId) return;
     
     if (useReelViewer) {
-      const reelIdx = reelItems.findIndex(i => (i.youtubeId && i.youtubeId === item.youtubeId) || (i.videoSrc && i.videoSrc === item.videoSrc));
+      const reelIdx = reelItems.findIndex(i =>
+        (i.youtubeId && i.youtubeId === item.youtubeId) ||
+        (i.cloudinaryUrl && i.cloudinaryUrl === item.cloudinaryUrl) ||
+        (i.videoSrc && i.videoSrc === item.videoSrc)
+      );
       reelViewerIndex = reelIdx >= 0 ? reelIdx : 0;
       reelViewerOpen = true;
       document.dispatchEvent(new CustomEvent('righello:lightbox-open'));
@@ -239,11 +246,11 @@
                 </a>
               {/if}
             </div>
-          {:else if item.youtubeId || item.videoSrc}
+          {:else if item.cloudinaryUrl || item.youtubeId || item.videoSrc}
             <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
             <div class="video-wrapper" on:click={() => handleCardClick(item)}>
               <img
-                src={item.youtubeId ? getYoutubeThumbnailUrl(item.youtubeId) : getThumbnailUrl(item.videoSrc || '')}
+                src={item.thumbnailUrl || (item.youtubeId ? getYoutubeThumbnailUrl(item.youtubeId) : getThumbnailUrl(item.videoSrc || ''))}
                 alt={item.title}
                 class="card-media card-poster"
                 loading="lazy"
@@ -253,12 +260,12 @@
               <div class="thumb-fallback">
                 <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>
               </div>
-              {#if item.videoSrc && !item.youtubeId}
+              {#if (item.cloudinaryUrl || item.videoSrc) && !item.youtubeId}
                 <video 
                   bind:this={videoRefs[i]}
                   class="card-media card-video-native"
                   class:video-ready={videoLoaded[i]}
-                  src={item.videoSrc}
+                  src={item.cloudinaryUrl || item.videoSrc}
                   muted
                   loop
                   playsinline

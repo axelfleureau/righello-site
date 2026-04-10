@@ -3,7 +3,7 @@
   import { fade } from 'svelte/transition';
   import { browser } from '$app/environment';
 
-  export let items: { title: string; subtitle?: string; videoSrc?: string; youtubeId?: string; category?: string }[] = [];
+  export let items: { title: string; subtitle?: string; videoSrc?: string; cloudinaryUrl?: string; cloudinaryPublicId?: string; youtubeId?: string; thumbnailUrl?: string; category?: string }[] = [];
   export let activeIndex: number = 0;
   export let open: boolean = false;
 
@@ -61,7 +61,7 @@
   }
 
   function hasMedia(item: typeof items[0]) {
-    return !!(item.videoSrc || item.youtubeId);
+    return !!(item.cloudinaryUrl || item.videoSrc || item.youtubeId);
   }
 
   function goTo(index: number, direction: 'up' | 'down') {
@@ -323,12 +323,12 @@
               allowfullscreen
               title={currentItem.title}
             ></iframe>
-          {:else if currentItem?.videoSrc}
+          {:else if currentItem?.cloudinaryUrl || currentItem?.videoSrc}
             <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
             <div class="video-tap-area" on:click={togglePlayPause}>
               <video
                 bind:this={videoEl}
-                src={currentItem.videoSrc}
+                src={currentItem.cloudinaryUrl || currentItem.videoSrc}
                 loop
                 playsinline
                 muted={isMuted}

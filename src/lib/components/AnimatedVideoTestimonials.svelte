@@ -11,7 +11,10 @@
     company: string;
     videoSrc?: string;
     youtubeId?: string;
+    cloudinaryUrl?: string;
+    cloudinaryPublicId?: string;
     thumbnailSrc?: string;
+    thumbnailUrl?: string;
     quote: string;
   }[];
 
@@ -111,7 +114,7 @@
 
   function openLightbox() {
     document.dispatchEvent(new CustomEvent('righello:lightbox-open'));
-    if (!activeTestimonial.videoSrc && !activeTestimonial.youtubeId) return;
+    if (!activeTestimonial.cloudinaryUrl && !activeTestimonial.videoSrc && !activeTestimonial.youtubeId) return;
     lightboxOpen = true;
     stopAutoplay();
     document.body.style.overflow = 'hidden';
@@ -148,7 +151,7 @@
 
   function handleTouchEnd() {
     if (!isSwiping) {
-      if (!isCtaActive && (activeTestimonial.videoSrc || activeTestimonial.youtubeId)) {
+      if (!isCtaActive && (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId)) {
         openLightbox();
       }
       return;
@@ -188,6 +191,8 @@
         const img = new Image();
         if (t.youtubeId) {
           img.src = getYoutubeThumbnailUrl(t.youtubeId);
+        } else if (t.thumbnailUrl) {
+          img.src = t.thumbnailUrl;
         } else if (t.videoSrc) {
           img.src = getThumbnailUrl(t.videoSrc);
         }
@@ -254,8 +259,8 @@
             "
             role={isActive && !isCta ? 'button' : undefined}
             tabindex={isActive ? 0 : undefined}
-            on:click={() => isActive && !isCta && (activeTestimonial.videoSrc || activeTestimonial.youtubeId) && openLightbox()}
-            on:keydown={(e) => isActive && !isCta && (e.key === 'Enter' || e.key === ' ') && (activeTestimonial.videoSrc || activeTestimonial.youtubeId) && openLightbox()}
+            on:click={() => isActive && !isCta && (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId) && openLightbox()}
+            on:keydown={(e) => isActive && !isCta && (e.key === 'Enter' || e.key === ' ') && (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId) && openLightbox()}
           >
             {#if isCta}
               <div class="avt-card__cta-bg">
@@ -263,10 +268,10 @@
               </div>
             {:else}
               <img
-                src={item.youtubeId ? getYoutubeThumbnailUrl(item.youtubeId) : (item.videoSrc ? getThumbnailUrl(item.videoSrc) : '')}
+                src={item.youtubeId ? getYoutubeThumbnailUrl(item.youtubeId) : (item.thumbnailUrl || (item.videoSrc ? getThumbnailUrl(item.videoSrc) : ''))}
                 alt={item.clientName}
                 class="avt-card__bg-thumb"
-                style="display: {(item.videoSrc || item.youtubeId) ? 'block' : 'none'}"
+                style="display: {(item.cloudinaryUrl || item.videoSrc || item.youtubeId) ? 'block' : 'none'}"
                 loading="eager"
                 fetchpriority="low"
                 decoding="async"
@@ -292,9 +297,9 @@
                   <p class="avt-cta-card__subtitle">Nuove recensioni ogni mese</p>
                   <a href="/contatti" class="avt-cta-card__btn">Vuoi sapere di più?</a>
                 </div>
-              {:else if activeTestimonial.videoSrc || activeTestimonial.youtubeId}
+              {:else if activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId}
                 <img
-                  src={activeTestimonial.youtubeId ? getYoutubeThumbnailUrl(activeTestimonial.youtubeId) : getThumbnailUrl(activeTestimonial.videoSrc || '')}
+                  src={activeTestimonial.youtubeId ? getYoutubeThumbnailUrl(activeTestimonial.youtubeId) : (activeTestimonial.thumbnailUrl || getThumbnailUrl(activeTestimonial.videoSrc || ''))}
                   alt={activeTestimonial.clientName}
                   class="avt-card__thumbnail"
                   loading="eager"
@@ -306,7 +311,7 @@
                 </div>
                 <video
                   bind:this={videoElement}
-                  src={activeTestimonial.videoSrc}
+                  src={activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc}
                   autoplay
                   muted
                   loop
@@ -330,7 +335,7 @@
               {#if !isCtaActive}
                 <div class="avt-card__gradient"></div>
 
-                <div class="avt-card__badge" style="display: {(activeTestimonial.videoSrc || activeTestimonial.youtubeId) ? 'flex' : 'none'}">
+                <div class="avt-card__badge" style="display: {(activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId) ? 'flex' : 'none'}">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
                     <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
                   </svg>
@@ -356,7 +361,7 @@
         ></div>
       </div>
 
-      {#if (activeTestimonial.videoSrc || activeTestimonial.youtubeId) && !isCtaActive}
+      {#if (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId) && !isCtaActive}
         <button
           class="avt-play"
           on:click={openLightbox}
@@ -430,7 +435,7 @@
   </div>
 </div>
 
-{#if lightboxOpen && (activeTestimonial.videoSrc || activeTestimonial.youtubeId)}
+{#if lightboxOpen && (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId)}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div
     class="avt-lightbox"
@@ -471,7 +476,7 @@
       {:else}
         <video
           bind:this={lightboxVideo}
-          src={activeTestimonial.videoSrc}
+          src={activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc}
           autoplay
           loop
           playsinline

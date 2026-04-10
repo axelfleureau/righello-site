@@ -7,6 +7,8 @@
   
   export let credibilityBadges: { icon: string; label: string }[] = [];
   export let partnerNames: string[] = [];
+  export let heroVideoCloudinaryUrl: string | undefined = undefined;
+  export let heroVideoYoutubeId: string | undefined = 'Rj5N4BMF-Vw';
 
   let videoMuted = true;
   let audioUnlocked = false;
@@ -447,7 +449,8 @@
     <!-- Phone column - positioned via CSS Grid, no absolute positioning -->
     <div bind:this={phoneWrapper} class="phone-area">
       <PhoneMockup 
-        youtubeId="Rj5N4BMF-Vw"
+        youtubeId={heroVideoCloudinaryUrl ? undefined : heroVideoYoutubeId}
+        videoSrc={heroVideoCloudinaryUrl}
         muted={videoMuted}
       />
     </div>

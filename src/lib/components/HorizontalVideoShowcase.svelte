@@ -12,8 +12,11 @@
     title: string;
     subtitle: string;
     videoSrc?: string;
+    cloudinaryUrl?: string;
+    cloudinaryPublicId?: string;
     youtubeId?: string;
     posterSrc?: string;
+    thumbnailUrl?: string;
     category: string;
   }
   
@@ -132,7 +135,7 @@
   
   function openLightbox(item: VideoItem) {
     lightboxYoutubeId = item.youtubeId ?? null;
-    lightboxVideo = item.youtubeId ? null : (item.videoSrc ?? null);
+    lightboxVideo = item.youtubeId ? null : (item.cloudinaryUrl ?? item.videoSrc ?? null);
     lightboxTitle = item.title;
     lightboxOpen = true;
     document.body.style.overflow = 'hidden';
@@ -256,10 +259,10 @@
             if (video) handleVideoLeave(video);
           }}
         >
-          {#if item.youtubeId || item.videoSrc}
+          {#if item.cloudinaryUrl || item.youtubeId || item.videoSrc}
             <div class="video-wrapper">
               <img
-                src={item.youtubeId ? getYoutubeThumbnailUrl(item.youtubeId) : getThumbnailUrl(item.videoSrc || '')}
+                src={item.thumbnailUrl || (item.youtubeId ? getYoutubeThumbnailUrl(item.youtubeId) : getThumbnailUrl(item.videoSrc || ''))}
                 alt={item.title}
                 class="card-media card-poster"
                 loading="lazy"
@@ -269,11 +272,11 @@
               <div class="thumb-fallback">
                 <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>
               </div>
-              {#if item.videoSrc && !item.youtubeId}
+              {#if (item.cloudinaryUrl || item.videoSrc) && !item.youtubeId}
                 <video 
                   class="card-media card-video-layer"
                   class:video-playing={loadedFrames[i]}
-                  src={item.videoSrc}
+                  src={item.cloudinaryUrl || item.videoSrc}
                   muted
                   loop
                   playsinline
