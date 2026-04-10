@@ -39,7 +39,11 @@ export const load: PageServerLoad = async () => {
 
   const heroVideo: HeroVideo =
     cloudinaryData.hero.length > 0
-      ? { cloudinaryUrl: cloudinaryData.hero[0].url, cloudinaryPublicId: cloudinaryData.hero[0].publicId }
+      ? {
+          youtubeId: cloudinaryData.hero[0].youtubeId,
+          cloudinaryUrl: cloudinaryData.hero[0].url || undefined,
+          cloudinaryPublicId: cloudinaryData.hero[0].publicId,
+        }
       : FALLBACK_HERO;
 
   const showcaseItems: VideoItem[] =
@@ -49,7 +53,8 @@ export const load: PageServerLoad = async () => {
           title: v.title,
           subtitle: v.subtitle,
           category: v.category,
-          cloudinaryUrl: v.url,
+          youtubeId: v.youtubeId,
+          cloudinaryUrl: v.url || undefined,
           cloudinaryPublicId: v.publicId,
           thumbnailUrl: v.thumbnailUrl,
           order: v.order,
@@ -63,7 +68,8 @@ export const load: PageServerLoad = async () => {
           title: v.title,
           subtitle: v.subtitle,
           category: v.category,
-          cloudinaryUrl: v.url,
+          youtubeId: v.youtubeId,
+          cloudinaryUrl: v.url || undefined,
           cloudinaryPublicId: v.publicId,
           thumbnailUrl: v.thumbnailUrl,
           order: v.order,
@@ -78,7 +84,8 @@ export const load: PageServerLoad = async () => {
           clientRole: v.clientRole || '',
           company: v.company || '',
           quote: v.quote || '',
-          cloudinaryUrl: v.url,
+          youtubeId: v.youtubeId,
+          cloudinaryUrl: v.url || undefined,
           cloudinaryPublicId: v.publicId,
           thumbnailUrl: v.thumbnailUrl,
           order: v.order,

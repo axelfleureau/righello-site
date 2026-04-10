@@ -19,6 +19,7 @@ export interface CloudinaryVideo {
   subtitle: string;
   category: string;
   order: number;
+  youtubeId?: string;
   clientName?: string;
   clientRole?: string;
   company?: string;
@@ -55,7 +56,7 @@ export async function getVideosBySection(section: VideoSection): Promise<Cloudin
   try {
     const folder = `righello/${section}`;
     const result = await cloudinary.search
-      .expression(`folder:${folder}/*`)
+      .expression(`folder:${folder}/* AND (resource_type:video OR resource_type:image)`)
       .with_field('context')
       .sort_by('created_at', 'desc')
       .max_results(50)
@@ -65,15 +66,19 @@ export async function getVideosBySection(section: VideoSection): Promise<Cloudin
 
     const videos: CloudinaryVideo[] = result.resources.map((r: Record<string, unknown>) => {
       const ctx = parseContext(r.context as Record<string, string>);
+      const youtubeId = ctx.youtubeId || undefined;
       return {
         publicId: r.public_id as string,
-        url: buildVideoUrl(r.public_id as string),
-        thumbnailUrl: buildThumbnailUrl(r.public_id as string),
+        url: youtubeId ? '' : buildVideoUrl(r.public_id as string),
+        thumbnailUrl: youtubeId
+          ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
+          : buildThumbnailUrl(r.public_id as string),
         section,
         title: ctx.title || (r.public_id as string).split('/').pop() || '',
         subtitle: ctx.subtitle || '',
         category: ctx.category || '',
         order: parseInt(ctx.order || '99', 10),
+        youtubeId,
         clientName: ctx.clientName,
         clientRole: ctx.clientRole,
         company: ctx.company,
@@ -106,6 +111,7 @@ export async function updateVideoMetadata(
     subtitle?: string;
     category?: string;
     order?: number;
+    youtubeId?: string;
     clientName?: string;
     clientRole?: string;
     company?: string;
@@ -117,11 +123,21 @@ export async function updateVideoMetadata(
     .map(([k, v]) => `${k}=${String(v).replace(/[|=]/g, ' ')}`)
     .join('|');
 
-  await cloudinary.uploader.add_context(context, [publicId], { resource_type: 'video' });
+  // Try video first, fall back to image (YouTube placeholders are stored as images)
+  try {
+    await cloudinary.uploader.add_context(context, [publicId], { resource_type: 'video' });
+  } catch {
+    await cloudinary.uploader.add_context(context, [publicId], { resource_type: 'image' });
+  }
 }
 
 export async function deleteVideo(publicId: string): Promise<void> {
-  await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
+  // Try video first, fall back to image
+  try {
+    await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
+  } catch {
+    await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+  }
 }
 
 export async function getSignedUploadParams(
