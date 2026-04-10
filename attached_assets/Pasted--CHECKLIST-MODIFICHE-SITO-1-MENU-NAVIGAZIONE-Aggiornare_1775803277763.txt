@@ -1,0 +1,143 @@
+✅ CHECKLIST MODIFICHE SITO
+
+🧭 1. MENU NAVIGAZIONE
+	•	Aggiornare voci menu con:
+	•	HOME
+	•	APPARTAMENTI
+	•	ESPERIENZE
+	•	TERRITORIO
+	•	INVESTMENT e RENTAL PROGRAM
+	•	CHI SIAMO
+	•	CONTATTACI
+
+⸻
+
+🏠 2. HOME PAGE – HERO TEXT
+	•	Sostituire completamente il testo attuale con:
+
+“ESPERIENZE – Vivere il territorio - Avventure indimenticabili sulla costa adriatica tra mare e terra, dove ogni famiglia crea ricordi che durano per sempre. Prenotate la vostra fuga perfetta.”
+
+⸻
+
+🛎️ 3. BARRA PRENOTAZIONI
+	•	Aggiungere campo selezione:
+	•	Animali domestici (oltre a adulti/bambini)
+
+⸻
+
+🌊 4. SEZIONE “IL BORGO PIÙ ESCLUSIVO DELL’ADRIATICO”
+	•	Aggiornare didascalie immagini:
+	•	Spiaggia privata e piscine a sfioro
+	•	Ristoranti gourmet e bar
+	•	Marina privata e shopping
+	•	Aggiornare descrizione:
+
+“Un villaggio privato sulla Baia di Sistiana. Spiaggia privata, marina e yacht club, negozi, spa (presto disponibile) e ristoranti gourmet a pochi passi da ogni appartamento.”
+
+	•	CTA:
+	•	Cambiare “Esplora gli appartamenti” → “Esplora il Borgo”
+
+⸻
+
+🖼️ 5. SEZIONE “I NOSTRI APPARTAMENTI”
+	•	Eliminare sezione
+	•	Inserire:
+	•	2 immagini emozionali con movimento (stile Reschio)
+
+⸻
+
+❌ 6. SEZIONE “OGNI ANGOLO RACCONTA UNA STORIA”
+	•	Eliminare completamente
+
+⸻
+
+🌍 7. SEZIONE “TERRITORIO – IL MONDO INTORNO A VOI”
+
+Modifiche testi:
+	•	Trieste:
+	•	Rimuovere “la Napoleonica”
+	•	Carso:
+
+Aggiornare descrizione con testo fornito
+
+	•	Pirano:
+
+Aggiornare descrizione con testo fornito
+
+	•	Venezia:
+
+Aggiornare descrizione con testo fornito
+
+Media:
+	•	Inserire:
+	•	4 immagini emozionali con movimento (stile Reschio)
+	•	Ogni immagine con descrizione
+
+⸻
+
+⭐ 8. SEZIONE “ESPERIENZE”
+	•	Rinominare titolo → “Esperienze”
+	•	Aggiornare contenuti:
+	•	Vivere il Borgo
+	•	Sport di mare
+	•	Avventure in mare
+	•	Sport di terra
+	•	Sapori autentici
+	•	Esperienze nel territorio
+
+⸻
+
+❌ 9. SEZIONE “LE NOSTRE TIPOLOGIE”
+	•	Eliminare completamente
+
+⸻
+
+📹 10. SEZIONE “VIVERE A PORTOPICCOLO”
+	•	Sostituire immagine con:
+	•	Webcam live
+
+⸻
+
+🧩 11. SEZIONE SERVIZI
+	•	Modificare:
+	•	“Spa” → “Spa prossima apertura”
+	•	“Su richiesta” → “Presto disponibile”
+	•	Aggiungere:
+	•	Art Gallery con descrizione fornita
+
+⸻
+
+❌ 12. SEZIONE WEBCAM
+	•	Eliminare (già integrata sopra)
+
+⸻
+
+🎨 13. IMMAGINI
+	•	Aggiornare tutte le immagini:
+	•	Stile Reschio
+	•	Coerenza estetica e tono premium
+
+⸻
+
+👋 14. NUOVA SEZIONE
+	•	Aggiungere:
+	•	“La nostra accoglienza è differente”
+	•	Inserire immagine
+	•	CTA: “Scopri chi siamo”
+
+⸻
+
+🤖 15. CHATBOT
+	•	Inserire chatbot (bottom right)
+	•	Testo:
+
+“Sei un Proprietario? Scopri come affittare facilmente il tuo appartamento”
+
+⸻
+
+🏢 16. SEZIONE APPARTAMENTI
+	•	Aggiornare numero appartamenti:
+	•	Da 20 → 34
+	•	Verificare:
+	•	Sync con gestionale (es. Guesty API)
+	•	Disponibilità reale
