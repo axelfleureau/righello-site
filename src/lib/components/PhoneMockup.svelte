@@ -17,7 +17,12 @@
   let videoElement: HTMLVideoElement;
   let iframeEl: HTMLIFrameElement;
   // YouTube-specific state
-  let ytPlaying = false; // true once YouTube fires onStateChange(1) = playing
+  // ytVisible: iframe fades IN as soon as YouTube starts buffering (state=3)
+  // ytPlaying: thumbnail fades OUT only when video is actually playing (state=1)
+  // Splitting these two means the user sees the iframe ~1-2s earlier while
+  // the thumbnail still acts as a cover until real frames appear.
+  let ytVisible = false;
+  let ytPlaying = false;
   // On touch/mobile devices we disable the 3D perspective tilt entirely.
   // iOS Safari cannot composite video frames inside a preserve-3d layer —
   // the result is frozen video with audio still playing (GPU compositor bug).
@@ -144,10 +149,14 @@
           if (data.info === 3 || data.info === 1) {
             hasReceivedFirstPlay = true;
           }
-          // state 1 = playing: reveal iframe immediately.
-          // The 300% iframe CSS trick already tells YouTube to serve 720p/1080p,
-          // so no need to wait for quality to settle — reveal without artificial delay.
+          // state 3 = buffering: iframe fades in immediately.
+          // The thumbnail still covers it so there's no black flash.
+          if (data.info === 3) {
+            ytVisible = true;
+          }
+          // state 1 = playing: thumbnail fades out, video is fully visible.
           if (data.info === 1) {
+            ytVisible = true;
             if (!ytPlaying) {
               ytPlaying = true;
             }
@@ -258,7 +267,7 @@
                 frameborder="0"
                 allow="autoplay; fullscreen; encrypted-media"
                 class="yt-iframe"
-                class:yt-iframe-hidden={!ytPlaying}
+                class:yt-iframe-hidden={!ytVisible}
               ></iframe>
             </div>
           {:else if videoSrc}
