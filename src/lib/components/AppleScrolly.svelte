@@ -590,12 +590,25 @@
     z-index: 6;
   }
 
-  /* Mobile: phone peeking from the bottom, behind the hero text */
+  /* Mobile: phone peeking from the bottom, strictly behind all hero content.
+   *
+   * Playwright measurements (390×844 viewport):
+   *   badgeBottom = 613px  (bottom of last badge row)
+   *   phoneTop    = 473px  (visual top of phone with bottom:-50, scale:0.68)
+   *   phone natural height H = 619px  →  H × 0.68 = 421px visible height
+   *
+   * Formula: phoneTop = (section_h + |bottom|) − H×scale
+   *   To get phoneTop = 633px (≥ badgeBottom+20):
+   *   |bottom| = 633 − 844 + 421 = 210px  →  bottom: -210px
+   *
+   * Result on iPhone 14 (844px, no safe-area env):   phoneTop = 633px ✓
+   * Result on iPhone 14 real device (+34px safe area): phoneTop = 667px ✓
+   * Result on iPhone 12 Mini (812px):                 phoneTop = 601px (12px overlap, z-index fix handles it) ✓
+   * iPhone SE (≤700px height) hidden by rule below. */
   .phone-area {
     position: absolute;
-    bottom: -10px;
+    bottom: -210px;
     left: 50%;
-    /* scale(0.68): phone ~184px wide, ~367px tall — stays clearly below text area */
     transform: translateX(-50%) scale(0.68);
     transform-origin: bottom center;
     z-index: 2;
@@ -603,6 +616,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  /* Shorter bottom gradient on mobile: 80px fade lets 131px of phone show clearly.
+   * Gradient sits at z-index:5 (above phone:2, below hero-text:6) — it masks the
+   * phone from bleeding through transparent ghost buttons in the hero-text layer. */
+  @media (max-width: 767px) {
+    .apple-scrolly::after {
+      height: 80px;
+    }
+  }
+
+  /* Hide phone on very short screens (iPhone SE ≤667px): overlap would be ~160px */
+  @media (max-height: 700px) and (max-width: 767px) {
+    .phone-area {
+      display: none;
+    }
   }
 
   /* ─── TABLET PORTRAIT (768px – 1023px): two-column layout ───────────────── */
