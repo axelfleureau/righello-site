@@ -896,6 +896,57 @@
     .emoji-right { right: 16%; }
   }
 
+  /* ── Landscape mobile / short viewport (≤ 500px tall) ─────────────────── *
+   * On landscape iPhone (e.g. 844×390), isDesktop=true so the desktop branch  *
+   * runs. Default top-gradient is 120px (31% of 390px) which covers final-text *
+   * at top:22% (86px) — it gets faded out by its own gradient overlay.         *
+   * Fix: shrink gradients, adjust text positions, compact font sizes.           */
+  @media (max-height: 500px) {
+    .easter-egg-blend {
+      height: 60px;
+    }
+
+    .emoji-transition-zone {
+      height: 60dvh;
+    }
+
+    .section-top-gradient {
+      height: 50px;
+    }
+
+    .section-bottom-gradient {
+      height: 40px;
+    }
+
+    /* Move texts below the now-shorter top gradient */
+    .final-text    { top: 27%; }
+    .discount-reveal { top: 58%; }
+
+    /* Compact heading so final-text + discount don't overlap */
+    .final-text h2 {
+      font-size: clamp(1.5rem, 4.5vw, 2.5rem);
+      line-height: 1.05;
+    }
+
+    /* Smaller body copy */
+    .easter-text p,
+    .mid-text p {
+      font-size: clamp(0.875rem, 2.5vw, 1.1rem);
+      line-height: 1.4;
+    }
+
+    /* Compact discount pill and label */
+    .discount-label {
+      font-size: 0.8125rem;
+      max-width: 280px;
+    }
+
+    .discount-code {
+      font-size: 1rem;
+      padding: 0.625rem 1.25rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .easter-egg-section .easter-text,
     .easter-egg-section .discount-reveal {
