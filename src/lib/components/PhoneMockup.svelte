@@ -70,6 +70,17 @@
   // Reactively sync muted prop → video element property
   $: if (videoElement) videoElement.muted = muted;
 
+  // Guard against "audio plays but thumbnail frozen" race condition:
+  // unlockAudio() in AppleScrolly sends unMute directly to the iframe (bypassing
+  // the ytPlaying guard below) so that iOS Safari receives the command inside the
+  // user-gesture context. This means audio can start while ytPlaying is still false
+  // and the thumbnail covers the iframe. When the user unmutes (!muted) and YouTube
+  // is already buffering (ytVisible), we force ytPlaying=true so the thumbnail fades
+  // out immediately — the iframe will show actual frames at this point or within ms.
+  $: if (!muted && ytVisible && !ytPlaying) {
+    ytPlaying = true;
+  }
+
   // Reactively sync muted prop → YouTube iframe via postMessage.
   // Sends both mute AND unMute so the iframe audio tracks the prop correctly.
   $: if (iframeEl && youtubeId && ytPlaying) {
