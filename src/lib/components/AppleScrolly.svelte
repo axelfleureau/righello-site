@@ -585,17 +585,21 @@
     text-align: center;
     pointer-events: auto;
     width: 100%;
+    /* Must be above phone-area (z-index:2) so text/buttons remain readable and tappable */
+    position: relative;
+    z-index: 6;
   }
 
-  /* Mobile: phone placed absolutely at the bottom, scaled to fit + gradient fades it */
+  /* Mobile: phone peeking from the bottom, behind the hero text */
   .phone-area {
     position: absolute;
     bottom: -10px;
     left: 50%;
-    transform: translateX(-50%) scale(0.78);
+    /* scale(0.68): phone ~184px wide, ~367px tall — stays clearly below text area */
+    transform: translateX(-50%) scale(0.68);
     transform-origin: bottom center;
-    z-index: 4;
-    pointer-events: auto;
+    z-index: 2;
+    pointer-events: none;
     display: flex;
     justify-content: center;
     align-items: center;
