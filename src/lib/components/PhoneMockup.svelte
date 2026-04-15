@@ -97,13 +97,13 @@
       videoLoading = false;
     }
     
-    // Fallback timeout: show iframe after 3 s even if onStateChange(1) never fired.
+    // Fallback timeout: clear loading state for native video after 3 s.
+    // We do NOT force ytPlaying=true here — the thumbnail stays visible as a
+    // permanent backdrop until YouTube actually confirms it is playing.
+    // Forcing ytPlaying early was the cause of the black-screen bug.
     const fallbackTimeout = setTimeout(() => {
       if (videoLoading && videoSrc) {
         videoLoading = false;
-      }
-      if (!ytPlaying && youtubeId) {
-        ytPlaying = true;
       }
     }, 3000);
 
@@ -241,15 +241,16 @@
         <div class="phone-screen">
           {#if youtubeId}
             <div class="yt-crop-wrapper">
-              {#if !ytPlaying}
-                <img
-                  src="https://img.youtube.com/vi/{youtubeId}/hqdefault.jpg"
-                  alt=""
-                  aria-hidden="true"
-                  class="yt-thumbnail"
-                  transition:fade={{ duration: 400 }}
-                />
-              {/if}
+              <!-- Thumbnail always in DOM — acts as permanent poster/fallback.
+                   Fades out only when YouTube confirms the video is playing.
+                   This prevents the black-screen bug caused by the old {#if !ytPlaying} guard. -->
+              <img
+                src="https://img.youtube.com/vi/{youtubeId}/hqdefault.jpg"
+                alt=""
+                aria-hidden="true"
+                class="yt-thumbnail"
+                class:yt-thumbnail-hidden={ytPlaying}
+              />
               <iframe
                 bind:this={iframeEl}
                 src="https://www.youtube-nocookie.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080&hd=1&enablejsapi=1"
@@ -464,7 +465,8 @@
     opacity: 0;
   }
 
-  /* YouTube thumbnail shown while the iframe is loading */
+  /* YouTube thumbnail — always in DOM as a poster/fallback.
+     Fades out smoothly once the iframe confirms it is playing. */
   .yt-thumbnail {
     position: absolute;
     inset: 0;
@@ -473,6 +475,11 @@
     object-fit: cover;
     z-index: 1;
     pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+
+  .yt-thumbnail-hidden {
+    opacity: 0;
   }
   
   .phone-home-indicator {
