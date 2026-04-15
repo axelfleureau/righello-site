@@ -409,7 +409,7 @@
         {heroSlide.description}
       </p>
       
-      <div class="flex flex-wrap gap-3 md:gap-4 mb-6 md:mb-10">
+      <div class="flex flex-wrap gap-3 md:gap-4 mb-6 md:mb-10 justify-center lg:justify-start">
         <MagneticButton href="/contatti" variant="primary">
           Iniziamo a parlare
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -522,7 +522,7 @@
 <style>
   .apple-scrolly {
     position: relative;
-    min-height: auto;
+    min-height: 100svh;
     overflow: hidden;
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
@@ -533,7 +533,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 180px;
+    height: 220px;
     background: linear-gradient(to bottom, transparent 0%, var(--bg-primary) 100%);
     z-index: 5;
     pointer-events: none;
@@ -565,88 +565,116 @@
       var(--bg-primary);
   }
   
-  /* CSS Grid based layout - stable positioning */
+  /* ─── MOBILE FIRST: stacked, full-viewport hero ─────────────────────────── */
   .scrolly-content {
     position: relative;
     z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 120px 6% 60px;
-    gap: 2.5rem;
+    min-height: 100svh;
+    padding: 100px 5% 0;
+    gap: 1.75rem;
+    /* hero text sits in the upper portion; phone is absolutely positioned below */
+    justify-content: flex-start;
   }
-  
-  @media (min-width: 1024px) {
-    .scrolly-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      height: 100%;
-      align-items: center;
-      padding: 100px 6% 0;
-      gap: 2rem;
-    }
-  }
-  
+
   .hero-text {
     flex-shrink: 0;
     max-width: 100%;
     text-align: center;
     pointer-events: auto;
+    width: 100%;
   }
-  
+
+  /* Mobile: phone placed absolutely at the bottom, scaled to fit + gradient fades it */
+  .phone-area {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.78);
+    transform-origin: bottom center;
+    z-index: 4;
+    pointer-events: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* ─── TABLET PORTRAIT (768px – 1023px): two-column layout ───────────────── */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .scrolly-content {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 110px 6% 80px;
+      gap: 3rem;
+      min-height: 100svh;
+      justify-content: center;
+    }
+
+    .hero-text {
+      text-align: left;
+      max-width: 100%;
+    }
+
+    /* Override mobile absolute positioning – phone is in the grid flow */
+    .phone-area {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      transform: scale(0.88);
+      transform-origin: center center;
+    }
+  }
+
+  /* ─── LANDSCAPE MOBILE (short screen ≤ 500px height, < 1024px wide) ──────── */
+  @media (max-height: 500px) and (max-width: 1023px) {
+    .apple-scrolly {
+      min-height: auto;
+    }
+    .scrolly-content {
+      min-height: auto;
+      padding-top: 72px;
+      padding-bottom: 40px;
+      gap: 1rem;
+      justify-content: center;
+    }
+    /* Hide phone on landscape mobile – too cramped */
+    .phone-area {
+      display: none;
+    }
+  }
+
+  /* ─── DESKTOP (1024px+): GSAP-controlled, full-screen pinned ────────────── */
   @media (min-width: 1024px) {
+    .scrolly-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100%;
+      min-height: unset;
+      align-items: center;
+      padding: 100px 6% 0;
+      gap: 2rem;
+      justify-content: unset;
+    }
+
     .hero-text {
       max-width: 600px;
       text-align: left;
       justify-self: start;
     }
-  }
-  
-  /* Phone area - uses Grid column positioning on desktop */
-  .phone-area {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    --phone-offset: 0;
-    pointer-events: auto;
-  }
-  
-  @media (min-width: 1024px) {
+
+    /* Phone area - GSAP controls exact position via inline styles */
     .phone-area {
-      /* Position phone absolutely - GSAP controls exact position */
-      will-change: transform, opacity;
       position: absolute;
-      /* Initial state: right side of viewport (before GSAP takes over) */
+      bottom: auto;
       left: 75%;
       top: 50%;
       transform: translateX(-50%) translateY(-50%);
       z-index: 5;
       transform-origin: center center;
-    }
-  }
-  
-  @media (max-width: 1023px) {
-    .hero-text .flex {
-      justify-content: center;
-    }
-  }
-  
-  @media (max-width: 1023px) {
-    .scrolly-content {
-      padding-top: 140px;
-      padding-bottom: 60px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .scrolly-content {
-      padding-top: 130px;
-      padding-left: 5%;
-      padding-right: 5%;
-      padding-bottom: 80px;
-      gap: 2rem;
+      will-change: transform, opacity;
     }
   }
   
