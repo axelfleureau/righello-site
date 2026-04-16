@@ -144,6 +144,14 @@ export async function getSignedUploadParams(
   section: VideoSection,
   filename: string
 ): Promise<{ signature: string; timestamp: number; cloudName: string; apiKey: string; folder: string; publicId: string }> {
+  // Guard: these vars must be set in Vercel Environment Variables (or Replit Secrets for dev).
+  // If missing, throw immediately so the error is visible in server logs, not a silent JSON omission.
+  if (!env.CLOUDINARY_CLOUD_NAME || !env.CLOUDINARY_API_KEY || !env.CLOUDINARY_API_SECRET) {
+    throw new Error(
+      'Cloudinary env vars not configured: set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET in the deployment environment variables.'
+    );
+  }
+
   const timestamp = Math.round(Date.now() / 1000);
   const folder = `righello/${section}`;
   const safeName = filename.replace(/\.[^/.]+$/, '').replace(/[^a-z0-9_-]/gi, '_').toLowerCase();

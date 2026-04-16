@@ -16,6 +16,11 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     throw error(400, 'section e filename sono obbligatori');
   }
 
-  const params = await getSignedUploadParams(section, filename);
-  return json(params);
+  try {
+    const params = await getSignedUploadParams(section, filename);
+    return json(params);
+  } catch (err) {
+    console.error('[admin/upload] getSignedUploadParams failed:', err);
+    throw error(500, err instanceof Error ? err.message : 'Errore nella generazione della firma');
+  }
 };
