@@ -252,8 +252,8 @@
   <div 
     class="phone-wrapper phone-entrance"
     style={!isTouch
-      ? `transform-style: preserve-3d; transform: perspective(1000px) rotateX(${$rotation.x}deg) rotateY(${$rotation.y}deg) translateX(${$position.x}px) translateY(${$position.y}px);`
-      : 'transform-style: flat;'}
+      ? `transform: perspective(1000px) rotateX(${$rotation.x}deg) rotateY(${$rotation.y}deg) translateX(${$position.x}px) translateY(${$position.y}px);`
+      : ''}
   >
       <div class="phone-frame">
         <div class="phone-notch"></div>
@@ -391,6 +391,20 @@
     width: 100%;
     height: 100%;
     transition: transform 0.1s ease-out;
+    /* Default: flat stacking context — safe for all devices including iOS Safari.
+     * iOS Safari cannot composite video frames inside preserve-3d layers:
+     * the result is audio playing but video frame frozen (GPU compositor bug).
+     * We override to preserve-3d ONLY for fine-pointer (mouse) devices via CSS
+     * media query — this fires BEFORE JS hydration, preventing the race condition
+     * where SSR renders preserve-3d and onMount hasn't yet set isTouch=true. */
+    transform-style: flat;
+  }
+
+  @media (pointer: fine) {
+    /* Desktop with mouse: enable 3D tilt effect safely */
+    .phone-wrapper {
+      transform-style: preserve-3d;
+    }
   }
 
   .phone-entrance {

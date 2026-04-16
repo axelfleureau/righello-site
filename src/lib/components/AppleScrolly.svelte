@@ -598,16 +598,19 @@
    *   phone natural height H = 619px  →  H × 0.68 = 421px visible height
    *
    * Formula: phoneTop = (section_h + |bottom|) − H×scale
-   *   To get phoneTop = 633px (≥ badgeBottom+20):
-   *   |bottom| = 633 − 844 + 421 = 210px  →  bottom: -210px
+   *   To get phoneTop = 583px (30px below badges, acceptable since z-index:6 hero-text
+   *   ensures badges always render ON TOP of the phone):
+   *   |bottom| = 583 − 844 + 421 = 160px  →  bottom: -160px
    *
-   * Result on iPhone 14 (844px, no safe-area env):   phoneTop = 633px ✓
-   * Result on iPhone 14 real device (+34px safe area): phoneTop = 667px ✓
-   * Result on iPhone 12 Mini (812px):                 phoneTop = 601px (12px overlap, z-index fix handles it) ✓
+   * Visible phone on iPhone 14 (844px): 583–844 = 261px total
+   *   - Non-faded (above 120px gradient): 583–724 = 141px  ← Dynamic Island + video
+   *   - Fading: 724–844 = 120px (soft, gradual fade — no hard clip appearance)
+   * Result on iPhone 14 real device (+34px safe area): phoneTop = 617px ✓ (4px above badges)
+   * Result on iPhone 12 Mini (812px):                 phoneTop = 573px (40px overlap, z-index handles it) ✓
    * iPhone SE (≤700px height) hidden by rule below. */
   .phone-area {
     position: absolute;
-    bottom: -210px;
+    bottom: -160px;
     left: 50%;
     transform: translateX(-50%) scale(0.68);
     transform-origin: bottom center;
@@ -618,12 +621,13 @@
     align-items: center;
   }
 
-  /* Shorter bottom gradient on mobile: 80px fade lets 131px of phone show clearly.
+  /* Mobile bottom gradient: 120px soft fade lets 141px of phone show clearly
+   * before fading, preventing any hard-clip appearance at the section boundary.
    * Gradient sits at z-index:5 (above phone:2, below hero-text:6) — it masks the
    * phone from bleeding through transparent ghost buttons in the hero-text layer. */
   @media (max-width: 767px) {
     .apple-scrolly::after {
-      height: 80px;
+      height: 120px;
     }
   }
 
