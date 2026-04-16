@@ -422,7 +422,8 @@
         </MagneticButton>
       </div>
       
-      <div class="flex flex-wrap gap-4 md:gap-6 justify-center lg:justify-start">
+      <!-- Desktop/tablet: credibility badges inside hero-text (left column) -->
+      <div class="flex flex-wrap gap-4 md:gap-6 justify-center lg:justify-start cred-badges-desktop">
         {#each credibilityBadges as badge}
           <div class="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
             {#if badge.icon === 'meta'}
@@ -447,13 +448,39 @@
       </div>
     </div>
     
-    <!-- Phone column - positioned via CSS Grid, no absolute positioning -->
+    <!-- Phone column: on mobile this is in normal flex flow between buttons and badges -->
     <div bind:this={phoneWrapper} class="phone-area">
       <PhoneMockup 
         youtubeId={heroVideoCloudinaryUrl ? undefined : heroVideoYoutubeId}
         videoSrc={heroVideoCloudinaryUrl}
         muted={videoMuted}
       />
+    </div>
+
+    <!-- Mobile only: credibility badges appear BELOW the phone mockup.
+         On desktop/tablet these are hidden — the desktop version lives inside .hero-text above. -->
+    <div class="cred-badges-mobile" aria-hidden="true">
+      {#each credibilityBadges as badge}
+        <div class="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+          {#if badge.icon === 'meta'}
+            <svg class="w-5 h-5 text-righello-pink" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
+            </svg>
+          {:else if badge.icon === 'google'}
+            <svg class="w-5 h-5 text-righello-pink" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+          {:else if badge.icon === 'star'}
+            <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          {/if}
+          <span class="font-medium">{badge.label}</span>
+        </div>
+      {/each}
     </div>
     
     <!-- Slides overlay -->
@@ -591,30 +618,28 @@
     z-index: 6;
   }
 
-  /* Mobile: phone peeking from the bottom, strictly behind all hero content.
+  /* ─── MOBILE phone: in normal flex flow between buttons and badges ───────────
    *
-   * Playwright measurements (390×844 viewport):
-   *   badgeBottom = 613px  (bottom of last badge row)
-   *   phoneTop    = 473px  (visual top of phone with bottom:-50, scale:0.68)
-   *   phone natural height H = 619px  →  H × 0.68 = 421px visible height
+   * The phone is no longer absolutely positioned on mobile. It sits in the
+   * flex column between .hero-text (title+buttons) and .cred-badges-mobile.
    *
-   * Formula: phoneTop = (section_h + |bottom|) − H×scale
-   *   To get phoneTop = 583px (30px below badges, acceptable since z-index:6 hero-text
-   *   ensures badges always render ON TOP of the phone):
-   *   |bottom| = 583 − 844 + 421 = 160px  →  bottom: -160px
+   * scale(0.65) gives a visual height of ~351px (540 × 0.65) on small phones
+   * and ~371px (570 × 0.65) on wider phones. The CSS layout box is still the
+   * full unscaled height, so we use negative margins to collapse the dead space:
+   *   margin = −(unscaledH × (1−0.65) / 2) ≈ −95px for 540px, −100px for 570px
+   * Using −95px for both (3px discrepancy on wider phones is imperceptible).
    *
-   * Visible phone on iPhone 14 (844px): 583–844 = 261px total
-   *   - Non-faded (above 120px gradient): 583–724 = 141px  ← Dynamic Island + video
-   *   - Fading: 724–844 = 120px (soft, gradual fade — no hard clip appearance)
-   * Result on iPhone 14 real device (+34px safe area): phoneTop = 617px ✓ (4px above badges)
-   * Result on iPhone 12 Mini (812px):                 phoneTop = 573px (40px overlap, z-index handles it) ✓
-   * iPhone SE (≤700px height) hidden by rule below. */
+   * Total estimated height on 390×844 iPhone 14:
+   *   100px padding-top + ~280px hero-text + 0 gap + (540−2×95)px phone + 0 gap
+   *   + ~115px cred-badges-mobile  ≈ 850px  ← fits comfortably. */
   .phone-area {
-    position: absolute;
-    bottom: -160px;
-    left: 50%;
-    transform: translateX(-50%) scale(0.68);
-    transform-origin: bottom center;
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: scale(0.65);
+    transform-origin: center center;
+    margin-top: -95px;
+    margin-bottom: -95px;
     z-index: 2;
     pointer-events: none;
     display: flex;
@@ -622,20 +647,31 @@
     align-items: center;
   }
 
-  /* Mobile bottom gradient: 120px soft fade lets 141px of phone show clearly
-   * before fading, preventing any hard-clip appearance at the section boundary.
-   * Gradient sits at z-index:5 (above phone:2, below hero-text:6) — it masks the
-   * phone from bleeding through transparent ghost buttons in the hero-text layer. */
+  /* Tighten scrolly-content gap on mobile: phone margins handle visual spacing */
   @media (max-width: 767px) {
-    .apple-scrolly::after {
-      height: 120px;
+    .scrolly-content {
+      gap: 0.25rem;
     }
   }
 
-  /* Hide phone on very short screens (iPhone SE ≤667px): overlap would be ~160px */
+  /* Reduce bottom gradient on mobile: phone is no longer at the section bottom */
+  @media (max-width: 767px) {
+    .apple-scrolly::after {
+      height: 80px;
+    }
+  }
+
+  /* Hide phone AND mobile badges on very short screens (iPhone SE ≤667px).
+   * Show desktop badges again so the credibility info isn't lost entirely. */
   @media (max-height: 700px) and (max-width: 767px) {
     .phone-area {
       display: none;
+    }
+    .cred-badges-mobile {
+      display: none !important;
+    }
+    .cred-badges-desktop {
+      display: flex !important;
     }
   }
 
@@ -656,13 +692,26 @@
       max-width: 100%;
     }
 
-    /* Override mobile absolute positioning – phone is in the grid flow */
+    /* Override mobile flow positioning – tablet uses grid */
     .phone-area {
       position: relative;
       bottom: auto;
       left: auto;
       transform: scale(0.88);
       transform-origin: center center;
+      /* Reset mobile negative margins */
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    /* Hide mobile duplicate badges on tablet+ */
+    .cred-badges-mobile {
+      display: none !important;
+    }
+
+    /* Show desktop badges on tablet+ */
+    .cred-badges-desktop {
+      display: flex !important;
     }
   }
 
@@ -713,6 +762,17 @@
       z-index: 5;
       transform-origin: center center;
       will-change: transform, opacity;
+      /* Reset mobile negative margins — they would shift an absolute element */
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    /* Desktop: show badges inside hero-text, hide mobile duplicate */
+    .cred-badges-mobile {
+      display: none !important;
+    }
+    .cred-badges-desktop {
+      display: flex !important;
     }
   }
   
@@ -967,6 +1027,42 @@
     background: rgba(0, 0, 0, 0.06);
     border-color: rgba(0, 0, 0, 0.1);
     color: rgba(0, 0, 0, 0.4);
+  }
+
+  /* ─── CREDIBILITY BADGES: desktop version (inside hero-text) ───────────── */
+  /* Default: visible (desktop/tablet show them inside hero-text column).
+   * Mobile overrides hide them and show .cred-badges-mobile instead. */
+  .cred-badges-desktop {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 767px) {
+    .cred-badges-desktop {
+      display: none !important;
+    }
+  }
+
+  /* ─── CREDIBILITY BADGES: mobile version (below phone mockup) ───────────── */
+  /* Hidden by default (desktop/tablet); shown only on mobile. */
+  .cred-badges-mobile {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .cred-badges-mobile {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.625rem 1.25rem;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      z-index: 6;
+      /* padding-bottom clears the partners-strip overlay at the section bottom */
+      padding-bottom: 5rem;
+      pointer-events: auto;
+    }
   }
 
   /* Partners strip */
