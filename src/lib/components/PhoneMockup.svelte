@@ -23,6 +23,13 @@
   // the thumbnail still acts as a cover until real frames appear.
   let ytVisible = false;
   let ytPlaying = false;
+  // ytError: set true if YouTube fires onError (video unavailable, private, etc.)
+  // When true, placeholder content is shown instead of the broken iframe.
+  let ytError = false;
+  // ytSrc: built after mount with origin parameter so YouTube postMessage API
+  // can reliably route events back to this page. An empty string means the
+  // iframe is not yet rendered (avoids loading without origin during SSR).
+  let ytSrc = '';
   // On touch/mobile devices we disable the 3D perspective tilt entirely.
   // iOS Safari cannot composite video frames inside a preserve-3d layer —
   // the result is frozen video with audio still playing (GPU compositor bug).
@@ -143,6 +150,7 @@
     // - onReady: mute + delayed playVideo (only if autoplay didn't fire)
     // - onStateChange(1): playing → reveal iframe immediately (CSS opacity transition handles smoothness)
     // - onStateChange(0): ended → loop manually (iOS workaround for loop=1 unreliability)
+    // - onError: video unavailable/private/not embeddable → show placeholder instead
     function handleYTMessage(e: MessageEvent) {
       if (!iframeEl || e.source !== iframeEl.contentWindow) return;
       try {
@@ -165,7 +173,7 @@
             }
           }, 150);
 
-          // Safety net: if onStateChange(1) never arrives within 8s (slow network,
+          // Safety net: if onStateChange(1) never arrives within 4s (slow network,
           // API hiccup, browser throttle), force the thumbnail out so the user
           // doesn't see a stuck poster image forever.
           ytFallbackTimer = setTimeout(() => {
@@ -174,7 +182,7 @@
               ytPlaying = true;
             }
             ytFallbackTimer = null;
-          }, 8000);
+          }, 4000);
         }
 
         if (data.event === 'onStateChange') {
@@ -206,12 +214,27 @@
             );
           }
         }
+
+        // onError: YouTube couldn't play the video (private, deleted, not embeddable,
+        // or network failure). Error codes: 2=invalid params, 5=HTML5 error,
+        // 100=video not found, 101/150=not allowed in embedded players.
+        // Cancel fallback timer and show placeholder content instead of the broken iframe.
+        if (data.event === 'onError') {
+          console.warn('[PhoneMockup] YouTube error code:', data.info, '— switching to placeholder');
+          if (ytFallbackTimer) { clearTimeout(ytFallbackTimer); ytFallbackTimer = null; }
+          ytError = true;
+        }
       } catch {
         // ignore malformed messages
       }
     }
 
     if (youtubeId) {
+      // Build the embed URL with the current page origin so YouTube's postMessage
+      // API knows which domain to route events back to. Without `origin`, the player
+      // may silently drop onReady / onStateChange events on some browser/network
+      // combinations, leaving the video stuck behind the thumbnail forever.
+      ytSrc = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&rel=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
       window.addEventListener('message', handleYTMessage, { passive: true });
     }
 
@@ -282,7 +305,7 @@
         <div class="phone-notch"></div>
         
         <div class="phone-screen">
-          {#if youtubeId}
+          {#if youtubeId && !ytError}
             <div class="yt-crop-wrapper">
               <!-- Thumbnail always in DOM — acts as permanent poster/fallback.
                    Fades out only when YouTube confirms the video is playing.
@@ -294,15 +317,20 @@
                 class="yt-thumbnail"
                 class:yt-thumbnail-hidden={ytPlaying}
               />
-              <iframe
-                bind:this={iframeEl}
-                src="https://www.youtube-nocookie.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
-                title="Righello video"
-                frameborder="0"
-                allow="autoplay; fullscreen; encrypted-media"
-                class="yt-iframe"
-                class:yt-iframe-hidden={!ytVisible}
-              ></iframe>
+              <!-- ytSrc is set after mount and includes `origin` parameter so YouTube's
+                   postMessage API routes onReady/onStateChange events back correctly.
+                   {#if ytSrc} prevents an empty-src iframe from loading during SSR. -->
+              {#if ytSrc}
+                <iframe
+                  bind:this={iframeEl}
+                  src={ytSrc}
+                  title="Righello video"
+                  frameborder="0"
+                  allow="autoplay; fullscreen; encrypted-media"
+                  class="yt-iframe"
+                  class:yt-iframe-hidden={!ytVisible}
+                ></iframe>
+              {/if}
             </div>
           {:else if videoSrc}
             {#if videoLoading}
