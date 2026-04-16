@@ -208,17 +208,27 @@
 
         gsap.set([introText, midText, finalText], { opacity: 0, yPercent: 30, force3D: true });
         gsap.set(discountReveal, { opacity: 0, scale: 0.8, force3D: true });
-        const PHASE = 0.20;
-        const ENTER_DUR = 0.05;
-        const EXIT_DUR = 0.05;
-        const LABEL_OFFSET = PHASE / 2;
-        const TEXT_OFFSET = 0.06;
-        const MOTION_END = PHASE * 4;
 
-        const L_INTRO    = LABEL_OFFSET;
-        const L_MID      = PHASE + LABEL_OFFSET;
-        const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
-        const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
+        // ── Two-phase animation ────────────────────────────────────────────────
+        // Phase 1 (0 → WIN_ENTER):  window grows from a small oval to full
+        //   horizontal size. Sky stays still so the user can appreciate the frame.
+        // Phase 2 (WIN_ENTER → 1): sky scrolls + window zooms in. Text reveals
+        //   happen in four equally-spaced sub-phases across the zoom.
+        const WIN_ENTER  = 0.15;              // fraction of timeline for entry
+        const ZOOM_START = WIN_ENTER;          // sky + zoom begin at this offset
+        const ZOOM_DUR   = 1 - ZOOM_START;    // = 0.85
+
+        const PHASE      = 0.20;
+        const ENTER_DUR  = 0.05;
+        const EXIT_DUR   = 0.05;
+        const LABEL_OFFSET = PHASE / 2;        // = 0.10
+        const TEXT_OFFSET  = 0.06;
+
+        // Text labels are spaced inside the zoom section (ZOOM_START … 1.0)
+        const L_INTRO    = ZOOM_START + LABEL_OFFSET;                 // 0.25
+        const L_MID      = ZOOM_START + PHASE + LABEL_OFFSET;         // 0.45
+        const L_FINAL    = ZOOM_START + PHASE * 2 + LABEL_OFFSET;     // 0.65
+        const L_DISCOUNT = ZOOM_START + PHASE * 3 + LABEL_OFFSET;     // 0.85
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -233,8 +243,6 @@
               ease: 'power1.inOut',
             },
             invalidateOnRefresh: true,
-            // onRefresh fires before GSAP recalculates trigger positions:
-            // keeps wrapper height in sync after resize (e.g. full-screening on a large monitor).
             onRefresh() {
               const newVh = window.innerHeight;
               if (desktopWrapper) desktopWrapper.style.height = `${newVh * 6}px`;
@@ -242,25 +250,38 @@
           }
         });
 
-        // fromTo explicitly locks the from-state (scale 1.35) so invalidateOnRefresh
-        // always re-uses it instead of re-capturing whatever mid-animation scale is
-        // currently on the element. transformOrigin at 50% 55% keeps the oval window
-        // centred during the zoom while hiding the dark airplane ceiling at the top.
+        // Phase 1: window enters — grows from compact oval to full-viewport size.
+        // fromTo locks the from-state (scale 0.5) so invalidateOnRefresh always
+        // re-starts from the same point instead of capturing a mid-animation value.
         tl.fromTo(windowContainer,
-          { scale: 1.35, transformOrigin: '50% 55%', force3D: true },
-          { scale: 4, duration: MOTION_END, ease: 'none', force3D: true },
+          { scale: 0.5, transformOrigin: '50% 55%', force3D: true },
+          { scale: 1, duration: WIN_ENTER, ease: 'power2.out', force3D: true },
           0
         );
+
+        // Snap anchor so the user can pause at "window fully open" before zooming.
+        tl.addLabel('windowFull', ZOOM_START);
+
+        // Phase 2: window zooms in (1 → 4). Second fromTo locks its own from-state
+        // (scale 1) independently of the entry tween — required for invalidateOnRefresh.
+        // transformOrigin 50% 55% keeps the oval centred and hides the ceiling strip.
+        tl.fromTo(windowContainer,
+          { scale: 1, transformOrigin: '50% 55%', force3D: true },
+          { scale: 4, duration: ZOOM_DUR, ease: 'none', force3D: true },
+          ZOOM_START
+        );
+
+        // Phase 2: sky scrolls from top to bottom, in sync with the window zoom.
         // Arrow function: GSAP re-evaluates on invalidateOnRefresh.
-        // Buffer is proportional to viewport height (0.5%, min 8px) so sub-pixel
+        // Buffer is proportional to viewport height (0.5 %, min 8 px) so sub-pixel
         // rounding on high-DPI / very large screens never reveals the black strip.
         tl.to(skyContainer, {
           y: () => {
             const buf = Math.max(8, Math.round(window.innerHeight * 0.005));
             return -(Math.max(0, skyContainer.offsetHeight - window.innerHeight - buf));
           },
-          duration: MOTION_END, ease: 'none', force3D: true
-        }, 0);
+          duration: ZOOM_DUR, ease: 'none', force3D: true
+        }, ZOOM_START);
 
         tl.addLabel('intro', L_INTRO);
         tl.to(introText, { opacity: 1, yPercent: 0, duration: ENTER_DUR, ease: 'none' }, L_INTRO - TEXT_OFFSET);
@@ -285,17 +306,22 @@
 
         gsap.set([mIntroText, mMidText, mFinalText], { opacity: 0, y: 50, force3D: true });
         gsap.set(mDiscountReveal, { opacity: 0, y: 30, scale: 0.9, force3D: true });
-        const PHASE = 0.20;
-        const ENTER_DUR = 0.05;
-        const EXIT_DUR = 0.05;
-        const LABEL_OFFSET = PHASE / 2;
-        const TEXT_OFFSET = 0.06;
-        const MOTION_END = PHASE * 4;
 
-        const L_INTRO    = LABEL_OFFSET;
-        const L_MID      = PHASE + LABEL_OFFSET;
-        const L_FINAL    = PHASE * 2 + LABEL_OFFSET;
-        const L_DISCOUNT = PHASE * 3 + LABEL_OFFSET;
+        // Same two-phase logic as desktop (see comments above).
+        const WIN_ENTER  = 0.15;
+        const ZOOM_START = WIN_ENTER;
+        const ZOOM_DUR   = 1 - ZOOM_START; // = 0.85
+
+        const PHASE      = 0.20;
+        const ENTER_DUR  = 0.05;
+        const EXIT_DUR   = 0.05;
+        const LABEL_OFFSET = PHASE / 2;
+        const TEXT_OFFSET  = 0.06;
+
+        const L_INTRO    = ZOOM_START + LABEL_OFFSET;
+        const L_MID      = ZOOM_START + PHASE + LABEL_OFFSET;
+        const L_FINAL    = ZOOM_START + PHASE * 2 + LABEL_OFFSET;
+        const L_DISCOUNT = ZOOM_START + PHASE * 3 + LABEL_OFFSET;
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -311,21 +337,29 @@
           }
         });
 
-        // fromTo locks the from-state so invalidateOnRefresh always re-uses
-        // scale:1 + transformOrigin:'50% 55%' instead of re-capturing whatever
-        // mid-animation scale is on the element (same pattern as desktop).
+        // Phase 1: window entry (small oval → full viewport).
         tl.fromTo(mWindowContainer,
-          { scale: 1, transformOrigin: '50% 55%', force3D: true },
-          { scale: 4, duration: MOTION_END, ease: 'none', force3D: true },
+          { scale: 0.5, transformOrigin: '50% 55%', force3D: true },
+          { scale: 1, duration: WIN_ENTER, ease: 'power2.out', force3D: true },
           0
         );
+
+        // Phase 2: window zoom (1 → 4). Separate fromTo locks scale:1 from-state
+        // for invalidateOnRefresh (same pattern as desktop).
+        tl.fromTo(mWindowContainer,
+          { scale: 1, transformOrigin: '50% 55%', force3D: true },
+          { scale: 4, duration: ZOOM_DUR, ease: 'none', force3D: true },
+          ZOOM_START
+        );
+
+        // Phase 2: sky scroll, starts in sync with zoom.
         tl.to(mSkyContainer, {
           y: () => {
             const buf = Math.max(8, Math.round(window.innerHeight * 0.005));
             return -(Math.max(0, mSkyContainer.offsetHeight - window.innerHeight - buf));
           },
-          duration: MOTION_END, ease: 'none', force3D: true
-        }, 0);
+          duration: ZOOM_DUR, ease: 'none', force3D: true
+        }, ZOOM_START);
 
         tl.addLabel('intro', L_INTRO);
         tl.to(mIntroText, { opacity: 1, y: 0, duration: ENTER_DUR, ease: 'none' }, L_INTRO - TEXT_OFFSET);
