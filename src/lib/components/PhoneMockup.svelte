@@ -27,6 +27,11 @@
   // iOS Safari cannot composite video frames inside a preserve-3d layer —
   // the result is frozen video with audio still playing (GPU compositor bug).
   let isTouch = false;
+
+  // Fallback: if YouTube never fires onStateChange(1) within 8s of onReady
+  // (e.g. slow buffering, network issue, API hiccup), force the thumbnail out.
+  // The 0.6s CSS opacity transition covers any brief dark flash.
+  let ytFallbackTimer: ReturnType<typeof setTimeout> | null = null;
   
   const rotation = spring({ x: 0, y: 0 }, {
     stiffness: 0.05,
@@ -69,6 +74,12 @@
   
   // Reactively sync muted prop → video element property
   $: if (videoElement) videoElement.muted = muted;
+
+  // When ytPlaying becomes true (naturally via onStateChange), cancel the fallback timer.
+  $: if (ytPlaying && ytFallbackTimer) {
+    clearTimeout(ytFallbackTimer);
+    ytFallbackTimer = null;
+  }
 
   // Guard against "audio plays but thumbnail frozen" race condition:
   // unlockAudio() in AppleScrolly sends unMute directly to the iframe (bypassing
@@ -153,6 +164,17 @@
               );
             }
           }, 150);
+
+          // Safety net: if onStateChange(1) never arrives within 8s (slow network,
+          // API hiccup, browser throttle), force the thumbnail out so the user
+          // doesn't see a stuck poster image forever.
+          ytFallbackTimer = setTimeout(() => {
+            if (!ytPlaying) {
+              ytVisible = true;
+              ytPlaying = true;
+            }
+            ytFallbackTimer = null;
+          }, 8000);
         }
 
         if (data.event === 'onStateChange') {
@@ -234,6 +256,7 @@
 
     return () => {
       clearTimeout(fallbackTimeout);
+      if (ytFallbackTimer) clearTimeout(ytFallbackTimer);
       window.removeEventListener('message', handleYTMessage);
       visibilityObserver?.disconnect();
     };
@@ -273,7 +296,7 @@
               />
               <iframe
                 bind:this={iframeEl}
-                src="https://www.youtube-nocookie.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080&hd=1&enablejsapi=1"
+                src="https://www.youtube-nocookie.com/embed/{youtubeId}?autoplay=1&mute=1&loop=1&playlist={youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
                 title="Righello video"
                 frameborder="0"
                 allow="autoplay; fullscreen; encrypted-media"
