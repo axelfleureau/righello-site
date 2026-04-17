@@ -675,19 +675,10 @@
     }
   }
 
-  /* Hide phone AND mobile badges on very short screens (iPhone SE ≤667px).
-   * Show desktop badges again so the credibility info isn't lost entirely. */
-  @media (max-height: 700px) and (max-width: 767px) {
-    .phone-area {
-      display: none;
-    }
-    .cred-badges-mobile {
-      display: none !important;
-    }
-    .cred-badges-desktop {
-      display: flex !important;
-    }
-  }
+  /* This rule was previously max-height: 700px which incorrectly caught all iPhones
+   * in portrait with Safari chrome visible (viewport ≈ 600–680px). Removed: the
+   * landscape rule at max-height: 500px already handles truly short screens.
+   * Portrait iPhones (SE included) should see the phone — they can scroll. */
 
   /* ─── TABLET PORTRAIT (768px – 1023px): two-column layout ───────────────── */
   @media (min-width: 768px) and (max-width: 1023px) {
