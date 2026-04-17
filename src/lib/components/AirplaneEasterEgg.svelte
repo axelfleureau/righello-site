@@ -250,12 +250,15 @@
           }
         });
 
-        // Phase 1: window enters — grows from compact oval to full-viewport size.
-        // fromTo locks the from-state (scale 0.5) so invalidateOnRefresh always
-        // re-starts from the same point instead of capturing a mid-animation value.
+        // Phase 1: window is already at full horizontal coverage (scale 1).
+        // Starting at scale 0.5 caused two issues: horizontal black borders on wide
+        // screens (container shrank to 50 vw, exposing the dark background), and the
+        // shrunk state was visible as the wrapper scrolled into view from below.
+        // Now Phase 1 simply holds at scale 1 for WIN_ENTER (a brief pause before
+        // the zoom kicks in), keeping the 'windowFull' snap anchor intact.
         tl.fromTo(windowContainer,
-          { scale: 0.5, transformOrigin: '50% 55%', force3D: true },
-          { scale: 1, duration: WIN_ENTER, ease: 'power2.out', force3D: true },
+          { scale: 1, transformOrigin: '50% 55%', force3D: true },
+          { scale: 1, duration: WIN_ENTER, ease: 'none', force3D: true },
           0
         );
 
@@ -337,10 +340,11 @@
           }
         });
 
-        // Phase 1: window entry (small oval → full viewport).
+        // Phase 1: window starts at full horizontal coverage (same fix as desktop —
+        // scale 0.5 caused horizontal black borders and a premature-shrunk appearance).
         tl.fromTo(mWindowContainer,
-          { scale: 0.5, transformOrigin: '50% 55%', force3D: true },
-          { scale: 1, duration: WIN_ENTER, ease: 'power2.out', force3D: true },
+          { scale: 1, transformOrigin: '50% 55%', force3D: true },
+          { scale: 1, duration: WIN_ENTER, ease: 'none', force3D: true },
           0
         );
 
