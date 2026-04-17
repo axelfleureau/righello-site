@@ -203,6 +203,19 @@
                 JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
               );
             }
+            // Race-condition safety: if the user unlocked audio BEFORE onReady fired,
+            // the unMute postMessage sent by unlockAudio() was dropped (player not
+            // ready yet). Re-send it here now that the player is initialised.
+            // This is safe to send even if the user hasn't unlocked — YouTube will
+            // ignore unMute while the video is playing muted via URL param.
+            if (!muted && iframeEl) {
+              iframeEl.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*'
+              );
+              iframeEl.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*'
+              );
+            }
           }, 150);
 
           // Safety net: if onStateChange(1) never arrives within 4s (slow network,
@@ -232,6 +245,29 @@
             ytVisible = true;
             if (!ytPlaying) {
               ytPlaying = true;
+            }
+            // Always sync audio here — do NOT rely solely on the Svelte reactive.
+            //
+            // Root cause of the desktop-audio-silent bug:
+            //   1. User scrolls before onReady fires → unlockAudio() sends unMute
+            //      to the not-yet-ready player → command dropped.
+            //   2. The reactive guard ($: !muted && iframeEl && !ytPlaying) forces
+            //      ytPlaying = true immediately.
+            //   3. onReady fires → sends mute (autoplay policy), then playVideo.
+            //   4. onStateChange(1) fires → ytPlaying is already true → Svelte sees
+            //      old === new, does NOT mark dirty → reactive never re-runs →
+            //      unMute never sent → video stays silenced.
+            //
+            // Fix: send unMute directly in state=1, bypassing the reactive.
+            // Reading `muted` here works because it closes over the Svelte prop
+            // variable (always reflects the latest parent-assigned value).
+            if (!muted && iframeEl) {
+              iframeEl.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*'
+              );
+              iframeEl.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*'
+              );
             }
           }
           // state 0 = ended: loop manually (iOS/iPadOS workaround for loop=1 unreliability).
