@@ -232,16 +232,17 @@
                   phoneProgress = (progress - 0.05) / 0.30;
                 }
                 
-                // Phone position: animate 'left' from 75% to 50% of viewport
-                // left: 75% = phone on right side
-                // left: 50% = phone at center
-                // xPercent: -50 = offset by half the phone width to truly center it
-                const leftValue = 75 - (25 * phoneProgress);
-                
+                // Phone position: CSS sets left:50% xPercent:-50 (centred baseline).
+                // We offset rightward with x (translateX) — a pure GPU transform that
+                // does NOT trigger layout reflows. The old left:% animation recalculated
+                // layout on every frame (60 fps), which caused the YouTube iframe GPU
+                // composite layer to stutter/freeze during the slide-in.
+                //
+                // x = 25vw → 0 as phoneProgress goes 0 → 1
+                //   (phone appears at 75% from left initially, slides to center)
                 gsap.set(phoneWrapper, { 
-                  left: `${leftValue}%`,
+                  x: (1 - phoneProgress) * window.innerWidth * 0.25,
                   xPercent: -50,
-                  top: '50%',
                   yPercent: -50,
                   scale: 1 - (0.08 * phoneProgress)
                 });
@@ -268,6 +269,11 @@
                       animateSlideText(slideEl, gsap);
                     }
                   } else {
+                    // Reset currentSlide so re-entry fires animateSlideText again.
+                    // Without this: hero→slide0→hero→slide0 → second visit has
+                    // i===currentSlide → animateSlideText never fires → headline stays
+                    // opacity:0 from the gsap.set reset below.
+                    if (currentSlide === i) currentSlide = -1;
                     gsap.set(slideEl, { opacity: 0 });
                     // Reset text elements so the entrance animation plays cleanly on re-entry.
                     // Without this, desc-chars would retain their animated-in state (opacity 1)
@@ -781,11 +787,15 @@
       justify-self: start;
     }
 
-    /* Phone area - GSAP controls exact position via inline styles */
+    /* Phone area - GSAP controls exact position via transforms only (no left/top changes).
+     * left:50% + xPercent:-50 centres the phone horizontally; GSAP then uses x (translateX)
+     * to offset it rightward. This avoids per-frame layout reflows that the old left:%
+     * animation caused — those reflows interrupted the YouTube iframe GPU composite layer
+     * and produced visible video stutter/freeze during the phone slide-in animation. */
     .phone-area {
       position: absolute;
       bottom: auto;
-      left: 75%;
+      left: 50%;
       top: 50%;
       transform: translateX(-50%) translateY(-50%);
       z-index: 5;
