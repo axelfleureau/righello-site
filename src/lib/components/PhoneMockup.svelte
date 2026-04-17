@@ -30,6 +30,12 @@
   // can reliably route events back to this page. An empty string means the
   // iframe is not yet rendered (avoids loading without origin during SSR).
   let ytSrc = '';
+  // ytSrcActive: Svelte-reactive binding used as the iframe src attribute.
+  // '' → iframe removed from DOM (guaranteed audio stop, no re-render surprise).
+  // = ytSrc → iframe re-created, YouTube reloads, onReady fires again.
+  // We must NOT do iframeEl.src = '' directly — Svelte would overwrite it on the
+  // next reactive re-render (e.g. when ytPlaying/ytVisible change simultaneously).
+  let ytSrcActive = '';
   // On touch/mobile devices we disable the 3D perspective tilt entirely.
   // iOS Safari cannot composite video frames inside a preserve-3d layer —
   // the result is frozen video with audio still playing (GPU compositor bug).
@@ -152,7 +158,16 @@
     // - onStateChange(0): ended → loop manually (iOS workaround for loop=1 unreliability)
     // - onError: video unavailable/private/not embeddable → show placeholder instead
     function handleYTMessage(e: MessageEvent) {
-      if (!iframeEl || e.source !== iframeEl.contentWindow) return;
+      // Filter by origin instead of e.source: on several mobile browsers (Chrome Android,
+      // Safari iOS, Firefox Mobile) e.source !== iframeEl.contentWindow even when the
+      // message genuinely comes from our iframe, silently dropping every YouTube event.
+      // Origin-only filtering is safe here because the specific YouTube message schema
+      // (event/info keys) is not replicated by other same-page content.
+      if (
+        e.origin !== 'https://www.youtube-nocookie.com' &&
+        e.origin !== 'https://www.youtube.com'
+      ) return;
+      if (!iframeEl) return; // iframe not yet mounted — ignore stray early messages
       try {
         const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
 
@@ -235,14 +250,26 @@
       // may silently drop onReady / onStateChange events on some browser/network
       // combinations, leaving the video stuck behind the thumbnail forever.
       ytSrc = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&rel=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
+      // Activate the iframe now that we have the origin-aware URL.
+      // ytSrcActive is the Svelte-reactive binding — setting it here causes Svelte
+      // to render the <iframe> and bind iframeEl. Never set iframeEl.src directly
+      // (Svelte would overwrite it on the next reactive render pass).
+      ytSrcActive = ytSrc;
       window.addEventListener('message', handleYTMessage, { passive: true });
     }
 
     // Pause the video when the phone scrolls out of view, resume on re-entry.
+    //
+    // For YouTube: postMessage('pauseVideo') alone is unreliable on mobile browsers
+    // because the communication channel may be broken (same bug that causes the
+    // thumbnail-freeze). Instead we clear iframeEl.src entirely — this is a 100%
+    // reliable way to stop the audio. We restore the src when the phone re-enters
+    // the viewport; the onReady → onStateChange sequence restarts cleanly and the
+    // thumbnail covers the brief reload so there's no visual flash.
+    //
     // IMPORTANT: never send playVideo on the initial intersection callback
-    // (phone visible at page load) — this interrupts YouTube's own autoplay
-    // sequence and causes it to call loadNewVideoConfig multiple times.
-    // We only resume after the phone has actually left the viewport at least once.
+    // (phone visible at page load) — this interrupts YouTube's own autoplay.
+    // We act only after the phone has actually left the viewport at least once.
     let hasBeenHidden = false;
     let visibilityObserver: IntersectionObserver | null = null;
     if (containerEl) {
@@ -250,23 +277,30 @@
         (entries) => {
           const isVisible = entries[0]?.isIntersecting;
           if (!isVisible) {
-            // Phone left viewport → pause
+            // Phone left viewport → stop
             hasBeenHidden = true;
             if (videoElement) videoElement.pause();
-            if (iframeEl && youtubeId) {
-              iframeEl.contentWindow?.postMessage(
-                JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
-                '*'
-              );
+            if (youtubeId && ytSrcActive) {
+              // Cancel any pending fallback timer — the old player is being destroyed.
+              // Without this, the timer could fire during the new player's startup and
+              // incorrectly force ytPlaying=true before the new video is ready.
+              if (ytFallbackTimer) { clearTimeout(ytFallbackTimer); ytFallbackTimer = null; }
+              // Setting ytSrcActive='' lets Svelte remove the <iframe> from the DOM
+              // via the {#if ytSrcActive} guard — guaranteed audio stop. Direct
+              // iframeEl.src mutation would be overwritten by the subsequent Svelte
+              // re-render triggered by the ytPlaying/ytVisible state changes below.
+              ytSrcActive = '';
+              // Reset state so thumbnail shows while the iframe is absent/reloading
+              ytPlaying = false;
+              ytVisible = false;
             }
           } else if (hasBeenHidden) {
-            // Phone returned to viewport (after being hidden) → resume
+            // Phone returned to viewport (after being hidden) → restart
             if (videoElement) videoElement.play().catch(() => {});
-            if (iframeEl && youtubeId) {
-              iframeEl.contentWindow?.postMessage(
-                JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
-                '*'
-              );
+            if (youtubeId && ytSrc && !ytSrcActive) {
+              // Restore ytSrcActive → Svelte recreates the <iframe> with the full
+              // YouTube URL; onReady fires → onStateChange updates ytVisible/ytPlaying.
+              ytSrcActive = ytSrc;
             }
           }
           // isVisible && !hasBeenHidden → initial page load, do nothing
@@ -317,13 +351,14 @@
                 class="yt-thumbnail"
                 class:yt-thumbnail-hidden={ytPlaying}
               />
-              <!-- ytSrc is set after mount and includes `origin` parameter so YouTube's
-                   postMessage API routes onReady/onStateChange events back correctly.
-                   {#if ytSrc} prevents an empty-src iframe from loading during SSR. -->
-              {#if ytSrc}
+              <!-- ytSrcActive is set after mount (with origin parameter) and cleared to ''
+                   when the phone scrolls out of view — removing the iframe from the DOM
+                   is the only 100%-reliable way to stop YouTube audio on mobile.
+                   When the phone returns to view ytSrcActive is restored → reload. -->
+              {#if ytSrcActive}
                 <iframe
                   bind:this={iframeEl}
-                  src={ytSrc}
+                  src={ytSrcActive}
                   title="Righello video"
                   frameborder="0"
                   allow="autoplay; fullscreen; encrypted-media"
