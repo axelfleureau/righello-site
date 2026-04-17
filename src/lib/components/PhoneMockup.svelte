@@ -272,8 +272,12 @@
       // audio (stays muted), the thumbnail would stay forever. Force it away after
       // 5s regardless — by then YouTube has definitely rendered frames via autoplay.
       // Normal path: onReady → 4s timer fires first. Audio path: reactive guard fires.
+      //
+      // IMPORTANT: check ytSrcActive before forcing — if the phone left the viewport
+      // within the first 5s, ytSrcActive='' (iframe gone). Forcing ytPlaying=true with
+      // no iframe would hide the thumbnail without any video behind it → black screen.
       setTimeout(() => {
-        if (!ytPlaying) {
+        if (!ytPlaying && ytSrcActive) {
           ytVisible = true;
           ytPlaying = true;
         }
@@ -323,6 +327,18 @@
               // Restore ytSrcActive → Svelte recreates the <iframe> with the full
               // YouTube URL; onReady fires → onStateChange updates ytVisible/ytPlaying.
               ytSrcActive = ytSrc;
+
+              // Re-entry safety net: the 5s absolute fallback from onMount only fires
+              // once (on initial load). On subsequent re-entries, if events are still
+              // dropped AND the user stays muted (reactive guard won't help), a fresh
+              // fallback is needed. ytSrcActive check prevents the black-screen bug if
+              // the phone leaves again before the 5s is up.
+              setTimeout(() => {
+                if (!ytPlaying && ytSrcActive) {
+                  ytVisible = true;
+                  ytPlaying = true;
+                }
+              }, 5000);
             }
           }
           // isVisible && !hasBeenHidden → initial page load, do nothing
