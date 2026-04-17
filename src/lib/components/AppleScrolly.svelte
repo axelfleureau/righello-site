@@ -53,7 +53,8 @@
   let ctx: any = null;
   let currentSlide = -1;
   let activeStep = 0;
-  let slideAnimated: boolean[] = [false, false, false];
+  // slideAnimated removed — text animation now replays on every snap/re-entry
+  // so each landing at a step feels alive and reinforces the magnetic snap.
   let scrollTriggerInstance: any = null;
   let isInitialized = false;
   
@@ -184,12 +185,23 @@
               end: () => `+=${scrollDistance}vh`,
               pin: true,
               anticipatePin: 1,
-              scrub: 0.8,
+              // scrub: 0.5 keeps the visual tightly coupled to the scroll position
+              // so the snap animation and the visual are always in sync.
+              // 0.8 was too slow — the scrub was still "chasing" scroll when snap fired,
+              // creating a disjointed lag instead of a magnetic pull.
+              scrub: 0.5,
               snap: {
                 snapTo: snapPoints,
-                duration: { min: 0.2, max: 0.6 },
-                delay: 0.08,
-                ease: 'power2.inOut',
+                // Longer duration = a firm, intentional pull toward each step
+                // (not a teleport, not a weak drift — a decisive magnetic grab).
+                duration: { min: 0.4, max: 0.8 },
+                // 0.15s matches the airplane animation delay — long enough for the
+                // user to feel they've "paused", short enough to feel responsive.
+                delay: 0.15,
+                // power2.out: fast initial pull → smooth deceleration into the step.
+                // Gives the "magnet snapping to a surface" feel rather than a symmetric
+                // ease-in-out which can feel sluggish on the approach.
+                ease: 'power2.out',
                 directional: true
               },
               onUpdate: (self) => {
@@ -251,13 +263,19 @@
                     
                     if (i !== currentSlide && progress >= slideStart && progress < slideEnd) {
                       currentSlide = i;
-                      if (!slideAnimated[i]) {
-                        slideAnimated[i] = true;
-                        animateSlideText(slideEl, gsap);
-                      }
+                      // Animate every time (no once-only guard) so each snap landing
+                      // plays the entrance animation fresh — reinforces the magnetic feel.
+                      animateSlideText(slideEl, gsap);
                     }
                   } else {
                     gsap.set(slideEl, { opacity: 0 });
+                    // Reset text elements so the entrance animation plays cleanly on re-entry.
+                    // Without this, desc-chars would retain their animated-in state (opacity 1)
+                    // and the next visit to the slide would skip the stagger animation.
+                    const title = slideEl.querySelector('.slide-title');
+                    const descChars = slideEl.querySelectorAll('.desc-char');
+                    if (title) gsap.set(title, { opacity: 0, y: 40, scale: 0.95 });
+                    if (descChars.length) gsap.set(descChars, { opacity: 0, y: 20 });
                   }
                 });
               }
@@ -313,6 +331,12 @@
   function animateSlideText(slideEl: HTMLElement, gsap: any) {
     const title = slideEl.querySelector('.slide-title');
     const descChars = slideEl.querySelectorAll('.desc-char');
+    
+    // Kill any in-flight tweens from a previous visit before re-animating.
+    // Without this, repeated snapping to the same slide stacks tweens that
+    // fight each other and produce a stuttering/flickering result.
+    if (title) gsap.killTweensOf(title);
+    if (descChars.length) gsap.killTweensOf(descChars);
     
     if (title) {
       gsap.fromTo(title, 
