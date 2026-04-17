@@ -647,10 +647,24 @@
     align-items: center;
   }
 
-  /* Tighten scrolly-content gap on mobile: phone margins handle visual spacing */
+  /* Mobile scrolly-content gap controls the visual spacing on BOTH sides of the phone.
+   *
+   * Because scale(0.65) is applied via CSS transform, the phone's layout box is still
+   * its full unscaled height (540px or 570px). The negative margins collapse the dead
+   * space above/below the visual phone, leaving a visual gap that equals:
+   *
+   *   visual_gap = CSS_gap + (phone_unscaled_H × (1 − scale) / 2) − |margin|
+   *             ≈ CSS_gap + 94.5 − 95  =  CSS_gap − 0.5px
+   *
+   * With CSS_gap = 1.5rem (24px):
+   *   visual_gap ≈ 23.5 px  on both sides of the phone  ✓ equal
+   *
+   * The third gap (badges → "Tra i nostri clienti" marquee) is set by padding-bottom
+   * on .cred-badges-mobile: gap = padding-bottom − partners_strip_height (~86px).
+   *   110px − 86px = 24px  ≈  same as the two phone gaps  ✓ */
   @media (max-width: 767px) {
     .scrolly-content {
-      gap: 0.25rem;
+      gap: 1.5rem;
     }
   }
 
@@ -1059,8 +1073,10 @@
       width: 100%;
       position: relative;
       z-index: 6;
-      /* padding-bottom clears the partners-strip overlay at the section bottom */
-      padding-bottom: 5rem;
+      /* padding-bottom = partners_strip_height (~86px) + desired_gap (24px) = 110px
+       * This keeps the gap from the last badge to "Tra i nostri clienti" equal to
+       * the two gaps on either side of the phone (~24px each). */
+      padding-bottom: 6.875rem;
       pointer-events: auto;
     }
   }
