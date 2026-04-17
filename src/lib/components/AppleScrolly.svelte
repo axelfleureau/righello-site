@@ -171,7 +171,7 @@
           "(min-width: 1024px)": function() {
             const totalSlides = slides.length + 1;
             const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-            const scrollDistance = slides.length * 350;
+            const scrollDistance = slides.length * 500;
             
             // Initialize slides as invisible
             slideRefs.forEach((slideEl) => {
@@ -287,6 +287,18 @@
               }
             });
             
+            // Apply the phone's initial GSAP position immediately — before the first
+            // onUpdate fires. Without this the CSS centres the phone (left:50%,
+            // translate(-50%,-50%)) and then the first onUpdate jumps it rightward,
+            // creating the visible "appears-at-centre-then-snaps" glitch on load.
+            // At progress=0: phoneProgress=0, x = 0.25*vw, xPercent=-50, scale=1.
+            gsap.set(phoneWrapper, {
+              x: window.innerWidth * 0.25,
+              xPercent: -50,
+              yPercent: -50,
+              scale: 1
+            });
+
             // Single refresh after setup
             ScrollTrigger.refresh();
           }
@@ -791,13 +803,18 @@
      * left:50% + xPercent:-50 centres the phone horizontally; GSAP then uses x (translateX)
      * to offset it rightward. This avoids per-frame layout reflows that the old left:%
      * animation caused — those reflows interrupted the YouTube iframe GPU composite layer
-     * and produced visible video stutter/freeze during the phone slide-in animation. */
+     * and produced visible video stutter/freeze during the phone slide-in animation.
+     *
+     * Initial CSS transform mirrors GSAP's starting state (phoneProgress=0):
+     *   x = 0.25vw, xPercent = -50  →  net translateX = 25vw - 50% (element width)
+     * This pre-positions the phone at ~75% from the left so it never appears centred
+     * and then jumps rightward when GSAP initialises (~200ms after mount). */
     .phone-area {
       position: absolute;
       bottom: auto;
       left: 50%;
       top: 50%;
-      transform: translateX(-50%) translateY(-50%);
+      transform: translateX(calc(25vw - 50%)) translateY(-50%);
       z-index: 5;
       transform-origin: center center;
       will-change: transform, opacity;
