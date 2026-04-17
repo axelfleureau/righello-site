@@ -94,14 +94,25 @@
     ytFallbackTimer = null;
   }
 
-  // Guard against "audio plays but thumbnail frozen" race condition:
-  // unlockAudio() in AppleScrolly sends unMute directly to the iframe (bypassing
-  // the ytPlaying guard below) so that iOS Safari receives the command inside the
-  // user-gesture context. This means audio can start while ytPlaying is still false
-  // and the thumbnail covers the iframe. When the user unmutes (!muted) and YouTube
-  // is already buffering (ytVisible), we force ytPlaying=true so the thumbnail fades
-  // out immediately — the iframe will show actual frames at this point or within ms.
-  $: if (!muted && ytVisible && !ytPlaying) {
+  // Guard against "audio plays but thumbnail frozen" bug.
+  //
+  // Root cause: on mobile browsers (Chrome Android, Safari iOS) YouTube's postMessage
+  // events (onReady, onStateChange) are frequently dropped, so ytVisible and ytPlaying
+  // never get set via the event handler. Meanwhile unlockAudio() in AppleScrolly
+  // sends unMute DIRECTLY to the iframe via querySelectorAll — bypassing the handler
+  // entirely — so audio starts even though ytVisible/ytPlaying are still false.
+  //
+  // Old guard:  if (!muted && ytVisible && !ytPlaying)
+  //   ↳ BROKEN: ytVisible only set by dropped events → circular dependency → never fires.
+  //
+  // New guard:  if (!muted && iframeEl && !ytPlaying)
+  //   ↳ iframeEl is non-null whenever the iframe is in the DOM (ytSrcActive is set),
+  //     meaning YouTube is loaded and actively playing. If the user has already
+  //     unlocked audio (!muted), the video has been buffering for at least a few
+  //     seconds — frames are ready. Setting ytVisible here prevents a black gap
+  //     between the thumbnail fade-out and the iframe becoming visible.
+  $: if (!muted && iframeEl && !ytPlaying) {
+    ytVisible = true;
     ytPlaying = true;
   }
 
@@ -256,6 +267,17 @@
       // (Svelte would overwrite it on the next reactive render pass).
       ytSrcActive = ytSrc;
       window.addEventListener('message', handleYTMessage, { passive: true });
+
+      // Absolute fallback: if ALL events are dropped AND the user never unlocks
+      // audio (stays muted), the thumbnail would stay forever. Force it away after
+      // 5s regardless — by then YouTube has definitely rendered frames via autoplay.
+      // Normal path: onReady → 4s timer fires first. Audio path: reactive guard fires.
+      setTimeout(() => {
+        if (!ytPlaying) {
+          ytVisible = true;
+          ytPlaying = true;
+        }
+      }, 5000);
     }
 
     // Pause the video when the phone scrolls out of view, resume on re-entry.
