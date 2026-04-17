@@ -1064,10 +1064,11 @@
       width: 100%;
       position: relative;
       z-index: 6;
-      /* padding-bottom = partners_strip_height (~86px) + desired_gap (24px) = 110px
+      /* padding-bottom = partners_strip_height (~75px) + desired_gap (24px) = 99px ≈ 6rem.
+       * Strip height: label (~14px) + gap (10px) + marquee (~18px) + padding-bottom (32px) ≈ 74px.
        * This keeps the gap from the last badge to "Tra i nostri clienti" equal to
        * the two gaps on either side of the phone (~24px each). */
-      padding-bottom: 6.875rem;
+      padding-bottom: 6rem;
       pointer-events: auto;
     }
   }

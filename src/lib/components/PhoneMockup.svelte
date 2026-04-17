@@ -43,8 +43,11 @@
 
   // Fallback: if YouTube never fires onStateChange(1) within 8s of onReady
   // (e.g. slow buffering, network issue, API hiccup), force the thumbnail out.
-  // The 0.6s CSS opacity transition covers any brief dark flash.
   let ytFallbackTimer: ReturnType<typeof setTimeout> | null = null;
+  // ytLooping: true for the ~2s window around a manual loop (state=0 → seekTo(0)).
+  // During this window the reactive guard must NOT fire — setting ytPlaying=false
+  // is intentional (thumbnail crossfade), and the guard would immediately override it.
+  let ytLooping = false;
   
   const rotation = spring({ x: 0, y: 0 }, {
     stiffness: 0.05,
@@ -105,13 +108,16 @@
   // Old guard:  if (!muted && ytVisible && !ytPlaying)
   //   ↳ BROKEN: ytVisible only set by dropped events → circular dependency → never fires.
   //
-  // New guard:  if (!muted && iframeEl && !ytPlaying)
+  // New guard:  if (!muted && iframeEl && !ytPlaying && !ytLooping)
   //   ↳ iframeEl is non-null whenever the iframe is in the DOM (ytSrcActive is set),
   //     meaning YouTube is loaded and actively playing. If the user has already
   //     unlocked audio (!muted), the video has been buffering for at least a few
   //     seconds — frames are ready. Setting ytVisible here prevents a black gap
   //     between the thumbnail fade-out and the iframe becoming visible.
-  $: if (!muted && iframeEl && !ytPlaying) {
+  //   ↳ !ytLooping: suppressed during the ~2s manual loop window (state=0 cross-fade).
+  //     The loop deliberately sets ytPlaying=false (to show thumbnail for a smooth
+  //     transition); the guard must not override this before the cross-fade completes.
+  $: if (!muted && iframeEl && !ytPlaying && !ytLooping) {
     ytVisible = true;
     ytPlaying = true;
   }
@@ -228,16 +234,39 @@
               ytPlaying = true;
             }
           }
-          // state 0 = ended: loop manually (iOS/iPadOS workaround for loop=1 unreliability)
+          // state 0 = ended: loop manually (iOS/iPadOS workaround for loop=1 unreliability).
+          // Instead of seeking immediately (which shows a flash), briefly cross-fade
+          // through the thumbnail — this hides the blank frame at the loop point and
+          // gives a smooth "breathing" loop rather than a visible cut.
+          //
+          // ytLooping must be set to true BEFORE ytPlaying=false so that the reactive
+          // guard ($: if !muted && iframeEl && !ytPlaying && !ytLooping) does not
+          // immediately override the intentional thumbnail-show (both are read in the
+          // same Svelte reactive evaluation pass).
           if (data.info === 0) {
-            iframeEl.contentWindow?.postMessage(
-              JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }),
-              '*'
-            );
-            iframeEl.contentWindow?.postMessage(
-              JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
-              '*'
-            );
+            ytLooping = true;           // suppress reactive guard
+            ytPlaying = false;          // thumbnail fades in (1s ease-in-out)
+            setTimeout(() => {
+              if (!ytSrcActive) { ytLooping = false; return; } // phone scrolled away
+              iframeEl?.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }),
+                '*'
+              );
+              iframeEl?.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+                '*'
+              );
+              // Safety: if onStateChange(1) never arrives (events dropped on mobile),
+              // reset ytLooping and force thumbnail away after 2s so the poster
+              // doesn't stay stuck after a loop.
+              setTimeout(() => {
+                ytLooping = false;
+                if (!ytPlaying && ytSrcActive) {
+                  ytVisible = true;
+                  ytPlaying = true;
+                }
+              }, 2000);
+            }, 300); // seek during the thumbnail fade-in → loop flash is covered
           }
         }
 
@@ -311,6 +340,8 @@
               // Without this, the timer could fire during the new player's startup and
               // incorrectly force ytPlaying=true before the new video is ready.
               if (ytFallbackTimer) { clearTimeout(ytFallbackTimer); ytFallbackTimer = null; }
+              // If a loop crossfade was in progress, cancel it — the phone is gone.
+              ytLooping = false;
               // Setting ytSrcActive='' lets Svelte remove the <iframe> from the DOM
               // via the {#if ytSrcActive} guard — guaranteed audio stop. Direct
               // iframeEl.src mutation would be overwritten by the subsequent Svelte
@@ -615,7 +646,7 @@
     transform-origin: center center;
     border: 0;
     pointer-events: none;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.8s ease-in-out;
   }
 
   /* Hidden while the video hasn't fired its first onStateChange(1) */
@@ -624,7 +655,8 @@
   }
 
   /* YouTube thumbnail — always in DOM as a poster/fallback.
-     Fades out smoothly once the iframe confirms it is playing. */
+     Fades out smoothly once the iframe confirms it is playing.
+     ease-in-out gives a breathing-like feel rather than a linear cut. */
   .yt-thumbnail {
     position: absolute;
     inset: 0;
@@ -633,7 +665,7 @@
     object-fit: cover;
     z-index: 1;
     pointer-events: none;
-    transition: opacity 0.6s ease;
+    transition: opacity 1s ease-in-out;
   }
 
   .yt-thumbnail-hidden {
