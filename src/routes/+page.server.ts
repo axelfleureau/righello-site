@@ -1,5 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { getAllVideos } from '$lib/server/cloudinary';
+import { getHiddenFallbackIds } from '$lib/server/video-visibility';
+import { getCache, setCache } from '$lib/server/page-cache';
 import {
   FALLBACK_HERO,
   FALLBACK_SHOWCASE,
@@ -11,86 +13,111 @@ import {
   type HeroVideo,
 } from '$lib/data/videos-fallback';
 
-let cache: {
-  data: Awaited<ReturnType<typeof getAllVideos>>;
-  expiresAt: number;
-} | null = null;
-
 const CACHE_TTL_MS = 5 * 60 * 1000;
 
-async function getCachedVideos() {
+async function getCachedData() {
   const now = Date.now();
+  const cache = getCache();
   if (cache && now < cache.expiresAt) {
-    return cache.data;
+    return cache;
   }
-  const data = await getAllVideos();
-  cache = { data, expiresAt: now + CACHE_TTL_MS };
-  return data;
+  const [data, hiddenFallbackIds] = await Promise.all([
+    getAllVideos(),
+    getHiddenFallbackIds(),
+  ]);
+  const fresh = { data, hiddenFallbackIds, expiresAt: now + CACHE_TTL_MS };
+  setCache(fresh);
+  return fresh;
 }
 
 export const load: PageServerLoad = async () => {
   let cloudinaryData = { hero: [], showcase: [], reels: [], testimonials: [] } as Awaited<ReturnType<typeof getAllVideos>>;
+  let hiddenFallbackIds: string[] = [];
 
   try {
-    cloudinaryData = await getCachedVideos();
+    const cached = await getCachedData();
+    cloudinaryData = cached.data;
+    hiddenFallbackIds = cached.hiddenFallbackIds;
   } catch (err) {
-    console.error('[page.server] Cloudinary fetch failed, using fallback data:', err);
+    console.error('[page.server] Data fetch failed, using fallback data:', err);
   }
 
+  // Visible Cloudinary videos (not hidden)
+  const visibleCloudinaryHero = cloudinaryData.hero.filter((v) => !v.hidden);
+  const visibleCloudinaryShowcase = cloudinaryData.showcase.filter((v) => !v.hidden);
+  const visibleCloudinaryReels = cloudinaryData.reels.filter((v) => !v.hidden);
+  const visibleCloudinaryTestimonials = cloudinaryData.testimonials.filter((v) => !v.hidden);
+
+  // --- Hero ---
   const heroVideo: HeroVideo =
-    cloudinaryData.hero.length > 0
+    visibleCloudinaryHero.length > 0
       ? {
-          youtubeId: cloudinaryData.hero[0].youtubeId,
-          cloudinaryUrl: cloudinaryData.hero[0].url || undefined,
-          cloudinaryPublicId: cloudinaryData.hero[0].publicId,
+          youtubeId: visibleCloudinaryHero[0].youtubeId,
+          cloudinaryUrl: visibleCloudinaryHero[0].url || undefined,
+          cloudinaryPublicId: visibleCloudinaryHero[0].publicId,
         }
       : FALLBACK_HERO;
 
-  const showcaseItems: VideoItem[] =
-    cloudinaryData.showcase.length > 0
-      ? cloudinaryData.showcase.map((v) => ({
-          id: v.publicId,
-          title: v.title,
-          subtitle: v.subtitle,
-          category: v.category,
-          youtubeId: v.youtubeId,
-          cloudinaryUrl: v.url || undefined,
-          cloudinaryPublicId: v.publicId,
-          thumbnailUrl: v.thumbnailUrl,
-          order: v.order,
-        }))
-      : FALLBACK_SHOWCASE;
+  // --- Showcase: merge Cloudinary + fallback, filter hidden, sort by order ---
+  const fallbackShowcase: VideoItem[] = FALLBACK_SHOWCASE
+    .filter((v) => !hiddenFallbackIds.includes(v.id))
+    .map((v) => ({ ...v, order: v.order + 1000 }));
 
-  const reelItems: ReelItem[] =
-    cloudinaryData.reels.length > 0
-      ? cloudinaryData.reels.map((v) => ({
-          id: v.publicId,
-          title: v.title,
-          subtitle: v.subtitle,
-          category: v.category,
-          youtubeId: v.youtubeId,
-          cloudinaryUrl: v.url || undefined,
-          cloudinaryPublicId: v.publicId,
-          thumbnailUrl: v.thumbnailUrl,
-          order: v.order,
-        }))
-      : FALLBACK_REELS;
+  const showcaseItems: VideoItem[] = [
+    ...visibleCloudinaryShowcase.map((v) => ({
+      id: v.publicId,
+      title: v.title,
+      subtitle: v.subtitle,
+      category: v.category,
+      youtubeId: v.youtubeId,
+      cloudinaryUrl: v.url || undefined,
+      cloudinaryPublicId: v.publicId,
+      thumbnailUrl: v.thumbnailUrl,
+      order: v.order,
+    })),
+    ...fallbackShowcase,
+  ].sort((a, b) => a.order - b.order);
 
-  const testimonialItems: TestimonialItem[] =
-    cloudinaryData.testimonials.length > 0
-      ? cloudinaryData.testimonials.map((v) => ({
-          id: v.publicId,
-          clientName: v.clientName || v.title,
-          clientRole: v.clientRole || '',
-          company: v.company || '',
-          quote: v.quote || '',
-          youtubeId: v.youtubeId,
-          cloudinaryUrl: v.url || undefined,
-          cloudinaryPublicId: v.publicId,
-          thumbnailUrl: v.thumbnailUrl,
-          order: v.order,
-        }))
-      : FALLBACK_TESTIMONIALS;
+  // --- Reels: merge Cloudinary + fallback, filter hidden, sort by order ---
+  const fallbackReels: ReelItem[] = FALLBACK_REELS
+    .filter((v) => !hiddenFallbackIds.includes(v.id))
+    .map((v) => ({ ...v, order: v.order + 1000 }));
+
+  const reelItems: ReelItem[] = [
+    ...visibleCloudinaryReels.map((v) => ({
+      id: v.publicId,
+      title: v.title,
+      subtitle: v.subtitle,
+      category: v.category,
+      youtubeId: v.youtubeId,
+      cloudinaryUrl: v.url || undefined,
+      cloudinaryPublicId: v.publicId,
+      thumbnailUrl: v.thumbnailUrl,
+      order: v.order,
+    })),
+    ...fallbackReels,
+  ].sort((a, b) => a.order - b.order);
+
+  // --- Testimonials: merge Cloudinary + fallback, filter hidden, sort by order ---
+  const fallbackTestimonials: TestimonialItem[] = FALLBACK_TESTIMONIALS
+    .filter((v) => !hiddenFallbackIds.includes(v.id))
+    .map((v) => ({ ...v, order: v.order + 1000 }));
+
+  const testimonialItems: TestimonialItem[] = [
+    ...visibleCloudinaryTestimonials.map((v) => ({
+      id: v.publicId,
+      clientName: v.clientName || v.title,
+      clientRole: v.clientRole || '',
+      company: v.company || '',
+      quote: v.quote || '',
+      youtubeId: v.youtubeId,
+      cloudinaryUrl: v.url || undefined,
+      cloudinaryPublicId: v.publicId,
+      thumbnailUrl: v.thumbnailUrl,
+      order: v.order,
+    })),
+    ...fallbackTestimonials,
+  ].sort((a, b) => a.order - b.order);
 
   return {
     heroVideo,

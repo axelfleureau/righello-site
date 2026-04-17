@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageData } from './$types';
+  import type { AdminVideo } from './+page.server';
 
   export let data: PageData;
 
@@ -45,6 +46,20 @@
   let uploadProgress = 0;
   let fileInput: HTMLInputElement;
 
+  // Local hidden state so toggles are instant without reload
+  let hiddenState: Record<string, boolean> = {};
+
+  function initHiddenState() {
+    const state: Record<string, boolean> = {};
+    for (const s of sections) {
+      for (const v of (data.videos[s] || [])) {
+        state[v.id] = v.hidden;
+      }
+    }
+    hiddenState = state;
+  }
+  initHiddenState();
+
   function handleFileChange(e: Event) {
     const files = (e.target as HTMLInputElement).files;
     uploadFile = files?.[0] ?? null;
@@ -54,12 +69,19 @@
     return s === 'testimonials';
   }
 
-  function getVideos(section: Section) {
+  function getVideos(section: Section): AdminVideo[] {
     return data.videos[section] || [];
   }
 
-  function startEdit(video: (typeof data.videos.showcase)[0]) {
-    editingId = video.publicId;
+  function videoUrl(v: AdminVideo): string {
+    if (v.url) return v.url;
+    if (v.youtubeId) return `https://www.youtube.com/watch?v=${v.youtubeId}`;
+    if (v.videoSrc) return v.videoSrc;
+    return '#';
+  }
+
+  function startEdit(video: AdminVideo) {
+    editingId = video.id;
     editForm = {
       title: video.title || '',
       subtitle: video.subtitle || '',
@@ -76,12 +98,13 @@
     editingId = null;
   }
 
-  async function saveEdit(publicId: string) {
+  async function saveEdit(video: AdminVideo) {
+    if (!video.publicId) return;
     try {
       const res = await fetch('/api/admin/videos', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ publicId, ...editForm }),
+        body: JSON.stringify({ publicId: video.publicId, ...editForm }),
       });
       if (!res.ok) throw new Error(await res.text());
       editingId = null;
@@ -91,18 +114,38 @@
     }
   }
 
-  async function deleteVideo(publicId: string, title: string) {
-    if (!confirm(`Eliminare il video "${title}"? Questa azione è irreversibile.`)) return;
+  async function deleteVideo(video: AdminVideo) {
+    if (!video.publicId) return;
+    if (!confirm(`Eliminare il video "${video.title}"? Questa azione è irreversibile.`)) return;
     try {
       const res = await fetch('/api/admin/videos', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ publicId }),
+        body: JSON.stringify({ publicId: video.publicId }),
       });
       if (!res.ok) throw new Error(await res.text());
       window.location.reload();
     } catch (err: unknown) {
       alert('Errore eliminazione: ' + String(err));
+    }
+  }
+
+  async function toggleHidden(video: AdminVideo) {
+    const newHidden = !hiddenState[video.id];
+    hiddenState[video.id] = newHidden; // optimistic update
+    try {
+      const res = await fetch('/api/admin/videos', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: video.id, source: video.source, hidden: newHidden }),
+      });
+      if (!res.ok) {
+        hiddenState[video.id] = !newHidden; // revert on error
+        throw new Error(await res.text());
+      }
+    } catch (err: unknown) {
+      hiddenState[video.id] = !newHidden;
+      alert('Errore: ' + String(err));
     }
   }
 
@@ -144,11 +187,8 @@
 
       await new Promise<void>((resolve, reject) => {
         xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            resolve();
-          } else {
-            reject(new Error(`Upload failed: ${xhr.responseText}`));
-          }
+          if (xhr.status >= 200 && xhr.status < 300) resolve();
+          else reject(new Error(`Upload failed: ${xhr.responseText}`));
         };
         xhr.onerror = () => reject(new Error('Network error'));
         xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`);
@@ -179,6 +219,9 @@
     await fetch('/api/admin/logout', { method: 'POST' });
     window.location.href = '/admin';
   }
+
+  $: visibleCount = (s: Section) => getVideos(s).filter((v) => !hiddenState[v.id]).length;
+  $: totalCount = (s: Section) => getVideos(s).length;
 </script>
 
 <svelte:head>
@@ -210,9 +253,21 @@
           style="background: {activeSection === section ? 'linear-gradient(135deg,#D6487E,#06B6D4)' : 'rgba(255,255,255,0.06)'}; border: 1px solid {activeSection === section ? 'transparent' : 'rgba(255,255,255,0.1)'}; border-radius: 0.625rem; padding: 0.625rem 1.25rem; color: #fff; font-size: 0.875rem; font-weight: {activeSection === section ? '600' : '400'}; cursor: pointer;"
         >
           {sectionLabels[section]}
-          <span style="margin-left: 0.5rem; opacity: 0.6;">({getVideos(section).length})</span>
+          <span style="margin-left: 0.5rem; opacity: 0.6;">({visibleCount(section)}/{totalCount(section)})</span>
         </button>
       {/each}
+    </div>
+
+    <!-- Legend -->
+    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: rgba(255,255,255,0.45);">
+        <span style="background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.35); border-radius: 0.3rem; padding: 0.1rem 0.4rem; font-size: 0.7rem; color: #67e8f9;">Cloudinary</span>
+        Video caricati sul tuo account
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: rgba(255,255,255,0.45);">
+        <span style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.3rem; padding: 0.1rem 0.4rem; font-size: 0.7rem; color: rgba(255,255,255,0.55);">Default</span>
+        Video integrati nel sito (YouTube / Firebase)
+      </div>
     </div>
 
     <!-- Video List -->
@@ -223,14 +278,16 @@
 
       {#if getVideos(activeSection).length === 0}
         <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 3rem; text-align: center; color: rgba(255,255,255,0.4);">
-          Nessun video Cloudinary in questa sezione. Caricane uno qui sotto, oppure il sito usa i video di default.
+          Nessun video in questa sezione.
         </div>
       {:else}
         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          {#each getVideos(activeSection) as video (video.publicId)}
-            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; overflow: hidden;">
-              {#if editingId === video.publicId}
-                <!-- Edit form -->
+          {#each getVideos(activeSection) as video (video.id)}
+            {@const isHidden = hiddenState[video.id]}
+            <div style="background: rgba(255,255,255,{isHidden ? '0.02' : '0.04'}); border: 1px solid rgba(255,255,255,{isHidden ? '0.05' : '0.08'}); border-radius: 1rem; overflow: hidden; opacity: {isHidden ? 0.55 : 1}; transition: opacity 0.2s;">
+
+              {#if editingId === video.id && video.source === 'cloudinary'}
+                <!-- Edit form (Cloudinary only) -->
                 <div style="padding: 1.25rem; display: flex; flex-direction: column; gap: 0.875rem;">
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                     <div>
@@ -266,7 +323,7 @@
                     <button on:click={cancelEdit} style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.5rem 1rem; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 0.875rem;">
                       Annulla
                     </button>
-                    <button on:click={() => saveEdit(video.publicId)} style="background: linear-gradient(135deg,#D6487E,#06B6D4); border: none; border-radius: 0.5rem; padding: 0.5rem 1.25rem; color: #fff; cursor: pointer; font-size: 0.875rem; font-weight: 600;">
+                    <button on:click={() => saveEdit(video)} style="background: linear-gradient(135deg,#D6487E,#06B6D4); border: none; border-radius: 0.5rem; padding: 0.5rem 1.25rem; color: #fff; cursor: pointer; font-size: 0.875rem; font-weight: 600;">
                       Salva
                     </button>
                   </div>
@@ -274,22 +331,65 @@
               {:else}
                 <!-- Card view -->
                 <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem;">
+                  <!-- Thumbnail -->
                   <div style="position: relative; width: 80px; height: 52px; border-radius: 0.5rem; overflow: hidden; flex-shrink: 0; background: #111;">
-                    <img src={video.thumbnailUrl} alt={video.title} style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
+                    {#if video.thumbnailUrl}
+                      <img src={video.thumbnailUrl} alt={video.title} style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
+                    {/if}
                   </div>
+
+                  <!-- Info -->
                   <div style="flex: 1; min-width: 0;">
-                    <p style="font-weight: 600; margin: 0 0 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{video.title || '(senza titolo)'}</p>
-                    <p style="color: rgba(255,255,255,0.45); font-size: 0.8rem; margin: 0;">{video.subtitle} {video.category ? `· ${video.category}` : ''} · ordine: {video.order}</p>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                      <p style="font-weight: 600; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{video.title || '(senza titolo)'}</p>
+                      {#if video.source === 'cloudinary'}
+                        <span style="flex-shrink: 0; background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.35); border-radius: 0.3rem; padding: 0.1rem 0.4rem; font-size: 0.65rem; color: #67e8f9; font-weight: 600;">Cloudinary</span>
+                      {:else}
+                        <span style="flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.3rem; padding: 0.1rem 0.4rem; font-size: 0.65rem; color: rgba(255,255,255,0.5);">Default</span>
+                      {/if}
+                      {#if isHidden}
+                        <span style="flex-shrink: 0; background: rgba(214,72,126,0.1); border: 1px solid rgba(214,72,126,0.25); border-radius: 0.3rem; padding: 0.1rem 0.4rem; font-size: 0.65rem; color: #f9a8c9;">Nascosto</span>
+                      {/if}
+                    </div>
+                    <p style="color: rgba(255,255,255,0.45); font-size: 0.8rem; margin: 0;">
+                      {[video.subtitle, video.category ? `· ${video.category}` : '', `· ordine: ${video.order}`].filter(Boolean).join(' ')}
+                    </p>
                   </div>
-                  <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
-                    <a href={video.url} target="_blank" rel="noopener" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.4rem 0.75rem; color: rgba(255,255,255,0.6); font-size: 0.8rem; text-decoration: none;">
-                      Apri
-                    </a>
-                    <button on:click={() => startEdit(video)} style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.4rem 0.75rem; color: rgba(255,255,255,0.7); font-size: 0.8rem; cursor: pointer;">
-                      Modifica
-                    </button>
-                    <button on:click={() => deleteVideo(video.publicId, video.title)} style="background: rgba(214,72,126,0.12); border: 1px solid rgba(214,72,126,0.3); border-radius: 0.5rem; padding: 0.4rem 0.75rem; color: #f9a8c9; font-size: 0.8rem; cursor: pointer;">
-                      Elimina
+
+                  <!-- Actions -->
+                  <div style="display: flex; gap: 0.5rem; flex-shrink: 0; align-items: center;">
+                    <!-- Apri link -->
+                    {#if videoUrl(video) !== '#'}
+                      <a href={videoUrl(video)} target="_blank" rel="noopener" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.4rem 0.75rem; color: rgba(255,255,255,0.6); font-size: 0.8rem; text-decoration: none; white-space: nowrap;">
+                        Apri
+                      </a>
+                    {/if}
+
+                    <!-- Modifica + Elimina: solo per Cloudinary -->
+                    {#if video.source === 'cloudinary'}
+                      <button on:click={() => startEdit(video)} style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 0.5rem; padding: 0.4rem 0.75rem; color: rgba(255,255,255,0.7); font-size: 0.8rem; cursor: pointer; white-space: nowrap;">
+                        Modifica
+                      </button>
+                      <button on:click={() => deleteVideo(video)} style="background: rgba(214,72,126,0.12); border: 1px solid rgba(214,72,126,0.3); border-radius: 0.5rem; padding: 0.4rem 0.75rem; color: #f9a8c9; font-size: 0.8rem; cursor: pointer; white-space: nowrap;">
+                        Elimina
+                      </button>
+                    {/if}
+
+                    <!-- Toggle Visibilità: per tutti -->
+                    <button
+                      on:click={() => toggleHidden(video)}
+                      title={isHidden ? 'Rendi visibile sul sito' : 'Nascondi dal sito'}
+                      style="background: {isHidden ? 'rgba(6,182,212,0.12)' : 'rgba(255,255,255,0.06)'}; border: 1px solid {isHidden ? 'rgba(6,182,212,0.3)' : 'rgba(255,255,255,0.12)'}; border-radius: 0.5rem; padding: 0.4rem 0.75rem; color: {isHidden ? '#67e8f9' : 'rgba(255,255,255,0.5)'}; font-size: 0.8rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 0.3rem;"
+                    >
+                      {#if isHidden}
+                        <!-- Eye icon -->
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Mostra
+                      {:else}
+                        <!-- Eye-off icon -->
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        Nascondi
+                      {/if}
                     </button>
                   </div>
                 </div>
@@ -349,14 +449,14 @@
       <div style="margin-bottom: 1.25rem;">
         <label style="display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 0.5rem;">File video (MP4, MOV, WebM) *</label>
         <div
-          style="border: 2px dashed rgba(255,255,255,0.15); border-radius: 0.75rem; padding: 1.5rem; text-align: center; cursor: pointer; transition: border-color 0.2s;"
+          style="border: 2px dashed rgba(255,255,255,0.15); border-radius: 0.75rem; padding: 1.5rem; text-align: center; cursor: pointer;"
           on:click={() => fileInput?.click()}
           on:keydown={(e) => e.key === 'Enter' && fileInput?.click()}
           role="button"
           tabindex="0"
         >
           {#if uploadFile}
-            <p style="color: #67e8f9; margin: 0; font-size: 0.875rem;">📎 {uploadFile.name} ({(uploadFile.size / 1024 / 1024).toFixed(1)} MB)</p>
+            <p style="color: #67e8f9; margin: 0; font-size: 0.875rem;">{uploadFile.name} ({(uploadFile.size / 1024 / 1024).toFixed(1)} MB)</p>
           {:else}
             <p style="color: rgba(255,255,255,0.35); margin: 0; font-size: 0.875rem;">Clicca per scegliere un file</p>
           {/if}

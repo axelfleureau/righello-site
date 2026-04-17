@@ -19,6 +19,7 @@ export interface CloudinaryVideo {
   subtitle: string;
   category: string;
   order: number;
+  hidden: boolean;
   youtubeId?: string;
   clientName?: string;
   clientRole?: string;
@@ -78,6 +79,7 @@ export async function getVideosBySection(section: VideoSection): Promise<Cloudin
         subtitle: ctx.subtitle || '',
         category: ctx.category || '',
         order: parseInt(ctx.order || '99', 10),
+        hidden: ctx.hidden === '1',
         youtubeId,
         clientName: ctx.clientName,
         clientRole: ctx.clientRole,
