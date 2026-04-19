@@ -1087,7 +1087,8 @@
     50% { transform: scale(1.15); opacity: 0.85; }
   }
 
-  .card-content:hover .youtube-play-hint { opacity: 0; }
+  .card-content:hover .youtube-play-hint,
+  .card-content:active .youtube-play-hint { opacity: 0; }
 
   @media (prefers-reduced-motion: reduce) {
     .youtube-play-hint { animation: none; opacity: 0.7; }
