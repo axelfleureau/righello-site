@@ -35,11 +35,16 @@
   // can reliably route events back to this page. An empty string means the
   // iframe is not yet rendered (avoids loading without origin during SSR).
   let ytSrc = '';
-  // ytSrcActive: Svelte-reactive binding used as the iframe src attribute.
-  // '' → iframe removed from DOM (guaranteed audio stop, no re-render surprise).
-  // = ytSrc → iframe re-created, YouTube reloads, onReady fires again.
-  // We must NOT do iframeEl.src = '' directly — Svelte would overwrite it on the
-  // next reactive re-render (e.g. when ytPlaying/ytVisible change simultaneously).
+  // ytSrcActive: reactive src binding for the YouTube iframe.
+  // ''     → iframe renders as src="about:blank" → YouTube unloads, audio stops.
+  // ytSrc  → iframe navigates to the YouTube embed URL → YouTube loads/reloads.
+  //
+  // IMPORTANT: the iframe is ALWAYS in the DOM (no {#if ytSrcActive} wrapper).
+  // Removing/inserting the iframe via an {#if} block causes a NotFoundError crash
+  // in GSAP's ScrollTrigger — Svelte's DOM reconciliation invalidates the node
+  // reference GSAP uses for insertBefore while the pin spacer is active.
+  // Using src="about:blank" is equally effective at stopping audio (the browser
+  // immediately unloads the document in the iframe) without any DOM restructuring.
   let ytSrcActive = '';
   // On touch/mobile devices we disable the 3D perspective tilt entirely.
   // iOS Safari cannot composite video frames inside a preserve-3d layer —
@@ -147,16 +152,16 @@
   // Old guard:  if (!muted && ytVisible && !ytPlaying)
   //   ↳ BROKEN: ytVisible only set by dropped events → circular dependency → never fires.
   //
-  // New guard:  if (!muted && iframeEl && !ytPlaying && !ytLooping)
-  //   ↳ iframeEl is non-null whenever the iframe is in the DOM (ytSrcActive is set),
-  //     meaning YouTube is loaded and actively playing. If the user has already
-  //     unlocked audio (!muted), the video has been buffering for at least a few
-  //     seconds — frames are ready. Setting ytVisible here prevents a black gap
-  //     between the thumbnail fade-out and the iframe becoming visible.
+  // New guard:  if (!muted && iframeEl && ytSrcActive && !ytPlaying && !ytLooping)
+  //   ↳ iframeEl: always non-null after mount (iframe is always in the DOM — see below).
+  //   ↳ ytSrcActive: non-empty only when YouTube is actually loaded (not about:blank).
+  //     This guard must NOT fire when the phone is out of viewport (ytSrcActive='').
+  //     Without this check the guard would fire after the phone leaves view, setting
+  //     ytPlaying=true while there is no video behind the thumbnail → black screen.
   //   ↳ !ytLooping: suppressed during the ~2s manual loop window (state=0 cross-fade).
   //     The loop deliberately sets ytPlaying=false (to show thumbnail for a smooth
   //     transition); the guard must not override this before the cross-fade completes.
-  $: if (!muted && iframeEl && !ytPlaying && !ytLooping) {
+  $: if (!muted && iframeEl && ytSrcActive && !ytPlaying && !ytLooping) {
     ytVisible = true;
     ytPlaying = true;
   }
@@ -228,7 +233,9 @@
         e.origin !== 'https://www.youtube-nocookie.com' &&
         e.origin !== 'https://www.youtube.com'
       ) return;
-      if (!iframeEl) return; // iframe not yet mounted — ignore stray early messages
+      // iframeEl is always in the DOM after mount (see ytSrcActive comment below).
+      // Guard against stray messages while src="about:blank" (phone out of viewport).
+      if (!iframeEl || !ytSrcActive) return;
       try {
         const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
 
@@ -532,21 +539,26 @@
                   <span class="ytf-label">righello.lab</span>
                 </div>
               {/if}
-              <!-- ytSrcActive is set after mount (with origin parameter) and cleared to ''
-                   when the phone scrolls out of view — removing the iframe from the DOM
-                   is the only 100%-reliable way to stop YouTube audio on mobile.
-                   When the phone returns to view ytSrcActive is restored → reload. -->
-              {#if ytSrcActive}
-                <iframe
-                  bind:this={iframeEl}
-                  src={ytSrcActive}
-                  title="Righello video"
-                  frameborder="0"
-                  allow="autoplay; fullscreen; encrypted-media"
-                  class="yt-iframe"
-                  class:yt-iframe-hidden={!ytVisible}
-                ></iframe>
-              {/if}
+              <!-- The iframe is ALWAYS in the DOM after mount — never removed/re-added.
+                   Removing/inserting it (via {#if ytSrcActive}) caused a NotFoundError
+                   crash in GSAP's ScrollTrigger pin spacer:
+                     insertBefore → Ri → ScrollTrigger.refresh → onUpdate
+                   Root cause: Svelte's DOM reconciliation (deleting an element inside the
+                   GSAP-pinned container during scroll) invalidated the node reference GSAP
+                   tracks for insertBefore, crashing mid-scroll and forcing a full re-render.
+                   Fix: keep the iframe in the DOM; control audio/video state via src only.
+                     - ytSrcActive = ''  → src="about:blank" → YouTube unloads (audio stops)
+                     - ytSrcActive = url → src=url → YouTube loads/reloads cleanly
+                   Changing an attribute is invisible to GSAP; removing a node is not. -->
+              <iframe
+                bind:this={iframeEl}
+                src={ytSrcActive || 'about:blank'}
+                title="Righello video"
+                frameborder="0"
+                allow="autoplay; fullscreen; encrypted-media"
+                class="yt-iframe"
+                class:yt-iframe-hidden={!ytVisible}
+              ></iframe>
             </div>
           {:else if videoSrc}
             {#if videoLoading}
