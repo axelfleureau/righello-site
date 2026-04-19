@@ -430,7 +430,7 @@
                   <track kind="captions" />
                 </video>
                 <div class="video-progress-bar" bind:this={progressBarEls[i]} aria-hidden="true"></div>
-                <span class="video-time-remaining" bind:this={timeRemainingEls[i]} aria-hidden="true"></span>
+                <span class="video-time-label" bind:this={timeRemainingEls[i]} aria-hidden="true"></span>
               {/if}
               {#if item.youtubeId}
                 <div class="youtube-play-hint" aria-hidden="true">
@@ -1082,8 +1082,8 @@
     opacity: 0;
   }
 
-  /* ── Time-remaining label ── */
-  .video-time-remaining {
+  /* ── Time label ── */
+  .video-time-label {
     position: absolute;
     bottom: 7px;
     right: 8px;
@@ -1099,12 +1099,12 @@
     line-height: 1;
   }
 
-  .card-content:hover .video-time-remaining {
+  .card-content:hover .video-time-label {
     opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .video-time-remaining { display: none; }
+    .video-time-label { display: none; }
   }
 
   /* ── YouTube play hint ── */
