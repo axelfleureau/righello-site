@@ -181,6 +181,7 @@
   }
   
   function openLightbox(item: VideoItem) {
+    tappedIndex = null;
     lightboxYoutubeId = item.youtubeId ?? null;
     lightboxVideo = item.youtubeId ? null : (item.cloudinaryUrl ?? item.videoSrc ?? null);
     lightboxTitle = item.title;
@@ -220,6 +221,7 @@
   let touchStartY = 0;
   let touchDragDirection: 'horizontal' | 'vertical' | null = null;
   let hasTouchDragged = false;
+  let tappedIndex: number | null = null;
   
   // Touch handlers: browser handles both pan-x (carousel) and pan-y (page scroll)
   // natively via `touch-action: pan-x pan-y`. We only track drag distance here
@@ -229,10 +231,24 @@
     touchStartY = e.touches[0].pageY;
     touchDragDirection = null;
     hasTouchDragged = false;
+    // Mark which card was tapped so we can keep the play hint hidden until
+    // the lightbox is confirmed open (avoids the brief re-flash on finger lift).
+    const card = (e.target as HTMLElement).closest<HTMLElement>('[data-card-idx]');
+    const idx = card ? parseInt(card.dataset.cardIdx ?? '-1') : -1;
+    tappedIndex = idx >= 0 ? idx : null;
   }
   
   function handleTouchEnd() {
     touchDragDirection = null;
+    // tappedIndex is intentionally NOT cleared here so the hint stays hidden
+    // until openLightbox() confirms the lightbox is open.  It will be cleared
+    // by openLightbox(), on drag, or on the next touchstart.
+  }
+
+  function handleTouchCancel() {
+    touchDragDirection = null;
+    hasTouchDragged = false;
+    tappedIndex = null;
   }
 
   function handleTouchMove(e: TouchEvent) {
@@ -243,6 +259,7 @@
     }
     if (touchDragDirection === 'horizontal' && Math.abs(dx) > 8) {
       hasTouchDragged = true;
+      tappedIndex = null;
     }
     // No e.preventDefault() — browser handles scroll natively via touch-action
   }
@@ -378,7 +395,7 @@
       on:touchstart={handleTouchStart}
       on:touchmove={handleTouchMove}
       on:touchend={handleTouchEnd}
-      on:touchcancel={handleTouchEnd}
+      on:touchcancel={handleTouchCancel}
       on:keydown={handleContainerKeydown}
       tabindex="0"
       role="list"
@@ -393,6 +410,7 @@
       >
         <div 
           class="card-content"
+          class:is-tapped={tappedIndex === i}
           on:mouseenter={(e) => {
             const video = e.currentTarget.querySelector('video');
             if (video) handleVideoHover(e, video);
@@ -1131,7 +1149,8 @@
   }
 
   .card-content:hover .youtube-play-hint,
-  .card-content:active .youtube-play-hint { opacity: 0; }
+  .card-content:active .youtube-play-hint,
+  .card-content.is-tapped .youtube-play-hint { opacity: 0; animation-play-state: paused; }
 
   @media (prefers-reduced-motion: reduce) {
     .youtube-play-hint { animation: none; opacity: 0.7; }

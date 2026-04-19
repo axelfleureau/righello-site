@@ -133,6 +133,7 @@
   }
   
   function openLightbox(item: { title: string; videoSrc?: string; cloudinaryUrl?: string; youtubeId?: string }) {
+    tappedIndex = null;
     lightboxYoutubeId = item.youtubeId ?? null;
     lightboxVideo = item.youtubeId ? null : (item.cloudinaryUrl ?? item.videoSrc ?? null);
     lightboxTitle = item.title;
@@ -159,12 +160,18 @@
   let touchStartX = 0;
   let touchScrollLeft = 0;
   let isTouching = false;
+  let tappedIndex: number | null = null;
   
   function handleTouchStart(e: TouchEvent) {
     isTouching = true;
     wasDragged = false;
     touchStartX = e.touches[0].pageX;
     container.style.scrollSnapType = 'none';
+    // Mark which card was tapped so the play hint stays hidden until the
+    // lightbox is confirmed open (avoids the brief re-flash on finger lift).
+    const card = (e.target as HTMLElement).closest<HTMLElement>('[data-card-idx]');
+    const idx = card ? parseInt(card.dataset.cardIdx ?? '-1') : -1;
+    tappedIndex = idx >= 0 ? idx : null;
   }
   
   function handleTouchMove(e: TouchEvent) {
@@ -172,17 +179,21 @@
     const dx = Math.abs(e.touches[0].pageX - touchStartX);
     if (dx > 10) {
       wasDragged = true;
+      tappedIndex = null;
     }
   }
   
   function handleTouchEnd() {
     isTouching = false;
     container.style.scrollSnapType = '';
+    // tappedIndex is intentionally NOT cleared here so the hint stays hidden
+    // until the lightbox open is confirmed by openLightbox() / handleCardClick().
   }
 
   function handleTouchCancel() {
     isTouching = false;
     container.style.scrollSnapType = '';
+    tappedIndex = null;
   }
   
   function handleCardClick(item: { title: string; videoSrc?: string; cloudinaryUrl?: string; youtubeId?: string }, itemIndex?: number) {
@@ -190,6 +201,7 @@
     if (!item.cloudinaryUrl && !item.videoSrc && !item.youtubeId) return;
     
     if (useReelViewer) {
+      tappedIndex = null;
       const reelIdx = reelItems.findIndex(i =>
         (i.youtubeId && i.youtubeId === item.youtubeId) ||
         (i.cloudinaryUrl && i.cloudinaryUrl === item.cloudinaryUrl) ||
@@ -361,6 +373,7 @@
       >
         <div 
           class="card-content"
+          class:is-tapped={tappedIndex === i}
           on:mouseenter={(e) => {
             const video = e.currentTarget.querySelector('video');
             handleVideoHover(e, video);
@@ -1088,7 +1101,8 @@
   }
 
   .card-content:hover .youtube-play-hint,
-  .card-content:active .youtube-play-hint { opacity: 0; }
+  .card-content:active .youtube-play-hint,
+  .card-content.is-tapped .youtube-play-hint { opacity: 0; animation-play-state: paused; }
 
   @media (prefers-reduced-motion: reduce) {
     .youtube-play-hint { animation: none; opacity: 0.7; }
