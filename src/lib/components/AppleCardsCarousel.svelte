@@ -274,6 +274,7 @@
         const bar = progressBarEls[idx];
         const video = videoRefs[idx];
         if (!bar || !video || !video.duration) return;
+        if (!scrollPlayingSet.has(idx) && video !== activeVideo) return;
         bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
         const label = timeLabelEls[idx];
         if (label) {

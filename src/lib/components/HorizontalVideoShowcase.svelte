@@ -295,6 +295,7 @@
         const card = container?.querySelector<HTMLElement>(`[data-card-idx="${idx}"]`);
         const video = card?.querySelector<HTMLVideoElement>('.card-video-layer');
         if (!video || !video.duration) return;
+        if (!scrollPlayingSet.has(idx) && video !== activeVideo) return;
         bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
         const label = timeLabelEls[idx];
         if (label) {
