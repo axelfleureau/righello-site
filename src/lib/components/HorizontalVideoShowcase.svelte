@@ -312,6 +312,20 @@
       if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
     }
 
+    function syncRaf() {
+      const videos = container.querySelectorAll<HTMLVideoElement>('.card-video-layer');
+      const anyActive = Array.from(videos).some(v => {
+        if (v.paused) return false;
+        const card = v.closest<HTMLElement>('[data-card-idx]');
+        const idx = card ? parseInt(card.dataset.cardIdx ?? '-1') : -1;
+        // scrollPlayingSet: IO confirmed ≥60% intersection (viewport-gated).
+        // activeVideo: hover-initiated play on desktop — cursor must be on the
+        // card so it is always on-screen, but IO may not have fired yet.
+        return scrollPlayingSet.has(idx) || v === activeVideo;
+      });
+      if (anyActive) startRaf(); else stopRaf();
+    }
+
     videoObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -327,7 +341,7 @@
             if (reducedMotion && progressBarEls[idx]) {
               progressBarEls[idx]!.style.transform = 'scaleX(1)';
             }
-            startRaf();
+            syncRaf();
           } else if (entry.intersectionRatio < 0.3) {
             scrollPlayingSet.delete(idx);
             video.pause();
@@ -335,7 +349,7 @@
             if (bar) bar.style.transform = 'scaleX(0)';
             const label = timeLabelEls[idx];
             if (label) label.textContent = '';
-            if (allVideosPaused()) stopRaf();
+            syncRaf();
           }
         });
       },
@@ -346,21 +360,8 @@
       videoObserver!.observe(card);
     });
 
-    function allVideosPaused(): boolean {
-      const videos = container.querySelectorAll<HTMLVideoElement>('.card-video-layer');
-      return Array.from(videos).every(v => v.paused);
-    }
-
-    function handleVideoPause() {
-      if (allVideosPaused()) stopRaf();
-    }
-
-    function handleVideoPlay() {
-      startRaf();
-    }
-
-    container.addEventListener('pause', handleVideoPause, { capture: true, passive: true });
-    container.addEventListener('play', handleVideoPlay, { capture: true, passive: true });
+    container.addEventListener('pause', syncRaf, { capture: true, passive: true });
+    container.addEventListener('play', syncRaf, { capture: true, passive: true });
 
     function handleTimeUpdate(e: Event) {
       if (reducedMotion) return;
@@ -380,8 +381,8 @@
       window.removeEventListener('keydown', handleKeydown);
       container?.removeEventListener('scroll', handleCarouselScroll);
       container?.removeEventListener('timeupdate', handleTimeUpdate, { capture: true });
-      container?.removeEventListener('pause', handleVideoPause, { capture: true });
-      container?.removeEventListener('play', handleVideoPlay, { capture: true });
+      container?.removeEventListener('pause', syncRaf, { capture: true });
+      container?.removeEventListener('play', syncRaf, { capture: true });
       videoObserver?.disconnect();
       if (rafId) cancelAnimationFrame(rafId);
     };
