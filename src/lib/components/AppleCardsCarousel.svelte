@@ -1076,6 +1076,7 @@
     pointer-events: none;
     opacity: 0.55;
     animation: ytPulse 2.4s ease-in-out infinite;
+    transition: opacity 0.2s ease;
   }
 
   .youtube-play-hint svg {
@@ -1087,7 +1088,10 @@
     50% { transform: scale(1.15); opacity: 0.85; }
   }
 
+  .card-content:hover .youtube-play-hint { opacity: 0; }
+
   @media (prefers-reduced-motion: reduce) {
     .youtube-play-hint { animation: none; opacity: 0.7; }
+    .card-content:hover .youtube-play-hint { opacity: 0.7; }
   }
 </style>
