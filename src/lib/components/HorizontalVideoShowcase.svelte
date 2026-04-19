@@ -258,7 +258,7 @@
             const video = card.querySelector<HTMLVideoElement>('.card-video-layer');
             if (!video) return;
 
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.60) {
               scrollPlayingSet.add(idx);
               video.play().catch(() => {});
             } else if (entry.intersectionRatio < 0.3) {
@@ -267,7 +267,7 @@
             }
           });
         },
-        { root: container, threshold: [0, 0.3, 0.55, 0.85, 1.0] }
+        { root: container, threshold: [0, 0.3, 0.6, 0.85, 1.0] }
       );
 
       container.querySelectorAll<HTMLElement>('[data-card-idx]').forEach((card) => {
@@ -998,6 +998,9 @@
   @media (prefers-reduced-motion: reduce) {
     .dot { transition: none; }
     .carousel-card { animation: none; }
+    .arrow-btn,
+    .arrow-btn:hover:not(:disabled) { transition: none; transform: translateY(-50%); }
+    .card-content { transition: none; }
   }
 
   /* ── YouTube play hint ── */
