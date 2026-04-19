@@ -351,6 +351,7 @@
       if (!card) return;
       const idx = parseInt(card.dataset.cardIdx ?? '-1');
       if (idx < 0) return;
+      if (!scrollPlayingSet.has(idx)) return;
       const bar = progressBarEls[idx];
       if (!bar) return;
       bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
