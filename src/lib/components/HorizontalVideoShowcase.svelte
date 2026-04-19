@@ -660,7 +660,7 @@
     }
     .carousel-container {
       padding-top: 0.75rem;
-      padding-bottom: 1rem;
+      padding-bottom: 0.5rem;
       gap: 1rem;
     }
   }
@@ -1086,7 +1086,7 @@
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.875rem 0 0.25rem;
+    padding: 0.25rem 0 0.25rem;
   }
 
   .dot {
