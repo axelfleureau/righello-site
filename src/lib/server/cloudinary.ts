@@ -161,7 +161,7 @@ export async function deleteVideo(publicId: string): Promise<void> {
 export async function getSignedUploadParams(
   section: VideoSection,
   filename: string
-): Promise<{ signature: string; timestamp: number; cloudName: string; apiKey: string; folder: string; publicId: string }> {
+): Promise<{ signature: string; timestamp: number; cloudName: string; apiKey: string; folder: string; publicId: string; uploadPublicId: string }> {
   // Guard: these vars must be set in Vercel Environment Variables (or Replit Secrets for dev).
   // If missing, throw immediately so the error is visible in server logs, not a silent JSON omission.
   if (!env.CLOUDINARY_CLOUD_NAME || !env.CLOUDINARY_API_KEY || !env.CLOUDINARY_API_SECRET) {
@@ -173,9 +173,13 @@ export async function getSignedUploadParams(
   const timestamp = Math.round(Date.now() / 1000);
   const folder = `righello/${section}`;
   const safeName = filename.replace(/\.[^/.]+$/, '').replace(/[^a-z0-9_-]/gi, '_').toLowerCase();
-  const publicId = `${folder}/${safeName}_${timestamp}`;
+  // public_id must NOT include the folder — Cloudinary concatenates folder + public_id
+  // when both are sent, otherwise we get duplicated paths like "righello/showcase/righello/showcase/foo".
+  const fileBase = `${safeName}_${timestamp}`;
+  const publicId = `${folder}/${fileBase}`;
 
-  const paramsToSign = { folder, public_id: publicId, timestamp };
+  // Sign with just the file portion as public_id; Cloudinary will prepend the folder.
+  const paramsToSign = { folder, public_id: fileBase, timestamp };
   const signature = cloudinary.utils.api_sign_request(paramsToSign, env.CLOUDINARY_API_SECRET);
 
   return {
@@ -184,7 +188,8 @@ export async function getSignedUploadParams(
     cloudName: env.CLOUDINARY_CLOUD_NAME,
     apiKey: env.CLOUDINARY_API_KEY,
     folder,
-    publicId,
+    publicId,           // full path "righello/section/file_ts" — used internally after upload
+    uploadPublicId: fileBase, // file portion only — what the client must send to Cloudinary
   };
 }
 

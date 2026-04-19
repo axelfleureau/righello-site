@@ -234,7 +234,7 @@
         }),
       });
       if (!sigRes.ok) throw new Error(await sigRes.text());
-      const { signature, timestamp, cloudName, apiKey, folder, publicId } = await sigRes.json();
+      const { signature, timestamp, cloudName, apiKey, folder, publicId, uploadPublicId } = await sigRes.json();
 
       const formData = new FormData();
       formData.append('file', uploadFile);
@@ -242,7 +242,9 @@
       formData.append('timestamp', String(timestamp));
       formData.append('signature', signature);
       formData.append('folder', folder);
-      formData.append('public_id', publicId);
+      // Send only the file portion — Cloudinary prepends `folder` automatically.
+      // Sending the full path here would cause "righello/section/righello/section/file" duplication.
+      formData.append('public_id', uploadPublicId);
 
       const xhr = new XMLHttpRequest();
       xhr.upload.addEventListener('progress', (e) => {
