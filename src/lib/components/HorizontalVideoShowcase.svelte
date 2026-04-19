@@ -153,10 +153,16 @@
     const cards = container.querySelectorAll<HTMLElement>('[data-card-idx]');
     const target = cards[index];
     if (!target) return;
-    const left =
+    // On mobile (snap-align: center) we center the card in the viewport.
+    // On desktop (snap-align: start) we align its left edge with the container left.
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches;
+    const targetLeftRelative =
       target.getBoundingClientRect().left -
       container.getBoundingClientRect().left +
       container.scrollLeft;
+    const left = isMobile
+      ? targetLeftRelative - (container.clientWidth - target.offsetWidth) / 2
+      : targetLeftRelative;
     container.scrollTo({ left, behavior: reducedMotion ? 'auto' : 'smooth' });
     currentIndex = index;
   }
@@ -171,11 +177,15 @@
 
   function handleCarouselScroll() {
     if (!container) return;
-    const cLeft = container.getBoundingClientRect().left;
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches;
+    const cRect = container.getBoundingClientRect();
     const cards = container.querySelectorAll<HTMLElement>('[data-card-idx]');
     let best = 0, bestDist = Infinity;
     cards.forEach((c, i) => {
-      const dist = Math.abs(c.getBoundingClientRect().left - cLeft);
+      const r = c.getBoundingClientRect();
+      const dist = isMobile
+        ? Math.abs((r.left + r.width / 2) - (cRect.left + cRect.width / 2))
+        : Math.abs(r.left - cRect.left);
       if (dist < bestDist) { bestDist = dist; best = i; }
     });
     currentIndex = best;
@@ -661,7 +671,14 @@
     .carousel-container {
       padding-top: 0.75rem;
       padding-bottom: 0.5rem;
+      /* Side padding sized so the first and last cards can snap centered.
+         Card width on mobile is 320px. */
+      padding-left: max(var(--container-padding), calc((100vw - 320px) / 2));
+      padding-right: max(var(--container-padding), calc((100vw - 320px) / 2));
       gap: 1rem;
+    }
+    .carousel-card {
+      scroll-snap-align: center;
     }
   }
   
