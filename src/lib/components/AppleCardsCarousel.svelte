@@ -179,9 +179,12 @@
     isTouching = true;
     wasDragged = false;
     touchStartX = e.touches[0].pageX;
-    container.style.scrollSnapType = 'none';
-    // Mark which card was tapped so the play hint stays hidden until the
-    // lightbox is confirmed open (avoids the brief re-flash on finger lift).
+    // NOTE: do NOT toggle scrollSnapType here.  Forcing it to 'none' on
+    // touchstart and back to 'x proximity' on touchend kills momentum
+    // scrolling on iOS / Android — the browser snaps to the nearest card
+    // the instant the finger lifts, which feels like the scroll "slams"
+    // to a halt.  `x proximity` (set in CSS) is permissive enough on its
+    // own and lets native inertia run to completion.
     const card = (e.target as HTMLElement).closest<HTMLElement>('[data-card-idx]');
     const idx = card ? parseInt(card.dataset.cardIdx ?? '-1') : -1;
     tappedIndex = idx >= 0 ? idx : null;
@@ -198,14 +201,12 @@
   
   function handleTouchEnd() {
     isTouching = false;
-    container.style.scrollSnapType = '';
     // tappedIndex is intentionally NOT cleared here so the hint stays hidden
     // until the lightbox open is confirmed by openLightbox() / handleCardClick().
   }
 
   function handleTouchCancel() {
     isTouching = false;
-    container.style.scrollSnapType = '';
     tappedIndex = null;
   }
   
@@ -534,17 +535,25 @@
   </div><!-- /.carousel-wrapper -->
 
   {#if showArrows}
-    <div class="dots-row" role="tablist" aria-label="Naviga tra i video">
-      {#each items.filter(it => !it.isCta) as _, i}
-        <button
-          class="dot"
-          class:dot--active={currentIndex === i}
-          on:click={() => scrollToIndex(i)}
-          role="tab"
-          aria-selected={currentIndex === i}
-          aria-label="Video {i + 1}"
-        ></button>
-      {/each}
+    {@const navItems = items.filter(it => !it.isCta)}
+    <div class="carousel-nav">
+      <div class="dots-row" role="tablist" aria-label="Naviga tra i video">
+        {#each navItems as _, i}
+          <button
+            class="dot"
+            class:dot--active={currentIndex === i}
+            on:click={() => scrollToIndex(i)}
+            role="tab"
+            aria-selected={currentIndex === i}
+            aria-label="Video {i + 1}"
+          ></button>
+        {/each}
+      </div>
+      <div class="nav-counter" aria-live="polite">
+        <span class="nav-counter-current">{Math.min(currentIndex + 1, navItems.length)}</span>
+        <span class="nav-counter-sep">/</span>
+        <span class="nav-counter-total">{navItems.length}</span>
+      </div>
     </div>
   {/if}
 </div>
@@ -1038,30 +1047,84 @@
     .arrow-btn { display: none; }
   }
 
-  /* ── Dots ── */
-  .dots-row {
+  /* ── Carousel nav (dots + counter) ── */
+  .carousel-nav {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     gap: 0.5rem;
     padding: 0.875rem 0 0.25rem;
   }
 
+  .dots-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .dot {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.28);
     border: none;
     padding: 0;
     cursor: pointer;
     transition: width 0.3s ease, background 0.3s ease, border-radius 0.3s ease;
+    /* Larger invisible hit area on touch devices */
+    position: relative;
+  }
+
+  .dot::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
   }
 
   .dot--active {
-    width: 22px;
+    width: 24px;
     border-radius: 4px;
     background: #D6487E;
+  }
+
+  /* Mobile: chunkier, more visible dots and a counter pill */
+  @media (pointer: coarse), (max-width: 767px) {
+    .dot {
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.35);
+    }
+    .dot--active {
+      width: 28px;
+      background: #D6487E;
+      box-shadow: 0 0 12px rgba(214, 72, 126, 0.55);
+    }
+  }
+
+  .nav-counter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.55);
+    font-variant-numeric: tabular-nums;
+    padding: 0.25rem 0.7rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .nav-counter-current {
+    color: #fff;
+    font-weight: 600;
+  }
+  .nav-counter-sep {
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0 0.05rem;
   }
 
   @media (prefers-reduced-motion: reduce) {

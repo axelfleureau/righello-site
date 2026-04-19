@@ -561,18 +561,25 @@
     </button>
   </div><!-- /.carousel-wrapper -->
 
-  <!-- Dots indicator -->
-  <div class="dots-row" role="tablist" aria-label="Naviga tra i video">
-    {#each items as _, i}
-      <button
-        class="dot"
-        class:dot--active={currentIndex === i}
-        on:click={() => scrollToIndex(i)}
-        role="tab"
-        aria-selected={currentIndex === i}
-        aria-label="Video {i + 1}"
-      ></button>
-    {/each}
+  <!-- Dots + counter -->
+  <div class="carousel-nav">
+    <div class="dots-row" role="tablist" aria-label="Naviga tra i video">
+      {#each items as _, i}
+        <button
+          class="dot"
+          class:dot--active={currentIndex === i}
+          on:click={() => scrollToIndex(i)}
+          role="tab"
+          aria-selected={currentIndex === i}
+          aria-label="Video {i + 1}"
+        ></button>
+      {/each}
+    </div>
+    <div class="nav-counter" aria-live="polite">
+      <span class="nav-counter-current">{Math.min(currentIndex + 1, items.length)}</span>
+      <span class="nav-counter-sep">/</span>
+      <span class="nav-counter-total">{items.length}</span>
+    </div>
   </div>
 </section>
 
@@ -1097,31 +1104,76 @@
     .arrow-btn { display: none; }
   }
 
-  /* ── Dots ── */
+  /* ── Carousel nav (dots + counter) ── */
+  .carousel-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+  }
+
   .dots-row {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.25rem 0 0.25rem;
   }
 
   .dot {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.28);
     border: none;
     padding: 0;
     cursor: pointer;
     transition: width 0.3s ease, background 0.3s ease, border-radius 0.3s ease;
+    position: relative;
+  }
+  .dot::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
   }
 
   .dot--active {
-    width: 22px;
+    width: 24px;
     border-radius: 4px;
     background: #D6487E;
   }
+
+  @media (pointer: coarse), (max-width: 767px) {
+    .dot {
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.35);
+    }
+    .dot--active {
+      width: 28px;
+      background: #D6487E;
+      box-shadow: 0 0 12px rgba(214, 72, 126, 0.55);
+    }
+  }
+
+  .nav-counter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.55);
+    font-variant-numeric: tabular-nums;
+    padding: 0.25rem 0.7rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .nav-counter-current { color: #fff; font-weight: 600; }
+  .nav-counter-sep { color: rgba(255, 255, 255, 0.3); margin: 0 0.05rem; }
 
   @media (prefers-reduced-motion: reduce) {
     .dot { transition: none; }
