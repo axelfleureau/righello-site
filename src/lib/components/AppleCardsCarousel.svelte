@@ -464,7 +464,7 @@
                   muted
                   loop
                   playsinline
-                  preload="metadata"
+                  preload="none"
                   on:canplay={() => handleVideoLoaded(i)}
                   on:error={() => handleVideoError(i)}
                 >
