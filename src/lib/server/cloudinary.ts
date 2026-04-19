@@ -28,9 +28,15 @@ export interface CloudinaryVideo {
   createdAt: string;
 }
 
-function parseContext(context: Record<string, string> | undefined): Record<string, string> {
+function parseContext(context: unknown): Record<string, string> {
   if (!context || typeof context !== 'object') return {};
-  return context;
+  const obj = context as Record<string, unknown>;
+  // Cloudinary Search API wraps context as { custom: { key: value } }
+  // whereas cloudinary.api.resource() may return it flat — handle both.
+  if (obj.custom && typeof obj.custom === 'object') {
+    return obj.custom as Record<string, string>;
+  }
+  return obj as Record<string, string>;
 }
 
 function buildVideoUrl(publicId: string): string {
@@ -66,7 +72,7 @@ export async function getVideosBySection(section: VideoSection): Promise<Cloudin
     if (!result.resources || result.resources.length === 0) return [];
 
     const videos: CloudinaryVideo[] = result.resources.map((r: Record<string, unknown>) => {
-      const ctx = parseContext(r.context as Record<string, string>);
+      const ctx = parseContext(r.context);
       const youtubeId = ctx.youtubeId || undefined;
       return {
         publicId: r.public_id as string,
@@ -134,11 +140,21 @@ export async function updateVideoMetadata(
 }
 
 export async function deleteVideo(publicId: string): Promise<void> {
-  // Try video first, fall back to image
-  try {
-    await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
-  } catch {
-    await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+  // cloudinary.uploader.destroy returns { result: 'ok' | 'not found' } — it does NOT throw
+  // for 'not found'. We must check the result explicitly and retry with 'image' if needed.
+  const videoResult = await cloudinary.uploader.destroy(publicId, {
+    resource_type: 'video',
+    invalidate: true,
+  });
+  if (videoResult.result === 'ok') return;
+
+  // Not a video resource — try image (e.g. YouTube placeholder stored as image)
+  const imgResult = await cloudinary.uploader.destroy(publicId, {
+    resource_type: 'image',
+    invalidate: true,
+  });
+  if (imgResult.result !== 'ok') {
+    throw new Error(`Cloudinary delete failed for "${publicId}": ${imgResult.result}`);
   }
 }
 
