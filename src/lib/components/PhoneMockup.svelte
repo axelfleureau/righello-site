@@ -471,6 +471,9 @@
                 src="https://img.youtube.com/vi/{youtubeId}/hqdefault.jpg"
                 alt=""
                 aria-hidden="true"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
                 class="yt-thumbnail"
                 class:yt-thumbnail-hidden={ytPlaying}
               />
@@ -671,10 +674,23 @@
     }
   }
   
+  /* Phone screen baseline.
+   *
+   * On cold-cache loads (incognito, first visit) the YouTube iframe and the
+   * hqdefault.jpg thumbnail can each take 1–3 seconds to arrive over the
+   * network. Until ONE of them paints, the user stares at the phone screen.
+   *
+   * Old background was solid #000 — that produced the "black/broken iPhone"
+   * flash users reported on first incognito load. We replace it with a dark
+   * brand-tinted gradient that always looks intentional (like a real iPhone
+   * wallpaper), so the worst-case empty state still feels designed. */
   .phone-screen {
     width: 100%;
     height: 100%;
-    background: #000;
+    background:
+      radial-gradient(120% 80% at 30% 15%, rgba(214, 72, 126, 0.28) 0%, transparent 55%),
+      radial-gradient(120% 80% at 75% 85%, rgba(6, 182, 212, 0.22) 0%, transparent 60%),
+      linear-gradient(160deg, #1a0a14 0%, #0a0a0f 55%, #0a1418 100%);
     border-radius: 36px;
     overflow: hidden;
     position: relative;

@@ -49,6 +49,13 @@
     { icon: 'star', label: '5.0 Rating' },
   ];
 
+  // Hero YouTube poster URL — preloaded in <svelte:head> so cold-cache visitors
+  // (incognito, first visit) see the iPhone screen filled with a real frame within
+  // a few hundred ms of TTFB instead of staring at the empty phone gradient while
+  // img.youtube.com is fetched. Mirrors the fallback in the AppleScrolly markup.
+  const heroYoutubeId = data.heroVideo?.youtubeId ?? 'Rj5N4BMF-Vw';
+  const heroPosterUrl = `https://img.youtube.com/vi/${heroYoutubeId}/hqdefault.jpg`;
+
   const heroPartnerNames = [
     'Barcolana', 'Comune di Pordenone', 'Ippodromo Merano', 'Reguta', 'Ricci Group',
     'Riviera Resort Hotel', 'Quellenhof', 'Scuola Sci Piancavallo', '3R Technology',
@@ -100,6 +107,10 @@
   <meta name="twitter:title" content="Righello | Growth Agency – Marketing, Sviluppo Web & Automazione" />
   <meta name="twitter:description" content="Agenzia di marketing digitale, sviluppo web e automazione con sede nel Nord Italia. Strategie data-driven, software su misura e campagne advertising con risultati misurabili." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
+  <!-- Preload hero YouTube poster: shaves ~500ms-1.5s off the cold-cache reveal of
+       the iPhone mockup screen. Without this, incognito visitors see only the dark
+       brand gradient until img.youtube.com responds. -->
+  <link rel="preload" as="image" href={heroPosterUrl} fetchpriority="high" />
 </svelte:head>
 
 <AppleScrolly 
