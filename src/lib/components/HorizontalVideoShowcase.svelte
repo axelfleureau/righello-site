@@ -68,6 +68,7 @@
   let lightboxVideo: string | null = null;
   let lightboxYoutubeId: string | null = null;
   let lightboxTitle = '';
+  let lightboxPausedVideo: HTMLVideoElement | null = null;
   let loadedFrames: boolean[] = items.map(() => false);
   let progressBarEls: (HTMLElement | null)[] = items.map(() => null);
   let timeLabelEls: (HTMLElement | null)[] = items.map(() => null);
@@ -180,12 +181,20 @@
     currentIndex = best;
   }
   
-  function openLightbox(item: VideoItem) {
+  function openLightbox(item: VideoItem, idx?: number) {
     tappedIndex = null;
     lightboxYoutubeId = item.youtubeId ?? null;
     lightboxVideo = item.youtubeId ? null : (item.cloudinaryUrl ?? item.videoSrc ?? null);
     lightboxTitle = item.title;
     lightboxOpen = true;
+    if (idx !== undefined) {
+      const card = container?.querySelector<HTMLElement>(`[data-card-idx="${idx}"]`);
+      const video = card?.querySelector<HTMLVideoElement>('.card-video-layer') ?? null;
+      if (video && !video.paused) {
+        video.pause();
+        lightboxPausedVideo = video;
+      }
+    }
     document.body.style.overflow = 'hidden';
     document.dispatchEvent(new CustomEvent('righello:lightbox-open'));
   }
@@ -195,6 +204,10 @@
     lightboxVideo = null;
     lightboxYoutubeId = null;
     lightboxTitle = '';
+    if (lightboxPausedVideo) {
+      lightboxPausedVideo.play().catch(() => {});
+      lightboxPausedVideo = null;
+    }
     document.body.style.overflow = '';
     document.dispatchEvent(new CustomEvent('righello:lightbox-close'));
   }
@@ -478,7 +491,7 @@
             </div>
             <button 
               class="play-overlay"
-              on:click|stopPropagation={() => { if (!hasTouchDragged) openLightbox(item); }}
+              on:click|stopPropagation={() => { if (!hasTouchDragged) openLightbox(item, i); }}
               aria-label="Riproduci video {item.title}"
             >
               <div class="play-icon">

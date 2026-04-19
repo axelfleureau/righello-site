@@ -33,6 +33,7 @@
   let lightboxVideo: string | null = null;
   let lightboxYoutubeId: string | null = null;
   let lightboxTitle = '';
+  let lightboxPausedVideo: HTMLVideoElement | null = null;
   let reelViewerOpen = false;
   let reelViewerIndex = 0;
 
@@ -132,12 +133,19 @@
     currentIndex = best;
   }
   
-  function openLightbox(item: { title: string; videoSrc?: string; cloudinaryUrl?: string; youtubeId?: string }) {
+  function openLightbox(item: { title: string; videoSrc?: string; cloudinaryUrl?: string; youtubeId?: string }, idx?: number) {
     tappedIndex = null;
     lightboxYoutubeId = item.youtubeId ?? null;
     lightboxVideo = item.youtubeId ? null : (item.cloudinaryUrl ?? item.videoSrc ?? null);
     lightboxTitle = item.title;
     lightboxOpen = true;
+    if (idx !== undefined) {
+      const video = videoRefs[idx];
+      if (video && !video.paused) {
+        video.pause();
+        lightboxPausedVideo = video;
+      }
+    }
     document.body.style.overflow = 'hidden';
     document.dispatchEvent(new CustomEvent('righello:lightbox-open'));
   }
@@ -147,6 +155,10 @@
     lightboxVideo = null;
     lightboxYoutubeId = null;
     lightboxTitle = '';
+    if (lightboxPausedVideo) {
+      lightboxPausedVideo.play().catch(() => {});
+      lightboxPausedVideo = null;
+    }
     document.body.style.overflow = '';
     document.dispatchEvent(new CustomEvent('righello:lightbox-close'));
   }
@@ -202,6 +214,13 @@
     
     if (useReelViewer) {
       tappedIndex = null;
+      if (itemIndex !== undefined) {
+        const video = videoRefs[itemIndex];
+        if (video && !video.paused) {
+          video.pause();
+          lightboxPausedVideo = video;
+        }
+      }
       const reelIdx = reelItems.findIndex(i =>
         (i.youtubeId && i.youtubeId === item.youtubeId) ||
         (i.cloudinaryUrl && i.cloudinaryUrl === item.cloudinaryUrl) ||
@@ -211,12 +230,16 @@
       reelViewerOpen = true;
       document.dispatchEvent(new CustomEvent('righello:lightbox-open'));
     } else {
-      openLightbox(item);
+      openLightbox(item, itemIndex);
     }
   }
   
   function closeReelViewer() {
     reelViewerOpen = false;
+    if (lightboxPausedVideo) {
+      lightboxPausedVideo.play().catch(() => {});
+      lightboxPausedVideo = null;
+    }
     document.dispatchEvent(new CustomEvent('righello:lightbox-close'));
   }
   
@@ -422,7 +445,7 @@
             </div>
           {:else if item.cloudinaryUrl || item.youtubeId || item.videoSrc}
             <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-            <div class="video-wrapper" on:click={() => handleCardClick(item)}>
+            <div class="video-wrapper" on:click={() => handleCardClick(item, i)}>
               <img
                 src={item.thumbnailUrl || (item.youtubeId ? getYoutubeThumbnailUrl(item.youtubeId) : getThumbnailUrl(item.videoSrc || ''))}
                 alt={item.title}
@@ -462,7 +485,7 @@
             </div>
             <button 
               class="play-btn-float"
-              on:click|stopPropagation={() => handleCardClick(item)}
+              on:click|stopPropagation={() => handleCardClick(item, i)}
               aria-label="Play video fullscreen"
             >
               <svg viewBox="0 0 24 24" fill="currentColor">
