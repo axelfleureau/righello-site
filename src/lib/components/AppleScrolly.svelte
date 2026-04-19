@@ -171,7 +171,10 @@
           "(min-width: 1024px)": function() {
             const totalSlides = slides.length + 1;
             const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-            const scrollDistance = slides.length * 500;
+            // Per-step scroll distance (in vh).  Higher = more scroll needed
+            // to advance from one step to the next, giving the user more time
+            // to read each panel before the next snap triggers.
+            const scrollDistance = slides.length * 800;
             
             // Initialize slides as invisible
             slideRefs.forEach((slideEl) => {
@@ -192,16 +195,17 @@
               scrub: 0.5,
               snap: {
                 snapTo: snapPoints,
-                // Longer duration = a firm, intentional pull toward each step
-                // (not a teleport, not a weak drift — a decisive magnetic grab).
-                duration: { min: 0.4, max: 0.8 },
-                // 0.15s matches the airplane animation delay — long enough for the
-                // user to feel they've "paused", short enough to feel responsive.
-                delay: 0.15,
-                // power2.out: fast initial pull → smooth deceleration into the step.
-                // Gives the "magnet snapping to a surface" feel rather than a symmetric
-                // ease-in-out which can feel sluggish on the approach.
-                ease: 'power2.out',
+                // Firmer, more decisive pull toward each step.  With the longer
+                // per-step distance (800vh), a slightly longer snap feels right —
+                // it confirms "you've landed" rather than just nudging.
+                duration: { min: 0.5, max: 0.9 },
+                // Fire snap quickly after the user stops scrolling so the
+                // alignment feels immediate and intentional, not delayed.
+                delay: 0.08,
+                // power3.out: stronger initial grab → smooth deceleration.
+                // Reinforces the "magnet snapping to a surface" feel and helps
+                // the user clearly perceive each step as a discrete reading unit.
+                ease: 'power3.out',
                 directional: true
               },
               onUpdate: (self) => {
