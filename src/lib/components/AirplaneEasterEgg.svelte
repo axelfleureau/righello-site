@@ -28,6 +28,7 @@
   let imagesLoaded = false;
   let preloadObserver: IntersectionObserver | null = null;
   let refreshTimeout: ReturnType<typeof setTimeout> | null = null;
+  let refreshTimeout2: ReturnType<typeof setTimeout> | null = null;
   let loadListener: (() => void) | null = null;
 
   const DISCOUNT_CODE = 'scrollerevenue26';
@@ -179,9 +180,11 @@
         const emojiTl = gsap.timeline({
           scrollTrigger: {
             trigger: emojiZone,
-            start: 'top 75%',
+            start: 'top 80%',
             toggleActions: 'play none none reset',
             invalidateOnRefresh: true,
+            // preventOverlaps: true ensures Chrome doesn't fire before the pin
+            // spacer from AppleScrolly has shifted all downstream positions.
           },
           defaults: { ease: 'back.out(1.4)', force3D: true }
         });
@@ -387,13 +390,30 @@
       }
     });
 
-    // Delay refresh so AppleScrolly's pin spacer (which extends scroll height) is
-    // guaranteed to be inserted before we recalculate trigger positions.
-    // 300ms covers the 100ms layout-stability delay in AppleScrolly.init() plus its
-    // own ScrollTrigger.refresh() — without this, AirplaneEasterEgg triggers fire at
-    // wrong scroll offsets and the animations never run.
+    // Multi-stage ScrollTrigger.refresh() strategy.
+    //
+    // Problem: AppleScrolly inserts a GSAP "pin spacer" element that shifts the
+    // scroll offset of every section below it (including AirplaneEasterEgg).
+    // ScrollTrigger must be refreshed AFTER the spacer is in the DOM so that
+    // trigger positions (start/end) are calculated correctly.
+    //
+    // Chrome commits its layout pipeline in a different order from Safari:
+    // - Safari: spacer visible within ~100ms of mount → 300ms was enough.
+    // - Chrome: spacer may not be fully committed until 600–800ms after mount,
+    //   causing the zoom to start at a wrong scroll offset ("too early" symptom)
+    //   and the emoji trigger to misfire (never visible → emojis never show).
+    //
+    // Fix: two rounds of refresh —
+    //   Round 1 (600ms): catches most cases including Safari.
+    //   Round 2 (1400ms): safety net for Chrome slow layout + font/image reflow.
+    // Both rounds use `invalidateOnRefresh: true` on all triggers, so the second
+    // refresh is always a correct no-op when positions haven't changed.
+    const doRefresh = () => {
+      ScrollTrigger.refresh();
+      refreshTimeout2 = setTimeout(() => ScrollTrigger.refresh(), 800);
+    };
     const scheduleRefresh = () => {
-      refreshTimeout = setTimeout(() => ScrollTrigger.refresh(), 300);
+      refreshTimeout = setTimeout(doRefresh, 600);
     };
     if (document.readyState === 'complete') {
       scheduleRefresh();
@@ -407,6 +427,7 @@
     ctx?.revert();
     preloadObserver?.disconnect();
     if (refreshTimeout !== null) clearTimeout(refreshTimeout);
+    if (refreshTimeout2 !== null) clearTimeout(refreshTimeout2);
     if (loadListener !== null) window.removeEventListener('load', loadListener);
   });
 </script>

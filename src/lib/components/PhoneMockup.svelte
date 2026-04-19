@@ -599,20 +599,20 @@
     width: 100%;
     height: 100%;
     transition: transform 0.1s ease-out;
-    /* Default: flat stacking context — safe for all devices including iOS Safari.
-     * iOS Safari cannot composite video frames inside preserve-3d layers:
-     * the result is audio playing but video frame frozen (GPU compositor bug).
-     * We override to preserve-3d ONLY for fine-pointer (mouse) devices via CSS
-     * media query — this fires BEFORE JS hydration, preventing the race condition
-     * where SSR renders preserve-3d and onMount hasn't yet set isTouch=true. */
+    /* Always flat — never preserve-3d.
+     *
+     * The 3D tilt effect uses `perspective(1000px)` embedded directly in the
+     * transform property (rotateX + rotateY), which looks fully 3D without
+     * needing preserve-3d.  preserve-3d is only required when CHILD elements
+     * must be independently positioned in 3D space (e.g. card-flip back faces)
+     * — this component never does that.
+     *
+     * preserve-3d was previously enabled on @media (pointer:fine) (desktop).
+     * Chrome cannot composite YouTube iframe video frames inside a preserve-3d
+     * ancestor that is being continuously scaled/translated by GSAP at 60fps
+     * (the AppleScrolly slide-in animation). The result: video frames freeze
+     * while audio keeps playing — exactly the symptom the user reported. */
     transform-style: flat;
-  }
-
-  @media (pointer: fine) {
-    /* Desktop with mouse: enable 3D tilt effect safely */
-    .phone-wrapper {
-      transform-style: preserve-3d;
-    }
   }
 
   .phone-entrance {
