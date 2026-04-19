@@ -239,6 +239,30 @@
     let videoObserver: IntersectionObserver | null = null;
     let rafId: number | null = null;
 
+    function tick() {
+      items.forEach((item, idx) => {
+        if (item.isCta || (!item.cloudinaryUrl && !item.videoSrc) || item.youtubeId) return;
+        const bar = progressBarEls[idx];
+        const video = videoRefs[idx];
+        if (!bar || !video || !video.duration) return;
+        bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
+        const label = timeRemainingEls[idx];
+        if (label) {
+          const remaining = Math.max(0, video.duration - video.currentTime);
+          label.textContent = formatTime(remaining);
+        }
+      });
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function startRaf() {
+      if (!reducedMotion && rafId === null) rafId = requestAnimationFrame(tick);
+    }
+
+    function stopRaf() {
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+    }
+
     videoObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -254,6 +278,7 @@
             if (reducedMotion && progressBarEls[idx]) {
               progressBarEls[idx]!.style.transform = 'scaleX(1)';
             }
+            startRaf();
           } else if (entry.intersectionRatio < 0.3) {
             scrollPlayingSet.delete(idx);
             video.pause();
@@ -261,6 +286,7 @@
             if (bar) bar.style.transform = 'scaleX(0)';
             const label = timeRemainingEls[idx];
             if (label) label.textContent = '';
+            if (scrollPlayingSet.size === 0) stopRaf();
           }
         });
       },
@@ -284,25 +310,6 @@
       bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
     }
     container.addEventListener('timeupdate', handleTimeUpdate, { capture: true, passive: true });
-
-    if (!reducedMotion) {
-      function tick() {
-        items.forEach((item, idx) => {
-          if (item.isCta || (!item.cloudinaryUrl && !item.videoSrc) || item.youtubeId) return;
-          const bar = progressBarEls[idx];
-          const video = videoRefs[idx];
-          if (!bar || !video || !video.duration) return;
-          bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
-          const label = timeRemainingEls[idx];
-          if (label) {
-            const remaining = Math.max(0, video.duration - video.currentTime);
-            label.textContent = formatTime(remaining);
-          }
-        });
-        rafId = requestAnimationFrame(tick);
-      }
-      rafId = requestAnimationFrame(tick);
-    }
 
     return () => {
       window.removeEventListener('keydown', handleKeydown);
