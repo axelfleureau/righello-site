@@ -243,31 +243,45 @@
           // state 1 = playing: thumbnail fades out, video is fully visible.
           if (data.info === 1) {
             ytVisible = true;
+            // Delay revealing the iframe (= fading out the thumbnail) by ~450ms
+            // after state=1.  YouTube fires state=1 the moment playback starts,
+            // but on cold-cache loads the player often shows the static poster
+            // for another 200-500ms before the first decoded frames hit the
+            // canvas.  If we drop the thumbnail and unmute the instant state=1
+            // arrives, the user hears audio while looking at a still poster
+            // for "alcuni secondi" — feels like the video froze on frame 1.
+            //
+            // Holding the thumbnail a few hundred ms more lets YouTube push
+            // real frames first, then we cross-fade to live video AND start
+            // audio in the same beat → the reveal feels solid and in sync.
             if (!ytPlaying) {
-              ytPlaying = true;
-            }
-            // Always sync audio here — do NOT rely solely on the Svelte reactive.
-            //
-            // Root cause of the desktop-audio-silent bug:
-            //   1. User scrolls before onReady fires → unlockAudio() sends unMute
-            //      to the not-yet-ready player → command dropped.
-            //   2. The reactive guard ($: !muted && iframeEl && !ytPlaying) forces
-            //      ytPlaying = true immediately.
-            //   3. onReady fires → sends mute (autoplay policy), then playVideo.
-            //   4. onStateChange(1) fires → ytPlaying is already true → Svelte sees
-            //      old === new, does NOT mark dirty → reactive never re-runs →
-            //      unMute never sent → video stays silenced.
-            //
-            // Fix: send unMute directly in state=1, bypassing the reactive.
-            // Reading `muted` here works because it closes over the Svelte prop
-            // variable (always reflects the latest parent-assigned value).
-            if (!muted && iframeEl) {
-              iframeEl.contentWindow?.postMessage(
-                JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*'
-              );
-              iframeEl.contentWindow?.postMessage(
-                JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*'
-              );
+              setTimeout(() => {
+                if (!ytSrcActive) return; // phone scrolled away during the wait
+                ytPlaying = true;
+                // Always sync audio here — do NOT rely solely on the Svelte reactive.
+                //
+                // Root cause of the desktop-audio-silent bug:
+                //   1. User scrolls before onReady fires → unlockAudio() sends unMute
+                //      to the not-yet-ready player → command dropped.
+                //   2. The reactive guard ($: !muted && iframeEl && !ytPlaying) forces
+                //      ytPlaying = true immediately.
+                //   3. onReady fires → sends mute (autoplay policy), then playVideo.
+                //   4. onStateChange(1) fires → ytPlaying is already true → Svelte sees
+                //      old === new, does NOT mark dirty → reactive never re-runs →
+                //      unMute never sent → video stays silenced.
+                //
+                // Fix: send unMute directly in the state=1 deferred block, bypassing
+                // the reactive. Reading `muted` here closes over the Svelte prop
+                // (always reflects the latest parent-assigned value).
+                if (!muted && iframeEl) {
+                  iframeEl.contentWindow?.postMessage(
+                    JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*'
+                  );
+                  iframeEl.contentWindow?.postMessage(
+                    JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*'
+                  );
+                }
+              }, 450);
             }
           }
           // state 0 = ended: loop manually (iOS/iPadOS workaround for loop=1 unreliability).
@@ -686,7 +700,7 @@
     transform-origin: center center;
     border: 0;
     pointer-events: none;
-    transition: opacity 0.8s ease-in-out;
+    transition: opacity 0.35s ease-out;
   }
 
   /* Hidden while the video hasn't fired its first onStateChange(1) */
@@ -695,8 +709,10 @@
   }
 
   /* YouTube thumbnail — always in DOM as a poster/fallback.
-     Fades out smoothly once the iframe confirms it is playing.
-     ease-in-out gives a breathing-like feel rather than a linear cut. */
+     Fades out smoothly once the iframe confirms it is playing AND the
+     deferred state=1 timeout has elapsed (≈450ms after playback starts),
+     by which point YouTube has pushed real frames to the canvas.
+     A 0.5s ease-out feels crisp without being a hard cut. */
   .yt-thumbnail {
     position: absolute;
     inset: 0;
@@ -705,7 +721,7 @@
     object-fit: cover;
     z-index: 1;
     pointer-events: none;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 0.5s ease-out;
   }
 
   .yt-thumbnail-hidden {
