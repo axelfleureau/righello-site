@@ -36,6 +36,7 @@
   let lightboxPausedVideo: HTMLVideoElement | null = null;
   let reelViewerOpen = false;
   let reelViewerIndex = 0;
+  let reelPausedVideos: HTMLVideoElement[] = [];
 
   // Navigation + autoplay state
   let currentIndex = 0;
@@ -214,13 +215,8 @@
     
     if (useReelViewer) {
       tappedIndex = null;
-      if (itemIndex !== undefined) {
-        const video = videoRefs[itemIndex];
-        if (video && !video.paused) {
-          video.pause();
-          lightboxPausedVideo = video;
-        }
-      }
+      reelPausedVideos = videoRefs.filter((v): v is HTMLVideoElement => !!v && !v.paused);
+      reelPausedVideos.forEach(v => v.pause());
       const reelIdx = reelItems.findIndex(i =>
         (i.youtubeId && i.youtubeId === item.youtubeId) ||
         (i.cloudinaryUrl && i.cloudinaryUrl === item.cloudinaryUrl) ||
@@ -236,10 +232,8 @@
   
   function closeReelViewer() {
     reelViewerOpen = false;
-    if (lightboxPausedVideo) {
-      lightboxPausedVideo.play().catch(() => {});
-      lightboxPausedVideo = null;
-    }
+    reelPausedVideos.forEach(v => v.play().catch(() => {}));
+    reelPausedVideos = [];
     document.dispatchEvent(new CustomEvent('righello:lightbox-close'));
   }
   
@@ -307,6 +301,7 @@
           if (!video) return;
 
           if (entry.isIntersecting && entry.intersectionRatio >= 0.60) {
+            if (reelViewerOpen) return;
             scrollPlayingSet.add(idx);
             video.play().catch(() => {});
             if (reducedMotion && progressBarEls[idx]) {
