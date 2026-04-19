@@ -69,6 +69,7 @@
   let lightboxYoutubeId: string | null = null;
   let lightboxTitle = '';
   let loadedFrames: boolean[] = items.map(() => false);
+  let progressBarEls: (HTMLElement | null)[] = items.map(() => null);
 
   // Navigation + autoplay state
   let currentIndex = 0;
@@ -247,38 +248,74 @@
     container.addEventListener('scroll', handleCarouselScroll, { passive: true });
 
     let videoObserver: IntersectionObserver | null = null;
+    let rafId: number | null = null;
+
+    videoObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const card = entry.target as HTMLElement;
+          const idx = parseInt(card.dataset.cardIdx ?? '-1');
+          if (idx < 0) return;
+          const video = card.querySelector<HTMLVideoElement>('.card-video-layer');
+          if (!video) return;
+
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.60) {
+            scrollPlayingSet.add(idx);
+            video.play().catch(() => {});
+            if (reducedMotion && progressBarEls[idx]) {
+              progressBarEls[idx]!.style.transform = 'scaleX(1)';
+            }
+          } else if (entry.intersectionRatio < 0.3) {
+            scrollPlayingSet.delete(idx);
+            video.pause();
+            const bar = progressBarEls[idx];
+            if (bar) bar.style.transform = 'scaleX(0)';
+          }
+        });
+      },
+      { root: container, threshold: [0, 0.3, 0.6, 0.85, 1.0] }
+    );
+
+    container.querySelectorAll<HTMLElement>('[data-card-idx]').forEach((card) => {
+      videoObserver!.observe(card);
+    });
+
+    function handleTimeUpdate(e: Event) {
+      if (reducedMotion) return;
+      const video = e.target as HTMLVideoElement;
+      if (!video.duration) return;
+      const card = video.closest<HTMLElement>('[data-card-idx]');
+      if (!card) return;
+      const idx = parseInt(card.dataset.cardIdx ?? '-1');
+      if (idx < 0) return;
+      const bar = progressBarEls[idx];
+      if (!bar) return;
+      bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
+    }
+    container.addEventListener('timeupdate', handleTimeUpdate, { capture: true, passive: true });
 
     if (!reducedMotion) {
-      videoObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            const card = entry.target as HTMLElement;
-            const idx = parseInt(card.dataset.cardIdx ?? '-1');
-            if (idx < 0) return;
-            const video = card.querySelector<HTMLVideoElement>('.card-video-layer');
-            if (!video) return;
-
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.60) {
-              scrollPlayingSet.add(idx);
-              video.play().catch(() => {});
-            } else if (entry.intersectionRatio < 0.3) {
-              scrollPlayingSet.delete(idx);
-              video.pause();
-            }
-          });
-        },
-        { root: container, threshold: [0, 0.3, 0.6, 0.85, 1.0] }
-      );
-
-      container.querySelectorAll<HTMLElement>('[data-card-idx]').forEach((card) => {
-        videoObserver!.observe(card);
-      });
+      function tick() {
+        items.forEach((item, idx) => {
+          if ((!item.cloudinaryUrl && !item.videoSrc) || item.youtubeId) return;
+          const bar = progressBarEls[idx];
+          if (!bar) return;
+          const card = container?.querySelector<HTMLElement>(`[data-card-idx="${idx}"]`);
+          const video = card?.querySelector<HTMLVideoElement>('.card-video-layer');
+          if (!video || !video.duration) return;
+          bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
+        });
+        rafId = requestAnimationFrame(tick);
+      }
+      rafId = requestAnimationFrame(tick);
     }
 
     return () => {
       window.removeEventListener('keydown', handleKeydown);
       container?.removeEventListener('scroll', handleCarouselScroll);
+      container?.removeEventListener('timeupdate', handleTimeUpdate, { capture: true });
       videoObserver?.disconnect();
+      if (rafId) cancelAnimationFrame(rafId);
     };
   });
 </script>
@@ -372,6 +409,7 @@
                 >
                   <track kind="captions" />
                 </video>
+                <div class="video-progress-bar" bind:this={progressBarEls[i]} aria-hidden="true"></div>
               {/if}
               {#if item.youtubeId}
                 <div class="youtube-play-hint" aria-hidden="true">
@@ -1001,6 +1039,26 @@
     .arrow-btn,
     .arrow-btn:hover:not(:disabled) { transition: none; transform: translateY(-50%); }
     .card-content { transition: none; }
+  }
+
+  /* ── Video progress bar ── */
+  .video-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #D6487E 0%, #a855f7 100%);
+    transform: scaleX(0);
+    transform-origin: left center;
+    z-index: 8;
+    will-change: transform;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+
+  .card-content:hover .video-progress-bar {
+    opacity: 0;
   }
 
   /* ── YouTube play hint ── */
