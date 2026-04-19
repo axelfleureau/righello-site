@@ -46,10 +46,45 @@
   let uploadProgress = 0;
   let fileInput: HTMLInputElement;
 
-  // Duplicate detection
-  let checkingDuplicate = false;
-  let duplicateWarning: { matchedTitle: string | null; matchedId: string | null; reason: string } | null = null;
+  // Duplicate detection (client-side, zero API calls)
+  let duplicateWarning: { matchedTitle: string; matchedId: string } | null = null;
   let duplicateChecked = false;
+
+  // Normalize a string to a slug for comparison:
+  // "Ricci Scuola Sci.mp4" → "ricci-scuola-sci"
+  function slugify(str: string): string {
+    return str
+      .toLowerCase()
+      .replace(/\.[^.]+$/, '')       // strip file extension
+      .replace(/[\s_]+/g, '-')       // spaces and underscores → dash
+      .replace(/[^a-z0-9-]/g, '')    // remove anything else
+      .replace(/-+/g, '-')           // collapse multiple dashes
+      .replace(/^-|-$/g, '');        // trim leading/trailing dashes
+  }
+
+  function runDuplicateCheck() {
+    duplicateWarning = null;
+    duplicateChecked = false;
+    if (!uploadFile) return;
+
+    const filenameSlug = slugify(uploadFile.name);
+    const titleSlug    = uploadFields.title ? slugify(uploadFields.title) : '';
+
+    for (const v of getVideos(activeSection)) {
+      // Extract the last segment of the id in case it's a full publicId path
+      const existingIdSlug    = slugify(v.id.split('/').pop() ?? v.id);
+      const existingTitleSlug = slugify(v.title);
+
+      const matchesFilename = filenameSlug && (filenameSlug === existingIdSlug || filenameSlug === existingTitleSlug);
+      const matchesTitle    = titleSlug    && (titleSlug    === existingIdSlug || titleSlug    === existingTitleSlug);
+
+      if (matchesFilename || matchesTitle) {
+        duplicateWarning = { matchedTitle: v.title, matchedId: v.id };
+        break;
+      }
+    }
+    duplicateChecked = true;
+  }
 
   // Local hidden state so toggles are instant without reload
   let hiddenState: Record<string, boolean> = {};
@@ -65,40 +100,14 @@
   }
   initHiddenState();
 
-  async function handleFileChange(e: Event) {
+  function handleFileChange(e: Event) {
     const files = (e.target as HTMLInputElement).files;
     uploadFile = files?.[0] ?? null;
-    duplicateWarning = null;
-    duplicateChecked = false;
-
-    if (!uploadFile) return;
-
-    // Run AI duplicate check in background (non-blocking)
-    checkingDuplicate = true;
-    try {
-      const res = await fetch('/api/admin/check-duplicate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          section: activeSection,
-          filename: uploadFile.name,
-          title: uploadFields.title,
-          subtitle: uploadFields.subtitle,
-        }),
-      });
-      if (res.ok) {
-        const result = await res.json();
-        if (result.isDuplicate) {
-          duplicateWarning = { matchedTitle: result.matchedTitle, matchedId: result.matchedId, reason: result.reason };
-        }
-      }
-    } catch {
-      // silenzioso: il check è opzionale
-    } finally {
-      checkingDuplicate = false;
-      duplicateChecked = true;
-    }
+    runDuplicateCheck();
   }
+
+  // Re-run check whenever the title changes (file already selected)
+  $: if (uploadFile) { void uploadFields.title; runDuplicateCheck(); }
 
   function isTestimonialSection(s: Section) {
     return s === 'testimonials';
@@ -194,6 +203,7 @@
     uploadSuccess = '';
     uploadProgress = 0;
     duplicateWarning = null;
+    duplicateChecked = false;
 
     try {
       const sigRes = await fetch('/api/admin/upload', {
@@ -506,25 +516,17 @@
         </div>
       </div>
 
-      <!-- AI duplicate check status -->
-      {#if checkingDuplicate}
-        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.75rem; padding: 0.75rem 1rem; margin-bottom: 1rem; color: rgba(255,255,255,0.45); font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
-          <svg style="animation: spin 1s linear infinite; flex-shrink:0;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-          Analisi AI in corso: controllo duplicati…
-        </div>
-      {:else if duplicateWarning}
+      <!-- Duplicate check (instant, client-side) -->
+      {#if duplicateWarning}
         <div style="background: rgba(214,72,126,0.1); border: 1px solid rgba(214,72,126,0.35); border-radius: 0.75rem; padding: 0.875rem 1rem; margin-bottom: 1rem;">
           <div style="display: flex; align-items: flex-start; gap: 0.625rem;">
             <svg style="flex-shrink:0;margin-top:1px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f9a8c9" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             <div>
               <p style="color: #f9a8c9; font-size: 0.85rem; font-weight: 600; margin: 0 0 0.25rem;">Possibile duplicato rilevato</p>
               <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin: 0 0 0.25rem;">
-                Simile a: <strong style="color:rgba(255,255,255,0.85);">{duplicateWarning.matchedTitle}</strong>
-                {#if duplicateWarning.matchedId}
-                  <span style="opacity:0.45;"> ({duplicateWarning.matchedId})</span>
-                {/if}
+                Corrisponde a: <strong style="color:rgba(255,255,255,0.85);">{duplicateWarning.matchedTitle}</strong>
+                <span style="opacity:0.4;"> ({duplicateWarning.matchedId.split('/').pop()})</span>
               </p>
-              <p style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin: 0;">AI: {duplicateWarning.reason}</p>
               <p style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin: 0.5rem 0 0;">Puoi comunque caricare premendo il bottone qui sotto.</p>
             </div>
           </div>
@@ -532,7 +534,7 @@
       {:else if duplicateChecked && uploadFile}
         <div style="background: rgba(6,182,212,0.07); border: 1px solid rgba(6,182,212,0.2); border-radius: 0.75rem; padding: 0.6rem 1rem; margin-bottom: 1rem; color: rgba(103,232,249,0.7); font-size: 0.78rem; display: flex; align-items: center; gap: 0.5rem;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          Nessun duplicato rilevato dall'AI
+          Nessun duplicato trovato
         </div>
       {/if}
 
@@ -547,18 +549,12 @@
 
       <button
         on:click={handleUpload}
-        disabled={uploading || checkingDuplicate}
-        style="background: {uploading || checkingDuplicate ? 'rgba(255,255,255,0.08)' : 'linear-gradient(135deg,#D6487E,#06B6D4)'}; border: none; border-radius: 0.75rem; padding: 0.875rem 2rem; color: #fff; font-size: 0.9rem; font-weight: 600; cursor: {uploading || checkingDuplicate ? 'not-allowed' : 'pointer'}; opacity: {uploading || checkingDuplicate ? 0.7 : 1}; transition: all 0.2s;"
+        disabled={uploading}
+        style="background: {uploading ? 'rgba(255,255,255,0.08)' : 'linear-gradient(135deg,#D6487E,#06B6D4)'}; border: none; border-radius: 0.75rem; padding: 0.875rem 2rem; color: #fff; font-size: 0.9rem; font-weight: 600; cursor: {uploading ? 'not-allowed' : 'pointer'}; opacity: {uploading ? 0.7 : 1}; transition: all 0.2s;"
       >
-        {uploading ? `Caricamento... ${uploadProgress}%` : checkingDuplicate ? 'Analisi in corso…' : 'Carica video su Cloudinary'}
+        {uploading ? `Caricamento... ${uploadProgress}%` : 'Carica video su Cloudinary'}
       </button>
     </div>
   </div>
 </div>
 
-<style>
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-</style>
