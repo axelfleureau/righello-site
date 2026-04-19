@@ -148,7 +148,7 @@
       target.getBoundingClientRect().left -
       container.getBoundingClientRect().left +
       container.scrollLeft;
-    container.scrollTo({ left, behavior: 'smooth' });
+    container.scrollTo({ left, behavior: reducedMotion ? 'auto' : 'smooth' });
     currentIndex = index;
   }
 
@@ -372,6 +372,13 @@
                 >
                   <track kind="captions" />
                 </video>
+              {/if}
+              {#if item.youtubeId}
+                <div class="youtube-play-hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="40" height="40">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
               {/if}
             </div>
             <button 
@@ -991,5 +998,31 @@
   @media (prefers-reduced-motion: reduce) {
     .dot { transition: none; }
     .carousel-card { animation: none; }
+  }
+
+  /* ── YouTube play hint ── */
+  .youtube-play-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    pointer-events: none;
+    opacity: 0.55;
+    animation: ytPulse 2.4s ease-in-out infinite;
+  }
+
+  .youtube-play-hint svg {
+    filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));
+  }
+
+  @keyframes ytPulse {
+    0%, 100% { transform: scale(1); opacity: 0.55; }
+    50% { transform: scale(1.15); opacity: 0.85; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .youtube-play-hint { animation: none; opacity: 0.7; }
   }
 </style>
