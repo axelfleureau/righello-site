@@ -47,6 +47,10 @@ export interface HeroVideo {
   youtubeId?: string;
   cloudinaryUrl?: string;
   cloudinaryPublicId?: string;
+  // Cloudinary-hosted thumbnail image URL. When set, PhoneMockup uses it as
+  // primary poster before the YouTube player loads — avoids the blank-screen
+  // symptom in in-app browsers (Instagram, Facebook, TikTok) that block img.youtube.com.
+  thumbnailUrl?: string;
 }
 
 export const FALLBACK_HERO: HeroVideo = {

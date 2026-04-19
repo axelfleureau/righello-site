@@ -62,6 +62,11 @@ export const load: PageServerLoad = async () => {
           youtubeId: visibleCloudinaryHero[0].youtubeId,
           cloudinaryUrl: visibleCloudinaryHero[0].url || undefined,
           cloudinaryPublicId: visibleCloudinaryHero[0].publicId,
+          // thumbnailUrl: Cloudinary auto-generates a JPEG thumbnail for every
+          // uploaded video. Passing it to PhoneMockup lets the hero image load
+          // correctly in in-app browsers (Instagram, Facebook, TikTok) that block
+          // cross-origin requests to img.youtube.com.
+          thumbnailUrl: visibleCloudinaryHero[0].thumbnailUrl || undefined,
         }
       : FALLBACK_HERO;
 

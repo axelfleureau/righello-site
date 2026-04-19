@@ -6,6 +6,11 @@
   
   export let videoSrc: string | null = null;
   export let youtubeId: string | null = null;
+  // Optional Cloudinary (or any CDN) thumbnail URL for the YouTube hero video.
+  // When provided it is used as the primary poster image before the player loads.
+  // This prevents the broken-image / blank-screen symptom in in-app browsers
+  // (Instagram, Facebook, TikTok WebViews) that block requests to img.youtube.com.
+  export let thumbnailUrl: string | undefined = undefined;
   export let showPlaceholder = true;
   export let muted: boolean = true;
   
@@ -48,6 +53,18 @@
   // During this window the reactive guard must NOT fire — setting ytPlaying=false
   // is intentional (thumbnail crossfade), and the guard would immediately override it.
   let ytLooping = false;
+  // ytThumbnailFailed: true when every thumbnail source (Cloudinary + YouTube CDN)
+  // has fired an onerror event. When true the broken img is hidden and a small
+  // branded plate (logo + gradient) is shown instead, so in-app browsers that block
+  // img.youtube.com don't leave the phone screen looking completely blank.
+  let ytThumbnailFailed = false;
+  // Computed thumbnail URLs — reactive so they update if the prop changes.
+  // ytCdnThumb: YouTube's own image CDN (blocked by some in-app browsers).
+  // activeThumbnailSrc: preferred source; Cloudinary URL takes priority over CDN.
+  $: ytCdnThumb = youtubeId ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg` : '';
+  $: activeThumbnailSrc = thumbnailUrl || ytCdnThumb;
+  // Reset failure flag whenever the video changes (e.g. hot-reload in dev).
+  $: if (youtubeId || thumbnailUrl) { ytThumbnailFailed = false; }
   
   const rotation = spring({ x: 0, y: 0 }, {
     stiffness: 0.05,
@@ -86,6 +103,28 @@
   function handleVideoError() {
     videoLoading = false;
     videoError = true;
+  }
+
+  // Thumbnail image onerror handler — called when any img src fails to load.
+  //
+  // Failure path:
+  //   1. If thumbnailUrl (Cloudinary) was the primary and failed → try YouTube CDN.
+  //   2. If YouTube CDN failed (or no thumbnailUrl) → all sources exhausted →
+  //      set ytThumbnailFailed, hide the broken img, show branded fallback.
+  //
+  // Why this matters: Instagram/Facebook/TikTok in-app browsers block requests
+  // to img.youtube.com entirely (cross-origin policy). Without a Cloudinary
+  // thumbnail AND without this handler, the user would see the phone screen's
+  // gradient background with no content at all.
+  function handleThumbnailError(e: Event) {
+    const img = e.currentTarget as HTMLImageElement;
+    // If the failed src was the Cloudinary URL (thumbnailUrl), try YouTube CDN next.
+    if (thumbnailUrl && ytCdnThumb && !img.src.includes('youtube.com')) {
+      img.src = ytCdnThumb;
+      return;
+    }
+    // All sources exhausted — hide the broken image placeholder.
+    ytThumbnailFailed = true;
   }
   
   // Reactively sync muted prop → video element property
@@ -462,17 +501,37 @@
             <div class="yt-crop-wrapper">
               <!-- Thumbnail always in DOM — acts as permanent poster/fallback.
                    Fades out only when YouTube confirms the video is playing.
-                   This prevents the black-screen bug caused by the old {#if !ytPlaying} guard. -->
+                   This prevents the black-screen bug caused by the old {#if !ytPlaying} guard.
+                   activeThumbnailSrc uses Cloudinary URL as primary (works in ALL browsers
+                   including Instagram/Facebook WebViews), falling back to img.youtube.com.
+                   onerror attempts a secondary source then sets ytThumbnailFailed. -->
               <img
-                src="https://img.youtube.com/vi/{youtubeId}/hqdefault.jpg"
+                src={activeThumbnailSrc}
                 alt=""
                 aria-hidden="true"
                 loading="eager"
                 fetchpriority="high"
                 decoding="async"
                 class="yt-thumbnail"
-                class:yt-thumbnail-hidden={ytPlaying}
+                class:yt-thumbnail-hidden={ytPlaying || ytThumbnailFailed}
+                on:error={handleThumbnailError}
               />
+              <!-- Branded fallback shown when ALL thumbnail sources fail (e.g. Instagram
+                   WebView blocks img.youtube.com AND Cloudinary has no thumbnail).
+                   The phone-screen gradient is already visible as backdrop; this adds
+                   the Righello logo mark so the screen doesn't look completely empty. -->
+              {#if ytThumbnailFailed && !ytPlaying}
+                <div class="yt-thumbnail-fallback" aria-hidden="true">
+                  <div class="ytf-glow ytf-glow-pink"></div>
+                  <div class="ytf-glow ytf-glow-cyan"></div>
+                  <svg class="ytf-logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <!-- Righello "R" lettermark simplified -->
+                    <circle cx="20" cy="20" r="18" stroke="rgba(214,72,126,0.6)" stroke-width="1.5" fill="none"/>
+                    <text x="20" y="27" font-family="serif" font-size="20" font-weight="700" fill="rgba(255,255,255,0.85)" text-anchor="middle">R</text>
+                  </svg>
+                  <span class="ytf-label">righello.lab</span>
+                </div>
+              {/if}
               <!-- ytSrcActive is set after mount (with origin parameter) and cleared to ''
                    when the phone scrolls out of view — removing the iframe from the DOM
                    is the only 100%-reliable way to stop YouTube audio on mobile.
@@ -740,7 +799,66 @@
   .yt-thumbnail-hidden {
     opacity: 0;
   }
-  
+
+  /* Branded fallback plate — shown inside the phone screen when every thumbnail
+     source (Cloudinary + YouTube CDN) has failed to load. The .phone-screen
+     gradient (pink/cyan over near-black) is visible as backdrop; this layer
+     adds a centred logo mark so the screen doesn't look completely blank.
+     Visible only in restricted WebViews (Instagram, Facebook, TikTok) that block
+     cross-origin image requests to img.youtube.com. */
+  .yt-thumbnail-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    pointer-events: none;
+  }
+
+  .ytf-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .ytf-glow-pink {
+    width: 140px;
+    height: 140px;
+    background: rgba(214, 72, 126, 0.5);
+    top: 20%;
+    left: 15%;
+  }
+
+  .ytf-glow-cyan {
+    width: 120px;
+    height: 120px;
+    background: rgba(6, 182, 212, 0.4);
+    bottom: 20%;
+    right: 15%;
+  }
+
+  .ytf-logo {
+    width: 52px;
+    height: 52px;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 0 12px rgba(214, 72, 126, 0.5));
+  }
+
+  .ytf-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.55);
+    position: relative;
+    z-index: 1;
+  }
+
   .phone-home-indicator {
     position: absolute;
     bottom: 8px;

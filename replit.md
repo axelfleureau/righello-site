@@ -29,6 +29,7 @@ The website features a modern UI/UX with interactive elements and advanced anima
 - **Security**: `robots.txt` configuration to block AI crawlers and scrapers, server-side bot blocking, and robust security headers (X-Frame-Options, CSP, X-Content-Type-Options, etc.).
 - **Performance & SEO**: Optimized HTTP headers for caching, font preloading, comprehensive meta tags, and best practices for image/video loading. Static video thumbnails are pre-generated.
 - **Contact Form**: An API endpoint (`/api/contact`) processes form submissions, leveraging OpenAI GPT for lead analysis and SendGrid for sending branded HTML emails to clients and internal teams.
+- **In-App Browser Robustness**: `PhoneMockup` accepts an optional `thumbnailUrl` prop (Cloudinary URL). It is used as the primary poster image and falls back to `img.youtube.com` on error; if both fail (Instagram/Facebook/TikTok WebViews block `img.youtube.com`) a branded gradient + "R" lettermark overlay is shown. The `HeroVideo` type, `+page.server.ts`, `+page.svelte`, and `AppleScrolly` are updated to thread `thumbnailUrl` through the data chain.
 
 ## Performance Optimizations Applied
 - **WOFF2 fonts**: All 14 Degular Display OTF fonts converted to WOFF2 (~50% smaller per file). `@font-face` declarations and `<link rel="preload">` updated to WOFF2.

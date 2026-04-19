@@ -9,6 +9,10 @@
   export let partnerNames: string[] = [];
   export let heroVideoCloudinaryUrl: string | undefined = undefined;
   export let heroVideoYoutubeId: string | undefined = 'Rj5N4BMF-Vw';
+  // Cloudinary thumbnail URL for the hero video. Passed to PhoneMockup as primary
+  // poster image so in-app browsers (Instagram, Facebook WebViews) can show content
+  // even when they block cross-origin requests to img.youtube.com.
+  export let heroVideoThumbnailUrl: string | undefined = undefined;
 
   let videoMuted = true;
   let audioUnlocked = false;
@@ -548,6 +552,7 @@
       <PhoneMockup 
         youtubeId={heroVideoCloudinaryUrl ? undefined : heroVideoYoutubeId}
         videoSrc={heroVideoCloudinaryUrl}
+        thumbnailUrl={heroVideoThumbnailUrl}
         muted={videoMuted}
       />
     </div>
