@@ -486,7 +486,7 @@
                   muted
                   loop
                   playsinline
-                  preload="none"
+                  preload="metadata"
                   on:canplay={(e) => handleCanPlay(i, e.currentTarget)}
                 >
                   <track kind="captions" />

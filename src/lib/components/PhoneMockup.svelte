@@ -411,7 +411,11 @@
           // isVisible && !hasBeenHidden → initial page load, do nothing
           // YouTube handles its own autoplay via the autoplay=1 URL param
         },
-        { threshold: 0.1 }
+        // rootMargin gives a generous buffer so the iframe is NOT destroyed when
+        // the phone briefly dips in/out of the viewport during pinned scrollytelling.
+        // Only when the phone is well past the viewport (300px above OR below) do
+        // we tear the iframe down. This prevents the "video stops mid-scroll" feel.
+        { threshold: 0.1, rootMargin: '300px 0px' }
       );
       visibilityObserver.observe(containerEl);
     }
