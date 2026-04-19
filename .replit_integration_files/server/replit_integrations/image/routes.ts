@@ -1,4 +1,4 @@
-import type { Express, Request, Response } from "express"; 
+import type { Express, Request, Response } from "express";
 import { openai } from "./client"; 
 
 export function registerImageRoutes(app: Express): void {
