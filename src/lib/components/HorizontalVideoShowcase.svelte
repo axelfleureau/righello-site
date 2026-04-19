@@ -268,8 +268,7 @@
         bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
         const label = timeRemainingEls[idx];
         if (label) {
-          const remaining = Math.max(0, video.duration - video.currentTime);
-          label.textContent = formatTime(remaining);
+          label.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
         }
       });
       rafId = requestAnimationFrame(tick);
