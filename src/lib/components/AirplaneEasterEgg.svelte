@@ -681,6 +681,10 @@
   }
 
   /* Mid-text gets a larger, more statement-like treatment */
+  .mid-text {
+    max-width: 820px;
+  }
+
   .mid-text p {
     font-size: clamp(1.5rem, 3.5vw, 2.25rem);
     line-height: 1.35;
@@ -865,6 +869,10 @@
       max-width: 1100px;
     }
 
+    .mid-text {
+      max-width: 900px;
+    }
+
     .final-text h2 {
       font-size: clamp(4rem, 7vw, 6.5rem);
     }
@@ -894,6 +902,10 @@
   @media (min-width: 1920px) {
     .easter-text {
       max-width: 1280px;
+    }
+
+    .mid-text {
+      max-width: 1040px;
     }
 
     .easter-text h2 {
