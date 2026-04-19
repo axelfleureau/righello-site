@@ -211,7 +211,13 @@
   let videoRefs: (HTMLVideoElement | null)[] = items.map(() => null);
   let videoLoaded: boolean[] = items.map(() => false);
   let progressBarEls: (HTMLElement | null)[] = items.map(() => null);
+  let timeRemainingEls: (HTMLElement | null)[] = items.map(() => null);
 
+  function formatTime(secs: number): string {
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  }
 
   function handleVideoLoaded(index: number) {
     videoLoaded[index] = true;
@@ -253,6 +259,8 @@
             video.pause();
             const bar = progressBarEls[idx];
             if (bar) bar.style.transform = 'scaleX(0)';
+            const label = timeRemainingEls[idx];
+            if (label) label.textContent = '';
           }
         });
       },
@@ -285,6 +293,11 @@
           const video = videoRefs[idx];
           if (!bar || !video || !video.duration) return;
           bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
+          const label = timeRemainingEls[idx];
+          if (label) {
+            const remaining = Math.max(0, video.duration - video.currentTime);
+            label.textContent = formatTime(remaining);
+          }
         });
         rafId = requestAnimationFrame(tick);
       }
@@ -400,6 +413,7 @@
                   <track kind="captions" />
                 </video>
                 <div class="video-progress-bar" bind:this={progressBarEls[i]} aria-hidden="true"></div>
+                <span class="video-time-remaining" bind:this={timeRemainingEls[i]} aria-hidden="true"></span>
               {/if}
               {#if item.youtubeId}
                 <div class="youtube-play-hint" aria-hidden="true">
@@ -1017,6 +1031,31 @@
 
   .card-content:hover .video-progress-bar {
     opacity: 0;
+  }
+
+  /* ── Time-remaining label ── */
+  .video-time-remaining {
+    position: absolute;
+    bottom: 7px;
+    right: 8px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+    z-index: 9;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .card-content:hover .video-time-remaining {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-time-remaining { display: none; }
   }
 
   /* ── YouTube play hint ── */
