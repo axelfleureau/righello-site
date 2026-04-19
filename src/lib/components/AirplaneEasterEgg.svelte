@@ -169,33 +169,37 @@
     ctx = gsap.context(() => {
       const emojiEls = emojiZone?.querySelectorAll('.emoji-float');
       if (emojiEls && emojiEls.length > 0) {
+        // Time-based animation (NOT scrub) so emojis always appear regardless of
+        // when ScrollTrigger calculates its positions. Scrub tied the animation to
+        // scroll math that could be off by the time the user reaches the zone
+        // (pin spacer from AppleScrolly shifts all positions), leaving them stuck
+        // at opacity:0 forever. With toggleActions the timeline plays once on enter.
+        gsap.set(Array.from(emojiEls), { opacity: 0, scale: 0.5, y: 40, force3D: true });
+
         const emojiTl = gsap.timeline({
           scrollTrigger: {
             trigger: emojiZone,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            scrub: true,
+            start: 'top 75%',
+            toggleActions: 'play none none reset',
             invalidateOnRefresh: true,
-          }
+          },
+          defaults: { ease: 'back.out(1.4)', force3D: true }
         });
 
-        emojiEls.forEach((el, i) => {
-          gsap.set(el, { opacity: 0, scale: 0.5, y: 40, rotation: (i % 2 === 0 ? 1 : -1) * 10, force3D: true });
-
-          const enterStart = i * 0.1;
-          const enterDur = 0.15;
-          const holdDur = 0.2;
-          const exitDur = 0.12;
-
-          emojiTl.to(el, {
-            opacity: 1, scale: 1, y: 0, rotation: 0,
-            duration: enterDur, ease: 'none'
-          }, enterStart);
-
-          emojiTl.to(el, {
-            opacity: 0, scale: 0.8, y: -20,
-            duration: exitDur, ease: 'none'
-          }, enterStart + enterDur + holdDur);
+        Array.from(emojiEls).forEach((el, i) => {
+          const rot = (i % 2 === 0 ? 1 : -1) * 12;
+          const startAt = i * 0.22;
+          // Enter: pop in with rotation snapping to 0
+          emojiTl.fromTo(el,
+            { opacity: 0, scale: 0.45, y: 45, rotation: rot },
+            { opacity: 1, scale: 1,    y: 0,  rotation: 0, duration: 0.45 },
+            startAt
+          );
+          // Exit: float up and fade out after a short hold
+          emojiTl.to(el,
+            { opacity: 0, scale: 0.75, y: -28, duration: 0.3, ease: 'power2.in' },
+            startAt + 0.65
+          );
         });
       }
 
