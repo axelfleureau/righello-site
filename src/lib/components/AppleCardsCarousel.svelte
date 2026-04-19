@@ -211,7 +211,7 @@
   let videoRefs: (HTMLVideoElement | null)[] = items.map(() => null);
   let videoLoaded: boolean[] = items.map(() => false);
   let progressBarEls: (HTMLElement | null)[] = items.map(() => null);
-  let timeRemainingEls: (HTMLElement | null)[] = items.map(() => null);
+  let timeLabelEls: (HTMLElement | null)[] = items.map(() => null);
 
   function formatTime(secs: number): string {
     const m = Math.floor(secs / 60);
@@ -246,7 +246,7 @@
         const video = videoRefs[idx];
         if (!bar || !video || !video.duration) return;
         bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
-        const label = timeRemainingEls[idx];
+        const label = timeLabelEls[idx];
         if (label) {
           label.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
         }
@@ -283,7 +283,7 @@
             video.pause();
             const bar = progressBarEls[idx];
             if (bar) bar.style.transform = 'scaleX(0)';
-            const label = timeRemainingEls[idx];
+            const label = timeLabelEls[idx];
             if (label) label.textContent = '';
             if (scrollPlayingSet.size === 0) stopRaf();
           }
@@ -419,7 +419,7 @@
                   <track kind="captions" />
                 </video>
                 <div class="video-progress-bar" bind:this={progressBarEls[i]} aria-hidden="true"></div>
-                <span class="video-time-label" bind:this={timeRemainingEls[i]} aria-hidden="true"></span>
+                <span class="video-time-label" bind:this={timeLabelEls[i]} aria-hidden="true"></span>
               {/if}
               {#if item.youtubeId}
                 <div class="youtube-play-hint" aria-hidden="true">
