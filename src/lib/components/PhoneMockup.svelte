@@ -123,23 +123,28 @@
   }
 
   // Reactively sync muted prop → YouTube iframe via postMessage.
-  // Sends both mute AND unMute so the iframe audio tracks the prop correctly.
-  $: if (iframeEl && youtubeId && ytPlaying) {
-    if (muted) {
-      iframeEl.contentWindow?.postMessage(
-        JSON.stringify({ event: 'command', func: 'mute', args: [] }),
-        '*'
-      );
-    } else {
-      iframeEl.contentWindow?.postMessage(
-        JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
-        '*'
-      );
-      iframeEl.contentWindow?.postMessage(
-        JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }),
-        '*'
-      );
-    }
+  //
+  // MUTE only — NOT unMute.
+  //
+  // Why: browsers (and YouTube's own base.js) require a qualifying user-activation
+  // event (click / pointerdown / keydown / touchstart) before allowing audio to
+  // start or unmute.  A Svelte reactive runs as a microtask — completely outside
+  // any gesture context.  Sending unMute here would cause YouTube to log:
+  //   "Unmuting failed and the element was paused instead because the user didn't
+  //    interact with the document before."
+  // …and then it actually PAUSES the video (no audio, no video frames).
+  //
+  // unMute is sent from two safer places:
+  //   1. state=1 handler below: fires while the video IS already playing; for
+  //      already-playing media browsers are far less restrictive.
+  //   2. AppleScrolly's retryUnmute(): called from click/pointerdown/keydown
+  //      listeners — guaranteed gesture context, works on every browser including
+  //      Safari iOS.
+  $: if (iframeEl && youtubeId && ytPlaying && muted) {
+    iframeEl.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: 'mute', args: [] }),
+      '*'
+    );
   }
 
   onMount(() => {
@@ -203,19 +208,12 @@
                 JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
               );
             }
-            // Race-condition safety: if the user unlocked audio BEFORE onReady fired,
-            // the unMute postMessage sent by unlockAudio() was dropped (player not
-            // ready yet). Re-send it here now that the player is initialised.
-            // This is safe to send even if the user hasn't unlocked — YouTube will
-            // ignore unMute while the video is playing muted via URL param.
-            if (!muted && iframeEl) {
-              iframeEl.contentWindow?.postMessage(
-                JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*'
-              );
-              iframeEl.contentWindow?.postMessage(
-                JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*'
-              );
-            }
+            // NOTE: we intentionally do NOT send unMute here, even if !muted.
+            // onReady fires outside any user-gesture context → YouTube's base.js
+            // would reject it, log "Unmuting failed", and pause the video.
+            // The race condition (user unlocked before player was ready) is handled
+            // by AppleScrolly's retryUnmute() which fires on click/pointerdown/keydown
+            // — always inside a real gesture context.
           }, 150);
 
           // Safety net: if onStateChange(1) never arrives within 4s (slow network,

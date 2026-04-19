@@ -96,6 +96,23 @@
     // The phone mockup handles its own loading state
   }
   
+  // Send unMute + setVolume to every YouTube iframe currently in the DOM.
+  // MUST be called directly from a qualifying user-gesture handler (click,
+  // pointerdown, keydown, touchstart).  Calling it from a Svelte reactive,
+  // onReady, or a postMessage callback will trigger YouTube's autoplay-policy
+  // guard and cause it to pause the video instead ("Unmuting failed…").
+  function sendUnmuteToIframes() {
+    if (!browser) return;
+    document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube"]').forEach(iframe => {
+      iframe.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*'
+      );
+      iframe.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*'
+      );
+    });
+  }
+
   function unlockAudio() {
     if (!audioUnlocked) {
       audioUnlocked = true;
@@ -103,20 +120,29 @@
       audioActiveVisible = true;
       setTimeout(() => { audioActiveVisible = false; }, 2500);
 
-      // Send unMute directly to all YouTube iframes *synchronously* inside the
-      // user-gesture context (touchstart / wheel). On iOS Safari, postMessage
-      // must be called inside the gesture; relying on Svelte reactive updates
-      // (async microtask) is too late and the command gets silently ignored.
-      if (browser) {
-        document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube"]').forEach(iframe => {
-          iframe.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*'
-          );
-          iframe.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*'
-          );
-        });
-      }
+      // Send unMute synchronously while still in the gesture call-stack.
+      // touchstart qualifies; wheel does NOT on some browsers/YouTube versions
+      // (see retryUnmute below for the reliable fallback).
+      sendUnmuteToIframes();
+    }
+  }
+
+  // Called from click / pointerdown / keydown listeners — these are qualifying
+  // user-activation events on every browser including Safari iOS.  If unlockAudio
+  // was already triggered via wheel (which may NOT qualify) and YouTube rejected
+  // the unMute (pausing the video), this will un-pause and unmute cleanly on the
+  // user's next natural interaction with the page.
+  function retryUnmute() {
+    if (!audioUnlocked || videoMuted) return;
+    sendUnmuteToIframes();
+    // If YouTube paused the video because an earlier unMute failed, we also need
+    // to resume playback.  Send playVideo so it resumes from where it froze.
+    if (browser) {
+      document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube"]').forEach(iframe => {
+        iframe.contentWindow?.postMessage(
+          JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
+        );
+      });
     }
   }
 
@@ -129,16 +155,37 @@
     if (!container) return;
 
     // --- Audio management ---
-    // Unlock audio on first user gesture (wheel on desktop, touchstart on mobile)
+    // Unlock audio on first user gesture.
+    // wheel   = desktop scroll  (fires first, but is NOT a qualifying activation on
+    //           some browsers/YouTube versions — retryUnmute below recovers from this)
+    // touchstart = mobile touch (always a qualifying activation)
     window.addEventListener('wheel', unlockAudio, { once: true, passive: true });
     window.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+
+    // Gesture-safe unMute retry: click / pointerdown / keydown ARE qualifying
+    // user-activation events on every browser including Safari iOS.
+    // retryUnmute is a no-op until audioUnlocked=true, so these listeners are
+    // harmless during normal page interaction. They recover the case where wheel
+    // fired unlockAudio but YouTube rejected the unMute (pausing the video) —
+    // the user's next click or keypress will resume + unmute in proper context.
+    window.addEventListener('pointerdown', retryUnmute, { passive: true });
+    window.addEventListener('keydown', retryUnmute, { passive: true });
 
     // Mute/unmute based on whether the hero is in viewport
     audioObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Re-enter viewport: unmute if user had already unlocked audio
-          if (audioUnlocked) videoMuted = false;
+          // Re-enter viewport: unmute if user had already unlocked audio.
+          // Also call sendUnmuteToIframes() directly: the Svelte reactive only
+          // handles mute now (not unMute, to avoid gesture-policy rejections on
+          // first load). For already-playing muted videos on re-entry this send
+          // is safe — browsers only restrict starting playback, not unMuting a
+          // video that is already in a playing state. retryUnmute() on pointerdown
+          // acts as a fallback for strict browsers (Safari desktop).
+          if (audioUnlocked) {
+            videoMuted = false;
+            sendUnmuteToIframes();
+          }
         } else {
           // Left viewport: always mute
           videoMuted = true;
@@ -392,6 +439,8 @@
     if (browser) {
       window.removeEventListener('wheel', unlockAudio);
       window.removeEventListener('touchstart', unlockAudio);
+      window.removeEventListener('pointerdown', retryUnmute);
+      window.removeEventListener('keydown', retryUnmute);
     }
   });
 </script>
