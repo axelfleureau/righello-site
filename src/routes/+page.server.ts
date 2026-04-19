@@ -15,6 +15,13 @@ import {
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 
+// Extract the last path segment from a Cloudinary publicId.
+// e.g. "righello/reels/ricci-scuolasci" → "ricci-scuolasci"
+// Used to match a Cloudinary upload against a fallback video by ID convention.
+function cloudinarySlug(publicId: string): string {
+  return publicId.split('/').pop() ?? publicId;
+}
+
 async function getCachedData() {
   const now = Date.now();
   const cache = getCache();
@@ -58,9 +65,16 @@ export const load: PageServerLoad = async () => {
         }
       : FALLBACK_HERO;
 
-  // --- Showcase: merge Cloudinary + fallback, filter hidden, sort by order ---
+  // Cloudinary slug sets: if a Cloudinary video's publicId last segment matches
+  // a fallback video's id, the Cloudinary version takes precedence and the
+  // fallback is excluded from the merged list (deduplication rule).
+  const cloudinaryShowcaseSlugs = new Set(visibleCloudinaryShowcase.map((v) => cloudinarySlug(v.publicId)));
+  const cloudinaryReelSlugs    = new Set(visibleCloudinaryReels.map((v) => cloudinarySlug(v.publicId)));
+  const cloudinaryTestiSlugs   = new Set(visibleCloudinaryTestimonials.map((v) => cloudinarySlug(v.publicId)));
+
+  // --- Showcase: merge Cloudinary + fallback, filter hidden + covered, sort by order ---
   const fallbackShowcase: VideoItem[] = FALLBACK_SHOWCASE
-    .filter((v) => !hiddenFallbackIds.includes(v.id))
+    .filter((v) => !hiddenFallbackIds.includes(v.id) && !cloudinaryShowcaseSlugs.has(v.id))
     .map((v) => ({ ...v, order: v.order + 1000 }));
 
   const showcaseItems: VideoItem[] = [
@@ -78,9 +92,9 @@ export const load: PageServerLoad = async () => {
     ...fallbackShowcase,
   ].sort((a, b) => a.order - b.order);
 
-  // --- Reels: merge Cloudinary + fallback, filter hidden, sort by order ---
+  // --- Reels: merge Cloudinary + fallback, filter hidden + covered, sort by order ---
   const fallbackReels: ReelItem[] = FALLBACK_REELS
-    .filter((v) => !hiddenFallbackIds.includes(v.id))
+    .filter((v) => !hiddenFallbackIds.includes(v.id) && !cloudinaryReelSlugs.has(v.id))
     .map((v) => ({ ...v, order: v.order + 1000 }));
 
   const reelItems: ReelItem[] = [
@@ -98,9 +112,9 @@ export const load: PageServerLoad = async () => {
     ...fallbackReels,
   ].sort((a, b) => a.order - b.order);
 
-  // --- Testimonials: merge Cloudinary + fallback, filter hidden, sort by order ---
+  // --- Testimonials: merge Cloudinary + fallback, filter hidden + covered, sort by order ---
   const fallbackTestimonials: TestimonialItem[] = FALLBACK_TESTIMONIALS
-    .filter((v) => !hiddenFallbackIds.includes(v.id))
+    .filter((v) => !hiddenFallbackIds.includes(v.id) && !cloudinaryTestiSlugs.has(v.id))
     .map((v) => ({ ...v, order: v.order + 1000 }));
 
   const testimonialItems: TestimonialItem[] = [
