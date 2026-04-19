@@ -322,7 +322,7 @@
             if (bar) bar.style.transform = 'scaleX(0)';
             const label = timeLabelEls[idx];
             if (label) label.textContent = '';
-            if (scrollPlayingSet.size === 0) stopRaf();
+            if (allVideosPaused()) stopRaf();
           }
         });
       },
@@ -332,6 +332,22 @@
     container.querySelectorAll<HTMLElement>('[data-card-idx]').forEach((card) => {
       videoObserver!.observe(card);
     });
+
+    function allVideosPaused(): boolean {
+      const videos = container.querySelectorAll<HTMLVideoElement>('.card-video-layer');
+      return Array.from(videos).every(v => v.paused);
+    }
+
+    function handleVideoPause() {
+      if (allVideosPaused()) stopRaf();
+    }
+
+    function handleVideoPlay() {
+      startRaf();
+    }
+
+    container.addEventListener('pause', handleVideoPause, { capture: true, passive: true });
+    container.addEventListener('play', handleVideoPlay, { capture: true, passive: true });
 
     function handleTimeUpdate(e: Event) {
       if (reducedMotion) return;
@@ -351,6 +367,8 @@
       window.removeEventListener('keydown', handleKeydown);
       container?.removeEventListener('scroll', handleCarouselScroll);
       container?.removeEventListener('timeupdate', handleTimeUpdate, { capture: true });
+      container?.removeEventListener('pause', handleVideoPause, { capture: true });
+      container?.removeEventListener('play', handleVideoPlay, { capture: true });
       videoObserver?.disconnect();
       if (rafId) cancelAnimationFrame(rafId);
     };
