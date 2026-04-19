@@ -6,6 +6,7 @@
 
   export let title = '';
   export let useReelViewer = false;
+  export let showArrows = false;
   export let items: {
     title: string;
     subtitle?: string;
@@ -34,6 +35,11 @@
   let lightboxTitle = '';
   let reelViewerOpen = false;
   let reelViewerIndex = 0;
+
+  // Navigation + autoplay state
+  let currentIndex = 0;
+  let reducedMotion = false;
+  const scrollPlayingSet = new Set<number>();
   
   $: reelItems = items.filter(i => (i.cloudinaryUrl || i.videoSrc || i.youtubeId) && !i.isCta);
   
@@ -82,14 +88,48 @@
     }
   }
   
-  function handleVideoLeave(video: HTMLVideoElement | null) {
+  function handleVideoLeave(video: HTMLVideoElement | null, idx: number) {
+    if (scrollPlayingSet.has(idx)) return; // scroll-autoplay running, don't interrupt
     if (video) {
       video.pause();
       video.currentTime = 0.1;
     }
-    if (video === activeVideo) {
-      activeVideo = null;
-    }
+    if (video === activeVideo) activeVideo = null;
+  }
+
+  // ── Navigation ──────────────────────────────────────────────
+  function scrollToIndex(index: number) {
+    if (!container) return;
+    const cards = container.querySelectorAll<HTMLElement>('[data-card-idx]');
+    const target = cards[index];
+    if (!target) return;
+    const left =
+      target.getBoundingClientRect().left -
+      container.getBoundingClientRect().left +
+      container.scrollLeft;
+    container.scrollTo({ left, behavior: 'smooth' });
+    currentIndex = index;
+  }
+
+  function goNext() {
+    const videoItems = items.filter(it => !it.isCta);
+    if (currentIndex < videoItems.length - 1) scrollToIndex(currentIndex + 1);
+  }
+
+  function goPrev() {
+    if (currentIndex > 0) scrollToIndex(currentIndex - 1);
+  }
+
+  function handleCarouselScroll() {
+    if (!container) return;
+    const cLeft = container.getBoundingClientRect().left;
+    const cards = container.querySelectorAll<HTMLElement>('[data-card-idx]');
+    let best = 0, bestDist = Infinity;
+    cards.forEach((c, i) => {
+      const dist = Math.abs(c.getBoundingClientRect().left - cLeft);
+      if (dist < bestDist) { bestDist = dist; best = i; }
+    });
+    currentIndex = best;
   }
   
   function openLightbox(item: { title: string; videoSrc?: string; cloudinaryUrl?: string; youtubeId?: string }) {
@@ -183,12 +223,46 @@
   }
 
   onMount(() => {
-    if (browser) {
-      window.addEventListener('keydown', handleKeydown);
-      return () => {
-        window.removeEventListener('keydown', handleKeydown);
-      };
+    if (!browser) return;
+
+    reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.addEventListener('keydown', handleKeydown);
+    container.addEventListener('scroll', handleCarouselScroll, { passive: true });
+
+    let videoObserver: IntersectionObserver | null = null;
+
+    if (!reducedMotion) {
+      videoObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const card = entry.target as HTMLElement;
+            const idx = parseInt(card.dataset.cardIdx ?? '-1');
+            if (idx < 0) return;
+            const video = card.querySelector<HTMLVideoElement>('.card-video-native');
+            if (!video) return;
+
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+              scrollPlayingSet.add(idx);
+              video.play().catch(() => {});
+            } else if (entry.intersectionRatio < 0.3) {
+              scrollPlayingSet.delete(idx);
+              video.pause();
+            }
+          });
+        },
+        { root: container, threshold: [0, 0.3, 0.55, 0.85, 1.0] }
+      );
+
+      container.querySelectorAll<HTMLElement>('[data-card-idx]').forEach((card) => {
+        videoObserver!.observe(card);
+      });
     }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeydown);
+      container?.removeEventListener('scroll', handleCarouselScroll);
+      videoObserver?.disconnect();
+    };
   });
 </script>
 
@@ -197,23 +271,38 @@
     <h2 class="carousel-title">{title}</h2>
   {/if}
   
-  <div 
-    bind:this={container}
-    class="carousel-container"
-    on:mousedown={handleMouseDown}
-    on:mousemove={handleMouseMove}
-    on:mouseup={handleMouseUp}
-    on:mouseleave={handleMouseLeave}
-    on:touchstart={handleTouchStart}
-    on:touchmove={handleTouchMove}
-    on:touchend={handleTouchEnd}
-    on:touchcancel={handleTouchCancel}
-    role="list"
-  >
+  <div class="carousel-wrapper">
+    {#if showArrows}
+      <button
+        class="arrow-btn arrow-prev"
+        on:click={goPrev}
+        disabled={currentIndex === 0}
+        aria-label="Precedente"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+    {/if}
+
+    <div 
+      bind:this={container}
+      class="carousel-container"
+      on:mousedown={handleMouseDown}
+      on:mousemove={handleMouseMove}
+      on:mouseup={handleMouseUp}
+      on:mouseleave={handleMouseLeave}
+      on:touchstart={handleTouchStart}
+      on:touchmove={handleTouchMove}
+      on:touchend={handleTouchEnd}
+      on:touchcancel={handleTouchCancel}
+      role="list"
+    >
     {#each items as item, i}
       <div 
         class="carousel-card"
         style="--index: {i}"
+        data-card-idx={item.isCta ? undefined : i}
         role="listitem"
       >
         <div 
@@ -224,8 +313,8 @@
           }}
           on:mouseleave={() => {
             const card = container?.querySelectorAll('.card-content')[i];
-            const video = card?.querySelector('video');
-            handleVideoLeave(video);
+            const video = card?.querySelector('video') ?? null;
+            handleVideoLeave(video, i);
           }}
         >
           {#if item.isCta}
@@ -313,7 +402,36 @@
         </div>
       </div>
     {/each}
-  </div>
+    </div><!-- /.carousel-container -->
+
+    {#if showArrows}
+      <button
+        class="arrow-btn arrow-next"
+        on:click={goNext}
+        disabled={currentIndex >= items.filter(it => !it.isCta).length - 1}
+        aria-label="Successivo"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    {/if}
+  </div><!-- /.carousel-wrapper -->
+
+  {#if showArrows}
+    <div class="dots-row" role="tablist" aria-label="Naviga tra i video">
+      {#each items.filter(it => !it.isCta) as _, i}
+        <button
+          class="dot"
+          class:dot--active={currentIndex === i}
+          on:click={() => scrollToIndex(i)}
+          role="tab"
+          aria-selected={currentIndex === i}
+          aria-label="Video {i + 1}"
+        ></button>
+      {/each}
+    </div>
+  {/if}
 </div>
 
 {#if lightboxOpen && (lightboxVideo || lightboxYoutubeId)}
@@ -757,5 +875,81 @@
 
   .cta-card-btn:hover .cta-card-arrow {
     transform: translateX(3px);
+  }
+
+  /* ── Carousel wrapper ── */
+  .carousel-wrapper {
+    position: relative;
+  }
+
+  /* ── Arrow buttons ── */
+  .arrow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(10, 10, 10, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .arrow-btn:hover:not(:disabled) {
+    background: rgba(214, 72, 126, 0.75);
+    border-color: rgba(214, 72, 126, 0.6);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .arrow-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .arrow-prev { left: 1rem; }
+  .arrow-next { right: 1rem; }
+
+  @media (pointer: coarse) {
+    .arrow-btn { display: none; }
+  }
+
+  /* ── Dots ── */
+  .dots-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 0 0.25rem;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: width 0.3s ease, background 0.3s ease, border-radius 0.3s ease;
+  }
+
+  .dot--active {
+    width: 22px;
+    border-radius: 4px;
+    background: #D6487E;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot { transition: none; }
   }
 </style>
