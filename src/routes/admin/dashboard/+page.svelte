@@ -16,6 +16,14 @@
   const sections: Section[] = ['hero', 'showcase', 'reels', 'testimonials'];
   let activeSection: Section = 'showcase';
 
+  // Local mutable copy of videos — avoids relying on server reload after mutations
+  let localVideos: Record<Section, AdminVideo[]> = {
+    hero: [...(data.videos.hero || [])],
+    showcase: [...(data.videos.showcase || [])],
+    reels: [...(data.videos.reels || [])],
+    testimonials: [...(data.videos.testimonials || [])],
+  };
+
   let uploading = false;
   let uploadError = '';
   let uploadSuccess = '';
@@ -92,7 +100,7 @@
   function initHiddenState() {
     const state: Record<string, boolean> = {};
     for (const s of sections) {
-      for (const v of (data.videos[s] || [])) {
+      for (const v of (localVideos[s] || [])) {
         state[v.id] = v.hidden;
       }
     }
@@ -114,7 +122,7 @@
   }
 
   function getVideos(section: Section): AdminVideo[] {
-    return data.videos[section] || [];
+    return localVideos[section] || [];
   }
 
   function videoUrl(v: AdminVideo): string {
@@ -152,7 +160,12 @@
       });
       if (!res.ok) throw new Error(await res.text());
       editingId = null;
-      window.location.reload();
+      // Update local state — no page reload needed
+      const section = video.section as Section;
+      localVideos[section] = localVideos[section].map((v) =>
+        v.id === video.id ? { ...v, ...editForm } : v
+      );
+      localVideos = { ...localVideos };
     } catch (err: unknown) {
       alert('Errore nel salvataggio: ' + String(err));
     }
@@ -168,7 +181,12 @@
         body: JSON.stringify({ publicId: video.publicId }),
       });
       if (!res.ok) throw new Error(await res.text());
-      window.location.reload();
+      // Remove from local state — no page reload needed
+      const section = video.section as Section;
+      localVideos[section] = localVideos[section].filter((v) => v.id !== video.id);
+      localVideos = { ...localVideos };
+      delete hiddenState[video.id];
+      hiddenState = { ...hiddenState };
     } catch (err: unknown) {
       alert('Errore eliminazione: ' + String(err));
     }
@@ -248,11 +266,34 @@
       });
 
       uploadSuccess = `Video caricato con successo!`;
+
+      // Add the new video to local state immediately — no page reload needed
+      const newVideo: AdminVideo = {
+        id: publicId,
+        source: 'cloudinary',
+        section: activeSection,
+        publicId,
+        title: uploadFields.title || publicId.split('/').pop() || publicId,
+        subtitle: uploadFields.subtitle || '',
+        category: uploadFields.category || '',
+        order: uploadFields.order,
+        hidden: false,
+        thumbnailUrl: `https://res.cloudinary.com/${cloudName}/video/upload/f_jpg,q_80,w_800,c_fill,so_0/${publicId}.jpg`,
+        clientName: uploadFields.clientName || undefined,
+        clientRole: uploadFields.clientRole || undefined,
+        company: uploadFields.company || undefined,
+        quote: uploadFields.quote || undefined,
+      };
+      localVideos[activeSection] = [...localVideos[activeSection], newVideo].sort(
+        (a, b) => a.order - b.order
+      );
+      localVideos = { ...localVideos };
+      hiddenState[publicId] = false;
+      hiddenState = { ...hiddenState };
+
       uploadFile = null;
       if (fileInput) fileInput.value = '';
       uploadFields = { title: '', subtitle: '', category: '', order: 99, clientName: '', clientRole: '', company: '', quote: '' };
-
-      setTimeout(() => window.location.reload(), 1500);
     } catch (err: unknown) {
       uploadError = 'Errore durante il caricamento: ' + String(err);
     } finally {
