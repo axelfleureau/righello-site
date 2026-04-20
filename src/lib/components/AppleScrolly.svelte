@@ -620,26 +620,31 @@
     </div>
   {/if}
 
-  <!-- Audio state badges – section-level, above partners strip -->
-  {#if audioActiveVisible}
-    <div class="audio-badge audio-on" aria-live="polite">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      </svg>
-      Audio attivato
-    </div>
-  {:else if !audioUnlocked}
-    <div class="audio-badge audio-hint">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <line x1="23" y1="9" x2="17" y2="15"/>
-        <line x1="17" y1="9" x2="23" y2="15"/>
-      </svg>
-      Scorri per audio
-    </div>
-  {/if}
+  <!-- Audio state badges – ALWAYS in DOM, hidden via CSS class only.
+       Using {#if} here caused a NotFoundError crash in GSAP's ScrollTrigger:
+       when audioUnlocked/audioActiveVisible changed mid-scroll, Svelte removed
+       these nodes from the pinned container and GSAP's insertBefore pin-spacer
+       logic referenced a stale node → crash → full hero section re-render.
+       Fix: keep both badge divs permanently in the DOM; toggle "audio-badge-gone"
+       (display:none) so GSAP never sees a structural DOM change during scroll.
+       Changing display:none → flex (or vice versa) also correctly re-triggers
+       the CSS keyframe animations (audio-on-in / audio-on-out). -->
+  <div class="audio-badge audio-on" aria-live="polite" class:audio-badge-gone={!audioActiveVisible}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    </svg>
+    Audio attivato
+  </div>
+  <div class="audio-badge audio-hint" class:audio-badge-gone={audioUnlocked}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+    Scorri per audio
+  </div>
 
   <div class="scroll-hint" aria-hidden="true">
     <div class="scroll-hint-line"></div>
@@ -1100,6 +1105,13 @@
     pointer-events: none;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Hides badge without removing it from the DOM.
+     display:none is used (not visibility/opacity) so GSAP's pin spacer never
+     sees a structural DOM change — only a style change, which is safe. */
+  .audio-badge-gone {
+    display: none;
   }
 
   .audio-hint {
