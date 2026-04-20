@@ -354,8 +354,23 @@
               scale: 1
             });
 
-            // Single refresh after setup
-            ScrollTrigger.refresh();
+            // ⚠️ DO NOT call ScrollTrigger.refresh() here.
+            //
+            // GSAP 3's ScrollTrigger.matchMedia() re-runs ALL matching callbacks on
+            // every refresh() call. Calling refresh() inside a matchMedia callback
+            // therefore creates an infinite loop:
+            //   matchMedia callback → ScrollTrigger.create() (adds event listeners)
+            //                       → refresh() → matchMedia re-evals
+            //                       → callback runs again → create() (more listeners)
+            //                       → refresh() → … repeat thousands of times
+            // This produced 15,000+ "non-passive event listener" violations in Chrome.
+            //
+            // The post-setup layout refresh is already provided by:
+            //   1. AirplaneEasterEgg: calls ScrollTrigger.refresh() at 600 ms and 800 ms
+            //      (outside any matchMedia callback — safe).
+            //   2. window 'load' listener below: fires once when all assets are loaded.
+            //   3. Debounced resize handler below: fires after viewport changes.
+            // Those callers are outside the matchMedia callback, so they cannot loop.
           }
         });
       }, container);
