@@ -29,8 +29,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="google-site-verification" content="VcNrLrBqzUI2ljwcUKeMvthK2DvlVMPKmB40NA-SrYI" />
     <meta name="theme-color" content="#050505" />
-    <link rel="preload" href="/fonts/DegularDisplay-Semibold_1768475446675.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/DegularDisplay-Bold_1768475446675.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- DegularDisplay-Semibold (600) and Bold (700) removed from preload:
+         Safari warns "preloaded but not used within a few seconds" because these
+         weights are not rendered above the fold. Removing the preload hint stops
+         the warning; the @font-face declarations in index.css still load them
+         on-demand when the browser first needs to render text in those weights. -->
     <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin />
     <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
