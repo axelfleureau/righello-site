@@ -11,7 +11,7 @@
   
   const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
   
-  const deptSlugs = ['marketing', 'advertising', 'web'];
+  const deptSlugs = ['marketing', 'advertising', 'web', 'agenti-ai'];
 
   const departments = [
     {
@@ -61,6 +61,22 @@
         'Integrazioni & Automazioni'
       ],
       color: '#8B5CF6',
+      featured: false
+    },
+    {
+      icon: '🤖',
+      title: 'Agenti AI',
+      tagline: 'Il tuo nuovo dipendente digitale',
+      description: 'Agenti digitali progettati sui flussi reali della tua azienda. Riducono i costi operativi, eliminano le attività ridondanti e si integrano con ERP, CRM e sistemi interni — lavorando al fianco del tuo team, non al suo posto.',
+      services: [
+        'Agenti AI su misura per i tuoi processi',
+        'Automazione attività amministrative',
+        'Integrazione con ERP, CRM e database',
+        'Customer service e assistenza AI',
+        'Reportistica automatizzata',
+        'Gestione documentale digitale'
+      ],
+      color: '#10B981',
       featured: false
     }
   ];
@@ -213,17 +229,17 @@
 </script>
 
 <svelte:head>
-  <title>Servizi | Righello – Marketing, Sviluppo Web & Automazione</title>
-  <meta name="description" content="Marketing & Social Media, Advertising & Automazione, Sviluppo Web & Software. Servizi integrati di marketing digitale, sviluppo software e automazione per il tuo business." />
-  <meta property="og:title" content="Servizi | Righello – Marketing, Sviluppo Web & Automazione" />
-  <meta property="og:description" content="Marketing & Social Media, Advertising & Automazione, Sviluppo Web & Software. Servizi integrati di marketing digitale, sviluppo software e automazione per il tuo business." />
+  <title>Servizi | Righello – Marketing, Sviluppo Web, Advertising & Agenti AI</title>
+  <meta name="description" content="Marketing & Social Media, Advertising, Sviluppo Web e Agenti AI. Quattro dipartimenti integrati per far crescere il tuo business con dati, automazioni e dipendenti digitali su misura." />
+  <meta property="og:title" content="Servizi | Righello – Marketing, Sviluppo Web, Advertising & Agenti AI" />
+  <meta property="og:description" content="Marketing & Social Media, Advertising, Sviluppo Web e Agenti AI. Quattro dipartimenti integrati per far crescere il tuo business con dati, automazioni e dipendenti digitali su misura." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta property="og:url" content="https://www.wearerighello.com/servizi" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Servizi | Righello – Marketing, Sviluppo Web & Automazione" />
-  <meta name="twitter:description" content="Marketing & Social Media, Advertising & Automazione, Sviluppo Web & Software. Servizi integrati di marketing digitale, sviluppo software e automazione per il tuo business." />
+  <meta name="twitter:title" content="Servizi | Righello – Marketing, Sviluppo Web, Advertising & Agenti AI" />
+  <meta name="twitter:description" content="Marketing & Social Media, Advertising, Sviluppo Web e Agenti AI. Quattro dipartimenti integrati per far crescere il tuo business con dati, automazioni e dipendenti digitali su misura." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
   
   {@html `<script type="application/ld+json">
@@ -252,7 +268,9 @@
           {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "E-Commerce"}},
           {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Web App Custom"}},
           {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Marketing Automation"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Sviluppo Software Custom"}}
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Sviluppo Software Custom"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Agenti AI su Misura"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Automazione Processi Aziendali"}}
         ]
       }
     }
@@ -279,14 +297,14 @@
     <RevealOnScroll animation="fly-up">
       <p class="eyebrow">I Nostri Servizi</p>
       <h1 class="hero-title">
-        Tre Dipartimenti.<br/>
+        Quattro Dipartimenti.<br/>
         <span class="gradient-text">Un Unico Team.</span>
       </h1>
     </RevealOnScroll>
     
     <RevealOnScroll animation="fly-up" delay={100}>
       <p class="hero-subtitle">
-        Marketing, Sviluppo Web e Automazione: competenze integrate 
+        Marketing, Advertising, Sviluppo Web e Agenti AI: competenze integrate 
         che lavorano insieme per far crescere il tuo business. 
         Un solo interlocutore, risultati misurabili.
       </p>
@@ -308,14 +326,14 @@
   </div>
 </section>
 
-<!-- I 3 DIPARTIMENTI -->
+<!-- I 4 DIPARTIMENTI -->
 <section id="dipartimenti" class="section-padding">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
         <p class="section-subtitle">I Nostri Dipartimenti</p>
         <h2 class="section-title">
-          Tre Anime, <span class="gradient-text">Una Visione</span>
+          Quattro Anime, <span class="gradient-text">Una Visione</span>
         </h2>
       </div>
     </RevealOnScroll>
@@ -751,8 +769,15 @@
   
   @media (min-width: 768px) {
     .departments-grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .departments-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
     }
   }
   

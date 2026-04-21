@@ -238,6 +238,79 @@ export const serviceDetails: ServiceDetail[] = [
       title: 'Sviluppo Web & Software | Righello – Siti Web, E-Commerce, Web App',
       description: 'Siti web, e-commerce, web app e software custom. Soluzioni scalabili con UX/UI design, SEO e integrazioni su misura per il tuo business.'
     }
+  },
+  {
+    slug: 'agenti-ai',
+    category: 'Agenti AI & Automazione Intelligente',
+    titleLine1: 'Il Tuo Nuovo',
+    titleHighlight: 'Dipendente Digitale',
+    subtitle: 'Agenti AI progettati sui flussi reali della tua azienda. Riducono i costi operativi, eliminano le attività ridondanti e si integrano con i tuoi sistemi esistenti — lavorando al fianco del team, non al suo posto.',
+    ctaText: 'Scopri come funziona',
+    ctaHref: '/contatti',
+    color: '#10B981',
+    services: [
+      {
+        icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+        title: 'Agenti AI su Misura',
+        description: 'Agenti digitali progettati ad hoc sui tuoi flussi reali: eseguono task, memorizzano procedure e dati, e operano in modo strutturato e coerente con i processi aziendali.'
+      },
+      {
+        icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
+        title: 'Automazione Processi Ripetitivi',
+        description: 'Trasformiamo attività ridondanti — amministrazione, customer service base, gestione documentale — in processi digitali strutturati e gestiti in modo continuativo senza intervento manuale.'
+      },
+      {
+        icon: 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1',
+        title: 'Integrazione ERP & CRM',
+        description: 'Gli agenti dialogano con i sistemi interni: ERP, CRM, email, database e API aziendali. Il know-how resta nella tua struttura, ottimizzato e sempre accessibile.'
+      },
+      {
+        icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z',
+        title: 'Customer Service AI',
+        description: 'Assistenza clienti intelligente per richieste standard e frequenti: tempi di risposta azzerati, qualità costante, escalation automatica al team umano per casi complessi.'
+      },
+      {
+        icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+        title: 'Reportistica Automatizzata',
+        description: 'Report e dashboard aggiornate automaticamente. I dati aziendali vengono raccolti, elaborati e presentati senza intervento manuale, con alert sulle anomalie.'
+      },
+      {
+        icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+        title: 'Gestione Documentale',
+        description: 'Archiviazione, classificazione e recupero automatico di documenti. Contratti, fatture, schede prodotto: tutto indicizzato e recuperabile in secondi dall\'agente corretto.'
+      }
+    ],
+    workflow: [
+      {
+        num: '01',
+        title: 'Mappatura dei Processi',
+        description: 'Analizziamo i flussi operativi reali della tua azienda: identifichiamo le attività ripetitive, i colli di bottiglia e i punti di maggiore spreco di tempo e costi.'
+      },
+      {
+        num: '02',
+        title: 'Progettazione degli Agenti',
+        description: 'Progettiamo gli agenti AI su misura: definiamo obiettivi, regole di comportamento, fonti dati e modalità di integrazione con i sistemi esistenti.'
+      },
+      {
+        num: '03',
+        title: 'Sviluppo & Integrazione',
+        description: 'Sviluppiamo gli agenti e li colleghiamo ai tuoi sistemi: ERP, CRM, email, database e API aziendali. Tutto in sicurezza, senza sostituire l\'infrastruttura esistente.'
+      },
+      {
+        num: '04',
+        title: 'Test & Training',
+        description: 'Test approfonditi su scenari reali. Il team viene formato per lavorare con gli agenti, capire i loro output e gestire le eccezioni che richiedono intervento umano.'
+      },
+      {
+        num: '05',
+        title: 'Deploy & Monitoraggio',
+        description: 'Deploy in produzione con monitoraggio continuo delle performance. Ottimizziamo gli agenti nel tempo sulla base dei dati operativi reali.'
+      }
+    ],
+    seo: {
+      title: 'Agenti AI | Righello – Dipendenti Digitali per Aziende del Triveneto',
+      description: 'Agenti AI su misura per ridurre costi operativi e attività ridondanti. Integrazione con ERP, CRM e sistemi interni. Il tuo nuovo dipendente digitale, operativo 24/7.'
+    }
   }
 ];
 

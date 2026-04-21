@@ -1,7 +1,7 @@
 # Righello - Growth Agency Website
 
 ## Overview
-Righello is an Italian growth agency specializing in data-driven marketing, advertising, and web development. This project is a website designed to showcase their services, highlight their expertise in delivering high ROAS and traceable conversions, and present their custom software solutions. The primary goal is to establish Righello as a leading agency in the European market with a strong focus on data and measurable results.
+Righello is an Italian growth agency specializing in data-driven marketing, advertising, web development, and AI agents. This project is a website designed to showcase their services, highlight their expertise in delivering high ROAS and traceable conversions, and present their custom software solutions and AI automation offerings. The primary goal is to establish Righello as a leading agency in the European market with a strong focus on data and measurable results.
 
 ## User Preferences
 I prefer simple language.
@@ -23,7 +23,7 @@ The website features a modern UI/UX with interactive elements and advanced anima
 - **Hero Section**: Fullscreen desktop hero with a 3D iPhone mockup, transparent overlay header, and scroll hints.
 - **Navbar**: A floating, glassmorphism-styled navbar that adapts to scroll behavior.
 - **Interactive Components**: `PhoneMockup` (3D with spring physics), `AppleScrolly` (Apple-style scrollytelling), `AppleCardsCarousel` (horizontal, drag-to-scroll with hover-to-play video), `GlowCard`, `InfiniteMarquee`, `ServiceTabs`, `AnimatedVideoTestimonials`, `HorizontalVideoShowcase`, `AnimatedCounter`, `MagneticButton`, `RippleGrid Background` (WebGL OGL-based animated grid), `BentoGrid` (Kokonutui-style grid with 6 feature types), `CardFlip` (3D flip animation), `ReelViewer` (Instagram Reels-style video player), and a global `CustomCursor`.
-- **Page Structure**: Dedicated pages for Homepage (`/`), Services (`/servizi` with 3-column department cards and gradient text, `/servizi/[slug]` detail pages), Projects (`/progetti`, `/progetti/[slug]`), About Us (`/chi-siamo`), Contact (`/contatti`), and La Busa del Sauc (`/busadelsauc` — fullscreen iframe embedding of external Vercel site, header/footer hidden).
+- **Page Structure**: Dedicated pages for Homepage (`/`), Services (`/servizi` with 4-column department cards on wide screens, 2-column on tablet, `/servizi/[slug]` detail pages), Projects (`/progetti`, `/progetti/[slug]`), About Us (`/chi-siamo`), Contact (`/contatti`), and La Busa del Sauc (`/busadelsauc` — fullscreen iframe embedding of external Vercel site, header/footer hidden). Services: `marketing`, `advertising`, `web`, `agenti-ai` (emerald `#10B981`, "Il Tuo Nuovo Dipendente Digitale" — AI agents for Triveneto companies).
 - **Mobile Optimizations**: Mobile-first design principles, responsive layouts, and disabled GSAP ScrollTrigger pinning on smaller screens.
 - **Accessibility**: Support for `prefers-reduced-motion`, dynamic ARIA labels, and semantic HTML.
 - **Security**: `robots.txt` configuration to block AI crawlers and scrapers, server-side bot blocking, and robust security headers (X-Frame-Options, CSP, X-Content-Type-Options, etc.).
