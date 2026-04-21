@@ -120,6 +120,36 @@
   </div>
 </section>
 
+{#if service.slug === 'web'}
+<section class="ai-bridge-section">
+  <div class="section-container">
+    <RevealOnScroll animation="scale">
+      <a href="/servizi/agenti-ai" class="ai-bridge-card">
+        <div class="ai-bridge-glow"></div>
+        <div class="ai-bridge-left">
+          <span class="ai-bridge-icon">🤖</span>
+          <div>
+            <p class="ai-bridge-label">Powered by sviluppo web</p>
+            <h3 class="ai-bridge-title">Gli Agenti AI nascono qui</h3>
+            <p class="ai-bridge-desc">
+              È il nostro team di sviluppo che progetta, integra e fa girare gli agenti digitali sui sistemi reali delle aziende. Senza una solida base tecnica, gli agenti AI restano un concept. Con Righello, diventano operativi.
+            </p>
+          </div>
+        </div>
+        <div class="ai-bridge-right">
+          <span class="ai-bridge-cta">
+            Scopri gli Agenti AI
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </span>
+        </div>
+      </a>
+    </RevealOnScroll>
+  </div>
+</section>
+{/if}
+
 <section class="workflow-section" style="--dept-color: {service.color}">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
@@ -237,6 +267,123 @@
     margin-left: 0.5rem;
     display: inline-block;
   }
+
+  /* ── AI Bridge Banner (web slug only) ─────────────────────────────── */
+  .ai-bridge-section {
+    padding: 0 0 4rem;
+  }
+
+  .ai-bridge-card {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    border-radius: 1.5rem;
+    padding: 2rem 2.5rem;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
+    text-decoration: none;
+    overflow: hidden;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+
+  .ai-bridge-card:hover {
+    border-color: rgba(16, 185, 129, 0.7);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 50px rgba(16, 185, 129, 0.15);
+  }
+
+  .ai-bridge-glow {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .ai-bridge-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    flex: 1;
+  }
+
+  .ai-bridge-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 0.25rem;
+  }
+
+  .ai-bridge-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #10B981;
+    margin-bottom: 0.4rem;
+  }
+
+  .ai-bridge-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
+  }
+
+  .ai-bridge-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 560px;
+  }
+
+  .ai-bridge-right {
+    flex-shrink: 0;
+  }
+
+  .ai-bridge-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #10B981;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .ai-bridge-card:hover .ai-bridge-cta {
+    background: #059669;
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 767px) {
+    .ai-bridge-card {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1.5rem;
+      gap: 1.5rem;
+    }
+
+    .ai-bridge-right {
+      width: 100%;
+    }
+
+    .ai-bridge-cta {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  /* ── end AI Bridge ─────────────────────────────────────────────────── */
 
   .section-padding {
     padding: var(--section-padding-sm) 0;
