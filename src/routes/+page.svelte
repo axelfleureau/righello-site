@@ -69,7 +69,7 @@
     { name: '3R Technology',       logo: '/logos/3r-technology.png' },
     { name: 'Tenuta Polvaro',      logo: '/logos/tenuta-polvaro.png' },
     { name: 'VIP Motors',          logo: '/logos/vip-motors.png' },
-    { name: 'Zanutta',             logo: '/logos/zanutta.webp' },
+    { name: 'Zanutta',             logo: '/logos/zanutta.png' },
     { name: 'La Busa del Sauc',    logo: '/logos/busa-del-sauc.png' },
     { name: 'Ardea',               logo: '/logos/ardea-autoscuola.png' },
     { name: 'Comune di Fanna',     logo: '/logos/comune-di-fanna.png' },
