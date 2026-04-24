@@ -631,7 +631,7 @@
           {#if partners.length > 0}
             {#each [0,1,2,3,4,5].flatMap(() => partners) as p}
               {#if p.logo}
-                <img src={p.logo} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
+                <img src={p.logo} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
               {:else}
                 <span class="partner-name">{p.name}</span>
               {/if}
@@ -1264,8 +1264,10 @@
   .partners-marquee-wrapper {
     width: 100%;
     overflow: hidden;
-    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    /* Use px-based fade zones so narrow mobile screens don't clip logos.
+       48px fade is enough to soften the edge without swallowing logos. */
+    mask-image: linear-gradient(to right, transparent 0px, black 48px, black calc(100% - 48px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0px, black 48px, black calc(100% - 48px), transparent 100%);
   }
 
   .partners-marquee {
@@ -1274,6 +1276,9 @@
     gap: 0;
     width: max-content;
     animation: partners-scroll 35s linear infinite;
+    /* GPU compositing hint: prevents Safari mobile from repainting the marquee
+       every frame, which causes the shimmer/glitch artefacts reported on mobile. */
+    will-change: transform;
   }
 
   @keyframes partners-scroll {
