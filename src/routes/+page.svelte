@@ -79,6 +79,7 @@
     { name: 'Finestre Art',        logo: '/logos/finestre-art.png' },
     { name: 'Dual Factory',        logo: '/logos/dual-factory.png' },
     { name: 'Solerò Sport Village', logo: '/logos/solero.png', noFilter: true },
+    { name: 'Noiclub',             logo: '/logos/noiclub.png' },
   ];
   
   const processSteps = [

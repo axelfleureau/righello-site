@@ -316,7 +316,7 @@ export const clients: Client[] = [
   { name: 'La Busa del Sauc',     logo: '/logos/busa-del-sauc.png' },
   { name: 'Casa Rossa' },
   { name: 'Solerò Sport Village', logo: '/logos/solero.png', noFilter: true },
-  { name: 'Noiclub' },
+  { name: 'Noiclub',              logo: '/logos/noiclub.png' },
   { name: 'Mangio' },
   { name: 'Razorpadel' },
   { name: 'Manuel Romanin' },
