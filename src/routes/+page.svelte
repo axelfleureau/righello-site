@@ -85,6 +85,7 @@
     { name: 'Geom. Mauro Poles',   logo: '/logos/poles.png' },
     { name: 'Dolfo Srl',           logo: '/logos/dolfo.png', noFilter: true },
     { name: 'Hotel Miramare',      logo: '/logos/hotel-miramare.png', noFilter: true },
+    { name: 'Razor Padel',         logo: '/logos/razorpadel.avif' },
   ];
   
   const processSteps = [

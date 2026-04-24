@@ -318,7 +318,7 @@ export const clients: Client[] = [
   { name: 'Solerò Sport Village', logo: '/logos/solero.png' },
   { name: 'Noiclub',              logo: '/logos/noiclub.png' },
   { name: 'Mangio' },
-  { name: 'Razorpadel' },
+  { name: 'Razorpadel',           logo: '/logos/razorpadel.avif' },
   { name: 'Manuel Romanin' },
   { name: 'Level Up' },
   { name: 'Dancelife' },
