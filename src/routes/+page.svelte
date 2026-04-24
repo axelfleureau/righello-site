@@ -89,6 +89,7 @@
     { name: 'Living Door',         logo: '/logos/livingdoor.png' },
     { name: 'Il Salotto',          logo: '/logos/salotto.png' },
     { name: 'Hotel Elite',         logo: '/logos/hotel-elite.png' },
+    { name: 'Garden Hotel Michelangelo', logo: '/logos/hotel-michelangelo.png' },
   ];
   
   const processSteps = [
