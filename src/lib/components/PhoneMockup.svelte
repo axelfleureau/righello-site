@@ -591,6 +591,8 @@
               <button
                 class="mobile-tap-hint"
                 class:tap-hint-hidden={!showTapHint || ytPlaying}
+                tabindex={!showTapHint || ytPlaying ? -1 : 0}
+                aria-hidden={!showTapHint || ytPlaying ? 'true' : undefined}
                 on:click|stopPropagation={handleMobilePlay}
                 aria-label="Riproduci video"
               >
