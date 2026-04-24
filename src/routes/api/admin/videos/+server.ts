@@ -33,6 +33,7 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
   }
 
   await updateVideoMetadata(publicId, cleanMeta as Parameters<typeof updateVideoMetadata>[1]);
+  invalidateCache();
   return json({ ok: true });
 };
 

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount, createEventDispatcher } from 'svelte';
   import { spring } from 'svelte/motion';
-  import { fade, scale } from 'svelte/transition';
   import { browser } from '$app/environment';
 
   const dispatch = createEventDispatcher<{ mobiletap: void }>();
@@ -584,18 +583,21 @@
                    accepts playVideo + unMute even under Low Power Mode.
                    pointer-events are auto here; .phone-area has pointer-events:none
                    on mobile but the AppleScrolly CSS overrides this for this button. -->
-              {#if showTapHint && !ytPlaying}
-                <button
-                  class="mobile-tap-hint"
-                  on:click|stopPropagation={handleMobilePlay}
-                  aria-label="Riproduci video"
-                  transition:fade={{ duration: 200 }}
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor" class="tap-play-icon" aria-hidden="true">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </button>
-              {/if}
+              <!-- Tap-to-play hint: always in DOM to avoid GSAP insertBefore crash.
+                   GSAP's ScrollTrigger tracks DOM nodes inside the pinned container;
+                   removing/inserting nodes (via {#if}) while pinned invalidates those
+                   references and triggers _swapPinOut2 → insertBefore NotFoundError.
+                   Fix: keep button in DOM, show/hide via CSS class only. -->
+              <button
+                class="mobile-tap-hint"
+                class:tap-hint-hidden={!showTapHint || ytPlaying}
+                on:click|stopPropagation={handleMobilePlay}
+                aria-label="Riproduci video"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" class="tap-play-icon" aria-hidden="true">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
               <!-- The iframe is ALWAYS in the DOM after mount — never removed/re-added.
                    Removing/inserting it (via {#if ytSrcActive}) caused a NotFoundError
                    crash in GSAP's ScrollTrigger pin spacer:
@@ -618,14 +620,15 @@
               ></iframe>
             </div>
           {:else if videoSrc}
-            {#if videoLoading}
-              <div class="video-skeleton" transition:fade={{ duration: 300 }}>
-                <div class="skeleton-shimmer"></div>
-                <div class="skeleton-loader">
-                  <div class="loader-spinner"></div>
-                </div>
+            <!-- Skeleton always in DOM — removing it via {#if} while GSAP has pinned
+                 this container triggers _swapPinOut2 → insertBefore NotFoundError.
+                 Show/hide via CSS class only; opacity transition replicates the old fade. -->
+            <div class="video-skeleton" class:skeleton-hidden={!videoLoading}>
+              <div class="skeleton-shimmer"></div>
+              <div class="skeleton-loader">
+                <div class="loader-spinner"></div>
               </div>
-            {/if}
+            </div>
             <video 
               bind:this={videoElement}
               autoplay 
@@ -900,6 +903,13 @@
     cursor: pointer;
     pointer-events: auto;
     -webkit-tap-highlight-color: transparent;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .mobile-tap-hint.tap-hint-hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .mobile-tap-hint::before {
@@ -1151,6 +1161,13 @@
     align-items: center;
     justify-content: center;
     z-index: 2;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .video-skeleton.skeleton-hidden {
+    opacity: 0;
+    pointer-events: none;
   }
   
   .skeleton-shimmer {
