@@ -7,6 +7,7 @@
   
   export let credibilityBadges: { icon: string; label: string }[] = [];
   export let partnerNames: string[] = [];
+  export let partners: { name: string; logo?: string }[] = [];
   export let heroVideoCloudinaryUrl: string | undefined = undefined;
   export let heroVideoYoutubeId: string | undefined = 'Rj5N4BMF-Vw';
   // Cloudinary thumbnail URL for the hero video. Passed to PhoneMockup as primary
@@ -621,15 +622,26 @@
     {/each}
   </div>
   
-  {#if partnerNames.length > 0}
+  {#if partners.length > 0 || partnerNames.length > 0}
     <div class="partners-strip" aria-hidden="true">
       <p class="partners-label">Tra i nostri clienti</p>
       <div class="partners-marquee-wrapper">
         <div class="partners-marquee">
-          {#each [0,1,2,3,4,5].flatMap(() => partnerNames) as name}
-            <span class="partner-name">{name}</span>
-            <span class="partner-sep">·</span>
-          {/each}
+          {#if partners.length > 0}
+            {#each [0,1,2,3,4,5].flatMap(() => partners) as p}
+              {#if p.logo}
+                <img src={p.logo} alt={p.name} class="partner-logo" loading="lazy" decoding="async" />
+              {:else}
+                <span class="partner-name">{p.name}</span>
+              {/if}
+              <span class="partner-sep">·</span>
+            {/each}
+          {:else}
+            {#each [0,1,2,3,4,5].flatMap(() => partnerNames) as name}
+              <span class="partner-name">{name}</span>
+              <span class="partner-sep">·</span>
+            {/each}
+          {/if}
         </div>
       </div>
     </div>
@@ -1270,6 +1282,20 @@
     padding: 0 0.5rem;
     letter-spacing: 0.03em;
     transition: opacity 0.2s;
+  }
+
+  .partner-logo {
+    height: 22px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+    padding: 0 0.75rem;
+    mix-blend-mode: screen;
+    filter: brightness(1.4) saturate(0.8);
+    opacity: 0.7;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
   .partner-sep {

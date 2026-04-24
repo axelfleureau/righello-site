@@ -57,10 +57,24 @@
   const heroPosterUrl = data.heroVideo?.thumbnailUrl
     ?? `https://img.youtube.com/vi/${heroYoutubeId}/hqdefault.jpg`;
 
-  const heroPartnerNames = [
-    'Barcolana', 'Comune di Pordenone', 'Ippodromo Merano', 'Reguta', 'Ricci Group',
-    'Riviera Resort Hotel', 'Quellenhof', 'Scuola Sci Piancavallo', '3R Technology',
-    'Tenuta Polvaro', 'VIP Motors', 'Zanutta', 'La Busa del Sauc', 'Ardea',
+  const heroPartners = [
+    { name: 'Barcolana',           logo: '/logos/barcolana.png' },
+    { name: 'Comune di Pordenone', logo: '/logos/comune-pordenone.png' },
+    { name: 'Ippodromo Merano',    logo: '/logos/ippodromo-merano.png' },
+    { name: 'Reguta',              logo: '/logos/reguta.png' },
+    { name: 'Ricci Group',         logo: '/logos/ricci-group.webp' },
+    { name: 'Riviera Resort',      logo: '/logos/riviera-resort.png' },
+    { name: 'Quellenhof',          logo: '/logos/quellenhof.png' },
+    { name: 'Scuola Sci Piancavallo', logo: '/logos/scuola-sci-piancavallo.png' },
+    { name: '3R Technology',       logo: '/logos/3r-technology.png' },
+    { name: 'Tenuta Polvaro',      logo: '/logos/tenuta-polvaro.png' },
+    { name: 'VIP Motors',          logo: '/logos/vip-motors.png' },
+    { name: 'Zanutta',             logo: '/logos/zanutta.webp' },
+    { name: 'La Busa del Sauc',    logo: '/logos/busa-del-sauc.png' },
+    { name: 'Ardea',               logo: '/logos/ardea-autoscuola.png' },
+    { name: 'Comune di Fanna',     logo: '/logos/comune-di-fanna.png' },
+    { name: 'G&M Ambiente',        logo: '/logos/gm-ambiente.png' },
+    { name: 'SystemDoc',           logo: '/logos/systemdoc.png' },
   ];
   
   const processSteps = [
@@ -116,7 +130,7 @@
 
 <AppleScrolly 
   {credibilityBadges} 
-  partnerNames={heroPartnerNames}
+  partners={heroPartners}
   heroVideoCloudinaryUrl={data.heroVideo?.cloudinaryUrl}
   heroVideoYoutubeId={data.heroVideo?.youtubeId ?? 'Rj5N4BMF-Vw'}
   heroVideoThumbnailUrl={data.heroVideo?.thumbnailUrl}
