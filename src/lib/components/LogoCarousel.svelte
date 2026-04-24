@@ -7,6 +7,7 @@
     name: string;
     logo?: string;
     href?: string;
+    noFilter?: boolean;
   }
   
   export let items: LogoItem[] = [];
@@ -149,7 +150,7 @@
           {#if item.href}
             <a href={item.href} class="logo-link" aria-label={item.name}>
               {#if item.logo}
-                <img src={item.logo} alt={item.name} class="logo-image" loading="lazy" decoding="async" />
+                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
               {:else}
                 <span class="logo-text">{item.name}</span>
               {/if}
@@ -157,7 +158,7 @@
           {:else}
             <span class="logo-content">
               {#if item.logo}
-                <img src={item.logo} alt={item.name} class="logo-image" loading="lazy" decoding="async" />
+                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
               {:else}
                 <span class="logo-text">{item.name}</span>
               {/if}
@@ -174,7 +175,7 @@
             {#if item.href}
               <a href={item.href} class="logo-link" tabindex="-1" aria-label={item.name}>
                 {#if item.logo}
-                  <img src={item.logo} alt={item.name} class="logo-image" loading="lazy" decoding="async" />
+                  <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
                 {:else}
                   <span class="logo-text">{item.name}</span>
                 {/if}
@@ -182,7 +183,7 @@
             {:else}
               <span class="logo-content">
                 {#if item.logo}
-                  <img src={item.logo} alt={item.name} class="logo-image" loading="lazy" decoding="async" />
+                  <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
                 {:else}
                   <span class="logo-text">{item.name}</span>
                 {/if}
@@ -243,6 +244,13 @@
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
+    filter: brightness(0) invert(1);
+    opacity: 0.6;
+  }
+
+  .logo-image.no-filter {
+    filter: none;
+    opacity: 0.8;
   }
   
   .logo-text {

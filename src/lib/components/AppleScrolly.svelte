@@ -1293,7 +1293,7 @@
   }
 
   .partner-logo {
-    height: 22px;
+    height: 28px;
     width: auto;
     object-fit: contain;
     flex-shrink: 0;
