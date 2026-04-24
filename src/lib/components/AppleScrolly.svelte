@@ -1290,9 +1290,8 @@
     object-fit: contain;
     flex-shrink: 0;
     padding: 0 0.75rem;
-    mix-blend-mode: screen;
-    filter: brightness(1.4) saturate(0.8);
-    opacity: 0.7;
+    filter: brightness(0) invert(1);
+    opacity: 0.55;
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
