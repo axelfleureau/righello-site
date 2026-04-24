@@ -570,6 +570,7 @@
         videoSrc={heroVideoCloudinaryUrl}
         thumbnailUrl={heroVideoThumbnailUrl}
         muted={videoMuted}
+        on:mobiletap={unlockAudio}
       />
     </div>
 
@@ -777,6 +778,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  /* Allow the tap-to-play button inside the phone to receive pointer events
+     even though .phone-area has pointer-events:none (needed to prevent the
+     phone's large layout box from blocking page scroll on mobile). */
+  .phone-area :global(.mobile-tap-hint) {
+    pointer-events: auto;
   }
 
   /* Mobile scrolly-content gap controls the visual spacing on BOTH sides of the phone.

@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
   import { spring } from 'svelte/motion';
   import { fade, scale } from 'svelte/transition';
   import { browser } from '$app/environment';
+
+  const dispatch = createEventDispatcher<{ mobiletap: void }>();
   
   export let videoSrc: string | null = null;
   export let youtubeId: string | null = null;
@@ -63,6 +65,33 @@
   // branded plate (logo + gradient) is shown instead, so in-app browsers that block
   // img.youtube.com don't leave the phone screen looking completely blank.
   let ytThumbnailFailed = false;
+  // showTapHint: shown on touch devices when the YouTube video hasn't started
+  // within 3 seconds of mount. iOS Low Power Mode / iOS autoplay restrictions
+  // can silently block muted iframe autoplay; a tap inside a gesture context
+  // is the only reliable way to unblock it.
+  let showTapHint = false;
+  let tapHintTimer: ReturnType<typeof setTimeout> | null = null;
+  // Clear tap hint as soon as the video is confirmed playing.
+  $: if (ytPlaying && showTapHint) { showTapHint = false; }
+
+  function handleMobilePlay() {
+    if (!iframeEl) return;
+    // Send playVideo inside a user-gesture context (tap). This bypasses Low Power
+    // Mode autoplay restrictions and YouTube's own gesture requirement.
+    iframeEl.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
+    );
+    // Also unmute — the user actively tapped, so we have a gesture context.
+    iframeEl.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*'
+    );
+    iframeEl.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*'
+    );
+    showTapHint = false;
+    // Notify parent (AppleScrolly) to unlock audio state.
+    dispatch('mobiletap');
+  }
   // Computed thumbnail URLs — reactive so they update if the prop changes.
   // ytCdnThumb: YouTube's own image CDN (blocked by some in-app browsers).
   // activeThumbnailSrc: preferred source; Cloudinary URL takes priority over CDN.
@@ -197,6 +226,15 @@
     // On these devices we skip the 3D tilt entirely to avoid the iOS Safari
     // compositor bug where video freezes inside a preserve-3d layer.
     isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+    // On touch devices, show a "tap to play" hint after 3s if the YouTube
+    // video hasn't started. This handles iOS Low Power Mode and any other
+    // scenario where muted autoplay is silently blocked.
+    if (isTouch && youtubeId) {
+      tapHintTimer = setTimeout(() => {
+        if (!ytPlaying) showTapHint = true;
+      }, 3000);
+    }
     
     // If video is already cached/ready, update loading state
     if (videoElement && videoElement.readyState >= 3) {
@@ -479,6 +517,7 @@
     return () => {
       clearTimeout(fallbackTimeout);
       if (ytFallbackTimer) clearTimeout(ytFallbackTimer);
+      if (tapHintTimer) clearTimeout(tapHintTimer);
       window.removeEventListener('message', handleYTMessage);
       visibilityObserver?.disconnect();
     };
@@ -538,6 +577,24 @@
                   </svg>
                   <span class="ytf-label">righello.lab</span>
                 </div>
+              {/if}
+              <!-- Tap-to-play: appears on touch devices when autoplay is blocked
+                   (iOS Low Power Mode, restrictive WebViews, slow network).
+                   The button sits inside a user-gesture context → YouTube
+                   accepts playVideo + unMute even under Low Power Mode.
+                   pointer-events are auto here; .phone-area has pointer-events:none
+                   on mobile but the AppleScrolly CSS overrides this for this button. -->
+              {#if showTapHint && !ytPlaying}
+                <button
+                  class="mobile-tap-hint"
+                  on:click|stopPropagation={handleMobilePlay}
+                  aria-label="Riproduci video"
+                  transition:fade={{ duration: 200 }}
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" class="tap-play-icon" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </button>
               {/if}
               <!-- The iframe is ALWAYS in the DOM after mount — never removed/re-added.
                    Removing/inserting it (via {#if ytSrcActive}) caused a NotFoundError
@@ -828,6 +885,45 @@
     justify-content: center;
     gap: 10px;
     pointer-events: none;
+  }
+
+  /* Tap-to-play button: shown on touch devices when autoplay is blocked. */
+  .mobile-tap-hint {
+    position: absolute;
+    inset: 0;
+    z-index: 12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-tap-hint::before {
+    content: '';
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(214, 72, 126, 0.25);
+    animation: tap-hint-pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes tap-hint-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50%       { transform: scale(1.25); opacity: 0.2; }
+  }
+
+  .tap-play-icon {
+    position: relative;
+    z-index: 1;
+    width: 32px;
+    height: 32px;
+    fill: white;
+    filter: drop-shadow(0 0 8px rgba(214, 72, 126, 0.8));
   }
 
   .ytf-glow {
