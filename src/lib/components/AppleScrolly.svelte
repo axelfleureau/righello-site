@@ -7,7 +7,7 @@
   
   export let credibilityBadges: { icon: string; label: string }[] = [];
   export let partnerNames: string[] = [];
-  export let partners: { name: string; logo?: string }[] = [];
+  export let partners: { name: string; logo?: string; noFilter?: boolean }[] = [];
   export let heroVideoCloudinaryUrl: string | undefined = undefined;
   export let heroVideoYoutubeId: string | undefined = 'Rj5N4BMF-Vw';
   // Cloudinary thumbnail URL for the hero video. Passed to PhoneMockup as primary
@@ -631,7 +631,7 @@
           {#if partners.length > 0}
             {#each [0,1,2,3,4,5].flatMap(() => partners) as p}
               {#if p.logo}
-                <img src={p.logo} alt={p.name} class="partner-logo" loading="lazy" decoding="async" />
+                <img src={p.logo} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
               {:else}
                 <span class="partner-name">{p.name}</span>
               {/if}
@@ -1303,6 +1303,12 @@
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
+  }
+
+  /* Loghi istituzionali (comuni) — mantieni i colori originali, senza inversione */
+  .partner-logo.no-filter {
+    filter: none;
+    opacity: 0.75;
   }
 
   .partner-sep {

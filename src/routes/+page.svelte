@@ -59,7 +59,7 @@
 
   const heroPartners = [
     { name: 'Barcolana',           logo: '/logos/barcolana.png' },
-    { name: 'Comune di Pordenone', logo: '/logos/comune-pordenone.png' },
+    { name: 'Comune di Pordenone', logo: '/logos/comune-pordenone.png', noFilter: true },
     { name: 'Ippodromo Merano',    logo: '/logos/ippodromo-merano.png' },
     { name: 'Reguta',              logo: '/logos/reguta.png' },
     { name: 'Ricci Group',         logo: '/logos/ricci-group.webp' },
@@ -72,7 +72,7 @@
     { name: 'Zanutta',             logo: '/logos/zanutta.png' },
     { name: 'La Busa del Sauc',    logo: '/logos/busa-del-sauc.png' },
     { name: 'Ardea',               logo: '/logos/ardea-autoscuola.png' },
-    { name: 'Comune di Fanna',     logo: '/logos/comune-di-fanna.png' },
+    { name: 'Comune di Fanna',     logo: '/logos/comune-di-fanna.png', noFilter: true },
     { name: 'G&M Ambiente',        logo: '/logos/gm-ambiente.png' },
     { name: 'SystemDoc',           logo: '/logos/systemdoc.png' },
   ];
