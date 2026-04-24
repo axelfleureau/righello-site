@@ -271,6 +271,30 @@ export const departments: Department[] = [
       },
     ],
   },
+  {
+    id: 'agenti-ai',
+    name: 'Agenti AI',
+    tagline: 'Il tuo nuovo dipendente digitale',
+    description: 'Agenti AI progettati sui flussi reali della tua azienda. Riducono i costi operativi, eliminano le attività ridondanti e si integrano con i tuoi sistemi esistenti — lavorando al fianco del team, non al suo posto.',
+    icon: 'brain',
+    services: [
+      {
+        title: 'Agenti AI su Misura',
+        description: 'Agenti conversazionali e operativi costruiti sui processi reali della tua azienda.',
+        icon: 'brain',
+      },
+      {
+        title: 'Automazioni Intelligenti',
+        description: 'Workflow automatizzati con AI per eliminare attività ripetitive e ridurre i costi operativi.',
+        icon: 'gear',
+      },
+      {
+        title: 'Integrazioni AI',
+        description: 'Connessione degli agenti AI con ERP, CRM e sistemi gestionali esistenti.',
+        icon: 'link',
+      },
+    ],
+  },
 ];
 
 export const services = departments.flatMap(d => d.services.map(s => ({ ...s, departmentId: d.id })));

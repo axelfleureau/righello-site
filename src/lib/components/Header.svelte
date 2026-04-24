@@ -23,7 +23,8 @@
   const departmentIcons: Record<string, string> = {
     'content-social': '📱',
     'advertising': '🎯',
-    'digital-experience': '💻'
+    'digital-experience': '💻',
+    'agenti-ai': '🤖'
   };
 
   const departmentSlugs: Record<string, string> = {
