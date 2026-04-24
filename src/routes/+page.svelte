@@ -65,7 +65,7 @@
     { name: 'Ricci Group',         logo: '/logos/ricci-group.webp' },
     { name: 'Riviera Resort',      logo: '/logos/riviera-resort.png' },
     { name: 'Quellenhof',          logo: '/logos/quellenhof.png' },
-    { name: 'Scuola Sci Piancavallo', logo: '/logos/scuola-sci-piancavallo.png' },
+    { name: 'Scuola Sci Piancavallo', logo: '/logos/scuola-sci-piancavallo.png', noFilter: true },
     { name: '3R Technology',       logo: '/logos/3r-technology.png' },
     { name: 'Tenuta Polvaro',      logo: '/logos/tenuta-polvaro.png' },
     { name: 'VIP Motors',          logo: '/logos/vip-motors.png' },
