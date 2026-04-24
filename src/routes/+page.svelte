@@ -87,6 +87,7 @@
     { name: 'Hotel Miramare',      logo: '/logos/hotel-miramare.png' },
     { name: 'Razor Padel',         logo: '/logos/razorpadel.avif' },
     { name: 'Living Door',         logo: '/logos/livingdoor.png' },
+    { name: 'Il Salotto',          logo: '/logos/salotto.png' },
   ];
   
   const processSteps = [

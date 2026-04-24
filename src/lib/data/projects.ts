@@ -297,7 +297,7 @@ export const clients: Client[] = [
   { name: 'Barcolana',            logo: '/logos/barcolana.png' },
   { name: 'Ippodromo Merano',     logo: '/logos/ippodromo-merano.png' },
   { name: 'Quellenhof',           logo: '/logos/quellenhof.png' },
-  { name: 'Salotto' },
+  { name: 'Il Salotto',           logo: '/logos/salotto.png' },
   { name: 'Embassy' },
   { name: 'VIP Motors',           logo: '/logos/vip-motors.png' },
   { name: 'NoleggioBar' },
