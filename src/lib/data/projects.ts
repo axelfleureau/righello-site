@@ -307,7 +307,7 @@ export const clients: Client[] = [
   { name: 'Reginato' },
   { name: 'Ennevi Costruzioni',   logo: '/logos/ennevi.png', noFilter: true },
   { name: 'Dolfo Srl',            logo: '/logos/dolfo.png', noFilter: true },
-  { name: 'Hotel Elite' },
+  { name: 'Hotel Elite',          logo: '/logos/hotel-elite.png' },
   { name: 'Hotel Michelangelo' },
   { name: 'Banshi' },
   { name: 'Comune di Pordenone',  logo: '/logos/comune-pordenone.png',   noFilter: true },
