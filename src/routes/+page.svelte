@@ -83,6 +83,7 @@
     { name: 'Ennevi Costruzioni',  logo: '/logos/ennevi.png', noFilter: true },
     { name: 'MG Grill BBQ',        logo: '/logos/mggrill.png', noFilter: true },
     { name: 'Geom. Mauro Poles',   logo: '/logos/poles.png' },
+    { name: 'Dolfo Srl',           logo: '/logos/dolfo.png', noFilter: true },
   ];
   
   const processSteps = [

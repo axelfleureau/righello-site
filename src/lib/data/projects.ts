@@ -306,7 +306,7 @@ export const clients: Client[] = [
   { name: 'G&M Ambiente',         logo: '/logos/gm-ambiente.png' },
   { name: 'Reginato' },
   { name: 'Ennevi Costruzioni',   logo: '/logos/ennevi.png', noFilter: true },
-  { name: 'Dolfo' },
+  { name: 'Dolfo Srl',            logo: '/logos/dolfo.png', noFilter: true },
   { name: 'Hotel Elite' },
   { name: 'Hotel Michelangelo' },
   { name: 'Banshi' },
