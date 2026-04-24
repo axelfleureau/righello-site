@@ -298,7 +298,7 @@
     scaleOnHover={true}
     fadeEdges={false}
     gap={64}
-    itemHeight={32}
+    itemHeight={48}
   />
 </section>
 

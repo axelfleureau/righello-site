@@ -51,6 +51,33 @@
       copyCount = Math.max(2, copiesNeeded);
     }
   }
+
+  /* Wait for all images in seqElement to load before measuring seqWidth.
+     This prevents the overlap bug: images start at 0-width before load,
+     so an early measurement underestimates seqWidth and causes the offset
+     to wrap too soon, making copies visually collide. */
+  function measureAfterImagesLoad() {
+    if (!seqElement) return;
+    const imgs = Array.from(seqElement.querySelectorAll('img')) as HTMLImageElement[];
+    if (imgs.length === 0) {
+      updateDimensions();
+      return;
+    }
+    let pending = imgs.filter(img => !img.complete).length;
+    if (pending === 0) {
+      updateDimensions();
+      return;
+    }
+    const onLoad = () => {
+      pending--;
+      if (pending <= 0) updateDimensions();
+    };
+    imgs.forEach(img => {
+      if (!img.complete) img.addEventListener('load', onLoad, { once: true });
+    });
+    // Safety net: measure after 800ms even if some images never fire load
+    setTimeout(updateDimensions, 800);
+  }
   
   function animate(timestamp: number) {
     if (!isVisible) {
@@ -88,8 +115,10 @@
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
     
+    // First rough measurement after a short delay, then accurate one after images load
     setTimeout(() => {
       updateDimensions();
+      measureAfterImagesLoad();
     }, 100);
     
     const resizeObserver = new ResizeObserver(() => {
@@ -97,7 +126,6 @@
     });
     
     if (container) resizeObserver.observe(container);
-    if (seqElement) resizeObserver.observe(seqElement);
 
     const visibilityObserver = new IntersectionObserver(
       (entries) => {
@@ -127,6 +155,10 @@
   function handleMouseLeave() {
     if (pauseOnHover) isHovered = false;
   }
+
+  function noNav(e: MouseEvent) {
+    e.preventDefault();
+  }
 </script>
 
 <div 
@@ -148,9 +180,9 @@
       {#each items as item, itemIdx (itemIdx)}
         <li class="logo-item flex-none" class:scale-hover={scaleOnHover} role="listitem">
           {#if item.href}
-            <a href={item.href} class="logo-link" aria-label={item.name}>
+            <a href={item.href} class="logo-link" aria-label={item.name} on:click={noNav}>
               {#if item.logo}
-                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
+                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
               {:else}
                 <span class="logo-text">{item.name}</span>
               {/if}
@@ -158,7 +190,7 @@
           {:else}
             <span class="logo-content">
               {#if item.logo}
-                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
+                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
               {:else}
                 <span class="logo-text">{item.name}</span>
               {/if}
@@ -173,9 +205,9 @@
         {#each items as item, itemIdx (itemIdx)}
           <li class="logo-item flex-none" class:scale-hover={scaleOnHover} role="listitem">
             {#if item.href}
-              <a href={item.href} class="logo-link" tabindex="-1" aria-label={item.name}>
+              <a href={item.href} class="logo-link" tabindex="-1" aria-label={item.name} on:click={noNav}>
                 {#if item.logo}
-                  <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
+                  <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
                 {:else}
                   <span class="logo-text">{item.name}</span>
                 {/if}
@@ -183,7 +215,7 @@
             {:else}
               <span class="logo-content">
                 {#if item.logo}
-                  <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
+                  <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
                 {:else}
                   <span class="logo-text">{item.name}</span>
                 {/if}
@@ -226,10 +258,7 @@
     text-decoration: none;
     border-radius: 0.5rem;
     transition: opacity 0.2s ease;
-  }
-  
-  .logo-link:hover {
-    opacity: 0.8;
+    cursor: default;
   }
   
   .logo-link:focus-visible {
@@ -260,21 +289,5 @@
     opacity: 0.6;
     white-space: nowrap;
     transition: opacity 0.2s ease;
-  }
-  
-  .logo-item:hover .logo-text {
-    opacity: 1;
-  }
-  
-  .logo-link .logo-text {
-    cursor: pointer;
-  }
-  
-  .logo-link:hover .logo-text {
-    opacity: 1;
-    background: linear-gradient(135deg, #D6487E, #06B6D4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
 </style>
