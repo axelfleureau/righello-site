@@ -56,6 +56,7 @@
   let heroContent: HTMLElement;
   let slideRefs: HTMLElement[] = [];
   let ctx: any = null;
+  let mm: any = null;
   let currentSlide = -1;
   let activeStep = 0;
   // slideAnimated removed — text animation now replays on every snap/re-entry
@@ -218,161 +219,155 @@
       
       isInitialized = true;
       
+      // gsap.matchMedia() (GSAP 3.11+ API) — unlike the deprecated
+      // ScrollTrigger.matchMedia(), this does NOT re-run callbacks on every
+      // ScrollTrigger.refresh() call. It only re-evaluates when the viewport
+      // actually crosses the breakpoint. This eliminates the "phone flickers
+      // multiple times on load" bug caused by the ScrollTrigger teardown-and-
+      // recreate cycle that happened on each of the 3 post-load refresh() calls
+      // (load event + AirplaneEasterEgg at +600ms and +1400ms).
+      mm = gsap.matchMedia();
       ctx = gsap.context(() => {
-        ScrollTrigger.matchMedia({
-          "(min-width: 1024px)": function() {
-            const totalSlides = slides.length + 1;
-            const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-            // Per-step scroll distance (in vh).  Higher = more scroll needed
-            // to advance from one step to the next, giving the user more time
-            // to read each panel before the next snap triggers.
-            const scrollDistance = slides.length * 800;
-            
-            // Initialize slides as invisible
-            slideRefs.forEach((slideEl) => {
-              if (!slideEl) return;
-              gsap.set(slideEl, { opacity: 0 });
-            });
-            
-            scrollTriggerInstance = ScrollTrigger.create({
-              trigger: container,
-              start: 'top top',
-              end: () => `+=${scrollDistance}vh`,
-              pin: true,
-              anticipatePin: 1,
-              // scrub: 0.5 keeps the visual tightly coupled to the scroll position
-              // so the snap animation and the visual are always in sync.
-              // 0.8 was too slow — the scrub was still "chasing" scroll when snap fired,
-              // creating a disjointed lag instead of a magnetic pull.
-              scrub: 0.5,
-              snap: {
-                snapTo: snapPoints,
-                // Firmer, more decisive pull toward each step.  With the longer
-                // per-step distance (800vh), a slightly longer snap feels right —
-                // it confirms "you've landed" rather than just nudging.
-                duration: { min: 0.5, max: 0.9 },
-                // Fire snap quickly after the user stops scrolling so the
-                // alignment feels immediate and intentional, not delayed.
-                delay: 0.08,
-                // power3.out: stronger initial grab → smooth deceleration.
-                // Reinforces the "magnet snapping to a surface" feel and helps
-                // the user clearly perceive each step as a discrete reading unit.
-                ease: 'power3.out',
-                directional: true
-              },
-              onUpdate: (self) => {
-                const progress = self.progress;
-                const slideIndex = Math.floor(progress * totalSlides);
-                
-                // Update active step only when it changes (avoid Svelte re-renders every frame)
-                const newStep = Math.max(0, Math.min(slideIndex, slides.length));
-                if (newStep !== activeStep) activeStep = newStep;
-                
-                // Hero content fade out (0 to 0.2 progress)
-                if (progress < 0.2) {
-                  const fadeProgress = progress / 0.2;
-                  gsap.set(heroContent, { 
-                    opacity: 1 - fadeProgress, 
-                    yPercent: -10 * fadeProgress 
-                  });
-                } else {
-                  gsap.set(heroContent, { opacity: 0, yPercent: -10 });
-                }
-                
-                // Phone animation (0.05 to 0.35 progress)
-                if (progress <= 0.05) {
-                  phoneProgress = 0;
-                } else if (progress >= 0.35) {
-                  phoneProgress = 1;
-                } else {
-                  phoneProgress = (progress - 0.05) / 0.30;
-                }
-                
-                // Phone position: CSS sets left:50% xPercent:-50 (centred baseline).
-                // We offset rightward with x (translateX) — a pure GPU transform that
-                // does NOT trigger layout reflows. The old left:% animation recalculated
-                // layout on every frame (60 fps), which caused the YouTube iframe GPU
-                // composite layer to stutter/freeze during the slide-in.
-                //
-                // x = 25vw → 0 as phoneProgress goes 0 → 1
-                //   (phone appears at 75% from left initially, slides to center)
-                gsap.set(phoneWrapper, { 
-                  x: (1 - phoneProgress) * window.innerWidth * 0.25,
-                  xPercent: -50,
-                  yPercent: -50,
-                  scale: 1 - (0.08 * phoneProgress)
+        mm.add("(min-width: 1024px)", () => {
+          const totalSlides = slides.length + 1;
+          const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
+          // Per-step scroll distance (in vh).  Higher = more scroll needed
+          // to advance from one step to the next, giving the user more time
+          // to read each panel before the next snap triggers.
+          const scrollDistance = slides.length * 800;
+          
+          // Initialize slides as invisible
+          slideRefs.forEach((slideEl) => {
+            if (!slideEl) return;
+            gsap.set(slideEl, { opacity: 0 });
+          });
+          
+          scrollTriggerInstance = ScrollTrigger.create({
+            trigger: container,
+            start: 'top top',
+            end: () => `+=${scrollDistance}vh`,
+            pin: true,
+            anticipatePin: 1,
+            // scrub: 0.5 keeps the visual tightly coupled to the scroll position
+            // so the snap animation and the visual are always in sync.
+            // 0.8 was too slow — the scrub was still "chasing" scroll when snap fired,
+            // creating a disjointed lag instead of a magnetic pull.
+            scrub: 0.5,
+            snap: {
+              snapTo: snapPoints,
+              // Firmer, more decisive pull toward each step.  With the longer
+              // per-step distance (800vh), a slightly longer snap feels right —
+              // it confirms "you've landed" rather than just nudging.
+              duration: { min: 0.5, max: 0.9 },
+              // Fire snap quickly after the user stops scrolling so the
+              // alignment feels immediate and intentional, not delayed.
+              delay: 0.08,
+              // power3.out: stronger initial grab → smooth deceleration.
+              // Reinforces the "magnet snapping to a surface" feel and helps
+              // the user clearly perceive each step as a discrete reading unit.
+              ease: 'power3.out',
+              directional: true
+            },
+            onUpdate: (self) => {
+              const progress = self.progress;
+              const slideIndex = Math.floor(progress * totalSlides);
+              
+              // Update active step only when it changes (avoid Svelte re-renders every frame)
+              const newStep = Math.max(0, Math.min(slideIndex, slides.length));
+              if (newStep !== activeStep) activeStep = newStep;
+              
+              // Hero content fade out (0 to 0.2 progress)
+              if (progress < 0.2) {
+                const fadeProgress = progress / 0.2;
+                gsap.set(heroContent, { 
+                  opacity: 1 - fadeProgress, 
+                  yPercent: -10 * fadeProgress 
                 });
-                
-                // Slides animation
-                slideRefs.forEach((slideEl, i) => {
-                  if (!slideEl) return;
-                  const slideStart = (i + 1) / totalSlides;
-                  const slideEnd = (i + 2) / totalSlides;
-                  
-                  if (progress >= slideStart - 0.05 && progress < slideEnd + 0.05) {
-                    let slideOpacity = 1;
-                    if (progress < slideStart + 0.1) {
-                      slideOpacity = (progress - (slideStart - 0.05)) / 0.15;
-                    } else if (progress > slideEnd - 0.1) {
-                      slideOpacity = 1 - ((progress - (slideEnd - 0.1)) / 0.15);
-                    }
-                    gsap.set(slideEl, { opacity: Math.max(0, Math.min(1, slideOpacity)) });
-                    
-                    if (i !== currentSlide && progress >= slideStart && progress < slideEnd) {
-                      currentSlide = i;
-                      // Animate every time (no once-only guard) so each snap landing
-                      // plays the entrance animation fresh — reinforces the magnetic feel.
-                      animateSlideText(slideEl, gsap);
-                    }
-                  } else {
-                    // Reset currentSlide so re-entry fires animateSlideText again.
-                    // Without this: hero→slide0→hero→slide0 → second visit has
-                    // i===currentSlide → animateSlideText never fires → headline stays
-                    // opacity:0 from the gsap.set reset below.
-                    if (currentSlide === i) currentSlide = -1;
-                    gsap.set(slideEl, { opacity: 0 });
-                    // Reset text elements so the entrance animation plays cleanly on re-entry.
-                    // Without this, desc-chars would retain their animated-in state (opacity 1)
-                    // and the next visit to the slide would skip the stagger animation.
-                    const title = slideEl.querySelector('.slide-title');
-                    const descChars = slideEl.querySelectorAll('.desc-char');
-                    if (title) gsap.set(title, { opacity: 0, y: 40, scale: 0.95 });
-                    if (descChars.length) gsap.set(descChars, { opacity: 0, y: 20 });
-                  }
-                });
+              } else {
+                gsap.set(heroContent, { opacity: 0, yPercent: -10 });
               }
-            });
-            
-            // Apply the phone's initial GSAP position immediately — before the first
-            // onUpdate fires. Without this the CSS centres the phone (left:50%,
-            // translate(-50%,-50%)) and then the first onUpdate jumps it rightward,
-            // creating the visible "appears-at-centre-then-snaps" glitch on load.
-            // At progress=0: phoneProgress=0, x = 0.25*vw, xPercent=-50, scale=1.
-            gsap.set(phoneWrapper, {
-              x: window.innerWidth * 0.25,
-              xPercent: -50,
-              yPercent: -50,
-              scale: 1
-            });
+              
+              // Phone animation (0.05 to 0.35 progress)
+              if (progress <= 0.05) {
+                phoneProgress = 0;
+              } else if (progress >= 0.35) {
+                phoneProgress = 1;
+              } else {
+                phoneProgress = (progress - 0.05) / 0.30;
+              }
+              
+              // Phone position: CSS sets left:50% xPercent:-50 (centred baseline).
+              // We offset rightward with x (translateX) — a pure GPU transform that
+              // does NOT trigger layout reflows. The old left:% animation recalculated
+              // layout on every frame (60 fps), which caused the YouTube iframe GPU
+              // composite layer to stutter/freeze during the slide-in.
+              //
+              // x = 25vw → 0 as phoneProgress goes 0 → 1
+              //   (phone appears at 75% from left initially, slides to center)
+              gsap.set(phoneWrapper, { 
+                x: (1 - phoneProgress) * window.innerWidth * 0.25,
+                xPercent: -50,
+                yPercent: -50,
+                scale: 1 - (0.08 * phoneProgress)
+              });
+              
+              // Slides animation
+              slideRefs.forEach((slideEl, i) => {
+                if (!slideEl) return;
+                const slideStart = (i + 1) / totalSlides;
+                const slideEnd = (i + 2) / totalSlides;
+                
+                if (progress >= slideStart - 0.05 && progress < slideEnd + 0.05) {
+                  let slideOpacity = 1;
+                  if (progress < slideStart + 0.1) {
+                    slideOpacity = (progress - (slideStart - 0.05)) / 0.15;
+                  } else if (progress > slideEnd - 0.1) {
+                    slideOpacity = 1 - ((progress - (slideEnd - 0.1)) / 0.15);
+                  }
+                  gsap.set(slideEl, { opacity: Math.max(0, Math.min(1, slideOpacity)) });
+                  
+                  if (i !== currentSlide && progress >= slideStart && progress < slideEnd) {
+                    currentSlide = i;
+                    // Animate every time (no once-only guard) so each snap landing
+                    // plays the entrance animation fresh — reinforces the magnetic feel.
+                    animateSlideText(slideEl, gsap);
+                  }
+                } else {
+                  // Reset currentSlide so re-entry fires animateSlideText again.
+                  // Without this: hero→slide0→hero→slide0 → second visit has
+                  // i===currentSlide → animateSlideText never fires → headline stays
+                  // opacity:0 from the gsap.set reset below.
+                  if (currentSlide === i) currentSlide = -1;
+                  gsap.set(slideEl, { opacity: 0 });
+                  // Reset text elements so the entrance animation plays cleanly on re-entry.
+                  // Without this, desc-chars would retain their animated-in state (opacity 1)
+                  // and the next visit to the slide would skip the stagger animation.
+                  const title = slideEl.querySelector('.slide-title');
+                  const descChars = slideEl.querySelectorAll('.desc-char');
+                  if (title) gsap.set(title, { opacity: 0, y: 40, scale: 0.95 });
+                  if (descChars.length) gsap.set(descChars, { opacity: 0, y: 20 });
+                }
+              });
+            }
+          });
+          
+          // Apply the phone's initial GSAP position immediately — before the first
+          // onUpdate fires. Without this the CSS centres the phone (left:50%,
+          // translate(-50%,-50%)) and then the first onUpdate jumps it rightward,
+          // creating the visible "appears-at-centre-then-snaps" glitch on load.
+          // At progress=0: phoneProgress=0, x = 0.25*vw, xPercent=-50, scale=1.
+          gsap.set(phoneWrapper, {
+            x: window.innerWidth * 0.25,
+            xPercent: -50,
+            yPercent: -50,
+            scale: 1
+          });
 
-            // ⚠️ DO NOT call ScrollTrigger.refresh() here.
-            //
-            // GSAP 3's ScrollTrigger.matchMedia() re-runs ALL matching callbacks on
-            // every refresh() call. Calling refresh() inside a matchMedia callback
-            // therefore creates an infinite loop:
-            //   matchMedia callback → ScrollTrigger.create() (adds event listeners)
-            //                       → refresh() → matchMedia re-evals
-            //                       → callback runs again → create() (more listeners)
-            //                       → refresh() → … repeat thousands of times
-            // This produced 15,000+ "non-passive event listener" violations in Chrome.
-            //
-            // The post-setup layout refresh is already provided by:
-            //   1. AirplaneEasterEgg: calls ScrollTrigger.refresh() at 600 ms and 800 ms
-            //      (outside any matchMedia callback — safe).
-            //   2. window 'load' listener below: fires once when all assets are loaded.
-            //   3. Debounced resize handler below: fires after viewport changes.
-            // Those callers are outside the matchMedia callback, so they cannot loop.
-          }
+          // Return cleanup: clear the stored instance reference when the breakpoint
+          // condition is no longer met (e.g. viewport shrinks below 1024px).
+          return () => {
+            scrollTriggerInstance = null;
+          };
         });
       }, container);
     };
@@ -454,6 +449,7 @@
   }
   
   onDestroy(() => {
+    mm?.revert();
     ctx?.revert();
     audioObserver?.disconnect();
     if (browser) {
