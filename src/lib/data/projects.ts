@@ -326,7 +326,7 @@ export const clients: Client[] = [
   { name: 'Ardea',                logo: '/logos/ardea-autoscuola.png' },
   { name: 'Avis' },
   { name: 'Homnia Verona' },
-  { name: 'Dual Factory' },
+  { name: 'Dual Factory',         logo: '/logos/dual-factory.png' },
   { name: 'Black&White' },
   { name: 'Tenuta Polvaro',       logo: '/logos/tenuta-polvaro.png' },
   { name: 'Marocco Dreams' },

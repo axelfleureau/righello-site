@@ -77,6 +77,7 @@
     { name: 'SystemDoc',           logo: '/logos/systemdoc.png' },
     { name: 'Neura',               logo: '/logos/neura.png' },
     { name: 'Finestre Art',        logo: '/logos/finestre-art.png' },
+    { name: 'Dual Factory',        logo: '/logos/dual-factory.png' },
   ];
   
   const processSteps = [
