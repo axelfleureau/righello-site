@@ -293,7 +293,7 @@ export const clients: Client[] = [
   { name: 'MgGrill',              href: '/progetti/mggrill', logo: '/logos/mggrill.png', noFilter: true },
   { name: 'Scuola Sci Piancavallo', href: '/progetti/scuola-sci-piancavallo', logo: '/logos/scuola-sci-piancavallo.png', noFilter: true },
   { name: 'Geom. Mauro Poles',    href: '/progetti/mauro-poles', logo: '/logos/poles.png' },
-  { name: 'Living Door',          href: '/progetti/living-door' },
+  { name: 'Living Door',          href: '/progetti/living-door', logo: '/logos/livingdoor.png' },
   { name: 'Barcolana',            logo: '/logos/barcolana.png' },
   { name: 'Ippodromo Merano',     logo: '/logos/ippodromo-merano.png' },
   { name: 'Quellenhof',           logo: '/logos/quellenhof.png' },

@@ -86,6 +86,7 @@
     { name: 'Dolfo Srl',           logo: '/logos/dolfo.png', noFilter: true },
     { name: 'Hotel Miramare',      logo: '/logos/hotel-miramare.png' },
     { name: 'Razor Padel',         logo: '/logos/razorpadel.avif' },
+    { name: 'Living Door',         logo: '/logos/livingdoor.png' },
   ];
   
   const processSteps = [
