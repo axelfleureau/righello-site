@@ -290,7 +290,7 @@ export const clients: Client[] = [
   { name: 'Hotel Miramare',       href: '/progetti/hotel-miramare' },
   { name: '3R Technology',        href: '/progetti/3r-technology',       logo: '/logos/3r-technology.png' },
   { name: 'Neura',                href: '/progetti/neura',               logo: '/logos/neura.png',               noFilter: true },
-  { name: 'MgGrill',              href: '/progetti/mggrill' },
+  { name: 'MgGrill',              href: '/progetti/mggrill', logo: '/logos/mggrill.png', noFilter: true },
   { name: 'Scuola Sci Piancavallo', href: '/progetti/scuola-sci-piancavallo', logo: '/logos/scuola-sci-piancavallo.png', noFilter: true },
   { name: 'Geom. Mauro Poles',    href: '/progetti/mauro-poles' },
   { name: 'Living Door',          href: '/progetti/living-door' },
