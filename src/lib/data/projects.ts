@@ -287,7 +287,7 @@ export const clients: Client[] = [
   { name: 'Reguta',               href: '/progetti/reguta',              logo: '/logos/reguta.png' },
   { name: 'Quinto della Luna',    href: '/progetti/quinto-della-luna' },
   { name: 'Riviera Resort Hotel', href: '/progetti/riviera-resort',      logo: '/logos/riviera-resort.png' },
-  { name: 'Hotel Miramare',       href: '/progetti/hotel-miramare', logo: '/logos/hotel-miramare.png', noFilter: true },
+  { name: 'Hotel Miramare',       href: '/progetti/hotel-miramare', logo: '/logos/hotel-miramare.png' },
   { name: '3R Technology',        href: '/progetti/3r-technology',       logo: '/logos/3r-technology.png' },
   { name: 'Neura',                href: '/progetti/neura',               logo: '/logos/neura.png',               noFilter: true },
   { name: 'MgGrill',              href: '/progetti/mggrill', logo: '/logos/mggrill.png', noFilter: true },

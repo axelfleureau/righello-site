@@ -84,7 +84,7 @@
     { name: 'MG Grill BBQ',        logo: '/logos/mggrill.png', noFilter: true },
     { name: 'Geom. Mauro Poles',   logo: '/logos/poles.png' },
     { name: 'Dolfo Srl',           logo: '/logos/dolfo.png', noFilter: true },
-    { name: 'Hotel Miramare',      logo: '/logos/hotel-miramare.png', noFilter: true },
+    { name: 'Hotel Miramare',      logo: '/logos/hotel-miramare.png' },
     { name: 'Razor Padel',         logo: '/logos/razorpadel.avif' },
   ];
   
