@@ -80,6 +80,7 @@
     { name: 'Dual Factory',        logo: '/logos/dual-factory.png' },
     { name: 'Solerò Sport Village', logo: '/logos/solero.png' },
     { name: 'Noiclub',             logo: '/logos/noiclub.png' },
+    { name: 'Ennevi Costruzioni',  logo: '/logos/ennevi.png', noFilter: true },
   ];
   
   const processSteps = [
