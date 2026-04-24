@@ -82,6 +82,7 @@
     { name: 'Noiclub',             logo: '/logos/noiclub.png' },
     { name: 'Ennevi Costruzioni',  logo: '/logos/ennevi.png', noFilter: true },
     { name: 'MG Grill BBQ',        logo: '/logos/mggrill.png', noFilter: true },
+    { name: 'Geom. Mauro Poles',   logo: '/logos/poles.png' },
   ];
   
   const processSteps = [
