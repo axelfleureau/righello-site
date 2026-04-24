@@ -75,6 +75,7 @@
     { name: 'Comune di Fanna',     logo: '/logos/comune-di-fanna.png', noFilter: true },
     { name: 'G&M Ambiente',        logo: '/logos/gm-ambiente.png' },
     { name: 'SystemDoc',           logo: '/logos/systemdoc.png' },
+    { name: 'Neura',               logo: '/logos/neura.png', noFilter: true },
   ];
   
   const processSteps = [
