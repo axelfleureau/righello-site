@@ -57,6 +57,7 @@
   let slideRefs: HTMLElement[] = [];
   let ctx: any = null;
   let mm: any = null;
+  let lastPhoneX = -Infinity;
   let currentSlide = -1;
   let activeStep = 0;
   // slideAnimated removed — text animation now replays on every snap/re-entry
@@ -241,7 +242,7 @@
             if (!slideEl) return;
             gsap.set(slideEl, { opacity: 0 });
           });
-          
+
           scrollTriggerInstance = ScrollTrigger.create({
             trigger: container,
             start: 'top top',
@@ -304,12 +305,22 @@
               //
               // x = 25vw → 0 as phoneProgress goes 0 → 1
               //   (phone appears at 75% from left initially, slides to center)
-              gsap.set(phoneWrapper, { 
-                x: (1 - phoneProgress) * window.innerWidth * 0.25,
-                xPercent: -50,
-                yPercent: -50,
-                scale: 1 - (0.08 * phoneProgress)
-              });
+              //
+              // ⚠️ NO scale transform here.
+              // Applying a continuously-changing scale to a composited layer that
+              // contains a YouTube iframe forces Chrome to re-rasterize the texture
+              // on every frame — this interrupts the video decode pipeline and causes
+              // visible video frame-freeze during the slide-in animation. Pure
+              // translation (x) is compositor-only and does not affect the decoder.
+              const targetX = (1 - phoneProgress) * window.innerWidth * 0.25;
+              if (targetX !== lastPhoneX) {
+                lastPhoneX = targetX;
+                gsap.set(phoneWrapper, { 
+                  x: targetX,
+                  xPercent: -50,
+                  yPercent: -50
+                });
+              }
               
               // Slides animation
               slideRefs.forEach((slideEl, i) => {
@@ -355,12 +366,13 @@
           // onUpdate fires. Without this the CSS centres the phone (left:50%,
           // translate(-50%,-50%)) and then the first onUpdate jumps it rightward,
           // creating the visible "appears-at-centre-then-snaps" glitch on load.
-          // At progress=0: phoneProgress=0, x = 0.25*vw, xPercent=-50, scale=1.
+          // At progress=0: phoneProgress=0, x = 0.25*vw, xPercent=-50 (no scale).
+          const initialX = window.innerWidth * 0.25;
+          lastPhoneX = initialX;
           gsap.set(phoneWrapper, {
-            x: window.innerWidth * 0.25,
+            x: initialX,
             xPercent: -50,
-            yPercent: -50,
-            scale: 1
+            yPercent: -50
           });
 
           // Return cleanup: clear the stored instance reference when the breakpoint
@@ -911,7 +923,7 @@
       transform: translateX(calc(25vw - 50%)) translateY(-50%);
       z-index: 5;
       transform-origin: center center;
-      will-change: transform, opacity;
+      will-change: transform;
       /* Reset mobile negative margins — they would shift an absolute element */
       margin-top: 0;
       margin-bottom: 0;
