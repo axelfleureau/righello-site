@@ -78,6 +78,7 @@
     { name: 'Neura',               logo: '/logos/neura.png' },
     { name: 'Finestre Art',        logo: '/logos/finestre-art.png' },
     { name: 'Dual Factory',        logo: '/logos/dual-factory.png' },
+    { name: 'Solerò Sport Village', logo: '/logos/solero.png', noFilter: true },
   ];
   
   const processSteps = [
