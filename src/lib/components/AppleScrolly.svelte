@@ -578,6 +578,7 @@
         videoSrc={heroVideoCloudinaryUrl}
         thumbnailUrl={heroVideoThumbnailUrl}
         muted={videoMuted}
+        disableVisibilityObserver={true}
         on:mobiletap={unlockAudio}
       />
     </div>

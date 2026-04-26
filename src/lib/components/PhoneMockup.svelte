@@ -52,6 +52,15 @@
   // the result is frozen video with audio still playing (GPU compositor bug).
   let isTouch = false;
 
+  // When true the IntersectionObserver that tears down and rebuilds the iframe
+  // is NOT created. Use this in scrollytelling contexts (AppleScrolly) where:
+  //  a) the phone is always inside the viewport (no need to pause/resume), and
+  //  b) GSAP's pin spacer insertion causes a spurious "not intersecting" flash
+  //     that incorrectly clears ytSrcActive → reloads the YouTube player.
+  // The parent component's own audioObserver handles muting when the section
+  // leaves view, so audio never leaks even without the visibility observer.
+  export let disableVisibilityObserver = false;
+
   // Fallback: if YouTube never fires onStateChange(1) within 8s of onReady
   // (e.g. slow buffering, network issue, API hiccup), force the thumbnail out.
   let ytFallbackTimer: ReturnType<typeof setTimeout> | null = null;
@@ -456,7 +465,7 @@
     // We act only after the phone has actually left the viewport at least once.
     let hasBeenHidden = false;
     let visibilityObserver: IntersectionObserver | null = null;
-    if (containerEl) {
+    if (containerEl && !disableVisibilityObserver) {
       visibilityObserver = new IntersectionObserver(
         (entries) => {
           const isVisible = entries[0]?.isIntersecting;
@@ -749,18 +758,22 @@
   }
 
   .phone-entrance {
-    animation: phoneScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+    animation: phoneReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
     opacity: 0;
   }
-  
-  @keyframes phoneScale {
+
+  /* No scale — scaling a composited GPU layer containing a YouTube iframe
+   * forces Chrome to re-rasterize the video texture on every frame, which
+   * interrupts the video decode pipeline and causes visible frame-freeze.
+   * Pure opacity + translateY are compositor-only operations: safe for video. */
+  @keyframes phoneReveal {
     from {
       opacity: 0;
-      transform: scale(0.8) perspective(1000px);
+      transform: translateY(28px);
     }
     to {
       opacity: 1;
-      transform: scale(1) perspective(1000px);
+      transform: translateY(0px);
     }
   }
   
