@@ -638,16 +638,16 @@
       <div class="partners-marquee-wrapper">
         <div class="partners-marquee">
           {#if partners.length > 0}
-            {#each [0,1,2,3,4,5].flatMap(() => partners) as p}
+            {#each [0,1].flatMap(() => partners) as p}
               {#if p.logo}
-                <img src={p.logo} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
+                <img src={p.logo} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" height="28" />
               {:else}
                 <span class="partner-name">{p.name}</span>
               {/if}
               <span class="partner-sep">·</span>
             {/each}
           {:else}
-            {#each [0,1,2,3,4,5].flatMap(() => partnerNames) as name}
+            {#each [0,1].flatMap(() => partnerNames) as name}
               <span class="partner-name">{name}</span>
               <span class="partner-sep">·</span>
             {/each}
@@ -1285,14 +1285,23 @@
     gap: 0;
     width: max-content;
     animation: partners-scroll 35s linear infinite;
-    /* GPU compositing hint: prevents Safari mobile from repainting the marquee
-       every frame, which causes the shimmer/glitch artefacts reported on mobile. */
+    /* will-change + backface-visibility: hidden forces the browser to promote
+       this element to its own GPU compositing layer. On Safari mobile this
+       prevents the full-page repaint that caused shimmer/glitch artefacts. */
     will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
+  /* Two copies instead of six + translate by exactly -50%.
+   * -50% = precisely one copy width regardless of fractional pixel widths.
+   * The old calc(-100% / 6) divided a non-integer max-content width by 6,
+   * producing a sub-pixel remainder that browsers rounded inconsistently —
+   * causing a visible jump at every loop reset. -50% is an exact CSS value:
+   * no rounding, no jump. */
   @keyframes partners-scroll {
     from { transform: translateX(0); }
-    to   { transform: translateX(calc(-100% / 6)); }
+    to   { transform: translateX(-50%); }
   }
 
   .partner-name {
@@ -1308,10 +1317,13 @@
 
   .partner-logo {
     height: 28px;
-    width: auto;
+    /* Fixed width: every logo slot occupies the same space whether the image
+       has loaded or not. Without this, async image loading changes max-content
+       width mid-animation, shifting the -50% endpoint and causing a visible jump. */
+    width: 70px;
     object-fit: contain;
     flex-shrink: 0;
-    padding: 0 0.75rem;
+    padding: 0 0.5rem;
     filter: brightness(0) invert(1);
     opacity: 0.55;
     pointer-events: none;
