@@ -26,7 +26,7 @@
   
   const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
   
-  const homepageServices = departments.map(dept => ({
+  const homepageServices = departments.filter(dept => dept.id !== 'agenti-ai').map(dept => ({
     id: dept.id,
     title: dept.name,
     description: dept.description,
