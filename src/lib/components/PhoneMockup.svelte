@@ -61,6 +61,24 @@
   // leaves view, so audio never leaks even without the visibility observer.
   export let disableVisibilityObserver = false;
 
+  // When true the 3D perspective tilt is completely disabled — no
+  // `perspective()` in the inline transform style.
+  //
+  // WHY: `perspective()` in the `transform` property creates a 3D projection
+  // context on .phone-wrapper. When a GSAP-animated ancestor (.phone-area,
+  // promoted to a GPU compositing layer via will-change:transform) is being
+  // continuously translated, Chrome cannot keep the YouTube iframe on an
+  // isolated texture. Every GSAP frame forces the browser to re-rasterize
+  // the iframe's video texture — the same root cause as the iOS preserve-3d
+  // freeze. At rest (rotateX/Y = 0) the perspective transform has zero
+  // visible effect, so disabling it in the scrollytelling context costs
+  // nothing visually while eliminating the compositor bottleneck.
+  //
+  // The isTouch flag already disables the tilt on mobile (pointer:coarse).
+  // disable3dTilt extends the same protection to GSAP-scrollytelling contexts
+  // on desktop (pointer:fine) where the phone is inside an animated ancestor.
+  export let disable3dTilt = false;
+
   // Fallback: if YouTube never fires onStateChange(1) within 8s of onReady
   // (e.g. slow buffering, network issue, API hiccup), force the thumbnail out.
   let ytFallbackTimer: ReturnType<typeof setTimeout> | null = null;
@@ -543,7 +561,7 @@
 >
   <div 
     class="phone-wrapper phone-entrance"
-    style={!isTouch
+    style={(!isTouch && !disable3dTilt)
       ? `transform: perspective(1000px) rotateX(${$rotation.x}deg) rotateY(${$rotation.y}deg) translateX(${$position.x}px) translateY(${$position.y}px);`
       : ''}
   >
