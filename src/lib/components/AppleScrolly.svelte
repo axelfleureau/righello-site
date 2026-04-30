@@ -1318,13 +1318,15 @@
 
   .partner-logo {
     height: 28px;
-    /* Fixed width: every logo slot occupies the same space whether the image
-       has loaded or not. Without this, async image loading changes max-content
-       width mid-animation, shifting the -50% endpoint and causing a visible jump. */
-    width: 70px;
+    /* width: auto preserves each logo's natural proportions at the fixed 28px
+       height, so all logos are perfectly aligned on the same baseline.
+       max-width caps very wide logos; 100px is enough for horizontal brand
+       marks (e.g. Mangio, Barcolana) without making icon-style logos too large. */
+    width: auto;
+    max-width: 100px;
     object-fit: contain;
     flex-shrink: 0;
-    padding: 0 0.5rem;
+    padding: 0 0.75rem;
     filter: brightness(0) invert(1);
     opacity: 0.55;
     pointer-events: none;
