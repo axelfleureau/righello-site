@@ -61,6 +61,26 @@
   // leaves view, so audio never leaks even without the visibility observer.
   export let disableVisibilityObserver = false;
 
+  // When true the CSS entrance animation (.phone-entrance / phoneReveal) is NOT
+  // applied to .phone-wrapper. Use this inside GSAP scrollytelling contexts where:
+  //
+  //  a) GSAP REPARENTS the pinned container into a pin-spacer element during
+  //     ScrollTrigger.create() and again on every ScrollTrigger.refresh() call.
+  //     CSS animations restart whenever their element is moved in the DOM tree.
+  //     Each reparent causes phoneReveal to restart from opacity:0 → brief flash.
+  //     With 3 refresh calls (window.load + AirplaneEasterEgg × 2) + initial pin,
+  //     the phone flashes 4 times on page load — exactly what the user reported.
+  //
+  //  b) The CSS animation-fill-mode:forwards keeps a live animation compositing
+  //     layer on .phone-wrapper even AFTER the animation completes. When GSAP
+  //     translates the parent .phone-area at 60fps, Chrome must composite three
+  //     nested layers: phone-area(GSAP) → phone-wrapper(CSS-anim) → YT-iframe.
+  //     This intermediate layer blocks the GPU video decoder → video freezes.
+  //
+  // When true, the parent (AppleScrolly) handles the entrance via a GSAP tween
+  // on .phone-area instead, which has NO intermediate compositing layer.
+  export let disableEntranceAnimation = false;
+
   // When true the 3D perspective tilt is completely disabled — no
   // `perspective()` in the inline transform style.
   //
@@ -560,7 +580,8 @@
   aria-label="Smartphone mockup showing social media content"
 >
   <div 
-    class="phone-wrapper phone-entrance"
+    class="phone-wrapper"
+    class:phone-entrance={!disableEntranceAnimation}
     style={(!isTouch && !disable3dTilt)
       ? `transform: perspective(1000px) rotateX(${$rotation.x}deg) rotateY(${$rotation.y}deg) translateX(${$position.x}px) translateY(${$position.y}px);`
       : ''}

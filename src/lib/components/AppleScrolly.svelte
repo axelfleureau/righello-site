@@ -375,10 +375,43 @@
             yPercent: -50
           });
 
+          // GSAP-driven phone entrance (replaces .phone-entrance CSS animation).
+          //
+          // WHY NOT CSS animation here:
+          //   a) GSAP reparents the pinned container into its pin-spacer on
+          //      ScrollTrigger.create() and again on every refresh() call.
+          //      Any CSS animation on a child element RESTARTS when its ancestor
+          //      is moved in the DOM — each reparent causes phoneReveal to start
+          //      over from opacity:0. With 3 refresh calls (window.load +
+          //      AirplaneEasterEgg × 2) + the initial create, the phone flashed
+          //      4 times on every page load (user reported "4/5 volte").
+          //   b) animation-fill-mode:forwards keeps a live compositing layer on
+          //      .phone-wrapper even after the animation ends. GSAP animating the
+          //      parent .phone-area at 60fps forces Chrome to composite through
+          //      three nested layers (phone-area/GSAP → phone-wrapper/CSS-anim →
+          //      YT-iframe), which blocks the GPU video decoder → freeze.
+          //
+          // GSAP manages opacity independently from x/xPercent/yPercent (separate
+          // property tracks). The onUpdate callback only touches x/xPercent/yPercent
+          // so there is zero interference.
+          if (phoneWrapper) {
+            gsap.set(phoneWrapper, { opacity: 0 });
+            gsap.to(phoneWrapper, {
+              opacity: 1,
+              duration: 0.8,
+              delay: 0.3,
+              ease: 'power2.out',
+              overwrite: 'auto'
+            });
+          }
+
           // Return cleanup: clear the stored instance reference when the breakpoint
           // condition is no longer met (e.g. viewport shrinks below 1024px).
           return () => {
             scrollTriggerInstance = null;
+            // Clear GSAP-managed opacity so the phone is visible on mobile/tablet
+            // (where the GSAP entrance tween above doesn't run).
+            if (phoneWrapper) gsap.set(phoneWrapper, { clearProps: 'opacity' });
           };
         });
       }, container);
@@ -580,6 +613,7 @@
         muted={videoMuted}
         disableVisibilityObserver={true}
         disable3dTilt={true}
+        disableEntranceAnimation={true}
         on:mobiletap={unlockAudio}
       />
     </div>
