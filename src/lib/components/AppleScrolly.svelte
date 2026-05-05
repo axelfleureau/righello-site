@@ -1366,12 +1366,32 @@
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
+    /* Transizione fluida al cambio tema — coerente con body transition */
+    transition: filter 0.3s ease, opacity 0.3s ease;
   }
 
   /* Loghi istituzionali (comuni) — mantieni i colori originali, senza inversione */
   .partner-logo.no-filter {
     filter: none;
     opacity: 0.75;
+  }
+
+  /* ─── Tema light: sfondo bianco → logo invertito (bianco) diventa invisibile ─ *
+   * Fix: in dark mode brightness(0)+invert(1) = bianco su scuro → OK.            *
+   * In light mode sostituiamo con brightness(0) = nero/grigio su bianco → OK.    *
+   * Opacità leggermente ridotta perché su bianco il nero puro è più "pesante"    *
+   * visivamente rispetto al bianco su scuro.                                      */
+  :global([data-theme="light"]) .partner-logo {
+    filter: brightness(0);
+    opacity: 0.35;
+  }
+
+  /* Loghi istituzionali in light: manteniamo i colori ma abbassiamo l'opacità
+   * e aggiungiamo un leggero grayscale per evitare che siano troppo saturi
+   * rispetto al resto della palette del tema chiaro.                              */
+  :global([data-theme="light"]) .partner-logo.no-filter {
+    filter: grayscale(0.25);
+    opacity: 0.6;
   }
 
   .partner-sep {
