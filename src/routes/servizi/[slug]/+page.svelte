@@ -15,8 +15,8 @@
   <meta property="og:title" content={service.seo.title} />
   <meta property="og:description" content={service.seo.description} />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
-  <link rel="canonical" href="https://www.wearerighello.com/servizi/{service.slug}" />
-  <meta property="og:url" content="https://www.wearerighello.com/servizi/{service.slug}" />
+  <link rel="canonical" href={`https://www.wearerighello.com/servizi/${service.slug}`} />
+  <meta property="og:url" content={`https://www.wearerighello.com/servizi/${service.slug}`} />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
