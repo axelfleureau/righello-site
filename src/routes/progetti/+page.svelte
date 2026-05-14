@@ -25,6 +25,7 @@
   <meta property="og:title" content="Progetti | Righello – Portfolio Marketing, Web & Software" />
   <meta property="og:description" content="Portfolio di progetti di marketing digitale, sviluppo web e software. Case study con risultati concreti: siti, app, campagne adv e automazioni." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
+  <link rel="canonical" href="https://www.wearerighello.com/progetti" />
   <meta property="og:url" content="https://www.wearerighello.com/progetti" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />

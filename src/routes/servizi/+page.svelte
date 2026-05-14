@@ -234,6 +234,7 @@
   <meta property="og:title" content="Servizi | Righello – Marketing, Sviluppo Web, Advertising & Agenti AI" />
   <meta property="og:description" content="Marketing & Social Media, Advertising, Sviluppo Web e Agenti AI. Quattro dipartimenti integrati per far crescere il tuo business con dati, automazioni e dipendenti digitali su misura." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
+  <link rel="canonical" href="https://www.wearerighello.com/servizi" />
   <meta property="og:url" content="https://www.wearerighello.com/servizi" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />

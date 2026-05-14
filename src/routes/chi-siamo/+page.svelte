@@ -114,16 +114,17 @@
 
 <svelte:head>
   <title>Chi Siamo | Righello – Growth Agency Nord Italia</title>
-  <meta name="description" content="Growth agency con sede a Mestre, Venezia. Esperti in marketing digitale, sviluppo web e automazione. Operiamo nel Nord Italia e all'estero." />
+  <meta name="description" content="Team di strategia, design e sviluppo a Pordenone e Venezia. Lavoriamo con aziende, hospitality, eventi e sport per marketing, siti web, software e contenuti in Friuli-Venezia Giulia e Veneto." />
+  <link rel="canonical" href="https://www.wearerighello.com/chi-siamo" />
   <meta property="og:title" content="Chi Siamo | Righello – Growth Agency Nord Italia" />
-  <meta property="og:description" content="Growth agency con sede a Mestre, Venezia. Esperti in marketing digitale, sviluppo web e automazione. Operiamo nel Nord Italia e all'estero." />
+  <meta property="og:description" content="Team di strategia, design e sviluppo a Pordenone e Venezia. Lavoriamo con aziende, hospitality, eventi e sport per marketing, siti web, software e contenuti in Friuli-Venezia Giulia e Veneto." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta property="og:url" content="https://www.wearerighello.com/chi-siamo" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Chi Siamo | Righello – Growth Agency Nord Italia" />
-  <meta name="twitter:description" content="Growth agency con sede a Mestre, Venezia. Esperti in marketing digitale, sviluppo web e automazione. Operiamo nel Nord Italia e all'estero." />
+  <meta name="twitter:description" content="Team di strategia, design e sviluppo a Pordenone e Venezia. Lavoriamo con aziende, hospitality, eventi e sport per marketing, siti web, software e contenuti in Friuli-Venezia Giulia e Veneto." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
 </svelte:head>
 

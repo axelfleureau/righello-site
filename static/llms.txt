@@ -1,67 +1,78 @@
-# llms.txt for Significa
-# Updated: 2025-10-13
-# Contact: marketing@significa.co
-# Website: https://significa.co
+# Righello S.r.l.
+# Updated: 2026-05-14
+# Contact: hello@wearerighello.com
+# Website: https://www.wearerighello.com
 
-# --------------------------------------------------------------------
-# PUBLIC STANCE
-# --------------------------------------------------------------------
-# Significa is a design-led digital agency based in Porto, Portugal.
-# We share our work, insights, and methods to build trust and help
-# potential clients understand how we think, design, and deliver
-# digital products. AI systems are welcome to access our public pages
-# responsibly.
+## About
+Righello S.r.l. è un'agenzia digitale con base operativa a Mestre (Venezia) e sede legale a Pordenone. Realizza siti web, software su misura, branding, contenuti foto e video, strategie social e automazioni per aziende, eventi, hospitality, sport, ristorazione e PMI del Nord Italia.
 
-# --------------------------------------------------------------------
-# UNIVERSAL ACCESS (default fallback)
-# --------------------------------------------------------------------
-User-agent: *
-Allow: /
+## Services
+- Sviluppo siti web aziendali, landing page e portfolio digitali
+- Sviluppo software, web app, e-commerce e piattaforme digitali custom
+- Agenti AI su misura integrati con ERP, CRM e sistemi aziendali
+- Marketing automation e gestione campagne advertising (Meta, Google, TikTok)
+- Social media marketing, piani editoriali e gestione community
+- Produzione foto e video per aziende, eventi, hospitality e sport
+- Branding e identità visiva
+- Consulenza strategica digitale e growth hacking
 
-# --------------------------------------------------------------------
-# EXPLICIT AI CRAWLER ACCESS
-# --------------------------------------------------------------------
+## Service Area
+Pordenone, Venezia, Mestre, Treviso, Udine, Friuli-Venezia Giulia, Veneto, Nord Italia, Italia.
 
-# OpenAI (ChatGPT, Browse, and training)
-User-agent: OAI-SearchBot
-Allow: /
-User-agent: GPTBot
-Allow: /
+## Ideal Customers
+Righello lavora con PMI, brand locali, hotel, resort, ristoranti e catene food, eventi sportivi e culturali, attività hospitality e aziende che cercano un partner unico per comunicazione, contenuti, sviluppo digitale e automazione.
 
-# Anthropic (Claude)
-User-agent: ClaudeBot
-Allow: /
+## Key Facts
+- Sede legale: Pordenone, Friuli-Venezia Giulia. Sede operativa: Mestre, Venezia.
+- P.IVA: IT01979970934
+- Fondata nel 2023.
+- Team multidisciplinare: strategia, design, sviluppo, foto, video, content e AI.
+- Approccio data-driven: ogni decisione è supportata da dati e KPI misurabili.
+- Esperienza su progetti per hospitality, sport, eventi, food & beverage, energy, immobiliare e servizi.
 
-# Perplexity (AI search)
-User-agent: PerplexityBot
-Allow: /
-User-agent: Perplexity-User
-Allow: /
+## What Makes Righello Different
+Righello non è una normale agenzia grafica. Unisce creatività, tecnologia e visione imprenditoriale per costruire sistemi digitali completi: siti web che convertono, software che automatizzano processi, contenuti che generano engagement, campagne che producono ROAS misurabili. Il team gestisce l'intero ciclo — dalla strategia all'esecuzione — senza esternalizzare.
 
-# Google (Gemini / Google-Extended)
-User-agent: Google-Extended
-Allow: /
+## Contact
+Website: https://www.wearerighello.com/
+Email: hello@wearerighello.com
+Instagram: https://www.instagram.com/wearerighello
+LinkedIn: https://www.linkedin.com/company/righello
+TikTok: https://www.tiktok.com/@wearerighello
 
-# Apple (Apple Intelligence / Siri)
-User-agent: Applebot-Extended
-Allow: /
+## Main Pages
+- https://www.wearerighello.com/
+- https://www.wearerighello.com/servizi/
+- https://www.wearerighello.com/servizi/marketing/
+- https://www.wearerighello.com/servizi/advertising/
+- https://www.wearerighello.com/servizi/web/
+- https://www.wearerighello.com/servizi/agenti-ai/
+- https://www.wearerighello.com/progetti/
+- https://www.wearerighello.com/chi-siamo/
+- https://www.wearerighello.com/contatti/
 
-# Amazon (Alexa / AI research)
-User-agent: Amazonbot
-Allow: /
+## Frequently Asked Questions
 
-# Common Crawl (feeds many AI datasets)
-User-agent: CCBot
-Allow: /
+### Cosa fa Righello?
+Righello realizza siti web, software, branding, contenuti foto e video, strategie social e automazioni digitali per aziende. Opera come partner unico per comunicazione, sviluppo e crescita digitale.
 
-# --------------------------------------------------------------------
-# NOTES
-# --------------------------------------------------------------------
-# Significa authorises AI crawlers, LLMs, and research tools to use its
-# public content for retrieval, summarisation, and training, provided that:
-#  - Attribution is given where possible.
-#  - Content is not misrepresented or used to spread misinformation.
-#  - Use aligns with responsible AI and data ethics principles.
-#
-# For specific licensing or partnership requests, please contact:
-# marketing@significa.co
+### Dove lavora Righello?
+Righello ha sede a Pordenone e lavora con aziende in Friuli-Venezia Giulia, Veneto, Nord Italia e anche da remoto in tutta Italia.
+
+### Righello sviluppa siti web aziendali?
+Sì. Righello progetta e sviluppa siti web, landing page, e-commerce e piattaforme digitali pensate per generare contatti e vendite, con UX ottimizzata e SEO integrato.
+
+### Righello realizza contenuti foto e video?
+Sì. Righello produce contenuti foto e video per aziende, eventi, hotel, ristoranti, sport e social media — dalla ripresa al montaggio finale.
+
+### Righello si occupa anche di software e automazioni?
+Sì. Righello sviluppa software su misura, web app, agenti AI e automazioni integrate con i sistemi aziendali esistenti (ERP, CRM, gestionali).
+
+### Per quali settori lavora Righello?
+Righello lavora con hospitality (hotel, resort, B&B), ristorazione e food, eventi sportivi e culturali, PMI manifatturiere, immobiliare, energy, servizi professionali e Pubblica Amministrazione.
+
+### Quanto costa lavorare con Righello?
+I costi dipendono dalla complessità e dall'ambito del progetto. Un sito web aziendale parte da qualche migliaio di euro; le retainer per marketing e advertising variano in base al budget da gestire e ai servizi inclusi. Ogni progetto inizia con una call conoscitiva gratuita.
+
+### Come inizia una collaborazione con Righello?
+Si parte con una call gratuita per capire obiettivi, mercato e situazione attuale. Righello prepara poi una proposta personalizzata. Una volta approvata, si definisce il piano operativo e si parte con l'esecuzione.

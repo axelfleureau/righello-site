@@ -50,33 +50,75 @@
 
 <svelte:head>
   <meta name="theme-color" content="#050505" />
+  <meta property="og:site_name" content="Righello" />
   {@html `<script type="application/ld+json">${JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Righello",
-    "legalName": "Righello S.r.l.",
-    "url": "https://www.wearerighello.com",
-    "logo": "https://www.wearerighello.com/logo-full.png",
-    "description": "Agenzia di marketing orientata ai risultati. Marketing, advertising e sviluppo digitale con un approccio data-driven.",
-    "email": "hello@wearerighello.com",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Via Pio X 21",
-      "addressLocality": "Mestre",
-      "addressRegion": "Venezia",
-      "addressCountry": "IT"
-    },
-    "sameAs": [
-      "https://www.instagram.com/wearerighello",
-      "https://www.linkedin.com/company/righello",
-      "https://www.tiktok.com/@wearerighello"
-    ],
-    "vatID": "IT01979970934",
-    "foundingDate": "2023",
-    "numberOfEmployees": {
-      "@type": "QuantitativeValue",
-      "value": 4
-    }
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.wearerighello.com/#organization",
+        "name": "Righello",
+        "legalName": "Righello S.r.l.",
+        "url": "https://www.wearerighello.com",
+        "logo": "https://www.wearerighello.com/logo-full.png",
+        "description": "Agenzia digitale a Pordenone e Venezia specializzata in siti web, software, marketing, contenuti foto/video e automazioni per aziende, hospitality, eventi e PMI in Friuli-Venezia Giulia e Veneto.",
+        "email": "hello@wearerighello.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Via Pio X 21",
+          "addressLocality": "Mestre",
+          "addressRegion": "Venezia",
+          "addressCountry": "IT"
+        },
+        "sameAs": [
+          "https://www.instagram.com/wearerighello",
+          "https://www.linkedin.com/company/righello",
+          "https://www.tiktok.com/@wearerighello"
+        ],
+        "vatID": "IT01979970934",
+        "foundingDate": "2023",
+        "numberOfEmployees": {
+          "@type": "QuantitativeValue",
+          "value": 4
+        }
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://www.wearerighello.com/#localbusiness",
+        "name": "Righello S.r.l.",
+        "url": "https://www.wearerighello.com",
+        "email": "hello@wearerighello.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Via Pio X 21",
+          "addressLocality": "Mestre",
+          "addressRegion": "Venezia",
+          "addressCountry": "IT"
+        },
+        "areaServed": [
+          "Pordenone",
+          "Venezia",
+          "Mestre",
+          "Treviso",
+          "Udine",
+          "Friuli-Venezia Giulia",
+          "Veneto",
+          "Italia"
+        ],
+        "priceRange": "€€€",
+        "description": "Agenzia digitale per siti web, software, marketing, contenuti foto/video e automazioni. Operiamo con aziende, hospitality, eventi e PMI in Friuli-Venezia Giulia, Veneto e Nord Italia."
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.wearerighello.com/#website",
+        "url": "https://www.wearerighello.com",
+        "name": "Righello",
+        "publisher": {
+          "@id": "https://www.wearerighello.com/#organization"
+        },
+        "inLanguage": "it-IT"
+      }
+    ]
   })}</script>`}
 </svelte:head>
 

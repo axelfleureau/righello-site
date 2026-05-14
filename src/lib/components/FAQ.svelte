@@ -7,24 +7,44 @@
   
   const faqs = [
     {
+      question: "Cosa fa Righello?",
+      answer: "Righello è un'agenzia digitale a Pordenone e Venezia che realizza siti web, software su misura, campagne advertising, contenuti foto e video, strategie social e automazioni per aziende. Opera come partner unico per comunicazione, sviluppo e crescita digitale — dalla strategia all'esecuzione."
+    },
+    {
+      question: "Dove lavora Righello?",
+      answer: "Righello ha sede a Pordenone e lavora principalmente con aziende in Friuli-Venezia Giulia, Veneto e Nord Italia. Gestiamo anche clienti da remoto in tutta Italia, senza vincoli geografici."
+    },
+    {
+      question: "Per quali settori lavora Righello?",
+      answer: "Righello ha esperienza diretta con hospitality (hotel, resort, B&B), ristorazione e food, eventi sportivi e culturali, PMI manifatturiere, immobiliare, energy e servizi professionali. Ogni settore richiede un approccio diverso: lo costruiamo insieme al cliente, a partire dagli obiettivi reali."
+    },
+    {
       question: "Quali risultati posso aspettarmi?",
-      answer: "I risultati variano in base al settore e agli obiettivi, ma i nostri clienti vedono in media un aumento del 340% dell'engagement e un ROAS di 8.5x sulle campagne advertising. Forniamo report mensili dettagliati con KPI trasparenti."
+      answer: "I risultati variano in base al settore e agli obiettivi. I nostri clienti vedono in media un aumento del 340% dell'engagement e un ROAS di 8.5x sulle campagne advertising. Forniamo report mensili dettagliati con KPI trasparenti, così i numeri parlano da soli."
     },
     {
       question: "Quanto tempo ci vuole per vedere i primi risultati?",
-      answer: "I primi miglioramenti si vedono dai 3 mesi. In questo periodo costruiamo le fondamenta: strategia, contenuti, campagne ottimizzate e tracking. Dopo i primi 3 mesi i risultati crescono in modo esponenziale mese dopo mese."
+      answer: "I primi miglioramenti si vedono dai 3 mesi. In questo periodo costruiamo le fondamenta: strategia, contenuti, campagne ottimizzate e tracking. Dopo i primi 3 mesi i risultati crescono in modo progressivo e misurabile mese dopo mese."
     },
     {
-      question: "Lavorate con aziende di ogni dimensione?",
-      answer: "Sì, lavoriamo con startup, PMI, grandi aziende e anche con la Pubblica Amministrazione. Adattiamo strategie e budget alle esigenze specifiche di ogni cliente. La cosa importante per noi è la volontà di crescere e investire nel digitale."
+      question: "Quanto costa lavorare con Righello?",
+      answer: "Dipende dalla complessità e dall'ambito del progetto. Un sito web aziendale parte da qualche migliaio di euro; le retainer per marketing e advertising variano in base ai servizi e al budget da gestire. Ogni progetto parte da una call gratuita in cui costruiamo insieme un'offerta su misura — nessun listino fisso, nessuna sorpresa."
+    },
+    {
+      question: "Cosa rende Righello diversa da una normale agenzia grafica?",
+      answer: "Righello non si ferma all'estetica. Costruisce sistemi digitali completi: siti che convertono, software che automatizzano processi, contenuti che generano engagement, campagne con ROAS tracciabile. Il team gestisce l'intero ciclo — strategia, design, sviluppo, produzione, distribuzione — senza esternalizzare."
     },
     {
       question: "Come funziona il processo di onboarding?",
-      answer: "Iniziamo con una call conoscitiva gratuita, poi analizziamo la tua situazione attuale. Prepariamo una strategia personalizzata e, una volta approvata, partiamo con l'implementazione. Avrai un account manager dedicato come punto di riferimento."
+      answer: "Iniziamo con una call conoscitiva gratuita. Analizziamo la situazione attuale, gli obiettivi e il mercato. Prepariamo una proposta personalizzata con roadmap e KPI chiari. Una volta approvata, si parte con l'implementazione. Ogni cliente ha un account manager dedicato come punto di riferimento unico."
+    },
+    {
+      question: "Lavorate con aziende di ogni dimensione?",
+      answer: "Sì, lavoriamo con startup, PMI, grandi aziende e con la Pubblica Amministrazione. Adattiamo strategie e budget alle esigenze specifiche di ogni cliente. La cosa che conta per noi è la volontà concreta di crescere e investire nel digitale."
     },
     {
       question: "Posso disdire in qualsiasi momento?",
-      answer: "Nessun vincolo rigido: la flessibilità per noi è un valore. C'è però una cosa che chiediamo di considerare. Quando collaboriamo, pianifichiamo con mesi di anticipo — strategie, contenuti, materiali — perché il nostro lavoro riguarda il modo in cui la tua azienda si presenta e parla ai suoi clienti. Dopo il prodotto, non esiste nulla di più importante. Per questo, prima di qualsiasi decisione, preferiamo sempre un confronto diretto: nella nostra esperienza, le migliori soluzioni nascono dal dialogo."
+      answer: "Nessun vincolo rigido: la flessibilità è un valore per noi. Chiediamo però di considerare che ogni collaborazione viene pianificata con mesi di anticipo — strategie, contenuti, materiali — perché il nostro lavoro riguarda come la tua azienda si presenta ai clienti. Prima di qualsiasi decisione, preferiamo sempre un confronto diretto: le migliori soluzioni nascono dal dialogo."
     }
   ];
   
@@ -33,7 +53,24 @@
   function toggle(index: number) {
     openIndex = openIndex === index ? null : index;
   }
+
+  $: faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
 </script>
+
+<svelte:head>
+  {@html `<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>`}
+</svelte:head>
 
 <section class="faq-section">
   <div class="section-container">
