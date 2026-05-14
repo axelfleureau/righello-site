@@ -86,6 +86,7 @@
     { name: 'Dolfo Srl',           logo: '/logos/dolfo.png' },
     { name: 'Hotel Miramare',      logo: '/logos/hotel-miramare.png' },
     { name: 'Razor Padel',         logo: '/logos/razorpadel.avif' },
+    { name: 'Tubaro & Co.',        logo: '/logos/tubaro.png' },
     { name: 'Living Door',         logo: '/logos/livingdoor.png' },
     { name: 'Il Salotto',          logo: '/logos/salotto.png' },
     { name: 'Hotel Elite',         logo: '/logos/hotel-elite.png' },
