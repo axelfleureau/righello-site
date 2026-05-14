@@ -93,6 +93,7 @@
     { name: 'Garden Hotel Michelangelo', logo: '/logos/hotel-michelangelo.png' },
     { name: 'Mangio',                  logo: '/logos/mangio.png',             noFilter: true },
     { name: 'Tomasella',               logo: '/logos/tomasella.png',          noFilter: true },
+    { name: 'Reginato Srl',            logo: '/logos/reginato.png',           noFilter: true },
   ];
   
   const processSteps = [

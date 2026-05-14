@@ -328,7 +328,7 @@ export const clients: Client[] = [
   { name: 'Tubaro & Co.',         logo: '/logos/tubaro.png' },
   { name: 'Zanutta',              logo: '/logos/zanutta.png' },
   { name: 'G&M Ambiente',         logo: '/logos/gm-ambiente.png' },
-  { name: 'Reginato' },
+  { name: 'Reginato Srl',         logo: '/logos/reginato.png',           noFilter: true },
   { name: 'Ennevi Costruzioni',   logo: '/logos/ennevi.png' },
   { name: 'Dolfo Srl',            logo: '/logos/dolfo.png' },
   { name: 'Hotel Elite',          logo: '/logos/hotel-elite.png' },
