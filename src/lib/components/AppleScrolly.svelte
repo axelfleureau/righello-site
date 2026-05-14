@@ -355,7 +355,7 @@
                   // and the next visit to the slide would skip the stagger animation.
                   const title = slideEl.querySelector('.slide-title');
                   const descChars = slideEl.querySelectorAll('.desc-char');
-                  if (title) gsap.set(title, { opacity: 0, y: 40, scale: 0.95 });
+                  if (title) gsap.set(title, { opacity: 0, y: 40 });
                   if (descChars.length) gsap.set(descChars, { opacity: 0, y: 20 });
                 }
               });
@@ -483,12 +483,20 @@
     if (descChars.length) gsap.killTweensOf(descChars);
     
     if (title) {
+      // ⚠️ NO scale transform here — same reason as phoneWrapper.
+      // Animating scale on .slide-title (even though it's a text element, not
+      // the iframe) creates a new compositor layer for that element inside the
+      // GSAP-pinned container. Layer creation inside a pinned container that
+      // already contains a composited YouTube iframe forces the browser to
+      // rebuild the compositor layer tree, which can stall the video decode
+      // pipeline and cause the same frame-freeze the user sees in the phone.
+      // Pure y+opacity are compositor-only: they reuse the existing layer
+      // without triggering a rasterization or layer-tree rebuild.
       gsap.fromTo(title, 
-        { opacity: 0, y: 40, scale: 0.95 },
+        { opacity: 0, y: 40 },
         { 
           opacity: 1, 
-          y: 0, 
-          scale: 1,
+          y: 0,
           duration: 0.6,
           ease: 'power3.out'
         }
