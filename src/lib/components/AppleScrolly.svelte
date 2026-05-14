@@ -375,6 +375,30 @@
             yPercent: -50
           });
 
+          // Pre-promote heroContent's compositing layer BEFORE the first scroll.
+          //
+          // Why this fixes the desktop "video freeze on first scroll" bug:
+          //   The onUpdate callback applies gsap.set(heroContent, { opacity, yPercent })
+          //   on every frame as the user scrolls. Before this fix, heroContent had
+          //   no GSAP-managed transform until the first scroll event — so the very
+          //   first gsap.set introduced a brand-new transform matrix on the element,
+          //   which forces the browser to create a new compositing layer at that
+          //   exact moment. That layer-creation event briefly pre-empts the GPU
+          //   compositor and disconnects the YouTube iframe's video texture for
+          //   one paint cycle, producing the visible video freeze that users see
+          //   the instant they start scrolling.
+          //
+          //   By pre-applying the identity transform here (yPercent: 0, opacity: 1
+          //   match the at-rest visual state), we force the browser to allocate the
+          //   compositing layer at mount time — when nothing else is going on —
+          //   so the first scroll's gsap.set merely UPDATES an existing matrix
+          //   instead of CREATING a new one. No layer creation → no decoder stall →
+          //   smooth video during scroll-start.
+          //
+          //   This is the same defensive pattern already applied to phoneWrapper
+          //   above; heroContent was missing it, hence the regression.
+          gsap.set(heroContent, { opacity: 1, yPercent: 0 });
+
           // GSAP-driven phone entrance (replaces .phone-entrance CSS animation).
           //
           // WHY NOT CSS animation here:
