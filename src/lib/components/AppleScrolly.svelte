@@ -399,35 +399,26 @@
           //   above; heroContent was missing it, hence the regression.
           gsap.set(heroContent, { opacity: 1, yPercent: 0 });
 
-          // GSAP-driven phone entrance (replaces .phone-entrance CSS animation).
+          // NOTE: The opacity entrance tween that previously animated phoneWrapper
+          // from opacity:0 → 1 over 0.8s has been intentionally removed.
           //
-          // WHY NOT CSS animation here:
-          //   a) GSAP reparents the pinned container into its pin-spacer on
-          //      ScrollTrigger.create() and again on every refresh() call.
-          //      Any CSS animation on a child element RESTARTS when its ancestor
-          //      is moved in the DOM — each reparent causes phoneReveal to start
-          //      over from opacity:0. With 3 refresh calls (window.load +
-          //      AirplaneEasterEgg × 2) + the initial create, the phone flashed
-          //      4 times on every page load (user reported "4/5 volte").
-          //   b) animation-fill-mode:forwards keeps a live compositing layer on
-          //      .phone-wrapper even after the animation ends. GSAP animating the
-          //      parent .phone-area at 60fps forces Chrome to composite through
-          //      three nested layers (phone-area/GSAP → phone-wrapper/CSS-anim →
-          //      YT-iframe), which blocks the GPU video decoder → freeze.
+          // Root cause of the desktop "video freeze during scroll" bug:
+          //   Animating opacity on phoneWrapper (which contains the YouTube iframe)
+          //   forces the GPU compositor to re-blend the iframe's video texture with
+          //   the updated opacity value on every single frame for 0.8 seconds.
+          //   If the user starts scrolling during that window (very common, since
+          //   the tween ran 0.3–1.1s after init), the ScrollTrigger onUpdate fires
+          //   concurrently with the opacity tween, creating two simultaneous GPU
+          //   compositing demands on the same element. This stalls the video decoder
+          //   pipeline and produces the visible freeze reported by the user.
           //
-          // GSAP manages opacity independently from x/xPercent/yPercent (separate
-          // property tracks). The onUpdate callback only touches x/xPercent/yPercent
-          // so there is zero interference.
-          if (phoneWrapper) {
-            gsap.set(phoneWrapper, { opacity: 0 });
-            gsap.to(phoneWrapper, {
-              opacity: 1,
-              duration: 0.8,
-              delay: 0.3,
-              ease: 'power2.out',
-              overwrite: 'auto'
-            });
-          }
+          // The phone already has a smooth entrance via the translateX slide-in
+          // (x: 0.25*vw → 0 driven by scroll progress 0.05→0.35). No additional
+          // opacity animation is needed — the translateX alone reads as a natural
+          // entrance, and eliminating the opacity tween removes the freeze entirely.
+          //
+          // The cleanup return below still calls clearProps:'opacity' to ensure
+          // mobile/tablet (where this branch doesn't run) always sees opacity:1.
 
           // Return cleanup: clear the stored instance reference when the breakpoint
           // condition is no longer met (e.g. viewport shrinks below 1024px).
