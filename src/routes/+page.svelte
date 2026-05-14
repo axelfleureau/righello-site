@@ -92,6 +92,7 @@
     { name: 'Hotel Elite',         logo: '/logos/hotel-elite.png' },
     { name: 'Garden Hotel Michelangelo', logo: '/logos/hotel-michelangelo.png' },
     { name: 'Mangio',                  logo: '/logos/mangio.png',             noFilter: true },
+    { name: 'Tomasella',               logo: '/logos/tomasella.png',          noFilter: true },
   ];
   
   const processSteps = [

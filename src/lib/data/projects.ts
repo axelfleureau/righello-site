@@ -336,7 +336,7 @@ export const clients: Client[] = [
   { name: 'Banshi' },
   { name: 'Comune di Pordenone',  logo: '/logos/comune-pordenone.png',   noFilter: true },
   { name: 'Comune di Fanna',      logo: '/logos/comune-di-fanna.png',    noFilter: true },
-  { name: 'Tomasella' },
+  { name: 'Tomasella',            logo: '/logos/tomasella.png',          noFilter: true },
   { name: 'Élite SPA' },
   { name: 'La Busa del Sauc',     logo: '/logos/busa-del-sauc.png' },
   { name: 'Casa Rossa' },
