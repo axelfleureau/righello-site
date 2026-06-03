@@ -517,6 +517,8 @@
     left: 1rem;
     right: 1rem;
     margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
     background: 
       linear-gradient(135deg, rgba(30, 30, 35, 0.95) 0%, rgba(20, 20, 25, 0.92) 50%, rgba(30, 30, 35, 0.95) 100%);
     backdrop-filter: blur(24px) saturate(180%);
@@ -524,8 +526,12 @@
     border: 1px solid transparent;
     border-radius: 1.5rem;
     max-height: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
     opacity: 0;
+    pointer-events: none;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 
       0 0 0 1px rgba(255, 255, 255, 0.08),
@@ -555,8 +561,10 @@
   }
   
   .mobile-menu-open {
-    max-height: 500px;
+    max-height: calc(100dvh - 7rem - env(safe-area-inset-bottom));
+    overflow-y: auto;
     opacity: 1;
+    pointer-events: auto;
   }
   
   :global([data-theme="light"]) .mobile-menu {
