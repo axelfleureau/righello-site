@@ -43,7 +43,14 @@
           "addressCountry": "IT"
         }
       },
-      "areaServed": "IT",
+      "areaServed": [
+        "Pordenone",
+        "Mestre",
+        "Venezia",
+        "Friuli-Venezia Giulia",
+        "Veneto",
+        "IT"
+      ],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "${service.category}",

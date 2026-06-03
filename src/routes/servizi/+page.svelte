@@ -229,18 +229,18 @@
 </script>
 
 <svelte:head>
-  <title>Servizi | Righello – Marketing, Sviluppo Web, Advertising & Agenti AI</title>
-  <meta name="description" content="Marketing & Social Media, Advertising, Sviluppo Web e Agenti AI. Quattro dipartimenti integrati per far crescere il tuo business con dati, automazioni e dipendenti digitali su misura." />
-  <meta property="og:title" content="Servizi | Righello – Marketing, Sviluppo Web, Advertising & Agenti AI" />
-  <meta property="og:description" content="Marketing & Social Media, Advertising, Sviluppo Web e Agenti AI. Quattro dipartimenti integrati per far crescere il tuo business con dati, automazioni e dipendenti digitali su misura." />
+  <title>Servizi | Agenzia Marketing Pordenone e Mestre - Righello</title>
+  <meta name="description" content="Servizi di marketing a Pordenone e Mestre: social media, advertising, siti web, e-commerce, software e agenti AI per aziende che vogliono crescere." />
+  <meta property="og:title" content="Servizi | Agenzia Marketing Pordenone e Mestre - Righello" />
+  <meta property="og:description" content="Servizi di marketing a Pordenone e Mestre: social media, advertising, siti web, e-commerce, software e agenti AI per aziende che vogliono crescere." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <link rel="canonical" href="https://www.wearerighello.com/servizi" />
   <meta property="og:url" content="https://www.wearerighello.com/servizi" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Servizi | Righello – Marketing, Sviluppo Web, Advertising & Agenti AI" />
-  <meta name="twitter:description" content="Marketing & Social Media, Advertising, Sviluppo Web e Agenti AI. Quattro dipartimenti integrati per far crescere il tuo business con dati, automazioni e dipendenti digitali su misura." />
+  <meta name="twitter:title" content="Servizi | Agenzia Marketing Pordenone e Mestre - Righello" />
+  <meta name="twitter:description" content="Servizi di marketing a Pordenone e Mestre: social media, advertising, siti web, e-commerce, software e agenti AI per aziende che vogliono crescere." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
   
   {@html `<script type="application/ld+json">
@@ -260,7 +260,14 @@
           "addressCountry": "IT"
         }
       },
-      "areaServed": "IT",
+      "areaServed": [
+        "Pordenone",
+        "Mestre",
+        "Venezia",
+        "Friuli-Venezia Giulia",
+        "Veneto",
+        "IT"
+      ],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "Servizi Digitali",

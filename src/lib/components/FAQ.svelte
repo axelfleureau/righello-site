@@ -8,11 +8,11 @@
   const faqs = [
     {
       question: "Cosa fa Righello?",
-      answer: "Righello è un'agenzia digitale a Pordenone e Venezia che realizza siti web, software su misura, campagne advertising, contenuti foto e video, strategie social e automazioni per aziende. Opera come partner unico per comunicazione, sviluppo e crescita digitale — dalla strategia all'esecuzione."
+      answer: "Righello è un'agenzia marketing e digitale a Pordenone e Mestre che realizza siti web, software su misura, campagne advertising, contenuti foto e video, strategie social e automazioni per aziende. Opera come partner unico per comunicazione, sviluppo e crescita digitale — dalla strategia all'esecuzione."
     },
     {
       question: "Dove lavora Righello?",
-      answer: "Righello ha sede a Pordenone e lavora principalmente con aziende in Friuli-Venezia Giulia, Veneto e Nord Italia. Gestiamo anche clienti da remoto in tutta Italia, senza vincoli geografici."
+      answer: "Righello opera a Pordenone e Mestre e lavora principalmente con aziende in Friuli-Venezia Giulia, Veneto e Nord Italia. La sede legale e operativa indicata sul sito è a Mestre, e gestiamo anche clienti da remoto in tutta Italia."
     },
     {
       question: "Per quali settori lavora Righello?",

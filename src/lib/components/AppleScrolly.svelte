@@ -21,10 +21,10 @@
   let audioObserver: IntersectionObserver | null = null;
   
   const heroSlide = {
-    subtitle: 'Growth Agency',
+    subtitle: 'Agenzia Marketing',
     title: 'La tua crescita,',
     titleGradient: 'inquadrata alla perfezione.',
-    description: 'Marketing, advertising e sviluppo digitale con un approccio data-driven. Ogni euro investito, ogni conversione tracciata.'
+    description: 'Marketing, advertising e sviluppo digitale a Pordenone e Mestre con un approccio data-driven. Ogni euro investito, ogni conversione tracciata.'
   };
   
   const slides = [

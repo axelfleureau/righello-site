@@ -84,18 +84,18 @@
 </script>
 
 <svelte:head>
-  <title>Contatti | Righello – Agenzia Marketing & Sviluppo Web</title>
-  <meta name="description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 72 ore. hello@wearerighello.com | Mestre, Venezia." />
-  <meta property="og:title" content="Contatti | Righello – Agenzia Marketing & Sviluppo Web" />
-  <meta property="og:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 72 ore. hello@wearerighello.com | Mestre, Venezia." />
+  <title>Contatti | Agenzia Marketing Pordenone e Mestre - Righello</title>
+  <meta name="description" content="Contatta Righello, agenzia marketing a Pordenone e Mestre: consulenza su social, advertising, siti web, software e automazioni. Risposta in 72 ore." />
+  <meta property="og:title" content="Contatti | Agenzia Marketing Pordenone e Mestre - Righello" />
+  <meta property="og:description" content="Contatta Righello, agenzia marketing a Pordenone e Mestre: consulenza su social, advertising, siti web, software e automazioni. Risposta in 72 ore." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <link rel="canonical" href="https://www.wearerighello.com/contatti" />
   <meta property="og:url" content="https://www.wearerighello.com/contatti" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Contatti | Righello – Agenzia Marketing & Sviluppo Web" />
-  <meta name="twitter:description" content="Contattaci per una consulenza gratuita su marketing, sviluppo web o automazione. Risposta in 72 ore. hello@wearerighello.com | Mestre, Venezia." />
+  <meta name="twitter:title" content="Contatti | Agenzia Marketing Pordenone e Mestre - Righello" />
+  <meta name="twitter:description" content="Contatta Righello, agenzia marketing a Pordenone e Mestre: consulenza su social, advertising, siti web, software e automazioni. Risposta in 72 ore." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
 </svelte:head>
 
