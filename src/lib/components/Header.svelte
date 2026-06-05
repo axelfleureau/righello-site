@@ -605,6 +605,12 @@
     background: rgba(214, 72, 126, 0.1);
     color: #D6487E;
   }
+
+  .mobile-nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
   
   .mobile-submenu {
     max-height: 0;
@@ -617,6 +623,8 @@
   
   .mobile-submenu-open {
     max-height: 42rem;
+    overflow: visible;
+    margin-bottom: 0.5rem;
   }
   
   .mobile-submenu-item {
