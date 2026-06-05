@@ -128,6 +128,30 @@
   </div>
 </section>
 
+{#if service.localSeo}
+<section class="local-product-section" style="--dept-color: {service.color}">
+  <div class="section-container local-product-grid">
+    <RevealOnScroll animation="fly-up">
+      <div>
+        <p class="section-subtitle">{service.localSeo.eyebrow}</p>
+        <h2 class="section-title">{service.localSeo.title}</h2>
+        <p class="local-product-copy">{service.localSeo.copy}</p>
+      </div>
+    </RevealOnScroll>
+    <RevealOnScroll animation="fly-up" delay={120}>
+      <div class="local-product-proof">
+        {#each service.localSeo.points as point, i}
+          <div>
+            <span>{String(i + 1).padStart(2, '0')}</span>
+            <p>{point}</p>
+          </div>
+        {/each}
+      </div>
+    </RevealOnScroll>
+  </div>
+</section>
+{/if}
+
 {#if service.slug === 'web'}
 <section class="ai-bridge-section">
   <div class="section-container">
@@ -276,7 +300,65 @@
     display: inline-block;
   }
 
-  /* ── AI Bridge Banner (web slug only) ─────────────────────────────── */
+  /* ── Local product SEO block ──────────────────────────────────────── */
+  .local-product-section {
+    padding: 0 1.5rem 4rem;
+    background: var(--bg-primary);
+  }
+
+  .local-product-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 2rem;
+    align-items: start;
+    border: 1px solid rgba(139, 92, 246, 0.28);
+    border-radius: 1.5rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background:
+      radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.16), transparent 26rem),
+      rgba(255, 255, 255, 0.03);
+  }
+
+  .local-product-copy {
+    max-width: 720px;
+    color: var(--text-secondary);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    line-height: 1.7;
+  }
+
+  .local-product-proof {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .local-product-proof div {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    align-items: start;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .local-product-proof span {
+    color: var(--dept-color);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+  }
+
+  .local-product-proof p {
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  @media (max-width: 767px) {
+    .local-product-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .ai-bridge-section {
     padding: 0 0 4rem;
   }

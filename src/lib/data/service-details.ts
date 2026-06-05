@@ -15,6 +15,13 @@ export interface ServiceSeo {
   description: string;
 }
 
+export interface LocalProductSeo {
+  eyebrow: string;
+  title: string;
+  copy: string;
+  points: string[];
+}
+
 export interface ServiceDetail {
   slug: string;
   category: string;
@@ -27,6 +34,7 @@ export interface ServiceDetail {
   services: ServiceItem[];
   workflow: WorkflowStep[];
   seo: ServiceSeo;
+  localSeo: LocalProductSeo;
 }
 
 export const serviceDetails: ServiceDetail[] = [
@@ -99,8 +107,18 @@ export const serviceDetails: ServiceDetail[] = [
       }
     ],
     seo: {
-      title: 'Marketing & Social Media | Righello',
+      title: 'Agenzia Marketing e Social Media a Pordenone e Mestre | Righello',
       description: 'Gestione social media, video production, copywriting, piano editoriale e contenuti per aziende tra Pordenone, Mestre e Nord Italia.'
+    },
+    localSeo: {
+      eyebrow: 'Marketing locale',
+      title: 'Agenzia marketing e social media a Pordenone e Mestre',
+      copy: 'Non riempiamo calendari editoriali per fare volume. Costruiamo contenuti, video e campagne social che fanno capire chi sei, fanno muovere le persone giuste e portano conversazioni utili al commerciale.',
+      points: [
+        'Strategia social, piano editoriale, copywriting e community management.',
+        'Produzione foto e video pensata per campagne, reel, adv e sito.',
+        'Presidio operativo tra Pordenone, Mestre, Friuli-Venezia Giulia e Veneto.'
+      ]
     }
   },
   {
@@ -167,16 +185,26 @@ export const serviceDetails: ServiceDetail[] = [
       }
     ],
     seo: {
-      title: 'Advertising | Righello - Meta Ads e Google Ads',
-      description: 'Campagne Meta Ads, Google Ads e TikTok Ads con tracking avanzato, marketing automation e ottimizzazione budget per aziende tra Pordenone e Mestre.'
+      title: 'Google Ads, Meta Ads e Advertising a Pordenone e Mestre | Righello',
+      description: 'Campagne Google Ads, Meta Ads e TikTok Ads con tracking avanzato, marketing automation e ottimizzazione budget per aziende tra Pordenone e Mestre.'
+    },
+    localSeo: {
+      eyebrow: 'Performance locale',
+      title: 'Google Ads, Meta Ads e advertising a Pordenone e Mestre',
+      copy: 'La pubblicità funziona quando ogni euro sa dove deve andare. Prepariamo campagne, tracciamento e landing in modo che il budget non diventi rumore, ma una macchina leggibile di dati, test e richieste reali.',
+      points: [
+        'Google Ads, Meta Ads, TikTok Ads e funnel di conversione.',
+        'GA4, pixel, server-side tracking, dashboard e ottimizzazione continua.',
+        'Campagne per aziende locali e B2B che vogliono misurare prima di scalare.'
+      ]
     }
   },
   {
     slug: 'web',
     category: 'Sviluppo Web & Software',
-    titleLine1: 'Soluzioni Digitali',
-    titleHighlight: 'Su Misura',
-    subtitle: 'Progettiamo e sviluppiamo siti web, e-commerce, web app e software custom. Soluzioni scalabili, integrate e potenziate dall\'intelligenza artificiale.',
+    titleLine1: 'Siti Web, E-commerce',
+    titleHighlight: 'e Software su Misura',
+    subtitle: 'Progettiamo e sviluppiamo siti web, e-commerce, web app e software custom per aziende a Pordenone e Mestre. Soluzioni scalabili, integrate e potenziate dall\'intelligenza artificiale.',
     ctaText: 'Richiedi un Preventivo',
     ctaHref: '/contatti',
     color: '#8B5CF6',
@@ -235,8 +263,18 @@ export const serviceDetails: ServiceDetail[] = [
       }
     ],
     seo: {
-      title: 'Siti Web e Software | Righello',
-      description: 'Siti web, e-commerce, web app e software custom per aziende tra Pordenone e Mestre. Soluzioni scalabili con UX/UI design, SEO e integrazioni.'
+      title: 'Agenzia Siti Web Pordenone e Mestre | Righello',
+      description: 'Agenzia siti web a Pordenone e Mestre: siti aziendali, e-commerce, web app, software custom, UX/UI, SEO tecnico e integrazioni.'
+    },
+    localSeo: {
+      eyebrow: 'Web agency locale',
+      title: 'Agenzia siti web a Pordenone e Mestre',
+      copy: 'Un sito non deve soltanto essere bello in riunione. Deve farsi trovare, caricare veloce, spiegare bene, convertire e restare semplice da far evolvere quando l\'azienda cambia passo.',
+      points: [
+        'Siti aziendali, landing page, e-commerce, web app e software custom.',
+        'UX/UI, performance, SEO tecnico, analytics e integrazioni in un unico processo.',
+        'Architettura pensata per far crescere home, servizi e contenuti senza cannibalizzarsi.'
+      ]
     }
   },
   {
@@ -308,8 +346,18 @@ export const serviceDetails: ServiceDetail[] = [
       }
     ],
     seo: {
-      title: 'Agenti AI | Righello - Automazioni per Aziende',
+      title: 'Agenti AI e Automazioni per Aziende a Pordenone e Mestre | Righello',
       description: 'Agenti AI e automazioni per aziende tra Pordenone e Mestre: riduzione dei costi operativi, integrazione con ERP, CRM e sistemi interni.'
+    },
+    localSeo: {
+      eyebrow: 'AI operativa',
+      title: 'Agenti AI e automazioni per aziende a Pordenone e Mestre',
+      copy: 'L\'AI non deve restare una demo da mostrare una volta. La inseriamo nei processi veri: documenti, CRM, ERP, customer service, report e attività ripetitive che oggi consumano ore buone.',
+      points: [
+        'Agenti AI su misura, automazioni operative e flussi documentali.',
+        'Integrazione con CRM, ERP, email, database e strumenti già in uso.',
+        'Progetti pensati per ridurre lavoro ripetitivo senza perdere controllo umano.'
+      ]
     }
   }
 ];
