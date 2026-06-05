@@ -184,7 +184,7 @@
     class="lg:hidden mobile-menu"
     class:mobile-menu-open={mobileMenuOpen}
   >
-    <div class="px-6 py-6 flex flex-col gap-2">
+    <div class="mobile-menu-content px-6 py-6 flex flex-col gap-2">
       {#each navLinks as link, i}
         {#if link.hasDropdown}
           <div class="mobile-nav-group">
@@ -206,10 +206,10 @@
                   class="mobile-submenu-item"
                   on:click={closeMenu}
                 >
-                  <span class="text-lg mr-2">{departmentIcons[dept.id]}</span>
-                  <div>
-                    <div class="font-medium text-[var(--text-primary)]">{dept.name}</div>
-                    <div class="text-sm text-[var(--text-secondary)]">{dept.tagline}</div>
+                  <span class="mobile-submenu-icon">{departmentIcons[dept.id] || '📊'}</span>
+                  <div class="mobile-submenu-text">
+                    <div class="mobile-submenu-title">{dept.name}</div>
+                    <div class="mobile-submenu-desc">{dept.tagline}</div>
                   </div>
                 </a>
               {/each}
@@ -585,6 +585,10 @@
       rgba(214, 72, 126, 0.05) 100%
     );
   }
+
+  .mobile-menu-content {
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom) + 4rem);
+  }
   
   .mobile-nav-link {
     display: flex;
@@ -605,20 +609,51 @@
   .mobile-submenu {
     max-height: 0;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
     transition: all 0.3s ease;
   }
   
   .mobile-submenu-open {
-    max-height: 300px;
+    max-height: 42rem;
   }
   
   .mobile-submenu-item {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1rem;
+    gap: 0.75rem;
+    min-height: 4.75rem;
+    padding: 0.875rem 1rem;
     margin-left: 1rem;
     border-radius: 0.75rem;
+    flex-shrink: 0;
     transition: all 0.2s ease;
+  }
+
+  .mobile-submenu-icon {
+    width: 1.75rem;
+    flex: 0 0 1.75rem;
+    font-size: 1.125rem;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .mobile-submenu-text {
+    min-width: 0;
+  }
+
+  .mobile-submenu-title {
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--text-primary);
+  }
+
+  .mobile-submenu-desc {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.35;
+    color: var(--text-secondary);
   }
   
   .mobile-submenu-item:hover {
