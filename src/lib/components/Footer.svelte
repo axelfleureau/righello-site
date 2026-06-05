@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  <div class="footer-main section-container">
+  <div class="footer-main section-container" data-nosnippet>
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="/" class="footer-logo-link" aria-label="Righello - Torna alla home">
@@ -117,7 +117,7 @@
     </div>
   </div>
 
-  <div class="footer-bottom section-container">
+  <div class="footer-bottom section-container" data-nosnippet>
     <div class="footer-bottom-inner">
       <p class="footer-copyright">&copy; {currentYear} Righello S.r.l. Tutti i diritti riservati.</p>
       <nav class="footer-legal" aria-label="Link legali">
