@@ -49,6 +49,19 @@
     { icon: 'star', label: '5.0 Rating' },
   ];
 
+  const localLandingLinks = [
+    {
+      href: '/agenzia-marketing-pordenone',
+      label: 'Agenzia marketing a Pordenone',
+      description: 'Strategia, social, advertising, siti web e automazioni per aziende in Friuli-Venezia Giulia.',
+    },
+    {
+      href: '/agenzia-marketing-mestre',
+      label: 'Agenzia marketing a Mestre',
+      description: 'Marketing, contenuti, performance e sviluppo digitale per aziende tra Mestre, Venezia e Veneto.',
+    },
+  ];
+
   // Hero poster URL — preloaded in <svelte:head> for fast cold-cache reveal.
   // Priority order:
   //   1. Cloudinary thumbnail (works in ALL browsers incl. in-app WebViews)
@@ -250,6 +263,20 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </MagneticButton>
+      </div>
+    </RevealOnScroll>
+
+    <RevealOnScroll animation="fly-up" delay={500}>
+      <div class="mt-10 grid gap-4 md:grid-cols-2 max-w-4xl mx-auto">
+        {#each localLandingLinks as local}
+          <a
+            href={local.href}
+            class="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-righello-pink/50 hover:bg-white/[0.06]"
+          >
+            <span class="text-sm font-semibold uppercase tracking-[0.14em] text-righello-pink">{local.label}</span>
+            <p class="mt-2 text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">{local.description}</p>
+          </a>
+        {/each}
       </div>
     </RevealOnScroll>
   </div>

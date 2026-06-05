@@ -13,6 +13,19 @@
   
   const deptSlugs = ['marketing', 'advertising', 'web', 'agenti-ai'];
 
+  const localLandingLinks = [
+    {
+      href: '/agenzia-marketing-pordenone',
+      label: 'Agenzia marketing a Pordenone',
+      description: 'Il sistema Righello per aziende in Friuli-Venezia Giulia: contenuti, advertising, web, software e AI.',
+    },
+    {
+      href: '/agenzia-marketing-mestre',
+      label: 'Agenzia marketing a Mestre',
+      description: 'Strategia, campagne, siti e automazioni per aziende tra Mestre, Venezia, Veneto e Nord Italia.',
+    },
+  ];
+
   const departments = [
     {
       icon: '📱',
@@ -331,6 +344,33 @@
         </MagneticButton>
       </div>
     </RevealOnScroll>
+  </div>
+</section>
+
+<!-- PRESIDIO LOCALE -->
+<section class="local-entry-section">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up">
+      <div class="local-entry-head">
+        <p class="section-subtitle">Dove operiamo</p>
+        <h2 class="section-title">Pordenone, Mestre e il Nord Italia dove serve davvero.</h2>
+        <p class="section-intro">
+          La geografia conta quando porta contesto, fiducia e velocità operativa. Il metodo resta lo stesso:
+          strategia, contenuti, campagne, tecnologia e numeri nello stesso tavolo.
+        </p>
+      </div>
+    </RevealOnScroll>
+
+    <div class="local-entry-grid">
+      {#each localLandingLinks as local}
+        <RevealOnScroll animation="fly-up">
+          <a href={local.href} class="local-entry-card">
+            <span>{local.label}</span>
+            <p>{local.description}</p>
+          </a>
+        </RevealOnScroll>
+      {/each}
+    </div>
   </div>
 </section>
 
@@ -766,6 +806,69 @@
   .btn-outline:hover {
     background: #D6487E;
     color: white;
+  }
+
+  /* Local entry links */
+  .local-entry-section {
+    padding: 0 1.5rem var(--section-padding-sm);
+  }
+
+  .local-entry-head {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .local-entry-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .local-entry-card {
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  }
+
+  :global([data-theme="light"]) .local-entry-card {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .local-entry-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(214, 72, 126, 0.55);
+    background: rgba(255, 255, 255, 0.055);
+  }
+
+  .local-entry-card span {
+    display: block;
+    color: #D6487E;
+    font-size: 0.875rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .local-entry-card p {
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  @media (min-width: 768px) {
+    .local-entry-section {
+      padding-bottom: var(--section-padding-md);
+    }
+
+    .local-entry-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   /* Departments Section */
