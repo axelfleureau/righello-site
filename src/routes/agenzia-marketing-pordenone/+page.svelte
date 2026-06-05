@@ -5,27 +5,27 @@
   const services = [
     {
       title: 'Marketing & Social Media',
-      description: 'Strategia editoriale, contenuti foto/video, community e campagne social per aziende a Pordenone e provincia.',
+      description: 'Contenuti, social e direzione editoriale per non sembrare l\'ennesima azienda con il feed acceso e il mercato spento.',
     },
     {
       title: 'Advertising',
-      description: 'Meta Ads, Google Ads, TikTok Ads, tracking e dashboard per capire quali campagne generano lead e vendite.',
+      description: 'Meta Ads, Google Ads, TikTok Ads e tracking: meno "speriamo funzioni", piu\' numeri leggibili.',
     },
     {
       title: 'Siti Web & Software',
-      description: 'Siti, landing page, e-commerce e web app veloci, tracciabili e costruiti per convertire il traffico locale.',
+      description: 'Siti, landing, e-commerce e strumenti su misura che non fanno solo presenza: fanno strada alle richieste.',
     },
     {
       title: 'Automazioni e Agenti AI',
-      description: 'Workflow e agenti digitali collegati a CRM, email, documenti e processi interni per ridurre il lavoro ripetitivo.',
+      description: 'Workflow e agenti digitali collegati a CRM, email e documenti per togliere lavoro ripetitivo dal tavolo.',
     },
   ];
 
   const proofPoints = [
-    'Esperienza con aziende, enti e attività tra Pordenone e Friuli-Venezia Giulia',
-    'Produzione contenuti, campagne e sviluppo nello stesso team',
-    'Metriche chiare: lead, conversioni, ROAS, traffico e richieste commerciali',
-    'Approccio operativo per PMI, hospitality, sport, retail e servizi B2B',
+    'Strategia, produzione, campagne e sviluppo nello stesso tavolo: niente scaricabarile tra reparti.',
+    'Partiamo dai numeri, ma non parliamo come un foglio Excel in giacca.',
+    'Ogni contenuto deve sapere dove sta andando: attenzione, fiducia, richiesta, vendita.',
+    'Il territorio conta, ma non basta: serve un sistema digitale che si faccia ricordare.',
   ];
 
   const localAreas = [
@@ -42,15 +42,15 @@
   const faqs = [
     {
       question: 'Righello è una agenzia marketing di Pordenone?',
-      answer: 'Righello lavora con aziende a Pordenone e in Friuli-Venezia Giulia su marketing, advertising, siti web, software e automazioni. Il team segue progetti locali e nazionali con un approccio data-driven.',
+      answer: 'Righello lavora con aziende a Pordenone e in Friuli-Venezia Giulia su marketing, advertising, siti web, software e automazioni. Siamo un partner operativo: strategia, contenuti, campagne e tecnologia nello stesso processo.',
     },
     {
       question: 'Lavorate anche con aziende fuori dal centro di Pordenone?',
-      answer: 'Sì. Gestiamo progetti per aziende in tutta la provincia di Pordenone e nel Nord Italia, con incontri da remoto e sessioni operative sul territorio quando servono contenuti, shooting o workshop.',
+      answer: 'Si. Gestiamo progetti in tutta la provincia di Pordenone e nel Nord Italia, con incontri da remoto e sessioni operative sul territorio quando servono shooting, workshop o contenuti.',
     },
     {
       question: 'Che cosa include un progetto di marketing locale?',
-      answer: 'Di solito partiamo da audit, posizionamento, tracking e piano di crescita. Poi attiviamo contenuti, campagne advertising, sito o landing page e reportistica per misurare richieste, lead e vendite.',
+      answer: 'Di solito partiamo da audit, posizionamento, tracking e piano di crescita. Poi mettiamo in fila contenuti, campagne, sito o landing page e reportistica: il marketing locale deve essere riconoscibile, non solo geolocalizzato.',
     },
   ];
 
@@ -147,14 +147,14 @@
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <p class="eyebrow">Pordenone, provincia e Friuli-Venezia Giulia</p>
-      <h1>Agenzia marketing a Pordenone per aziende che vogliono crescere</h1>
+      <h1>Agenzia marketing a Pordenone, ma senza la solita agenzia.</h1>
       <p class="hero-copy">
-        Righello unisce marketing, advertising, sviluppo web e automazioni AI per costruire sistemi di crescita misurabili.
-        Lavoriamo con aziende di Pordenone e provincia che vogliono trasformare contenuti, campagne e sito in richieste concrete.
+        Se il tuo marketing non si fa notare, non e' colpa di Pordenone. Righello costruisce sistemi digitali
+        che mettono in fila strategia, contenuti, advertising, sito e automazioni: meno rumore, piu' direzione.
       </p>
       <div class="hero-actions">
         <MagneticButton href="/contatti" variant="primary">Parliamone</MagneticButton>
-        <MagneticButton href="/servizi" variant="secondary">Guarda i servizi</MagneticButton>
+        <MagneticButton href="/servizi" variant="secondary">Vedi cosa facciamo</MagneticButton>
       </div>
     </RevealOnScroll>
   </div>
@@ -165,7 +165,7 @@
     <RevealOnScroll animation="fly-up">
       <div>
         <p class="eyebrow">Perché Righello</p>
-        <h2>Un team unico per strategia, contenuti, campagne e tecnologia</h2>
+        <h2>Non vendiamo post. Costruiamo sistemi che tengono insieme attenzione e fatturato.</h2>
       </div>
     </RevealOnScroll>
     <RevealOnScroll animation="fly-up" delay={120}>
@@ -186,7 +186,7 @@
     <RevealOnScroll animation="fly-up">
       <div class="section-heading">
         <p class="eyebrow">Cosa facciamo</p>
-        <h2>Servizi per aziende a Pordenone</h2>
+        <h2>Le leve giuste, nella sequenza giusta.</h2>
       </div>
     </RevealOnScroll>
 
@@ -208,10 +208,11 @@
     <RevealOnScroll animation="fly-up">
       <div>
         <p class="eyebrow">Copertura locale</p>
-        <h2>Marketing per Pordenone, provincia e Nord Italia</h2>
+        <h2>Locali quando serve. Ambiziosi sempre.</h2>
         <p class="body-copy">
-          La ricerca "agenzia marketing Pordenone" premia rilevanza, vicinanza e autorevolezza.
-          Per questo la pagina racconta chiaramente cosa facciamo sul territorio, senza inventare sedi o promesse.
+          La ricerca "agenzia marketing Pordenone" deve trovare una risposta chiara, ma la pagina non deve sembrare
+          scritta per un motore di ricerca. Raccontiamo dove operiamo, cosa facciamo e perche' un'azienda dovrebbe
+          ricordarsi di Righello dopo dieci risultati tutti uguali.
         </p>
       </div>
     </RevealOnScroll>
@@ -252,12 +253,12 @@
     <RevealOnScroll animation="scale">
       <div class="cta-panel">
         <p class="eyebrow">Audit gratuito</p>
-        <h2>Vuoi posizionarti meglio a Pordenone?</h2>
+        <h2>Vuoi essere trovato a Pordenone e scelto per un motivo?</h2>
         <p>
-          Analizziamo sito, Google Business Profile, contenuti, tracking e competitor locali.
-          Poi definiamo le priorità per aumentare visibilità, lead e richieste commerciali.
+          Guardiamo sito, contenuti, Google Business Profile, tracking e competitor locali.
+          Poi decidiamo cosa va sistemato prima: visibilita', messaggio o conversione.
         </p>
-        <MagneticButton href="/contatti" variant="primary">Richiedi una consulenza</MagneticButton>
+        <MagneticButton href="/contatti" variant="primary">Mettiamo ordine</MagneticButton>
       </div>
     </RevealOnScroll>
   </div>

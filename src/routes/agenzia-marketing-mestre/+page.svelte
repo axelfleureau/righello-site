@@ -5,27 +5,27 @@
   const services = [
     {
       title: 'Marketing & Social Media',
-      description: 'Strategia editoriale, contenuti foto/video, community e campagne social per aziende a Mestre, Venezia e Veneto.',
+      description: 'Contenuti, social e direzione editoriale per non confondersi nel rumore digitale tra Mestre, Venezia e Veneto.',
     },
     {
       title: 'Advertising',
-      description: 'Meta Ads, Google Ads, TikTok Ads, tracking e dashboard per capire quali campagne generano lead e vendite.',
+      description: 'Meta Ads, Google Ads, TikTok Ads e tracking: meno budget bruciato, piu\' segnali leggibili.',
     },
     {
       title: 'Siti Web & Software',
-      description: 'Siti, landing page, e-commerce e web app veloci, tracciabili e costruiti per convertire il traffico locale.',
+      description: 'Siti, landing, e-commerce e strumenti su misura che trasformano attenzione locale in richieste concrete.',
     },
     {
       title: 'Automazioni e Agenti AI',
-      description: 'Workflow e agenti digitali collegati a CRM, email, documenti e processi interni per ridurre il lavoro ripetitivo.',
+      description: 'Workflow e agenti digitali collegati a CRM, email e documenti per liberare tempo dove oggi si perde energia.',
     },
   ];
 
   const proofPoints = [
-    'Sede indicata a Mestre e operatività diretta tra Venezia, Veneto e Nord Italia',
-    'Produzione contenuti, campagne e sviluppo nello stesso team',
-    'Metriche chiare: lead, conversioni, ROAS, traffico e richieste commerciali',
-    'Approccio operativo per PMI, hospitality, sport, retail e servizi B2B',
+    'Sede indicata a Mestre e operativita\' diretta tra Venezia, Veneto e Nord Italia.',
+    'Strategia, produzione, campagne e sviluppo nello stesso tavolo: meno passaggi, piu\' controllo.',
+    'Misuriamo lead, conversioni, ROAS e richieste commerciali senza perdere il lato umano del brand.',
+    'Lavoriamo per PMI, hospitality, sport, retail e servizi B2B che vogliono sembrare vivi, non compilati.',
   ];
 
   const localAreas = [
@@ -42,15 +42,15 @@
   const faqs = [
     {
       question: 'Righello è una agenzia marketing di Mestre?',
-      answer: 'Righello ha sede indicata a Mestre e lavora con aziende a Mestre, Venezia e Veneto su marketing, advertising, siti web, software e automazioni. Il team segue progetti locali e nazionali con un approccio data-driven.',
+      answer: 'Righello ha sede indicata a Mestre e lavora con aziende a Mestre, Venezia e Veneto su marketing, advertising, siti web, software e automazioni. Il team unisce strategia, contenuti, campagne e tecnologia in un processo unico.',
     },
     {
       question: 'Lavorate anche con aziende fuori da Mestre?',
-      answer: 'Sì. Gestiamo progetti per aziende a Venezia, in Veneto e nel Nord Italia, con incontri da remoto e sessioni operative sul territorio quando servono contenuti, shooting o workshop.',
+      answer: 'Si. Gestiamo progetti per aziende a Venezia, in Veneto e nel Nord Italia, con incontri da remoto e sessioni operative sul territorio quando servono contenuti, shooting o workshop.',
     },
     {
       question: 'Che cosa include un progetto di marketing locale?',
-      answer: 'Di solito partiamo da audit, posizionamento, tracking e piano di crescita. Poi attiviamo contenuti, campagne advertising, sito o landing page e reportistica per misurare richieste, lead e vendite.',
+      answer: 'Di solito partiamo da audit, posizionamento, tracking e piano di crescita. Poi costruiamo contenuti, campagne, sito o landing page e reportistica: il marketing locale deve farsi trovare, ma soprattutto scegliere.',
     },
   ];
 
@@ -149,14 +149,14 @@
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <p class="eyebrow">Mestre, Venezia e Veneto</p>
-      <h1>Agenzia marketing a Mestre per aziende che vogliono crescere</h1>
+      <h1>Agenzia marketing a Mestre, senza fare rumore a vuoto.</h1>
       <p class="hero-copy">
-        Righello unisce marketing, advertising, sviluppo web e automazioni AI per costruire sistemi di crescita misurabili.
-        Lavoriamo con aziende di Mestre, Venezia e Veneto che vogliono trasformare contenuti, campagne e sito in richieste concrete.
+        A Mestre non serve un'altra pagina che promette "comunicazione a 360 gradi". Serve un sistema che tiene insieme
+        strategia, contenuti, advertising, sito e automazioni: riconoscibile, misurabile, difficile da ignorare.
       </p>
       <div class="hero-actions">
         <MagneticButton href="/contatti" variant="primary">Parliamone</MagneticButton>
-        <MagneticButton href="/servizi" variant="secondary">Guarda i servizi</MagneticButton>
+        <MagneticButton href="/servizi" variant="secondary">Vedi cosa facciamo</MagneticButton>
       </div>
     </RevealOnScroll>
   </div>
@@ -167,7 +167,7 @@
     <RevealOnScroll animation="fly-up">
       <div>
         <p class="eyebrow">Perché Righello</p>
-        <h2>Un team unico per strategia, contenuti, campagne e tecnologia</h2>
+        <h2>Non facciamo presenza digitale. Facciamo sistemi che meritano attenzione.</h2>
       </div>
     </RevealOnScroll>
     <RevealOnScroll animation="fly-up" delay={120}>
@@ -188,7 +188,7 @@
     <RevealOnScroll animation="fly-up">
       <div class="section-heading">
         <p class="eyebrow">Cosa facciamo</p>
-        <h2>Servizi per aziende a Mestre</h2>
+        <h2>Leve diverse, una direzione sola.</h2>
       </div>
     </RevealOnScroll>
 
@@ -210,10 +210,11 @@
     <RevealOnScroll animation="fly-up">
       <div>
         <p class="eyebrow">Copertura locale</p>
-        <h2>Marketing per Mestre, Venezia e Veneto</h2>
+        <h2>Mestre e Venezia sono il punto di partenza, non il limite.</h2>
         <p class="body-copy">
-          La ricerca "agenzia marketing Mestre" premia rilevanza, vicinanza e autorevolezza.
-          Per questo la pagina racconta chiaramente cosa facciamo sul territorio, partendo dalla sede indicata a Mestre e dalle aziende del Veneto.
+          La ricerca "agenzia marketing Mestre" deve trovare una risposta precisa, ma non una pagina senz'anima.
+          Qui teniamo insieme rilevanza locale, identita' Righello e una promessa semplice: meno comunicazione decorativa,
+          piu' lavoro che porta da qualche parte.
         </p>
       </div>
     </RevealOnScroll>
@@ -254,12 +255,12 @@
     <RevealOnScroll animation="scale">
       <div class="cta-panel">
         <p class="eyebrow">Audit gratuito</p>
-        <h2>Vuoi posizionarti meglio a Mestre?</h2>
+        <h2>Vuoi essere trovato a Mestre e ricordato dopo il primo click?</h2>
         <p>
-          Analizziamo sito, Google Business Profile, contenuti, tracking e competitor locali.
-          Poi definiamo le priorità per aumentare visibilità, lead e richieste commerciali.
+          Guardiamo sito, contenuti, Google Business Profile, tracking e competitor locali.
+          Poi decidiamo cosa va sistemato prima: visibilita', messaggio o conversione.
         </p>
-        <MagneticButton href="/contatti" variant="primary">Richiedi una consulenza</MagneticButton>
+        <MagneticButton href="/contatti" variant="primary">Mettiamo ordine</MagneticButton>
       </div>
     </RevealOnScroll>
   </div>
