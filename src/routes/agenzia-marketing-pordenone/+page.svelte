@@ -28,6 +28,27 @@
     'Il territorio conta, ma non basta: serve un sistema digitale che si faccia ricordare.',
   ];
 
+  const homeFunnelLinks = [
+    {
+      href: '/#risultati',
+      number: '01',
+      title: 'Numeri prima delle promesse',
+      description: 'Parti dai risultati: cosa misuriamo, perche\' lo misuriamo e dove vogliamo arrivare.',
+    },
+    {
+      href: '/#servizi',
+      number: '02',
+      title: 'Il sistema completo',
+      description: 'Marketing, advertising, web, software e AI nello stesso flusso operativo.',
+    },
+    {
+      href: '/#testimonial',
+      number: '03',
+      title: 'Righello in movimento',
+      description: 'Guarda video, casi e clienti: la parte che una landing locale non puo\' raccontare da sola.',
+    },
+  ];
+
   const localAreas = [
     'Pordenone',
     'Cordenons',
@@ -154,9 +175,37 @@
       </p>
       <div class="hero-actions">
         <MagneticButton href="/contatti" variant="primary">Parliamone</MagneticButton>
-        <MagneticButton href="/servizi" variant="secondary">Vedi cosa facciamo</MagneticButton>
+        <MagneticButton href="/" variant="secondary">Entra nella home</MagneticButton>
       </div>
     </RevealOnScroll>
+  </div>
+</section>
+
+<section class="home-funnel">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up">
+      <div class="home-funnel-head">
+        <p class="eyebrow">La pagina giusta e' la home</p>
+        <h2>Questa pagina ti ha trovato. La home ti fa capire se siamo quelli giusti.</h2>
+        <p>
+          Qui confermiamo una cosa semplice: lavoriamo anche per aziende di Pordenone.
+          Ma la vera identita' Righello vive nella home, con ritmo, casi, video, metodo e tutto il sistema in movimento.
+        </p>
+        <MagneticButton href="/" variant="primary">Guarda Righello davvero</MagneticButton>
+      </div>
+    </RevealOnScroll>
+
+    <div class="funnel-grid">
+      {#each homeFunnelLinks as link}
+        <RevealOnScroll animation="fly-up">
+          <a href={link.href} class="funnel-card">
+            <span>{link.number}</span>
+            <h3>{link.title}</h3>
+            <p>{link.description}</p>
+          </a>
+        </RevealOnScroll>
+      {/each}
+    </div>
   </div>
 </section>
 
@@ -297,9 +346,84 @@
     margin-top: 2rem;
   }
 
+  .home-funnel,
   .local-section {
     padding: 5rem 0;
     background: var(--bg-primary);
+  }
+
+  .home-funnel {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    background:
+      radial-gradient(circle at 15% 20%, rgba(214, 72, 126, 0.18), transparent 28rem),
+      radial-gradient(circle at 85% 40%, rgba(255, 255, 255, 0.08), transparent 22rem),
+      var(--bg-primary);
+  }
+
+  .home-funnel-head {
+    display: grid;
+    max-width: 920px;
+    gap: 1.35rem;
+  }
+
+  .home-funnel-head h2 {
+    max-width: 900px;
+  }
+
+  .home-funnel-head p {
+    max-width: 760px;
+    color: var(--text-secondary);
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.65;
+  }
+
+  .funnel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .funnel-card {
+    display: grid;
+    min-height: 15rem;
+    align-content: start;
+    gap: 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    color: inherit;
+    text-decoration: none;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  }
+
+  .funnel-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(214, 72, 126, 0.55);
+    background: rgba(214, 72, 126, 0.1);
+  }
+
+  .funnel-card span {
+    color: #D6487E;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+
+  .funnel-card h3 {
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  .funnel-card p {
+    color: var(--text-secondary);
+    line-height: 1.55;
   }
 
   .local-section-alt {
@@ -454,14 +578,20 @@
       padding: 8rem 0 4rem;
     }
 
+    .home-funnel,
     .local-section,
     .local-cta {
       padding: 4rem 0;
     }
 
     .split,
+    .funnel-grid,
     .service-grid {
       grid-template-columns: 1fr;
+    }
+
+    .funnel-card {
+      min-height: auto;
     }
 
     .service-card {
