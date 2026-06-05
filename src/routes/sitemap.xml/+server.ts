@@ -11,6 +11,7 @@ const PAGES = [
   { loc: '/servizi/web',            priority: '0.9', changefreq: 'monthly' },
   { loc: '/servizi/agenti-ai',      priority: '0.9', changefreq: 'monthly' },
   { loc: '/agenzia-marketing-pordenone', priority: '0.9', changefreq: 'monthly' },
+  { loc: '/agenzia-marketing-mestre', priority: '0.9', changefreq: 'monthly' },
   { loc: '/progetti',               priority: '0.8', changefreq: 'monthly' },
   { loc: '/chi-siamo',              priority: '0.8', changefreq: 'monthly' },
   { loc: '/contatti',               priority: '0.8', changefreq: 'monthly' },

@@ -32,6 +32,21 @@
     'advertising': 'advertising',
     'digital-experience': 'web'
   };
+
+  const localLandingLinks = [
+    {
+      href: '/agenzia-marketing-pordenone',
+      icon: '📍',
+      title: 'Agenzia marketing Pordenone',
+      description: 'Pagina locale per Pordenone',
+    },
+    {
+      href: '/agenzia-marketing-mestre',
+      icon: '📍',
+      title: 'Agenzia marketing Mestre',
+      description: 'Pagina locale per Mestre e Venezia',
+    },
+  ];
   
   function toggleMenu() {
     mobileMenuOpen = !mobileMenuOpen;
@@ -138,6 +153,19 @@
                       </div>
                     </a>
                   {/each}
+                  {#each localLandingLinks as localLink}
+                    <a
+                      href={localLink.href}
+                      class="dropdown-item"
+                      on:click={() => serviziHovered = false}
+                    >
+                      <div class="dropdown-icon">{localLink.icon}</div>
+                      <div class="dropdown-text">
+                        <span class="dropdown-title">{localLink.title}</span>
+                        <span class="dropdown-desc">{localLink.description}</span>
+                      </div>
+                    </a>
+                  {/each}
                 </div>
               </div>
             </div>
@@ -210,6 +238,19 @@
                   <div class="mobile-submenu-text">
                     <div class="mobile-submenu-title">{dept.name}</div>
                     <div class="mobile-submenu-desc">{dept.tagline}</div>
+                  </div>
+                </a>
+              {/each}
+              {#each localLandingLinks as localLink}
+                <a
+                  href={localLink.href}
+                  class="mobile-submenu-item"
+                  on:click={closeMenu}
+                >
+                  <span class="mobile-submenu-icon">{localLink.icon}</span>
+                  <div class="mobile-submenu-text">
+                    <div class="mobile-submenu-title">{localLink.title}</div>
+                    <div class="mobile-submenu-desc">{localLink.description}</div>
                   </div>
                 </a>
               {/each}

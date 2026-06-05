@@ -61,7 +61,7 @@
         "legalName": "Righello S.r.l.",
         "url": "https://www.wearerighello.com",
         "logo": "https://www.wearerighello.com/logo-full.png",
-        "description": "Agenzia marketing e digitale a Pordenone e Mestre specializzata in siti web, software, advertising, contenuti foto/video e automazioni per aziende, hospitality, eventi e PMI in Friuli-Venezia Giulia e Veneto.",
+        "description": "Studio digitale operativo tra Pordenone e Mestre, specializzato in siti web, software, advertising, contenuti foto/video e automazioni per aziende, hospitality, eventi e PMI in Friuli-Venezia Giulia e Veneto.",
         "email": "hello@wearerighello.com",
         "address": {
           "@type": "PostalAddress",
@@ -106,7 +106,7 @@
           "Italia"
         ],
         "priceRange": "€€€",
-        "description": "Agenzia marketing a Pordenone e Mestre per siti web, software, advertising, contenuti foto/video e automazioni. Operiamo con aziende, hospitality, eventi e PMI in Friuli-Venezia Giulia, Veneto e Nord Italia."
+        "description": "Studio digitale per siti web, software, advertising, contenuti foto/video e automazioni. Operiamo tra Pordenone, Mestre, Friuli-Venezia Giulia, Veneto e Nord Italia."
       },
       {
         "@type": "WebSite",

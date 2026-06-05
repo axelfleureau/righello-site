@@ -99,8 +99,8 @@ export const serviceDetails: ServiceDetail[] = [
       }
     ],
     seo: {
-      title: 'Marketing & Social Media Pordenone e Mestre | Righello',
-      description: 'Gestione social media a Pordenone e Mestre: video production, copywriting, piano editoriale e contenuti che generano engagement e conversioni misurabili.'
+      title: 'Marketing & Social Media | Righello',
+      description: 'Gestione social media, video production, copywriting, piano editoriale e contenuti per aziende tra Pordenone, Mestre e Nord Italia.'
     }
   },
   {
@@ -167,8 +167,8 @@ export const serviceDetails: ServiceDetail[] = [
       }
     ],
     seo: {
-      title: 'Advertising Pordenone e Mestre | Righello - Meta Ads e Google Ads',
-      description: 'Campagne Meta Ads, Google Ads e TikTok Ads a Pordenone e Mestre con tracking avanzato, marketing automation e ottimizzazione dei budget.'
+      title: 'Advertising | Righello - Meta Ads e Google Ads',
+      description: 'Campagne Meta Ads, Google Ads e TikTok Ads con tracking avanzato, marketing automation e ottimizzazione budget per aziende tra Pordenone e Mestre.'
     }
   },
   {
@@ -235,8 +235,8 @@ export const serviceDetails: ServiceDetail[] = [
       }
     ],
     seo: {
-      title: 'Siti Web e Software Pordenone e Mestre | Righello',
-      description: 'Siti web, e-commerce, web app e software custom a Pordenone e Mestre. Soluzioni scalabili con UX/UI design, SEO e integrazioni su misura.'
+      title: 'Siti Web e Software | Righello',
+      description: 'Siti web, e-commerce, web app e software custom per aziende tra Pordenone e Mestre. Soluzioni scalabili con UX/UI design, SEO e integrazioni.'
     }
   },
   {
@@ -308,8 +308,8 @@ export const serviceDetails: ServiceDetail[] = [
       }
     ],
     seo: {
-      title: 'Agenti AI Pordenone e Mestre | Righello - Automazioni per Aziende',
-      description: 'Agenti AI e automazioni per aziende a Pordenone e Mestre: riduzione dei costi operativi, integrazione con ERP, CRM e sistemi interni.'
+      title: 'Agenti AI | Righello - Automazioni per Aziende',
+      description: 'Agenti AI e automazioni per aziende tra Pordenone e Mestre: riduzione dei costi operativi, integrazione con ERP, CRM e sistemi interni.'
     }
   }
 ];

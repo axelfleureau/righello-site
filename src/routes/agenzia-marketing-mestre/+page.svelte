@@ -5,7 +5,7 @@
   const services = [
     {
       title: 'Marketing & Social Media',
-      description: 'Strategia editoriale, contenuti foto/video, community e campagne social per aziende a Pordenone e provincia.',
+      description: 'Strategia editoriale, contenuti foto/video, community e campagne social per aziende a Mestre, Venezia e Veneto.',
     },
     {
       title: 'Advertising',
@@ -22,31 +22,31 @@
   ];
 
   const proofPoints = [
-    'Esperienza con aziende, enti e attività tra Pordenone e Friuli-Venezia Giulia',
+    'Sede indicata a Mestre e operatività diretta tra Venezia, Veneto e Nord Italia',
     'Produzione contenuti, campagne e sviluppo nello stesso team',
     'Metriche chiare: lead, conversioni, ROAS, traffico e richieste commerciali',
     'Approccio operativo per PMI, hospitality, sport, retail e servizi B2B',
   ];
 
   const localAreas = [
-    'Pordenone',
-    'Cordenons',
-    'Porcia',
-    'Sacile',
-    'Spilimbergo',
-    'San Vito al Tagliamento',
-    'Maniago',
-    'Friuli-Venezia Giulia',
+    'Mestre',
+    'Venezia',
+    'Marghera',
+    'Mogliano Veneto',
+    'Spinea',
+    'Mirano',
+    'Treviso',
+    'Veneto',
   ];
 
   const faqs = [
     {
-      question: 'Righello è una agenzia marketing di Pordenone?',
-      answer: 'Righello lavora con aziende a Pordenone e in Friuli-Venezia Giulia su marketing, advertising, siti web, software e automazioni. Il team segue progetti locali e nazionali con un approccio data-driven.',
+      question: 'Righello è una agenzia marketing di Mestre?',
+      answer: 'Righello ha sede indicata a Mestre e lavora con aziende a Mestre, Venezia e Veneto su marketing, advertising, siti web, software e automazioni. Il team segue progetti locali e nazionali con un approccio data-driven.',
     },
     {
-      question: 'Lavorate anche con aziende fuori dal centro di Pordenone?',
-      answer: 'Sì. Gestiamo progetti per aziende in tutta la provincia di Pordenone e nel Nord Italia, con incontri da remoto e sessioni operative sul territorio quando servono contenuti, shooting o workshop.',
+      question: 'Lavorate anche con aziende fuori da Mestre?',
+      answer: 'Sì. Gestiamo progetti per aziende a Venezia, in Veneto e nel Nord Italia, con incontri da remoto e sessioni operative sul territorio quando servono contenuti, shooting o workshop.',
     },
     {
       question: 'Che cosa include un progetto di marketing locale?',
@@ -59,8 +59,8 @@
     '@graph': [
       {
         '@type': 'Service',
-        '@id': 'https://www.wearerighello.com/agenzia-marketing-pordenone#service',
-        name: 'Agenzia marketing a Pordenone',
+        '@id': 'https://www.wearerighello.com/agenzia-marketing-mestre#service',
+        name: 'Agenzia marketing a Mestre',
         serviceType: 'Marketing, advertising, sviluppo web e automazioni',
         provider: {
           '@type': 'LocalBusiness',
@@ -78,13 +78,15 @@
           },
         },
         areaServed: [
-          { '@type': 'City', name: 'Pordenone' },
-          { '@type': 'AdministrativeArea', name: 'Provincia di Pordenone' },
-          { '@type': 'AdministrativeArea', name: 'Friuli-Venezia Giulia' },
+          { '@type': 'City', name: 'Mestre' },
+          { '@type': 'City', name: 'Venezia' },
+          { '@type': 'City', name: 'Marghera' },
+          { '@type': 'City', name: 'Treviso' },
+          { '@type': 'AdministrativeArea', name: 'Veneto' },
         ],
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
-          name: 'Servizi marketing e sviluppo per aziende a Pordenone',
+          name: 'Servizi marketing e sviluppo per aziende a Mestre',
           itemListElement: services.map((service) => ({
             '@type': 'Offer',
             itemOffered: {
@@ -97,7 +99,7 @@
       },
       {
         '@type': 'BreadcrumbList',
-        '@id': 'https://www.wearerighello.com/agenzia-marketing-pordenone#breadcrumb',
+        '@id': 'https://www.wearerighello.com/agenzia-marketing-mestre#breadcrumb',
         itemListElement: [
           {
             '@type': 'ListItem',
@@ -108,8 +110,8 @@
           {
             '@type': 'ListItem',
             position: 2,
-            name: 'Agenzia marketing Pordenone',
-            item: 'https://www.wearerighello.com/agenzia-marketing-pordenone',
+            name: 'Agenzia marketing Mestre',
+            item: 'https://www.wearerighello.com/agenzia-marketing-mestre',
           },
         ],
       },
@@ -118,26 +120,26 @@
 </script>
 
 <svelte:head>
-  <title>Agenzia Marketing Pordenone | Righello - Web, Advertising e AI</title>
+  <title>Agenzia Marketing Mestre | Righello - Web, Advertising e AI</title>
   <meta
     name="description"
-    content="Agenzia marketing a Pordenone: social media, advertising, siti web, software e automazioni AI per aziende in Friuli-Venezia Giulia."
+    content="Agenzia marketing a Mestre: social media, advertising, siti web, software e automazioni AI per aziende a Venezia, Mestre e Veneto."
   />
-  <link rel="canonical" href="https://www.wearerighello.com/agenzia-marketing-pordenone" />
-  <meta property="og:title" content="Agenzia Marketing Pordenone | Righello" />
+  <link rel="canonical" href="https://www.wearerighello.com/agenzia-marketing-mestre" />
+  <meta property="og:title" content="Agenzia Marketing Mestre | Righello" />
   <meta
     property="og:description"
-    content="Marketing, advertising, siti web e automazioni per aziende a Pordenone e in Friuli-Venezia Giulia."
+    content="Marketing, advertising, siti web e automazioni per aziende a Mestre, Venezia e Veneto."
   />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
-  <meta property="og:url" content="https://www.wearerighello.com/agenzia-marketing-pordenone" />
+  <meta property="og:url" content="https://www.wearerighello.com/agenzia-marketing-mestre" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Agenzia Marketing Pordenone | Righello" />
+  <meta name="twitter:title" content="Agenzia Marketing Mestre | Righello" />
   <meta
     name="twitter:description"
-    content="Strategia, contenuti, campagne, siti web e automazioni per aziende a Pordenone."
+    content="Strategia, contenuti, campagne, siti web e automazioni per aziende a Mestre e Venezia."
   />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
   {@html `<script type="application/ld+json">${JSON.stringify(structuredData)}</script>`}
@@ -146,11 +148,11 @@
 <section class="local-hero">
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
-      <p class="eyebrow">Pordenone, provincia e Friuli-Venezia Giulia</p>
-      <h1>Agenzia marketing a Pordenone per aziende che vogliono crescere</h1>
+      <p class="eyebrow">Mestre, Venezia e Veneto</p>
+      <h1>Agenzia marketing a Mestre per aziende che vogliono crescere</h1>
       <p class="hero-copy">
         Righello unisce marketing, advertising, sviluppo web e automazioni AI per costruire sistemi di crescita misurabili.
-        Lavoriamo con aziende di Pordenone e provincia che vogliono trasformare contenuti, campagne e sito in richieste concrete.
+        Lavoriamo con aziende di Mestre, Venezia e Veneto che vogliono trasformare contenuti, campagne e sito in richieste concrete.
       </p>
       <div class="hero-actions">
         <MagneticButton href="/contatti" variant="primary">Parliamone</MagneticButton>
@@ -186,7 +188,7 @@
     <RevealOnScroll animation="fly-up">
       <div class="section-heading">
         <p class="eyebrow">Cosa facciamo</p>
-        <h2>Servizi per aziende a Pordenone</h2>
+        <h2>Servizi per aziende a Mestre</h2>
       </div>
     </RevealOnScroll>
 
@@ -208,10 +210,10 @@
     <RevealOnScroll animation="fly-up">
       <div>
         <p class="eyebrow">Copertura locale</p>
-        <h2>Marketing per Pordenone, provincia e Nord Italia</h2>
+        <h2>Marketing per Mestre, Venezia e Veneto</h2>
         <p class="body-copy">
-          La ricerca "agenzia marketing Pordenone" premia rilevanza, vicinanza e autorevolezza.
-          Per questo la pagina racconta chiaramente cosa facciamo sul territorio, senza inventare sedi o promesse.
+          La ricerca "agenzia marketing Mestre" premia rilevanza, vicinanza e autorevolezza.
+          Per questo la pagina racconta chiaramente cosa facciamo sul territorio, partendo dalla sede indicata a Mestre e dalle aziende del Veneto.
         </p>
       </div>
     </RevealOnScroll>
@@ -252,7 +254,7 @@
     <RevealOnScroll animation="scale">
       <div class="cta-panel">
         <p class="eyebrow">Audit gratuito</p>
-        <h2>Vuoi posizionarti meglio a Pordenone?</h2>
+        <h2>Vuoi posizionarti meglio a Mestre?</h2>
         <p>
           Analizziamo sito, Google Business Profile, contenuti, tracking e competitor locali.
           Poi definiamo le priorità per aumentare visibilità, lead e richieste commerciali.

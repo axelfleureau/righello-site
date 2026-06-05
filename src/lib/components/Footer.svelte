@@ -17,7 +17,8 @@
   const pageLinks = [
     { href: '/', label: 'Home' },
     { href: '/servizi', label: 'Servizi' },
-    { href: '/agenzia-marketing-pordenone', label: 'Agenzia Marketing Pordenone e Mestre' },
+    { href: '/agenzia-marketing-pordenone', label: 'Agenzia Marketing Pordenone' },
+    { href: '/agenzia-marketing-mestre', label: 'Agenzia Marketing Mestre' },
     { href: '/chi-siamo', label: 'Chi siamo' },
     { href: '/contatti', label: 'Contatti' },
   ];

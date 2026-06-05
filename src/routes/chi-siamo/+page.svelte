@@ -113,18 +113,18 @@
 </script>
 
 <svelte:head>
-  <title>Chi Siamo | Agenzia Marketing a Pordenone e Mestre - Righello</title>
-  <meta name="description" content="Righello è un'agenzia marketing con operatività a Pordenone e Mestre: strategia, social, advertising, siti web, software e contenuti per aziende." />
+  <title>Chi Siamo | Team, Metodo e Visione - Righello</title>
+  <meta name="description" content="Scopri il team Righello: strategia, social, advertising, siti web, software e contenuti per aziende tra Pordenone, Mestre e Nord Italia." />
   <link rel="canonical" href="https://www.wearerighello.com/chi-siamo" />
-  <meta property="og:title" content="Chi Siamo | Agenzia Marketing a Pordenone e Mestre - Righello" />
-  <meta property="og:description" content="Righello è un'agenzia marketing con operatività a Pordenone e Mestre: strategia, social, advertising, siti web, software e contenuti per aziende." />
+  <meta property="og:title" content="Chi Siamo | Team, Metodo e Visione - Righello" />
+  <meta property="og:description" content="Scopri il team Righello: strategia, social, advertising, siti web, software e contenuti per aziende tra Pordenone, Mestre e Nord Italia." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta property="og:url" content="https://www.wearerighello.com/chi-siamo" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chi Siamo | Agenzia Marketing a Pordenone e Mestre - Righello" />
-  <meta name="twitter:description" content="Righello è un'agenzia marketing con operatività a Pordenone e Mestre: strategia, social, advertising, siti web, software e contenuti per aziende." />
+  <meta name="twitter:title" content="Chi Siamo | Team, Metodo e Visione - Righello" />
+  <meta name="twitter:description" content="Scopri il team Righello: strategia, social, advertising, siti web, software e contenuti per aziende tra Pordenone, Mestre e Nord Italia." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
 </svelte:head>
 

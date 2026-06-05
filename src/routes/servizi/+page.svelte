@@ -229,18 +229,18 @@
 </script>
 
 <svelte:head>
-  <title>Servizi | Agenzia Marketing Pordenone e Mestre - Righello</title>
-  <meta name="description" content="Servizi di marketing a Pordenone e Mestre: social media, advertising, siti web, e-commerce, software e agenti AI per aziende che vogliono crescere." />
-  <meta property="og:title" content="Servizi | Agenzia Marketing Pordenone e Mestre - Righello" />
-  <meta property="og:description" content="Servizi di marketing a Pordenone e Mestre: social media, advertising, siti web, e-commerce, software e agenti AI per aziende che vogliono crescere." />
+  <title>Servizi | Social, Advertising, Siti Web e AI - Righello</title>
+  <meta name="description" content="Servizi Righello: social media, advertising, siti web, e-commerce, software e agenti AI per aziende tra Pordenone, Mestre e Nord Italia." />
+  <meta property="og:title" content="Servizi | Social, Advertising, Siti Web e AI - Righello" />
+  <meta property="og:description" content="Servizi Righello: social media, advertising, siti web, e-commerce, software e agenti AI per aziende tra Pordenone, Mestre e Nord Italia." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <link rel="canonical" href="https://www.wearerighello.com/servizi" />
   <meta property="og:url" content="https://www.wearerighello.com/servizi" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Servizi | Agenzia Marketing Pordenone e Mestre - Righello" />
-  <meta name="twitter:description" content="Servizi di marketing a Pordenone e Mestre: social media, advertising, siti web, e-commerce, software e agenti AI per aziende che vogliono crescere." />
+  <meta name="twitter:title" content="Servizi | Social, Advertising, Siti Web e AI - Righello" />
+  <meta name="twitter:description" content="Servizi Righello: social media, advertising, siti web, e-commerce, software e agenti AI per aziende tra Pordenone, Mestre e Nord Italia." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
   
   {@html `<script type="application/ld+json">
