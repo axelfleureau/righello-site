@@ -311,7 +311,7 @@
       <div class="card-grid">
         {#each grantCards as card, i}
           <RevealOnScroll animation="fly-up" stagger={70} index={i}>
-          <GlowCard borderRadius="16px" class="h-full">
+          <GlowCard borderRadius="24px" class="h-full">
           <article class="feature-card">
             <div class="icon-box">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -469,7 +469,7 @@
       <div class="example-grid">
         {#each examples as example, i}
           <RevealOnScroll animation="fly-up" stagger={90} index={i}>
-          <GlowCard borderRadius="16px" class="h-full">
+          <GlowCard borderRadius="24px" class="h-full">
           <article class="example-card">
             <h3>{example.title}</h3>
             <ul>
@@ -699,16 +699,22 @@
     min-height: 3.1rem;
     font-weight: 800;
     padding: 0.9rem 1.25rem;
+    border-radius: 9999px;
   }
 
   .lead-form button {
+    position: relative;
+    overflow: hidden;
     background: linear-gradient(135deg, #d6487e, #06b6d4);
     color: white;
     box-shadow: 0 1.2rem 3rem rgba(214, 72, 126, 0.28);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
   }
 
   .lead-form button:hover {
     transform: translateY(-2px);
+    filter: saturate(1.08);
+    box-shadow: 0 1.5rem 3.5rem rgba(214, 72, 126, 0.34);
   }
 
   .badge-row span,
@@ -745,7 +751,7 @@
 
   .hero-panel {
     padding: 1.4rem;
-    border-radius: 1.25rem;
+    border-radius: 1.75rem;
   }
 
   .panel-topline {
@@ -786,7 +792,7 @@
   }
 
   .panel-stats div {
-    border-radius: 0.75rem;
+    border-radius: 1rem;
     background: rgba(255, 255, 255, 0.06);
     padding: 0.85rem;
   }
@@ -864,7 +870,7 @@
   .use-case-card,
   .timeline-item {
     border: 1px solid var(--border-color);
-    border-radius: 0.8rem;
+    border-radius: 1.35rem;
     background: rgba(255, 255, 255, 0.045);
   }
 
@@ -902,7 +908,7 @@
     display: grid;
     place-items: center;
     margin-bottom: 1rem;
-    border-radius: 0.75rem;
+    border-radius: 1rem;
     color: #ffffff;
     background: linear-gradient(135deg, rgba(214, 72, 126, 0.85), rgba(6, 182, 212, 0.78));
   }
@@ -928,7 +934,7 @@
     margin-top: 1rem;
     padding: 1rem;
     border-left: 3px solid #d6487e;
-    border-radius: 0.45rem;
+    border-radius: 1rem;
     background: rgba(214, 72, 126, 0.08);
   }
 
@@ -948,7 +954,7 @@
     gap: 0.8rem;
     min-height: 100%;
     border: 1px solid var(--border-color);
-    border-radius: 0.95rem;
+    border-radius: 1.35rem;
     background: rgba(255, 255, 255, 0.045);
     padding: 1.1rem;
   }
@@ -1063,7 +1069,7 @@
   }
 
   .counter-card {
-    border-radius: 1.1rem;
+    border-radius: 1.75rem;
     padding: 1.2rem;
   }
 
@@ -1112,7 +1118,7 @@
     min-height: 2.5rem;
     display: flex;
     align-items: center;
-    border-radius: 0.65rem;
+    border-radius: 1rem;
     padding: 0.55rem 0.75rem;
     color: var(--text-secondary);
     background: rgba(255, 255, 255, 0.055);
@@ -1126,8 +1132,9 @@
 
   details {
     border: 1px solid var(--border-color);
-    border-radius: 0.8rem;
+    border-radius: 1.25rem;
     background: rgba(255, 255, 255, 0.045);
+    overflow: hidden;
   }
 
   summary {
@@ -1173,8 +1180,8 @@
   .lead-form {
     display: grid;
     gap: 0.9rem;
-    border-radius: 1.1rem;
-    padding: 1rem;
+    border-radius: 1.75rem;
+    padding: 1.1rem;
   }
 
   .lead-form label {
@@ -1189,7 +1196,7 @@
   .lead-form textarea {
     width: 100%;
     border: 1px solid var(--border-color);
-    border-radius: 0.65rem;
+    border-radius: 1rem;
     background: rgba(255, 255, 255, 0.06);
     color: var(--text-primary);
     padding: 0.8rem 0.85rem;
@@ -1220,7 +1227,7 @@
 
   .success-message,
   .error-message {
-    border-radius: 0.65rem;
+    border-radius: 1rem;
     padding: 0.8rem;
     font-size: 0.95rem;
   }
