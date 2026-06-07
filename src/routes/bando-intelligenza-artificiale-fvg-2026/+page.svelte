@@ -4,6 +4,7 @@
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import RippleGrid from '$lib/components/RippleGrid.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
+  import StickyScrollReveal from '$lib/components/StickyScrollReveal.svelte';
 
   type IconKey = 'percent' | 'wallet' | 'fund' | 'users' | 'brain' | 'chart' | 'file' | 'bot' | 'search' | 'dashboard' | 'quote' | 'workflow';
 
@@ -61,11 +62,27 @@
     },
   ];
 
-  const processSteps = [
-    { title: 'Analisi gratuita', text: 'Guardiamo come lavorate oggi e dove si perde più tempo.' },
-    { title: 'Opportunità ad alto impatto', text: 'Scegliamo un caso d’uso AI che abbia senso davvero: meno lavoro manuale, meno errori, più velocità.' },
-    { title: 'Progetto chiaro', text: 'Mettiamo in fila obiettivo, costi, benefici e cosa serve per partire senza confusione.' },
-    { title: 'Realizzazione', text: 'Sviluppiamo e integriamo la soluzione nel flusso di lavoro, pensando anche alle persone che la useranno.' },
+  const scrollProcessSteps = [
+    {
+      title: 'Analisi gratuita',
+      description: 'Guardiamo processi, documenti, persone e strumenti. L’obiettivo è trovare dove l’azienda perde tempo davvero.',
+      icon: '01',
+    },
+    {
+      title: 'Caso d’uso ad alto impatto',
+      description: 'Scegliamo un progetto AI piccolo abbastanza da partire, ma utile abbastanza da cambiare il lavoro quotidiano.',
+      icon: '02',
+    },
+    {
+      title: 'Progetto pronto da costruire',
+      description: 'Mettiamo in fila flussi, costi, benefici, dati necessari e cosa deve fare la soluzione per essere usata dal team.',
+      icon: '03',
+    },
+    {
+      title: 'Sviluppo e integrazione',
+      description: 'Realizziamo agenti AI, automazioni, dashboard o software su misura e li colleghiamo agli strumenti già presenti.',
+      icon: '04',
+    },
   ];
 
   const examples = [
@@ -430,29 +447,12 @@
 
   <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" height="56px" mobileHeight="24px" />
 
-  <section class="section-padding">
-    <div class="section-container">
-      <RevealOnScroll animation="fly-up">
-      <div class="landing-section-header left">
-        <p>Come lavora Righello</p>
-        <h2>Prima capiamo il lavoro. Poi scegliamo l’AI giusta.</h2>
-      </div>
-      </RevealOnScroll>
-
-      <div class="timeline">
-        {#each processSteps as step, index}
-          <RevealOnScroll animation="fly-up" stagger={90} index={index}>
-          <article class="timeline-item">
-            <div class="timeline-number">{index + 1}</div>
-            <div>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </div>
-          </article>
-          </RevealOnScroll>
-        {/each}
-      </div>
-    </div>
+  <section id="metodo-righello" class="righello-scroll-section">
+    <StickyScrollReveal
+      title="Prima capiamo il lavoro. Poi scegliamo l’AI giusta."
+      subtitle="Come lavora Righello"
+      content={scrollProcessSteps}
+    />
   </section>
 
   <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" height="56px" mobileHeight="24px" />
@@ -867,8 +867,7 @@
     min-height: 100%;
   }
 
-  .use-case-card,
-  .timeline-item {
+  .use-case-card {
     border: 1px solid var(--border-color);
     border-radius: 1.35rem;
     background: rgba(255, 255, 255, 0.045);
@@ -876,8 +875,7 @@
 
   .feature-card h3,
   .use-case-card h3,
-  .example-card h3,
-  .timeline-item h3 {
+  .example-card h3 {
     color: var(--text-primary);
     font-size: 1.2rem;
     font-weight: 800;
@@ -886,7 +884,6 @@
 
   .feature-card p,
   .use-case-card p,
-  .timeline-item p,
   .urgency-section p,
   .final-copy p,
   .source-note,
@@ -897,8 +894,7 @@
   }
 
   .feature-card p,
-  .use-case-card p,
-  .timeline-item p {
+  .use-case-card p {
     margin-top: 0.55rem;
   }
 
@@ -999,30 +995,6 @@
     padding: 1rem;
   }
 
-  .timeline {
-    display: grid;
-    gap: 0.85rem;
-    position: relative;
-  }
-
-  .timeline-item {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  .timeline-number {
-    width: 2.6rem;
-    height: 2.6rem;
-    display: grid;
-    place-items: center;
-    border-radius: 999px;
-    background: #ffffff;
-    color: #050505;
-    font-weight: 900;
-  }
-
   .example-card ul {
     display: grid;
     gap: 0.7rem;
@@ -1048,6 +1020,70 @@
     background:
       linear-gradient(135deg, rgba(214, 72, 126, 0.16), rgba(6, 182, 212, 0.12)),
       var(--bg-secondary);
+  }
+
+  .righello-scroll-section {
+    position: relative;
+    overflow: clip;
+    background:
+      radial-gradient(circle at 12% 20%, rgba(214, 72, 126, 0.14), transparent 30rem),
+      radial-gradient(circle at 88% 62%, rgba(6, 182, 212, 0.12), transparent 28rem),
+      var(--bg-primary);
+  }
+
+  :global(.righello-scroll-section .sticky-scroll-section) {
+    padding-top: clamp(4rem, 8vw, 7rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+
+  :global(.righello-scroll-section .section-title) {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1;
+    font-weight: 850;
+  }
+
+  :global(.righello-scroll-section .section-subtitle) {
+    color: #D6487E;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+  }
+
+  :global(.righello-scroll-section .visual-sticky) {
+    border-radius: 2rem;
+  }
+
+  :global(.righello-scroll-section .visual-panel) {
+    border: 1px solid rgba(214, 72, 126, 0.22);
+    border-radius: 2rem;
+    background:
+      radial-gradient(circle at 50% 35%, rgba(214, 72, 126, 0.2), transparent 22rem),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+  }
+
+  :global(.righello-scroll-section .visual-icon) {
+    color: #ffffff;
+    font-size: clamp(5rem, 10vw, 9rem);
+    font-weight: 900;
+    letter-spacing: -0.08em;
+    filter: drop-shadow(0 1.5rem 3rem rgba(214, 72, 126, 0.3));
+  }
+
+  :global(.righello-scroll-section .content-item) {
+    border-radius: 1.75rem;
+  }
+
+  :global(.righello-scroll-section .content-item.active) {
+    background: rgba(214, 72, 126, 0.09);
+    border-color: rgba(214, 72, 126, 0.32);
+    box-shadow: 0 1.5rem 4rem rgba(214, 72, 126, 0.14);
+  }
+
+  :global(.righello-scroll-section .step-number) {
+    background: linear-gradient(135deg, #D6487E, #06B6D4);
+    box-shadow: 0 1rem 2.4rem rgba(214, 72, 126, 0.24);
   }
 
   .urgency-grid,
@@ -1268,7 +1304,6 @@
   :global([data-theme='light']) .use-case-card,
   :global([data-theme='light']) .service-offer-card,
   :global([data-theme='light']) .client-proof-card,
-  :global([data-theme='light']) .timeline-item,
   :global([data-theme='light']) details {
     background: rgba(255, 255, 255, 0.78);
   }
