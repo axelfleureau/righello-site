@@ -1,4 +1,10 @@
 <script lang="ts">
+  import GlowCard from '$lib/components/GlowCard.svelte';
+  import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
+  import RippleGrid from '$lib/components/RippleGrid.svelte';
+  import SectionDivider from '$lib/components/SectionDivider.svelte';
+
   type IconKey = 'percent' | 'wallet' | 'fund' | 'users' | 'brain' | 'chart' | 'file' | 'bot' | 'search' | 'dashboard' | 'quote' | 'workflow';
 
   const officialSourceUrl = 'https://www.consiglio.regione.fvg.it/pagineinterne/Portale/comunicatiStampaDettaglio.aspx?ID=944263';
@@ -190,9 +196,21 @@
 
 <div class="ai-grant-page">
   <section class="hero-section">
-    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="ripple-bg" aria-hidden="true">
+      <RippleGrid
+        mouseInteraction={true}
+        gridColor="#D6487E"
+        opacity={0.16}
+        rippleIntensity={0.035}
+        gridSize={14}
+        gridThickness={18}
+        fadeDistance={1.7}
+        vignetteStrength={2.6}
+      />
+    </div>
     <div class="section-container hero-grid">
-      <div class="hero-copy stagger-group">
+      <RevealOnScroll animation="fly-up">
+      <div class="hero-copy">
         <a class="source-pill" href={officialSourceUrl} target="_blank" rel="noopener noreferrer">
           Opportunità AI per aziende FVG
         </a>
@@ -201,8 +219,12 @@
           La Regione Friuli Venezia Giulia può coprire fino al 75% dell’investimento. Righello ti aiuta a capire dove usare l’AI, scegliere un progetto utile e trasformarlo in una soluzione pronta per lavorare meglio.
         </p>
         <div class="hero-actions" aria-label="Azioni principali">
-          <a class="primary-cta" href="#consulenza">Richiedi una consulenza gratuita</a>
-          <a class="secondary-cta" href="#requisiti">Verifica i requisiti</a>
+          <MagneticButton href="#consulenza" variant="primary" class="landing-magnetic">
+            Richiedi una consulenza gratuita
+          </MagneticButton>
+          <MagneticButton href="#requisiti" variant="secondary" class="landing-magnetic">
+            Verifica i requisiti
+          </MagneticButton>
         </div>
         <div class="badge-row" aria-label="Punti chiave del bando">
           <span><span aria-hidden="true">✓</span> Fino al 75% a fondo perduto</span>
@@ -210,7 +232,9 @@
           <span><span aria-hidden="true">✓</span> Per imprese e professionisti FVG</span>
         </div>
       </div>
+      </RevealOnScroll>
 
+      <RevealOnScroll animation="scale" delay={120}>
       <div class="hero-panel" aria-label="Sintesi contributo">
         <div class="panel-topline">In pratica</div>
         <div class="grant-number">75%</div>
@@ -226,20 +250,29 @@
             <span>fondo disponibile</span>
           </div>
         </div>
-        <a class="panel-link" href="#consulenza">Partiamo dal tuo processo</a>
+        <MagneticButton href="#consulenza" variant="primary" class="panel-magnetic">
+          Partiamo dal tuo processo
+        </MagneticButton>
       </div>
+      </RevealOnScroll>
     </div>
   </section>
 
+  <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" height="56px" mobileHeight="24px" />
+
   <section id="requisiti" class="section-padding">
     <div class="section-container">
+      <RevealOnScroll animation="fly-up">
       <div class="landing-section-header">
         <p>Cosa prevede</p>
         <h2>Un incentivo per portare l’AI dove serve davvero</h2>
       </div>
+      </RevealOnScroll>
 
       <div class="card-grid">
-        {#each grantCards as card}
+        {#each grantCards as card, i}
+          <RevealOnScroll animation="fly-up" stagger={70} index={i}>
+          <GlowCard borderRadius="16px" class="h-full">
           <article class="feature-card">
             <div class="icon-box">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -249,24 +282,33 @@
             <h3>{card.title}</h3>
             <p>{card.text}</p>
           </article>
+          </GlowCard>
+          </RevealOnScroll>
         {/each}
       </div>
 
+      <RevealOnScroll animation="fade">
       <p class="source-note">
         Le informazioni sono basate sulle comunicazioni pubbliche della Regione Friuli Venezia Giulia. Aggiorneremo questa pagina quando uscirà la documentazione definitiva.
       </p>
+      </RevealOnScroll>
     </div>
   </section>
 
+  <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" height="56px" mobileHeight="24px" />
+
   <section class="section-padding muted-section">
     <div class="section-container">
+      <RevealOnScroll animation="fly-up">
       <div class="landing-section-header">
         <p>Cosa puoi fare</p>
         <h2>Non “AI generica”. Soluzioni che fanno risparmiare ore ogni settimana</h2>
       </div>
+      </RevealOnScroll>
 
       <div class="use-case-grid">
-        {#each useCases as item}
+        {#each useCases as item, i}
+          <RevealOnScroll animation="fly-up" stagger={70} index={i}>
           <article class="use-case-card">
             <div class="icon-box compact">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -278,20 +320,26 @@
               <p>{item.text}</p>
             </div>
           </article>
+          </RevealOnScroll>
         {/each}
       </div>
     </div>
   </section>
 
+  <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="56px" mobileHeight="24px" />
+
   <section class="section-padding">
     <div class="section-container">
+      <RevealOnScroll animation="fly-up">
       <div class="landing-section-header left">
         <p>Come lavora Righello</p>
         <h2>Prima capiamo il lavoro. Poi scegliamo l’AI giusta.</h2>
       </div>
+      </RevealOnScroll>
 
       <div class="timeline">
         {#each processSteps as step, index}
+          <RevealOnScroll animation="fly-up" stagger={90} index={index}>
           <article class="timeline-item">
             <div class="timeline-number">{index + 1}</div>
             <div>
@@ -299,20 +347,27 @@
               <p>{step.text}</p>
             </div>
           </article>
+          </RevealOnScroll>
         {/each}
       </div>
     </div>
   </section>
 
+  <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" height="56px" mobileHeight="24px" />
+
   <section class="section-padding muted-section">
     <div class="section-container">
+      <RevealOnScroll animation="fly-up">
       <div class="landing-section-header">
         <p>Esempi concreti</p>
         <h2>Da dove potresti partire</h2>
       </div>
+      </RevealOnScroll>
 
       <div class="example-grid">
-        {#each examples as example}
+        {#each examples as example, i}
+          <RevealOnScroll animation="fly-up" stagger={90} index={i}>
+          <GlowCard borderRadius="16px" class="h-full">
           <article class="example-card">
             <h3>{example.title}</h3>
             <ul>
@@ -324,6 +379,8 @@
               {/each}
             </ul>
           </article>
+          </GlowCard>
+          </RevealOnScroll>
         {/each}
       </div>
     </div>
@@ -331,6 +388,7 @@
 
   <section class="section-padding urgency-section">
     <div class="section-container urgency-grid">
+      <RevealOnScroll animation="fly-up">
       <div>
         <p class="eyebrow">Perché muoversi subito</p>
         <h2>Le risorse sono limitate</h2>
@@ -338,6 +396,8 @@
           Il fondo disponibile è pari a 1 milione di euro. Prepararsi in anticipo significa scegliere il progetto giusto, capire quanto investire e non arrivare all’apertura dello sportello con idee confuse.
         </p>
       </div>
+      </RevealOnScroll>
+      <RevealOnScroll animation="scale" delay={100}>
       <div class="counter-card" aria-label="Contatore visuale risorse bando">
         <div class="counter-label">
           <span>Fondo previsto</span>
@@ -352,21 +412,28 @@
           <span>Progetto pronto da presentare</span>
         </div>
       </div>
+      </RevealOnScroll>
     </div>
   </section>
 
+  <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="56px" mobileHeight="24px" />
+
   <section class="section-padding">
     <div class="section-container faq-layout">
+      <RevealOnScroll animation="fly-up">
       <div class="landing-section-header left">
         <p>FAQ</p>
         <h2>Le domande che ci farebbe un imprenditore, non un ufficio tecnico</h2>
       </div>
+      </RevealOnScroll>
       <div class="faq-list">
-        {#each faqs as faq}
+        {#each faqs as faq, i}
+          <RevealOnScroll animation="fly-up" stagger={60} index={i}>
           <details>
             <summary>{faq.question}</summary>
             <p>{faq.answer}</p>
           </details>
+          </RevealOnScroll>
         {/each}
       </div>
     </div>
@@ -374,6 +441,7 @@
 
   <section id="consulenza" class="section-padding final-cta-section">
     <div class="section-container cta-grid">
+      <RevealOnScroll animation="fly-up">
       <div class="final-copy">
         <p class="eyebrow">Consulenza gratuita</p>
         <h2>Scopri se la tua azienda può ottenere il contributo</h2>
@@ -384,7 +452,9 @@
           <span>Prossimi passi</span>
         </div>
       </div>
+      </RevealOnScroll>
 
+      <RevealOnScroll animation="scale" delay={120}>
       <form class="lead-form" on:submit|preventDefault={handleSubmit}>
         <label>
           Nome
@@ -415,6 +485,7 @@
           </p>
         {/if}
       </form>
+      </RevealOnScroll>
     </div>
   </section>
 
@@ -450,14 +521,12 @@
     overflow: hidden;
   }
 
-  .hero-bg {
+  .ripple-bg {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-    background-size: 4rem 4rem;
-    mask-image: linear-gradient(to bottom, black, transparent 82%);
+    z-index: 0;
+    pointer-events: auto;
+    opacity: 0.9;
   }
 
   .hero-grid {
@@ -522,36 +591,20 @@
     margin-top: 1.6rem;
   }
 
-  .primary-cta,
-  .secondary-cta,
-  .panel-link,
+  :global(.landing-magnetic),
+  :global(.panel-magnetic),
   .lead-form button {
     min-height: 3.1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    padding: 0.9rem 1.25rem;
     font-weight: 800;
-    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    padding: 0.9rem 1.25rem;
   }
 
-  .primary-cta,
   .lead-form button {
     background: linear-gradient(135deg, #d6487e, #06b6d4);
     color: white;
     box-shadow: 0 1.2rem 3rem rgba(214, 72, 126, 0.28);
   }
 
-  .secondary-cta {
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    background: rgba(255, 255, 255, 0.05);
-  }
-
-  .primary-cta:hover,
-  .secondary-cta:hover,
-  .panel-link:hover,
   .lead-form button:hover {
     transform: translateY(-2px);
   }
@@ -650,11 +703,9 @@
     line-height: 1.2;
   }
 
-  .panel-link {
+  :global(.panel-magnetic) {
     width: 100%;
     margin-top: 1rem;
-    color: white;
-    background: rgba(214, 72, 126, 0.9);
   }
 
   .landing-section-header {
@@ -693,17 +744,16 @@
   }
 
   .feature-card,
+  .example-card {
+    padding: 1.15rem;
+    min-height: 100%;
+  }
+
   .use-case-card,
-  .example-card,
   .timeline-item {
     border: 1px solid var(--border-color);
     border-radius: 0.8rem;
     background: rgba(255, 255, 255, 0.045);
-  }
-
-  .feature-card,
-  .example-card {
-    padding: 1.15rem;
   }
 
   .feature-card h3,
@@ -1039,21 +1089,13 @@
       var(--bg-primary);
   }
 
-  :global([data-theme='light']) .hero-bg {
-    background-image:
-      linear-gradient(rgba(17, 24, 39, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(17, 24, 39, 0.08) 1px, transparent 1px);
-  }
-
   :global([data-theme='light']) .source-pill,
   :global([data-theme='light']) .eyebrow {
     color: #b63266;
     background: rgba(214, 72, 126, 0.09);
   }
 
-  :global([data-theme='light']) .feature-card,
   :global([data-theme='light']) .use-case-card,
-  :global([data-theme='light']) .example-card,
   :global([data-theme='light']) .timeline-item,
   :global([data-theme='light']) details {
     background: rgba(255, 255, 255, 0.78);
@@ -1075,7 +1117,6 @@
 
   :global([data-theme='light']) .lead-form input,
   :global([data-theme='light']) .lead-form textarea,
-  :global([data-theme='light']) .secondary-cta,
   :global([data-theme='light']) .badge-row span,
   :global([data-theme='light']) .final-points span,
   :global([data-theme='light']) .panel-stats div,
@@ -1135,7 +1176,7 @@
       padding-top: 6.75rem;
     }
 
-    .hero-actions a {
+    :global(.landing-magnetic) {
       width: 100%;
     }
 
@@ -1146,9 +1187,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .primary-cta,
-    .secondary-cta,
-    .panel-link,
     .lead-form button {
       transition: none;
     }
