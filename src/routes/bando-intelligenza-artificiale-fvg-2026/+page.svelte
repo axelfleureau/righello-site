@@ -1,5 +1,6 @@
 <script lang="ts">
   import AIGrantScrollStory from '$lib/components/AIGrantScrollStory.svelte';
+  import AnimatedCountdown from '$lib/components/AnimatedCountdown.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
@@ -533,7 +534,7 @@
     </div>
   </section>
 
-  <section class="section-padding urgency-section">
+  <section id="urgenza" class="section-padding urgency-section">
     <div class="section-container urgency-grid">
       <RevealOnScroll animation="fly-up">
       <div>
@@ -545,20 +546,12 @@
       </div>
       </RevealOnScroll>
       <RevealOnScroll animation="scale" delay={100}>
-      <div class="counter-card" aria-label="Contatore visuale risorse bando">
-        <div class="counter-label">
-          <span>Fondo previsto</span>
-          <strong>1.000.000€</strong>
-        </div>
-        <div class="progress-track">
-          <div class="progress-bar"></div>
-        </div>
-        <div class="counter-details">
-          <span>Idea AI chiara</span>
-          <span>Investimento stimato</span>
-          <span>Progetto pronto da presentare</span>
-        </div>
-      </div>
+      <AnimatedCountdown
+        targetDate="2026-06-30T23:59:59+02:00"
+        title="Hai ancora tempo. Ma non conviene aspettare."
+        subtitle="La data esatta di apertura non è ancora indicata: usiamo fine giugno come riferimento prudente per preparare il progetto senza arrivare tardi."
+        footnote="Countdown non ufficiale: indica il tempo residuo alla fine di giugno 2026, mese indicato dalla fonte ufficiale per l’apertura prevista."
+      />
       </RevealOnScroll>
     </div>
   </section>
@@ -795,7 +788,6 @@
   }
 
   .hero-panel,
-  .counter-card,
   .lead-form {
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.035));
@@ -1117,6 +1109,7 @@
   }
 
   .urgency-section {
+    scroll-margin-top: 7rem;
     background:
       linear-gradient(135deg, rgba(214, 72, 126, 0.16), rgba(6, 182, 212, 0.12)),
       var(--bg-secondary);
@@ -1147,63 +1140,6 @@
   .final-copy p {
     max-width: 42rem;
     margin-top: 1rem;
-  }
-
-  .counter-card {
-    border-radius: 1.75rem;
-    padding: 1.2rem;
-  }
-
-  .counter-label {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .counter-label span {
-    color: var(--text-secondary);
-    font-size: 0.92rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .counter-label strong {
-    color: var(--text-primary);
-    font-size: clamp(1.8rem, 8vw, 3rem);
-    line-height: 1;
-  }
-
-  .progress-track {
-    height: 0.9rem;
-    margin: 1.4rem 0 1rem;
-    overflow: hidden;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .progress-bar {
-    width: 74%;
-    height: 100%;
-    border-radius: inherit;
-    background: linear-gradient(90deg, #70e1c8, #d6487e);
-  }
-
-  .counter-details {
-    display: grid;
-    gap: 0.6rem;
-  }
-
-  .counter-details span {
-    min-height: 2.5rem;
-    display: flex;
-    align-items: center;
-    border-radius: 1rem;
-    padding: 0.55rem 0.75rem;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.055);
-    font-size: 0.95rem;
   }
 
   .faq-list {
@@ -1354,7 +1290,6 @@
   }
 
   :global([data-theme='light']) .hero-panel,
-  :global([data-theme='light']) .counter-card,
   :global([data-theme='light']) .lead-form {
     background: rgba(255, 255, 255, 0.86);
     box-shadow: 0 1.4rem 3rem rgba(17, 24, 39, 0.09);
@@ -1371,8 +1306,7 @@
   :global([data-theme='light']) .lead-form textarea,
   :global([data-theme='light']) .badge-row span,
   :global([data-theme='light']) .final-points span,
-  :global([data-theme='light']) .panel-stats div,
-  :global([data-theme='light']) .counter-details span {
+  :global([data-theme='light']) .panel-stats div {
     background: rgba(255, 255, 255, 0.9);
   }
 
@@ -1440,10 +1374,6 @@
       width: 100%;
     }
 
-    .counter-label {
-      display: grid;
-      gap: 0.5rem;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
