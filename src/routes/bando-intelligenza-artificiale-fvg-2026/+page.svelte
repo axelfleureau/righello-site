@@ -11,6 +11,7 @@
   const agencySourceUrl = 'https://www.lavoroimpresa.fvg.it/portale/incentivi_dettaglio.aspx?AltID=1681&GUID=9e99d2dc-470e-463c-b695-adf01428af32&ID=9e99d2dc-470e-463c-b695-adf01428af32&PreviewKey=manduph3cvcxpm2yuuputsw0';
   const officialSourceUrl = 'https://www.consiglio.regione.fvg.it/pagineinterne/Portale/comunicatiStampaDettaglio.aspx?ID=944263';
   const incentivesPortalUrl = 'https://incentivi.regione.fvg.it/';
+  const informationDate = '7 giugno 2026';
 
   const icons: Record<IconKey, string> = {
     percent: '<path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/>',
@@ -127,6 +128,10 @@
       answer: 'Il contributo può arrivare fino al 75% dell’investimento, con un massimo di 10.000 euro per progetto.',
     },
     {
+      question: 'Il bando è già aperto?',
+      answer: 'Al 7 giugno 2026, la scheda ufficiale LavoroImpresa FVG riporta il voucher come misura in previsione, con apertura operativa prevista nel mese di giugno 2026.',
+    },
+    {
       question: 'Posso finanziare software su misura?',
       answer: 'Sì, se il progetto rientra nell’adozione di tecnologie basate sull’intelligenza artificiale. I dettagli finali dipenderanno dal bando ufficiale.',
     },
@@ -167,6 +172,7 @@
         '@id': 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026#webpage',
         url: 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026',
         name: 'Bando Intelligenza Artificiale FVG 2026 | Righello',
+        dateModified: '2026-06-07',
         citation: officialSources.map((source) => source.href),
       },
       {
@@ -263,17 +269,17 @@
 
 <svelte:head>
   <title>Bando Intelligenza Artificiale FVG 2026 | Righello</title>
-  <meta name="description" content="Ottieni fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale in Friuli Venezia Giulia. Consulenza gratuita con Righello." />
+  <meta name="description" content="Bando AI FVG 2026 in apertura a giugno: fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale. Consulenza gratuita con Righello." />
   <link rel="canonical" href="https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026" />
   <meta property="og:title" content="Bando Intelligenza Artificiale FVG 2026 | Righello" />
-  <meta property="og:description" content="Ottieni fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale in Friuli Venezia Giulia. Consulenza gratuita con Righello." />
+  <meta property="og:description" content="Bando AI FVG 2026 in apertura a giugno: fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale. Consulenza gratuita con Righello." />
   <meta property="og:url" content="https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Bando Intelligenza Artificiale FVG 2026 | Righello" />
-  <meta name="twitter:description" content="Ottieni fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale in Friuli Venezia Giulia. Consulenza gratuita con Righello." />
+  <meta name="twitter:description" content="Bando AI FVG 2026 in apertura a giugno: fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale. Consulenza gratuita con Righello." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
   {@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}</script>`}
 </svelte:head>
@@ -295,12 +301,15 @@
     <div class="section-container hero-grid">
       <RevealOnScroll animation="fly-up">
       <div class="hero-copy">
-        <a class="source-pill" href={officialSourceUrl} target="_blank" rel="noopener noreferrer">
-          Opportunità AI per aziende FVG
+        <a class="source-pill" href={agencySourceUrl} target="_blank" rel="noopener noreferrer">
+          Apertura prevista: giugno 2026
         </a>
         <h1>Bando AI FVG 2026: fino a 10.000€ per portare l’AI nella tua azienda</h1>
         <p class="hero-subtitle">
-          La Regione Friuli Venezia Giulia può coprire fino al 75% dell’investimento. Righello ti aiuta a usare questa occasione per costruire qualcosa che serve davvero: meno attività manuali, meno errori, più tempo per il lavoro che conta.
+          La misura risulta in previsione e può coprire fino al 75% dell’investimento. Righello ti aiuta a usare questa occasione per arrivare pronto con un progetto utile: meno attività manuali, meno errori, più tempo per il lavoro che conta.
+        </p>
+        <p class="status-line">
+          Situazione al {informationDate}: lo sportello non risulta chiuso o esaurito; la previsione ufficiale di apertura operativa è nel mese di giugno 2026.
         </p>
         <div class="hero-actions" aria-label="Azioni principali">
           <MagneticButton href="#consulenza" variant="primary" class="landing-magnetic">
@@ -313,14 +322,14 @@
         <div class="badge-row" aria-label="Punti chiave del bando">
           <span><span aria-hidden="true">✓</span> Fino al 75% a fondo perduto</span>
           <span><span aria-hidden="true">✓</span> Fino a 10.000€</span>
-          <span><span aria-hidden="true">✓</span> Per imprese e professionisti FVG</span>
+          <span><span aria-hidden="true">✓</span> In previsione sul portale ufficiale</span>
         </div>
       </div>
       </RevealOnScroll>
 
       <RevealOnScroll animation="scale" delay={120}>
       <div class="hero-panel" aria-label="Sintesi contributo">
-        <div class="panel-topline">In pratica</div>
+        <div class="panel-topline">Misura in previsione</div>
         <div class="grant-number">75%</div>
         <p>del progetto può essere coperto dal contributo regionale</p>
         <div class="panel-divider"></div>
@@ -330,8 +339,8 @@
             <span>massimo previsto</span>
           </div>
           <div>
-            <strong>1M€</strong>
-            <span>fondo disponibile</span>
+            <strong>Giugno</strong>
+            <span>apertura prevista</span>
           </div>
         </div>
         <MagneticButton href="#consulenza" variant="primary" class="panel-magnetic">
@@ -374,7 +383,7 @@
       <RevealOnScroll animation="fade">
       <div class="source-note">
         <p>
-          Le informazioni sono basate sulle comunicazioni pubbliche della Regione Friuli Venezia Giulia. Aggiorneremo questa pagina quando uscirà la documentazione definitiva.
+          Situazione aggiornata al {informationDate}: le informazioni sono basate sulla scheda ufficiale LavoroImpresa FVG, che riporta “Previsione di apertura: giugno 2026”, e sulle comunicazioni pubbliche della Regione Friuli Venezia Giulia. Aggiorneremo questa pagina quando uscirà la documentazione definitiva.
         </p>
         <div class="official-source-links" aria-label="Fonti ufficiali sul bando Intelligenza Artificiale FVG">
           <span>Fonti ufficiali</span>
@@ -717,6 +726,15 @@
     margin-top: 1.5rem;
     color: var(--text-secondary);
     font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.45;
+  }
+
+  .status-line {
+    max-width: 42rem;
+    margin-top: 0.9rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 650;
     line-height: 1.45;
   }
 
