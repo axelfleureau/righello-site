@@ -42,6 +42,25 @@
     { title: 'Workflow e Processi', text: 'Elimina attività ripetitive e riduci gli errori.', icon: 'workflow' },
   ] satisfies Array<{ title: string; text: string; icon: IconKey }>;
 
+  const serviceOffers = [
+    {
+      title: 'Troviamo il progetto giusto',
+      text: 'Non partiamo dallo strumento. Guardiamo dove perdi tempo, dove si accumulano errori e quale processo può migliorare subito.',
+    },
+    {
+      title: 'Disegniamo il flusso',
+      text: 'Mettiamo in fila persone, documenti, dati e passaggi operativi. L’AI deve entrare nel lavoro vero, non restare una demo.',
+    },
+    {
+      title: 'Sviluppiamo la soluzione',
+      text: 'Costruiamo agenti AI, automazioni, dashboard e software su misura collegati ai sistemi che usi già.',
+    },
+    {
+      title: 'Aiutiamo il team a usarla',
+      text: 'Una soluzione vale solo se viene adottata. Prepariamo strumenti semplici, formazione e prime routine operative.',
+    },
+  ];
+
   const processSteps = [
     { title: 'Analisi gratuita', text: 'Guardiamo come lavorate oggi e dove si perde più tempo.' },
     { title: 'Opportunità ad alto impatto', text: 'Scegliamo un caso d’uso AI che abbia senso davvero: meno lavoro manuale, meno errori, più velocità.' },
@@ -53,6 +72,26 @@
     { title: 'Azienda manifatturiera', points: ['Preventivi automatici', 'Documentazione tecnica', 'Controllo qualità'] },
     { title: 'Studio professionale', points: ['Gestione documenti', 'Ricerca normativa', 'Assistente interno'] },
     { title: 'PMI commerciale', points: ['CRM intelligente', 'Email automatiche', 'Supporto vendite'] },
+  ];
+
+  const clientProofs = [
+    {
+      name: 'Óptima',
+      text: 'Una piattaforma AI per marketing, task, clienti, preventivi, contenuti e automazioni. Non una demo: un sistema operativo per far lavorare meglio un team.',
+    },
+    {
+      name: 'Tetha',
+      text: 'Gestionale con documenti, scadenze, preventivi, PDF e assistente AI. Il tipo di progetto in cui l’AI serve a trovare informazioni e ridurre lavoro manuale.',
+    },
+    {
+      name: 'Hermes',
+      text: 'Infrastruttura agentica e gateway per collegare strumenti, servizi e automazioni in modo controllato. AI che entra nei processi, non solo in una chat.',
+    },
+    {
+      name: 'Reguta',
+      href: '/progetti/reguta',
+      text: 'Dalla comunicazione al gestionale operativo: lavoratori, sicurezza, macchinari, botti, manutenzioni, scadenze e documenti in un sistema più ordinato.',
+    },
   ];
 
   const faqs = [
@@ -216,7 +255,7 @@
         </a>
         <h1>Bando AI FVG 2026: fino a 10.000€ per portare l’AI nella tua azienda</h1>
         <p class="hero-subtitle">
-          La Regione Friuli Venezia Giulia può coprire fino al 75% dell’investimento. Righello ti aiuta a capire dove usare l’AI, scegliere un progetto utile e trasformarlo in una soluzione pronta per lavorare meglio.
+          La Regione Friuli Venezia Giulia può coprire fino al 75% dell’investimento. Righello ti aiuta a usare questa occasione per costruire qualcosa che serve davvero: meno attività manuali, meno errori, più tempo per il lavoro che conta.
         </p>
         <div class="hero-actions" aria-label="Azioni principali">
           <MagneticButton href="#consulenza" variant="primary" class="landing-magnetic">
@@ -265,7 +304,7 @@
       <RevealOnScroll animation="fly-up">
       <div class="landing-section-header">
         <p>Cosa prevede</p>
-        <h2>Un incentivo per portare l’AI dove serve davvero</h2>
+        <h2>Il bando è il punto di partenza. Il valore è il progetto che costruisci.</h2>
       </div>
       </RevealOnScroll>
 
@@ -298,11 +337,39 @@
   <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" height="56px" mobileHeight="24px" />
 
   <section class="section-padding muted-section">
+    <div class="section-container service-offer-layout">
+      <RevealOnScroll animation="fly-up">
+      <div class="landing-section-header left">
+        <p>Cosa fa Righello</p>
+        <h2>Trasformiamo il contributo in un progetto digitale concreto.</h2>
+        <p class="section-copy">
+          La parte importante non è “mettere l’AI in azienda”. È scegliere un problema reale, progettare una soluzione semplice da usare e farla entrare nel lavoro quotidiano.
+        </p>
+      </div>
+      </RevealOnScroll>
+
+      <div class="service-offer-grid">
+        {#each serviceOffers as offer, i}
+          <RevealOnScroll animation="fly-up" stagger={70} index={i}>
+          <article class="service-offer-card">
+            <span>{String(i + 1).padStart(2, '0')}</span>
+            <h3>{offer.title}</h3>
+            <p>{offer.text}</p>
+          </article>
+          </RevealOnScroll>
+        {/each}
+      </div>
+    </div>
+  </section>
+
+  <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="56px" mobileHeight="24px" />
+
+  <section class="section-padding">
     <div class="section-container">
       <RevealOnScroll animation="fly-up">
       <div class="landing-section-header">
-        <p>Cosa puoi fare</p>
-        <h2>Non “AI generica”. Soluzioni che fanno risparmiare ore ogni settimana</h2>
+        <p>Cosa puoi realizzare</p>
+        <h2>Servizi AI pensati per togliere lavoro ripetitivo dal tavolo</h2>
       </div>
       </RevealOnScroll>
 
@@ -326,7 +393,42 @@
     </div>
   </section>
 
-  <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" height="56px" mobileHeight="24px" />
+  <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" height="56px" mobileHeight="24px" />
+
+  <section class="section-padding">
+    <div class="section-container proof-layout">
+      <RevealOnScroll animation="fly-up">
+      <div class="landing-section-header left">
+        <p>Non partiamo da zero</p>
+        <h2>Abbiamo già trasformato idee, processi e comunicazione in strumenti che lavorano.</h2>
+        <p class="section-copy">
+          Il bando è una buona occasione solo se dietro c’è un progetto utile. Per questo non vendiamo “AI” come parola magica:
+          costruiamo sistemi digitali che aiutano team, clienti e aziende a fare meglio il lavoro di tutti i giorni.
+        </p>
+      </div>
+      </RevealOnScroll>
+
+      <div class="client-proof-grid">
+        {#each clientProofs as proof, i}
+          <RevealOnScroll animation="fly-up" stagger={70} index={i}>
+            {#if proof.href}
+              <a href={proof.href} class="client-proof-card">
+                <span>{proof.name}</span>
+                <p>{proof.text}</p>
+              </a>
+            {:else}
+              <article class="client-proof-card">
+                <span>{proof.name}</span>
+                <p>{proof.text}</p>
+              </article>
+            {/if}
+          </RevealOnScroll>
+        {/each}
+      </div>
+    </div>
+  </section>
+
+  <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" height="56px" mobileHeight="24px" />
 
   <section class="section-padding">
     <div class="section-container">
@@ -736,9 +838,19 @@
     font-weight: 850;
   }
 
+  .section-copy {
+    max-width: 42rem;
+    margin-top: 1rem;
+    color: var(--text-secondary);
+    font-size: clamp(1rem, 2vw, 1.18rem);
+    line-height: 1.65;
+  }
+
   .card-grid,
   .use-case-grid,
-  .example-grid {
+  .example-grid,
+  .service-offer-grid,
+  .client-proof-grid {
     display: grid;
     gap: 1rem;
   }
@@ -822,6 +934,57 @@
 
   .muted-section {
     background: rgba(255, 255, 255, 0.025);
+  }
+
+  .service-offer-layout,
+  .proof-layout {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .service-offer-card,
+  .client-proof-card {
+    display: grid;
+    gap: 0.8rem;
+    min-height: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 0.95rem;
+    background: rgba(255, 255, 255, 0.045);
+    padding: 1.1rem;
+  }
+
+  .client-proof-card {
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+
+  a.client-proof-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(214, 72, 126, 0.55);
+    background: rgba(214, 72, 126, 0.08);
+  }
+
+  .service-offer-card span,
+  .client-proof-card span {
+    color: #D6487E;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .service-offer-card h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 850;
+    line-height: 1.12;
+  }
+
+  .service-offer-card p,
+  .client-proof-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
   }
 
   .use-case-card {
@@ -1096,6 +1259,8 @@
   }
 
   :global([data-theme='light']) .use-case-card,
+  :global([data-theme='light']) .service-offer-card,
+  :global([data-theme='light']) .client-proof-card,
   :global([data-theme='light']) .timeline-item,
   :global([data-theme='light']) details {
     background: rgba(255, 255, 255, 0.78);
@@ -1138,7 +1303,9 @@
 
     .card-grid,
     .use-case-grid,
-    .example-grid {
+    .example-grid,
+    .service-offer-grid,
+    .client-proof-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -1159,6 +1326,12 @@
     .use-case-grid,
     .example-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .service-offer-layout,
+    .proof-layout {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: start;
     }
 
     .faq-layout {

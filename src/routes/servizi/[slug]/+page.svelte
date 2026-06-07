@@ -207,6 +207,31 @@
   </div>
 </section>
 
+{#if service.slug === 'agenti-ai'}
+<section class="ai-grant-section">
+  <div class="section-container">
+    <RevealOnScroll animation="scale">
+      <a href="/bando-intelligenza-artificiale-fvg-2026" class="ai-grant-card">
+        <div>
+          <p class="ai-grant-label">Opportunità per aziende FVG</p>
+          <h2>Bando Intelligenza Artificiale FVG 2026</h2>
+          <p>
+            Se vuoi introdurre un agente AI in azienda, il contributo regionale può coprire fino al 75% del progetto.
+            Partiamo dai processi che ti fanno perdere più tempo e capiamo se possono diventare una soluzione finanziabile.
+          </p>
+        </div>
+        <span class="ai-grant-cta">
+          Verifica i requisiti
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </span>
+      </a>
+    </RevealOnScroll>
+  </div>
+</section>
+{/if}
+
 <section class="final-cta-section">
   <div class="section-container">
     <RevealOnScroll animation="scale">
@@ -474,6 +499,82 @@
     }
   }
   /* ── end AI Bridge ─────────────────────────────────────────────────── */
+
+  .ai-grant-section {
+    padding: 0 1.5rem 4rem;
+    background: var(--bg-secondary);
+  }
+
+  .ai-grant-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    border: 1px solid rgba(214, 72, 126, 0.35);
+    border-radius: 1.5rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background:
+      radial-gradient(circle at 10% 20%, rgba(214, 72, 126, 0.16), transparent 24rem),
+      linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(255, 255, 255, 0.03));
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ai-grant-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(214, 72, 126, 0.7);
+    box-shadow: 0 20px 50px rgba(214, 72, 126, 0.14);
+  }
+
+  .ai-grant-label {
+    margin-bottom: 0.55rem;
+    color: #D6487E;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .ai-grant-card h2 {
+    color: var(--text-primary);
+    font-size: clamp(1.55rem, 4vw, 2.4rem);
+    font-weight: 850;
+    line-height: 1.05;
+  }
+
+  .ai-grant-card p:not(.ai-grant-label) {
+    max-width: 720px;
+    margin-top: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .ai-grant-cta {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    border-radius: 999px;
+    padding: 0.75rem 1.25rem;
+    background: #D6487E;
+    color: #fff;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 767px) {
+    .ai-grant-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .ai-grant-cta {
+      width: 100%;
+    }
+  }
 
   .section-padding {
     padding: var(--section-padding-sm) 0;

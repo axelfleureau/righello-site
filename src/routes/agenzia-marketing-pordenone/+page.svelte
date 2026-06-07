@@ -307,7 +307,10 @@
           Guardiamo sito, contenuti, Google Business Profile, tracking e competitor locali.
           Poi decidiamo cosa va sistemato prima: visibilita', messaggio o conversione.
         </p>
-        <MagneticButton href="/contatti" variant="primary">Mettiamo ordine</MagneticButton>
+        <div class="cta-buttons">
+          <MagneticButton href="/contatti" variant="primary">Mettiamo ordine</MagneticButton>
+          <MagneticButton href="/bando-intelligenza-artificiale-fvg-2026" variant="secondary">Bando AI FVG 2026</MagneticButton>
+        </div>
       </div>
     </RevealOnScroll>
   </div>
@@ -565,6 +568,13 @@
   .cta-panel p {
     max-width: 680px;
     margin: 0 auto 2rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
   }
 
   @media (max-width: 1024px) {

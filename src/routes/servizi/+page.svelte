@@ -24,6 +24,11 @@
       label: 'Agenzia marketing a Mestre',
       description: 'Strategia, campagne, siti e automazioni per aziende tra Mestre, Venezia, Veneto e Nord Italia.',
     },
+    {
+      href: '/bando-intelligenza-artificiale-fvg-2026',
+      label: 'Bando Intelligenza Artificiale FVG 2026',
+      description: 'Capire se un progetto AI può diventare un investimento utile e finanziabile per aziende e professionisti FVG.',
+    },
   ];
 
   const departments = [
@@ -868,6 +873,13 @@
 
     .local-entry-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .local-entry-grid {
+      max-width: 1120px;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 

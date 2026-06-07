@@ -60,6 +60,11 @@
       label: 'Agenzia marketing a Mestre',
       description: 'Marketing, contenuti, performance e sviluppo digitale per aziende tra Mestre, Venezia e Veneto.',
     },
+    {
+      href: '/bando-intelligenza-artificiale-fvg-2026',
+      label: 'Bando Intelligenza Artificiale FVG 2026',
+      description: 'Consulenza per trasformare processi, documenti e workflow in un progetto AI finanziabile in Friuli Venezia Giulia.',
+    },
   ];
 
   // Hero poster URL — preloaded in <svelte:head> for fast cold-cache reveal.
@@ -267,7 +272,7 @@
     </RevealOnScroll>
 
     <RevealOnScroll animation="fly-up" delay={500}>
-      <div class="mt-10 grid gap-4 md:grid-cols-2 max-w-4xl mx-auto">
+      <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
         {#each localLandingLinks as local}
           <a
             href={local.href}
