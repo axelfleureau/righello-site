@@ -1,10 +1,10 @@
 <script lang="ts">
+  import AIGrantScrollStory from '$lib/components/AIGrantScrollStory.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import RippleGrid from '$lib/components/RippleGrid.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
-  import StickyScrollReveal from '$lib/components/StickyScrollReveal.svelte';
 
   type IconKey = 'percent' | 'wallet' | 'fund' | 'users' | 'brain' | 'chart' | 'file' | 'bot' | 'search' | 'dashboard' | 'quote' | 'workflow';
 
@@ -64,24 +64,28 @@
 
   const scrollProcessSteps = [
     {
+      label: '01',
       title: 'Analisi gratuita',
       description: 'Guardiamo processi, documenti, persone e strumenti. L’obiettivo è trovare dove l’azienda perde tempo davvero.',
-      icon: '01',
+      metric: 'Mappa operativa',
     },
     {
+      label: '02',
       title: 'Caso d’uso ad alto impatto',
       description: 'Scegliamo un progetto AI piccolo abbastanza da partire, ma utile abbastanza da cambiare il lavoro quotidiano.',
-      icon: '02',
+      metric: 'Priorità reale',
     },
     {
+      label: '03',
       title: 'Progetto pronto da costruire',
       description: 'Mettiamo in fila flussi, costi, benefici, dati necessari e cosa deve fare la soluzione per essere usata dal team.',
-      icon: '03',
+      metric: 'Costi e benefici',
     },
     {
+      label: '04',
       title: 'Sviluppo e integrazione',
       description: 'Realizziamo agenti AI, automazioni, dashboard o software su misura e li colleghiamo agli strumenti già presenti.',
-      icon: '04',
+      metric: 'Soluzione operativa',
     },
   ];
 
@@ -448,10 +452,10 @@
   <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" height="56px" mobileHeight="24px" />
 
   <section id="metodo-righello" class="righello-scroll-section">
-    <StickyScrollReveal
+    <AIGrantScrollStory
       title="Prima capiamo il lavoro. Poi scegliamo l’AI giusta."
-      subtitle="Come lavora Righello"
-      content={scrollProcessSteps}
+      eyebrow="Come lavora Righello"
+      items={scrollProcessSteps}
     />
   </section>
 
@@ -1029,61 +1033,6 @@
       radial-gradient(circle at 12% 20%, rgba(214, 72, 126, 0.14), transparent 30rem),
       radial-gradient(circle at 88% 62%, rgba(6, 182, 212, 0.12), transparent 28rem),
       var(--bg-primary);
-  }
-
-  :global(.righello-scroll-section .sticky-scroll-section) {
-    padding-top: clamp(4rem, 8vw, 7rem);
-    padding-bottom: clamp(4rem, 8vw, 7rem);
-  }
-
-  :global(.righello-scroll-section .section-title) {
-    max-width: 900px;
-    margin: 0 auto;
-    font-size: clamp(2rem, 5vw, 4rem);
-    line-height: 1;
-    font-weight: 850;
-  }
-
-  :global(.righello-scroll-section .section-subtitle) {
-    color: #D6487E;
-    font-weight: 900;
-    letter-spacing: 0.14em;
-  }
-
-  :global(.righello-scroll-section .visual-sticky) {
-    border-radius: 2rem;
-  }
-
-  :global(.righello-scroll-section .visual-panel) {
-    border: 1px solid rgba(214, 72, 126, 0.22);
-    border-radius: 2rem;
-    background:
-      radial-gradient(circle at 50% 35%, rgba(214, 72, 126, 0.2), transparent 22rem),
-      linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
-    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
-  }
-
-  :global(.righello-scroll-section .visual-icon) {
-    color: #ffffff;
-    font-size: clamp(5rem, 10vw, 9rem);
-    font-weight: 900;
-    letter-spacing: -0.08em;
-    filter: drop-shadow(0 1.5rem 3rem rgba(214, 72, 126, 0.3));
-  }
-
-  :global(.righello-scroll-section .content-item) {
-    border-radius: 1.75rem;
-  }
-
-  :global(.righello-scroll-section .content-item.active) {
-    background: rgba(214, 72, 126, 0.09);
-    border-color: rgba(214, 72, 126, 0.32);
-    box-shadow: 0 1.5rem 4rem rgba(214, 72, 126, 0.14);
-  }
-
-  :global(.righello-scroll-section .step-number) {
-    background: linear-gradient(135deg, #D6487E, #06B6D4);
-    box-shadow: 0 1rem 2.4rem rgba(214, 72, 126, 0.24);
   }
 
   .urgency-grid,
