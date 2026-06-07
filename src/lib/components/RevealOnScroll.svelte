@@ -12,7 +12,7 @@
   export let once: boolean = true;
   export let stagger: number = 0;
   export let index: number = 0;
-  export let disableOnMobile: boolean = false;
+  export let disableOnMobile: boolean = true;
   export let disableOnReducedMotion: boolean = true;
   
   let visible = !browser;
