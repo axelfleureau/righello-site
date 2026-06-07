@@ -1,5 +1,5 @@
 # Righello S.r.l.
-# Updated: 2026-05-14
+# Updated: 2026-06-07
 # Contact: hello@wearerighello.com
 # Website: https://www.wearerighello.com
 
@@ -15,6 +15,7 @@ Righello S.r.l. è un'agenzia digitale con base operativa a Mestre (Venezia) e s
 - Produzione foto e video per aziende, eventi, hospitality e sport
 - Branding e identità visiva
 - Consulenza strategica digitale e growth hacking
+- Consulenza e sviluppo soluzioni AI per il Bando Intelligenza Artificiale Friuli Venezia Giulia 2026
 
 ## Service Area
 Pordenone, Venezia, Mestre, Treviso, Udine, Friuli-Venezia Giulia, Veneto, Nord Italia, Italia.
@@ -47,6 +48,7 @@ TikTok: https://www.tiktok.com/@wearerighello
 - https://www.wearerighello.com/servizi/advertising/
 - https://www.wearerighello.com/servizi/web/
 - https://www.wearerighello.com/servizi/agenti-ai/
+- https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026/
 - https://www.wearerighello.com/progetti/
 - https://www.wearerighello.com/chi-siamo/
 - https://www.wearerighello.com/contatti/
@@ -67,6 +69,9 @@ Sì. Righello produce contenuti foto e video per aziende, eventi, hotel, ristora
 
 ### Righello si occupa anche di software e automazioni?
 Sì. Righello sviluppa software su misura, web app, agenti AI e automazioni integrate con i sistemi aziendali esistenti (ERP, CRM, gestionali).
+
+### Righello può aiutare con il Bando Intelligenza Artificiale FVG 2026?
+Sì. Righello aiuta imprese e professionisti del Friuli Venezia Giulia a individuare casi d'uso AI concreti, progettare la soluzione e stimare l'investimento. Righello non è l'ente erogatore del contributo.
 
 ### Per quali settori lavora Righello?
 Righello lavora con hospitality (hotel, resort, B&B), ristorazione e food, eventi sportivi e culturali, PMI manifatturiere, immobiliare, energy, servizi professionali e Pubblica Amministrazione.

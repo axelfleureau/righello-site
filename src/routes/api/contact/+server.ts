@@ -9,6 +9,7 @@ const TEAM_EMAILS = ['edis@wearerighello.com', 'paolo@wearerighello.com', 'axel@
 interface ContactForm {
   name: string;
   email: string;
+  phone: string;
   company: string;
   service: string;
   budget: string;
@@ -28,6 +29,7 @@ function validateForm(data: unknown): ContactForm | null {
   return {
     name: d.name.trim(),
     email: d.email.trim(),
+    phone: typeof d.phone === 'string' ? d.phone.trim() : '',
     company: typeof d.company === 'string' ? d.company.trim() : '',
     service: typeof d.service === 'string' ? d.service.trim() : '',
     budget: typeof d.budget === 'string' ? d.budget.trim() : '',
@@ -129,6 +131,7 @@ async function generateLeadAnalysis(form: ContactForm, priority: { label: string
 DATI LEAD:
 - Nome: ${form.name}
 - Email: ${form.email}
+- Telefono: ${form.phone || 'Non specificato'}
 - Azienda: ${form.company || 'Non specificata'}
 - Servizio: ${form.service || 'Non specificato'}
 - Budget: ${form.budget || 'Non specificato'}
@@ -341,6 +344,12 @@ function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, priority: {
                   <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
                     <span style="font-size: 12px; color: #999999; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Email</span><br/>
                     <a href="mailto:${encodeURIComponent(form.email)}" style="font-size: 16px; color: #D6487E; text-decoration: none; font-weight: 500;">${escHtml(form.email)}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
+                    <span style="font-size: 12px; color: #999999; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Telefono</span><br/>
+                    <span style="font-size: 16px; color: #333333; font-weight: 500;">${escHtml(form.phone || '\u2014')}</span>
                   </td>
                 </tr>
                 <tr>
