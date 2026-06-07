@@ -301,7 +301,7 @@
       />
     </div>
     <div class="section-container hero-grid">
-      <RevealOnScroll animation="fly-up">
+      <RevealOnScroll disableOnMobile={true} animation="fly-up">
       <div class="hero-copy">
         <a class="source-pill" href={agencySourceUrl} target="_blank" rel="noopener noreferrer">
           Apertura prevista: giugno 2026
@@ -329,7 +329,7 @@
       </div>
       </RevealOnScroll>
 
-      <RevealOnScroll animation="scale" delay={120}>
+      <RevealOnScroll disableOnMobile={true} animation="scale" delay={120}>
       <div class="hero-panel" aria-label="Sintesi contributo">
         <div class="panel-topline">Misura in previsione</div>
         <div class="grant-number">75%</div>
@@ -357,7 +357,7 @@
 
   <section id="requisiti" class="section-padding">
     <div class="section-container">
-      <RevealOnScroll animation="fly-up">
+      <RevealOnScroll disableOnMobile={true} animation="fly-up">
       <div class="landing-section-header">
         <p>Cosa prevede</p>
         <h2>Il bando è il punto di partenza. Il valore è il progetto che costruisci.</h2>
@@ -366,7 +366,7 @@
 
       <div class="card-grid">
         {#each grantCards as card, i}
-          <RevealOnScroll animation="fly-up" stagger={70} index={i}>
+          <RevealOnScroll disableOnMobile={true} animation="fly-up" stagger={70} index={i}>
           <GlowCard borderRadius="24px" class="h-full">
           <article class="feature-card">
             <div class="icon-box">
@@ -382,7 +382,7 @@
         {/each}
       </div>
 
-      <RevealOnScroll animation="fade">
+      <RevealOnScroll disableOnMobile={true} animation="fade">
       <div class="source-note">
         <p>
           Situazione aggiornata al {informationDate}: le informazioni sono basate sulla scheda ufficiale LavoroImpresa FVG, che riporta “Previsione di apertura: giugno 2026”, e sulle comunicazioni pubbliche della Regione Friuli Venezia Giulia. Aggiorneremo questa pagina quando uscirà la documentazione definitiva.
@@ -402,7 +402,7 @@
 
   <section class="section-padding muted-section">
     <div class="section-container service-offer-layout">
-      <RevealOnScroll animation="fly-up">
+      <RevealOnScroll disableOnMobile={true} animation="fly-up">
       <div class="landing-section-header left">
         <p>Cosa fa Righello</p>
         <h2>Trasformiamo il contributo in un progetto digitale concreto.</h2>
@@ -414,7 +414,7 @@
 
       <div class="service-offer-grid">
         {#each serviceOffers as offer, i}
-          <RevealOnScroll animation="fly-up" stagger={70} index={i}>
+          <RevealOnScroll disableOnMobile={true} animation="fly-up" stagger={70} index={i}>
           <article class="service-offer-card">
             <span>{String(i + 1).padStart(2, '0')}</span>
             <h3>{offer.title}</h3>
@@ -430,7 +430,7 @@
 
   <section class="section-padding">
     <div class="section-container">
-      <RevealOnScroll animation="fly-up">
+      <RevealOnScroll disableOnMobile={true} animation="fly-up">
       <div class="landing-section-header">
         <p>Cosa puoi realizzare</p>
         <h2>Servizi AI pensati per togliere lavoro ripetitivo dal tavolo</h2>
@@ -439,7 +439,7 @@
 
       <div class="use-case-grid">
         {#each useCases as item, i}
-          <RevealOnScroll animation="fly-up" stagger={70} index={i}>
+          <RevealOnScroll disableOnMobile={true} animation="fly-up" stagger={70} index={i}>
           <article class="use-case-card">
             <div class="icon-box compact">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -461,7 +461,7 @@
 
   <section class="section-padding">
     <div class="section-container proof-layout">
-      <RevealOnScroll animation="fly-up">
+      <RevealOnScroll disableOnMobile={true} animation="fly-up">
       <div class="landing-section-header left">
         <p>Non partiamo da zero</p>
         <h2>Abbiamo già trasformato idee, processi e comunicazione in strumenti che lavorano.</h2>
@@ -474,7 +474,7 @@
 
       <div class="client-proof-grid">
         {#each clientProofs as proof, i}
-          <RevealOnScroll animation="fly-up" stagger={70} index={i}>
+          <RevealOnScroll disableOnMobile={true} animation="fly-up" stagger={70} index={i}>
             {#if proof.href}
               <a href={proof.href} class="client-proof-card">
                 <span>{proof.name}</span>
@@ -506,7 +506,7 @@
 
   <section class="section-padding muted-section">
     <div class="section-container">
-      <RevealOnScroll animation="fly-up">
+      <RevealOnScroll disableOnMobile={true} animation="fly-up">
       <div class="landing-section-header">
         <p>Esempi concreti</p>
         <h2>Da dove potresti partire</h2>
@@ -515,7 +515,7 @@
 
       <div class="example-grid">
         {#each examples as example, i}
-          <RevealOnScroll animation="fly-up" stagger={90} index={i}>
+          <RevealOnScroll disableOnMobile={true} animation="fly-up" stagger={90} index={i}>
           <GlowCard borderRadius="24px" class="h-full">
           <article class="example-card">
             <h3>{example.title}</h3>
@@ -537,7 +537,7 @@
 
   <section id="urgenza" class="section-padding urgency-section">
     <div class="section-container urgency-grid">
-      <RevealOnScroll animation="fly-up">
+      <RevealOnScroll disableOnMobile={true} animation="fly-up">
       <div>
         <p class="eyebrow">Perché muoversi subito</p>
         <h2>Le risorse sono limitate</h2>
@@ -546,7 +546,7 @@
         </p>
       </div>
       </RevealOnScroll>
-      <RevealOnScroll animation="scale" delay={100}>
+      <RevealOnScroll disableOnMobile={true} animation="scale" delay={100}>
       <AnimatedCountdown
         targetDate="2026-06-30T23:59:59+02:00"
         title="Hai ancora tempo. Ma non conviene aspettare."
@@ -561,7 +561,7 @@
 
   <section class="section-padding">
     <div class="section-container faq-layout">
-      <RevealOnScroll animation="fly-up">
+      <RevealOnScroll disableOnMobile={true} animation="fly-up">
       <div class="landing-section-header left">
         <p>FAQ</p>
         <h2>Le domande che ci farebbe un imprenditore, non un ufficio tecnico</h2>
@@ -569,7 +569,7 @@
       </RevealOnScroll>
       <div class="faq-list">
         {#each faqs as faq, i}
-          <RevealOnScroll animation="fly-up" stagger={60} index={i}>
+          <RevealOnScroll disableOnMobile={true} animation="fly-up" stagger={60} index={i}>
           <details>
             <summary>{faq.question}</summary>
             <p>{faq.answer}</p>
@@ -582,7 +582,7 @@
 
   <section id="consulenza" class="section-padding final-cta-section">
     <div class="section-container cta-grid">
-      <RevealOnScroll animation="fly-up">
+      <RevealOnScroll disableOnMobile={true} animation="fly-up">
       <div class="final-copy">
         <p class="eyebrow">Consulenza gratuita</p>
         <h2>Scopri se la tua azienda può ottenere il contributo</h2>
@@ -595,7 +595,7 @@
       </div>
       </RevealOnScroll>
 
-      <RevealOnScroll animation="scale" delay={120}>
+      <RevealOnScroll disableOnMobile={true} animation="scale" delay={120}>
       <form class="lead-form" on:submit|preventDefault={handleSubmit}>
         <label>
           Nome
@@ -1363,6 +1363,13 @@
 
     .hero-panel {
       transform: translateY(2rem);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .ai-grant-page {
+      overflow-x: hidden;
+      touch-action: pan-y;
     }
   }
 

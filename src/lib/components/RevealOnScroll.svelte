@@ -12,11 +12,25 @@
   export let once: boolean = true;
   export let stagger: number = 0;
   export let index: number = 0;
+  export let disableOnMobile: boolean = false;
+  export let disableOnReducedMotion: boolean = true;
   
   let visible = !browser;
   let mounted = false;
+  let revealDisabled = false;
   
   onMount(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
+
+    if ((disableOnReducedMotion && prefersReducedMotion) || (disableOnMobile && (isCoarsePointer || isNarrowViewport))) {
+      revealDisabled = true;
+      visible = true;
+      mounted = true;
+      return;
+    }
+
     mounted = true;
     visible = false;
   });
@@ -51,35 +65,43 @@
   }
 </script>
 
-<div 
-  class="reveal-wrapper"
-  use:inview={{ threshold, once }}
-  on:inview={handleInview}
->
-  {#if visible}
-    {#if animation === 'fly-up' || animation === 'fly-left' || animation === 'fly-right'}
-      <div class="reveal-content" in:fly={flyParams}>
-        <slot />
-      </div>
-    {:else if animation === 'scale'}
-      <div class="reveal-content" in:scale={scaleParams}>
-        <slot />
-      </div>
-    {:else if animation === 'blur'}
-      <div class="reveal-content" in:blurIn={{ duration, delay: totalDelay }}>
-        <slot />
-      </div>
+{#if revealDisabled}
+  <div class="reveal-wrapper">
+    <div class="reveal-content reveal-content--immediate">
+      <slot />
+    </div>
+  </div>
+{:else}
+  <div
+    class="reveal-wrapper"
+    use:inview={{ threshold, once }}
+    on:inview={handleInview}
+  >
+    {#if visible}
+      {#if animation === 'fly-up' || animation === 'fly-left' || animation === 'fly-right'}
+        <div class="reveal-content" in:fly={flyParams}>
+          <slot />
+        </div>
+      {:else if animation === 'scale'}
+        <div class="reveal-content" in:scale={scaleParams}>
+          <slot />
+        </div>
+      {:else if animation === 'blur'}
+        <div class="reveal-content" in:blurIn={{ duration, delay: totalDelay }}>
+          <slot />
+        </div>
+      {:else}
+        <div class="reveal-content" in:fade={fadeParams}>
+          <slot />
+        </div>
+      {/if}
     {:else}
-      <div class="reveal-content" in:fade={fadeParams}>
+      <div class="reveal-placeholder" aria-hidden="true">
         <slot />
       </div>
     {/if}
-  {:else}
-    <div class="reveal-placeholder" aria-hidden="true">
-      <slot />
-    </div>
-  {/if}
-</div>
+  </div>
+{/if}
 
 <style>
   .reveal-wrapper {
@@ -90,6 +112,10 @@
   .reveal-content {
     will-change: transform, opacity;
     height: 100%;
+  }
+
+  .reveal-content--immediate {
+    will-change: auto;
   }
   
   .reveal-placeholder {
