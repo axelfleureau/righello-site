@@ -8,7 +8,9 @@
 
   type IconKey = 'percent' | 'wallet' | 'fund' | 'users' | 'brain' | 'chart' | 'file' | 'bot' | 'search' | 'dashboard' | 'quote' | 'workflow';
 
+  const agencySourceUrl = 'https://www.lavoroimpresa.fvg.it/portale/incentivi_dettaglio.aspx?AltID=1681&GUID=9e99d2dc-470e-463c-b695-adf01428af32&ID=9e99d2dc-470e-463c-b695-adf01428af32&PreviewKey=manduph3cvcxpm2yuuputsw0';
   const officialSourceUrl = 'https://www.consiglio.regione.fvg.it/pagineinterne/Portale/comunicatiStampaDettaglio.aspx?ID=944263';
+  const incentivesPortalUrl = 'https://incentivi.regione.fvg.it/';
 
   const icons: Record<IconKey, string> = {
     percent: '<path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/>',
@@ -142,9 +144,31 @@
     },
   ];
 
+  const officialSources = [
+    {
+      label: 'Scheda Agenzia Lavoro & SviluppoImpresa',
+      href: agencySourceUrl,
+    },
+    {
+      label: 'Comunicato Consiglio regionale FVG',
+      href: officialSourceUrl,
+    },
+    {
+      label: 'Portale Incentivi FVG',
+      href: incentivesPortalUrl,
+    },
+  ];
+
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026#webpage',
+        url: 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026',
+        name: 'Bando Intelligenza Artificiale FVG 2026 | Righello',
+        citation: officialSources.map((source) => source.href),
+      },
       {
         '@type': 'FAQPage',
         '@id': 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026#faq',
@@ -348,9 +372,17 @@
       </div>
 
       <RevealOnScroll animation="fade">
-      <p class="source-note">
-        Le informazioni sono basate sulle comunicazioni pubbliche della Regione Friuli Venezia Giulia. Aggiorneremo questa pagina quando uscirà la documentazione definitiva.
-      </p>
+      <div class="source-note">
+        <p>
+          Le informazioni sono basate sulle comunicazioni pubbliche della Regione Friuli Venezia Giulia. Aggiorneremo questa pagina quando uscirà la documentazione definitiva.
+        </p>
+        <div class="official-source-links" aria-label="Fonti ufficiali sul bando Intelligenza Artificiale FVG">
+          <span>Fonti ufficiali</span>
+          {#each officialSources as source}
+            <a href={source.href} target="_blank" rel="noopener noreferrer">{source.label}</a>
+          {/each}
+        </div>
+      </div>
       </RevealOnScroll>
     </div>
   </section>
@@ -936,6 +968,52 @@
     border-left: 3px solid #d6487e;
     border-radius: 1rem;
     background: rgba(214, 72, 126, 0.08);
+  }
+
+  .source-note p {
+    margin: 0;
+  }
+
+  .official-source-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    align-items: center;
+    margin-top: 0.85rem;
+  }
+
+  .official-source-links span,
+  .official-source-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.15rem;
+    border-radius: 999px;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .official-source-links span {
+    color: #ffffff;
+    background: linear-gradient(135deg, #d6487e, #06b6d4);
+  }
+
+  .official-source-links a {
+    color: var(--text-primary);
+    border: 1px solid rgba(214, 72, 126, 0.28);
+    background: rgba(255, 255, 255, 0.06);
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .official-source-links a:hover {
+    transform: translateY(-2px);
+    border-color: rgba(214, 72, 126, 0.5);
+    background: rgba(214, 72, 126, 0.14);
   }
 
   .muted-section {
