@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
+  import { browser } from '$app/environment';
 
   export let targetDate = '2026-06-30T23:59:59+02:00';
   export let title = 'Giugno è già iniziato';
@@ -13,7 +14,10 @@
 
   const targetTime = Date.parse(targetDate);
   let remaining = Math.max(0, targetTime - Date.now());
+  let card: HTMLElement;
   let intervalId: ReturnType<typeof setInterval> | null = null;
+  let observer: IntersectionObserver | null = null;
+  let isVisible = false;
 
   function pad(value: number) {
     return String(value).padStart(2, '0');
@@ -21,6 +25,28 @@
 
   function updateRemaining() {
     remaining = Math.max(0, targetTime - Date.now());
+  }
+
+  function stopTimer() {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  }
+
+  function startTimer() {
+    if (!browser || intervalId || !isVisible || document.hidden) return;
+    updateRemaining();
+    intervalId = setInterval(updateRemaining, 1000);
+  }
+
+  function handleVisibilityChange() {
+    if (!browser) return;
+    if (document.hidden) {
+      stopTimer();
+    } else {
+      startTimer();
+    }
   }
 
   $: totalSeconds = Math.floor(remaining / 1000);
@@ -36,18 +62,33 @@
   ] satisfies Unit[];
 
   onMount(() => {
+    if (!browser) return;
     updateRemaining();
-    intervalId = setInterval(updateRemaining, 1000);
+    observer = new IntersectionObserver(
+      (entries) => {
+        isVisible = entries[0].isIntersecting;
+        if (isVisible) {
+          startTimer();
+        } else {
+          stopTimer();
+        }
+      },
+      { rootMargin: '120px 0px' }
+    );
+    observer.observe(card);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
   });
 
   onDestroy(() => {
-    if (intervalId) {
-      clearInterval(intervalId);
+    stopTimer();
+    observer?.disconnect();
+    if (browser) {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     }
   });
 </script>
 
-<section class="countdown-card" aria-label="Countdown preparazione bando AI FVG">
+<section bind:this={card} class="countdown-card" aria-label="Countdown preparazione bando AI FVG">
   <div class="countdown-glow" aria-hidden="true"></div>
   <div class="countdown-head">
     <span>In previsione</span>

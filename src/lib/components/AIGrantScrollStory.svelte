@@ -18,7 +18,10 @@
   let smoothedProgress = 0;
   let scrollHandler: (() => void) | null = null;
   let unsubscribeProgress: (() => void) | null = null;
+  let cards: HTMLElement[] = [];
+  let observer: IntersectionObserver | null = null;
   let rafPending = false;
+  let listening = false;
   let reducedMotion = false;
   let isReady = false;
   const progressSpring = spring(0, {
@@ -42,7 +45,10 @@
     progress = total > 0 ? clamp((-rect.top / total) * 100, 0, 100) : 0;
     progressSpring.set(progress);
 
-    const cards = Array.from(section.querySelectorAll<HTMLElement>('.story-step'));
+    if (cards.length === 0) {
+      cards = Array.from(section.querySelectorAll<HTMLElement>('.story-step'));
+    }
+
     const focusLine = window.innerHeight * 0.52;
     let closest = 0;
     let distance = Number.POSITIVE_INFINITY;
@@ -88,13 +94,46 @@
     }
 
     scrollHandler = onScroll;
-    window.addEventListener('scroll', scrollHandler, { passive: true });
-    window.addEventListener('resize', scrollHandler, { passive: true });
-    updateScrollState();
+    cards = Array.from(section.querySelectorAll<HTMLElement>('.story-step'));
+    const shouldAnimateScroll = window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
+
+    if (!shouldAnimateScroll) {
+      progress = 100;
+      progressSpring.set(100);
+      return;
+    }
+
+    const addScrollListeners = () => {
+      if (!scrollHandler || listening) return;
+      listening = true;
+      window.addEventListener('scroll', scrollHandler, { passive: true });
+      window.addEventListener('resize', scrollHandler, { passive: true });
+      updateScrollState();
+    };
+
+    const removeScrollListeners = () => {
+      if (!scrollHandler || !listening) return;
+      listening = false;
+      window.removeEventListener('scroll', scrollHandler);
+      window.removeEventListener('resize', scrollHandler);
+    };
+
+    observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          addScrollListeners();
+        } else {
+          removeScrollListeners();
+        }
+      },
+      { rootMargin: '30% 0px' }
+    );
+    observer.observe(section);
   });
 
   onDestroy(() => {
     unsubscribeProgress?.();
+    observer?.disconnect();
     if (!browser || !scrollHandler) return;
     window.removeEventListener('scroll', scrollHandler);
     window.removeEventListener('resize', scrollHandler);

@@ -297,6 +297,7 @@
         gridThickness={18}
         fadeDistance={1.7}
         vignetteStrength={2.6}
+        disableOnMobile={true}
       />
     </div>
     <div class="section-container hero-grid">

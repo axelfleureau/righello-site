@@ -14,6 +14,8 @@
   export let gridRotation: number = 0;
   export let mouseInteraction: boolean = true;
   export let mouseInteractionRadius: number = 1;
+  export let disableOnMobile: boolean = false;
+  export let disableOnReducedMotion: boolean = true;
   
   let container: HTMLDivElement;
   let renderer: any;
@@ -231,6 +233,14 @@ void main() {
 
   onMount(() => {
     if (!browser || !container) return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
+
+    if ((disableOnReducedMotion && prefersReducedMotion) || (disableOnMobile && (isCoarsePointer || isNarrowViewport))) {
+      return;
+    }
+
     // Defer WebGL initialization until the grid enters the viewport.
     // This avoids starting the expensive OGL render loop at page-load time
     // and saves CPU during initial hydration.
