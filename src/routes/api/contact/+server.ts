@@ -251,7 +251,7 @@ function buildClientEmailHtml(form: ContactForm, enhancedBody: string): string {
               <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 32px 0;">
                 <tr>
                   <td style="background-color: #D6487E; border-radius: 8px; text-align: center;">
-                    <a href="https://www.wearerighello.com/progetti" style="display: inline-block; padding: 14px 32px; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 15px;">Vedi i Risultati dei Nostri Clienti \u2192</a>
+                    <a href="https://www.wearerighello.com/servizi" style="display: inline-block; padding: 14px 32px; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 15px;">Scopri Come Lavoriamo \u2192</a>
                   </td>
                 </tr>
               </table>

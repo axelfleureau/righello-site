@@ -114,7 +114,6 @@
     },
     {
       name: 'Reguta',
-      href: '/progetti/reguta',
       text: 'Dalla comunicazione al gestionale operativo: lavoratori, sicurezza, macchinari, botti, manutenzioni, scadenze e documenti in un sistema più ordinato.',
     },
   ];
