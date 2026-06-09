@@ -102,7 +102,7 @@
   let demoVideo: HTMLVideoElement;
   let demoSection: HTMLElement;
   let videoFrame: HTMLElement;
-  let demoControls = true;
+  let demoControls = false;
 
   onMount(() => {
     let ctx: { revert: () => void } | null = null;
@@ -112,10 +112,11 @@
 
     const setupScrollVideo = async () => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const canScrub = window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
 
-      if (reduceMotion || !canScrub || !demoVideo || !demoSection) return;
-      demoControls = false;
+      if (reduceMotion || !demoVideo || !demoSection) {
+        demoControls = true;
+        return;
+      }
 
       const gsapModule = await import('gsap');
       const scrollModule = await import('gsap/ScrollTrigger');
@@ -142,6 +143,7 @@
 
       ctx = gsap.context(() => {
         const scrubState = { time: 0 };
+        const isMobile = window.matchMedia('(max-width: 767px)').matches;
         const maxTime = Math.max(0, demoVideo.duration - 0.04);
 
         scrollTween = gsap.to(scrubState, {
@@ -149,9 +151,9 @@
           ease: 'none',
           scrollTrigger: {
             trigger: demoSection,
-            start: 'top 72%',
-            end: 'bottom 28%',
-            scrub: 0.08,
+            start: isMobile ? 'top 82%' : 'top 72%',
+            end: isMobile ? 'bottom 18%' : 'bottom 28%',
+            scrub: isMobile ? 0.2 : 0.08,
             invalidateOnRefresh: true,
           },
           onUpdate: () => {
@@ -160,7 +162,7 @@
           },
         });
 
-        if (videoFrame) {
+        if (videoFrame && !isMobile) {
           frameTween = gsap.fromTo(
             videoFrame,
             { y: 36, scale: 0.96 },
@@ -479,15 +481,15 @@
   }
 
   .app-store-button {
-    min-height: 56px;
+    min-height: 60px;
     width: fit-content;
     display: inline-flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 0.58rem;
+    justify-content: center;
+    gap: 0.72rem;
     border: 1px solid rgba(255, 255, 255, 0.82);
-    border-radius: 0.72rem;
-    padding: 0.46rem 1.05rem 0.48rem 0.88rem;
+    border-radius: 999px;
+    padding: 0.55rem 1.45rem;
     background: #050505;
     color: #fff;
     text-decoration: none;
@@ -503,8 +505,8 @@
   }
 
   .app-store-icon {
-    width: 1.55rem;
-    height: 1.55rem;
+    width: 1.65rem;
+    height: 1.65rem;
     flex: 0 0 auto;
     fill: currentColor;
   }
@@ -522,7 +524,7 @@
   }
 
   .app-store-button strong {
-    font-size: 1.18rem;
+    font-size: 1.16rem;
     font-weight: 300;
     letter-spacing: 0;
   }
@@ -808,7 +810,7 @@
     }
 
     .app-store-button {
-      width: min(100%, 13.5rem);
+      width: 100%;
       justify-content: center;
     }
 
