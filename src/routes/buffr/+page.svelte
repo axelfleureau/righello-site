@@ -111,16 +111,19 @@
 
   onMount(() => {
     let ctx: { revert: () => void } | null = null;
-    let scrollTween: { kill: () => void } | null = null;
-    let frameTween: { kill: () => void } | null = null;
     let resizeObserver: ResizeObserver | null = null;
+    let intersectionObserver: IntersectionObserver | null = null;
     let frameRequest = 0;
     let activeFrame = -1;
-    let pendingFrame = 0;
+    let isDemoVisible = false;
+    let renderLoopActive = false;
     let cancelled = false;
+    let reduceMotion = false;
+    let setFrameY: ((value: number) => void) | null = null;
+    let setFrameScale: ((value: number) => void) | null = null;
 
     const setupScrollFrames = async () => {
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       if (!demoCanvas || !demoSection) {
         return;
@@ -152,7 +155,6 @@
       };
 
       const drawFrame = (index: number) => {
-        sizeCanvas();
         const column = index % demoSpriteColumns;
         const row = Math.floor(index / demoSpriteColumns);
         canvasContext.drawImage(
@@ -167,75 +169,145 @@
           demoCanvas.height
         );
         activeFrame = index;
+        demoCanvas.dataset.frame = String(index);
       };
 
-      const scheduleFrame = (index: number) => {
-        pendingFrame = Math.min(demoFrameCount - 1, Math.max(0, index));
-        if (pendingFrame === activeFrame || frameRequest) return;
+      const getScrollProgress = () => {
+        const bounds = demoSection.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 1;
+        const isMobile = window.matchMedia('(max-width: 767px)').matches;
+        const startRatio = isMobile ? 0.82 : 0.72;
+        const endRatio = isMobile ? 0.18 : 0.28;
+        const start = viewportHeight * startRatio;
+        const travel = bounds.height + viewportHeight * (startRatio - endRatio);
+        return Math.min(1, Math.max(0, (start - bounds.top) / travel));
+      };
 
+      const renderFromScroll = () => {
+        const progress = reduceMotion ? 0 : getScrollProgress();
+        const nextFrame = Math.min(
+          demoFrameCount - 1,
+          Math.max(0, Math.round(progress * (demoFrameCount - 1)))
+        );
+
+        if (nextFrame !== activeFrame) {
+          drawFrame(nextFrame);
+        }
+
+        if (setFrameY && setFrameScale) {
+          setFrameY(36 + progress * -58);
+          setFrameScale(0.96 + progress * 0.04);
+        }
+      };
+
+      const requestRender = () => {
+        if (frameRequest || cancelled) return;
         frameRequest = window.requestAnimationFrame(() => {
           frameRequest = 0;
-          drawFrame(pendingFrame);
+          renderFromScroll();
+          if (renderLoopActive && !cancelled) {
+            frameRequest = window.requestAnimationFrame(runRenderLoop);
+          }
         });
       };
 
-      resizeObserver = new ResizeObserver(() => drawFrame(Math.max(0, activeFrame)));
+      const runRenderLoop = () => {
+        if (!renderLoopActive || cancelled) {
+          frameRequest = 0;
+          return;
+        }
+
+        renderFromScroll();
+        frameRequest = window.requestAnimationFrame(runRenderLoop);
+      };
+
+      const startRenderLoop = () => {
+        if (reduceMotion) {
+          requestRender();
+          return;
+        }
+
+        if (renderLoopActive) return;
+        renderLoopActive = true;
+        if (!frameRequest) {
+          frameRequest = window.requestAnimationFrame(runRenderLoop);
+        }
+      };
+
+      const stopRenderLoop = () => {
+        renderLoopActive = false;
+      };
+
+      resizeObserver = new ResizeObserver(() => {
+        sizeCanvas();
+        drawFrame(Math.max(0, activeFrame));
+        requestRender();
+      });
       resizeObserver.observe(demoCanvas);
+      sizeCanvas();
       drawFrame(0);
 
       if (reduceMotion) return;
 
       const gsapModule = await import('gsap');
-      const scrollModule = await import('gsap/ScrollTrigger');
       if (cancelled) return;
 
       const gsap = gsapModule.default;
-      const ScrollTrigger = scrollModule.ScrollTrigger;
-      gsap.registerPlugin(ScrollTrigger);
 
       ctx = gsap.context(() => {
         const isMobile = window.matchMedia('(max-width: 767px)').matches;
 
-        scrollTween = ScrollTrigger.create({
-          trigger: demoSection,
-          start: isMobile ? 'top 82%' : 'top 72%',
-          end: isMobile ? 'bottom 18%' : 'bottom 28%',
-          invalidateOnRefresh: true,
-          onUpdate: (self: { progress: number }) => {
-            scheduleFrame(Math.round(self.progress * (demoFrameCount - 1)));
-          },
-        });
-
         if (videoFrame && !isMobile) {
-          frameTween = gsap.fromTo(
-            videoFrame,
-            { y: 36, scale: 0.96 },
-            {
-              y: -22,
-              scale: 1,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: demoSection,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true,
-              },
-            }
-          );
+          gsap.set(videoFrame, { y: 36, scale: 0.96, force3D: true });
+          setFrameY = gsap.quickSetter(videoFrame, 'y', 'px') as (value: number) => void;
+          setFrameScale = gsap.quickSetter(videoFrame, 'scale') as (value: number) => void;
         }
       }, demoSection);
+
+      intersectionObserver = new IntersectionObserver(
+        ([entry]) => {
+          isDemoVisible = entry.isIntersecting;
+          if (isDemoVisible) {
+            startRenderLoop();
+          } else {
+            stopRenderLoop();
+          }
+        },
+        { rootMargin: '220px 0px' }
+      );
+      intersectionObserver.observe(demoSection);
+
+      const handleScroll = () => {
+        if (isDemoVisible) startRenderLoop();
+      };
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', requestRender, { passive: true });
+      window.addEventListener('orientationchange', requestRender, { passive: true });
+      requestRender();
+
+      return () => {
+        stopRenderLoop();
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', requestRender);
+        window.removeEventListener('orientationchange', requestRender);
+      };
     };
 
-    setupScrollFrames().catch(() => {
+    let cleanupScrollFrames: (() => void) | void;
+
+    setupScrollFrames().then((cleanup) => {
+      cleanupScrollFrames = cleanup;
+    }).catch(() => {
       // Keep the poster background visible if a frame asset fails.
     });
 
     return () => {
       cancelled = true;
       if (frameRequest) window.cancelAnimationFrame(frameRequest);
+      cleanupScrollFrames?.();
       resizeObserver?.disconnect();
-      scrollTween?.kill();
-      frameTween?.kill();
+      intersectionObserver?.disconnect();
       ctx?.revert();
     };
   });
@@ -605,6 +677,18 @@
     box-shadow: 0 34px 100px rgba(0, 0, 0, 0.55);
   }
 
+  .demo-stage,
+  .demo-phone,
+  .demo-phone canvas {
+    touch-action: pan-y;
+  }
+
+  .demo-phone {
+    contain: layout paint;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
   .phone-shell img,
   .demo-phone canvas {
     display: block;
@@ -615,6 +699,7 @@
     background:
       url('/products/buffr/buffr-demo-poster.jpg') center / cover no-repeat,
       #050505;
+    transform: translateZ(0);
   }
 
   .live-chip {
