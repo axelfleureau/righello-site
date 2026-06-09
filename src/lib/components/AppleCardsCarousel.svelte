@@ -41,6 +41,7 @@
   // Navigation + autoplay state
   let currentIndex = 0;
   let reducedMotion = false;
+  let scrollRaf: number | null = null;
   const scrollPlayingSet = new Set<number>();
   
   $: reelItems = items.filter(i => (i.cloudinaryUrl || i.videoSrc || i.youtubeId) && !i.isCta);
@@ -122,7 +123,7 @@
     if (currentIndex > 0) scrollToIndex(currentIndex - 1);
   }
 
-  function handleCarouselScroll() {
+  function updateCarouselIndex() {
     if (!container) return;
     const cLeft = container.getBoundingClientRect().left;
     const cards = container.querySelectorAll<HTMLElement>('[data-card-idx]');
@@ -131,7 +132,15 @@
       const dist = Math.abs(c.getBoundingClientRect().left - cLeft);
       if (dist < bestDist) { bestDist = dist; best = i; }
     });
-    currentIndex = best;
+    if (currentIndex !== best) currentIndex = best;
+  }
+
+  function handleCarouselScroll() {
+    if (scrollRaf !== null) return;
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = null;
+      updateCarouselIndex();
+    });
   }
   
   function openLightbox(item: { title: string; videoSrc?: string; cloudinaryUrl?: string; youtubeId?: string }, idx?: number) {
@@ -263,6 +272,7 @@
     if (!browser) return;
 
     reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canAutoplayCards = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     window.addEventListener('keydown', handleKeydown);
     container.addEventListener('scroll', handleCarouselScroll, { passive: true });
 
@@ -307,40 +317,39 @@
       if (anyActive) startRaf(); else stopRaf();
     }
 
-    videoObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const card = entry.target as HTMLElement;
-          const idx = parseInt(card.dataset.cardIdx ?? '-1');
-          if (idx < 0) return;
-          const video = card.querySelector<HTMLVideoElement>('.card-video-native');
-          if (!video) return;
+    if (canAutoplayCards && !reducedMotion) {
+      videoObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const card = entry.target as HTMLElement;
+            const idx = parseInt(card.dataset.cardIdx ?? '-1');
+            if (idx < 0) return;
+            const video = card.querySelector<HTMLVideoElement>('.card-video-native');
+            if (!video) return;
 
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.60) {
-            if (reelViewerOpen) return;
-            scrollPlayingSet.add(idx);
-            video.play().catch(() => {});
-            if (reducedMotion && progressBarEls[idx]) {
-              progressBarEls[idx]!.style.transform = 'scaleX(1)';
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.60) {
+              if (reelViewerOpen) return;
+              scrollPlayingSet.add(idx);
+              video.play().catch(() => {});
+              syncRaf();
+            } else if (entry.intersectionRatio < 0.3) {
+              scrollPlayingSet.delete(idx);
+              video.pause();
+              const bar = progressBarEls[idx];
+              if (bar) bar.style.transform = 'scaleX(0)';
+              const label = timeLabelEls[idx];
+              if (label) label.textContent = '';
+              syncRaf();
             }
-            syncRaf();
-          } else if (entry.intersectionRatio < 0.3) {
-            scrollPlayingSet.delete(idx);
-            video.pause();
-            const bar = progressBarEls[idx];
-            if (bar) bar.style.transform = 'scaleX(0)';
-            const label = timeLabelEls[idx];
-            if (label) label.textContent = '';
-            syncRaf();
-          }
-        });
-      },
-      { root: container, threshold: [0, 0.3, 0.6, 0.85, 1.0] }
-    );
+          });
+        },
+        { root: container, threshold: [0, 0.3, 0.6, 0.85, 1.0] }
+      );
 
-    container.querySelectorAll<HTMLElement>('[data-card-idx]').forEach((card) => {
-      videoObserver!.observe(card);
-    });
+      container.querySelectorAll<HTMLElement>('[data-card-idx]').forEach((card) => {
+        videoObserver!.observe(card);
+      });
+    }
 
     container.addEventListener('pause', syncRaf, { capture: true, passive: true });
     container.addEventListener('play', syncRaf, { capture: true, passive: true });
@@ -363,6 +372,7 @@
     return () => {
       window.removeEventListener('keydown', handleKeydown);
       container?.removeEventListener('scroll', handleCarouselScroll);
+      if (scrollRaf !== null) cancelAnimationFrame(scrollRaf);
       container?.removeEventListener('timeupdate', handleTimeUpdate, { capture: true });
       container?.removeEventListener('pause', syncRaf, { capture: true });
       container?.removeEventListener('play', syncRaf, { capture: true });

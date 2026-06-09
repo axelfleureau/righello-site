@@ -49,6 +49,7 @@
   let isSwiping = false;
   const SWIPE_THRESHOLD = 25;
   let reducedMotion = false;
+  let canAutoplayInline = false;
   let videoLoaded = false;
   let isAnimating = false;
 
@@ -62,9 +63,9 @@
     videoLoaded = false;
   }
 
-  $: if (videoElement && isInView && !lightboxOpen) {
+  $: if (canAutoplayInline && videoElement && isInView && !lightboxOpen) {
     videoElement.play().catch(() => {});
-  } else if (videoElement && (!isInView || lightboxOpen)) {
+  } else if (videoElement && (!canAutoplayInline || !isInView || lightboxOpen)) {
     videoElement.pause();
   }
 
@@ -185,6 +186,7 @@
   onMount(() => {
     if (browser) {
       reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      canAutoplayInline = window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reducedMotion;
       window.addEventListener('keydown', handleKeydown);
 
       testimonials.forEach((t) => {
@@ -204,7 +206,7 @@
             isInView = entry.isIntersecting;
             if (isInView) {
               startAutoplay();
-              if (videoElement && !reducedMotion) videoElement.play().catch(() => {});
+              if (videoElement && canAutoplayInline) videoElement.play().catch(() => {});
             } else if (!isHovering && !lightboxOpen) {
               stopAutoplay();
               if (videoElement) videoElement.pause();
@@ -272,7 +274,7 @@
                 alt={item.clientName}
                 class="avt-card__bg-thumb"
                 style="display: {(item.cloudinaryUrl || item.videoSrc || item.youtubeId) ? 'block' : 'none'}"
-                loading="eager"
+                loading="lazy"
                 fetchpriority="low"
                 decoding="async"
               />
@@ -302,28 +304,30 @@
                   src={activeTestimonial.youtubeId ? getYoutubeThumbnailUrl(activeTestimonial.youtubeId) : (activeTestimonial.thumbnailUrl || getThumbnailUrl(activeTestimonial.videoSrc || ''))}
                   alt={activeTestimonial.clientName}
                   class="avt-card__thumbnail"
-                  loading="eager"
+                  loading="lazy"
                   decoding="async"
                   on:error={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.add('avt-thumb-fallback--visible'); }}
                 />
                 <div class="avt-thumb-fallback">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>
                 </div>
-                <video
-                  bind:this={videoElement}
-                  src={activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc}
-                  autoplay
-                  muted
-                  loop
-                  playsinline
-                  preload="metadata"
-                  class="avt-card__video"
-                  class:avt-card__video--visible={videoLoaded}
-                  on:canplay={handleVideoCanPlay}
-                  on:loadeddata={handleVideoCanPlay}
-                >
-                  <track kind="captions" />
-                </video>
+                {#if canAutoplayInline && (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc)}
+                  <video
+                    bind:this={videoElement}
+                    src={activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc}
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    class="avt-card__video"
+                    class:avt-card__video--visible={videoLoaded}
+                    on:canplay={handleVideoCanPlay}
+                    on:loadeddata={handleVideoCanPlay}
+                  >
+                    <track kind="captions" />
+                  </video>
+                {/if}
               {:else}
                 <div class="avt-card__placeholder">
                   <div class="avt-card__initial">

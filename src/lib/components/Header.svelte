@@ -6,7 +6,6 @@
   import { departments } from '$lib/data/projects';
   
   let mobileMenuOpen = false;
-  let scrollY = 0;
   let lastScrollY = 0;
   let isAtTop = true;
   let isCompact = false;
@@ -50,31 +49,46 @@
   }
   
   onMount(() => {
+    let rafId: number | null = null;
+
+    const updateHeaderState = () => {
+      rafId = null;
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+      const nextIsAtTop = currentScrollY <= 30;
+      let nextIsCompact = isCompact;
+
+      if (nextIsAtTop) {
+        nextIsCompact = false;
+      } else if (scrollDelta > 5 && currentScrollY > 80) {
+        nextIsCompact = true;
+        if (serviziHovered) serviziHovered = false;
+      } else if (scrollDelta < -5) {
+        nextIsCompact = false;
+      }
+
+      if (isAtTop !== nextIsAtTop) {
+        isAtTop = nextIsAtTop;
+      }
+
+      if (isCompact !== nextIsCompact) {
+        isCompact = nextIsCompact;
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
     const handleScroll = () => {
-      scrollY = window.scrollY;
-      const scrollDelta = scrollY - lastScrollY;
-      
-      // At top: transparent, classic navbar, reset compact
-      isAtTop = scrollY <= 30;
-      if (isAtTop) {
-        isCompact = false;
-      }
-      
-      // Scrolling down: compact mode (navbar stays visible, just smaller)
-      if (scrollDelta > 5 && scrollY > 80) {
-        isCompact = true;
-        serviziHovered = false;
-      }
-      // Scrolling up: expand
-      else if (scrollDelta < -5) {
-        isCompact = false;
-      }
-      
-      lastScrollY = scrollY;
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(updateHeaderState);
     };
     
+    updateHeaderState();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+    };
   });
 </script>
 
@@ -261,7 +275,11 @@
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     background: rgba(20, 20, 25, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.3s ease,
+      border-color 0.3s ease,
+      transform 0.3s ease;
     box-shadow: 
       0 4px 30px rgba(0, 0, 0, 0.15),
       0 1px 1px rgba(255, 255, 255, 0.05) inset;

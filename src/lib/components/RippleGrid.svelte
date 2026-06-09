@@ -14,7 +14,7 @@
   export let gridRotation: number = 0;
   export let mouseInteraction: boolean = true;
   export let mouseInteractionRadius: number = 1;
-  export let disableOnMobile: boolean = false;
+  export let disableOnMobile: boolean = true;
   export let disableOnReducedMotion: boolean = true;
   
   let container: HTMLDivElement;
@@ -316,7 +316,7 @@ void main() {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    pointer-events: auto;
+    pointer-events: none;
   }
   
   .ripple-grid :global(canvas) {

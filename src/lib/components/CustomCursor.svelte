@@ -13,13 +13,15 @@
   let prefersReducedMotion = false;
   let rafId: number;
   let isLightboxOpen = false;
+  let dotEl: HTMLDivElement;
+  let ringEl: HTMLDivElement;
 
   const INTERACTIVE_SELECTOR = 'a, button, [role="button"], input, textarea, select, .cursor-hover';
   const RING_LERP = 0.15;
 
   function handleLightboxOpen() {
     isLightboxOpen = true;
-    isVisible = false;
+    setVisible(false);
     isHovering = false;
     document.body.style.cursor = 'auto';
     document.documentElement.style.cursor = 'auto';
@@ -35,7 +37,8 @@
     if (isLightboxOpen) return;
     dotX = e.clientX;
     dotY = e.clientY;
-    if (!isVisible) isVisible = true;
+    if (!isVisible) setVisible(true);
+    updateDotTransform();
   }
 
   function handleMouseDown() {
@@ -52,7 +55,7 @@
     if ((target as HTMLElement).tagName === 'IFRAME') {
       document.body.style.cursor = 'auto';
       document.documentElement.style.cursor = 'auto';
-      isVisible = false;
+      setVisible(false);
       return;
     }
 
@@ -69,7 +72,7 @@
     if ((target as HTMLElement).tagName === 'IFRAME') {
       document.body.style.cursor = 'none';
       document.documentElement.style.cursor = 'none';
-      isVisible = true;
+      setVisible(true);
       return;
     }
 
@@ -79,17 +82,40 @@
   }
 
   function handleMouseLeave() {
-    isVisible = false;
+    setVisible(false);
   }
 
   function handleMouseEnter() {
-    isVisible = true;
+    setVisible(true);
+  }
+
+  function setVisible(nextVisible: boolean) {
+    if (isVisible === nextVisible) return;
+    isVisible = nextVisible;
   }
 
   function animate() {
     ringX += (dotX - ringX) * RING_LERP;
     ringY += (dotY - ringY) * RING_LERP;
+    updateRingTransform();
     rafId = requestAnimationFrame(animate);
+  }
+
+  function updateDotTransform() {
+    if (!dotEl) return;
+    dotEl.style.transform = `translate(${dotX}px, ${dotY}px) scale(${isHovering ? 0 : isClicking ? 0.6 : 1})`;
+    dotEl.style.opacity = isHovering ? '0' : '';
+  }
+
+  function updateRingTransform() {
+    if (!ringEl) return;
+    ringEl.style.transform = `translate(${ringX}px, ${ringY}px)`;
+  }
+
+  $: if (shouldRender) {
+    isHovering;
+    isClicking;
+    updateDotTransform();
   }
 
   onMount(() => {
@@ -147,16 +173,16 @@
 
 {#if shouldRender}
   <div
+    bind:this={dotEl}
     class="cursor-dot"
     class:hidden={!isVisible}
-    style="transform: translate({dotX}px, {dotY}px) scale({isHovering ? 0 : isClicking ? 0.6 : 1}); opacity: {isHovering ? 0 : 1};"
   ></div>
   <div
+    bind:this={ringEl}
     class="cursor-ring"
     class:hovering={isHovering}
     class:clicking={isClicking}
     class:hidden={!isVisible}
-    style="transform: translate({ringX}px, {ringY}px);"
   ></div>
 {/if}
 
