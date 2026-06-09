@@ -266,7 +266,7 @@ function buildClientEmailHtml(form: ContactForm, enhancedBody: string): string {
                 <a href="https://www.linkedin.com/company/righello" style="color: #D6487E; text-decoration: none; font-size: 13px;">LinkedIn</a>
               </p>
               <p style="margin: 0 0 8px 0; font-size: 14px; color: #999999; text-align: center;">Righello — Growth Agency</p>
-              <p style="margin: 0 0 8px 0; font-size: 13px; color: #bbbbbb; text-align: center;">Via Pio X 21, Mestre - Venezia</p>
+              <p style="margin: 0 0 8px 0; font-size: 13px; color: #bbbbbb; text-align: center;">Sede legale Pordenone · base operativa Mestre - Venezia</p>
               <p style="margin: 0 0 8px 0; font-size: 13px; color: #bbbbbb; text-align: center;">
                 <a href="mailto:hello@wearerighello.com" style="color: #D6487E; text-decoration: none;">hello@wearerighello.com</a>
               </p>
@@ -396,7 +396,7 @@ function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, priority: {
           <!-- Footer -->
           <tr>
             <td style="background-color: #fafafa; padding: 24px 40px; border-radius: 0 0 16px 16px; border-top: 1px solid #eeeeee;">
-              <p style="margin: 0; font-size: 13px; color: #bbbbbb; text-align: center;">Righello — Via Pio X 21, Mestre - Venezia</p>
+              <p style="margin: 0; font-size: 13px; color: #bbbbbb; text-align: center;">Righello — sede legale Pordenone · base operativa Mestre - Venezia</p>
             </td>
           </tr>
         </table>

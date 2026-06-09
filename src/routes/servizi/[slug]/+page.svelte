@@ -327,7 +327,7 @@
 
   /* ── Local product SEO block ──────────────────────────────────────── */
   .local-product-section {
-    padding: 0 1.5rem 4rem;
+    padding: 0 0 4rem;
     background: var(--bg-primary);
   }
 
@@ -342,6 +342,7 @@
     background:
       radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.16), transparent 26rem),
       rgba(255, 255, 255, 0.03);
+    min-width: 0;
   }
 
   .local-product-copy {
@@ -354,6 +355,7 @@
   .local-product-proof {
     display: grid;
     gap: 1rem;
+    min-width: 0;
   }
 
   .local-product-proof div {
@@ -376,11 +378,19 @@
   .local-product-proof p {
     color: var(--text-secondary);
     line-height: 1.55;
+    min-width: 0;
   }
 
   @media (max-width: 767px) {
     .local-product-grid {
       grid-template-columns: 1fr;
+      padding: 1.35rem;
+      border-radius: 1.25rem;
+    }
+
+    .local-product-proof div {
+      grid-template-columns: 2.35rem 1fr;
+      gap: 0.8rem;
     }
   }
 
@@ -501,7 +511,7 @@
   /* ── end AI Bridge ─────────────────────────────────────────────────── */
 
   .ai-grant-section {
-    padding: 0 1.5rem 4rem;
+    padding: 0 0 4rem;
     background: var(--bg-secondary);
   }
 
@@ -593,24 +603,25 @@
   }
 
   .services-section {
-    padding: var(--section-padding-sm) 1.5rem;
+    padding: var(--section-padding-sm) 0;
   }
 
   @media (min-width: 768px) {
     .services-section {
-      padding: var(--section-padding-md) 1.5rem;
+      padding: var(--section-padding-md) 0;
     }
   }
 
   @media (min-width: 1024px) {
     .services-section {
-      padding: var(--section-padding-lg) 1.5rem;
+      padding: var(--section-padding-lg) 0;
     }
   }
 
   .section-container {
     max-width: var(--container-max, 1280px);
     margin: 0 auto;
+    min-width: 0;
   }
 
   .section-header {
@@ -638,6 +649,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
+    min-width: 0;
   }
 
   @media (min-width: 640px) {
@@ -695,19 +707,19 @@
   }
 
   .workflow-section {
-    padding: var(--section-padding-sm) 1.5rem;
+    padding: var(--section-padding-sm) 0;
     background: var(--bg-secondary);
   }
 
   @media (min-width: 768px) {
     .workflow-section {
-      padding: var(--section-padding-md) 1.5rem;
+      padding: var(--section-padding-md) 0;
     }
   }
 
   @media (min-width: 1024px) {
     .workflow-section {
-      padding: var(--section-padding-lg) 1.5rem;
+      padding: var(--section-padding-lg) 0;
     }
   }
 
@@ -715,6 +727,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    min-width: 0;
   }
 
   @media (min-width: 768px) {
@@ -776,27 +789,28 @@
   }
 
   .final-cta-section {
-    padding: var(--section-padding-sm) 1.5rem;
+    padding: var(--section-padding-sm) 0;
   }
 
   @media (min-width: 768px) {
     .final-cta-section {
-      padding: var(--section-padding-md) 1.5rem;
+      padding: var(--section-padding-md) 0;
     }
   }
 
   @media (min-width: 1024px) {
     .final-cta-section {
-      padding: var(--section-padding-lg) 1.5rem;
+      padding: var(--section-padding-lg) 0;
     }
   }
 
   .final-cta {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: clamp(2.5rem, 8vw, 4rem) clamp(1.25rem, 5vw, 2rem);
     background: linear-gradient(135deg, rgba(214, 72, 126, 0.15), rgba(6, 182, 212, 0.1));
     border-radius: 2rem;
     border: 1px solid rgba(214, 72, 126, 0.2);
+    min-width: 0;
   }
 
   .cta-title {
@@ -819,5 +833,21 @@
     gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  @media (max-width: 767px) {
+    .final-cta {
+      border-radius: 1.5rem;
+    }
+
+    .cta-buttons {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .cta-buttons :global(.magnetic-button) {
+      width: 100%;
+      min-height: 56px;
+    }
   }
 </style>

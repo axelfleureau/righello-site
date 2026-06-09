@@ -815,7 +815,7 @@
 
   /* Local entry links */
   .local-entry-section {
-    padding: 0 1.5rem var(--section-padding-sm);
+    padding: 0 0 var(--section-padding-sm);
   }
 
   .local-entry-head {
@@ -829,6 +829,7 @@
     gap: 1rem;
     max-width: 900px;
     margin: 0 auto;
+    min-width: 0;
   }
 
   .local-entry-card {
@@ -1515,10 +1516,11 @@
   /* Final CTA */
   .final-cta {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: clamp(2.5rem, 8vw, 4rem) clamp(1.25rem, 5vw, 2rem);
     background: linear-gradient(135deg, rgba(214, 72, 126, 0.15), rgba(6, 182, 212, 0.1));
     border-radius: 2rem;
     border: 1px solid rgba(214, 72, 126, 0.2);
+    min-width: 0;
   }
   
   .cta-title {
@@ -1538,6 +1540,18 @@
   
   .cta-buttons {
     margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 767px) {
+    .final-cta {
+      border-radius: 1.5rem;
+    }
+
+    .cta-buttons :global(.magnetic-button),
+    .cta-buttons :global(.btn-primary-large) {
+      width: 100%;
+      min-height: 56px;
+    }
   }
   
   .btn-primary-large {

@@ -110,7 +110,8 @@
         <h4 class="footer-heading">Contatti</h4>
         <address class="footer-address">
           <a href="mailto:hello@wearerighello.com" class="contact-link">hello@wearerighello.com</a>
-          <span class="contact-text">Via Pio X 21, Mestre - Venezia</span>
+          <span class="contact-text">Sede legale: Pordenone</span>
+          <span class="contact-text">Base operativa: Mestre - Venezia</span>
           <span class="contact-text">P.IVA: 01979970934</span>
         </address>
       </div>

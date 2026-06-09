@@ -7,6 +7,7 @@
   export let duration: number = 600;
   export let threshold: number = 0.1;
   export let once: boolean = true;
+  export let disableOnMobile: boolean = true;
   
   let element: HTMLElement;
   let isVisible = true;
@@ -17,8 +18,10 @@
     if (!browser) return;
     
     prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
     
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || (disableOnMobile && (isCoarsePointer || isNarrowViewport))) {
       isVisible = true;
       return;
     }

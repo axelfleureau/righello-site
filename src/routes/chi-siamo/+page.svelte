@@ -370,7 +370,7 @@
     </ScrollReveal>
     <ScrollReveal animation="fade-up" delay={300}>
       <p class="mt-8 text-base" style="color: var(--text-muted);">
-        Via Pio X 21, Mestre - Venezia
+        Sede legale Pordenone · base operativa Mestre - Venezia
       </p>
     </ScrollReveal>
   </div>

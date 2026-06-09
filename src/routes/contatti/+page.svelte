@@ -147,10 +147,10 @@
                   </svg>
                 </div>
                 <div>
-                  <h4 class="font-semibold mb-1">Sede Operativa</h4>
+                  <h4 class="font-semibold mb-1">Sedi e operatività</h4>
                   <p class="text-lg" style="color: var(--text-secondary);">
-                    Via Pio X 21<br />
-                    Mestre - Venezia (VE)
+                    Sede legale: Pordenone<br />
+                    Base operativa: Mestre - Venezia
                   </p>
                 </div>
               </div>
@@ -376,6 +376,17 @@
     justify-content: center;
     transition: all 0.3s ease;
   }
+
+  #form :global(.grid),
+  #form :global(.grid > *),
+  .contact-info-card,
+  .form-column {
+    min-width: 0;
+  }
+
+  .contact-info-card a {
+    overflow-wrap: anywhere;
+  }
   
   .group:hover .contact-icon {
     background-color: var(--righello-pink);
@@ -505,5 +516,12 @@
 
   :global([data-theme="light"]) .direct-section-text {
     color: #64748b;
+  }
+
+  @media (max-width: 767px) {
+    .direct-section :global(.magnetic-button) {
+      width: 100%;
+      min-height: 56px;
+    }
   }
 </style>

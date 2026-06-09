@@ -387,6 +387,7 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
     margin-top: 2rem;
+    min-width: 0;
   }
 
   .funnel-card {
@@ -458,6 +459,7 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 3rem;
     align-items: start;
+    min-width: 0;
   }
 
   .proof-list,
@@ -492,6 +494,7 @@
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
+    min-width: 0;
   }
 
   .service-card,
@@ -558,6 +561,7 @@
     border-radius: 1.25rem;
     padding: clamp(2rem, 5vw, 3.5rem);
     text-align: center;
+    min-width: 0;
   }
 
   .cta-panel h2 {
@@ -598,6 +602,11 @@
 
     .service-card {
       min-height: auto;
+    }
+
+    .cta-panel :global(.magnetic-button) {
+      width: 100%;
+      min-height: 56px;
     }
   }
 </style>

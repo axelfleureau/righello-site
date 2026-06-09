@@ -12,7 +12,7 @@
     },
     {
       question: "Dove lavora Righello?",
-      answer: "Righello opera a Pordenone e Mestre e lavora principalmente con aziende in Friuli-Venezia Giulia, Veneto e Nord Italia. La sede legale e operativa indicata sul sito è a Mestre, e gestiamo anche clienti da remoto in tutta Italia."
+      answer: "Righello opera tra Pordenone e Mestre e lavora principalmente con aziende in Friuli-Venezia Giulia, Veneto e Nord Italia. La sede legale è a Pordenone, la base operativa indicata è a Mestre, e gestiamo anche clienti da remoto in tutta Italia."
     },
     {
       question: "Per quali settori lavora Righello?",
