@@ -1330,6 +1330,7 @@
 
   .partners-marquee-wrapper {
     width: 100%;
+    min-height: 2rem;
     overflow: hidden;
     /* Use px-based fade zones so narrow mobile screens don't clip logos.
        48px fade is enough to soften the edge without swallowing logos. */
@@ -1415,6 +1416,22 @@
   :global([data-theme="light"]) .partner-logo.no-filter {
     filter: grayscale(0.25);
     opacity: 0.6;
+  }
+
+  @media (max-width: 767px) {
+    .partners-strip {
+      mask-image: none;
+      -webkit-mask-image: none;
+    }
+
+    .partners-marquee-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .partner-logo {
+      opacity: 0.72;
+    }
   }
 
   .partner-sep {
