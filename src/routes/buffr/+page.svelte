@@ -98,25 +98,92 @@
   });
 
   const schemaMarkup = `<script type="application/ld+json">${schema.replace(/</g, '\\u003c')}<\/script>`;
+  const demoFrameCount = 84;
+  const demoSpriteColumns = 7;
+  const demoSpriteFrameWidth = 320;
+  const demoSpriteFrameHeight = 568;
+  const demoFrameRatio = demoSpriteFrameHeight / demoSpriteFrameWidth;
+  const demoSpriteSrc = '/products/buffr/buffr-scroll-sprite.jpg';
 
-  let demoVideo: HTMLVideoElement;
+  let demoCanvas: HTMLCanvasElement;
   let demoSection: HTMLElement;
   let videoFrame: HTMLElement;
-  let demoControls = false;
 
   onMount(() => {
     let ctx: { revert: () => void } | null = null;
     let scrollTween: { kill: () => void } | null = null;
     let frameTween: { kill: () => void } | null = null;
+    let resizeObserver: ResizeObserver | null = null;
+    let frameRequest = 0;
+    let activeFrame = -1;
+    let pendingFrame = 0;
     let cancelled = false;
 
-    const setupScrollVideo = async () => {
+    const setupScrollFrames = async () => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      if (reduceMotion || !demoVideo || !demoSection) {
-        demoControls = true;
+      if (!demoCanvas || !demoSection) {
         return;
       }
+
+      const canvasContext = demoCanvas.getContext('2d', { alpha: false });
+      if (!canvasContext) return;
+
+      const sprite = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
+        image.decoding = 'async';
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error('Unable to load BUFFR scroll sprite'));
+        image.src = demoSpriteSrc;
+      });
+
+      if (cancelled) return;
+
+      const sizeCanvas = () => {
+        const bounds = demoCanvas.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const width = Math.max(1, Math.round(bounds.width * dpr));
+        const height = Math.max(1, Math.round(bounds.width * demoFrameRatio * dpr));
+
+        if (demoCanvas.width !== width || demoCanvas.height !== height) {
+          demoCanvas.width = width;
+          demoCanvas.height = height;
+        }
+      };
+
+      const drawFrame = (index: number) => {
+        sizeCanvas();
+        const column = index % demoSpriteColumns;
+        const row = Math.floor(index / demoSpriteColumns);
+        canvasContext.drawImage(
+          sprite,
+          column * demoSpriteFrameWidth,
+          row * demoSpriteFrameHeight,
+          demoSpriteFrameWidth,
+          demoSpriteFrameHeight,
+          0,
+          0,
+          demoCanvas.width,
+          demoCanvas.height
+        );
+        activeFrame = index;
+      };
+
+      const scheduleFrame = (index: number) => {
+        pendingFrame = Math.min(demoFrameCount - 1, Math.max(0, index));
+        if (pendingFrame === activeFrame || frameRequest) return;
+
+        frameRequest = window.requestAnimationFrame(() => {
+          frameRequest = 0;
+          drawFrame(pendingFrame);
+        });
+      };
+
+      resizeObserver = new ResizeObserver(() => drawFrame(Math.max(0, activeFrame)));
+      resizeObserver.observe(demoCanvas);
+      drawFrame(0);
+
+      if (reduceMotion) return;
 
       const gsapModule = await import('gsap');
       const scrollModule = await import('gsap/ScrollTrigger');
@@ -126,39 +193,16 @@
       const ScrollTrigger = scrollModule.ScrollTrigger;
       gsap.registerPlugin(ScrollTrigger);
 
-      const ensureMetadata = () => new Promise<void>((resolve) => {
-        if (Number.isFinite(demoVideo.duration) && demoVideo.duration > 0) {
-          resolve();
-          return;
-        }
-
-        demoVideo.addEventListener('loadedmetadata', () => resolve(), { once: true });
-      });
-
-      await ensureMetadata();
-      if (cancelled) return;
-
-      demoVideo.pause();
-      demoVideo.currentTime = 0;
-
       ctx = gsap.context(() => {
-        const scrubState = { time: 0 };
         const isMobile = window.matchMedia('(max-width: 767px)').matches;
-        const maxTime = Math.max(0, demoVideo.duration - 0.04);
 
-        scrollTween = gsap.to(scrubState, {
-          time: maxTime,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: demoSection,
-            start: isMobile ? 'top 82%' : 'top 72%',
-            end: isMobile ? 'bottom 18%' : 'bottom 28%',
-            scrub: isMobile ? 0.2 : 0.08,
-            invalidateOnRefresh: true,
-          },
-          onUpdate: () => {
-            if (!demoVideo.duration) return;
-            demoVideo.currentTime = Math.min(maxTime, Math.max(0, scrubState.time));
+        scrollTween = ScrollTrigger.create({
+          trigger: demoSection,
+          start: isMobile ? 'top 82%' : 'top 72%',
+          end: isMobile ? 'bottom 18%' : 'bottom 28%',
+          invalidateOnRefresh: true,
+          onUpdate: (self: { progress: number }) => {
+            scheduleFrame(Math.round(self.progress * (demoFrameCount - 1)));
           },
         });
 
@@ -182,10 +226,14 @@
       }, demoSection);
     };
 
-    setupScrollVideo();
+    setupScrollFrames().catch(() => {
+      // Keep the poster background visible if a frame asset fails.
+    });
 
     return () => {
       cancelled = true;
+      if (frameRequest) window.cancelAnimationFrame(frameRequest);
+      resizeObserver?.disconnect();
       scrollTween?.kill();
       frameTween?.kill();
       ctx?.revert();
@@ -307,16 +355,12 @@
 
     <div class="demo-stage">
       <div class="demo-phone" bind:this={videoFrame}>
-        <video
-          bind:this={demoVideo}
-          src="/products/buffr/buffr-demo.mp4"
-          poster="/products/buffr/buffr-demo-poster.jpg"
-          muted
-          playsinline
-          preload="auto"
-          controls={demoControls}
-          aria-label="Demo video BUFFR controllata dallo scroll"
-        ></video>
+        <canvas
+          bind:this={demoCanvas}
+          width="540"
+          height="960"
+          aria-label="Demo BUFFR controllata dallo scroll"
+        ></canvas>
       </div>
     </div>
   </div>
@@ -562,13 +606,15 @@
   }
 
   .phone-shell img,
-  .demo-phone video {
+  .demo-phone canvas {
     display: block;
     width: 100%;
     aspect-ratio: 9 / 16;
     object-fit: cover;
     border-radius: 1.9rem;
-    background: #050505;
+    background:
+      url('/products/buffr/buffr-demo-poster.jpg') center / cover no-repeat,
+      #050505;
   }
 
   .live-chip {
