@@ -102,10 +102,11 @@
   let demoVideo: HTMLVideoElement;
   let demoSection: HTMLElement;
   let videoFrame: HTMLElement;
+  let demoControls = true;
 
   onMount(() => {
     let ctx: { revert: () => void } | null = null;
-    let trigger: { kill: () => void } | null = null;
+    let scrollTween: { kill: () => void } | null = null;
     let frameTween: { kill: () => void } | null = null;
     let cancelled = false;
 
@@ -114,6 +115,7 @@
       const canScrub = window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
 
       if (reduceMotion || !canScrub || !demoVideo || !demoSection) return;
+      demoControls = false;
 
       const gsapModule = await import('gsap');
       const scrollModule = await import('gsap/ScrollTrigger');
@@ -139,14 +141,22 @@
       demoVideo.currentTime = 0;
 
       ctx = gsap.context(() => {
-        trigger = ScrollTrigger.create({
-          trigger: demoSection,
-          start: 'top 78%',
-          end: 'bottom 24%',
-          scrub: true,
-          onUpdate: (self) => {
+        const scrubState = { time: 0 };
+        const maxTime = Math.max(0, demoVideo.duration - 0.04);
+
+        scrollTween = gsap.to(scrubState, {
+          time: maxTime,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: demoSection,
+            start: 'top 72%',
+            end: 'bottom 28%',
+            scrub: 0.08,
+            invalidateOnRefresh: true,
+          },
+          onUpdate: () => {
             if (!demoVideo.duration) return;
-            demoVideo.currentTime = Math.min(demoVideo.duration - 0.05, demoVideo.duration * self.progress);
+            demoVideo.currentTime = Math.min(maxTime, Math.max(0, scrubState.time));
           },
         });
 
@@ -174,7 +184,7 @@
 
     return () => {
       cancelled = true;
-      trigger?.kill();
+      scrollTween?.kill();
       frameTween?.kill();
       ctx?.revert();
     };
@@ -212,8 +222,13 @@
 
         <div class="hero-actions">
           <a class="app-store-button" href={appStoreUrl} target="_blank" rel="noreferrer">
-            <span>Scarica su</span>
-            <strong>App Store</strong>
+            <svg class="app-store-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M17.6 12.7c0-2.1 1.7-3.1 1.8-3.2-1-1.5-2.5-1.7-3-1.7-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.8-2.7-.7-1.4 0-2.7.8-3.4 2.1-1.5 2.6-.4 6.4 1 8.5.7 1 1.6 2.2 2.7 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2.1.8-1.2 1.2-2.4 1.2-2.5 0-.1-2.7-1.1-2.7-3.3zM15.6 6.5c.6-.8 1-1.8.9-2.9-.9 0-2 .6-2.6 1.4-.6.7-1 1.8-.9 2.8 1 .1 2-.5 2.6-1.3z" />
+            </svg>
+            <span class="app-store-copy">
+              <span>Scarica su</span>
+              <strong>App Store</strong>
+            </span>
           </a>
           <MagneticButton href="#demo" variant="secondary">Guarda BUFFR</MagneticButton>
         </div>
@@ -230,15 +245,12 @@
     <RevealOnScroll animation="scale" delay={120} duration={420}>
       <div class="hero-device" aria-label="Anteprima BUFFR">
         <div class="phone-shell">
-          <video
-            src="/products/buffr/buffr-demo.mp4"
-            poster="/products/buffr/buffr-demo-poster.jpg"
-            muted
-            loop
-            playsinline
-            autoplay
-            preload="metadata"
-          ></video>
+          <img
+            src="/products/buffr/replay-in-un-tap.jpg"
+            alt="Screenshot BUFFR con replay in un tap"
+            loading="eager"
+            decoding="async"
+          />
         </div>
         <div class="live-chip">
           <span></span>
@@ -299,8 +311,9 @@
           poster="/products/buffr/buffr-demo-poster.jpg"
           muted
           playsinline
-          preload="metadata"
-          controls
+          preload="auto"
+          controls={demoControls}
+          aria-label="Demo video BUFFR controllata dallo scroll"
         ></video>
       </div>
     </div>
@@ -391,8 +404,13 @@
           backstage e contenuti social.
         </p>
         <a class="app-store-button app-store-button--large" href={appStoreUrl} target="_blank" rel="noreferrer">
-          <span>Apri BUFFR su</span>
-          <strong>App Store</strong>
+          <svg class="app-store-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.6 12.7c0-2.1 1.7-3.1 1.8-3.2-1-1.5-2.5-1.7-3-1.7-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.8-2.7-.7-1.4 0-2.7.8-3.4 2.1-1.5 2.6-.4 6.4 1 8.5.7 1 1.6 2.2 2.7 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2.1.8-1.2 1.2-2.4 1.2-2.5 0-.1-2.7-1.1-2.7-3.3zM15.6 6.5c.6-.8 1-1.8.9-2.9-.9 0-2 .6-2.6 1.4-.6.7-1 1.8-.9 2.8 1 .1 2-.5 2.6-1.3z" />
+          </svg>
+          <span class="app-store-copy">
+            <span>Scarica su</span>
+            <strong>App Store</strong>
+          </span>
         </a>
       </div>
     </RevealOnScroll>
@@ -461,27 +479,52 @@
   }
 
   .app-store-button {
-    min-height: 52px;
+    min-height: 56px;
+    width: fit-content;
     display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    border-radius: 999px;
-    padding: 0.65rem 1.25rem;
-    background: #fff;
-    color: #050505;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.58rem;
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 0.72rem;
+    padding: 0.46rem 1.05rem 0.48rem 0.88rem;
+    background: #050505;
+    color: #fff;
     text-decoration: none;
     line-height: 1;
-    box-shadow: 0 16px 44px rgba(255, 255, 255, 0.12);
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.28);
+    transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+  }
+
+  .app-store-button:hover {
+    border-color: #fff;
+    background: #0b0b0b;
+    transform: translateY(-1px);
+  }
+
+  .app-store-icon {
+    width: 1.55rem;
+    height: 1.55rem;
+    flex: 0 0 auto;
+    fill: currentColor;
+  }
+
+  .app-store-copy {
+    display: grid;
+    gap: 0.16rem;
+    text-align: left;
   }
 
   .app-store-button span {
-    font-size: 0.72rem;
-    font-weight: 700;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0;
   }
 
   .app-store-button strong {
     font-size: 1.18rem;
-    font-weight: 900;
+    font-weight: 300;
+    letter-spacing: 0;
   }
 
   .hero-meta {
@@ -516,7 +559,7 @@
     box-shadow: 0 34px 100px rgba(0, 0, 0, 0.55);
   }
 
-  .phone-shell video,
+  .phone-shell img,
   .demo-phone video {
     display: block;
     width: 100%;
@@ -765,8 +808,8 @@
     }
 
     .app-store-button {
-      width: 100%;
-      align-items: center;
+      width: min(100%, 13.5rem);
+      justify-content: center;
     }
 
     .demo-section {
