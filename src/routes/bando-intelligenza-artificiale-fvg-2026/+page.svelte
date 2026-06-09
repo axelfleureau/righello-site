@@ -1368,7 +1368,6 @@
   @media (max-width: 767px) {
     .ai-grant-page {
       overflow-x: hidden;
-      touch-action: pan-y;
     }
   }
 

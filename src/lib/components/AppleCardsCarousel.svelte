@@ -409,7 +409,7 @@
       on:mouseup={handleMouseUp}
       on:mouseleave={handleMouseLeave}
       on:touchstart={handleTouchStart}
-      on:touchmove={handleTouchMove}
+      on:touchmove|passive={handleTouchMove}
       on:touchend={handleTouchEnd}
       on:touchcancel={handleTouchCancel}
       role="list"
@@ -651,7 +651,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
     scroll-snap-type: x proximity;
-    touch-action: pan-x pan-y;
+    touch-action: auto;
     overscroll-behavior-x: contain;
   }
 
@@ -724,7 +724,7 @@
     width: 100%;
     height: 100%;
     cursor: pointer;
-    touch-action: pan-x pan-y;
+    touch-action: auto;
   }
   
   .card-poster {
@@ -769,7 +769,7 @@
     z-index: 2;
     transition: opacity 0.4s ease;
     pointer-events: none;
-    touch-action: pan-x pan-y;
+    touch-action: auto;
   }
 
   .card-video-native.video-ready {

@@ -255,8 +255,8 @@
   let hasTouchDragged = false;
   let tappedIndex: number | null = null;
   
-  // Touch handlers: browser handles both pan-x (carousel) and pan-y (page scroll)
-  // natively via `touch-action: pan-x pan-y`. We only track drag distance here
+  // Touch handlers only track drag distance here; the browser owns native
+  // pan and momentum scroll.
   // to distinguish a tap (open lightbox) from a swipe (scroll).
   function handleTouchStart(e: TouchEvent) {
     touchStartX = e.touches[0].pageX;
@@ -293,7 +293,7 @@
       hasTouchDragged = true;
       tappedIndex = null;
     }
-    // No e.preventDefault() — browser handles scroll natively via touch-action
+    // No e.preventDefault() — browser keeps native momentum scroll.
   }
   
   onMount(() => {
@@ -447,7 +447,7 @@
       on:mouseup={handleMouseUp}
       on:mouseleave={handleMouseLeave}
       on:touchstart={handleTouchStart}
-      on:touchmove={handleTouchMove}
+      on:touchmove|passive={handleTouchMove}
       on:touchend={handleTouchEnd}
       on:touchcancel={handleTouchCancel}
       on:keydown={handleContainerKeydown}
@@ -674,9 +674,7 @@
     scrollbar-width: none;
     scroll-snap-type: x proximity;
     overscroll-behavior-x: contain;
-    /* pan-x pan-y: browser handles both horizontal (carousel) and vertical (page)
-       scroll natively — eliminates the vertical-scroll block on touch. */
-    touch-action: pan-x pan-y;
+    touch-action: auto;
   }
 
   /* Tighter vertical spacing on mobile — the global section-header margin-bottom

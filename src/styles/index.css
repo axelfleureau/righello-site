@@ -200,6 +200,18 @@
     transition: background-color 0.3s ease, color 0.3s ease;
     overflow-x: clip;
   }
+
+  [data-theme] {
+    overflow-x: clip;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    body {
+      overflow-x: visible;
+      overscroll-behavior-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
   
   p {
     @apply text-lg md:text-xl leading-relaxed;
