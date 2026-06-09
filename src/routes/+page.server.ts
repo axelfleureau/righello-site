@@ -117,9 +117,15 @@ export const load: PageServerLoad = async () => {
     ...fallbackReels,
   ].sort((a, b) => a.order - b.order);
 
-  // --- Testimonials: merge Cloudinary + fallback, filter hidden + covered, sort by order ---
+  // --- Testimonials: Cloudinary replaces fallback once testimonial uploads exist.
+  // Customer reviews are curated assets: appending old fallback videos after a
+  // fresh Cloudinary set makes the section look stale and duplicates clients.
   const fallbackTestimonials: TestimonialItem[] = FALLBACK_TESTIMONIALS
-    .filter((v) => !hiddenFallbackIds.includes(v.id) && !cloudinaryTestiSlugs.has(v.id))
+    .filter((v) =>
+      visibleCloudinaryTestimonials.length === 0 &&
+      !hiddenFallbackIds.includes(v.id) &&
+      !cloudinaryTestiSlugs.has(v.id)
+    )
     .map((v) => ({ ...v, order: v.order + 1000 }));
 
   const testimonialItems: TestimonialItem[] = [

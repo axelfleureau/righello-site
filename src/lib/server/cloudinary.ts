@@ -60,6 +60,10 @@ function buildThumbnailUrl(publicId: string): string {
 }
 
 export async function getVideosBySection(section: VideoSection): Promise<CloudinaryVideo[]> {
+  if (!env.CLOUDINARY_CLOUD_NAME || !env.CLOUDINARY_API_KEY || !env.CLOUDINARY_API_SECRET) {
+    return [];
+  }
+
   try {
     const folder = `righello/${section}`;
     const result = await cloudinary.search
