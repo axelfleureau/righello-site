@@ -22,6 +22,17 @@ function cloudinarySlug(publicId: string): string {
   return publicId.split('/').pop() ?? publicId;
 }
 
+function dedupeTestimonialsByClient(items: TestimonialItem[]): TestimonialItem[] {
+  const seen = new Set<string>();
+
+  return items.filter((item) => {
+    const key = (item.company || item.clientName || item.id).trim().toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 async function getCachedData() {
   const now = Date.now();
   const cache = getCache();
@@ -128,21 +139,23 @@ export const load: PageServerLoad = async () => {
     )
     .map((v) => ({ ...v, order: v.order + 1000 }));
 
-  const testimonialItems: TestimonialItem[] = [
-    ...visibleCloudinaryTestimonials.map((v) => ({
-      id: v.publicId,
-      clientName: v.clientName || v.title,
-      clientRole: v.clientRole || '',
-      company: v.company || '',
-      quote: v.quote || '',
-      youtubeId: v.youtubeId,
-      cloudinaryUrl: v.url || undefined,
-      cloudinaryPublicId: v.publicId,
-      thumbnailUrl: v.thumbnailUrl,
-      order: v.order,
-    })),
-    ...fallbackTestimonials,
-  ].sort((a, b) => a.order - b.order);
+  const testimonialItems: TestimonialItem[] = dedupeTestimonialsByClient(
+    [
+      ...visibleCloudinaryTestimonials.map((v) => ({
+        id: v.publicId,
+        clientName: v.clientName || v.title,
+        clientRole: v.clientRole || '',
+        company: v.company || '',
+        quote: v.quote || '',
+        youtubeId: v.youtubeId,
+        cloudinaryUrl: v.url || undefined,
+        cloudinaryPublicId: v.publicId,
+        thumbnailUrl: v.thumbnailUrl,
+        order: v.order,
+      })),
+      ...fallbackTestimonials,
+    ].sort((a, b) => a.order - b.order)
+  );
 
   return {
     heroVideo,
