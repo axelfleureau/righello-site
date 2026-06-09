@@ -205,7 +205,14 @@
     overflow-x: clip;
   }
 
-  @media (hover: none) and (pointer: coarse) {
+  @media (max-width: 767px), (hover: none) and (pointer: coarse) {
+    html,
+    [data-theme] {
+      overflow-x: visible;
+      overscroll-behavior-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     body {
       overflow-x: visible;
       overscroll-behavior-y: auto;

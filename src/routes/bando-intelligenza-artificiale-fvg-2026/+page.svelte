@@ -649,7 +649,6 @@
       radial-gradient(circle at top left, rgba(214, 72, 126, 0.18), transparent 32rem),
       radial-gradient(circle at 82% 18%, rgba(6, 182, 212, 0.16), transparent 30rem),
       var(--bg-primary);
-    overflow-x: clip;
   }
 
   .hero-section {
@@ -665,7 +664,7 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    pointer-events: auto;
+    pointer-events: none;
     opacity: 0.9;
   }
 
@@ -1362,12 +1361,6 @@
 
     .hero-panel {
       transform: translateY(2rem);
-    }
-  }
-
-  @media (max-width: 767px) {
-    .ai-grant-page {
-      overflow-x: hidden;
     }
   }
 
