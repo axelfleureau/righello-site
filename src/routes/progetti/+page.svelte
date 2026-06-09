@@ -106,6 +106,7 @@
   ];
 
   const webProjects = [
+    { name: 'BUFFR', type: 'App iOS / camera buffer per replay istantanei', url: '/buffr' },
     { name: 'Neura', type: 'Web application custom / prodotto digitale', url: 'https://neura.wearerighello.com' },
     { name: 'Lumis', type: 'Web application custom / prodotto digitale', url: 'https://lumis.wearerighello.com' },
     { name: 'Porto Piccolo Apartments', type: 'Real estate / landing page validazione', url: 'https://portopiccolo-apartments-validation.wearerighello.com' },
@@ -167,6 +168,8 @@
       })),
     },
   ]);
+
+  const schemaMarkup = `<script type="application/ld+json">${schema.replace(/</g, '\\u003c')}<\/script>`;
 </script>
 
 <svelte:head>
@@ -183,7 +186,7 @@
   <meta name="twitter:title" content="Progetti e Case Study | Righello" />
   <meta name="twitter:description" content="Case study, produzioni, siti e sistemi digitali realizzati da Righello." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
-  <script type="application/ld+json">{schema}</script>
+  {@html schemaMarkup}
 </svelte:head>
 
 <section class="projects-hero">
@@ -332,7 +335,12 @@
     <div class="web-list">
       {#each webProjects as project, i}
         <RevealOnScroll animation="fly-up" stagger={60} index={i} duration={320}>
-          <a class="web-row" href={project.url} target="_blank" rel="noreferrer">
+          <a
+            class="web-row"
+            href={project.url}
+            target={project.url.startsWith('http') ? '_blank' : undefined}
+            rel={project.url.startsWith('http') ? 'noreferrer' : undefined}
+          >
             <span>{String(i + 1).padStart(2, '0')}</span>
             <div>
               <strong>{project.name}</strong>
