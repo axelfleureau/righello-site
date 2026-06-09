@@ -705,7 +705,7 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    pointer-events: auto;
+    pointer-events: none;
   }
   
   .hero-content {

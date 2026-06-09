@@ -160,6 +160,7 @@
     opacity: 0.24;
     filter: blur(52px);
     animation: pulse-glow 4s ease-in-out infinite;
+    pointer-events: none;
   }
 
   .countdown-head {
