@@ -17,6 +17,16 @@
     logo?: string;
   };
 
+  type WebProject = {
+    name: string;
+    type: string;
+    url: string;
+    summary: string;
+    proof: string;
+    ctaLabel: string;
+    featured?: boolean;
+  };
+
   const categories = [
     { id: 'all', label: 'Tutti' },
     { id: 'hospitality', label: 'Hospitality' },
@@ -105,15 +115,73 @@
     },
   ];
 
-  const webProjects = [
-    { name: 'BUFFR', type: 'App iOS / camera buffer per replay istantanei', url: '/buffr' },
-    { name: 'Neura', type: 'Web application custom / prodotto digitale', url: 'https://neura.wearerighello.com' },
-    { name: 'Lumis', type: 'Web application custom / prodotto digitale', url: 'https://lumis.wearerighello.com' },
-    { name: 'Porto Piccolo Apartments', type: 'Real estate / landing page validazione', url: 'https://portopiccolo-apartments-validation.wearerighello.com' },
-    { name: 'Solero Sport Village', type: 'Sport & fitness / landing page validazione', url: 'https://solero-validation.wearerighello.com' },
-    { name: 'TC Studio Immobiliare', type: 'Agenzia immobiliare / sito corporate', url: 'https://www.tcstudioimmobiliare.it' },
-    { name: 'Clara Falomo', type: 'Personal brand / professionista', url: 'https://www.clarafalomo.it' },
-    { name: 'Black & White S.r.l.s.', type: 'Corporate / sito aziendale', url: 'https://www.blackwhitesrls.com' },
+  const webProjects: WebProject[] = [
+    {
+      name: 'BUFFR',
+      type: 'App iOS / camera buffer per replay istantanei',
+      url: '/buffr',
+      summary: 'Prodotto iOS nato internamente: una camera buffer per salvare gli ultimi secondi durante sport, live event e backstage.',
+      proof: 'Product design, UX mobile, pagina prodotto, App Store assets',
+      ctaLabel: 'Apri pagina BUFFR',
+      featured: true,
+    },
+    {
+      name: 'Lumis',
+      type: 'Web application custom / prodotto digitale',
+      url: 'https://lumis.wearerighello.com',
+      summary: 'Applicazione web custom costruita come esperienza digitale proprietaria, non come semplice sito vetrina.',
+      proof: 'Web app, interfaccia custom, sviluppo prodotto',
+      ctaLabel: 'Visita Lumis',
+      featured: true,
+    },
+    {
+      name: 'Neura',
+      type: 'Web application custom / prodotto digitale',
+      url: 'https://neura.wearerighello.com',
+      summary: 'Prodotto digitale con posizionamento, architettura informativa e interfaccia pensati per spiegare valore e funzione.',
+      proof: 'UX, frontend, prodotto digitale',
+      ctaLabel: 'Visita Neura',
+    },
+    {
+      name: 'Porto Piccolo Apartments',
+      type: 'Real estate / landing page validazione',
+      url: 'https://portopiccolo-apartments-validation.wearerighello.com',
+      summary: 'Landing di validazione per testare proposta, domanda e qualità del traffico prima di scalare.',
+      proof: 'Landing, conversione, real estate',
+      ctaLabel: 'Apri progetto',
+    },
+    {
+      name: 'Solero Sport Village',
+      type: 'Sport & fitness / landing page validazione',
+      url: 'https://solero-validation.wearerighello.com',
+      summary: 'Esperienza web rapida e focalizzata per comunicare offerta, posizionamento e prossima azione.',
+      proof: 'Landing, sport, lead generation',
+      ctaLabel: 'Apri progetto',
+    },
+    {
+      name: 'TC Studio Immobiliare',
+      type: 'Agenzia immobiliare / sito corporate',
+      url: 'https://www.tcstudioimmobiliare.it',
+      summary: 'Sito corporate per rendere più chiara l’offerta e sostenere il contatto commerciale.',
+      proof: 'Corporate website, UX, SEO base',
+      ctaLabel: 'Visita sito',
+    },
+    {
+      name: 'Clara Falomo',
+      type: 'Personal brand / professionista',
+      url: 'https://www.clarafalomo.it',
+      summary: 'Presenza digitale personale, pulita e diretta, costruita per autorevolezza e contatto.',
+      proof: 'Personal brand, sito, copy',
+      ctaLabel: 'Visita sito',
+    },
+    {
+      name: 'Black & White S.r.l.s.',
+      type: 'Corporate / sito aziendale',
+      url: 'https://www.blackwhitesrls.com',
+      summary: 'Sito aziendale essenziale e credibile, pensato per far capire subito attività e affidabilità.',
+      proof: 'Corporate website, struttura, contenuti',
+      ctaLabel: 'Visita sito',
+    },
   ];
 
   const productionLinks = [
@@ -190,18 +258,19 @@
 </svelte:head>
 
 <section class="projects-hero">
+  <div class="hero-glass" aria-hidden="true"></div>
   <div class="section-container hero-grid">
     <RevealOnScroll animation="fly-up" duration={420}>
       <div class="hero-copy">
-        <p class="section-subtitle">Progetti Righello</p>
-        <h1 class="heading-xl hero-title">Case study e produzioni costruite sul contesto reale.</h1>
+        <p class="section-subtitle">Selected work</p>
+        <h1 class="heading-xl hero-title">Case study per aziende che vogliono sembrare leader.</h1>
         <p class="hero-intro">
-          Strategia, contenuti, advertising, siti e sistemi digitali su misura per aziende, hospitality,
-          medical, automotive, eventi e brand territoriali.
+          Strategia, contenuti, advertising, siti e prodotti digitali costruiti per aumentare percezione,
+          fiducia e richieste commerciali. Pochi lavori selezionati, raccontati con il contesto giusto.
         </p>
         <div class="hero-actions">
           <MagneticButton href="/contatti" variant="primary">Parliamo del tuo progetto</MagneticButton>
-          <MagneticButton href="#case-study" variant="secondary">Guarda i casi</MagneticButton>
+          <MagneticButton href="#product-work" variant="secondary">Prodotti digitali</MagneticButton>
         </div>
       </div>
     </RevealOnScroll>
@@ -209,21 +278,26 @@
     <RevealOnScroll animation="scale" delay={120} duration={420}>
       <aside class="proof-panel" aria-label="Sintesi portfolio Righello">
         <div class="proof-panel__top">
-          <span>Portfolio</span>
+          <span>Righello work index</span>
           <strong>50+ clienti</strong>
+        </div>
+        <div class="proof-hero-line">
+          <span>Design</span>
+          <span>Growth</span>
+          <span>Software</span>
         </div>
         <div class="proof-list">
           <div>
             <span>01</span>
-            <p>Contenuti pensati come asset commerciali, non come post isolati.</p>
+            <p>Identità digitale più credibile prima ancora della call commerciale.</p>
           </div>
           <div>
             <span>02</span>
-            <p>Siti e prodotti digitali custom, con performance e struttura SEO.</p>
+            <p>Siti e prodotti digitali custom, con performance, SEO e UX solide.</p>
           </div>
           <div>
             <span>03</span>
-            <p>Materiali riutilizzabili su organico, paid, vendita e presentazioni.</p>
+            <p>Asset riutilizzabili su organico, paid, vendita e presentazioni.</p>
           </div>
         </div>
       </aside>
@@ -239,11 +313,11 @@
       <div class="section-heading-row">
         <div>
           <p class="section-subtitle">Case study principali</p>
-          <h2 class="section-title">Pochi casi, raccontati bene.</h2>
+          <h2 class="section-title">Non facciamo vetrine. Costruiamo percezione.</h2>
         </div>
         <p>
-          Non pubblichiamo metriche riservate dei clienti. Qui mostriamo metodo, qualita produttiva,
-          valore di comunicazione e capacita di creare asset che restano utili nel tempo.
+          Non pubblichiamo numeri riservati dei clienti. Qui mostriamo metodo, qualità produttiva,
+          valore di comunicazione e capacità di creare asset che continuano a lavorare dopo la consegna.
         </p>
       </div>
     </RevealOnScroll>
@@ -267,6 +341,7 @@
       {#each filteredCaseStudies as study, i (study.id)}
         <RevealOnScroll animation="fly-up" stagger={70} index={i} duration={360}>
           <article id={study.id} class="case-card">
+            <span class="case-index">{String(i + 1).padStart(2, '0')}</span>
             <div class="case-card__header">
               <div class="client-mark" aria-hidden="true">
                 {#if study.logo}
@@ -319,34 +394,45 @@
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
-<section class="section-padding digital-section">
-  <div class="section-container digital-grid">
+<section id="product-work" class="section-padding digital-section">
+  <div class="section-container digital-shell">
     <RevealOnScroll animation="fly-up" duration={360}>
-      <div>
+      <div class="digital-copy">
         <p class="section-subtitle">Web e prodotto digitale</p>
-        <h2 class="section-title">Niente template usati come scorciatoia.</h2>
+        <h2 class="section-title">Qui si vede se sai fare prodotto o solo pagine carine.</h2>
         <p class="section-intro">
-          Progettiamo siti, landing e applicazioni custom con architettura pulita, performance,
-          struttura SEO e sistemi pensati per evolvere con il business.
+          Progettiamo siti, landing, app e software con architettura pulita, performance,
+          struttura SEO e un’interfaccia che non sembra uscita da un template.
         </p>
+        <div class="digital-points" aria-label="Punti di forza dei progetti digitali Righello">
+          <span>UX/UI</span>
+          <span>SEO tecnico</span>
+          <span>Performance</span>
+          <span>Software custom</span>
+        </div>
       </div>
     </RevealOnScroll>
 
-    <div class="web-list">
+    <div class="web-grid">
       {#each webProjects as project, i}
         <RevealOnScroll animation="fly-up" stagger={60} index={i} duration={320}>
           <a
             class="web-row"
+            class:web-row--featured={project.featured}
             href={project.url}
             target={project.url.startsWith('http') ? '_blank' : undefined}
             rel={project.url.startsWith('http') ? 'noreferrer' : undefined}
+            aria-label={`${project.ctaLabel}: ${project.name}`}
           >
-            <span>{String(i + 1).padStart(2, '0')}</span>
+            <span class="web-index">{String(i + 1).padStart(2, '0')}</span>
             <div>
               <strong>{project.name}</strong>
               <p>{project.type}</p>
+              <small>{project.summary}</small>
+              <span class="web-proof">{project.proof}</span>
             </div>
-            <em aria-hidden="true">↗</em>
+            <em aria-hidden="true">{project.url.startsWith('http') ? '↗' : '→'}</em>
+            <b>{project.ctaLabel}</b>
           </a>
         </RevealOnScroll>
       {/each}
@@ -435,15 +521,33 @@
 
 <style>
   .projects-hero {
+    position: relative;
+    isolation: isolate;
     padding: 7.5rem 0 4rem;
+    overflow: hidden;
     background:
-      radial-gradient(circle at 16% 20%, rgba(214, 72, 126, 0.18), transparent 28rem),
-      radial-gradient(circle at 86% 18%, rgba(6, 182, 212, 0.13), transparent 26rem),
+      radial-gradient(circle at 12% 12%, rgba(214, 72, 126, 0.26), transparent 30rem),
+      radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.18), transparent 28rem),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.03), transparent 34rem),
       var(--bg-primary);
   }
 
+  .hero-glass {
+    position: absolute;
+    inset: 6rem 1rem auto;
+    z-index: -1;
+    height: min(46rem, 72vh);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 2rem;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.015)),
+      rgba(255, 255, 255, 0.02);
+    transform: skewY(-2deg);
+    pointer-events: none;
+  }
+
   .hero-grid,
-  .digital-grid,
+  .digital-shell,
   .production-grid {
     display: grid;
     gap: 2rem;
@@ -454,8 +558,11 @@
   }
 
   .hero-title {
-    max-width: 62rem;
+    max-width: 58rem;
     margin-bottom: 1.5rem;
+    font-size: clamp(3.35rem, 8vw, 7.2rem);
+    line-height: 0.92;
+    letter-spacing: 0;
   }
 
   .hero-intro,
@@ -481,10 +588,14 @@
   .proof-panel {
     align-self: end;
     border: 1px solid var(--border-color);
-    border-radius: 1.5rem;
-    background: color-mix(in srgb, var(--bg-secondary) 90%, transparent);
+    border-radius: 1.65rem;
+    background:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025)),
+      color-mix(in srgb, var(--bg-secondary) 86%, transparent);
     padding: 1.25rem;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.26);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
   }
 
   .proof-panel__top {
@@ -500,6 +611,28 @@
     color: var(--text-primary);
   }
 
+  .proof-hero-line {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .proof-hero-line span {
+    min-height: 5.2rem;
+    display: grid;
+    place-items: end start;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    padding: 0.7rem;
+    color: var(--text-primary);
+    background:
+      radial-gradient(circle at 0% 0%, rgba(214, 72, 126, 0.22), transparent 4.5rem),
+      rgba(255, 255, 255, 0.035);
+    font-size: 0.85rem;
+    font-weight: 850;
+  }
+
   .proof-list {
     display: grid;
     gap: 0.75rem;
@@ -512,11 +645,11 @@
     padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.045);
   }
 
   .proof-list span,
-  .web-row > span {
+  .web-index {
     color: var(--righello-pink, #D6487E);
     font-weight: 800;
     font-size: 0.9rem;
@@ -593,8 +726,44 @@
   }
 
   .case-card {
+    position: relative;
+    isolation: isolate;
     padding: 1.1rem;
     min-height: 100%;
+    overflow: hidden;
+    transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+  }
+
+  .case-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(214, 72, 126, 0.16), transparent 14rem),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.24s ease;
+  }
+
+  .case-card:hover {
+    border-color: rgba(214, 72, 126, 0.42);
+    transform: translateY(-3px);
+  }
+
+  .case-card:hover::before {
+    opacity: 1;
+  }
+
+  .case-index {
+    position: absolute;
+    right: 1rem;
+    top: 0.85rem;
+    color: color-mix(in srgb, var(--text-muted) 55%, transparent);
+    font-size: clamp(2.7rem, 8vw, 4.6rem);
+    font-weight: 900;
+    line-height: 1;
+    pointer-events: none;
   }
 
   .case-card__header {
@@ -638,7 +807,7 @@
   .case-card__header h3,
   .reference-card h3 {
     margin: 0;
-    font-size: 1.55rem;
+    font-size: clamp(1.55rem, 3vw, 2.05rem);
     line-height: 1.05;
   }
 
@@ -727,26 +896,76 @@
   }
 
   .digital-section {
-    background: var(--bg-primary);
+    background:
+      radial-gradient(circle at 12% 16%, rgba(214, 72, 126, 0.11), transparent 26rem),
+      radial-gradient(circle at 88% 78%, rgba(6, 182, 212, 0.09), transparent 24rem),
+      var(--bg-primary);
   }
 
-  .web-list,
+  .digital-copy {
+    align-self: start;
+  }
+
+  .digital-points,
   .archive-links {
     display: grid;
     gap: 0.7rem;
   }
 
+  .digital-points {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 1.4rem;
+  }
+
+  .digital-points span {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.65rem 0.8rem;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.035);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .web-grid {
+    display: grid;
+    gap: 0.85rem;
+  }
+
   .web-row {
+    position: relative;
+    isolation: isolate;
     display: grid;
     grid-template-columns: auto 1fr auto;
     gap: 0.85rem;
-    align-items: center;
-    min-height: 4.5rem;
+    align-items: start;
+    min-height: 8.25rem;
     border: 1px solid var(--border-color);
-    border-radius: 1.1rem;
-    padding: 0.85rem;
-    background: var(--bg-secondary);
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    border-radius: 1.35rem;
+    padding: 1rem;
+    overflow: hidden;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
+      var(--bg-secondary);
+    transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+  }
+
+  .web-row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 0% 0%, rgba(214, 72, 126, 0.2), transparent 16rem),
+      radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.14), transparent 16rem);
+    opacity: 0;
+    transition: opacity 0.22s ease;
+  }
+
+  .web-row--featured {
+    min-height: 11rem;
+    border-color: rgba(214, 72, 126, 0.34);
   }
 
   .web-row:hover {
@@ -754,8 +973,14 @@
     transform: translateY(-2px);
   }
 
+  .web-row:hover::before,
+  .web-row--featured::before {
+    opacity: 1;
+  }
+
   .web-row strong {
     display: block;
+    font-size: clamp(1.55rem, 3.5vw, 2.45rem);
     line-height: 1.1;
   }
 
@@ -764,9 +989,42 @@
     line-height: 1.25;
   }
 
+  .web-row small {
+    display: block;
+    margin-top: 0.85rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .web-proof {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.38rem 0.65rem;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
   .web-row em {
     color: var(--text-muted);
+    font-size: 1.35rem;
     font-style: normal;
+  }
+
+  .web-row b {
+    grid-column: 2 / -1;
+    width: fit-content;
+    border-radius: 999px;
+    padding: 0.65rem 0.9rem;
+    color: #fff;
+    background: var(--righello-pink, #D6487E);
+    font-size: 0.92rem;
+    line-height: 1;
   }
 
   .production-section {
@@ -849,9 +1107,14 @@
     }
 
     .section-heading-row,
-    .digital-grid,
+    .digital-shell,
     .production-grid {
       grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+
+    .digital-copy {
+      position: sticky;
+      top: 7.5rem;
     }
 
     .case-grid {
