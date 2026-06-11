@@ -19,7 +19,7 @@
       name: 'Paolo Aileni',
       role: 'COO & Co-Founder',
       description: 'Operations e project management. Garantisce delivery puntuale e qualità costante.',
-      image: '/team-paolo.jpg',
+      image: '/team-paolo.jpg?v=20260611',
     },
     {
       name: 'Axel N. L. Fleureau',
