@@ -10,9 +10,19 @@
   type IconKey = 'percent' | 'wallet' | 'fund' | 'users' | 'brain' | 'chart' | 'file' | 'bot' | 'search' | 'dashboard' | 'quote' | 'workflow';
 
   const agencySourceUrl = 'https://www.lavoroimpresa.fvg.it/portale/incentivi_dettaglio.aspx?AltID=1681&GUID=9e99d2dc-470e-463c-b695-adf01428af32&ID=9e99d2dc-470e-463c-b695-adf01428af32&PreviewKey=manduph3cvcxpm2yuuputsw0';
-  const regionNoticeUrl = 'https://www.regione.fvg.it/rafvg/cms/RAFVG/MODULI/bandi_avvisi/BANDI/8992.html';
+  const regionNoticeUrl = 'https://www.regione.fvg.it/rafvg/cms/RAFVG/economia-imprese/industria/FOGLIA204/articolo.html';
   const regionPressUrl = 'https://www.regione.fvg.it/rafvg/comunicati/comunicato.act;jsessionid=8F18B21A1BB38C039AF6ABC6E1EAAF32?dir=/rafvg/cms/RAFVG/&nm=20260608134346003';
   const incentivesPortalUrl = 'https://incentivi.regione.fvg.it/';
+  const onlineApplicationsUrl = 'https://istanze-web.regione.fvg.it/CruscottoBeneficiario/login.aspx?ID_CON=2&ID_PROC=646459';
+  const guidePdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/LineeGuida_IA.pdf';
+  const facsimilePdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/Fac-simile_Intelligenza_artificiale.pdf';
+  const decreePdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/Decreto_bando_IA_n._29347_2026_allegato.pdf';
+  const faqPdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/FAQ_IA_14.05.26.pdf';
+  const formsUrl = 'https://www.regione.fvg.it/rafvg/cms/RAFVG/economia-imprese/industria/FOGLIA204/modulistica/modulistica.html';
+  const stampDutyPdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/Modello_assolvimento_imposta_di_bollo.pdf';
+  const deMinimisPdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/istruzioni_per_dichiarazioni_de_minimis.pdf';
+  const procedureNoticePdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/nota_informativa_procedimento.pdf';
+  const privacyPdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/Informativa_privacy.pdf';
   const informationDate = '15 giugno 2026';
 
   const icons: Record<IconKey, string> = {
@@ -145,6 +155,26 @@
       answer: 'La scheda ufficiale cita software, piattaforme e sistemi di IA, licenze, dispositivi digitali intelligenti, integrazione con sistemi aziendali, manutenzione, aggiornamento, assistenza tecnica, consulenze specialistiche, addestramento dei modelli sui dati aziendali e formazione.',
     },
     {
+      question: 'Il contributo copre anche crediti IA o API?',
+      answer: 'Sì, se coerenti con l’utilizzo di soluzioni IA e classificati come canoni, abbonamenti o costi di utilizzo con utilità limitata all’esercizio, secondo quanto previsto dal bando.',
+    },
+    {
+      question: 'L’IVA è finanziata?',
+      answer: 'Solo se costituisce un costo per il beneficiario. Se l’impresa recupera o detrae l’IVA, la base di calcolo è al netto IVA.',
+    },
+    {
+      question: 'Quando posso iniziare le spese?',
+      answer: 'Le spese devono essere sostenute successivamente alla presentazione della domanda.',
+    },
+    {
+      question: 'Quanto devo spendere per ottenere 10.000€ di contributo?',
+      answer: 'Poiché il contributo è pari al 75%, per ottenere il massimo di 10.000€ servono circa 13.333,33€ di spese ammissibili. Con 10.000€ di spese ammissibili, il contributo stimato è 7.500€.',
+    },
+    {
+      question: 'Posso comprare la marca da bollo in tabaccheria?',
+      answer: 'Sì. In alternativa a F23/F24 puoi usare il modello ufficiale di assolvimento bollo con contrassegno da 16€ acquistato presso intermediario convenzionato.',
+    },
+    {
       question: 'Serve già un progetto definito?',
       answer: 'No. La prima consulenza serve proprio a trasformare un problema operativo in un progetto AI chiaro e realizzabile.',
     },
@@ -168,8 +198,16 @@
       href: agencySourceUrl,
     },
     {
-      label: 'Bando Regione FVG',
+      label: 'Pagina ufficiale Regione FVG',
       href: regionNoticeUrl,
+    },
+    {
+      label: 'Istanze On Line',
+      href: onlineApplicationsUrl,
+    },
+    {
+      label: 'Linee guida domanda',
+      href: guidePdfUrl,
     },
     {
       label: 'Comunicato Regione FVG',
@@ -181,6 +219,134 @@
     },
   ];
 
+  const officialResources = [
+    { label: 'Pagina ufficiale bando Regione FVG', href: regionNoticeUrl },
+    { label: 'Accesso Istanze On Line', href: onlineApplicationsUrl },
+    { label: 'Linee guida presentazione domanda', href: guidePdfUrl },
+    { label: 'Fac-simile domanda', href: facsimilePdfUrl },
+    { label: 'Bando ufficiale allegato al decreto', href: decreePdfUrl },
+    { label: 'FAQ ufficiali Regione FVG', href: faqPdfUrl },
+    { label: 'Modulistica', href: formsUrl },
+    { label: 'Modello assolvimento imposta di bollo', href: stampDutyPdfUrl },
+    { label: 'Istruzioni dichiarazioni de minimis', href: deMinimisPdfUrl },
+    { label: 'Nota informativa procedimento', href: procedureNoticePdfUrl },
+    { label: 'Informativa privacy', href: privacyPdfUrl },
+  ];
+
+  const eligibilityChecks = [
+    { id: 'fvg', label: 'Hai una sede legale o operativa in Friuli Venezia Giulia?', critical: true },
+    { id: 'size', label: 'Sei micro o piccola impresa, oppure libero professionista con P.IVA attiva?', critical: true },
+    { id: 'active', label: 'L’impresa è attiva e in regola con i requisiti dichiarativi del bando?', critical: true },
+    { id: 'aiProject', label: 'Hai un progetto per introdurre l’IA nei processi aziendali?', critical: true },
+    { id: 'futureCosts', label: 'Le spese saranno sostenute dopo la presentazione della domanda?', critical: true },
+    { id: 'access', label: 'Hai SPID, CIE, CNS o CRS del legale rappresentante/titolare?', critical: false },
+  ];
+
+  const expenseRows = [
+    ['Software, piattaforme e sistemi IA', 'Piattaforme IA cloud o on-premise, sistemi software IA acquistati per il progetto.'],
+    ['Licenze pluriennali', 'Licenze IA con utilità pluriennale iscritte tra immobilizzazioni immateriali.'],
+    ['Dispositivi digitali intelligenti', 'Sensori, sistemi di visione, dispositivi IoT con funzionalità IA.'],
+    ['Personalizzazione e integrazione', 'Setup, configurazione e integrazione con archivi, gestionali, workflow e dati aziendali.'],
+    ['Manutenzione e assistenza tecnica', 'Assistenza iniziale, aggiornamenti, correzioni e supporto operativo dei sistemi IA.'],
+    ['Formazione accreditata FVG', 'Formazione in ambito IA erogata da enti accreditati dalla Regione FVG.'],
+    ['Canoni e abbonamenti IA', 'Abbonamenti, crediti API, consumo modelli e servizi cloud IA con utilità limitata all’esercizio.'],
+    ['Consulenze e addestramento modelli', 'Analisi dati, configurazione modelli, dataset, prompt engineering e ottimizzazione sui processi aziendali.'],
+  ];
+
+  const categoryOptions = expenseRows.map(([label]) => label);
+
+  const technicalProjectModules = [
+    'Caricamento e archiviazione documenti',
+    'OCR o document intelligence per PDF e scansioni',
+    'Estrazione dati e metadati',
+    'Classificazione automatica',
+    'Assistente conversazionale interno',
+    'Dashboard scadenze',
+    'Workflow di controllo',
+    'Report e riepiloghi automatici',
+    'Ruoli, permessi e accessi',
+    'Assistenza tecnica e aggiornamenti',
+  ];
+
+  const documentChecklist = [
+    'Partita IVA, denominazione, PEC e sede FVG',
+    'Dimensione impresa, codice ATECO e dati legale rappresentante',
+    'SPID, CIE, CNS o CRS del legale rappresentante',
+    'Preventivo tecnico del fornitore',
+    'Scheda tecnica del progetto IA',
+    'Bollo da 16€ e modello assolvimento bollo o F23/F24',
+    'Dati de minimis',
+    'Eventuali allegati tecnici e visura camerale aggiornata',
+  ];
+
+  const applicationSteps = [
+    ['Accesso', 'Accedi a Istanze On Line dalla pagina ufficiale del bando con SPID, CIE, CNS o CRS.'],
+    ['Nuova istanza', 'Clicca Nuova Istanza e seleziona la linea contributiva dedicata all’intelligenza artificiale.'],
+    ['Tipo soggetto', 'Se sei impresa, seleziona Impresa iscritta al Registro Imprese.'],
+    ['Anagrafica', 'Controlla denominazione, sede, PEC, REA, forma giuridica, stato impresa, ATECO e dimensione impresa.'],
+    ['Descrizione intervento', 'Inserisci titolo, descrizione sintetica, descrizione dettagliata, date presunte e ATECO collegato al progetto.'],
+    ['Dati finanziari', 'Suddividi le spese tra investimento e correnti. Il contributo richiesto non può superare il 75% e il massimo di 10.000€.'],
+    ['Dichiarazioni e de minimis', 'Conferma solo dichiarazioni vere e compila i dati relativi ad aiuti, impresa unica e requisiti richiesti.'],
+    ['Allegati', 'Carica bollo, preventivo tecnico, scheda progetto e documenti richiesti.'],
+    ['Controlla e trasmetti', 'Visualizza il PDF generato, controlla dati e allegati. Firma e trasmette il legale rappresentante/titolare.'],
+  ];
+
+  const avoidErrors = [
+    'Inviare la domanda senza bollo.',
+    'Sostenere spese o pagamenti prima dell’invio della domanda.',
+    'Inserire IVA recuperabile nella base di calcolo.',
+    'Descrivere il progetto come consulenza informatica generica.',
+    'Usare voci di spesa non coerenti con l’introduzione dell’IA.',
+    'Inserire formazione non erogata da ente accreditato FVG.',
+    'Non controllare PDF, allegati e dichiarazioni prima dell’invio.',
+    'Non conservare fatture, pagamenti tracciabili e CUP quando richiesto.',
+  ];
+
+  const exampleProjectText = 'Introduzione nei processi aziendali di una soluzione software personalizzata basata su intelligenza artificiale per gestione documentale, analisi automatizzata dei dati, controllo scadenze e consultazione assistita delle informazioni interne.';
+
+  let eligibilityAnswers: Record<string, boolean | null> = Object.fromEntries(eligibilityChecks.map((item) => [item.id, null]));
+  let selectedCategories: Record<string, boolean> = Object.fromEntries(categoryOptions.map((item) => [item, false]));
+  let preparedDocuments: Record<string, boolean> = Object.fromEntries(documentChecklist.map((item) => [item, false]));
+  let expenseAmount = 10000;
+  let ivaRecoverable = true;
+  let nonRecoverableVat = 0;
+  let activeApplicationStep = 0;
+  let copiedExample = false;
+
+  $: eligibilityAnswered = eligibilityChecks.filter((item) => eligibilityAnswers[item.id] !== null).length;
+  $: eligibilityYes = eligibilityChecks.filter((item) => eligibilityAnswers[item.id] === true).length;
+  $: hasCriticalEligibilityNo = eligibilityChecks.some((item) => item.critical && eligibilityAnswers[item.id] === false);
+  $: eligibilityProgress = Math.round((eligibilityAnswered / eligibilityChecks.length) * 100);
+  $: eligibilityResult = hasCriticalEligibilityNo
+    ? 'Potrebbe esserci un problema di ammissibilità. Verifica la tua situazione prima di procedere.'
+    : eligibilityAnswered === eligibilityChecks.length && eligibilityYes >= 5
+      ? 'Probabilmente puoi procedere alla preparazione della domanda. Verifica sempre i requisiti sul bando ufficiale.'
+      : 'Rispondi alle domande per avere un primo orientamento operativo.';
+
+  $: spendBase = Math.max(0, Number(expenseAmount) || 0) + (ivaRecoverable ? 0 : Math.max(0, Number(nonRecoverableVat) || 0));
+  $: estimatedGrant = Math.min(10000, spendBase * 0.75);
+  $: companyShare = Math.max(0, spendBase - estimatedGrant);
+  $: selectedCategoryCount = Object.values(selectedCategories).filter(Boolean).length;
+  $: preparedCount = Object.values(preparedDocuments).filter(Boolean).length;
+  $: documentProgress = Math.round((preparedCount / documentChecklist.length) * 100);
+  $: missingDocuments = documentChecklist.filter((item) => !preparedDocuments[item]);
+
+  function formatCurrency(value: number) {
+    return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(value);
+  }
+
+  async function copyExampleProject() {
+    try {
+      await navigator.clipboard?.writeText(exampleProjectText);
+      copiedExample = true;
+      setTimeout(() => {
+        copiedExample = false;
+      }, 1800);
+    } catch {
+      copiedExample = false;
+    }
+  }
+
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -188,7 +354,7 @@
         '@type': 'WebPage',
         '@id': 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026#webpage',
         url: 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026',
-        name: 'Bando AI FVG 2026: 75% a fondo perduto | Righello',
+        name: 'Bando AI FVG 2026: guida e contributo 75% | Righello',
         dateModified: '2026-06-15',
         citation: officialSources.map((source) => source.href),
       },
@@ -285,18 +451,18 @@
 </script>
 
 <svelte:head>
-  <title>Bando AI FVG 2026: 75% a fondo perduto | Righello</title>
-  <meta name="description" content="Bando AI FVG 2026 aperto fino al 31 luglio: fino a 10.000€ a fondo perduto per Intelligenza Artificiale in Friuli Venezia Giulia." />
+  <title>Bando AI FVG 2026: guida e contributo 75% | Righello</title>
+  <meta name="description" content="Guida interattiva Righello al Bando AI FVG 2026: requisiti, calcolo contributo, documenti e progetto tecnico per Intelligenza Artificiale." />
   <link rel="canonical" href="https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026" />
-  <meta property="og:title" content="Bando AI FVG 2026: 75% a fondo perduto | Righello" />
-  <meta property="og:description" content="Bando AI FVG 2026 aperto fino al 31 luglio: fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale. Consulenza gratuita con Righello." />
+  <meta property="og:title" content="Bando AI FVG 2026: guida e contributo 75% | Righello" />
+  <meta property="og:description" content="Guida interattiva Righello al Bando AI FVG 2026: requisiti, calcolo contributo, documenti e progetto tecnico per Intelligenza Artificiale." />
   <meta property="og:url" content="https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bando AI FVG 2026: 75% a fondo perduto | Righello" />
-  <meta name="twitter:description" content="Bando AI FVG 2026 aperto fino al 31 luglio: fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale. Consulenza gratuita con Righello." />
+  <meta name="twitter:title" content="Bando AI FVG 2026: guida e contributo 75% | Righello" />
+  <meta name="twitter:description" content="Guida interattiva Righello al Bando AI FVG 2026: requisiti, calcolo contributo, documenti e progetto tecnico per Intelligenza Artificiale." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
   {@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}</script>`}
 </svelte:head>
@@ -336,7 +502,7 @@
           <MagneticButton href="#consulenza" variant="primary" class="landing-magnetic">
             Richiedi una consulenza gratuita
           </MagneticButton>
-          <MagneticButton href="#requisiti" variant="secondary" class="landing-magnetic">
+          <MagneticButton href="#guida-bando" variant="secondary" class="landing-magnetic">
             Verifica i requisiti
           </MagneticButton>
         </div>
@@ -413,6 +579,263 @@
           {/each}
         </div>
       </div>
+      </RevealOnScroll>
+    </div>
+  </section>
+
+  <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" height="56px" mobileHeight="24px" />
+
+  <section id="guida-bando" class="section-padding muted-section interactive-guide-section">
+    <div class="section-container">
+      <RevealOnScroll animation="fly-up">
+      <div class="landing-section-header">
+        <p>Guida interattiva</p>
+        <h2>Capisci requisiti, budget e documenti prima di aprire la domanda</h2>
+        <p class="section-copy centered">
+          Questa guida non sostituisce bando, commercialista o consulente amministrativo. Serve a mettere ordine nella parte tecnica: progetto IA, preventivo, spese, allegati e passaggi pratici.
+        </p>
+      </div>
+      </RevealOnScroll>
+
+      <div class="guide-tool-grid">
+        <RevealOnScroll animation="fly-up">
+        <article class="interactive-panel">
+          <div class="panel-heading">
+            <span>01</span>
+            <div>
+              <h3>Mini-check requisiti</h3>
+              <p>Una prima lettura pratica prima di entrare in Istanze On Line.</p>
+            </div>
+          </div>
+          <div class="progress-track" aria-label={`Completamento requisiti ${eligibilityProgress}%`}>
+            <span style={`width: ${eligibilityProgress}%`}></span>
+          </div>
+          <div class="check-list">
+            {#each eligibilityChecks as check}
+              <div class="yes-no-row">
+                <p>{check.label}</p>
+                <div>
+                  <button type="button" class:active={eligibilityAnswers[check.id] === true} on:click={() => (eligibilityAnswers[check.id] = true)}>Sì</button>
+                  <button type="button" class:active={eligibilityAnswers[check.id] === false} on:click={() => (eligibilityAnswers[check.id] = false)}>No</button>
+                </div>
+              </div>
+            {/each}
+          </div>
+          <p class:warning-result={hasCriticalEligibilityNo} class="tool-result">{eligibilityResult}</p>
+        </article>
+        </RevealOnScroll>
+
+        <RevealOnScroll animation="fly-up" delay={90}>
+        <article class="interactive-panel">
+          <div class="panel-heading">
+            <span>02</span>
+            <div>
+              <h3>Calcolatore contributo</h3>
+              <p>Stima rapida: 75% della spesa ammissibile, massimo 10.000€.</p>
+            </div>
+          </div>
+          <label class="calculator-field">
+            Spese ammissibili stimate, netto IVA
+            <input type="number" min="0" step="100" bind:value={expenseAmount} />
+          </label>
+          <label class="switch-row">
+            <input type="checkbox" bind:checked={ivaRecoverable} />
+            IVA recuperabile o detraibile
+          </label>
+          {#if !ivaRecoverable}
+            <label class="calculator-field">
+              IVA non recuperabile stimata
+              <input type="number" min="0" step="100" bind:value={nonRecoverableVat} />
+            </label>
+          {/if}
+          <div class="category-picker">
+            <p>Categorie spesa previste</p>
+            {#each categoryOptions as category}
+              <label>
+                <input type="checkbox" bind:checked={selectedCategories[category]} />
+                {category}
+              </label>
+            {/each}
+          </div>
+          <div class="calculator-results">
+            <div><span>Spesa ammissibile stimata</span><strong>{formatCurrency(spendBase)}</strong></div>
+            <div><span>Contributo stimato</span><strong>{formatCurrency(estimatedGrant)}</strong></div>
+            <div><span>Quota a carico impresa</span><strong>{formatCurrency(companyShare)}</strong></div>
+          </div>
+          <p class="tool-result">Hai selezionato {selectedCategoryCount} categorie. La stima non sostituisce la valutazione ufficiale della Regione.</p>
+        </article>
+        </RevealOnScroll>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-padding">
+    <div class="section-container">
+      <RevealOnScroll animation="fly-up">
+      <div class="landing-section-header">
+        <p>Spese ammissibili</p>
+        <h2>Traduciamo le voci del bando in esempi pratici</h2>
+      </div>
+      </RevealOnScroll>
+
+      <table class="expense-table" aria-label="Spese ammissibili Bando AI FVG 2026">
+        <thead>
+          <tr>
+            <th>Categoria bando</th>
+            <th>Esempi pratici</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each expenseRows as row}
+            <tr>
+              <th scope="row">{row[0]}</th>
+              <td>{row[1]}</td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+
+      <div class="guide-callout">
+        <strong>Nota IVA</strong>
+        <p>L’IVA è ammissibile solo se rappresenta un costo per il beneficiario. Se l’impresa detrae l’IVA, la base della domanda va considerata al netto IVA.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-padding muted-section">
+    <div class="section-container guide-two-columns">
+      <RevealOnScroll animation="fly-up">
+      <article class="interactive-panel">
+        <div class="panel-heading">
+          <span>03</span>
+          <div>
+            <h3>Esempio di progetto tecnico</h3>
+            <p>Un testo di partenza, generico, da adattare al caso reale.</p>
+          </div>
+        </div>
+        <h4>Assistente AI per documenti, scadenze e processi aziendali</h4>
+        <p>{exampleProjectText}</p>
+        <div class="module-grid">
+          {#each technicalProjectModules as item}
+            <span>{item}</span>
+          {/each}
+        </div>
+        <button type="button" class="outline-action" on:click={copyExampleProject}>
+          {copiedExample ? 'Testo copiato' : 'Copia testo esempio'}
+        </button>
+      </article>
+      </RevealOnScroll>
+
+      <RevealOnScroll animation="fly-up" delay={90}>
+      <article class="interactive-panel">
+        <div class="panel-heading">
+          <span>04</span>
+          <div>
+            <h3>Documenti da preparare</h3>
+            <p>Spunta quello che hai già. La lista dei mancanti si aggiorna da sola.</p>
+          </div>
+        </div>
+        <div class="progress-track" aria-label={`Documenti preparati ${documentProgress}%`}>
+          <span style={`width: ${documentProgress}%`}></span>
+        </div>
+        <div class="document-checklist">
+          {#each documentChecklist as item}
+            <label>
+              <input type="checkbox" bind:checked={preparedDocuments[item]} />
+              {item}
+            </label>
+          {/each}
+        </div>
+        <div class="missing-documents">
+          <strong>{preparedCount}/{documentChecklist.length} pronti</strong>
+          <p>{missingDocuments.length ? `Mancano ancora: ${missingDocuments.slice(0, 3).join(', ')}${missingDocuments.length > 3 ? '...' : ''}` : 'Checklist completa. Verifica comunque la modulistica ufficiale prima dell’invio.'}</p>
+        </div>
+      </article>
+      </RevealOnScroll>
+    </div>
+  </section>
+
+  <section class="section-padding">
+    <div class="section-container guide-two-columns">
+      <RevealOnScroll animation="fly-up">
+      <article class="interactive-panel">
+        <div class="panel-heading">
+          <span>05</span>
+          <div>
+            <h3>Marca da bollo da 16€</h3>
+            <p>La domanda richiede assolvimento dell’imposta di bollo.</p>
+          </div>
+        </div>
+        <ol class="compact-steps">
+          <li>Acquista una marca da bollo da 16€ oppure prepara F23/F24.</li>
+          <li>Scarica il modello ufficiale di assolvimento bollo.</li>
+          <li>Applica la marca, annullala, compila dati e firma il modulo.</li>
+          <li>Scansiona il PDF e caricalo tra gli allegati della domanda.</li>
+        </ol>
+        <a class="outline-action link-action" href={stampDutyPdfUrl} target="_blank" rel="noopener noreferrer">Apri modello bollo</a>
+        <p class="tool-result">Conserva originale della marca e modulo firmato insieme alla pratica.</p>
+      </article>
+      </RevealOnScroll>
+
+      <RevealOnScroll animation="fly-up" delay={90}>
+      <article class="interactive-panel">
+        <div class="panel-heading">
+          <span>06</span>
+          <div>
+            <h3>Domanda passo-passo</h3>
+            <p>Uno stepper leggero per non perdere i passaggi chiave.</p>
+          </div>
+        </div>
+        <div class="stepper-tabs" role="tablist" aria-label="Passaggi compilazione domanda">
+          {#each applicationSteps as step, i}
+            <button type="button" class:active={activeApplicationStep === i} on:click={() => (activeApplicationStep = i)}>{i + 1}</button>
+          {/each}
+        </div>
+        <div class="stepper-content">
+          <span>Step {activeApplicationStep + 1}</span>
+          <h4>{applicationSteps[activeApplicationStep][0]}</h4>
+          <p>{applicationSteps[activeApplicationStep][1]}</p>
+        </div>
+        <a class="outline-action link-action" href={onlineApplicationsUrl} target="_blank" rel="noopener noreferrer">Apri Istanze On Line</a>
+      </article>
+      </RevealOnScroll>
+    </div>
+  </section>
+
+  <section class="section-padding muted-section">
+    <div class="section-container guide-two-columns">
+      <RevealOnScroll animation="fly-up">
+      <article class="interactive-panel">
+        <div class="panel-heading">
+          <span>07</span>
+          <div>
+            <h3>Errori da evitare</h3>
+            <p>Piccoli errori possono rendere debole una domanda anche quando l’idea è buona.</p>
+          </div>
+        </div>
+        <ul class="avoid-list">
+          {#each avoidErrors as error}
+            <li>{error}</li>
+          {/each}
+        </ul>
+      </article>
+      </RevealOnScroll>
+
+      <RevealOnScroll animation="fly-up" delay={90}>
+      <article class="interactive-panel">
+        <div class="panel-heading">
+          <span>08</span>
+          <div>
+            <h3>Fonti ufficiali</h3>
+            <p>Tutti i documenti da aprire prima di inviare la pratica.</p>
+          </div>
+        </div>
+        <div class="resource-list">
+          {#each officialResources as resource}
+            <a href={resource.href} target="_blank" rel="noopener noreferrer">{resource.label}</a>
+          {/each}
+        </div>
+      </article>
       </RevealOnScroll>
     </div>
   </section>
@@ -1058,6 +1481,342 @@
     background: rgba(255, 255, 255, 0.025);
   }
 
+  .centered {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .interactive-guide-section {
+    position: relative;
+  }
+
+  .guide-tool-grid,
+  .guide-two-columns {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .interactive-panel {
+    display: grid;
+    gap: 1rem;
+    min-height: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 1.35rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.03));
+    padding: 1.1rem;
+  }
+
+  .panel-heading {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+  }
+
+  .panel-heading > span {
+    display: inline-grid;
+    flex: 0 0 auto;
+    width: 2.35rem;
+    height: 2.35rem;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(214, 72, 126, 0.14);
+    color: #f0a4c1;
+    font-weight: 900;
+  }
+
+  .panel-heading h3,
+  .interactive-panel h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    line-height: 1.1;
+  }
+
+  .panel-heading p,
+  .interactive-panel > p,
+  .stepper-content p,
+  .missing-documents p,
+  .category-picker p,
+  .tool-result {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .progress-track {
+    height: 0.55rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .progress-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #d6487e, #06b6d4);
+    transition: width 0.25s ease;
+  }
+
+  .check-list,
+  .document-checklist,
+  .category-picker,
+  .resource-list {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .yes-no-row {
+    display: grid;
+    gap: 0.7rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.045);
+    padding: 0.85rem;
+  }
+
+  .yes-no-row p {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .yes-no-row div,
+  .stepper-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .yes-no-row button,
+  .stepper-tabs button,
+  .outline-action {
+    min-height: 2.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    font-weight: 850;
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .yes-no-row button,
+  .stepper-tabs button {
+    padding: 0.35rem 0.85rem;
+  }
+
+  .yes-no-row button.active,
+  .stepper-tabs button.active {
+    border-color: rgba(214, 72, 126, 0.75);
+    background: rgba(214, 72, 126, 0.2);
+    color: #ffffff;
+  }
+
+  .yes-no-row button:hover,
+  .stepper-tabs button:hover,
+  .outline-action:hover,
+  .resource-list a:hover {
+    transform: translateY(-1px);
+    border-color: rgba(214, 72, 126, 0.45);
+  }
+
+  .tool-result {
+    border-radius: 1rem;
+    background: rgba(112, 225, 200, 0.09);
+    padding: 0.85rem;
+    font-weight: 700;
+  }
+
+  .warning-result {
+    background: rgba(214, 72, 126, 0.12);
+  }
+
+  .calculator-field,
+  .switch-row,
+  .category-picker label,
+  .document-checklist label {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    color: var(--text-primary);
+    font-weight: 750;
+    line-height: 1.35;
+  }
+
+  .calculator-field {
+    display: grid;
+    align-items: initial;
+  }
+
+  .calculator-field input {
+    width: 100%;
+    min-height: 2.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.9rem;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-primary);
+    padding: 0.75rem 0.85rem;
+    font: inherit;
+    box-sizing: border-box;
+  }
+
+  .switch-row input,
+  .category-picker input,
+  .document-checklist input {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: #d6487e;
+    flex: 0 0 auto;
+  }
+
+  .calculator-results {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .calculator-results div,
+  .missing-documents,
+  .stepper-content {
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.055);
+    padding: 0.85rem;
+  }
+
+  .calculator-results span,
+  .stepper-content span {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .calculator-results strong {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--text-primary);
+    font-size: 1.35rem;
+  }
+
+  .expense-table {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 1.35rem;
+    border-spacing: 0;
+  }
+
+  .expense-table thead {
+    display: none;
+  }
+
+  .expense-table tbody,
+  .expense-table tr,
+  .expense-table th,
+  .expense-table td {
+    display: grid;
+  }
+
+  .expense-table tr {
+    gap: 0.4rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .expense-table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .expense-table th {
+    color: var(--text-primary);
+    text-align: left;
+  }
+
+  .expense-table td {
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .guide-callout {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 1rem;
+    border-left: 3px solid #70e1c8;
+    border-radius: 1rem;
+    background: rgba(112, 225, 200, 0.08);
+    padding: 1rem;
+  }
+
+  .guide-callout strong,
+  .missing-documents strong {
+    color: var(--text-primary);
+  }
+
+  .guide-callout p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .module-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .module-grid span {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    padding: 0.45rem 0.65rem;
+    font-size: 0.85rem;
+    font-weight: 750;
+  }
+
+  .outline-action {
+    justify-self: flex-start;
+    padding: 0.7rem 1rem;
+  }
+
+  .link-action,
+  .resource-list a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .compact-steps,
+  .avoid-list {
+    display: grid;
+    gap: 0.65rem;
+    margin: 0;
+    padding-left: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .resource-list a {
+    min-height: 2.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.055);
+    color: var(--text-primary);
+    padding: 0.5rem 0.8rem;
+    font-weight: 800;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+
   .service-offer-layout,
   .proof-layout {
     display: grid;
@@ -1313,6 +2072,8 @@
   :global([data-theme='light']) .use-case-card,
   :global([data-theme='light']) .service-offer-card,
   :global([data-theme='light']) .client-proof-card,
+  :global([data-theme='light']) .interactive-panel,
+  :global([data-theme='light']) .expense-table tr,
   :global([data-theme='light']) details {
     background: rgba(255, 255, 255, 0.78);
   }
@@ -1332,9 +2093,14 @@
 
   :global([data-theme='light']) .lead-form input,
   :global([data-theme='light']) .lead-form textarea,
+  :global([data-theme='light']) .calculator-field input,
   :global([data-theme='light']) .badge-row span,
   :global([data-theme='light']) .final-points span,
-  :global([data-theme='light']) .panel-stats div {
+  :global([data-theme='light']) .panel-stats div,
+  :global([data-theme='light']) .yes-no-row,
+  :global([data-theme='light']) .calculator-results div,
+  :global([data-theme='light']) .missing-documents,
+  :global([data-theme='light']) .stepper-content {
     background: rgba(255, 255, 255, 0.9);
   }
 
@@ -1354,8 +2120,49 @@
     .use-case-grid,
     .example-grid,
     .service-offer-grid,
-    .client-proof-grid {
+    .client-proof-grid,
+    .guide-tool-grid,
+    .guide-two-columns {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .expense-table {
+      display: table;
+    }
+
+    .expense-table thead {
+      display: table-header-group;
+    }
+
+    .expense-table tbody {
+      display: table-row-group;
+    }
+
+    .expense-table tr {
+      display: table-row;
+      padding: 0;
+    }
+
+    .expense-table th,
+    .expense-table td {
+      display: table-cell;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: top;
+    }
+
+    .expense-table tbody tr:last-child th,
+    .expense-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .expense-table thead th {
+      background: rgba(214, 72, 126, 0.12) !important;
+      color: var(--text-primary);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.8rem;
     }
 
     .lead-form {
