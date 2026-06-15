@@ -121,6 +121,10 @@
 
   const faqs = [
     {
+      question: 'Cos’è il Bando AI FVG 2026?',
+      answer: 'È il bando della Regione Friuli Venezia Giulia per aiutare micro e piccole imprese e liberi professionisti a introdurre tecnologie di Intelligenza Artificiale nei processi aziendali.',
+    },
+    {
       question: 'Chi può partecipare?',
       answer: 'Il bando è rivolto a micro e piccole imprese e liberi professionisti con sede legale o operativa attiva in Friuli Venezia Giulia.',
     },
@@ -184,7 +188,7 @@
         '@type': 'WebPage',
         '@id': 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026#webpage',
         url: 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026',
-        name: 'Bando Intelligenza Artificiale FVG 2026 | Righello',
+        name: 'Bando AI FVG 2026: 75% a fondo perduto | Righello',
         dateModified: '2026-06-15',
         citation: officialSources.map((source) => source.href),
       },
@@ -281,17 +285,17 @@
 </script>
 
 <svelte:head>
-  <title>Bando Intelligenza Artificiale FVG 2026 | Righello</title>
-  <meta name="description" content="Bando AI FVG 2026 aperto fino al 31 luglio: fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale. Consulenza gratuita Righello." />
+  <title>Bando AI FVG 2026: 75% a fondo perduto | Righello</title>
+  <meta name="description" content="Bando AI FVG 2026 aperto fino al 31 luglio: fino a 10.000€ a fondo perduto per Intelligenza Artificiale in Friuli Venezia Giulia." />
   <link rel="canonical" href="https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026" />
-  <meta property="og:title" content="Bando Intelligenza Artificiale FVG 2026 | Righello" />
+  <meta property="og:title" content="Bando AI FVG 2026: 75% a fondo perduto | Righello" />
   <meta property="og:description" content="Bando AI FVG 2026 aperto fino al 31 luglio: fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale. Consulenza gratuita con Righello." />
   <meta property="og:url" content="https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bando Intelligenza Artificiale FVG 2026 | Righello" />
+  <meta name="twitter:title" content="Bando AI FVG 2026: 75% a fondo perduto | Righello" />
   <meta name="twitter:description" content="Bando AI FVG 2026 aperto fino al 31 luglio: fino a 10.000€ a fondo perduto per progetti di Intelligenza Artificiale. Consulenza gratuita con Righello." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
   {@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}</script>`}
@@ -324,6 +328,9 @@
         </p>
         <p class="status-line">
           Situazione al {informationDate}: il bando risulta aperto. Le domande sono a sportello e vanno presentate online entro le ore 16:00 del 31 luglio 2026.
+        </p>
+        <p class="search-intent-line">
+          In breve: il bando AI FVG 2026 finanzia progetti di intelligenza artificiale in Friuli Venezia Giulia. Righello ti aiuta a capire requisiti, spese ammissibili e progetto da costruire.
         </p>
         <div class="hero-actions" aria-label="Azioni principali">
           <MagneticButton href="#consulenza" variant="primary" class="landing-magnetic">
@@ -741,6 +748,15 @@
     font-size: 0.95rem;
     font-weight: 650;
     line-height: 1.45;
+  }
+
+  .search-intent-line {
+    max-width: 44rem;
+    margin-top: 0.85rem;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    font-weight: 520;
+    line-height: 1.5;
   }
 
   .hero-actions,
