@@ -27,6 +27,21 @@
     featured?: boolean;
   };
 
+  type FeaturedProof = {
+    name: string;
+    label: string;
+    href: string;
+    intro: string;
+    proof: string[];
+    accent: string;
+  };
+
+  const heroStats = [
+    { value: '50+', label: 'aziende e brand seguiti' },
+    { value: '3', label: 'aree operative: brand, growth, software' },
+    { value: '1', label: 'metodo: strategia, produzione, tecnologia' },
+  ];
+
   const categories = [
     { id: 'all', label: 'Tutti' },
     { id: 'hospitality', label: 'Hospitality' },
@@ -184,6 +199,70 @@
     },
   ];
 
+  const featuredProofs: FeaturedProof[] = [
+    {
+      name: 'BUFFR',
+      label: 'Prodotto iOS',
+      href: '/buffr',
+      intro: 'Camera buffer per iPhone: replay istantanei per sport, live event, backstage e creator.',
+      proof: ['Product design', 'UX mobile', 'Pagina prodotto', 'App Store assets'],
+      accent: 'Replay istantanei',
+    },
+    {
+      name: 'Lumis',
+      label: 'Web app custom',
+      href: 'https://lumis.wearerighello.com',
+      intro: 'Esperienza digitale proprietaria: interfaccia, posizionamento e prodotto custom fuori dal sito vetrina standard.',
+      proof: ['Web app', 'Interfaccia custom', 'Sviluppo prodotto', 'Design system'],
+      accent: 'Custom product',
+    },
+    {
+      name: 'Neura',
+      label: 'Prodotto digitale',
+      href: 'https://neura.wearerighello.com',
+      intro: 'Architettura informativa e interfaccia per spiegare valore, funzione e posizionamento di un prodotto digitale.',
+      proof: ['UX', 'Frontend', 'Brand positioning', 'Product storytelling'],
+      accent: 'UX + valore',
+    },
+    {
+      name: 'Hermes',
+      label: 'Sistema interno',
+      href: '#case-study-archive',
+      intro: 'Archivio proof-of-work Righello: case study, PDF, referenze e produzioni organizzati per usarli meglio in vendita.',
+      proof: ['Knowledge base', 'Case study map', 'Portfolio intelligence', 'Asset commerciali'],
+      accent: 'Proof system',
+    },
+  ];
+
+  const capabilityProofs = [
+    {
+      title: 'Dalla percezione alla fiducia',
+      text: 'Contenuti, pagine e sistemi che fanno sembrare l’azienda solida prima ancora della prima call.',
+    },
+    {
+      title: 'Dal sito al prodotto',
+      text: 'Landing, web app, software e strumenti proprietari costruiti con la stessa attenzione di un prodotto digitale.',
+    },
+    {
+      title: 'Dalla campagna al sistema',
+      text: 'Asset riutilizzabili su paid, organico, vendita, documenti commerciali e presentazioni.',
+    },
+  ];
+
+  const archiveSignals = [
+    { value: '68', label: 'PDF case study censiti' },
+    { value: '16', label: 'case study finali validati' },
+    { value: '10+', label: 'settori coperti' },
+    { value: '50+', label: 'clienti e progetti mappati' },
+  ];
+
+  const archiveBullets = [
+    'Case study principali pronti per conversazioni commerciali',
+    'Portfolio web, prodotti digitali e produzioni separati per contesto',
+    'Referenze divise per settore: hospitality, medical, automotive, wine, food, sport, eventi e tech',
+    'Materiali selezionati per evitare liste infinite e mostrare solo esempi coerenti',
+  ];
+
   const productionLinks = [
     { label: 'Portfolio completo', href: 'https://1drv.ms/f/c/8e8043fff9e6e829/IgCF6y9QuDYLSZIE7CyYG0fWAUmlUH8AJxGKvnIdEnaRXUc' },
     { label: 'Archivio produzioni video/foto', href: 'https://1drv.ms/f/c/8e8043fff9e6e829/IgCctAk1dekaSqNLIVfJmFMKAX-3qsFqNlK7m6SLOhBU4Ik' },
@@ -235,6 +314,21 @@
         url: `https://www.wearerighello.com/progetti#${study.id}`,
       })),
     },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: 'Proof of work digitali Righello',
+      itemListElement: featuredProofs.map((proof, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: proof.name,
+        url: proof.href.startsWith('http')
+          ? proof.href
+          : proof.href.startsWith('#')
+            ? `https://www.wearerighello.com/progetti${proof.href}`
+            : `https://www.wearerighello.com${proof.href}`,
+      })),
+    },
   ]);
 
   const schemaMarkup = `<script type="application/ld+json">${schema.replace(/</g, '\\u003c')}<\/script>`;
@@ -262,15 +356,23 @@
   <div class="section-container hero-grid">
     <RevealOnScroll animation="fly-up" duration={420}>
       <div class="hero-copy">
-        <p class="section-subtitle">Selected work</p>
-        <h1 class="heading-xl hero-title">Case study per aziende che vogliono sembrare leader.</h1>
+        <p class="section-subtitle">Proof of work</p>
+        <h1 class="heading-xl hero-title">Progetti veri. Prodotti veri. Risultati che si vedono.</h1>
         <p class="hero-intro">
-          Strategia, contenuti, advertising, siti e prodotti digitali costruiti per aumentare percezione,
-          fiducia e richieste commerciali. Pochi lavori selezionati, raccontati con il contesto giusto.
+          Una selezione di lavori Righello: contenuti, campagne, siti, app e sistemi digitali costruiti
+          per aumentare percezione, fiducia e richieste commerciali.
         </p>
         <div class="hero-actions">
           <MagneticButton href="/contatti" variant="primary">Parliamo del tuo progetto</MagneticButton>
           <MagneticButton href="#product-work" variant="secondary">Prodotti digitali</MagneticButton>
+        </div>
+        <div class="hero-stats" aria-label="Sintesi proof of work Righello">
+          {#each heroStats as stat}
+            <div>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </div>
+          {/each}
         </div>
       </div>
     </RevealOnScroll>
@@ -279,7 +381,7 @@
       <aside class="proof-panel" aria-label="Sintesi portfolio Righello">
         <div class="proof-panel__top">
           <span>Righello work index</span>
-          <strong>50+ clienti</strong>
+          <strong>Brand, growth, software</strong>
         </div>
         <div class="proof-hero-line">
           <span>Design</span>
@@ -306,6 +408,64 @@
 </section>
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+
+<section class="section-padding featured-proof-section">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up" duration={360}>
+      <div class="section-heading-row">
+        <div>
+          <p class="section-subtitle">In evidenza</p>
+          <h2 class="section-title">Quando diciamo prodotto digitale, intendiamo questo.</h2>
+        </div>
+        <p>
+          Non solo siti “belli”: esperienze, pagine e software pensati per essere usati,
+          capiti, condivisi e venduti. BUFFR apre la sua pagina dedicata dal portfolio.
+        </p>
+      </div>
+    </RevealOnScroll>
+
+    <div class="featured-proof-grid">
+      {#each featuredProofs as proof, i}
+        <RevealOnScroll animation="fly-up" stagger={80} index={i} duration={340}>
+          <a
+            class="featured-proof-card"
+            href={proof.href}
+            target={proof.href.startsWith('http') ? '_blank' : undefined}
+            rel={proof.href.startsWith('http') ? 'noreferrer' : undefined}
+            aria-label={`Apri proof of work ${proof.name}`}
+          >
+            <div class="featured-proof-card__top">
+              <span>{proof.label}</span>
+              <em>{proof.href.startsWith('http') ? '↗' : '→'}</em>
+            </div>
+            <strong class="featured-accent">{proof.accent}</strong>
+            <h3>{proof.name}</h3>
+            <p>{proof.intro}</p>
+            <div class="proof-chip-row" aria-label={`Competenze coinvolte per ${proof.name}`}>
+              {#each proof.proof as item}
+                <span>{item}</span>
+              {/each}
+            </div>
+          </a>
+        </RevealOnScroll>
+      {/each}
+    </div>
+
+    <div class="capability-proof-grid">
+      {#each capabilityProofs as capability, i}
+        <RevealOnScroll animation="fade" stagger={70} index={i} duration={300}>
+          <article class="capability-proof-card">
+            <span>{String(i + 1).padStart(2, '0')}</span>
+            <h3>{capability.title}</h3>
+            <p>{capability.text}</p>
+          </article>
+        </RevealOnScroll>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-secondary)" />
 
 <section id="case-study" class="section-padding case-section">
   <div class="section-container">
@@ -394,12 +554,47 @@
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
+<section id="case-study-archive" class="section-padding archive-proof-section">
+  <div class="section-container archive-proof-shell">
+    <RevealOnScroll animation="fly-up" duration={360}>
+      <div class="archive-proof-copy">
+        <p class="section-subtitle">Hermes archive</p>
+        <h2 class="section-title">Non mostriamo “qualche lavoro”. Organizziamo prove.</h2>
+        <p>
+          Abbiamo un archivio interno di case study, PDF, produzioni e referenze. Serve a scegliere
+          gli esempi giusti per ogni cliente: pochi, coerenti, leggibili e utili a una decisione.
+        </p>
+      </div>
+    </RevealOnScroll>
+
+    <RevealOnScroll animation="scale" delay={90} duration={360}>
+      <div class="archive-proof-panel">
+        <div class="archive-proof-stats" aria-label="Dati archivio case study Righello">
+          {#each archiveSignals as signal}
+            <div>
+              <strong>{signal.value}</strong>
+              <span>{signal.label}</span>
+            </div>
+          {/each}
+        </div>
+        <ul class="archive-proof-list">
+          {#each archiveBullets as item}
+            <li>{item}</li>
+          {/each}
+        </ul>
+      </div>
+    </RevealOnScroll>
+  </div>
+</section>
+
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" />
+
 <section id="product-work" class="section-padding digital-section">
   <div class="section-container digital-shell">
     <RevealOnScroll animation="fly-up" duration={360}>
       <div class="digital-copy">
         <p class="section-subtitle">Web e prodotto digitale</p>
-        <h2 class="section-title">Qui si vede se sai fare prodotto o solo pagine carine.</h2>
+        <h2 class="section-title">Qui si vede se sai fare prodotto, non template.</h2>
         <p class="section-intro">
           Progettiamo siti, landing, app e software con architettura pulita, performance,
           struttura SEO e un’interfaccia che non sembra uscita da un template.
@@ -534,9 +729,8 @@
 
   .hero-glass {
     position: absolute;
-    inset: 6rem 1rem auto;
+    inset: 6rem 1rem 1.5rem;
     z-index: -1;
-    height: min(46rem, 72vh);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 2rem;
     background:
@@ -583,6 +777,41 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.9rem;
+  }
+
+  .hero-stats {
+    display: grid;
+    gap: 0.7rem;
+    margin-top: 2rem;
+  }
+
+  .hero-stats div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 1.1rem;
+    padding: 0.65rem;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .hero-stats strong {
+    display: grid;
+    place-items: center;
+    min-width: 3.2rem;
+    min-height: 2.25rem;
+    border-radius: 999px;
+    color: #fff;
+    background: var(--righello-pink, #D6487E);
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
+  .hero-stats span {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.2;
   }
 
   .proof-panel {
@@ -675,8 +904,164 @@
   }
 
   .case-section,
-  .references-section {
+  .references-section,
+  .featured-proof-section {
     background: var(--bg-secondary);
+  }
+
+  .featured-proof-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .featured-proof-card {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-height: 27rem;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 1.55rem;
+    padding: 1.1rem;
+    color: var(--text-primary);
+    background:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.018)),
+      var(--bg-primary);
+    text-decoration: none;
+    transform: translateZ(0);
+    transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+  }
+
+  .featured-proof-card::before,
+  .featured-proof-card::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .featured-proof-card::before {
+    inset: -35% -25% auto;
+    height: 19rem;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 35% 45%, rgba(214, 72, 126, 0.38), transparent 10rem),
+      radial-gradient(circle at 70% 35%, rgba(6, 182, 212, 0.2), transparent 9rem);
+    filter: blur(8px);
+    opacity: 0.86;
+  }
+
+  .featured-proof-card::after {
+    inset: 42% 1rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.15rem;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.018)),
+      rgba(255, 255, 255, 0.02);
+  }
+
+  .featured-proof-card:hover {
+    border-color: rgba(214, 72, 126, 0.48);
+    transform: translateY(-4px);
+  }
+
+  .featured-proof-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    font-weight: 750;
+  }
+
+  .featured-proof-card__top em {
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    font-style: normal;
+  }
+
+  .featured-accent {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: auto;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 0.42rem 0.75rem;
+    color: #fff;
+    background: rgba(214, 72, 126, 0.86);
+    font-size: 0.82rem;
+    line-height: 1;
+  }
+
+  .featured-proof-card h3 {
+    margin: 0.8rem 0 0.75rem;
+    font-size: clamp(2.45rem, 10vw, 5rem);
+    line-height: 0.9;
+    font-weight: 900;
+  }
+
+  .featured-proof-card p {
+    max-width: 29rem;
+    margin: 0 0 1rem;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.42;
+  }
+
+  .proof-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .proof-chip-row span {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.34rem 0.62rem;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.18);
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .capability-proof-grid {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1rem;
+  }
+
+  .capability-proof-card {
+    display: grid;
+    gap: 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: 1.25rem;
+    padding: 1rem;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
+      var(--bg-primary);
+  }
+
+  .capability-proof-card span {
+    color: var(--righello-pink, #D6487E);
+    font-size: 0.88rem;
+    font-weight: 850;
+  }
+
+  .capability-proof-card h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.1;
+  }
+
+  .capability-proof-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.96rem;
+    line-height: 1.35;
   }
 
   .filter-bar {
@@ -902,6 +1287,99 @@
       var(--bg-primary);
   }
 
+  .archive-proof-section {
+    background:
+      linear-gradient(135deg, rgba(214, 72, 126, 0.08), rgba(6, 182, 212, 0.06)),
+      var(--bg-primary);
+  }
+
+  .archive-proof-shell {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .archive-proof-copy {
+    max-width: 48rem;
+  }
+
+  .archive-proof-copy p:not(.section-subtitle) {
+    color: var(--text-secondary);
+    font-size: 1.08rem;
+    line-height: 1.45;
+  }
+
+  .archive-proof-panel {
+    border: 1px solid var(--border-color);
+    border-radius: 1.55rem;
+    padding: 1rem;
+    background:
+      radial-gradient(circle at 0% 0%, rgba(214, 72, 126, 0.18), transparent 18rem),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02)),
+      var(--bg-secondary);
+  }
+
+  .archive-proof-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .archive-proof-stats div {
+    min-height: 7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--border-color);
+    border-radius: 1.1rem;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .archive-proof-stats strong {
+    color: var(--text-primary);
+    font-size: clamp(2.4rem, 12vw, 4.6rem);
+    line-height: 0.9;
+    font-weight: 900;
+  }
+
+  .archive-proof-stats span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.18;
+  }
+
+  .archive-proof-list {
+    display: grid;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .archive-proof-list li {
+    position: relative;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.7rem 0.85rem 0.7rem 2rem;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.16);
+    font-size: 0.92rem;
+    line-height: 1.25;
+  }
+
+  .archive-proof-list li::before {
+    content: '';
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: var(--righello-pink, #D6487E);
+    transform: translateY(-50%);
+  }
+
   .digital-copy {
     align-self: start;
   }
@@ -1106,9 +1584,28 @@
       align-items: end;
     }
 
+    .hero-stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 44rem;
+    }
+
+    .hero-stats div {
+      grid-template-columns: 1fr;
+      align-content: space-between;
+      min-height: 7rem;
+      border-radius: 1.25rem;
+      padding: 0.8rem;
+    }
+
+    .hero-stats strong {
+      width: fit-content;
+      min-width: 3.45rem;
+    }
+
     .section-heading-row,
     .digital-shell,
-    .production-grid {
+    .production-grid,
+    .archive-proof-shell {
       grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     }
 
@@ -1119,6 +1616,28 @@
 
     .case-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .featured-proof-grid,
+    .capability-proof-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .featured-proof-card {
+      min-height: 31rem;
+      padding: 1.25rem;
+    }
+
+    .featured-proof-grid > :first-child {
+      grid-column: span 2;
+    }
+
+    .archive-proof-panel {
+      padding: 1.2rem;
+    }
+
+    .archive-proof-stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .reference-grid {
@@ -1144,11 +1663,17 @@
     .case-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+
+    .featured-proof-card {
+      min-height: 34rem;
+      padding: 1.45rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .web-row,
-    .filter-bar button {
+    .filter-bar button,
+    .featured-proof-card {
       transition: none;
     }
   }
