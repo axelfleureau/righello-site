@@ -1649,6 +1649,7 @@
   }
 
   .archive-proof-panel {
+    min-width: 0;
     border: 1px solid var(--border-color);
     border-radius: 1.55rem;
     padding: 1rem;
@@ -1660,13 +1661,14 @@
 
   .archive-proof-stats {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     gap: 0.75rem;
     margin-bottom: 1rem;
   }
 
   .archive-proof-stats div {
-    min-height: 7rem;
+    min-width: 0;
+    min-height: 6.7rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1677,16 +1679,19 @@
   }
 
   .archive-proof-stats strong {
+    max-width: 100%;
     color: var(--text-primary);
-    font-size: clamp(1.45rem, 6vw, 2.25rem);
-    line-height: 0.95;
+    font-size: clamp(1.28rem, 3vw, 1.8rem);
+    line-height: 1;
     font-weight: 900;
+    overflow-wrap: anywhere;
   }
 
   .archive-proof-stats span {
     color: var(--text-secondary);
     font-size: 0.9rem;
     line-height: 1.18;
+    overflow-wrap: break-word;
   }
 
   .archive-proof-list {
@@ -1700,12 +1705,13 @@
   .archive-proof-list li {
     position: relative;
     border: 1px solid var(--border-color);
-    border-radius: 999px;
+    border-radius: 1.1rem;
     padding: 0.7rem 0.85rem 0.7rem 2rem;
     color: var(--text-secondary);
     background: rgba(0, 0, 0, 0.16);
     font-size: 0.92rem;
     line-height: 1.25;
+    overflow-wrap: break-word;
   }
 
   .archive-proof-list li::before {
@@ -1986,7 +1992,7 @@
     }
 
     .archive-proof-stats {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .reference-grid {
