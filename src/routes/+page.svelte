@@ -51,6 +51,16 @@
 
   const localLandingLinks = [
     {
+      href: '/progetti',
+      label: 'Case study e progetti Righello',
+      description: 'Siti web, campagne, contenuti, software custom e prodotti digitali realizzati per aziende reali.',
+    },
+    {
+      href: '/buffr',
+      label: 'BUFFR app iOS by Righello',
+      description: 'La camera buffer per iPhone firmata Righello S.r.l.: replay istantanei per sport, live event e creator.',
+    },
+    {
       href: '/agenzia-marketing-pordenone',
       label: 'Agenzia marketing a Pordenone',
       description: 'Strategia, social, advertising, siti web e automazioni per aziende in Friuli-Venezia Giulia.',
@@ -293,7 +303,7 @@
   <HorizontalVideoShowcase 
     title="Creiamo esperienze memorabili"
     subtitle="Video Production"
-    description="Video istituzionali, contenuti dimostrativi e proof of work per raccontare il tuo brand"
+    description="Video istituzionali, contenuti dimostrativi e casi studio per raccontare il tuo brand"
     items={data.showcaseItems}
   />
 </div>

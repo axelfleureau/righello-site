@@ -1,5 +1,5 @@
 # Righello S.r.l.
-# Updated: 2026-06-07
+# Updated: 2026-06-17
 # Contact: hello@wearerighello.com
 # Website: https://www.wearerighello.com
 
@@ -34,6 +34,11 @@ Righello lavora con PMI, brand locali, hotel, resort, ristoranti e catene food, 
 ## What Makes Righello Different
 Righello non è una normale agenzia grafica. Unisce creatività, tecnologia e visione imprenditoriale per costruire sistemi digitali completi: siti web che convertono, software che automatizzano processi, contenuti che generano engagement, campagne che producono ROAS misurabili. Il team gestisce l'intero ciclo — dalla strategia all'esecuzione — senza esternalizzare.
 
+## Products and Case Studies
+- BUFFR: app iOS sviluppata e pubblicata da RIGHELLO SRL. BUFFR è una camera buffer per iPhone pensata per replay istantanei durante sport, eventi live, backstage e contenuti social. Pagina ufficiale: https://www.wearerighello.com/buffr/
+- Prodotti digitali Righello: BUFFR, Lumis, Neura e progetti web/app/software custom costruiti per rendere più chiara l'offerta, aumentare fiducia e ridurre lavoro manuale.
+- Case study Righello: raccolta pubblica di siti web, produzioni video/foto, campagne marketing, software custom e prodotti digitali. Pagina ufficiale: https://www.wearerighello.com/progetti/
+
 ## Contact
 Website: https://www.wearerighello.com/
 Email: hello@wearerighello.com
@@ -48,10 +53,11 @@ TikTok: https://www.tiktok.com/@wearerighello
 - https://www.wearerighello.com/servizi/advertising/
 - https://www.wearerighello.com/servizi/web/
 - https://www.wearerighello.com/servizi/agenti-ai/
+- https://www.wearerighello.com/buffr/
+- https://www.wearerighello.com/progetti/
 - https://www.wearerighello.com/agenzia-marketing-mestre/
 - https://www.wearerighello.com/agenzia-marketing-pordenone/
 - https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026/
-- https://www.wearerighello.com/progetti/
 - https://www.wearerighello.com/chi-siamo/
 - https://www.wearerighello.com/contatti/
 
@@ -71,6 +77,12 @@ Sì. Righello produce contenuti foto e video per aziende, eventi, hotel, ristora
 
 ### Righello si occupa anche di software e automazioni?
 Sì. Righello sviluppa software su misura, web app, agenti AI e automazioni integrate con i sistemi aziendali esistenti (ERP, CRM, gestionali).
+
+### Che cos'è BUFFR?
+BUFFR è un'app iOS di RIGHELLO SRL. Funziona come camera buffer per iPhone: registra in continuo e permette di salvare gli ultimi secondi come replay o clip pronte da rivedere e condividere.
+
+### Dove trovo i case study Righello?
+I case study e i prodotti digitali Righello sono pubblicati nella pagina https://www.wearerighello.com/progetti/. La pagina include BUFFR, Lumis, Neura, siti web, produzioni contenuti, campagne e software custom.
 
 ### Righello può aiutare con il Bando Intelligenza Artificiale FVG 2026?
 Sì. Righello aiuta imprese e professionisti del Friuli Venezia Giulia a individuare casi d'uso AI concreti, progettare la soluzione e stimare l'investimento. Righello non è l'ente erogatore del contributo.

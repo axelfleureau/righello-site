@@ -313,7 +313,7 @@
       '@type': 'CollectionPage',
       name: 'Case study e progetti Righello',
       url: 'https://www.wearerighello.com/progetti',
-      description: 'Case study, siti web, produzioni video, campagne e prodotti digitali realizzati da Righello per aziende tra Pordenone, Mestre, Friuli Venezia Giulia e Veneto.',
+      description: 'Case study, prodotti digitali Righello, siti web, produzioni video e campagne realizzati per aziende tra Pordenone, Mestre, Friuli Venezia Giulia e Veneto.',
       publisher: {
         '@type': 'Organization',
         name: 'Righello S.r.l.',
@@ -351,18 +351,18 @@
 </script>
 
 <svelte:head>
-  <title>Case Study Agenzia Marketing, Siti Web e Software | Righello</title>
-  <meta name="description" content="Case study Righello: siti web, produzioni video, campagne marketing, software custom e prodotti digitali per aziende a Pordenone, Mestre, FVG e Veneto." />
+  <title>Case Study e Prodotti Digitali Righello | Siti Web, App e Software</title>
+  <meta name="description" content="Case study e prodotti digitali Righello: BUFFR, Lumis, Neura, siti web, produzioni video, campagne marketing e software custom per aziende." />
   <link rel="canonical" href="https://www.wearerighello.com/progetti" />
-  <meta property="og:title" content="Case Study e Progetti | Righello" />
-  <meta property="og:description" content="Siti web, campagne, contenuti, software e prodotti digitali realizzati da Righello per aziende reali." />
+  <meta property="og:title" content="Case Study e Prodotti Digitali | Righello" />
+  <meta property="og:description" content="BUFFR, Lumis, Neura, siti web, campagne, contenuti e software custom realizzati da Righello." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta property="og:url" content="https://www.wearerighello.com/progetti" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Case Study e Progetti | Righello" />
-  <meta name="twitter:description" content="Case study Righello: siti web, produzioni, campagne, software custom e prodotti digitali." />
+  <meta name="twitter:title" content="Case Study e Prodotti Digitali | Righello" />
+  <meta name="twitter:description" content="Case study Righello: BUFFR, Lumis, Neura, siti web, produzioni, campagne e software custom." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
   {@html schemaMarkup}
 </svelte:head>
@@ -372,10 +372,10 @@
   <div class="section-container hero-grid">
     <RevealOnScroll animation="fly-up" duration={420}>
       <div class="hero-copy">
-        <p class="section-subtitle">Case study Righello</p>
+        <p class="section-subtitle">Case study e prodotti digitali Righello</p>
         <h1 class="heading-xl hero-title">Lavori reali per aziende che vogliono essere scelte meglio.</h1>
         <p class="hero-intro">
-          Siti web, produzioni video, campagne, software custom e prodotti digitali. Qui trovi una selezione
+          Siti web, produzioni video, campagne, software custom, app e prodotti digitali Righello. Qui trovi una selezione
           di progetti costruiti per rendere più chiara l’offerta, aumentare fiducia e dare al team materiali
           utili per vendere.
         </p>
@@ -647,10 +647,11 @@
   <div class="section-container digital-shell">
     <RevealOnScroll animation="fly-up" duration={360}>
       <div class="digital-copy">
-        <p class="section-subtitle">Web e prodotto digitale</p>
-        <h2 class="section-title">Siti web, landing e software che non nascono da un template.</h2>
+        <p class="section-subtitle">Prodotti digitali Righello</p>
+        <h2 class="section-title">App, siti web, landing e software che non nascono da un template.</h2>
         <p class="section-intro">
-          Progettiamo siti aziendali, landing page, app e software custom con architettura pulita,
+          BUFFR, Lumis, Neura e gli altri progetti digitali raccontano il modo in cui lavoriamo:
+          siti aziendali, landing page, app e software custom con architettura pulita,
           performance, struttura SEO e interfacce pensate per evolvere con il business.
         </p>
         <div class="digital-points" aria-label="Punti di forza dei progetti digitali Righello">

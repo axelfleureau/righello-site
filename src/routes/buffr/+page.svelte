@@ -74,28 +74,122 @@
     'Team sul campo e operatori video',
   ];
 
-  const schema = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'BUFFR',
-    applicationCategory: 'PhotoApplication',
-    operatingSystem: 'iOS 15.1 or later',
-    softwareVersion: '1.0',
-    bundleId: 'com.wearerighello.bufferello',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'EUR',
+  const productFacts = [
+    {
+      title: 'Nome app',
+      value: 'BUFFR',
     },
-    author: {
-      '@type': 'Organization',
-      name: 'RIGHELLO SRL',
-      url: 'https://wearerighello.com',
+    {
+      title: 'Seller',
+      value: 'RIGHELLO SRL',
     },
-    url: 'https://www.wearerighello.com/buffr',
-    sameAs: [appStoreUrl, appStoreUsUrl],
-    description: 'BUFFR è una camera buffer per iPhone che registra in continuo e permette di salvare gli ultimi secondi come replay o clip pronte da rivedere e condividere.',
-  });
+    {
+      title: 'Categoria',
+      value: 'Foto e video',
+    },
+    {
+      title: 'Prezzo',
+      value: 'Gratis su App Store',
+    },
+  ];
+
+  const faqs = [
+    {
+      question: 'Che cos’è BUFFR di Righello?',
+      answer: 'BUFFR è un’app iOS sviluppata da RIGHELLO SRL: una camera buffer per iPhone che registra in continuo e permette di salvare gli ultimi secondi come replay o clip.',
+    },
+    {
+      question: 'A cosa serve una camera buffer per iPhone?',
+      answer: 'Serve quando l’azione succede all’improvviso: durante sport, eventi live, backstage o contenuti social puoi salvare solo il momento utile senza tagliare lunghi video dopo.',
+    },
+    {
+      question: 'BUFFR è disponibile su App Store?',
+      answer: 'Sì. BUFFR è disponibile su App Store in Italia e negli Stati Uniti con seller RIGHELLO SRL.',
+    },
+    {
+      question: 'BUFFR è gratis?',
+      answer: 'La versione 1.0 di BUFFR è indicata come gratuita su App Store.',
+    },
+  ];
+
+  const schema = JSON.stringify([
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: 'BUFFR Righello',
+      url: 'https://www.wearerighello.com/buffr',
+      description: 'Pagina prodotto ufficiale di BUFFR, app iOS di RIGHELLO SRL per replay istantanei e clip dagli ultimi secondi registrati su iPhone.',
+      inLanguage: 'it-IT',
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'Righello',
+        url: 'https://www.wearerighello.com',
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': ['SoftwareApplication', 'MobileApplication'],
+      name: 'BUFFR',
+      alternateName: ['BUFFR Righello', 'BUFFR by Righello'],
+      applicationCategory: 'PhotoApplication',
+      operatingSystem: 'iOS 15.1 or later',
+      softwareVersion: '1.0',
+      bundleId: 'com.wearerighello.bufferello',
+      downloadUrl: appStoreUrl,
+      installUrl: appStoreUrl,
+      image: 'https://www.wearerighello.com/products/buffr/replay-eventi-live.jpg',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'EUR',
+        availability: 'https://schema.org/InStock',
+        url: appStoreUrl,
+      },
+      author: {
+        '@type': 'Organization',
+        name: 'RIGHELLO SRL',
+        url: 'https://www.wearerighello.com',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'RIGHELLO SRL',
+        url: 'https://www.wearerighello.com',
+      },
+      url: 'https://www.wearerighello.com/buffr',
+      sameAs: [appStoreUrl, appStoreUsUrl],
+      description: 'BUFFR è una camera buffer per iPhone che registra in continuo e permette di salvare gli ultimi secondi come replay o clip pronte da rivedere e condividere.',
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer,
+        },
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://www.wearerighello.com',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'BUFFR',
+          item: 'https://www.wearerighello.com/buffr',
+        },
+      ],
+    },
+  ]);
 
   const schemaMarkup = `<script type="application/ld+json">${schema.replace(/</g, '\\u003c')}<\/script>`;
   const demoFrameCount = 84;
@@ -314,18 +408,18 @@
 </script>
 
 <svelte:head>
-  <title>BUFFR | Replay istantanei dal tuo iPhone</title>
-  <meta name="description" content="BUFFR è la camera buffer per iPhone pensata per sport, eventi live, backstage e creator. Salva gli ultimi secondi in replay e clip pronte da rivedere o condividere." />
+  <title>BUFFR Righello | Camera buffer iPhone per replay istantanei</title>
+  <meta name="description" content="BUFFR è l’app iOS di Righello S.r.l.: una camera buffer per iPhone che salva gli ultimi secondi come replay e clip per sport, eventi live e creator." />
   <link rel="canonical" href="https://www.wearerighello.com/buffr" />
-  <meta property="og:title" content="BUFFR | Replay istantanei dal tuo iPhone" />
-  <meta property="og:description" content="Salva gli ultimi secondi. Non perdere mai l’azione. BUFFR è la camera buffer iOS di Righello S.r.l." />
+  <meta property="og:title" content="BUFFR Righello | Camera buffer iPhone" />
+  <meta property="og:description" content="L’app iOS di Righello S.r.l. per replay istantanei: salva gli ultimi secondi durante sport, live event, backstage e contenuti social." />
   <meta property="og:image" content="https://www.wearerighello.com/products/buffr/replay-eventi-live.jpg" />
   <meta property="og:url" content="https://www.wearerighello.com/buffr" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="BUFFR | Replay istantanei dal tuo iPhone" />
-  <meta name="twitter:description" content="La camera buffer per sport, live event e creator." />
+  <meta name="twitter:title" content="BUFFR Righello | Replay istantanei dal tuo iPhone" />
+  <meta name="twitter:description" content="Camera buffer iOS di Righello S.r.l. per sport, live event e creator." />
   <meta name="twitter:image" content="https://www.wearerighello.com/products/buffr/replay-eventi-live.jpg" />
   {@html schemaMarkup}
 </svelte:head>
@@ -334,10 +428,10 @@
   <div class="section-container hero-grid">
     <RevealOnScroll animation="fly-up" duration={420}>
       <div class="hero-copy">
-        <p class="product-kicker">BUFFR by Righello</p>
-        <h1 class="hero-title">Replay istantanei dal tuo iPhone.</h1>
+        <p class="product-kicker">BUFFR by Righello S.r.l.</p>
+        <h1 class="hero-title">BUFFR: replay istantanei dal tuo iPhone.</h1>
         <p class="hero-intro">
-          BUFFR è una camera buffer per creare replay istantanei durante eventi live, sport,
+          BUFFR è l’app iOS di Righello: una camera buffer per creare replay istantanei durante eventi live, sport,
           backstage e contenuti social. Avvia il buffer, registra in continuo e salva gli ultimi
           secondi in clip pronte da rivedere o condividere.
         </p>
@@ -508,6 +602,61 @@
         {/each}
       </div>
     </RevealOnScroll>
+  </div>
+</section>
+
+<section class="section-padding product-seo-section">
+  <div class="section-container product-seo-grid">
+    <RevealOnScroll animation="fly-up" duration={360}>
+      <div class="product-seo-copy">
+        <p class="product-kicker">Pagina prodotto ufficiale</p>
+        <h2>BUFFR è un prodotto Righello, nato per catturare momenti che non si ripetono.</h2>
+        <p>
+          Questa è la pagina ufficiale di BUFFR su wearerighello.com. L’app è pubblicata su App Store
+          da RIGHELLO SRL e nasce per chi lavora con sport, eventi live, backstage, creator e contenuti
+          social. Il valore è semplice: apri la camera, lasci attivo il buffer e salvi subito il replay
+          quando succede qualcosa di importante.
+        </p>
+        <p>
+          Per chi cerca “BUFFR Righello”, “camera buffer iPhone” o “app replay istantanei”, qui trova
+          descrizione, screenshot, link App Store e informazioni sul seller ufficiale.
+        </p>
+      </div>
+    </RevealOnScroll>
+
+    <RevealOnScroll animation="scale" delay={90} duration={360}>
+      <div class="product-facts" aria-label="Informazioni ufficiali BUFFR">
+        {#each productFacts as fact}
+          <div>
+            <span>{fact.title}</span>
+            <strong>{fact.value}</strong>
+          </div>
+        {/each}
+        <a href={appStoreUsUrl} target="_blank" rel="noreferrer">Apri scheda App Store US ↗</a>
+      </div>
+    </RevealOnScroll>
+  </div>
+</section>
+
+<section class="section-padding faq-section">
+  <div class="section-container">
+    <RevealOnScroll animation="fly-up" duration={360}>
+      <div class="section-heading">
+        <p class="product-kicker">FAQ BUFFR</p>
+        <h2>Domande rapide sull’app.</h2>
+      </div>
+    </RevealOnScroll>
+
+    <div class="faq-grid">
+      {#each faqs as faq, i}
+        <RevealOnScroll animation="fly-up" stagger={60} index={i} duration={300}>
+          <article class="faq-card">
+            <h3>{faq.question}</h3>
+            <p>{faq.answer}</p>
+          </article>
+        </RevealOnScroll>
+      {/each}
+    </div>
   </div>
 </section>
 
@@ -879,6 +1028,107 @@
     padding: 1.1rem;
   }
 
+  .product-seo-section,
+  .faq-section {
+    background: var(--bg-secondary);
+  }
+
+  .product-seo-grid {
+    display: grid;
+    gap: 1.2rem;
+    align-items: stretch;
+  }
+
+  .product-seo-copy {
+    max-width: 52rem;
+  }
+
+  .product-seo-copy h2 {
+    margin: 0 0 1rem;
+    font-size: clamp(2.25rem, 6vw, 4.7rem);
+    line-height: 0.98;
+    font-weight: 900;
+  }
+
+  .product-seo-copy p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .product-facts,
+  .faq-card {
+    border: 1px solid var(--border-color);
+    border-radius: 1.3rem;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
+      var(--bg-primary);
+  }
+
+  .product-facts {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .product-facts div {
+    display: grid;
+    gap: 0.3rem;
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 0.85rem;
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .product-facts span {
+    color: var(--righello-pink, #D6487E);
+    font-size: 0.78rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .product-facts strong {
+    color: var(--text-primary);
+    font-size: clamp(1.25rem, 4vw, 2rem);
+    line-height: 1.05;
+  }
+
+  .product-facts a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 800;
+  }
+
+  .faq-grid {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .faq-card {
+    padding: 1.05rem;
+  }
+
+  .faq-card h3 {
+    margin: 0 0 0.6rem;
+    color: var(--text-primary);
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    line-height: 1.1;
+  }
+
+  .faq-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.45;
+  }
+
   .final-cta {
     padding: 4rem 0 5rem;
     background: var(--bg-secondary);
@@ -919,8 +1169,13 @@
 
     .demo-grid,
     .flow-grid,
-    .use-case-grid {
+    .use-case-grid,
+    .product-seo-grid {
       grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+
+    .faq-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .screenshot-rail {
