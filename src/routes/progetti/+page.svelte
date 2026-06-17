@@ -784,15 +784,30 @@
 
   .hero-glass {
     position: absolute;
-    inset: 6rem 1rem 1.5rem;
+    inset: 6rem 1rem 1.35rem;
     z-index: -1;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 2rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: clamp(1.5rem, 3vw, 2.35rem);
     background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.015)),
+      radial-gradient(circle at 12% 0%, rgba(214, 72, 126, 0.14), transparent 34rem),
+      radial-gradient(circle at 92% 8%, rgba(6, 182, 212, 0.12), transparent 30rem),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
       rgba(255, 255, 255, 0.02);
-    transform: skewY(-2deg);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 32px 90px rgba(0, 0, 0, 0.28);
     pointer-events: none;
+  }
+
+  .hero-glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent 34%),
+      linear-gradient(180deg, transparent 72%, rgba(0, 0, 0, 0.24));
+    opacity: 0.82;
   }
 
   .hero-grid,
