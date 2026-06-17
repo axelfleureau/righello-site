@@ -442,14 +442,14 @@
     <div class="client-logo-grid">
       {#each selectedClientLogos as client, i}
         <RevealOnScroll animation="fade" stagger={22} index={i} duration={220}>
-          <div class="client-logo-tile">
+          <div class={`client-logo-tile${client.lightSurface ? ' light-surface' : ''}`}>
             {#if client.logo}
               <img
                 src={client.logo}
                 alt={client.name}
                 loading="lazy"
                 decoding="async"
-                class:no-filter={client.noFilter}
+                class:no-filter={client.noFilter || client.lightSurface}
               />
             {:else}
               <span>{client.name}</span>
@@ -1023,27 +1023,74 @@
   }
 
   .client-logo-tile {
+    position: relative;
+    isolation: isolate;
     min-height: 5.4rem;
     display: grid;
     place-items: center;
     border: 1px solid var(--border-color);
     border-radius: 1.1rem;
     padding: 0.8rem;
+    overflow: hidden;
     background:
       linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
       var(--bg-primary);
   }
 
+  .client-logo-tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 30% 12%, rgba(255, 255, 255, 0.12), transparent 4.5rem),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 62%);
+    opacity: 0.6;
+  }
+
+  .client-logo-tile.light-surface {
+    border-color: rgba(255, 255, 255, 0.18);
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(225, 229, 233, 0.74)),
+      var(--bg-primary);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 10px 28px rgba(0, 0, 0, 0.18);
+  }
+
+  .client-logo-tile.light-surface::before {
+    background:
+      radial-gradient(circle at 18% 12%, rgba(214, 72, 126, 0.13), transparent 5rem),
+      radial-gradient(circle at 88% 100%, rgba(6, 182, 212, 0.1), transparent 5rem);
+    opacity: 1;
+  }
+
   .client-logo-tile img {
-    max-width: 8.5rem;
+    max-width: min(100%, 8.5rem);
     max-height: 2.35rem;
     object-fit: contain;
-    filter: grayscale(1) brightness(1.6) contrast(0.92);
-    opacity: 0.82;
+    filter: grayscale(1) brightness(1.85) contrast(0.98);
+    opacity: 0.9;
   }
 
   .client-logo-tile img.no-filter {
     filter: none;
+    opacity: 1;
+  }
+
+  .client-logo-tile.light-surface img {
+    max-width: min(100%, 8.95rem);
+    max-height: 2.65rem;
+  }
+
+  .client-logo-tile.light-surface img[src*='salotto'],
+  .client-logo-tile.light-surface img[src*='hotel-elite'],
+  .client-logo-tile.light-surface img[src*='hotel-michelangelo'] {
+    max-height: 3.35rem;
+  }
+
+  .client-logo-tile.light-surface img[src*='poles'] {
+    max-width: min(100%, 8rem);
   }
 
   .client-logo-tile span {
