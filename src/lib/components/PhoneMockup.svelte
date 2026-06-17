@@ -410,6 +410,18 @@
               );
             }
           }
+          // state 2 = paused. When the hero should still be muted, a pause here
+          // is almost always an autoplay/unMute race from the browser/YouTube
+          // player, not a user intent. Recover by keeping it muted and resuming.
+          // This protects fast first-scroll cases without trying to start audio.
+          if (data.info === 2 && muted && ytSrcActive && iframeEl) {
+            iframeEl.contentWindow?.postMessage(
+              JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*'
+            );
+            iframeEl.contentWindow?.postMessage(
+              JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
+            );
+          }
           // state 0 = ended: loop manually (iOS/iPadOS workaround for loop=1 unreliability).
           // Instead of seeking immediately (which shows a flash), briefly cross-fade
           // through the thumbnail — this hides the blank frame at the loop point and

@@ -162,19 +162,17 @@
     if (!container) return;
 
     // --- Audio management ---
-    // Unlock audio on first user gesture.
-    // wheel   = desktop scroll  (fires first, but is NOT a qualifying activation on
-    //           some browsers/YouTube versions — retryUnmute below recovers from this)
-    // touchstart = mobile touch (always a qualifying activation)
-    window.addEventListener('wheel', unlockAudio, { once: true, passive: true });
-    window.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+    // Do NOT unlock audio on scroll/touchstart.
+    //
+    // A fast first swipe can fire while the YouTube iframe is still booting. If
+    // we call unMute at that moment, YouTube may reject the request and pause the
+    // player, leaving the hero video frozen until refresh. Scroll must remain a
+    // pure navigation gesture; the hero video stays muted and stable. Explicit
+    // tap-to-play inside PhoneMockup still calls unlockAudio through mobiletap.
 
-    // Gesture-safe unMute retry: click / pointerdown / keydown ARE qualifying
-    // user-activation events on every browser including Safari iOS.
-    // retryUnmute is a no-op until audioUnlocked=true, so these listeners are
-    // harmless during normal page interaction. They recover the case where wheel
-    // fired unlockAudio but YouTube rejected the unMute (pausing the video) —
-    // the user's next click or keypress will resume + unmute in proper context.
+    // Gesture-safe unMute retry: after an explicit unlock, click / pointerdown /
+    // keydown are qualifying user-activation events on every browser including
+    // Safari iOS. retryUnmute is a no-op until audioUnlocked=true.
     window.addEventListener('pointerdown', retryUnmute, { passive: true });
     window.addEventListener('keydown', retryUnmute, { passive: true });
 
@@ -521,8 +519,6 @@
     ctx?.revert();
     audioObserver?.disconnect();
     if (browser) {
-      window.removeEventListener('wheel', unlockAudio);
-      window.removeEventListener('touchstart', unlockAudio);
       window.removeEventListener('pointerdown', retryUnmute);
       window.removeEventListener('keydown', retryUnmute);
     }
@@ -732,7 +728,7 @@
     </svg>
     Audio attivato
   </div>
-  <div class="audio-badge audio-hint" class:audio-badge-gone={audioUnlocked}>
+  <div class="audio-badge audio-hint" class:audio-badge-gone={true} aria-hidden="true">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
       <line x1="23" y1="9" x2="17" y2="15"/>
