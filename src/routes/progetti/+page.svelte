@@ -35,6 +35,12 @@
     intro: string;
     proof: string[];
     accent: string;
+    image: string;
+    imagePosition?: string;
+    imageOpacity?: number;
+    imageHoverOpacity?: number;
+    imageFilter?: string;
+    imageHoverFilter?: string;
   };
 
   const heroStats = [
@@ -208,6 +214,8 @@
       intro: 'Un prodotto nato in Righello: camera buffer per iPhone, replay istantanei e pagina prodotto pronta per App Store.',
       proof: ['Product design', 'UX mobile', 'Go-to-market', 'Pagina prodotto'],
       accent: 'Dal prototipo allo store',
+      image: '/products/buffr/replay-in-un-tap.jpg',
+      imagePosition: 'center 40%',
     },
     {
       name: 'Lumis',
@@ -216,6 +224,8 @@
       intro: 'Un’esperienza digitale proprietaria, costruita per spiegare valore e funzione senza sembrare un template.',
       proof: ['Interfaccia custom', 'Frontend', 'Design system', 'Storytelling prodotto'],
       accent: 'Esperienza proprietaria',
+      image: '/projects/cards/lumis-card.jpg',
+      imagePosition: 'center top',
     },
     {
       name: 'Neura',
@@ -224,6 +234,12 @@
       intro: 'Architettura informativa, UX e posizionamento per rendere comprensibile un prodotto digitale complesso.',
       proof: ['UX writing', 'Frontend', 'Posizionamento', 'Struttura commerciale'],
       accent: 'Chiarezza che vende',
+      image: '/projects/cards/neura-card.jpg',
+      imagePosition: 'left top',
+      imageOpacity: 0.2,
+      imageHoverOpacity: 0.3,
+      imageFilter: 'blur(10px) saturate(0.75) contrast(0.9)',
+      imageHoverFilter: 'blur(7px) saturate(0.82) contrast(0.96)',
     },
     {
       name: 'Contenuti',
@@ -232,6 +248,8 @@
       intro: 'Shooting, video, social e advertising pensati per diventare materiali commerciali, non post isolati.',
       proof: ['Video', 'Foto', 'Paid asset', 'Materiali vendita'],
       accent: 'Asset riutilizzabili',
+      image: '/thumbnails/thumb-f89791b0c4c7.jpg',
+      imagePosition: 'center center',
     },
   ];
 
@@ -488,18 +506,31 @@
             rel={proof.href.startsWith('http') ? 'noreferrer' : undefined}
             aria-label={`Apri progetto ${proof.name}`}
           >
+            <img
+              class="featured-proof-card__media"
+              src={proof.image}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              style={`object-position: ${proof.imagePosition || 'center center'}; --proof-media-opacity: ${proof.imageOpacity ?? 0.58}; --proof-media-hover-opacity: ${proof.imageHoverOpacity ?? 0.74}; --proof-media-filter: ${proof.imageFilter || 'saturate(1) contrast(1)'}; --proof-media-hover-filter: ${proof.imageHoverFilter || 'saturate(1.08) contrast(1.04)'};`}
+              aria-hidden="true"
+            />
+            <span class="featured-proof-card__shade" aria-hidden="true"></span>
             <div class="featured-proof-card__top">
               <span>{proof.label}</span>
               <em>{proof.href.startsWith('http') ? '↗' : '→'}</em>
             </div>
-            <strong class="featured-accent">{proof.accent}</strong>
-            <h3>{proof.name}</h3>
-            <p>{proof.intro}</p>
-            <div class="proof-chip-row" aria-label={`Competenze coinvolte per ${proof.name}`}>
-              {#each proof.proof as item}
-                <span>{item}</span>
-              {/each}
+            <div class="featured-proof-card__body">
+              <strong class="featured-accent">{proof.accent}</strong>
+              <h3>{proof.name}</h3>
+              <p>{proof.intro}</p>
+              <div class="proof-chip-row" aria-label={`Competenze coinvolte per ${proof.name}`}>
+                {#each proof.proof as item}
+                  <span>{item}</span>
+                {/each}
+              </div>
             </div>
+            <span class="featured-proof-card__cta" aria-hidden="true">→</span>
           </a>
         </RevealOnScroll>
       {/each}
@@ -1109,75 +1140,100 @@
     position: relative;
     isolation: isolate;
     display: flex;
-    min-height: 27rem;
+    min-height: 27.5rem;
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
-    border: 1px solid var(--border-color);
-    border-radius: 1.55rem;
-    padding: 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: clamp(1.45rem, 3vw, 2rem);
+    padding: 1.25rem;
     color: var(--text-primary);
-    background:
-      linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.018)),
-      var(--bg-primary);
+    background: #111;
     text-decoration: none;
     transform: translateZ(0);
-    transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+    transition: transform 0.34s ease, border-color 0.34s ease, box-shadow 0.34s ease;
   }
 
-  .featured-proof-card::before,
-  .featured-proof-card::after {
-    content: '';
+  .featured-proof-card__media,
+  .featured-proof-card__shade {
     position: absolute;
-    z-index: -1;
+    inset: 0;
     pointer-events: none;
   }
 
-  .featured-proof-card::before {
-    inset: -35% -25% auto;
-    height: 19rem;
-    border-radius: 999px;
+  .featured-proof-card__media {
+    z-index: -3;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: var(--proof-media-opacity, 0.58);
+    filter: var(--proof-media-filter, saturate(1) contrast(1));
+    transform: scale(1.01);
+    transition: transform 0.7s ease, opacity 0.7s ease, filter 0.7s ease;
+  }
+
+  .featured-proof-card__shade {
+    z-index: -2;
     background:
-      radial-gradient(circle at 35% 45%, rgba(214, 72, 126, 0.38), transparent 10rem),
-      radial-gradient(circle at 70% 35%, rgba(6, 182, 212, 0.2), transparent 9rem);
-    filter: blur(8px);
-    opacity: 0.86;
+      radial-gradient(circle at 18% 12%, rgba(214, 72, 126, 0.42), transparent 16rem),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.16) 38%, rgba(0, 0, 0, 0.78) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.26) 58%, rgba(0, 0, 0, 0.62));
   }
 
   .featured-proof-card::after {
-    inset: 42% 1rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1.15rem;
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
     background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.018)),
-      rgba(255, 255, 255, 0.02);
+      linear-gradient(145deg, rgba(255, 255, 255, 0.12), transparent 28%),
+      linear-gradient(0deg, rgba(255, 255, 255, 0.035), transparent 42%);
+    opacity: 0.72;
+    pointer-events: none;
   }
 
   .featured-proof-card:hover {
-    border-color: rgba(214, 72, 126, 0.48);
-    transform: translateY(-4px);
+    border-color: rgba(214, 72, 126, 0.5);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.34);
+    transform: translateY(-5px);
+  }
+
+  .featured-proof-card:hover .featured-proof-card__media {
+    opacity: var(--proof-media-hover-opacity, 0.74);
+    filter: var(--proof-media-hover-filter, saturate(1.08) contrast(1.04));
+    transform: scale(1.065);
   }
 
   .featured-proof-card__top {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    color: var(--text-secondary);
-    font-size: 0.92rem;
-    font-weight: 750;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 0.82rem;
+    font-weight: 850;
+    line-height: 1.1;
   }
 
   .featured-proof-card__top em {
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.76);
     font-size: 1.25rem;
     font-style: normal;
+  }
+
+  .featured-proof-card__body {
+    position: relative;
+    z-index: 1;
+    max-width: 24rem;
   }
 
   .featured-accent {
     display: inline-flex;
     width: fit-content;
-    margin-top: auto;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 999px;
     padding: 0.42rem 0.75rem;
@@ -1189,15 +1245,17 @@
 
   .featured-proof-card h3 {
     margin: 0.8rem 0 0.75rem;
-    font-size: clamp(2.45rem, 10vw, 5rem);
-    line-height: 0.9;
+    color: #fff;
+    font-size: clamp(2.4rem, 7vw, 3.75rem);
+    line-height: 0.88;
     font-weight: 900;
+    text-shadow: 0 12px 34px rgba(0, 0, 0, 0.48);
   }
 
   .featured-proof-card p {
     max-width: 29rem;
     margin: 0 0 1rem;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.78);
     font-size: 1.05rem;
     line-height: 1.42;
   }
@@ -1209,14 +1267,39 @@
   }
 
   .proof-chip-row span {
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 999px;
     padding: 0.34rem 0.62rem;
-    color: var(--text-secondary);
-    background: rgba(0, 0, 0, 0.18);
+    color: rgba(255, 255, 255, 0.72);
+    background: rgba(0, 0, 0, 0.26);
+    backdrop-filter: blur(10px);
     font-size: 0.78rem;
     font-weight: 700;
     line-height: 1.1;
+  }
+
+  .featured-proof-card__cta {
+    position: absolute;
+    right: 1.2rem;
+    bottom: 1.2rem;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(14px);
+    opacity: 0;
+    transform: translate3d(0, 0.65rem, 0);
+    transition: opacity 0.32s ease, transform 0.32s ease, background 0.32s ease;
+  }
+
+  .featured-proof-card:hover .featured-proof-card__cta {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 
   .capability-proof-grid {
@@ -1818,18 +1901,17 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    .featured-proof-grid,
     .capability-proof-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .featured-proof-card {
-      min-height: 31rem;
-      padding: 1.25rem;
+    .featured-proof-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .featured-proof-grid > :first-child {
-      grid-column: span 2;
+    .featured-proof-card {
+      min-height: 29rem;
+      padding: 1.25rem;
     }
 
     .archive-proof-panel {
@@ -1864,8 +1946,12 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
+    .featured-proof-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
     .featured-proof-card {
-      min-height: 34rem;
+      min-height: 28.5rem;
       padding: 1.45rem;
     }
 
@@ -1877,7 +1963,9 @@
   @media (prefers-reduced-motion: reduce) {
     .web-row,
     .filter-bar button,
-    .featured-proof-card {
+    .featured-proof-card,
+    .featured-proof-card__media,
+    .featured-proof-card__cta {
       transition: none;
     }
   }
