@@ -587,49 +587,58 @@
         <RevealOnScroll animation="fly-up" stagger={70} index={i} duration={360}>
           <article id={study.id} class="case-card">
             <span class="case-index">{String(i + 1).padStart(2, '0')}</span>
-            <div class="case-card__header">
-              <div class="client-mark" aria-hidden="true">
-                {#if study.logo}
-                  <img src={study.logo} alt="" loading="lazy" decoding="async" />
-                {:else}
-                  <span>{study.name.slice(0, 1)}</span>
-                {/if}
+            <div class="case-card__main">
+              <div class="case-card__intro">
+                <div class="case-card__header">
+                  <div class="client-mark" aria-hidden="true">
+                    {#if study.logo}
+                      <img src={study.logo} alt="" loading="lazy" decoding="async" />
+                    {:else}
+                      <span>{study.name.slice(0, 1)}</span>
+                    {/if}
+                  </div>
+                  <div>
+                    <p>{study.sector}</p>
+                    <h3>{study.name}</h3>
+                  </div>
+                </div>
+
+                <p class="case-summary">{study.summary}</p>
+
+                <div class="tag-row" aria-label="Servizi coinvolti">
+                  {#each study.services as service}
+                    <span>{service}</span>
+                  {/each}
+                </div>
+
+                <a class="reference-link" href={study.reference} target="_blank" rel="noreferrer">
+                  Vedi riferimento pubblico
+                  <span aria-hidden="true">↗</span>
+                </a>
               </div>
-              <div>
-                <p>{study.sector}</p>
-                <h3>{study.name}</h3>
+
+              <div class="case-card__proof">
+                <div class="case-body">
+                  <div>
+                    <span>Sfida</span>
+                    <p>{study.challenge}</p>
+                  </div>
+                  <div>
+                    <span>Metodo Righello</span>
+                    <p>{study.approach}</p>
+                  </div>
+                </div>
+
+                <div class="case-outcomes">
+                  <span>Risultati visibili</span>
+                  <ul class="value-list">
+                    {#each study.value as item}
+                      <li>{item}</li>
+                    {/each}
+                  </ul>
+                </div>
               </div>
             </div>
-
-            <p class="case-summary">{study.summary}</p>
-
-            <div class="case-body">
-              <div>
-                <span>Sfida</span>
-                <p>{study.challenge}</p>
-              </div>
-              <div>
-                <span>Metodo Righello</span>
-                <p>{study.approach}</p>
-              </div>
-            </div>
-
-            <div class="tag-row" aria-label="Servizi coinvolti">
-              {#each study.services as service}
-                <span>{service}</span>
-              {/each}
-            </div>
-
-            <ul class="value-list">
-              {#each study.value as item}
-                <li>{item}</li>
-              {/each}
-            </ul>
-
-            <a class="reference-link" href={study.reference} target="_blank" rel="noreferrer">
-              Vedi riferimento pubblico
-              <span aria-hidden="true">↗</span>
-            </a>
           </article>
         </RevealOnScroll>
       {/each}
@@ -1387,9 +1396,12 @@
   .case-card {
     position: relative;
     isolation: isolate;
-    padding: 1.1rem;
+    padding: clamp(1rem, 2vw, 1.35rem);
     min-height: 100%;
     overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015) 58%, rgba(214, 72, 126, 0.045)),
+      var(--bg-primary);
     transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
   }
 
@@ -1399,15 +1411,15 @@
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(circle at 10% 0%, rgba(214, 72, 126, 0.16), transparent 14rem),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 55%);
-    opacity: 0;
+      radial-gradient(circle at 0% 0%, rgba(214, 72, 126, 0.18), transparent 17rem),
+      radial-gradient(circle at 100% 80%, rgba(6, 182, 212, 0.08), transparent 18rem);
+    opacity: 0.72;
     transition: opacity 0.24s ease;
   }
 
   .case-card:hover {
     border-color: rgba(214, 72, 126, 0.42);
-    transform: translateY(-3px);
+    transform: translateY(-2px);
   }
 
   .case-card:hover::before {
@@ -1418,11 +1430,35 @@
     position: absolute;
     right: 1rem;
     top: 0.85rem;
-    color: color-mix(in srgb, var(--text-muted) 55%, transparent);
-    font-size: clamp(2.7rem, 8vw, 4.6rem);
+    z-index: 0;
+    color: color-mix(in srgb, var(--text-primary) 5%, transparent);
+    font-size: clamp(3.2rem, 10vw, 6.4rem);
     font-weight: 900;
     line-height: 1;
     pointer-events: none;
+  }
+
+  .case-card__main {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .case-card__intro,
+  .case-card__proof {
+    min-width: 0;
+  }
+
+  .case-card__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .case-card__proof {
+    display: grid;
+    gap: 0.85rem;
   }
 
   .case-card__header {
@@ -1471,24 +1507,35 @@
   }
 
   .case-summary {
-    margin-bottom: 1.1rem;
+    margin: 0 0 1rem;
     color: var(--text-primary);
-    font-size: 1.12rem;
-    line-height: 1.4;
+    font-size: clamp(1.04rem, 1.5vw, 1.22rem);
+    line-height: 1.43;
   }
 
   .case-body {
     display: grid;
-    gap: 0.9rem;
-    margin-bottom: 1rem;
+    gap: 0.75rem;
   }
 
-  .case-body span {
+  .case-body > div,
+  .case-outcomes {
+    border: 1px solid rgba(255, 255, 255, 0.085);
+    border-radius: 1.1rem;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+      rgba(255, 255, 255, 0.025);
+    padding: 0.9rem;
+  }
+
+  .case-body span,
+  .case-outcomes > span {
     display: inline-block;
     margin-bottom: 0.25rem;
-    color: var(--text-muted);
+    color: var(--righello-pink, #D6487E);
     font-size: 0.82rem;
-    font-weight: 750;
+    font-weight: 820;
+    letter-spacing: -0.01em;
     text-transform: uppercase;
   }
 
@@ -1506,6 +1553,11 @@
     gap: 0.45rem;
   }
 
+  .tag-row {
+    margin-top: auto;
+    padding-top: 0.2rem;
+  }
+
   .tag-row span,
   .reference-names span {
     border: 1px solid var(--border-color);
@@ -1519,7 +1571,7 @@
   .value-list {
     display: grid;
     gap: 0.45rem;
-    margin: 1rem 0;
+    margin: 0.65rem 0 0;
     padding: 0;
     list-style: none;
   }
@@ -1551,7 +1603,21 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+    min-height: 42px;
+    margin-top: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    padding: 0.5rem 0.85rem;
+    background: rgba(255, 255, 255, 0.035);
     font-weight: 750;
+    line-height: 1.15;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .reference-link:hover {
+    border-color: rgba(214, 72, 126, 0.42);
+    background: rgba(214, 72, 126, 0.11);
+    transform: translateY(-1px);
   }
 
   .digital-section {
@@ -1889,7 +1955,8 @@
     }
 
     .case-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
+      gap: 1.15rem;
     }
 
     .client-proof-heading {
@@ -1932,6 +1999,16 @@
       padding: 1.35rem;
     }
 
+    .case-card__main {
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      align-items: stretch;
+    }
+
+    .case-card__intro {
+      min-height: 100%;
+      padding-right: 0.15rem;
+    }
+
     .case-body {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1943,7 +2020,8 @@
 
   @media (min-width: 1120px) {
     .case-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
     }
 
     .featured-proof-grid {
