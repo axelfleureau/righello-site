@@ -16,6 +16,8 @@
     services: string[];
     reference: string;
     logo?: string;
+    cover?: string;
+    coverPosition?: string;
   };
 
   type WebProject = {
@@ -25,6 +27,8 @@
     summary: string;
     proof: string;
     ctaLabel: string;
+    image: string;
+    imagePosition?: string;
     featured?: boolean;
   };
 
@@ -71,6 +75,8 @@
       services: ['Video production', 'Shooting fotografico', 'Social content', 'Advertising asset'],
       reference: 'https://www.instagram.com/elitehotelandspa/',
       logo: '/logos/hotel-elite.png',
+      cover: '/thumbnails/thumb-ca926bab868e.jpg',
+      coverPosition: 'center center',
     },
     {
       id: 'garden-hotel-michelangelo',
@@ -84,6 +90,8 @@
       services: ['Strategia contenuti', 'Produzione video', 'Fotografia', 'Storytelling hospitality'],
       reference: 'https://www.instagram.com/gardenhotelmichelangelo/',
       logo: '/logos/hotel-michelangelo.png',
+      cover: '/thumbnails/thumb-18c674dd5ccb.jpg',
+      coverPosition: 'center center',
     },
     {
       id: 'fiumedica',
@@ -109,6 +117,8 @@
       services: ['Video production', 'Social media', 'Advertising creative', 'Content planning'],
       reference: 'https://www.instagram.com/riccigroup_concessionaria/',
       logo: '/logos/ricci-group.webp',
+      cover: '/thumbnails/thumb-867948b42ce0.jpg',
+      coverPosition: 'center center',
     },
     {
       id: 'reguta-1928',
@@ -122,6 +132,8 @@
       services: ['Storytelling', 'Social media', 'Video content', 'Produzione fotografica'],
       reference: 'https://www.instagram.com/reguta.1928/',
       logo: '/logos/reguta.png',
+      cover: '/thumbnails/thumb-f89791b0c4c7.jpg',
+      coverPosition: 'center center',
     },
     {
       id: 'casa-rossa',
@@ -145,6 +157,8 @@
       summary: 'App iOS firmata Righello: una camera buffer per salvare gli ultimi secondi durante sport, live event e backstage.',
       proof: 'Product design, UX mobile, pagina prodotto, App Store assets',
       ctaLabel: 'Apri pagina BUFFR',
+      image: '/products/buffr/replay-in-un-tap.jpg',
+      imagePosition: 'center 38%',
       featured: true,
     },
     {
@@ -154,6 +168,8 @@
       summary: 'Applicazione web custom costruita come esperienza digitale proprietaria, non come semplice sito vetrina.',
       proof: 'Web app, interfaccia custom, sviluppo prodotto',
       ctaLabel: 'Visita Lumis',
+      image: '/projects/cards/lumis-card.jpg',
+      imagePosition: 'center top',
       featured: true,
     },
     {
@@ -163,6 +179,8 @@
       summary: 'Prodotto digitale con posizionamento, architettura informativa e interfaccia pensati per spiegare valore e funzione.',
       proof: 'UX, frontend, prodotto digitale',
       ctaLabel: 'Visita Neura',
+      image: '/projects/cards/neura-card.jpg',
+      imagePosition: 'left top',
     },
     {
       name: 'Porto Piccolo Apartments',
@@ -171,6 +189,8 @@
       summary: 'Landing commerciale per chiarire proposta, pubblico e qualità del traffico prima di scalare.',
       proof: 'Landing, conversione, real estate',
       ctaLabel: 'Apri progetto',
+      image: '/thumbnails/thumb-6322be15ebae.jpg',
+      imagePosition: 'center center',
     },
     {
       name: 'Solero Sport Village',
@@ -179,6 +199,8 @@
       summary: 'Esperienza web rapida e focalizzata per comunicare offerta, posizionamento e prossima azione.',
       proof: 'Landing, sport, lead generation',
       ctaLabel: 'Apri progetto',
+      image: '/logos/solero.png',
+      imagePosition: 'center center',
     },
     {
       name: 'TC Studio Immobiliare',
@@ -187,6 +209,8 @@
       summary: 'Sito corporate per rendere più chiara l’offerta e sostenere il contatto commerciale.',
       proof: 'Corporate website, UX, SEO base',
       ctaLabel: 'Visita sito',
+      image: '/logos/tubaro.png',
+      imagePosition: 'center center',
     },
     {
       name: 'Clara Falomo',
@@ -195,6 +219,8 @@
       summary: 'Presenza digitale personale, pulita e diretta, costruita per autorevolezza e contatto.',
       proof: 'Personal brand, sito, copy',
       ctaLabel: 'Visita sito',
+      image: '/thumbnails/thumb-b21d67febb70.jpg',
+      imagePosition: 'center center',
     },
     {
       name: 'Black & White S.r.l.s.',
@@ -203,6 +229,8 @@
       summary: 'Sito aziendale essenziale e credibile, pensato per far capire subito attività e affidabilità.',
       proof: 'Corporate website, struttura, contenuti',
       ctaLabel: 'Visita sito',
+      image: '/logo-white.png',
+      imagePosition: 'center center',
     },
   ];
 
@@ -567,7 +595,69 @@
   </div>
 </section>
 
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-secondary)" />
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
+
+<section id="product-work" class="section-padding digital-section">
+  <div class="section-container digital-shell">
+    <RevealOnScroll animation="fly-up" duration={360}>
+      <div class="digital-copy">
+        <p class="section-subtitle">Prodotti digitali Righello</p>
+        <h2 class="section-title">App, siti web, landing e software che non nascono da un template.</h2>
+        <p class="section-intro">
+          BUFFR, Lumis, Neura e gli altri progetti digitali raccontano il modo in cui lavoriamo:
+          siti aziendali, landing page, app e software custom con architettura pulita,
+          performance, struttura SEO e interfacce pensate per evolvere con il business.
+        </p>
+        <div class="digital-points" aria-label="Punti di forza dei progetti digitali Righello">
+          <span>UX/UI</span>
+          <span>SEO tecnico</span>
+          <span>Performance</span>
+          <span>Software custom</span>
+        </div>
+      </div>
+    </RevealOnScroll>
+
+    <div class="web-grid">
+      {#each webProjects as project, i}
+        <RevealOnScroll animation="fly-up" stagger={60} index={i} duration={320}>
+          <a
+            class="web-card"
+            class:web-card--featured={project.featured}
+            href={project.url}
+            target={project.url.startsWith('http') ? '_blank' : undefined}
+            rel={project.url.startsWith('http') ? 'noreferrer' : undefined}
+            aria-label={`${project.ctaLabel}: ${project.name}`}
+          >
+            <img
+              class="web-card__media"
+              class:web-card__media--logo={project.image.startsWith('/logos/') || project.image === '/logo-white.png'}
+              src={project.image}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              style={`object-position: ${project.imagePosition || 'center center'};`}
+              aria-hidden="true"
+            />
+            <span class="web-card__shade" aria-hidden="true"></span>
+            <div class="web-card__top">
+              <span>{project.type}</span>
+              <em aria-hidden="true">{project.url.startsWith('http') ? '↗' : '→'}</em>
+            </div>
+            <div class="web-card__body">
+              <span class="web-index">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{project.name}</h3>
+              <p>{project.summary}</p>
+              <small>{project.proof}</small>
+              <b>{project.ctaLabel}</b>
+            </div>
+          </a>
+        </RevealOnScroll>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
 <section id="case-study" class="section-padding case-section">
   <div class="section-container">
@@ -603,6 +693,18 @@
       {#each filteredCaseStudies as study, i (study.id)}
         <RevealOnScroll animation="fly-up" stagger={70} index={i} duration={360}>
           <article id={study.id} class="case-card">
+            {#if study.cover}
+              <img
+                class="case-card__cover"
+                src={study.cover}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                style={`object-position: ${study.coverPosition || 'center center'};`}
+                aria-hidden="true"
+              />
+              <span class="case-card__cover-shade" aria-hidden="true"></span>
+            {/if}
             <span class="case-index">{String(i + 1).padStart(2, '0')}</span>
             <div class="case-card__main">
               <div class="case-card__intro">
@@ -698,56 +800,6 @@
   </div>
 </section>
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-primary)" />
-
-<section id="product-work" class="section-padding digital-section">
-  <div class="section-container digital-shell">
-    <RevealOnScroll animation="fly-up" duration={360}>
-      <div class="digital-copy">
-        <p class="section-subtitle">Prodotti digitali Righello</p>
-        <h2 class="section-title">App, siti web, landing e software che non nascono da un template.</h2>
-        <p class="section-intro">
-          BUFFR, Lumis, Neura e gli altri progetti digitali raccontano il modo in cui lavoriamo:
-          siti aziendali, landing page, app e software custom con architettura pulita,
-          performance, struttura SEO e interfacce pensate per evolvere con il business.
-        </p>
-        <div class="digital-points" aria-label="Punti di forza dei progetti digitali Righello">
-          <span>UX/UI</span>
-          <span>SEO tecnico</span>
-          <span>Performance</span>
-          <span>Software custom</span>
-        </div>
-      </div>
-    </RevealOnScroll>
-
-    <div class="web-grid">
-      {#each webProjects as project, i}
-        <RevealOnScroll animation="fly-up" stagger={60} index={i} duration={320}>
-          <a
-            class="web-row"
-            class:web-row--featured={project.featured}
-            href={project.url}
-            target={project.url.startsWith('http') ? '_blank' : undefined}
-            rel={project.url.startsWith('http') ? 'noreferrer' : undefined}
-            aria-label={`${project.ctaLabel}: ${project.name}`}
-            style={`--web-rotate: ${i % 3 === 1 ? '-1.1deg' : i % 3 === 2 ? '-3deg' : '-2.4deg'}; --web-shift: ${i % 3 === 1 ? '-0.35rem' : i % 3 === 2 ? '-0.15rem' : '0rem'};`}
-          >
-            <span class="web-index">{String(i + 1).padStart(2, '0')}</span>
-            <div class="web-row__content">
-              <strong>{project.name}</strong>
-              <p>{project.type}</p>
-              <small>{project.summary}</small>
-              <span class="web-proof">{project.proof}</span>
-              <b>{project.ctaLabel}</b>
-            </div>
-            <em class="web-arrow" aria-hidden="true">↗</em>
-          </a>
-        </RevealOnScroll>
-      {/each}
-    </div>
-  </div>
-</section>
-
 <section class="section-padding production-section">
   <div class="section-container production-grid">
     <RevealOnScroll animation="fly-up" duration={360}>
@@ -838,41 +890,17 @@
   .projects-hero {
     position: relative;
     isolation: isolate;
-    padding: 7.5rem 0 4rem;
+    padding: 8rem 0 4.5rem;
     overflow: hidden;
     background:
-      radial-gradient(circle at 12% 12%, rgba(214, 72, 126, 0.26), transparent 30rem),
-      radial-gradient(circle at 92% 18%, rgba(6, 182, 212, 0.18), transparent 28rem),
-      linear-gradient(145deg, rgba(255, 255, 255, 0.03), transparent 34rem),
+      radial-gradient(circle at 14% 10%, rgba(214, 72, 126, 0.28), transparent 32rem),
+      radial-gradient(circle at 94% 20%, rgba(6, 182, 212, 0.14), transparent 30rem),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 32rem),
       var(--bg-primary);
   }
 
   .hero-glass {
-    position: absolute;
-    inset: 6rem 1rem 1.35rem;
-    z-index: -1;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.075);
-    border-radius: clamp(1.5rem, 3vw, 2.35rem);
-    background:
-      radial-gradient(circle at 12% 0%, rgba(214, 72, 126, 0.14), transparent 34rem),
-      radial-gradient(circle at 92% 8%, rgba(6, 182, 212, 0.12), transparent 30rem),
-      linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
-      rgba(255, 255, 255, 0.02);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 32px 90px rgba(0, 0, 0, 0.28);
-    pointer-events: none;
-  }
-
-  .hero-glass::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent 34%),
-      linear-gradient(180deg, transparent 72%, rgba(0, 0, 0, 0.24));
-    opacity: 0.82;
+    display: none;
   }
 
   .hero-grid,
@@ -953,7 +981,7 @@
   .proof-panel {
     align-self: end;
     border: 1px solid var(--border-color);
-    border-radius: 1.65rem;
+    border-radius: 2rem;
     background:
       linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025)),
       color-mix(in srgb, var(--bg-secondary) 86%, transparent);
@@ -1050,6 +1078,12 @@
     background: var(--bg-secondary);
   }
 
+  #product-work,
+  #case-study,
+  #case-study-archive {
+    scroll-margin-top: 7.5rem;
+  }
+
   .client-proof-heading {
     display: grid;
     gap: 1rem;
@@ -1098,7 +1132,7 @@
     padding: 0.8rem;
     overflow: hidden;
     background:
-      linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.072), rgba(255, 255, 255, 0.018)),
       var(--bg-primary);
   }
 
@@ -1136,6 +1170,24 @@
       contrast(0.96)
       drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.12));
     opacity: 0.92;
+  }
+
+  .client-logo-tile:hover img {
+    opacity: 1;
+    filter: grayscale(0.35) brightness(1.95) contrast(1.02);
+  }
+
+  .client-logo-tile:hover img.logo-lift {
+    filter:
+      grayscale(0.35)
+      invert(1)
+      brightness(1.42)
+      contrast(1.02)
+      drop-shadow(0 0 0.85rem rgba(255, 255, 255, 0.14));
+  }
+
+  .client-logo-tile:hover img.no-filter {
+    filter: none;
   }
 
   .client-logo-tile img.logo-lift[src*='salotto'],
@@ -1420,6 +1472,31 @@
     transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
   }
 
+  .case-card__cover,
+  .case-card__cover-shade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .case-card__cover {
+    z-index: -3;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.24;
+    filter: saturate(0.9) contrast(1.08);
+    transform: scale(1.02);
+    transition: opacity 0.38s ease, transform 0.58s ease, filter 0.58s ease;
+  }
+
+  .case-card__cover-shade {
+    z-index: -2;
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, 0.86), rgba(0, 0, 0, 0.54) 52%, rgba(0, 0, 0, 0.82)),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.78));
+  }
+
   .case-card::before {
     content: '';
     position: absolute;
@@ -1435,6 +1512,12 @@
   .case-card:hover {
     border-color: rgba(214, 72, 126, 0.42);
     transform: translateY(-2px);
+  }
+
+  .case-card:hover .case-card__cover {
+    opacity: 0.34;
+    filter: saturate(1.03) contrast(1.12);
+    transform: scale(1.055);
   }
 
   .case-card:hover::before {
@@ -1556,7 +1639,7 @@
 
   .case-body p,
   .value-list,
-  .web-row p {
+  .web-card p {
     color: var(--text-secondary);
     font-size: 1rem;
   }
@@ -1609,7 +1692,7 @@
 
   .reference-link,
   .archive-links a,
-  .web-row {
+  .web-card {
     color: var(--text-primary);
     text-decoration: none;
   }
@@ -1743,6 +1826,7 @@
 
   .digital-copy {
     align-self: start;
+    max-width: 58rem;
   }
 
   .digital-points,
@@ -1768,162 +1852,182 @@
   }
 
   .web-grid {
-    position: relative;
     display: grid;
     gap: 1rem;
-    perspective: 1200px;
-    perspective-origin: 20% 45%;
   }
 
-  .web-row {
+  .web-card {
     position: relative;
     isolation: isolate;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1rem;
-    align-items: start;
-    min-height: 10.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: 1.65rem;
-    padding: 1.15rem;
+    min-height: 23rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: clamp(1.55rem, 3vw, 2.2rem);
+    padding: 1.2rem;
     overflow: hidden;
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.025) 56%, rgba(214, 72, 126, 0.035)),
-      var(--bg-secondary);
-    box-shadow: 0 1.4rem 3.5rem rgba(0, 0, 0, 0.16);
-    transform-style: preserve-3d;
-    transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease;
+    background: #101010;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+    transform: translateZ(0);
+    transition: transform 0.36s ease, border-color 0.36s ease, box-shadow 0.36s ease;
   }
 
-  .web-row::before {
-    content: '';
+  .web-card__media,
+  .web-card__shade {
     position: absolute;
     inset: 0;
+    pointer-events: none;
+  }
+
+  .web-card__media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     z-index: -1;
-    background:
-      radial-gradient(circle at 0% 0%, rgba(214, 72, 126, 0.2), transparent 16rem),
-      radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.14), transparent 16rem);
+    opacity: 0.62;
+    filter: saturate(0.95) contrast(1.04);
+    transform: scale(1.02);
+    transition: transform 0.72s ease, opacity 0.72s ease, filter 0.72s ease;
+  }
+
+  .web-card__media--logo {
+    object-fit: contain;
+    padding: 4.5rem 2.2rem;
     opacity: 0.42;
-    transition: opacity 0.22s ease;
-  }
-
-  .web-row::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
+    filter: grayscale(0.15) brightness(1.4) contrast(1.05);
     background:
-      linear-gradient(120deg, transparent 0 38%, rgba(255, 255, 255, 0.08) 48%, transparent 58% 100%);
-    opacity: 0;
-    transform: translateX(-28%);
-    transition: opacity 0.24s ease, transform 0.34s ease;
+      radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.08), transparent 11rem),
+      linear-gradient(145deg, rgba(214, 72, 126, 0.16), rgba(6, 182, 212, 0.08));
   }
 
-  .web-row--featured {
-    min-height: 11rem;
+  .web-card:hover .web-card__media--logo {
+    opacity: 0.64;
+    filter: grayscale(0) brightness(1.55) contrast(1.08);
+  }
+
+  .web-card__shade {
+    z-index: 0;
+    background:
+      radial-gradient(circle at 16% 16%, rgba(214, 72, 126, 0.44), transparent 16rem),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.64) 0%, rgba(0, 0, 0, 0.2) 38%, rgba(0, 0, 0, 0.84) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.26) 52%, rgba(0, 0, 0, 0.64));
+  }
+
+  .web-card--featured {
     border-color: rgba(214, 72, 126, 0.34);
   }
 
-  .web-row:hover {
+  .web-card:hover {
     border-color: rgba(214, 72, 126, 0.45);
-    transform: translateY(-2px);
-    box-shadow: 0 1.8rem 4.4rem rgba(214, 72, 126, 0.12);
+    box-shadow: 0 32px 95px rgba(0, 0, 0, 0.34);
+    transform: translateY(-5px);
   }
 
-  .web-row:hover::before,
-  .web-row--featured::before {
-    opacity: 1;
+  .web-card:hover .web-card__media {
+    opacity: 0.82;
+    filter: saturate(1.08) contrast(1.08);
+    transform: scale(1.075);
   }
 
-  .web-row:hover::after {
-    opacity: 1;
-    transform: translateX(24%);
+  .web-card__top,
+  .web-card__body {
+    position: relative;
+    z-index: 1;
+  }
+
+  .web-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 0.78rem;
+    font-weight: 850;
+    line-height: 1.15;
+  }
+
+  .web-card__top span {
+    max-width: 15rem;
+  }
+
+  .web-card__top em {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    flex: 0 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 1.2rem;
+    font-style: normal;
+    backdrop-filter: blur(12px);
+    transition: transform 0.28s ease, background 0.28s ease;
+  }
+
+  .web-card:hover .web-card__top em {
+    background: rgba(214, 72, 126, 0.7);
+    transform: translate3d(0.12rem, -0.12rem, 0);
   }
 
   .web-index {
-    position: absolute;
-    top: 1.2rem;
-    left: 1.15rem;
-    z-index: 1;
-    color: var(--righello-pink, #D6487E);
-    font-size: 0.88rem;
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 0.75rem;
+    border-radius: 999px;
+    padding: 0.42rem 0.62rem;
+    color: #fff;
+    background: rgba(214, 72, 126, 0.88);
+    font-size: 0.78rem;
     font-weight: 900;
     line-height: 1;
   }
 
-  .web-row__content {
-    min-width: 0;
-    padding-top: 1.55rem;
+  .web-card h3 {
+    margin: 0 0 0.75rem;
+    color: #fff;
+    font-size: clamp(2.05rem, 3.8vw, 3rem);
+    line-height: 0.9;
+    font-weight: 900;
+    text-shadow: 0 12px 34px rgba(0, 0, 0, 0.48);
   }
 
-  .web-row strong {
-    display: block;
-    font-size: clamp(1.9rem, 4vw, 2.7rem);
-    line-height: 1.1;
-    letter-spacing: -0.045em;
+  .web-card p {
+    max-width: 27rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.02rem;
+    line-height: 1.42;
   }
 
-  .web-row p {
-    margin: 0.2rem 0 0;
-    line-height: 1.25;
-  }
-
-  .web-row small {
-    display: block;
-    margin-top: 0.85rem;
-    color: var(--text-primary);
-    font-size: 1rem;
-    line-height: 1.35;
-  }
-
-  .web-proof {
+  .web-card small {
     display: inline-flex;
     max-width: 100%;
     width: fit-content;
-    margin-top: 0.85rem;
-    border: 1px solid var(--border-color);
+    margin-top: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 999px;
-    padding: 0.38rem 0.65rem;
-    color: var(--text-secondary);
-    font-size: 0.82rem;
-    font-weight: 700;
+    padding: 0.38rem 0.7rem;
+    color: rgba(255, 255, 255, 0.72);
+    background: rgba(0, 0, 0, 0.28);
+    font-size: 0.78rem;
+    font-weight: 750;
     line-height: 1.15;
-    overflow-wrap: anywhere;
+    backdrop-filter: blur(10px);
   }
 
-  .web-arrow {
-    width: 2.65rem;
-    height: 2.65rem;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 999px;
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.04);
-    font-size: 1.35rem;
-    font-style: normal;
-    line-height: 1;
-    transition: transform 0.22s ease, border-color 0.22s ease, background-color 0.22s ease;
-  }
-
-  .web-row:hover .web-arrow {
-    border-color: rgba(214, 72, 126, 0.48);
-    background: rgba(214, 72, 126, 0.15);
-    transform: translate3d(0.1rem, -0.1rem, 0);
-  }
-
-  .web-row b {
+  .web-card b {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
     width: fit-content;
     min-height: 2.45rem;
     margin-top: 1rem;
     border-radius: 999px;
-    padding: 0.68rem 1rem;
+    padding: 0.72rem 1rem;
     color: #fff;
     background: var(--righello-pink, #D6487E);
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     line-height: 1;
   }
 
@@ -2064,15 +2168,17 @@
     }
 
     .section-heading-row,
-    .digital-shell,
     .production-grid,
     .archive-proof-shell {
       grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     }
 
     .digital-copy {
-      position: sticky;
-      top: 7.5rem;
+      max-width: 64rem;
+    }
+
+    .digital-points {
+      max-width: 42rem;
     }
 
     .case-grid {
@@ -2115,16 +2221,8 @@
     }
 
     .web-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.1rem;
-    }
-
-    .web-row {
-      transform: rotateY(var(--web-rotate, -2.4deg)) translateX(var(--web-shift, 0rem)) translateZ(0);
-      transform-origin: left center;
-    }
-
-    .web-row:hover {
-      transform: rotateY(0deg) translateX(-0.2rem) translateY(-2px);
     }
 
     .case-card,
@@ -2170,12 +2268,17 @@
     .client-logo-grid {
       grid-template-columns: repeat(7, minmax(0, 1fr));
     }
+
+    .web-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .web-row,
-    .web-row::after,
-    .web-arrow,
+    .web-card,
+    .web-card__media,
+    .web-card__top em,
     .filter-bar button,
     .featured-proof-card,
     .featured-proof-card__media,
