@@ -299,18 +299,23 @@
 
   const productionLinks = [
     {
-      label: 'Scopri Lumis',
-      description: 'Il nostro ambiente proprietario per gallery eventi, portfolio fotografici e vendita foto.',
-      href: 'https://lumis.wearerighello.com/',
+      label: 'Portfolio completo',
+      description: 'Selezione pubblica di lavori, eventi e produzioni gestita nella nostra gallery Lumis.',
+      href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=portfolio-completo',
     },
     {
-      label: 'Richiedi una selezione portfolio',
-      description: 'Ti inviamo riferimenti coerenti con settore, obiettivo e tipo di produzione.',
-      href: '/contatti',
+      label: 'Archivio produzioni video/foto',
+      description: 'Una raccolta curata di materiali pubblici per capire come organizziamo produzioni riutilizzabili.',
+      href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=archivio-produzioni-video-foto',
     },
     {
-      label: 'Parliamo di una produzione',
-      description: 'Foto, video e asset pensati per sito, social, campagne e materiali commerciali.',
+      label: 'Tomasella',
+      description: 'Esempio di contenuti e asset visuali preparati per raccontare meglio un brand e i suoi prodotti.',
+      href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=tomasella',
+    },
+    {
+      label: 'Casa Rossa e selezioni private',
+      description: 'Per lavori non pubblici prepariamo una selezione coerente con settore, obiettivo e canali.',
       href: '/contatti',
     },
   ];
