@@ -298,10 +298,21 @@
   ];
 
   const productionLinks = [
-    { label: 'Portfolio completo', href: 'https://1drv.ms/f/c/8e8043fff9e6e829/IgCF6y9QuDYLSZIE7CyYG0fWAUmlUH8AJxGKvnIdEnaRXUc' },
-    { label: 'Archivio produzioni video/foto', href: 'https://1drv.ms/f/c/8e8043fff9e6e829/IgCctAk1dekaSqNLIVfJmFMKAX-3qsFqNlK7m6SLOhBU4Ik' },
-    { label: 'Casa Rossa', href: 'https://1drv.ms/f/c/8e8043fff9e6e829/IgA6sdW-66v4QoP1Rz4XVc76Aeed2ENOJ9zl0Z8KhOeDB8U' },
-    { label: 'Tomasella', href: 'https://1drv.ms/f/c/8e8043fff9e6e829/IgDHhhDLOkg6SY_6Zn-g7008Ab9mChH_ASM4ggBLiYnT3c4' },
+    {
+      label: 'Scopri Lumis',
+      description: 'Il nostro ambiente proprietario per gallery eventi, portfolio fotografici e vendita foto.',
+      href: 'https://lumis.wearerighello.com/',
+    },
+    {
+      label: 'Richiedi una selezione portfolio',
+      description: 'Ti inviamo riferimenti coerenti con settore, obiettivo e tipo di produzione.',
+      href: '/contatti',
+    },
+    {
+      label: 'Parliamo di una produzione',
+      description: 'Foto, video e asset pensati per sito, social, campagne e materiali commerciali.',
+      href: '/contatti',
+    },
   ];
 
   const referenceGroups = [
@@ -746,11 +757,18 @@
 
     <RevealOnScroll animation="fly-up" delay={100} duration={360}>
       <div class="archive-card">
-        <p>Materiali pubblici selezionati</p>
+        <p>Portfolio e gallery proprietarie</p>
         <div class="archive-links">
           {#each productionLinks as link}
-            <a href={link.href} target="_blank" rel="noreferrer">
-              {link.label}
+            <a
+              href={link.href}
+              target={link.href.startsWith('http') ? '_blank' : undefined}
+              rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
+            >
+              <span>
+                <strong>{link.label}</strong>
+                <small>{link.description}</small>
+              </span>
               <span aria-hidden="true">↗</span>
             </a>
           {/each}
@@ -1938,13 +1956,52 @@
   .archive-links a {
     display: flex;
     justify-content: space-between;
-    gap: 1rem;
-    min-height: 44px;
+    gap: 0.9rem;
+    min-height: 5.2rem;
     align-items: center;
     border: 1px solid var(--border-color);
-    border-radius: 999px;
-    padding: 0.65rem 0.9rem;
+    border-radius: 1.15rem;
+    padding: 0.85rem 0.95rem;
     font-weight: 700;
+    background: rgba(255, 255, 255, 0.025);
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .archive-links a:hover {
+    border-color: rgba(214, 72, 126, 0.42);
+    background: rgba(214, 72, 126, 0.09);
+    transform: translateY(-1px);
+  }
+
+  .archive-links a > span:first-child {
+    display: grid;
+    min-width: 0;
+    gap: 0.25rem;
+  }
+
+  .archive-links strong {
+    color: var(--text-primary);
+    font-size: 1rem;
+    line-height: 1.15;
+  }
+
+  .archive-links small {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .archive-links a > span:last-child {
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.035);
   }
 
   .reference-card {
