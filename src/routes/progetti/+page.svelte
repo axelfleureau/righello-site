@@ -327,23 +327,23 @@
 
   const productionLinks = [
     {
-      label: 'Portfolio completo',
-      description: 'Selezione pubblica di lavori, eventi e produzioni gestita nella nostra gallery Lumis.',
-      href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=portfolio-completo',
-    },
-    {
-      label: 'Archivio produzioni video/foto',
-      description: 'Una raccolta curata di materiali pubblici per capire come organizziamo produzioni riutilizzabili.',
-      href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=archivio-produzioni-video-foto',
-    },
-    {
       label: 'Tomasella',
       description: 'Esempio di contenuti e asset visuali preparati per raccontare meglio un brand e i suoi prodotti.',
       href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=tomasella',
     },
     {
-      label: 'Casa Rossa e selezioni private',
-      description: 'Per lavori non pubblici prepariamo una selezione coerente con settore, obiettivo e canali.',
+      label: 'Play x Noiclub',
+      description: 'Gallery evento separata e riconoscibile, utile per valutare gestione, ritmo e selezione dei contenuti live.',
+      href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=play-x-noiclub',
+    },
+    {
+      label: 'Appartamento Ernesto Sanato',
+      description: 'Esempio real estate/interior: pochi scatti organizzati per mostrare spazio, atmosfera e dettagli.',
+      href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=Appartament-Ernesto',
+    },
+    {
+      label: 'Selezione su misura',
+      description: 'Per lavori non pubblici prepariamo una selezione coerente con settore, obiettivo e canali, senza archivi generici.',
       href: '/contatti',
     },
   ];
