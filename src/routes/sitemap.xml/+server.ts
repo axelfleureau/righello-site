@@ -13,7 +13,7 @@ const PAGES = [
   { loc: '/buffr',                  priority: '0.95', changefreq: 'weekly' },
   { loc: '/bando-intelligenza-artificiale-fvg-2026', priority: '0.9', changefreq: 'weekly' },
   { loc: '/agenzia-marketing-pordenone', priority: '0.9', changefreq: 'monthly' },
-  { loc: '/agenzia-marketing-mestre', priority: '0.9', changefreq: 'monthly' },
+  { loc: '/agenzia-marketing-mestre', priority: '0.95', changefreq: 'weekly' },
   { loc: '/progetti',               priority: '0.9', changefreq: 'weekly' },
   { loc: '/chi-siamo',              priority: '0.8', changefreq: 'monthly' },
   { loc: '/contatti',               priority: '0.8', changefreq: 'monthly' },

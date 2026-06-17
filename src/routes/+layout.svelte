@@ -67,7 +67,8 @@
           "@type": "PostalAddress",
           "streetAddress": "Via Pio X 21",
           "addressLocality": "Mestre",
-          "addressRegion": "Venezia",
+          "addressRegion": "Veneto",
+          "postalCode": "30174",
           "addressCountry": "IT"
         },
         "sameAs": [
@@ -92,7 +93,8 @@
           "@type": "PostalAddress",
           "streetAddress": "Via Pio X 21",
           "addressLocality": "Mestre",
-          "addressRegion": "Venezia",
+          "addressRegion": "Veneto",
+          "postalCode": "30174",
           "addressCountry": "IT"
         },
         "areaServed": [
