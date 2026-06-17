@@ -327,11 +327,6 @@
 
   const productionLinks = [
     {
-      label: 'Portfolio completo Righello',
-      description: 'Una selezione curata di eventi, shooting, interni, prodotto e contenuti creator, organizzata per progetto.',
-      href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=portfolio-completo',
-    },
-    {
       label: 'Tomasella',
       description: 'Esempio di contenuti e asset visuali preparati per raccontare meglio un brand e i suoi prodotti.',
       href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=tomasella',
