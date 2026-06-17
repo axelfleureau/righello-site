@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { clients } from '$lib/data/projects';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
@@ -37,9 +38,9 @@
   };
 
   const heroStats = [
-    { value: '50+', label: 'aziende e brand seguiti' },
-    { value: '3', label: 'aree operative: brand, growth, software' },
-    { value: '1', label: 'metodo: strategia, produzione, tecnologia' },
+    { value: '50+', label: 'clienti e brand seguiti' },
+    { value: '10+', label: 'settori tra hospitality, tech e PMI' },
+    { value: '3', label: 'contenuti, sito e tecnologia' },
   ];
 
   const categories = [
@@ -60,7 +61,7 @@
       summary: 'Un sistema di contenuti premium per allineare percezione digitale, produzione visuale e campagne di prenotazione diretta.',
       challenge: 'Una struttura con esperienza reale di alto livello, ma una comunicazione digitale non ancora coerente con il valore percepito dal cliente.',
       approach: 'Produzione video, fotografia e short-form content pianificati come asset riutilizzabili su social, advertising e sito.',
-      value: ['Identita visiva piu premium', 'Libreria contenuti riutilizzabile', 'Materiali pronti per campagne e prenotazioni dirette'],
+      value: ['Identità visiva più premium', 'Libreria contenuti riutilizzabile', 'Materiali pronti per campagne e prenotazioni dirette'],
       services: ['Video production', 'Shooting fotografico', 'Social content', 'Advertising asset'],
       reference: 'https://www.instagram.com/elitehotelandspa/',
       logo: '/logos/hotel-elite.png',
@@ -70,10 +71,10 @@
       name: 'Garden Hotel Michelangelo',
       sector: 'Hospitality',
       category: 'hospitality',
-      summary: 'Storytelling visivo stagionale per elevare la percezione dell’hotel e parlare a un pubblico piu internazionale e premium.',
-      challenge: 'Un hotel consolidato con prodotto forte, pronto a rendere la comunicazione piu curata, coerente e memorabile.',
+      summary: 'Storytelling visivo stagionale per elevare la percezione dell’hotel e parlare a un pubblico più internazionale e premium.',
+      challenge: 'Un hotel consolidato con prodotto forte, pronto a rendere la comunicazione più curata, coerente e memorabile.',
       approach: 'Racconto di atmosfera, architettura ed esperienza ospite con produzioni pensate per durare nel tempo.',
-      value: ['Percezione brand piu alta', 'Asset coerenti per canali organici e paid', 'Produzione non usa e getta'],
+      value: ['Percezione brand più alta', 'Asset coerenti per canali organici e paid', 'Produzione non usa e getta'],
       services: ['Strategia contenuti', 'Produzione video', 'Fotografia', 'Storytelling hospitality'],
       reference: 'https://www.instagram.com/gardenhotelmichelangelo/',
       logo: '/logos/hotel-michelangelo.png',
@@ -83,10 +84,10 @@
       name: 'Fiumedica',
       sector: 'Medical & Healthcare',
       category: 'medical',
-      summary: 'Comunicazione chiara e rassicurante per rendere l’expertise clinica piu comprensibile prima del primo appuntamento.',
+      summary: 'Comunicazione chiara e rassicurante per rendere l’expertise clinica più comprensibile prima del primo appuntamento.',
       challenge: 'Una clinica privata con forte competenza medica, da raccontare con equilibrio, fiducia e standard adatti al settore.',
       approach: 'Contenuti pensati per rispondere alle domande dei pazienti, ridurre frizione e trasmettere cura senza linguaggio freddo.',
-      value: ['Comunicazione piu chiara per il paziente', 'Fiducia prima del contatto', 'Posizionamento professionale piu solido'],
+      value: ['Comunicazione più chiara per il paziente', 'Fiducia prima del contatto', 'Posizionamento professionale più solido'],
       services: ['Content strategy', 'Copywriting', 'Produzione contenuti', 'Posizionamento'],
       reference: 'https://www.instagram.com/fiumedica/',
     },
@@ -96,9 +97,9 @@
       sector: 'Automotive',
       category: 'automotive',
       summary: 'Contenuti automotive premium costruiti per portare il linguaggio visivo dei brand rappresentati dentro la comunicazione del concessionario.',
-      challenge: 'Un concessionario premium deve vendere aspirazione, non solo schede tecniche e disponibilita veicoli.',
+      challenge: 'Un concessionario premium deve vendere aspirazione, non solo schede tecniche e disponibilità veicoli.',
       approach: 'Approccio cinematografico alla presentazione dei modelli, con produzione ad alto volume in giornate organizzate.',
-      value: ['Percezione premium piu alta', 'Materiale utile per organico e paid', 'Maggiore coerenza con i marchi rappresentati'],
+      value: ['Percezione premium più alta', 'Materiale utile per organico e paid', 'Maggiore coerenza con i marchi rappresentati'],
       services: ['Video production', 'Social media', 'Advertising creative', 'Content planning'],
       reference: 'https://www.instagram.com/riccigroup_concessionaria/',
       logo: '/logos/ricci-group.webp',
@@ -109,9 +110,9 @@
       sector: 'Wine & Lifestyle',
       category: 'wine',
       summary: 'Heritage, territorio e persone trasformati in un racconto contemporaneo per un brand vinicolo storico.',
-      challenge: 'Parlare a un pubblico moderno e premium senza perdere autenticita, storia e legame con la terra.',
-      approach: 'Narrativa visiva su tenuta, processo produttivo, artigianalita e persone dietro al vino.',
-      value: ['Identita coerente con storia e qualita', 'Contenuti con appeal internazionale', 'Racconto piu forte per buyer, hospitality ed export'],
+      challenge: 'Parlare a un pubblico moderno e premium senza perdere autenticità, storia e legame con la terra.',
+      approach: 'Narrativa visiva su tenuta, processo produttivo, artigianalità e persone dietro al vino.',
+      value: ['Identità coerente con storia e qualità', 'Contenuti con appeal internazionale', 'Racconto più forte per buyer, hospitality ed export'],
       services: ['Storytelling', 'Social media', 'Video content', 'Produzione fotografica'],
       reference: 'https://www.instagram.com/reguta.1928/',
       logo: '/logos/reguta.png',
@@ -122,9 +123,9 @@
       sector: 'Food & Restaurant',
       category: 'food',
       summary: 'Un ristorante premium raccontato come destinazione per ospiti, eventi e business dining.',
-      challenge: 'Attrarre clientela professionale e corporate mantenendo chiara l’identita gastronomica.',
+      challenge: 'Attrarre clientela professionale e corporate mantenendo chiara l’identità gastronomica.',
       approach: 'Produzione e contenuti dual-audience: ospiti individuali da un lato, organizzatori di eventi e aziende dall’altro.',
-      value: ['Identita premium piu coerente', 'Materiali utili per vendita diretta e marketing eventi', 'Posizionamento B2B piu leggibile'],
+      value: ['Identità premium più coerente', 'Materiali utili per vendita diretta e marketing eventi', 'Posizionamento B2B più leggibile'],
       services: ['Food content', 'Shooting', 'Social strategy', 'Advertising asset'],
       reference: 'https://www.instagram.com/casarossaristobusiness/',
     },
@@ -135,7 +136,7 @@
       name: 'BUFFR',
       type: 'App iOS / camera buffer per replay istantanei',
       url: '/buffr',
-      summary: 'Prodotto iOS nato internamente: una camera buffer per salvare gli ultimi secondi durante sport, live event e backstage.',
+      summary: 'App iOS firmata Righello: una camera buffer per salvare gli ultimi secondi durante sport, live event e backstage.',
       proof: 'Product design, UX mobile, pagina prodotto, App Store assets',
       ctaLabel: 'Apri pagina BUFFR',
       featured: true,
@@ -159,15 +160,15 @@
     },
     {
       name: 'Porto Piccolo Apartments',
-      type: 'Real estate / landing page validazione',
+      type: 'Real estate / landing page commerciale',
       url: 'https://portopiccolo-apartments-validation.wearerighello.com',
-      summary: 'Landing di validazione per testare proposta, domanda e qualità del traffico prima di scalare.',
+      summary: 'Landing commerciale per chiarire proposta, pubblico e qualità del traffico prima di scalare.',
       proof: 'Landing, conversione, real estate',
       ctaLabel: 'Apri progetto',
     },
     {
       name: 'Solero Sport Village',
-      type: 'Sport & fitness / landing page validazione',
+      type: 'Sport & fitness / landing page commerciale',
       url: 'https://solero-validation.wearerighello.com',
       summary: 'Esperienza web rapida e focalizzata per comunicare offerta, posizionamento e prossima azione.',
       proof: 'Landing, sport, lead generation',
@@ -202,65 +203,80 @@
   const featuredProofs: FeaturedProof[] = [
     {
       name: 'BUFFR',
-      label: 'Prodotto iOS',
+      label: 'App iOS proprietaria',
       href: '/buffr',
-      intro: 'Camera buffer per iPhone: replay istantanei per sport, live event, backstage e creator.',
-      proof: ['Product design', 'UX mobile', 'Pagina prodotto', 'App Store assets'],
-      accent: 'Replay istantanei',
+      intro: 'Un prodotto nato in Righello: camera buffer per iPhone, replay istantanei e pagina prodotto pronta per App Store.',
+      proof: ['Product design', 'UX mobile', 'Go-to-market', 'Pagina prodotto'],
+      accent: 'Dal prototipo allo store',
     },
     {
       name: 'Lumis',
-      label: 'Web app custom',
+      label: 'Web app su misura',
       href: 'https://lumis.wearerighello.com',
-      intro: 'Esperienza digitale proprietaria: interfaccia, posizionamento e prodotto custom fuori dal sito vetrina standard.',
-      proof: ['Web app', 'Interfaccia custom', 'Sviluppo prodotto', 'Design system'],
-      accent: 'Custom product',
+      intro: 'Un’esperienza digitale proprietaria, costruita per spiegare valore e funzione senza sembrare un template.',
+      proof: ['Interfaccia custom', 'Frontend', 'Design system', 'Storytelling prodotto'],
+      accent: 'Esperienza proprietaria',
     },
     {
       name: 'Neura',
       label: 'Prodotto digitale',
       href: 'https://neura.wearerighello.com',
-      intro: 'Architettura informativa e interfaccia per spiegare valore, funzione e posizionamento di un prodotto digitale.',
-      proof: ['UX', 'Frontend', 'Brand positioning', 'Product storytelling'],
-      accent: 'UX + valore',
+      intro: 'Architettura informativa, UX e posizionamento per rendere comprensibile un prodotto digitale complesso.',
+      proof: ['UX writing', 'Frontend', 'Posizionamento', 'Struttura commerciale'],
+      accent: 'Chiarezza che vende',
     },
     {
-      name: 'Hermes',
-      label: 'Sistema interno',
+      name: 'Contenuti',
+      label: 'Produzioni e campagne',
       href: '#case-study-archive',
-      intro: 'Archivio proof-of-work Righello: case study, PDF, referenze e produzioni organizzati per usarli meglio in vendita.',
-      proof: ['Knowledge base', 'Case study map', 'Portfolio intelligence', 'Asset commerciali'],
-      accent: 'Proof system',
+      intro: 'Shooting, video, social e advertising pensati per diventare materiali commerciali, non post isolati.',
+      proof: ['Video', 'Foto', 'Paid asset', 'Materiali vendita'],
+      accent: 'Asset riutilizzabili',
     },
   ];
 
   const capabilityProofs = [
     {
-      title: 'Dalla percezione alla fiducia',
-      text: 'Contenuti, pagine e sistemi che fanno sembrare l’azienda solida prima ancora della prima call.',
+      title: 'Prima impressione più forte',
+      text: 'Quando un cliente arriva sul sito o sui social, deve capire subito che l’azienda è solida, curata e affidabile.',
     },
     {
-      title: 'Dal sito al prodotto',
-      text: 'Landing, web app, software e strumenti proprietari costruiti con la stessa attenzione di un prodotto digitale.',
+      title: 'Più materiali per vendere',
+      text: 'Un progetto ben fatto produce pagine, video, foto, presentazioni e asset che il team può usare ogni giorno.',
     },
     {
-      title: 'Dalla campagna al sistema',
-      text: 'Asset riutilizzabili su paid, organico, vendita, documenti commerciali e presentazioni.',
+      title: 'Meno improvvisazione',
+      text: 'Sito, contenuti e campagne devono lavorare insieme. Non trattiamo ogni canale come un pezzo separato.',
     },
   ];
 
   const archiveSignals = [
-    { value: '68', label: 'PDF case study censiti' },
-    { value: '16', label: 'case study finali validati' },
-    { value: '10+', label: 'settori coperti' },
-    { value: '50+', label: 'clienti e progetti mappati' },
+    { value: 'Hospitality', label: 'hotel, spa, resort e ristorazione' },
+    { value: 'Medical', label: 'cliniche, studi e servizi alla persona' },
+    { value: 'Automotive', label: 'concessionarie, showroom e brand premium' },
+    { value: 'Tech', label: 'software, app, portali e prodotti digitali' },
   ];
 
   const archiveBullets = [
-    'Case study principali pronti per conversazioni commerciali',
-    'Portfolio web, prodotti digitali e produzioni separati per contesto',
-    'Referenze divise per settore: hospitality, medical, automotive, wine, food, sport, eventi e tech',
-    'Materiali selezionati per evitare liste infinite e mostrare solo esempi coerenti',
+    'Selezioniamo esempi coerenti con il settore del cliente, invece di mandare un portfolio infinito.',
+    'Distinguiamo tra sito, prodotto digitale, contenuti e campagne, così il valore è più facile da leggere.',
+    'Mostriamo cosa è stato migliorato: percezione, chiarezza dell’offerta, materiali di vendita, velocità di pubblicazione.',
+    'Quando i numeri sono riservati, usiamo prove pubbliche: contenuti, pagine, asset, canali e riferimenti verificabili.',
+  ];
+
+  const selectedClientLogos = clients
+    .filter((client) => client.logo)
+    .slice(0, 28);
+
+  const seoServiceAreas = [
+    'agenzia marketing Pordenone',
+    'agenzia marketing Mestre',
+    'siti web aziendali',
+    'produzioni video e foto',
+    'software custom',
+    'automazioni AI',
+    'social media marketing',
+    'advertising',
   ];
 
   const productionLinks = [
@@ -273,15 +289,15 @@
   const referenceGroups = [
     {
       title: 'Hospitality, food e lifestyle',
-      names: ['Elite Hotel & Spa', 'Garden Hotel Michelangelo', 'Casa Rossa', 'Busa del Sauc', 'Banshi Sushi'],
+      names: ['Elite Hotel & Spa', 'Garden Hotel Michelangelo', 'Casa Rossa', 'Busa del Sauc', 'Banshi Sushi', 'Riviera Resort', 'Quellenhof'],
     },
     {
       title: 'Sport, eventi e territorio',
-      names: ['Scuola Sci Piancavallo', 'Solero Sport Village', 'Noi Club', 'Barcolana', 'Comune di Pordenone'],
+      names: ['Scuola Sci Piancavallo', 'Solero Sport Village', 'Noi Club', 'Barcolana', 'Comune di Pordenone', 'Comune di Fanna', 'Ippodromo Merano'],
     },
     {
       title: 'Tech, web e business',
-      names: ['3R Technology', 'Neura', 'Tomasella', 'Ricci Group', 'Fiumedica'],
+      names: ['3R Technology', 'Neura', 'Lumis', 'BUFFR', 'Tomasella', 'Ricci Group', 'Fiumedica', 'SystemDoc'],
     },
   ];
 
@@ -295,9 +311,9 @@
     {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: 'Progetti e case study Righello',
+      name: 'Case study e progetti Righello',
       url: 'https://www.wearerighello.com/progetti',
-      description: 'Case study, produzioni e progetti web realizzati da Righello per aziende, hospitality, medical, automotive, eventi e brand territoriali.',
+      description: 'Case study, siti web, produzioni video, campagne e prodotti digitali realizzati da Righello per aziende tra Pordenone, Mestre, Friuli Venezia Giulia e Veneto.',
       publisher: {
         '@type': 'Organization',
         name: 'Righello S.r.l.',
@@ -317,7 +333,7 @@
     {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: 'Proof of work digitali Righello',
+      name: 'Progetti digitali Righello',
       itemListElement: featuredProofs.map((proof, index) => ({
         '@type': 'ListItem',
         position: index + 1,
@@ -335,18 +351,18 @@
 </script>
 
 <svelte:head>
-  <title>Progetti e Case Study | Righello</title>
-  <meta name="description" content="Case study, produzioni video, campagne, siti e sistemi digitali realizzati da Righello per aziende, hospitality, medical, automotive, eventi e brand territoriali." />
+  <title>Case Study Agenzia Marketing, Siti Web e Software | Righello</title>
+  <meta name="description" content="Case study Righello: siti web, produzioni video, campagne marketing, software custom e prodotti digitali per aziende a Pordenone, Mestre, FVG e Veneto." />
   <link rel="canonical" href="https://www.wearerighello.com/progetti" />
-  <meta property="og:title" content="Progetti e Case Study | Righello" />
-  <meta property="og:description" content="Una selezione di lavori Righello: contenuti, campagne, siti e sistemi digitali costruiti su misura." />
+  <meta property="og:title" content="Case Study e Progetti | Righello" />
+  <meta property="og:description" content="Siti web, campagne, contenuti, software e prodotti digitali realizzati da Righello per aziende reali." />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta property="og:url" content="https://www.wearerighello.com/progetti" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Progetti e Case Study | Righello" />
-  <meta name="twitter:description" content="Case study, produzioni, siti e sistemi digitali realizzati da Righello." />
+  <meta name="twitter:title" content="Case Study e Progetti | Righello" />
+  <meta name="twitter:description" content="Case study Righello: siti web, produzioni, campagne, software custom e prodotti digitali." />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
   {@html schemaMarkup}
 </svelte:head>
@@ -356,17 +372,18 @@
   <div class="section-container hero-grid">
     <RevealOnScroll animation="fly-up" duration={420}>
       <div class="hero-copy">
-        <p class="section-subtitle">Proof of work</p>
-        <h1 class="heading-xl hero-title">Progetti veri. Prodotti veri. Risultati che si vedono.</h1>
+        <p class="section-subtitle">Case study Righello</p>
+        <h1 class="heading-xl hero-title">Lavori reali per aziende che vogliono essere scelte meglio.</h1>
         <p class="hero-intro">
-          Una selezione di lavori Righello: contenuti, campagne, siti, app e sistemi digitali costruiti
-          per aumentare percezione, fiducia e richieste commerciali.
+          Siti web, produzioni video, campagne, software custom e prodotti digitali. Qui trovi una selezione
+          di progetti costruiti per rendere più chiara l’offerta, aumentare fiducia e dare al team materiali
+          utili per vendere.
         </p>
         <div class="hero-actions">
           <MagneticButton href="/contatti" variant="primary">Parliamo del tuo progetto</MagneticButton>
-          <MagneticButton href="#product-work" variant="secondary">Prodotti digitali</MagneticButton>
+          <MagneticButton href="#case-study" variant="secondary">Guarda i casi studio</MagneticButton>
         </div>
-        <div class="hero-stats" aria-label="Sintesi proof of work Righello">
+        <div class="hero-stats" aria-label="Sintesi progetti Righello">
           {#each heroStats as stat}
             <div>
               <strong>{stat.value}</strong>
@@ -380,26 +397,26 @@
     <RevealOnScroll animation="scale" delay={120} duration={420}>
       <aside class="proof-panel" aria-label="Sintesi portfolio Righello">
         <div class="proof-panel__top">
-          <span>Righello work index</span>
-          <strong>Brand, growth, software</strong>
+          <span>Cosa guardare</span>
+          <strong>Non solo estetica</strong>
         </div>
         <div class="proof-hero-line">
-          <span>Design</span>
-          <span>Growth</span>
-          <span>Software</span>
+          <span>Brand</span>
+          <span>Contenuti</span>
+          <span>Prodotto</span>
         </div>
         <div class="proof-list">
           <div>
             <span>01</span>
-            <p>Identità digitale più credibile prima ancora della call commerciale.</p>
+            <p>La prima impressione deve spiegare valore, qualità e affidabilità.</p>
           </div>
           <div>
             <span>02</span>
-            <p>Siti e prodotti digitali custom, con performance, SEO e UX solide.</p>
+            <p>Un buon progetto genera contenuti, pagine e asset riutilizzabili.</p>
           </div>
           <div>
             <span>03</span>
-            <p>Asset riutilizzabili su organico, paid, vendita e presentazioni.</p>
+            <p>Sito, social, advertising e software devono lavorare come un sistema.</p>
           </div>
         </div>
       </aside>
@@ -409,17 +426,54 @@
 
 <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
 
+<section class="client-proof-section">
+  <div class="section-container">
+    <RevealOnScroll animation="fade" duration={260}>
+      <div class="client-proof-heading">
+        <p>Alcuni brand, aziende ed enti con cui abbiamo lavorato</p>
+        <div class="seo-chip-row" aria-label="Aree di lavoro Righello">
+          {#each seoServiceAreas as area}
+            <span>{area}</span>
+          {/each}
+        </div>
+      </div>
+    </RevealOnScroll>
+
+    <div class="client-logo-grid">
+      {#each selectedClientLogos as client, i}
+        <RevealOnScroll animation="fade" stagger={22} index={i} duration={220}>
+          <div class="client-logo-tile">
+            {#if client.logo}
+              <img
+                src={client.logo}
+                alt={client.name}
+                loading="lazy"
+                decoding="async"
+                class:no-filter={client.noFilter}
+              />
+            {:else}
+              <span>{client.name}</span>
+            {/if}
+          </div>
+        </RevealOnScroll>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-secondary)" />
+
 <section class="section-padding featured-proof-section">
   <div class="section-container">
     <RevealOnScroll animation="fly-up" duration={360}>
       <div class="section-heading-row">
         <div>
-          <p class="section-subtitle">In evidenza</p>
-          <h2 class="section-title">Quando diciamo prodotto digitale, intendiamo questo.</h2>
+          <p class="section-subtitle">Progetti in evidenza</p>
+          <h2 class="section-title">Dal sito vetrina al sistema che aiuta davvero a vendere.</h2>
         </div>
         <p>
-          Non solo siti “belli”: esperienze, pagine e software pensati per essere usati,
-          capiti, condivisi e venduti. BUFFR apre la sua pagina dedicata dal portfolio.
+          Alcuni lavori sono pagine, altri sono app, software o contenuti. Il punto è lo stesso:
+          creare strumenti che il cliente può usare per presentarsi meglio, spiegare meglio e muoversi più velocemente.
         </p>
       </div>
     </RevealOnScroll>
@@ -432,7 +486,7 @@
             href={proof.href}
             target={proof.href.startsWith('http') ? '_blank' : undefined}
             rel={proof.href.startsWith('http') ? 'noreferrer' : undefined}
-            aria-label={`Apri proof of work ${proof.name}`}
+            aria-label={`Apri progetto ${proof.name}`}
           >
             <div class="featured-proof-card__top">
               <span>{proof.label}</span>
@@ -472,12 +526,12 @@
     <RevealOnScroll animation="fly-up" duration={360}>
       <div class="section-heading-row">
         <div>
-          <p class="section-subtitle">Case study principali</p>
-          <h2 class="section-title">Non facciamo vetrine. Costruiamo percezione.</h2>
+          <p class="section-subtitle">Case study selezionati</p>
+          <h2 class="section-title">Ogni settore ha un problema diverso. Il metodo resta concreto.</h2>
         </div>
         <p>
-          Non pubblichiamo numeri riservati dei clienti. Qui mostriamo metodo, qualità produttiva,
-          valore di comunicazione e capacità di creare asset che continuano a lavorare dopo la consegna.
+          Non pubblichiamo metriche riservate. Mostriamo ciò che un potenziale cliente può valutare:
+          chiarezza del posizionamento, qualità dei contenuti, coerenza dei canali e utilità commerciale degli asset prodotti.
         </p>
       </div>
     </RevealOnScroll>
@@ -558,11 +612,11 @@
   <div class="section-container archive-proof-shell">
     <RevealOnScroll animation="fly-up" duration={360}>
       <div class="archive-proof-copy">
-        <p class="section-subtitle">Hermes archive</p>
-        <h2 class="section-title">Non mostriamo “qualche lavoro”. Organizziamo prove.</h2>
+        <p class="section-subtitle">Come scegliamo i riferimenti</p>
+        <h2 class="section-title">Il portfolio funziona quando parla al problema giusto.</h2>
         <p>
-          Abbiamo un archivio interno di case study, PDF, produzioni e referenze. Serve a scegliere
-          gli esempi giusti per ogni cliente: pochi, coerenti, leggibili e utili a una decisione.
+          Se ci contatti, non ti mandiamo un elenco infinito. Selezioniamo i casi più simili al tuo contesto:
+          settore, obiettivo, canali da migliorare, materiali già disponibili e livello di maturità digitale.
         </p>
       </div>
     </RevealOnScroll>
@@ -594,10 +648,10 @@
     <RevealOnScroll animation="fly-up" duration={360}>
       <div class="digital-copy">
         <p class="section-subtitle">Web e prodotto digitale</p>
-        <h2 class="section-title">Qui si vede se sai fare prodotto, non template.</h2>
+        <h2 class="section-title">Siti web, landing e software che non nascono da un template.</h2>
         <p class="section-intro">
-          Progettiamo siti, landing, app e software con architettura pulita, performance,
-          struttura SEO e un’interfaccia che non sembra uscita da un template.
+          Progettiamo siti aziendali, landing page, app e software custom con architettura pulita,
+          performance, struttura SEO e interfacce pensate per evolvere con il business.
         </p>
         <div class="digital-points" aria-label="Punti di forza dei progetti digitali Righello">
           <span>UX/UI</span>
@@ -640,7 +694,7 @@
     <RevealOnScroll animation="fly-up" duration={360}>
       <div class="production-copy">
         <p class="section-subtitle">Produzioni video e foto</p>
-        <h2 class="section-title">Asset che lavorano oltre il giorno dello shooting.</h2>
+        <h2 class="section-title">Lo shooting è solo l’inizio. Il valore è nel riuso.</h2>
         <p>
           Ogni produzione viene progettata per generare materiale riutilizzabile su social,
           campagne paid, sito web, presentazioni commerciali e materiali interni.
@@ -650,7 +704,7 @@
 
     <RevealOnScroll animation="fly-up" delay={100} duration={360}>
       <div class="archive-card">
-        <p>Archivio selezionato</p>
+        <p>Materiali pubblici selezionati</p>
         <div class="archive-links">
           {#each productionLinks as link}
             <a href={link.href} target="_blank" rel="noreferrer">
@@ -672,11 +726,11 @@
       <div class="section-heading-row">
         <div>
           <p class="section-subtitle">Referenze</p>
-          <h2 class="section-title">Settori diversi, stesso metodo.</h2>
+          <h2 class="section-title">Abbiamo lavorato con aziende locali, brand nazionali, eventi ed enti.</h2>
         </div>
         <p>
-          In una conversazione commerciale scegliamo 2 o 3 esempi coerenti con il cliente.
-          Il portfolio serve come prova mirata, non come elenco infinito di loghi.
+          La varietà conta: hospitality, food, sport, automotive, tecnologia, pubblica amministrazione e prodotti digitali
+          richiedono linguaggi diversi, ma sempre una comunicazione più chiara e vendibile.
         </p>
       </div>
     </RevealOnScroll>
@@ -703,12 +757,12 @@
     <RevealOnScroll animation="scale" duration={360}>
       <div class="final-cta__inner">
         <p class="section-subtitle">Prossimo progetto</p>
-        <h2>Hai bisogno di far capire meglio quello che vendi?</h2>
+        <h2>Vuoi capire quali lavori Righello sono più vicini al tuo caso?</h2>
         <p>
-          Raccontaci contesto, obiettivi e materiali disponibili. Ti aiutiamo a capire quali asset
-          servono davvero: contenuti, campagne, sito, software o un sistema piu completo.
+          Raccontaci settore, obiettivo e materiali disponibili. Ti mostriamo esempi coerenti e ti diciamo
+          cosa serve davvero: sito, contenuti, campagne, software o un sistema più completo.
         </p>
-        <MagneticButton href="/contatti" variant="primary">Richiedi una proposta</MagneticButton>
+        <MagneticButton href="/contatti" variant="primary">Richiedi una consulenza</MagneticButton>
       </div>
     </RevealOnScroll>
   </div>
@@ -812,6 +866,7 @@
     color: var(--text-secondary);
     font-size: 0.92rem;
     line-height: 1.2;
+    text-wrap: pretty;
   }
 
   .proof-panel {
@@ -907,6 +962,79 @@
   .references-section,
   .featured-proof-section {
     background: var(--bg-secondary);
+  }
+
+  .client-proof-section {
+    padding: 2.5rem 0 3.25rem;
+    background: var(--bg-secondary);
+  }
+
+  .client-proof-heading {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .client-proof-heading p {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(1.35rem, 4vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.05;
+  }
+
+  .seo-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .seo-chip-row span {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.38rem 0.68rem;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.035);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .client-logo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .client-logo-tile {
+    min-height: 5.4rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 1.1rem;
+    padding: 0.8rem;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
+      var(--bg-primary);
+  }
+
+  .client-logo-tile img {
+    max-width: 8.5rem;
+    max-height: 2.35rem;
+    object-fit: contain;
+    filter: grayscale(1) brightness(1.6) contrast(0.92);
+    opacity: 0.82;
+  }
+
+  .client-logo-tile img.no-filter {
+    filter: none;
+  }
+
+  .client-logo-tile span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 750;
+    text-align: center;
   }
 
   .featured-proof-grid {
@@ -1338,8 +1466,8 @@
 
   .archive-proof-stats strong {
     color: var(--text-primary);
-    font-size: clamp(2.4rem, 12vw, 4.6rem);
-    line-height: 0.9;
+    font-size: clamp(1.45rem, 6vw, 2.25rem);
+    line-height: 0.95;
     font-weight: 900;
   }
 
@@ -1618,6 +1746,15 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .client-proof-heading {
+      grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+      align-items: end;
+    }
+
+    .client-logo-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
     .featured-proof-grid,
     .capability-proof-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1667,6 +1804,10 @@
     .featured-proof-card {
       min-height: 34rem;
       padding: 1.45rem;
+    }
+
+    .client-logo-grid {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
     }
   }
 
