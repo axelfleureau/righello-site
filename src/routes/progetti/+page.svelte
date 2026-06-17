@@ -471,14 +471,15 @@
     <div class="client-logo-grid">
       {#each selectedClientLogos as client, i}
         <RevealOnScroll animation="fade" stagger={22} index={i} duration={220}>
-          <div class={`client-logo-tile${client.lightSurface ? ' light-surface' : ''}`}>
+          <div class="client-logo-tile">
             {#if client.logo}
               <img
                 src={client.logo}
                 alt={client.name}
                 loading="lazy"
                 decoding="async"
-                class:no-filter={client.noFilter || client.lightSurface}
+                class:no-filter={client.noFilter && !client.lightSurface}
+                class:logo-lift={client.lightSurface}
               />
             {:else}
               <span>{client.name}</span>
@@ -1107,23 +1108,6 @@
     opacity: 0.6;
   }
 
-  .client-logo-tile.light-surface {
-    border-color: rgba(255, 255, 255, 0.18);
-    background:
-      linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(225, 229, 233, 0.74)),
-      var(--bg-primary);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.7),
-      0 10px 28px rgba(0, 0, 0, 0.18);
-  }
-
-  .client-logo-tile.light-surface::before {
-    background:
-      radial-gradient(circle at 18% 12%, rgba(214, 72, 126, 0.13), transparent 5rem),
-      radial-gradient(circle at 88% 100%, rgba(6, 182, 212, 0.1), transparent 5rem);
-    opacity: 1;
-  }
-
   .client-logo-tile img {
     max-width: min(100%, 8.5rem);
     max-height: 2.35rem;
@@ -1137,18 +1121,25 @@
     opacity: 1;
   }
 
-  .client-logo-tile.light-surface img {
+  .client-logo-tile img.logo-lift {
     max-width: min(100%, 8.95rem);
     max-height: 2.65rem;
+    filter:
+      grayscale(1)
+      invert(1)
+      brightness(1.35)
+      contrast(0.96)
+      drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.12));
+    opacity: 0.92;
   }
 
-  .client-logo-tile.light-surface img[src*='salotto'],
-  .client-logo-tile.light-surface img[src*='hotel-elite'],
-  .client-logo-tile.light-surface img[src*='hotel-michelangelo'] {
+  .client-logo-tile img.logo-lift[src*='salotto'],
+  .client-logo-tile img.logo-lift[src*='hotel-elite'],
+  .client-logo-tile img.logo-lift[src*='hotel-michelangelo'] {
     max-height: 3.35rem;
   }
 
-  .client-logo-tile.light-surface img[src*='poles'] {
+  .client-logo-tile img.logo-lift[src*='poles'] {
     max-width: min(100%, 8rem);
   }
 
