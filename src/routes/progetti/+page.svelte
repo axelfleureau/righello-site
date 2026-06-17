@@ -219,7 +219,7 @@
       summary: 'Presenza digitale personale, pulita e diretta, costruita per autorevolezza e contatto.',
       proof: 'Personal brand, sito, copy',
       ctaLabel: 'Visita sito',
-      image: '/thumbnails/thumb-b21d67febb70.jpg',
+      image: '/thumbnails/thumb-d21d67febb70.jpg',
       imagePosition: 'center center',
     },
     {
