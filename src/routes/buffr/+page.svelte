@@ -197,8 +197,8 @@
   const demoSpriteFrameWidth = 320;
   const demoSpriteFrameHeight = 568;
   const demoFrameRatio = demoSpriteFrameHeight / demoSpriteFrameWidth;
-  const demoSpriteSrc = '/products/buffr/buffr-scroll-sprite.jpg';
-  const demoFirstDynamicFrame = 18;
+  const demoSpriteSrc = '/products/buffr/buffr-scroll-sprite-v2.jpg';
+  const demoFirstDynamicFrame = 8;
   const demoLastDynamicFrame = demoFrameCount - 1;
 
   let demoCanvas: HTMLCanvasElement;
@@ -272,8 +272,8 @@
         const bounds = demoSection.getBoundingClientRect();
         const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 1;
         const isMobile = window.matchMedia('(max-width: 767px)').matches;
-        const startRatio = isMobile ? 1.05 : 1.15;
-        const endRatio = isMobile ? 0.08 : 0.12;
+        const startRatio = isMobile ? 1.35 : 1.45;
+        const endRatio = isMobile ? 0.04 : 0.08;
         const start = viewportHeight * startRatio;
         const travel = bounds.height + viewportHeight * (startRatio - endRatio);
         return Math.min(1, Math.max(0, (start - bounds.top) / travel));
