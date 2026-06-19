@@ -198,6 +198,8 @@
   const demoSpriteFrameHeight = 568;
   const demoFrameRatio = demoSpriteFrameHeight / demoSpriteFrameWidth;
   const demoSpriteSrc = '/products/buffr/buffr-scroll-sprite.jpg';
+  const demoFirstDynamicFrame = 18;
+  const demoLastDynamicFrame = demoFrameCount - 1;
 
   let demoCanvas: HTMLCanvasElement;
   let demoSection: HTMLElement;
@@ -270,8 +272,8 @@
         const bounds = demoSection.getBoundingClientRect();
         const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 1;
         const isMobile = window.matchMedia('(max-width: 767px)').matches;
-        const startRatio = isMobile ? 0.82 : 0.72;
-        const endRatio = isMobile ? 0.18 : 0.28;
+        const startRatio = isMobile ? 1.05 : 1.15;
+        const endRatio = isMobile ? 0.08 : 0.12;
         const start = viewportHeight * startRatio;
         const travel = bounds.height + viewportHeight * (startRatio - endRatio);
         return Math.min(1, Math.max(0, (start - bounds.top) / travel));
@@ -279,10 +281,18 @@
 
       const renderFromScroll = () => {
         const progress = reduceMotion ? 0 : getScrollProgress();
-        const nextFrame = Math.min(
-          demoFrameCount - 1,
-          Math.max(0, Math.round(progress * (demoFrameCount - 1)))
-        );
+        const frameProgress = Math.min(1, Math.max(0, progress * 1.18));
+        const nextFrame = progress <= 0.01
+          ? 0
+          : Math.min(
+              demoLastDynamicFrame,
+              Math.max(
+                demoFirstDynamicFrame,
+                Math.round(
+                  demoFirstDynamicFrame + frameProgress * (demoLastDynamicFrame - demoFirstDynamicFrame)
+                )
+              )
+            );
 
         if (nextFrame !== activeFrame) {
           drawFrame(nextFrame);
@@ -341,23 +351,6 @@
       sizeCanvas();
       drawFrame(0);
 
-      if (reduceMotion) return;
-
-      const gsapModule = await import('gsap');
-      if (cancelled) return;
-
-      const gsap = gsapModule.default;
-
-      ctx = gsap.context(() => {
-        const isMobile = window.matchMedia('(max-width: 767px)').matches;
-
-        if (videoFrame && !isMobile) {
-          gsap.set(videoFrame, { y: 36, scale: 0.96, force3D: true });
-          setFrameY = gsap.quickSetter(videoFrame, 'y', 'px') as (value: number) => void;
-          setFrameScale = gsap.quickSetter(videoFrame, 'scale') as (value: number) => void;
-        }
-      }, demoSection);
-
       intersectionObserver = new IntersectionObserver(
         ([entry]) => {
           isDemoVisible = entry.isIntersecting;
@@ -372,6 +365,7 @@
       intersectionObserver.observe(demoSection);
 
       const handleScroll = () => {
+        requestRender();
         if (isDemoVisible) startRenderLoop();
       };
 
@@ -380,12 +374,33 @@
       window.addEventListener('orientationchange', requestRender, { passive: true });
       requestRender();
 
-      return () => {
+      const cleanupScrollListeners = () => {
         stopRenderLoop();
         window.removeEventListener('scroll', handleScroll);
         window.removeEventListener('resize', requestRender);
         window.removeEventListener('orientationchange', requestRender);
       };
+
+      if (reduceMotion) return cleanupScrollListeners;
+
+      const gsapModule = await import('gsap');
+      if (cancelled) return cleanupScrollListeners;
+
+      const gsap = gsapModule.default;
+
+      ctx = gsap.context(() => {
+        const isMobile = window.matchMedia('(max-width: 767px)').matches;
+
+        if (videoFrame && !isMobile) {
+          gsap.set(videoFrame, { y: 36, scale: 0.96, force3D: true });
+          setFrameY = gsap.quickSetter(videoFrame, 'y', 'px') as (value: number) => void;
+          setFrameScale = gsap.quickSetter(videoFrame, 'scale') as (value: number) => void;
+        }
+      }, demoSection);
+
+      requestRender();
+
+      return cleanupScrollListeners;
     };
 
     let cleanupScrollFrames: (() => void) | void;
