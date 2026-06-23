@@ -46,11 +46,27 @@
   $: if (browser) {
     document.documentElement.setAttribute('data-theme', $theme);
   }
+
+  const SITE_URL = 'https://www.wearerighello.com';
+  const DEFAULT_OG_IMAGE = `${SITE_URL}/og.png?v=4`;
+  const DEFAULT_DESCRIPTION = 'Studio digitale a Pordenone e Mestre per siti web, software, advertising, contenuti foto/video e agenti AI. Operiamo in Friuli-Venezia Giulia, Veneto e Nord Italia.';
+
+  // Reactive SEO defaults — pages can override via their own <svelte:head>.
+  // SvelteKit appends page head after layout head, so per-page meta wins.
+  $: canonicalUrl = `${SITE_URL}${$page.url.pathname === '/' ? '/' : $page.url.pathname.replace(/\/$/, '') + '/'}`;
+  $: ogImage = DEFAULT_OG_IMAGE;
 </script>
 
 <svelte:head>
   <meta name="theme-color" content="#050505" />
   <meta property="og:site_name" content="Righello" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="it_IT" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={ogImage} />
+  <meta name="description" content={DEFAULT_DESCRIPTION} />
   {@html `<script type="application/ld+json">${JSON.stringify({
     "@context": "https://schema.org",
     "@graph": [
