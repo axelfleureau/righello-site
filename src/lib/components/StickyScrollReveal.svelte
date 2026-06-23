@@ -94,6 +94,20 @@
     'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)',
     'linear-gradient(135deg, #10b981 0%, #06B6D4 100%)',
   ];
+
+  // Icon registry: string key → inline SVG (Lucide-style, stroke-based, currentColor).
+  // Anything not in the map falls back to the raw string (emoji or other).
+  const iconMap: Record<string, string> = {
+    audit: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>`,
+    roadmap: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h13a4 4 0 0 1 4 4v2"/><path d="M3 12h13a4 4 0 0 1 4 4v2"/><path d="M3 18h9"/><circle cx="7" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="11" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="18" r="1.4" fill="currentColor" stroke="none"/></svg>`,
+    execution: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4l14 8-14 8V4z"/><path d="M20 5v3"/><path d="M20 16v3"/></svg>`,
+    growth: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-9"/><path d="M14 6h7v7"/><path d="M3 21h18"/></svg>`,
+  };
+
+  function resolveIcon(key: string | undefined): string | null {
+    if (!key) return null;
+    return iconMap[key] ?? key;
+  }
 </script>
 
 <section bind:this={container} class="sticky-scroll-section">
@@ -120,8 +134,8 @@
             {#if item.imageSrc}
               <img src={item.imageSrc} alt={item.title} class="visual-image" />
             {:else if item.icon}
-              <div class="visual-icon">
-                {item.icon}
+              <div class="visual-icon" class:is-svg={iconMap[item.icon]}>
+                {@html resolveIcon(item.icon)}
               </div>
             {:else}
               <div class="visual-placeholder">
@@ -262,7 +276,23 @@
   
   .visual-icon {
     font-size: 12rem;
+    line-height: 1;
+    color: white;
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .visual-icon.is-svg {
+    font-size: 0;
+  }
+
+  .visual-icon :global(svg) {
+    width: 60%;
+    height: 60%;
+    max-width: 360px;
+    max-height: 360px;
   }
   
   .visual-placeholder {

@@ -126,24 +126,24 @@
   
   const processSteps = [
     {
-      title: 'Discovery & Analisi',
-      description: 'Analizziamo il tuo business, il mercato e i competitor. Identifichiamo opportunità di crescita e definiamo KPI chiari e misurabili.',
-      icon: '🔍',
+      title: 'Audit e benchmark',
+      description: 'Mappiamo il tuo business, i canali attivi, i competitor di riferimento e i numeri storici. Da qui nascono gli obiettivi misurabili del progetto.',
+      icon: 'audit',
     },
     {
-      title: 'Strategia & Pianificazione',
-      description: 'Creiamo una roadmap personalizzata con obiettivi a breve, medio e lungo termine. Ogni azione è connessa a risultati concreti.',
-      icon: '📋',
+      title: 'Strategia e roadmap',
+      description: 'Roadmap operativa a 30, 60 e 90 giorni con priorità, canali, formati e budget. Ogni mese ha una soglia di uscita e indicatori di passaggio.',
+      icon: 'roadmap',
     },
     {
-      title: 'Esecuzione & Ottimizzazione',
-      description: 'Implementiamo la strategia con cicli di test continui. A/B testing, analisi dati e ottimizzazione costante per massimizzare i risultati.',
-      icon: '🚀',
+      title: 'Esecuzione e test',
+      description: 'Produzione di asset, campagne e automazioni in cicli brevi. A/B test settimanali su copy, creative e targeting per convergere sui formati che convertono.',
+      icon: 'execution',
     },
     {
-      title: 'Reporting & Crescita',
-      description: 'Dashboard real-time con tutti i KPI. Report settimanali e call strategiche per scalare insieme i risultati ottenuti.',
-      icon: '📈',
+      title: 'Reportistica e crescita',
+      description: 'Dashboard live con i KPI concordati, review mensili e call strategiche. Quando un canale è saturo, ridistribuiamo il budget verso il successivo.',
+      icon: 'growth',
     },
   ];
   
