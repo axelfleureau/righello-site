@@ -122,6 +122,7 @@
     }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     if (prefersReducedMotion) return;
 
     const gsap = (await import('gsap')).default;
@@ -243,7 +244,7 @@
             start: 'top top',
             end: 'bottom bottom',
             scrub: 0.5,
-            snap: {
+            snap: isSafari ? false : {
               snapTo: 'labels',
               duration: { min: 0.2, max: 0.5 },
               delay: 0.15,

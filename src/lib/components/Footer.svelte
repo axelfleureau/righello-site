@@ -40,7 +40,7 @@
   }
 </script>
 
-<footer class="footer" role="contentinfo">
+<footer class="footer">
   <div class="footer-top-border"></div>
 
   <div class="footer-cta section-container">
@@ -145,9 +145,9 @@
 
   <div class="footer-giant-logo" aria-hidden="true">
     {#if $theme === 'dark'}
-      <img src="/logo-white.png" alt="" class="footer-giant-logo-img" loading="lazy" decoding="async" />
+      <img src="/logo-white.png" alt="" class="footer-giant-logo-img" loading="eager" decoding="async" />
     {:else}
-      <img src="/logo-full.png" alt="" class="footer-giant-logo-img" loading="lazy" decoding="async" />
+      <img src="/logo-full.png" alt="" class="footer-giant-logo-img" loading="eager" decoding="async" />
     {/if}
   </div>
 </footer>
@@ -158,7 +158,7 @@
     z-index: 1;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    overflow-x: clip;
+    overflow-x: hidden;
     overflow-y: visible;
   }
 
@@ -437,7 +437,7 @@
     margin-right: auto;
     padding-left: var(--container-padding, 1rem);
     padding-right: var(--container-padding, 1rem);
-    opacity: 0.04;
+    opacity: 0.055;
   }
 
   .footer-giant-logo-img {
@@ -455,7 +455,7 @@
   }
 
   :global([data-theme="light"]) .footer-giant-logo {
-    opacity: 0.06;
+    opacity: 0.075;
   }
 
   /* ── Mobile: compact, premium layout ── */
