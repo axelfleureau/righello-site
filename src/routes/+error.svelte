@@ -4,7 +4,9 @@
 </script>
 
 <svelte:head>
-  <title>Errore {$page.status} - Righello</title>
+  <title>{$page.status === 404 ? 'Pagina non trovata' : 'Pagina temporaneamente non disponibile'} | Righello</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="googlebot" content="noindex, nofollow" />
 </svelte:head>
 
 <section class="min-h-[60vh] flex items-center justify-center py-20">

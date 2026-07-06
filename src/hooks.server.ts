@@ -20,6 +20,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   const response = await resolve(event);
 
+  if (response.status >= 400) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  }
+
   const pathname = event.url.pathname;
 
   const isStaticAsset =
