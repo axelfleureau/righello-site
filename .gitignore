@@ -11,6 +11,7 @@ vite.config.ts.timestamp-*
 .thumbnail-cache
 
 .vercel
+.claude
 
 static/sitemap.xml
 
