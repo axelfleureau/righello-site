@@ -180,12 +180,6 @@ function emailShell(options: ShellOptions): string {
             <td style="background:${BRAND_BLACK};border-radius:28px 28px 0 0;padding:0;" class="rh-pad">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
                 <tr>
-                  <td width="72%" style="height:5px;background:${BRAND_PINK};border-radius:28px 0 0 0;font-size:0;line-height:0;">&nbsp;</td>
-                  <td width="28%" style="height:5px;background:${BRAND_CYAN};border-radius:0 28px 0 0;font-size:0;line-height:0;">&nbsp;</td>
-                </tr>
-              </table>
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-                <tr>
                   <td style="padding:30px 34px 26px 34px;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
