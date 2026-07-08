@@ -99,14 +99,21 @@ function detailRow(label: string, value: string, accent = false): string {
     </tr>`;
 }
 
-function metricPill(label: string, value: string, color = BRAND_PINK): string {
+function summaryCell(label: string, value: string, color = BRAND_PINK): string {
   return `
-    <td class="rh-two-col" width="33.33%" valign="top" style="padding:0 6px 12px 6px;">
-      <div style="min-height:72px;background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:18px;padding:16px;">
-        <div style="font-size:10px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">${escHtml(label)}</div>
-        <div style="margin-top:7px;font-size:16px;line-height:1.25;color:${color};font-weight:800;">${escHtml(value)}</div>
-      </div>
+    <td class="rh-summary-col" width="33.33%" valign="top" style="padding:15px 18px;">
+      <div style="font-size:10px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">${escHtml(label)}</div>
+      <div style="margin-top:6px;font-size:15px;line-height:1.25;color:${color};font-weight:800;">${escHtml(value)}</div>
     </td>`;
+}
+
+function summaryStrip(items: Array<{ label: string; value: string; color?: string }>): string {
+  return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px 0;background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:18px;">
+      <tr>
+        ${items.map((item) => summaryCell(item.label, item.value, item.color)).join('')}
+      </tr>
+    </table>`;
 }
 
 function ctaButton(href: string, label: string, variant: 'primary' | 'dark' = 'primary'): string {
@@ -159,6 +166,7 @@ function emailShell(options: ShellOptions): string {
       .rh-pad { padding-left: 22px !important; padding-right: 22px !important; }
       .rh-title { font-size: 29px !important; line-height: 1.08 !important; }
       .rh-two-col { display: block !important; width: 100% !important; }
+      .rh-summary-col { display: block !important; width: auto !important; padding: 13px 16px !important; }
     }
   </style>
 </head>
@@ -261,13 +269,11 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
         </td>
       </tr>
     </table>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 -6px 28px -6px;">
-      <tr>
-        ${metricPill('Tempo', '72 ore lavorative')}
-        ${metricPill('Metodo', 'prima analisi', BRAND_CYAN)}
-        ${metricPill('Output', 'prossimo passo')}
-      </tr>
-    </table>
+    ${summaryStrip([
+      { label: 'Tempo', value: '72 ore lavorative' },
+      { label: 'Metodo', value: 'prima analisi', color: BRAND_CYAN },
+      { label: 'Output', value: 'prossimo passo' },
+    ])}
     ${ctaButton(`${SITE_URL}/progetti`, 'Guarda i progetti Righello')}
   `;
 
@@ -338,13 +344,11 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
     : '';
 
   const body = `
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 -6px 18px -6px;">
-      <tr>
-        ${metricPill('Priorità', priority.label, priority.color)}
-        ${metricPill('Risposta', actionWindow, BRAND_PINK)}
-        ${metricPill('Fonte', 'form sito', BRAND_CYAN)}
-      </tr>
-    </table>
+    ${summaryStrip([
+      { label: 'Priorità', value: priority.label, color: priority.color },
+      { label: 'Risposta', value: actionWindow },
+      { label: 'Fonte', value: 'form sito', color: BRAND_CYAN },
+    ])}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px 0;">
       <tr>
         <td style="padding:18px 20px;border-radius:20px;background:${priority.bg};border:1px solid rgba(0,0,0,0.04);">
