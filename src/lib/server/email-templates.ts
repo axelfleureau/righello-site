@@ -9,6 +9,8 @@ const BRAND_CYAN = '#06B6D4';
 const TEXT_MAIN = '#202020';
 const PANEL_BG = '#F6F6F6';
 const PANEL_BORDER = '#E9E9E9';
+const SOFT_PINK = '#FFF3F7';
+const SOFT_CYAN = '#EEFDFE';
 const PRIVACY_URL = 'https://www.iubenda.com/privacy-policy/47301653';
 
 export interface ContactForm {
@@ -99,6 +101,10 @@ function detailRow(label: string, value: string, accent = false): string {
     </tr>`;
 }
 
+function brandBadge(label: string, color = BRAND_PINK): string {
+  return `<span style="display:inline-block;border:1px solid ${color};border-radius:999px;padding:6px 10px;font-size:10px;line-height:1;color:${color};text-transform:uppercase;letter-spacing:0.12em;font-weight:800;">${escHtml(label)}</span>`;
+}
+
 function summaryCell(label: string, value: string, color = BRAND_PINK): string {
   return `
     <td class="rh-summary-col" width="33.33%" valign="top" style="padding:15px 18px;">
@@ -109,11 +115,24 @@ function summaryCell(label: string, value: string, color = BRAND_PINK): string {
 
 function summaryStrip(items: Array<{ label: string; value: string; color?: string }>): string {
   return `
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px 0;background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:18px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px 0;background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,0.04);">
       <tr>
         ${items.map((item) => summaryCell(item.label, item.value, item.color)).join('')}
       </tr>
     </table>`;
+}
+
+function processStep(index: string, title: string, text: string, color = BRAND_PINK): string {
+  return `
+    <tr>
+      <td width="40" valign="top" style="padding:0 14px 18px 0;">
+        <div style="width:34px;height:34px;border-radius:999px;background:${color};color:#FFFFFF;text-align:center;font-size:13px;line-height:34px;font-weight:800;">${escHtml(index)}</div>
+      </td>
+      <td valign="top" style="padding:0 0 18px 0;">
+        <div style="font-size:16px;line-height:1.25;color:#FFFFFF;font-weight:800;">${escHtml(title)}</div>
+        <div style="margin-top:5px;font-size:14px;line-height:1.55;color:#CFCFCF;">${escHtml(text)}</div>
+      </td>
+    </tr>`;
 }
 
 function ctaButton(href: string, label: string, variant: 'primary' | 'dark' = 'primary'): string {
@@ -167,6 +186,7 @@ function emailShell(options: ShellOptions): string {
       .rh-title { font-size: 29px !important; line-height: 1.08 !important; }
       .rh-two-col { display: block !important; width: 100% !important; }
       .rh-summary-col { display: block !important; width: auto !important; padding: 13px 16px !important; }
+      .rh-header-eyebrow { display: none !important; }
     }
   </style>
 </head>
@@ -180,14 +200,14 @@ function emailShell(options: ShellOptions): string {
             <td style="background:${BRAND_BLACK};border-radius:28px 28px 0 0;padding:0;" class="rh-pad">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
                 <tr>
-                  <td style="padding:30px 34px 26px 34px;">
+                  <td style="padding:32px 34px 30px 34px;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td valign="middle">
                           <img src="${LOGO_WHITE_URL}" width="142" alt="Righello" style="display:block;width:142px;height:auto;border:0;outline:none;text-decoration:none;">
                         </td>
-                        <td valign="middle" align="right" style="font-size:11px;line-height:1.2;color:#A9A9A9;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">
-                          ${escHtml(options.eyebrow)}
+                        <td valign="middle" align="right" class="rh-header-eyebrow" style="font-size:11px;line-height:1.2;color:#D8D8D8;text-transform:uppercase;letter-spacing:0.12em;font-weight:800;">
+                          <span style="display:inline-block;border:1px solid rgba(255,255,255,0.18);border-radius:999px;padding:8px 12px;">${escHtml(options.eyebrow)}</span>
                         </td>
                       </tr>
                     </table>
@@ -197,7 +217,8 @@ function emailShell(options: ShellOptions): string {
             </td>
           </tr>
           <tr>
-            <td style="background:#FFFFFF;padding:38px 42px 42px 42px;border-radius:0 0 28px 28px;box-shadow:0 18px 60px rgba(0,0,0,0.08);" class="rh-pad">
+            <td style="background:#FFFFFF;padding:40px 42px 44px 42px;border-radius:0 0 28px 28px;box-shadow:0 18px 60px rgba(0,0,0,0.08);" class="rh-pad">
+              <div style="margin:0 0 18px 0;">${brandBadge('Righello response system')}</div>
               <h1 class="rh-title" style="margin:0 0 14px 0;font-size:34px;line-height:1.05;color:#111111;font-weight:800;letter-spacing:-0.02em;">${escHtml(options.title)}</h1>
               ${intro}
               ${options.body}
@@ -239,7 +260,7 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
 
   const body = `
     ${paragraphsFromText(enhancedBody, fallbackBody)}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:26px 0 26px 0;background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 26px 0;background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
       <tr>
         <td style="padding:24px 24px 18px 24px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_PINK};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Riepilogo richiesta</div>
@@ -255,11 +276,15 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
         </td>
       </tr>
     </table>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px 0;background:${BRAND_BLACK};border-radius:22px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px 0;background:${BRAND_BLACK};border-radius:24px;">
       <tr>
-        <td style="padding:22px 24px;">
-          <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Cosa succede ora</div>
-          <p style="margin:0;font-size:16px;line-height:1.55;color:#F4F4F4;">Una persona del team legge il messaggio, capisce se siamo il partner giusto e ti risponde con un prossimo passo chiaro. Se serve, partiamo da una call breve e molto concreta.</p>
+        <td style="padding:26px 26px 8px 26px;">
+          <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:18px;">Cosa succede ora</div>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            ${processStep('1', 'Lettura umana', 'Leggiamo contesto, obiettivo e vincoli. Niente risposta automatica generica.')}
+            ${processStep('2', 'Prima direzione', 'Se c’è fit, ti proponiamo un prossimo passo chiaro e sostenibile.', BRAND_CYAN)}
+            ${processStep('3', 'Call concreta', 'Quando serve, partiamo da una call breve per capire priorità e impatto.', BRAND_PINK)}
+          </table>
         </td>
       </tr>
     </table>
@@ -268,6 +293,14 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
       { label: 'Metodo', value: 'prima analisi', color: BRAND_CYAN },
       { label: 'Output', value: 'prossimo passo' },
     ])}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px 0;background:${SOFT_CYAN};border:1px solid #D8F6F8;border-radius:20px;">
+      <tr>
+        <td style="padding:20px 22px;">
+          <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:8px;">Metodo Righello</div>
+          <p style="margin:0;font-size:15px;line-height:1.65;color:${TEXT_MAIN};">Prima capiamo il processo. Poi scegliamo canali, sito, automazioni e strumenti. L’obiettivo è costruire qualcosa che lavori davvero, non solo qualcosa che “sembra bello”.</p>
+        </td>
+      </tr>
+    </table>
     ${ctaButton(`${SITE_URL}/progetti`, 'Guarda i progetti Righello')}
   `;
 
@@ -338,6 +371,15 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
     : '';
 
   const body = `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px 0;background:${BRAND_BLACK};border-radius:24px;">
+      <tr>
+        <td style="padding:24px 26px;">
+          <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Lead cockpit</div>
+          <div style="font-size:24px;line-height:1.05;color:#FFFFFF;font-weight:800;">${escHtml(priority.label)}</div>
+          <p style="margin:10px 0 0 0;font-size:15px;line-height:1.6;color:#D8D8D8;">Rispondere ${escHtml(actionWindow)} con una domanda mirata, una proposta di call breve e un primo criterio di valutazione.</p>
+        </td>
+      </tr>
+    </table>
     ${summaryStrip([
       { label: 'Priorità', value: priority.label, color: priority.color },
       { label: 'Risposta', value: actionWindow },
@@ -367,7 +409,7 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
       </tr>
     </table>
     ${analysisHtml}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0 0;background:#FFF5F8;border:1px solid #F5D6E2;border-radius:20px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0 0;background:${SOFT_PINK};border:1px solid #F5D6E2;border-radius:20px;">
       <tr>
         <td style="padding:20px 22px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_PINK};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Primo messaggio utile</div>

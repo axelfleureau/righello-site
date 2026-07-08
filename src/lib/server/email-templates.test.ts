@@ -22,6 +22,9 @@ describe('Righello email templates', () => {
     expect(combined).toContain('#06B6D4');
     expect(clientHtml).toContain('Riepilogo richiesta');
     expect(clientHtml).toContain('Cosa succede ora');
+    expect(clientHtml).toContain('Metodo Righello');
+    expect(combined).toContain('Righello response system');
+    expect(teamHtml).toContain('Lead cockpit');
     expect(teamHtml).toContain('Azione consigliata');
     expect(teamHtml).toContain('Primo messaggio utile');
   });
