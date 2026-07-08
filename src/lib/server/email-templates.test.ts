@@ -16,13 +16,14 @@ describe('Righello email templates', () => {
     const teamHtml = buildTeamEmailHtml(form, buildPreviewLeadAnalysis(), priority);
     const combined = `${clientHtml}\n${teamHtml}`;
 
-    expect(combined).toContain('https://www.wearerighello.com/logo-full.png');
     expect(combined).toContain('https://www.wearerighello.com/logo-white.png');
     expect(combined).toContain('https://www.wearerighello.com/fonts/DegularDisplay-Regular_1768475446675.woff2');
     expect(combined).toContain('#D6487E');
     expect(combined).toContain('#06B6D4');
     expect(clientHtml).toContain('Riepilogo richiesta');
-    expect(teamHtml).toContain('Priorità commerciale');
+    expect(clientHtml).toContain('Cosa succede ora');
+    expect(teamHtml).toContain('Azione consigliata');
+    expect(teamHtml).toContain('Primo messaggio utile');
   });
 
   it('escapes user supplied contact data', () => {

@@ -1,12 +1,14 @@
 const SITE_URL = 'https://www.wearerighello.com';
 const LOGO_WHITE_URL = `${SITE_URL}/logo-white.png`;
-const LOGO_FULL_URL = `${SITE_URL}/logo-full.png`;
 const FONT_REGULAR_URL = `${SITE_URL}/fonts/DegularDisplay-Regular_1768475446675.woff2`;
 const FONT_SEMIBOLD_URL = `${SITE_URL}/fonts/DegularDisplay-Semibold_1768475446675.woff2`;
 const FONT_BOLD_URL = `${SITE_URL}/fonts/DegularDisplay-Bold_1768475446675.woff2`;
 const BRAND_BLACK = '#050505';
 const BRAND_PINK = '#D6487E';
 const BRAND_CYAN = '#06B6D4';
+const TEXT_MAIN = '#202020';
+const PANEL_BG = '#F6F6F6';
+const PANEL_BORDER = '#E9E9E9';
 const PRIVACY_URL = 'https://www.iubenda.com/privacy-policy/47301653';
 
 export interface ContactForm {
@@ -83,7 +85,7 @@ function paragraphsFromText(text: string, fallback: string): string {
     .split(/\n+/)
     .map((p) => p.trim())
     .filter(Boolean)
-    .map((p) => `<p style="margin:0 0 16px 0;font-size:16px;line-height:1.65;color:#2B2B2B;">${escHtml(p)}</p>`)
+    .map((p) => `<p style="margin:0 0 16px 0;font-size:17px;line-height:1.72;color:${TEXT_MAIN};font-weight:400;">${escHtml(p)}</p>`)
     .join('');
 }
 
@@ -95,6 +97,16 @@ function detailRow(label: string, value: string, accent = false): string {
         <div style="margin-top:6px;font-size:15px;line-height:1.5;color:${accent ? BRAND_PINK : '#202020'};font-weight:${accent ? '700' : '500'};">${escHtml(value)}</div>
       </td>
     </tr>`;
+}
+
+function metricPill(label: string, value: string, color = BRAND_PINK): string {
+  return `
+    <td class="rh-two-col" width="33.33%" valign="top" style="padding:0 6px 12px 6px;">
+      <div style="min-height:72px;background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:18px;padding:16px;">
+        <div style="font-size:10px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">${escHtml(label)}</div>
+        <div style="margin-top:7px;font-size:16px;line-height:1.25;color:${color};font-weight:800;">${escHtml(value)}</div>
+      </div>
+    </td>`;
 }
 
 function ctaButton(href: string, label: string, variant: 'primary' | 'dark' = 'primary'): string {
@@ -145,7 +157,7 @@ function emailShell(options: ShellOptions): string {
     @media only screen and (max-width: 640px) {
       .rh-shell { width: 100% !important; }
       .rh-pad { padding-left: 22px !important; padding-right: 22px !important; }
-      .rh-title { font-size: 28px !important; line-height: 1.08 !important; }
+      .rh-title { font-size: 29px !important; line-height: 1.08 !important; }
       .rh-two-col { display: block !important; width: 100% !important; }
     }
   </style>
@@ -155,21 +167,28 @@ function emailShell(options: ShellOptions): string {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;background:#ECECEC;">
     <tr>
       <td align="center" style="padding:34px 14px;">
-        <table role="presentation" width="640" cellpadding="0" cellspacing="0" class="rh-shell" style="width:640px;max-width:640px;">
+        <table role="presentation" width="640" cellpadding="0" cellspacing="0" class="rh-shell" style="width:640px;max-width:640px;border-collapse:separate;border-spacing:0;">
           <tr>
-            <td style="padding:0 0 12px 0;text-align:center;">
-              <img src="${LOGO_FULL_URL}" width="134" alt="Righello" style="display:inline-block;width:134px;height:auto;border:0;outline:none;text-decoration:none;">
-            </td>
-          </tr>
-          <tr>
-            <td style="background:${BRAND_BLACK};border-radius:28px 28px 0 0;padding:30px 34px 26px 34px;" class="rh-pad">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <td style="background:${BRAND_BLACK};border-radius:28px 28px 0 0;padding:0;" class="rh-pad">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
                 <tr>
-                  <td valign="middle">
-                    <img src="${LOGO_WHITE_URL}" width="142" alt="Righello" style="display:block;width:142px;height:auto;border:0;outline:none;text-decoration:none;">
-                  </td>
-                  <td valign="middle" align="right" style="font-size:11px;line-height:1.2;color:#A9A9A9;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">
-                    ${escHtml(options.eyebrow)}
+                  <td width="72%" style="height:5px;background:${BRAND_PINK};border-radius:28px 0 0 0;font-size:0;line-height:0;">&nbsp;</td>
+                  <td width="28%" style="height:5px;background:${BRAND_CYAN};border-radius:0 28px 0 0;font-size:0;line-height:0;">&nbsp;</td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                <tr>
+                  <td style="padding:30px 34px 26px 34px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td valign="middle">
+                          <img src="${LOGO_WHITE_URL}" width="142" alt="Righello" style="display:block;width:142px;height:auto;border:0;outline:none;text-decoration:none;">
+                        </td>
+                        <td valign="middle" align="right" style="font-size:11px;line-height:1.2;color:#A9A9A9;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">
+                          ${escHtml(options.eyebrow)}
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
@@ -206,8 +225,8 @@ function emailShell(options: ShellOptions): string {
 export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): string {
   const fallbackBody = [
     `Ciao ${form.name}, grazie per averci scritto.`,
-    `Abbiamo ricevuto la tua richiesta${form.service ? ` su ${form.service}` : ''} e la stiamo leggendo con attenzione. Ti risponderemo entro 72 ore lavorative con un riscontro concreto, non con una risposta automatica.`,
-    'Nel frattempo iniziamo a mettere a fuoco il contesto, gli obiettivi e le prossime domande utili per capire come aiutarti nel modo giusto.'
+    `Abbiamo ricevuto la tua richiesta${form.service ? ` su ${form.service}` : ''} e la stiamo leggendo con attenzione. Ti risponderemo entro 72 ore lavorative con un riscontro concreto, non con una risposta automatica travestita da email.`,
+    'Nel frattempo mettiamo a fuoco contesto, obiettivi e prime domande utili per capire come aiutarti nel modo giusto.'
   ].join('\n\n');
 
   const summaryRows = [
@@ -218,7 +237,7 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
 
   const body = `
     ${paragraphsFromText(enhancedBody, fallbackBody)}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:26px 0 28px 0;background:#F7F7F7;border-radius:22px;border:1px solid #EEEEEE;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:26px 0 26px 0;background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
       <tr>
         <td style="padding:24px 24px 18px 24px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_PINK};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Riepilogo richiesta</div>
@@ -234,30 +253,29 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
         </td>
       </tr>
     </table>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px 0;background:${BRAND_BLACK};border-radius:22px;">
       <tr>
-        <td class="rh-two-col" width="50%" valign="top" style="padding:0 8px 12px 0;">
-          <div style="background:#FFF5F8;border:1px solid #F5D6E2;border-radius:18px;padding:18px;">
-            <div style="font-size:13px;font-weight:800;color:${BRAND_PINK};margin-bottom:8px;">1. Analisi</div>
-            <div style="font-size:14px;line-height:1.5;color:#3A3A3A;">Leggiamo il contesto e capiamo dove Righello può generare più valore.</div>
-          </div>
+        <td style="padding:22px 24px;">
+          <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Cosa succede ora</div>
+          <p style="margin:0;font-size:16px;line-height:1.55;color:#F4F4F4;">Una persona del team legge il messaggio, capisce se siamo il partner giusto e ti risponde con un prossimo passo chiaro. Se serve, partiamo da una call breve e molto concreta.</p>
         </td>
-        <td class="rh-two-col" width="50%" valign="top" style="padding:0 0 12px 8px;">
-          <div style="background:#F1FCFC;border:1px solid #D7F2F2;border-radius:18px;padding:18px;">
-            <div style="font-size:13px;font-weight:800;color:${BRAND_CYAN};margin-bottom:8px;">2. Risposta</div>
-            <div style="font-size:14px;line-height:1.5;color:#3A3A3A;">Ti ricontattiamo entro 72 ore lavorative con prossimi passi chiari.</div>
-          </div>
-        </td>
+      </tr>
+    </table>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 -6px 28px -6px;">
+      <tr>
+        ${metricPill('Tempo', '72 ore lavorative')}
+        ${metricPill('Metodo', 'prima analisi', BRAND_CYAN)}
+        ${metricPill('Output', 'prossimo passo')}
       </tr>
     </table>
     ${ctaButton(`${SITE_URL}/progetti`, 'Guarda i progetti Righello')}
   `;
 
   return emailShell({
-    preheader: 'Abbiamo ricevuto la tua richiesta. Il team Righello ti rispondera entro 72 ore lavorative.',
+    preheader: 'Abbiamo ricevuto la tua richiesta. Il team Righello ti risponderà entro 72 ore lavorative.',
     eyebrow: 'Richiesta ricevuta',
-    title: 'Ci siamo, abbiamo ricevuto tutto.',
-    intro: 'Grazie per averci contattato. Ora trasformiamo il tuo messaggio in una conversazione utile.',
+    title: 'Richiesta ricevuta. Ora la leggiamo sul serio.',
+    intro: 'Grazie per averci contattato. Il punto non è rispondere in fretta: è rispondere con criterio.',
     body,
   });
 }
@@ -291,6 +309,7 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
   });
 
   const replyHref = `mailto:${encodeURIComponent(form.email)}?subject=${encodeURIComponent(`Re: richiesta a Righello - ${form.name}`)}`;
+  const actionWindow = priority.label.toLowerCase().includes('alta') ? 'entro 24 ore' : 'entro 72 ore';
   const rows = [
     detailRow('Ricevuto', now),
     detailRow('Nome', form.name),
@@ -305,7 +324,7 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
     ? `
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0 0;background:#050505;border-radius:22px;">
         <tr>
-      <td style="padding:24px;">
+          <td style="padding:24px;">
             <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:12px;">Analisi operativa</div>
             ${leadAnalysis
               .split(/\n+/)
@@ -319,15 +338,22 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
     : '';
 
   const body = `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 -6px 18px -6px;">
+      <tr>
+        ${metricPill('Priorità', priority.label, priority.color)}
+        ${metricPill('Risposta', actionWindow, BRAND_PINK)}
+        ${metricPill('Fonte', 'form sito', BRAND_CYAN)}
+      </tr>
+    </table>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px 0;">
       <tr>
-        <td style="padding:16px 18px;border-radius:18px;background:${priority.bg};border:1px solid rgba(0,0,0,0.04);">
-          <div style="font-size:11px;line-height:1.2;color:${priority.color};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">Priorità commerciale</div>
-          <div style="margin-top:5px;font-size:22px;line-height:1.2;color:${priority.color};font-weight:800;">${escHtml(priority.label)}</div>
+        <td style="padding:18px 20px;border-radius:20px;background:${priority.bg};border:1px solid rgba(0,0,0,0.04);">
+          <div style="font-size:11px;line-height:1.2;color:${priority.color};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">Azione consigliata</div>
+          <div style="margin-top:7px;font-size:18px;line-height:1.35;color:${priority.color};font-weight:800;">Rispondere ${escHtml(actionWindow)} con una domanda mirata e una proposta di call breve.</div>
         </td>
       </tr>
     </table>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F7F7F7;border-radius:22px;border:1px solid #EEEEEE;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
       <tr>
         <td style="padding:10px 24px 24px 24px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
@@ -343,6 +369,14 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
       </tr>
     </table>
     ${analysisHtml}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0 0;background:#FFF5F8;border:1px solid #F5D6E2;border-radius:20px;">
+      <tr>
+        <td style="padding:20px 22px;">
+          <div style="font-size:12px;line-height:1.2;color:${BRAND_PINK};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Primo messaggio utile</div>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:${TEXT_MAIN};">Ciao ${escHtml(form.name)}, grazie per il messaggio. Abbiamo letto il contesto e ti proponiamo una call breve per capire obiettivi, priorità e prossimi passi.</p>
+        </td>
+      </tr>
+    </table>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:30px 0 0 0;">
       <tr>
         <td align="center" style="padding-bottom:12px;">
@@ -360,8 +394,8 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
   return emailShell({
     preheader: `Nuovo contatto da ${form.name}${form.company ? `, ${form.company}` : ''}. ${priority.label}.`,
     eyebrow: 'Nuovo lead',
-    title: 'Nuova richiesta dal sito.',
-    intro: 'Un contatto ha compilato il form. Qui trovi dati, priorità e primo orientamento commerciale.',
+    title: 'Nuovo lead dal sito.',
+    intro: 'Dati essenziali, priorità e prima azione consigliata per rispondere senza perdere contesto.',
     body,
     footerNote: 'Notifica interna generata dal sito Righello.',
   });
