@@ -87,35 +87,35 @@ function paragraphsFromText(text: string, fallback: string): string {
     .split(/\n+/)
     .map((p) => p.trim())
     .filter(Boolean)
-    .map((p) => `<p style="margin:0 0 16px 0;font-size:17px;line-height:1.72;color:${TEXT_MAIN};font-weight:400;">${escHtml(p)}</p>`)
+    .map((p) => `<p class="rh-copy" style="margin:0 0 16px 0;font-size:17px;line-height:1.72;color:${TEXT_MAIN};font-weight:400;">${escHtml(p)}</p>`)
     .join('');
 }
 
 function detailRow(label: string, value: string, accent = false): string {
   return `
     <tr>
-      <td style="padding:14px 0;border-bottom:1px solid #EEEEEE;">
-        <div style="font-size:11px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">${escHtml(label)}</div>
-        <div style="margin-top:6px;font-size:15px;line-height:1.5;color:${accent ? BRAND_PINK : '#202020'};font-weight:${accent ? '700' : '500'};">${escHtml(value)}</div>
+      <td class="rh-detail-row" style="padding:14px 0;border-bottom:1px solid #EEEEEE;">
+        <div class="rh-muted" style="font-size:11px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">${escHtml(label)}</div>
+        <div class="rh-detail-value" style="margin-top:6px;font-size:15px;line-height:1.5;color:${accent ? BRAND_PINK : '#202020'};font-weight:${accent ? '700' : '500'};">${escHtml(value)}</div>
       </td>
     </tr>`;
 }
 
 function brandBadge(label: string, color = BRAND_PINK): string {
-  return `<span style="display:inline-block;border:1px solid ${color};border-radius:999px;padding:6px 10px;font-size:10px;line-height:1;color:${color};text-transform:uppercase;letter-spacing:0.12em;font-weight:800;">${escHtml(label)}</span>`;
+  return `<span class="rh-badge" style="display:inline-block;border:1px solid ${color};border-radius:999px;padding:6px 10px;font-size:10px;line-height:1;color:${color};text-transform:uppercase;letter-spacing:0.12em;font-weight:800;">${escHtml(label)}</span>`;
 }
 
 function summaryCell(label: string, value: string, color = BRAND_PINK): string {
   return `
     <td class="rh-summary-col" width="33.33%" valign="top" style="padding:15px 18px;">
-      <div style="font-size:10px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">${escHtml(label)}</div>
+      <div class="rh-muted" style="font-size:10px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">${escHtml(label)}</div>
       <div style="margin-top:6px;font-size:15px;line-height:1.25;color:${color};font-weight:800;">${escHtml(value)}</div>
     </td>`;
 }
 
 function summaryStrip(items: Array<{ label: string; value: string; color?: string }>): string {
   return `
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px 0;background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,0.04);">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-summary" style="margin:0 0 24px 0;background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,0.04);">
       <tr>
         ${items.map((item) => summaryCell(item.label, item.value, item.color)).join('')}
       </tr>
@@ -130,7 +130,7 @@ function processStep(index: string, title: string, text: string, color = BRAND_P
       </td>
       <td valign="top" style="padding:0 0 18px 0;">
         <div style="font-size:16px;line-height:1.25;color:#FFFFFF;font-weight:800;">${escHtml(title)}</div>
-        <div style="margin-top:5px;font-size:14px;line-height:1.55;color:#CFCFCF;">${escHtml(text)}</div>
+        <div class="rh-dark-muted" style="margin-top:5px;font-size:14px;line-height:1.55;color:#CFCFCF;">${escHtml(text)}</div>
       </td>
     </tr>`;
 }
@@ -149,7 +149,7 @@ function ctaButton(href: string, label: string, variant: 'primary' | 'dark' = 'p
 
 function emailShell(options: ShellOptions): string {
   const intro = options.intro
-    ? `<p style="margin:0 0 22px 0;font-size:17px;line-height:1.55;color:#4A4A4A;">${escHtml(options.intro)}</p>`
+    ? `<p class="rh-intro" style="margin:0 0 22px 0;font-size:17px;line-height:1.55;color:#4A4A4A;">${escHtml(options.intro)}</p>`
     : '';
 
   return `<!DOCTYPE html>
@@ -158,8 +158,8 @@ function emailShell(options: ShellOptions): string {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="x-apple-disable-message-reformatting">
-  <meta name="color-scheme" content="light">
-  <meta name="supported-color-schemes" content="light">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
   <title>${escHtml(options.title)}</title>
   <style>
     @font-face {
@@ -180,6 +180,10 @@ function emailShell(options: ShellOptions): string {
       font-weight: 700;
       font-style: normal;
     }
+    :root {
+      color-scheme: light dark;
+      supported-color-schemes: light dark;
+    }
     @media only screen and (max-width: 640px) {
       .rh-shell { width: 100% !important; }
       .rh-pad { padding-left: 22px !important; padding-right: 22px !important; }
@@ -188,11 +192,39 @@ function emailShell(options: ShellOptions): string {
       .rh-summary-col { display: block !important; width: auto !important; padding: 13px 16px !important; }
       .rh-header-eyebrow { display: none !important; }
     }
+    @media (prefers-color-scheme: dark) {
+      .rh-body, .rh-bg { background: #080808 !important; }
+      .rh-card { background: #111111 !important; color: #F4F4F4 !important; box-shadow: none !important; }
+      .rh-title, .rh-copy, .rh-detail-value, .rh-soft-copy { color: #F4F4F4 !important; }
+      .rh-intro, .rh-muted, .rh-footer-note, .rh-footer-text { color: #BDBDBD !important; }
+      .rh-panel, .rh-summary { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
+      .rh-detail-row { border-bottom-color: #343434 !important; }
+      .rh-message-box { background: #101010 !important; border-color: #2B2B2B !important; color: #EDEDED !important; }
+      .rh-soft-cyan { background: #07191B !important; border-color: #0D3D42 !important; }
+      .rh-soft-pink, .rh-priority-box { background: #241018 !important; border-color: #4A1D31 !important; }
+      .rh-priority-title, .rh-priority-copy { color: #FF8A7A !important; }
+      .rh-dark-block { background: #050505 !important; }
+      .rh-footer-link { color: #F06A9E !important; }
+      .rh-privacy-link { color: #BDBDBD !important; }
+    }
+    [data-ogsc] .rh-body, [data-ogsc] .rh-bg { background: #080808 !important; }
+    [data-ogsc] .rh-card { background: #111111 !important; color: #F4F4F4 !important; box-shadow: none !important; }
+    [data-ogsc] .rh-title, [data-ogsc] .rh-copy, [data-ogsc] .rh-detail-value, [data-ogsc] .rh-soft-copy { color: #F4F4F4 !important; }
+    [data-ogsc] .rh-intro, [data-ogsc] .rh-muted, [data-ogsc] .rh-footer-note, [data-ogsc] .rh-footer-text { color: #BDBDBD !important; }
+    [data-ogsc] .rh-panel, [data-ogsc] .rh-summary { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
+    [data-ogsc] .rh-detail-row { border-bottom-color: #343434 !important; }
+    [data-ogsc] .rh-message-box { background: #101010 !important; border-color: #2B2B2B !important; color: #EDEDED !important; }
+    [data-ogsc] .rh-soft-cyan { background: #07191B !important; border-color: #0D3D42 !important; }
+    [data-ogsc] .rh-soft-pink, [data-ogsc] .rh-priority-box { background: #241018 !important; border-color: #4A1D31 !important; }
+    [data-ogsc] .rh-priority-title, [data-ogsc] .rh-priority-copy { color: #FF8A7A !important; }
+    [data-ogsc] .rh-dark-block { background: #050505 !important; }
+    [data-ogsc] .rh-footer-link { color: #F06A9E !important; }
+    [data-ogsc] .rh-privacy-link { color: #BDBDBD !important; }
   </style>
 </head>
-<body style="margin:0;padding:0;background:#ECECEC;font-family:'Degular Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#202020;">
+<body class="rh-body" style="margin:0;padding:0;background:#ECECEC;font-family:'Degular Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#202020;">
   <span style="display:none!important;font-size:1px;color:#ECECEC;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">${escHtml(options.preheader)}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</span>
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;background:#ECECEC;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-bg" style="width:100%;background:#ECECEC;">
     <tr>
       <td align="center" style="padding:34px 14px;">
         <table role="presentation" width="640" cellpadding="0" cellspacing="0" class="rh-shell" style="width:640px;max-width:640px;border-collapse:separate;border-spacing:0;">
@@ -217,7 +249,7 @@ function emailShell(options: ShellOptions): string {
             </td>
           </tr>
           <tr>
-            <td style="background:#FFFFFF;padding:40px 42px 44px 42px;border-radius:0 0 28px 28px;box-shadow:0 18px 60px rgba(0,0,0,0.08);" class="rh-pad">
+            <td style="background:#FFFFFF;padding:40px 42px 44px 42px;border-radius:0 0 28px 28px;box-shadow:0 18px 60px rgba(0,0,0,0.08);" class="rh-pad rh-card">
               <div style="margin:0 0 18px 0;">${brandBadge('Righello response system')}</div>
               <h1 class="rh-title" style="margin:0 0 14px 0;font-size:34px;line-height:1.05;color:#111111;font-weight:800;letter-spacing:-0.02em;">${escHtml(options.title)}</h1>
               ${intro}
@@ -226,14 +258,14 @@ function emailShell(options: ShellOptions): string {
           </tr>
           <tr>
             <td style="padding:22px 14px 0 14px;text-align:center;">
-              <p style="margin:0 0 10px 0;font-size:13px;line-height:1.5;color:#696969;">${escHtml(options.footerNote || 'Righello S.r.l. - Marketing, advertising e sviluppo digitale.')}</p>
-              <p style="margin:0;font-size:12px;line-height:1.6;color:#8A8A8A;">
+              <p class="rh-footer-note" style="margin:0 0 10px 0;font-size:13px;line-height:1.5;color:#696969;">${escHtml(options.footerNote || 'Righello S.r.l. - Marketing, advertising e sviluppo digitale.')}</p>
+              <p class="rh-footer-text" style="margin:0;font-size:12px;line-height:1.6;color:#8A8A8A;">
                 Sede legale Pordenone · Base operativa Mestre - Venezia · P.IVA 01979970934<br>
-                <a href="mailto:hello@wearerighello.com" style="color:${BRAND_PINK};text-decoration:none;">hello@wearerighello.com</a>
+                <a href="mailto:hello@wearerighello.com" class="rh-footer-link" style="color:${BRAND_PINK};text-decoration:none;">hello@wearerighello.com</a>
                 <span style="color:#BDBDBD;"> · </span>
-                <a href="${SITE_URL}" style="color:${BRAND_PINK};text-decoration:none;">wearerighello.com</a>
+                <a href="${SITE_URL}" class="rh-footer-link" style="color:${BRAND_PINK};text-decoration:none;">wearerighello.com</a>
                 <span style="color:#BDBDBD;"> · </span>
-                <a href="${PRIVACY_URL}" style="color:#8A8A8A;text-decoration:underline;">Privacy</a>
+                <a href="${PRIVACY_URL}" class="rh-privacy-link" style="color:#8A8A8A;text-decoration:underline;">Privacy</a>
               </p>
             </td>
           </tr>
@@ -260,7 +292,7 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
 
   const body = `
     ${paragraphsFromText(enhancedBody, fallbackBody)}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 26px 0;background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-panel" style="margin:28px 0 26px 0;background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
       <tr>
         <td style="padding:24px 24px 18px 24px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_PINK};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Riepilogo richiesta</div>
@@ -268,15 +300,15 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
             ${summaryRows}
             <tr>
               <td style="padding:14px 0 0 0;">
-                <div style="font-size:11px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Messaggio</div>
-                <p style="margin:8px 0 0 0;font-size:15px;line-height:1.6;color:#303030;">${escHtml(form.message)}</p>
+                <div class="rh-muted" style="font-size:11px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Messaggio</div>
+                <p class="rh-copy" style="margin:8px 0 0 0;font-size:15px;line-height:1.6;color:#303030;">${escHtml(form.message)}</p>
               </td>
             </tr>
           </table>
         </td>
       </tr>
     </table>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px 0;background:${BRAND_BLACK};border-radius:24px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-dark-block" style="margin:0 0 20px 0;background:${BRAND_BLACK};border-radius:24px;">
       <tr>
         <td style="padding:26px 26px 8px 26px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:18px;">Cosa succede ora</div>
@@ -293,11 +325,11 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
       { label: 'Metodo', value: 'prima analisi', color: BRAND_CYAN },
       { label: 'Output', value: 'prossimo passo' },
     ])}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px 0;background:${SOFT_CYAN};border:1px solid #D8F6F8;border-radius:20px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-soft-cyan" style="margin:0 0 28px 0;background:${SOFT_CYAN};border:1px solid #D8F6F8;border-radius:20px;">
       <tr>
         <td style="padding:20px 22px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:8px;">Metodo Righello</div>
-          <p style="margin:0;font-size:15px;line-height:1.65;color:${TEXT_MAIN};">Prima capiamo il processo. Poi scegliamo canali, sito, automazioni e strumenti. L’obiettivo è costruire qualcosa che lavori davvero, non solo qualcosa che “sembra bello”.</p>
+          <p class="rh-soft-copy" style="margin:0;font-size:15px;line-height:1.65;color:${TEXT_MAIN};">Prima capiamo il processo. Poi scegliamo canali, sito, automazioni e strumenti. L’obiettivo è costruire qualcosa che lavori davvero, non solo qualcosa che “sembra bello”.</p>
         </td>
       </tr>
     </table>
@@ -355,7 +387,7 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
 
   const analysisHtml = leadAnalysis.trim()
     ? `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0 0;background:#050505;border-radius:22px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-dark-block" style="margin:28px 0 0 0;background:#050505;border-radius:22px;">
         <tr>
           <td style="padding:24px;">
             <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:12px;">Analisi operativa</div>
@@ -371,7 +403,7 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
     : '';
 
   const body = `
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px 0;background:${BRAND_BLACK};border-radius:24px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-dark-block" style="margin:0 0 24px 0;background:${BRAND_BLACK};border-radius:24px;">
       <tr>
         <td style="padding:24px 26px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Lead cockpit</div>
@@ -387,21 +419,21 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
     ])}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px 0;">
       <tr>
-        <td style="padding:18px 20px;border-radius:20px;background:${priority.bg};border:1px solid rgba(0,0,0,0.04);">
-          <div style="font-size:11px;line-height:1.2;color:${priority.color};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">Azione consigliata</div>
-          <div style="margin-top:7px;font-size:18px;line-height:1.35;color:${priority.color};font-weight:800;">Rispondere ${escHtml(actionWindow)} con una domanda mirata e una proposta di call breve.</div>
+        <td class="rh-priority-box" style="padding:18px 20px;border-radius:20px;background:${priority.bg};border:1px solid rgba(0,0,0,0.04);">
+          <div class="rh-priority-title" style="font-size:11px;line-height:1.2;color:${priority.color};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">Azione consigliata</div>
+          <div class="rh-priority-copy" style="margin-top:7px;font-size:18px;line-height:1.35;color:${priority.color};font-weight:800;">Rispondere ${escHtml(actionWindow)} con una domanda mirata e una proposta di call breve.</div>
         </td>
       </tr>
     </table>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-panel" style="background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
       <tr>
         <td style="padding:10px 24px 24px 24px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             ${rows}
             <tr>
               <td style="padding:16px 0 0 0;">
-                <div style="font-size:11px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Messaggio</div>
-                <p style="margin:8px 0 0 0;font-size:15px;line-height:1.6;color:#303030;background:#FFFFFF;border-radius:16px;padding:18px;border:1px solid #EEEEEE;">${escHtml(form.message)}</p>
+                <div class="rh-muted" style="font-size:11px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Messaggio</div>
+                <p class="rh-message-box" style="margin:8px 0 0 0;font-size:15px;line-height:1.6;color:#303030;background:#FFFFFF;border-radius:16px;padding:18px;border:1px solid #EEEEEE;">${escHtml(form.message)}</p>
               </td>
             </tr>
           </table>
@@ -409,11 +441,11 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
       </tr>
     </table>
     ${analysisHtml}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0 0;background:${SOFT_PINK};border:1px solid #F5D6E2;border-radius:20px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-soft-pink" style="margin:28px 0 0 0;background:${SOFT_PINK};border:1px solid #F5D6E2;border-radius:20px;">
       <tr>
         <td style="padding:20px 22px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_PINK};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Primo messaggio utile</div>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:${TEXT_MAIN};">Ciao ${escHtml(form.name)}, grazie per il messaggio. Abbiamo letto il contesto e ti proponiamo una call breve per capire obiettivi, priorità e prossimi passi.</p>
+          <p class="rh-soft-copy" style="margin:0;font-size:15px;line-height:1.6;color:${TEXT_MAIN};">Ciao ${escHtml(form.name)}, grazie per il messaggio. Abbiamo letto il contesto e ti proponiamo una call breve per capire obiettivi, priorità e prossimi passi.</p>
         </td>
       </tr>
     </table>
