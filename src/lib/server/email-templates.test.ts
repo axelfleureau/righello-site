@@ -17,6 +17,9 @@ describe('Righello email templates', () => {
     const combined = `${clientHtml}\n${teamHtml}`;
 
     expect(combined).toContain('https://www.wearerighello.com/logo-white.png');
+    expect(combined).toContain('https://www.wearerighello.com/email/icon-target.png');
+    expect(combined).toContain('https://www.wearerighello.com/email/icon-clock.png');
+    expect(combined).toContain('https://www.wearerighello.com/email/icon-reply.png');
     expect(combined).toContain('https://www.wearerighello.com/fonts/DegularDisplay-Regular_1768475446675.woff2');
     expect(combined).toContain('#D6487E');
     expect(combined).toContain('#06B6D4');

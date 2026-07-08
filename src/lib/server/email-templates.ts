@@ -1,5 +1,6 @@
 const SITE_URL = 'https://www.wearerighello.com';
 const LOGO_WHITE_URL = `${SITE_URL}/logo-white.png`;
+const EMAIL_ASSET_URL = `${SITE_URL}/email`;
 const FONT_REGULAR_URL = `${SITE_URL}/fonts/DegularDisplay-Regular_1768475446675.woff2`;
 const FONT_SEMIBOLD_URL = `${SITE_URL}/fonts/DegularDisplay-Semibold_1768475446675.woff2`;
 const FONT_BOLD_URL = `${SITE_URL}/fonts/DegularDisplay-Bold_1768475446675.woff2`;
@@ -37,6 +38,8 @@ interface ShellOptions {
   body: string;
   footerNote?: string;
 }
+
+type EmailIconName = 'reply' | 'map' | 'target' | 'clock' | 'spark';
 
 export function escHtml(str: string): string {
   return str
@@ -105,19 +108,48 @@ function brandBadge(label: string, color = BRAND_PINK): string {
   return `<span class="rh-badge" style="display:inline-block;border:1px solid ${color};border-radius:999px;padding:6px 10px;font-size:10px;line-height:1;color:${color};text-transform:uppercase;letter-spacing:0.12em;font-weight:800;">${escHtml(label)}</span>`;
 }
 
-function summaryCell(label: string, value: string, color = BRAND_PINK): string {
+function emailIcon(name: EmailIconName, alt: string, size = 38): string {
+  return `<img src="${EMAIL_ASSET_URL}/icon-${name}.png" width="${size}" height="${size}" alt="${escAttr(alt)}" style="display:block;width:${size}px;height:${size}px;border:0;outline:none;text-decoration:none;">`;
+}
+
+function summaryCell(label: string, value: string, color = BRAND_PINK, icon?: EmailIconName): string {
   return `
     <td class="rh-summary-col" width="33.33%" valign="top" style="padding:15px 18px;">
+      ${icon ? `<div style="margin:0 0 10px 0;">${emailIcon(icon, '', 30)}</div>` : ''}
       <div class="rh-muted" style="font-size:10px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">${escHtml(label)}</div>
       <div style="margin-top:6px;font-size:15px;line-height:1.25;color:${color};font-weight:800;">${escHtml(value)}</div>
     </td>`;
 }
 
-function summaryStrip(items: Array<{ label: string; value: string; color?: string }>): string {
+function summaryStrip(items: Array<{ label: string; value: string; color?: string; icon?: EmailIconName }>): string {
   return `
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-summary" style="margin:0 0 24px 0;background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,0.04);">
       <tr>
-        ${items.map((item) => summaryCell(item.label, item.value, item.color)).join('')}
+        ${items.map((item) => summaryCell(item.label, item.value, item.color, item.icon)).join('')}
+      </tr>
+    </table>`;
+}
+
+function featureCell(icon: EmailIconName, title: string, text: string, color = BRAND_PINK): string {
+  return `
+    <td class="rh-feature-col" width="33.33%" valign="top" style="padding:0 8px 16px 0;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-icon-card" style="background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:20px;box-shadow:0 12px 34px rgba(0,0,0,0.045);">
+        <tr>
+          <td style="padding:18px 16px 17px 16px;">
+            ${emailIcon(icon, '', 40)}
+            <div style="margin-top:14px;font-size:15px;line-height:1.18;color:${color};font-weight:800;">${escHtml(title)}</div>
+            <div class="rh-soft-copy" style="margin-top:7px;font-size:13px;line-height:1.45;color:#484848;">${escHtml(text)}</div>
+          </td>
+        </tr>
+      </table>
+    </td>`;
+}
+
+function featureGrid(items: Array<{ icon: EmailIconName; title: string; text: string; color?: string }>): string {
+  return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:2px 0 24px 0;">
+      <tr>
+        ${items.map((item) => featureCell(item.icon, item.title, item.text, item.color)).join('')}
       </tr>
     </table>`;
 }
@@ -190,6 +222,7 @@ function emailShell(options: ShellOptions): string {
       .rh-title { font-size: 29px !important; line-height: 1.08 !important; }
       .rh-two-col { display: block !important; width: 100% !important; }
       .rh-summary-col { display: block !important; width: auto !important; padding: 13px 16px !important; }
+      .rh-feature-col { display: block !important; width: auto !important; padding: 0 0 12px 0 !important; }
       .rh-header-eyebrow { display: none !important; }
     }
     @media (prefers-color-scheme: dark) {
@@ -198,6 +231,7 @@ function emailShell(options: ShellOptions): string {
       .rh-title, .rh-copy, .rh-detail-value, .rh-soft-copy { color: #F4F4F4 !important; }
       .rh-intro, .rh-muted, .rh-footer-note, .rh-footer-text { color: #BDBDBD !important; }
       .rh-panel, .rh-summary { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
+      .rh-icon-card { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
       .rh-detail-row { border-bottom-color: #343434 !important; }
       .rh-message-box { background: #101010 !important; border-color: #2B2B2B !important; color: #EDEDED !important; }
       .rh-soft-cyan { background: #07191B !important; border-color: #0D3D42 !important; }
@@ -212,6 +246,7 @@ function emailShell(options: ShellOptions): string {
     [data-ogsc] .rh-title, [data-ogsc] .rh-copy, [data-ogsc] .rh-detail-value, [data-ogsc] .rh-soft-copy { color: #F4F4F4 !important; }
     [data-ogsc] .rh-intro, [data-ogsc] .rh-muted, [data-ogsc] .rh-footer-note, [data-ogsc] .rh-footer-text { color: #BDBDBD !important; }
     [data-ogsc] .rh-panel, [data-ogsc] .rh-summary { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
+    [data-ogsc] .rh-icon-card { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
     [data-ogsc] .rh-detail-row { border-bottom-color: #343434 !important; }
     [data-ogsc] .rh-message-box { background: #101010 !important; border-color: #2B2B2B !important; color: #EDEDED !important; }
     [data-ogsc] .rh-soft-cyan { background: #07191B !important; border-color: #0D3D42 !important; }
@@ -292,6 +327,24 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
 
   const body = `
     ${paragraphsFromText(enhancedBody, fallbackBody)}
+    ${featureGrid([
+      {
+        icon: 'map',
+        title: 'Mettiamo ordine',
+        text: 'Processo, priorità e vincoli prima della soluzione.',
+      },
+      {
+        icon: 'target',
+        title: 'Cerchiamo impatto',
+        text: 'Proponiamo solo passi utili e sostenibili.',
+        color: BRAND_CYAN,
+      },
+      {
+        icon: 'reply',
+        title: 'Risposta umana',
+        text: 'Niente automatismi generici: ti risponde il team.',
+      },
+    ])}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-panel" style="margin:28px 0 26px 0;background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
       <tr>
         <td style="padding:24px 24px 18px 24px;">
@@ -321,9 +374,9 @@ export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): s
       </tr>
     </table>
     ${summaryStrip([
-      { label: 'Tempo', value: '72 ore lavorative' },
-      { label: 'Metodo', value: 'prima analisi', color: BRAND_CYAN },
-      { label: 'Output', value: 'prossimo passo' },
+      { label: 'Tempo', value: '72 ore lavorative', icon: 'clock' },
+      { label: 'Metodo', value: 'prima analisi', color: BRAND_CYAN, icon: 'map' },
+      { label: 'Output', value: 'prossimo passo', icon: 'spark' },
     ])}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-soft-cyan" style="margin:0 0 28px 0;background:${SOFT_CYAN};border:1px solid #D8F6F8;border-radius:20px;">
       <tr>
@@ -412,10 +465,28 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
         </td>
       </tr>
     </table>
+    ${featureGrid([
+      {
+        icon: 'target',
+        title: 'Valuta fit',
+        text: 'Capire subito se richiesta, budget e urgenza sono allineati.',
+      },
+      {
+        icon: 'clock',
+        title: actionWindow,
+        text: 'Finestra consigliata per la prima risposta commerciale.',
+        color: BRAND_CYAN,
+      },
+      {
+        icon: 'reply',
+        title: 'Prima risposta',
+        text: 'Domanda mirata, call breve e un criterio di avanzamento.',
+      },
+    ])}
     ${summaryStrip([
-      { label: 'Priorità', value: priority.label, color: priority.color },
-      { label: 'Risposta', value: actionWindow },
-      { label: 'Fonte', value: 'form sito', color: BRAND_CYAN },
+      { label: 'Priorità', value: priority.label, color: priority.color, icon: 'target' },
+      { label: 'Risposta', value: actionWindow, icon: 'clock' },
+      { label: 'Fonte', value: 'form sito', color: BRAND_CYAN, icon: 'spark' },
     ])}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px 0;">
       <tr>
