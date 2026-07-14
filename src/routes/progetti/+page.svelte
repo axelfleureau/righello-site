@@ -1,6 +1,7 @@
 <script lang="ts">
   import { clients } from '$lib/data/projects';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import PhotoSpotlightShowcase from '$lib/components/PhotoSpotlightShowcase.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
 
   type FeaturedProject = {
@@ -190,6 +191,55 @@
       label: 'Appartamento Ernesto Sanato',
       description: 'Esempio real estate/interior con focus su spazio, atmosfera e dettagli.',
       href: 'https://lumis.wearerighello.com/gallery?tenant=righello&event=Appartament-Ernesto',
+    },
+  ];
+
+  const productionSpotlightImages = [
+    {
+      src: '/thumbnails/thumb-8424e05df0ca.jpg',
+      alt: 'Produzione hospitality sul territorio',
+      label: 'Hospitality',
+    },
+    {
+      src: '/thumbnails/thumb-18c674dd5ccb.jpg',
+      alt: 'Produzione Riviera Resort',
+      label: 'Riviera Resort',
+    },
+    {
+      src: '/thumbnails/thumb-f89791b0c4c7.jpg',
+      alt: 'Produzione Reguta 1928',
+      label: 'Reguta',
+    },
+    {
+      src: '/thumbnails/thumb-2794f24022e5.jpg',
+      alt: 'Sito e comunicazione Fiumedica',
+      label: 'Fiumedica',
+    },
+    {
+      src: '/projects/cards/lumis-card.jpg',
+      alt: 'Gallery Lumis',
+      label: 'Lumis',
+      position: 'center top',
+    },
+    {
+      src: '/thumbnails/thumb-cd759b2f2273.jpg',
+      alt: 'Produzione visuale per industria e territorio',
+      label: 'Industria',
+    },
+    {
+      src: '/thumbnails/thumb-6322be15ebae.jpg',
+      alt: 'Riprese aeree per materiali commerciali',
+      label: 'Advertising asset',
+    },
+    {
+      src: '/thumbnails/thumb-d21d67febb70.jpg',
+      alt: 'Racconto visuale per brand e social',
+      label: 'Content',
+    },
+    {
+      src: '/thumbnails/thumb-fe97a7333488.jpg',
+      alt: 'Gallery evento pubblicata con Lumis',
+      label: 'Evento',
     },
   ];
 
@@ -503,30 +553,13 @@
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
 
-<section class="section-padding production-section">
-  <div class="section-container production-layout">
-    <div>
-      <p class="section-subtitle">Produzioni video e foto</p>
-      <h2 class="section-title">Lo shooting è solo l’inizio. Il valore è nel riuso.</h2>
-      <p>
-        Le gallery Lumis qui sotto sono esempi pubblici: servono a mostrare ordine, selezione e qualità del materiale,
-        senza esporre cartelle generiche o archivi disordinati.
-      </p>
-    </div>
-
-    <div class="gallery-links">
-      {#each productionLinks as link}
-        <a href={link.href} target="_blank" rel="noreferrer">
-          <span>
-            <strong>{link.label}</strong>
-            <small>{link.description}</small>
-          </span>
-          <em aria-hidden="true">↗</em>
-        </a>
-      {/each}
-    </div>
-  </div>
-</section>
+<PhotoSpotlightShowcase
+  eyebrow="Produzioni video e foto"
+  title="Lo shooting è solo l’inizio. Il valore è nel riuso."
+  text="Una produzione fatta bene non resta in una cartella: diventa sito, social, campagna, sales deck e archivio ordinato. Le gallery Lumis mostrano come trasformiamo foto ed eventi in materiali pronti da usare."
+  images={productionSpotlightImages}
+  links={productionLinks}
+/>
 
 <section class="final-cta">
   <div class="section-container">
@@ -575,7 +608,7 @@
   .section-heading,
   .case-heading,
   .system-copy,
-  .production-layout > div:first-child {
+  .system-layout > div:first-child {
     max-width: 58rem;
   }
 
@@ -591,7 +624,6 @@
   .section-heading > p,
   .case-heading > p,
   .system-copy > p,
-  .production-layout p,
   .final-cta__inner > p {
     color: var(--text-secondary);
     font-size: clamp(1.02rem, 1.7vw, 1.22rem);
@@ -902,13 +934,11 @@
   }
 
   .system-section,
-  .production-section,
   .final-cta {
     background: var(--bg-primary);
   }
 
-  .system-layout,
-  .production-layout {
+  .system-layout {
     display: grid;
     gap: clamp(1.5rem, 4vw, 3rem);
     align-items: start;
@@ -1112,47 +1142,6 @@ background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 46%, rgba(0
     color: var(--text-primary);
   }
 
-  .gallery-links {
-    display: grid;
-    gap: 0.75rem;
-  }
-
-  .gallery-links a {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 1.25rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-primary);
-    text-decoration: none;
-  }
-
-  .gallery-links strong,
-  .gallery-links small {
-    display: block;
-  }
-
-  .gallery-links small {
-    margin-top: 0.25rem;
-    color: var(--text-secondary);
-    line-height: 1.4;
-  }
-
-  .gallery-links em {
-    width: 2.6rem;
-    height: 2.6rem;
-    flex: 0 0 auto;
-    display: grid;
-    place-items: center;
-    border-radius: 999px;
-    background: rgba(214, 72, 126, 0.15);
-    color: var(--righello-pink, #d6487e);
-    font-style: normal;
-  }
-
   .final-cta {
     padding: 0 0 clamp(4rem, 8vw, 7rem);
   }
@@ -1192,7 +1181,6 @@ background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 46%, rgba(0
       border-color: rgba(214, 72, 126, 0.45);
     }
 
-    .gallery-links a:hover,
     .case-card:hover,
     .pillar-card:hover {
       border-color: rgba(214, 72, 126, 0.26);
@@ -1229,8 +1217,7 @@ background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 46%, rgba(0
     }
 
     .client-proof-grid,
-    .system-layout,
-    .production-layout {
+    .system-layout {
       grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
     }
 
@@ -1265,8 +1252,7 @@ background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 46%, rgba(0
     }
 
     .proof-kicker,
-    .proof-list p,
-    .gallery-links a {
+    .proof-list p {
       align-items: flex-start;
     }
 
