@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { clients } from '$lib/data/projects';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import PhotoSpotlightShowcase from '$lib/components/PhotoSpotlightShowcase.svelte';
@@ -305,6 +306,21 @@
   ]);
 
   const schemaMarkup = `<script type="application/ld+json">${schema.replace(/</g, '\\u003c')}<\/script>`;
+
+  onMount(() => {
+    if (window.location.hash) return;
+
+    const previousScrollRestoration = history.scrollRestoration;
+    history.scrollRestoration = 'manual';
+
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    });
+
+    return () => {
+      history.scrollRestoration = previousScrollRestoration;
+    };
+  });
 </script>
 
 <svelte:head>

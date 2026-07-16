@@ -24,19 +24,13 @@
   export let links: PhotoSpotlightLink[] = [];
 
   let section: HTMLElement;
-  let gallery: HTMLElement;
-  let overlay: HTMLElement;
-  let content: HTMLElement;
-  let footer: HTMLElement;
   let imageNodes: HTMLImageElement[] = [];
   let ctx: { revert: () => void } | null = null;
-  let scrollTrigger: { kill: () => void } | null = null;
 
-  const lerp = (from: number, to: number, t: number) => from + (to - from) * t;
   $: imageColumns = [images.slice(0, 3), images.slice(3, 6), images.slice(6, 9)];
 
   onMount(async () => {
-    if (!browser || !section || !gallery) return;
+    if (!browser || !section) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const desktop = window.matchMedia('(min-width: 900px)').matches;
@@ -49,60 +43,75 @@
     gsap.registerPlugin(ScrollTrigger);
 
     ctx = gsap.context(() => {
-      gsap.set(gallery, { scale: 1.12, force3D: true });
-      gsap.set(imageNodes, { scale: 1.16, force3D: true });
-      gsap.set(content, { y: 28, opacity: 0.18 });
-      gsap.set(footer, { y: 22, opacity: 0.55, filter: 'blur(0px)' });
+      const cards = gsap.utils.toArray<HTMLElement>('.photo-spotlight__item', section);
 
-      scrollTrigger = ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.55,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const focusProgress = gsap.utils.clamp(0, 1, progress / 0.72);
-          const contentProgress = gsap.utils.clamp(0, 1, (progress - 0.1) / 0.42);
-          const exitProgress = gsap.utils.clamp(0, 1, (progress - 0.72) / 0.28);
+      gsap.set(imageNodes, { scale: 1.06, force3D: true });
+      gsap.set(cards, { y: 28, opacity: 0.82, force3D: true });
 
-          gsap.set(gallery, {
-            scale: lerp(1.12, 0.58, focusProgress),
-            yPercent: lerp(0, -5, exitProgress),
-          });
+      cards.forEach((card, index) => {
+        const offset = index % 3 === 0 ? -44 : index % 3 === 1 ? 22 : -18;
+        gsap.to(card, {
+          y: offset,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.45,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
 
-          gsap.set(imageNodes, {
-            scale: lerp(1.16, 1, focusProgress),
-          });
-
-          gsap.set(content, {
-            y: lerp(28, 0, contentProgress),
-            opacity: lerp(0.18, 1, contentProgress),
-          });
-
-          gsap.set(footer, {
-            y: lerp(22, -22, exitProgress),
-            opacity: lerp(0.55, 0, exitProgress),
-            filter: `blur(${lerp(0, 16, exitProgress)}px)`,
-          });
-
-          gsap.set(overlay, {
-            opacity: lerp(0.12, 0.52, contentProgress),
-          });
+      gsap.to(imageNodes, {
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.45,
+          invalidateOnRefresh: true,
         },
+      });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => section.classList.add('is-visible'),
       });
     }, section);
   });
 
   onDestroy(() => {
-    scrollTrigger?.kill();
     ctx?.revert();
   });
 </script>
 
 <section id={anchorId} class="photo-spotlight" bind:this={section} aria-label={title}>
-  <div class="photo-spotlight__stage">
-    <div class="photo-spotlight__gallery" bind:this={gallery}>
+  <div class="section-container photo-spotlight__layout">
+    <div class="photo-spotlight__content">
+      <p class="section-subtitle">{eyebrow}</p>
+      <h2>{title}</h2>
+      <p>{text}</p>
+      {#if links.length}
+        <div class="photo-spotlight__links">
+          {#each links as link}
+            <a href={link.href} target="_blank" rel="noreferrer">
+              <span>
+                <strong>{link.label}</strong>
+                <small>{link.description}</small>
+              </span>
+              <em aria-hidden="true">↗</em>
+            </a>
+          {/each}
+        </div>
+      {/if}
+    </div>
+
+    <div class="photo-spotlight__gallery" aria-label="Esempi visuali Righello">
       {#each imageColumns as column, col}
         <div class="photo-spotlight__col">
           {#each column as image, row}
@@ -123,80 +132,46 @@
         </div>
       {/each}
     </div>
-
-    <div class="photo-spotlight__overlay" bind:this={overlay}></div>
-
-    <div class="photo-spotlight__content" bind:this={content}>
-      <p class="section-subtitle">{eyebrow}</p>
-      <h2>{title}</h2>
-      <p>{text}</p>
-      {#if links.length}
-        <div class="photo-spotlight__links">
-          {#each links as link}
-            <a href={link.href} target="_blank" rel="noreferrer">
-              <span>
-                <strong>{link.label}</strong>
-                <small>{link.description}</small>
-              </span>
-              <em aria-hidden="true">↗</em>
-            </a>
-          {/each}
-        </div>
-      {/if}
-    </div>
-
-    <div class="photo-spotlight__footer" bind:this={footer} aria-hidden="true">
-      <span>Gallery Lumis</span>
-      <span>scrolla</span>
-    </div>
   </div>
 </section>
 
 <style>
   .photo-spotlight {
     position: relative;
-    height: 220svh;
-    min-height: 72rem;
+    scroll-margin-top: 7rem;
     overflow: hidden;
-    background: #050505;
+    padding: clamp(5rem, 11vw, 8rem) 0;
+    background:
+      radial-gradient(circle at 12% 22%, rgba(214, 72, 126, 0.16), transparent 24rem),
+      radial-gradient(circle at 92% 72%, rgba(6, 182, 212, 0.1), transparent 26rem),
+      #050505;
     color: #fff;
   }
 
-  .photo-spotlight__stage {
-    position: sticky;
-    top: 0;
-    height: 100svh;
-    min-height: 42rem;
-    overflow: hidden;
-    isolation: isolate;
+  .photo-spotlight__layout {
+    display: grid;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
   }
 
   .photo-spotlight__gallery {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 0;
-    width: min(190vw, 150rem);
-    height: min(180svh, 92rem);
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(0.65rem, 1.4vw, 1.15rem);
-    transform: translate(-50%, -50%);
-    transform-origin: center;
-    will-change: transform;
+    gap: clamp(0.55rem, 1.1vw, 0.9rem);
+    min-width: 0;
   }
 
   .photo-spotlight__col {
     display: grid;
-    gap: clamp(0.65rem, 1.4vw, 1.15rem);
+    gap: clamp(0.55rem, 1.1vw, 0.9rem);
   }
 
   .photo-spotlight__col:nth-child(2) {
-    transform: translateY(-4%);
+    padding-top: clamp(1.6rem, 5vw, 4rem);
   }
 
   .photo-spotlight__col:nth-child(3) {
-    transform: translateY(3%);
+    padding-top: clamp(0.8rem, 3vw, 2.4rem);
   }
 
   .photo-spotlight__item {
@@ -208,6 +183,15 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: clamp(1.15rem, 2.4vw, 2rem);
     background: #111;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  }
+
+  .photo-spotlight__item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 48%, rgba(0, 0, 0, 0.54));
+    pointer-events: none;
   }
 
   .photo-spotlight__item img {
@@ -217,6 +201,24 @@
     filter: saturate(1.08) contrast(1.04);
     transform-origin: center;
     will-change: transform;
+  }
+
+  .photo-spotlight__col:nth-child(1) .photo-spotlight__item:nth-child(1),
+  .photo-spotlight__col:nth-child(2) .photo-spotlight__item:nth-child(2),
+  .photo-spotlight__col:nth-child(3) .photo-spotlight__item:nth-child(1) {
+    aspect-ratio: 0.82;
+  }
+
+  .photo-spotlight__col:nth-child(1) .photo-spotlight__item:nth-child(2),
+  .photo-spotlight__col:nth-child(2) .photo-spotlight__item:nth-child(1),
+  .photo-spotlight__col:nth-child(3) .photo-spotlight__item:nth-child(3) {
+    aspect-ratio: 1.04;
+  }
+
+  .photo-spotlight__col:nth-child(1) .photo-spotlight__item:nth-child(3),
+  .photo-spotlight__col:nth-child(2) .photo-spotlight__item:nth-child(3),
+  .photo-spotlight__col:nth-child(3) .photo-spotlight__item:nth-child(2) {
+    aspect-ratio: 1.28;
   }
 
   .photo-spotlight__item figcaption {
@@ -238,67 +240,42 @@
     backdrop-filter: blur(12px);
   }
 
-  .photo-spotlight__overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background:
-      radial-gradient(circle at 50% 48%, rgba(214, 72, 126, 0.08), transparent 18rem),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.72));
-    opacity: 0.2;
-    pointer-events: none;
-    will-change: opacity;
-  }
-
   .photo-spotlight__content {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    width: min(100% - 2rem, 58rem);
-    height: max-content;
-    margin: auto;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    will-change: transform, opacity;
+    max-width: 43rem;
   }
 
   .photo-spotlight__content h2 {
     margin: 0;
-    max-width: 54rem;
     color: #fff;
-    font-size: clamp(2.5rem, 7.5vw, 6.2rem);
-    line-height: 0.9;
+    font-size: clamp(2.7rem, 6.2vw, 6rem);
+    line-height: 0.88;
     letter-spacing: 0;
   }
 
   .photo-spotlight__content > p:not(.section-subtitle) {
-    max-width: 42rem;
-    margin: 1.05rem auto 0;
-    color: rgba(255, 255, 255, 0.78);
+    margin: 1.25rem 0 0;
+    color: rgba(255, 255, 255, 0.72);
     font-size: clamp(1rem, 1.7vw, 1.18rem);
     line-height: 1.58;
   }
 
   .photo-spotlight__links {
-    width: min(100%, 48rem);
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.65rem;
-    margin-top: clamp(1.35rem, 3vw, 2rem);
+    margin-top: clamp(1.4rem, 4vw, 2.4rem);
   }
 
   .photo-spotlight__links a {
     min-width: 0;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    min-height: 9.6rem;
+    gap: 0.9rem;
     border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 1.2rem;
-    padding: 1rem;
-    background: rgba(8, 8, 8, 0.56);
+    border-radius: 1.35rem;
+    padding: 0.95rem;
+    background: rgba(255, 255, 255, 0.055);
     color: #fff;
     text-align: left;
     text-decoration: none;
@@ -311,7 +288,7 @@
   }
 
   .photo-spotlight__links strong {
-    font-size: 1.05rem;
+    font-size: 1rem;
     line-height: 1;
   }
 
@@ -322,7 +299,7 @@
   }
 
   .photo-spotlight__links em {
-    align-self: flex-end;
+    flex: 0 0 auto;
     width: 2.35rem;
     height: 2.35rem;
     display: grid;
@@ -333,70 +310,38 @@
     font-style: normal;
   }
 
-  .photo-spotlight__footer {
-    position: absolute;
-    right: clamp(1rem, 4vw, 2rem);
-    bottom: clamp(1rem, 4vw, 2rem);
-    z-index: 2;
-    display: flex;
-    gap: 0.55rem;
-    align-items: center;
-    color: rgba(255, 255, 255, 0.76);
-    font-size: 0.75rem;
-    font-weight: 850;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    will-change: transform, opacity, filter;
-  }
-
-  .photo-spotlight__footer span {
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 999px;
-    padding: 0.5rem 0.7rem;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(14px);
-  }
-
   @media (hover: hover) and (pointer: fine) {
     .photo-spotlight__links a:hover {
       border-color: rgba(214, 72, 126, 0.55);
-      background: rgba(8, 8, 8, 0.72);
+      background: rgba(255, 255, 255, 0.085);
+      transform: translateY(-2px);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .photo-spotlight__layout {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+    }
+
+    .photo-spotlight__content {
+      position: sticky;
+      top: 8rem;
+      padding-top: 1rem;
     }
   }
 
   @media (max-width: 899px), (prefers-reduced-motion: reduce) {
     .photo-spotlight {
-      height: auto;
-      min-height: 0;
-      overflow: hidden;
       padding: clamp(4rem, 14vw, 6rem) 0;
     }
 
-    .photo-spotlight__stage {
-      position: relative;
-      height: auto;
-      min-height: 0;
-      display: grid;
-      gap: 1.35rem;
-      padding: 0 1rem;
-    }
-
     .photo-spotlight__gallery {
-      position: relative;
-      top: auto;
-      left: auto;
-      width: min(100%, 54rem);
-      height: auto;
-      order: 2;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin: 0 auto;
-      transform: none;
     }
 
-    .photo-spotlight__col,
     .photo-spotlight__col:nth-child(2),
     .photo-spotlight__col:nth-child(3) {
-      transform: none;
+      padding-top: 0;
     }
 
     .photo-spotlight__item {
@@ -408,30 +353,8 @@
       transform: none;
     }
 
-    .photo-spotlight__overlay {
-      opacity: 0.22;
-    }
-
-    .photo-spotlight__content {
-      position: relative;
-      inset: auto;
-      width: min(100%, 52rem);
-      order: 1;
-      margin: 0 auto;
-      opacity: 1 !important;
-      transform: none !important;
-    }
-
     .photo-spotlight__links {
       grid-template-columns: 1fr;
-    }
-
-    .photo-spotlight__links a {
-      min-height: 0;
-    }
-
-    .photo-spotlight__footer {
-      display: none;
     }
   }
 
