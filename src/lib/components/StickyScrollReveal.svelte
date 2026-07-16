@@ -332,7 +332,7 @@
     .content-column {
       gap: 0;
       padding-top: 15vh;
-      padding-bottom: 15vh;
+      padding-bottom: 45vh;
     }
   }
   
