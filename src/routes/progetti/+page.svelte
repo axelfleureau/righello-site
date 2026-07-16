@@ -98,6 +98,9 @@
     { id: 'marketing', label: 'Marketing' },
   ];
 
+  const fiumedicaThumbnail =
+    'https://res.cloudinary.com/dcqqiy7ok/video/upload/c_fill,q_auto,so_0,w_800/v1781002731/righello/testimonials/fiumedica-massimo-fausti.jpg';
+
   const caseStudies: CaseStudy[] = [
     {
       id: 'buffr',
@@ -160,7 +163,8 @@
       text:
         'Quando il tema è sanitario, design e contenuti devono abbassare l’attrito: spiegare, rassicurare e guidare il paziente verso il passo successivo.',
       focus: ['Sito', 'Copy chiaro', 'Fiducia', 'Percorso utente'],
-      image: '/thumbnails/thumb-2794f24022e5.jpg',
+      image: fiumedicaThumbnail,
+      imagePosition: 'center center',
     },
     {
       id: 'riviera-resort',
@@ -173,7 +177,7 @@
       focus: ['Video production', 'Foto', 'Social asset', 'Paid media'],
       href: 'https://www.instagram.com/rivieraresorthotel/',
       logo: '/logos/riviera-resort.png',
-      image: '/thumbnails/thumb-18c674dd5ccb.jpg',
+      image: '/thumbnails/thumb-8424e05df0ca.jpg',
     },
   ];
 
@@ -197,12 +201,12 @@
 
   const productionSpotlightImages = [
     {
-      src: '/thumbnails/thumb-8424e05df0ca.jpg',
-      alt: 'Produzione hospitality sul territorio',
-      label: 'Hospitality',
+      src: '/thumbnails/thumb-18c674dd5ccb.jpg',
+      alt: 'Riprese aeree per racconto immobiliare e territoriale',
+      label: 'Real estate',
     },
     {
-      src: '/thumbnails/thumb-18c674dd5ccb.jpg',
+      src: '/thumbnails/thumb-8424e05df0ca.jpg',
       alt: 'Produzione Riviera Resort',
       label: 'Riviera Resort',
     },
@@ -212,9 +216,9 @@
       label: 'Reguta',
     },
     {
-      src: '/thumbnails/thumb-2794f24022e5.jpg',
-      alt: 'Sito e comunicazione Fiumedica',
-      label: 'Fiumedica',
+      src: '/thumbnails/thumb-0ff41fc20196.jpg',
+      alt: 'Contenuti social per 3R Technology',
+      label: '3R Technology',
     },
     {
       src: '/projects/cards/lumis-card.jpg',
