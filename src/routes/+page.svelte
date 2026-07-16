@@ -373,8 +373,6 @@
   />
 </section>
 
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
-
 <PesoSection />
 
 <SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
