@@ -244,7 +244,17 @@
           scrollTriggerInstance = ScrollTrigger.create({
             trigger: container,
             start: 'top top',
-            end: () => `+=${scrollDistance}vh`,
+            // A relative "+=Nvh" end string does not get unit-converted by
+            // GSAP the way an absolute "Nvh" value does — it resolves the
+            // number as raw pixels, registering a pin duration of 2400px
+            // instead of the intended 2400vh (24 viewport heights). That
+            // silently shrinks this pin's real scroll-jacked length, which
+            // throws off the absolute scroll position of every ScrollTrigger
+            // below it on the page (confirmed live: AirplaneEasterEgg's
+            // emoji reveal never fired because its calculated trigger
+            // position was off by exactly this gap). Converting to pixels
+            // ourselves avoids the unit ambiguity entirely.
+            end: () => `+=${(scrollDistance / 100) * window.innerHeight}`,
             pin: true,
             anticipatePin: 1,
             // scrub: 0.5 keeps the visual tightly coupled to the scroll position

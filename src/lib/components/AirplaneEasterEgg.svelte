@@ -27,9 +27,8 @@
   let copied = false;
   let imagesLoaded = false;
   let preloadObserver: IntersectionObserver | null = null;
+  let bodyResizeObserver: ResizeObserver | null = null;
   let refreshTimeout: ReturnType<typeof setTimeout> | null = null;
-  let refreshTimeout2: ReturnType<typeof setTimeout> | null = null;
-  let loadListener: (() => void) | null = null;
 
   const DISCOUNT_CODE = 'scrollerevenue26';
   const WA_NUMBER = '393393998351';
@@ -168,7 +167,9 @@
       return;
     }
 
-    ctx = gsap.context(() => {
+    // Extracted so it can be re-run (via ctx.revert() + a fresh gsap.context
+    // call) once real layout is confirmed stable — see doRefresh below.
+    const setupAnimations = () => {
       const emojiEls = emojiZone?.querySelectorAll('.emoji-float');
       if (emojiEls && emojiEls.length > 0) {
         // Time-based animation (NOT scrub) so emojis always appear regardless of
@@ -184,8 +185,6 @@
             start: 'top 80%',
             toggleActions: 'play none none reset',
             invalidateOnRefresh: true,
-            // preventOverlaps: true ensures Chrome doesn't fire before the pin
-            // spacer from AppleScrolly has shifted all downstream positions.
           },
           defaults: { ease: 'back.out(1.4)', force3D: true }
         });
@@ -389,47 +388,87 @@
 
         tl.addLabel('end', 1);
       }
-    });
+    };
 
-    // Multi-stage ScrollTrigger.refresh() strategy.
+    // Wait for the real dependency, not a proxy for it, before creating any
+    // ScrollTrigger.
     //
-    // Problem: AppleScrolly inserts a GSAP "pin spacer" element that shifts the
-    // scroll offset of every section below it (including AirplaneEasterEgg).
-    // ScrollTrigger must be refreshed AFTER the spacer is in the DOM so that
-    // trigger positions (start/end) are calculated correctly.
+    // Problem: AppleScrolly (the hero above this component) creates a GSAP
+    // pin — on desktop this inserts a `.pin-spacer` element that shifts the
+    // scroll offset of every section below it, including this one. Until
+    // that spacer exists, any ScrollTrigger created here measures against
+    // the wrong (pre-spacer) document layout.
     //
-    // Chrome commits its layout pipeline in a different order from Safari:
-    // - Safari: spacer visible within ~100ms of mount → 300ms was enough.
-    // - Chrome: spacer may not be fully committed until 600–800ms after mount,
-    //   causing the zoom to start at a wrong scroll offset ("too early" symptom)
-    //   and the emoji trigger to misfire (never visible → emojis never show).
-    //
-    // Fix: two rounds of refresh —
-    //   Round 1 (600ms): catches most cases including Safari.
-    //   Round 2 (1400ms): safety net for Chrome slow layout + font/image reflow.
-    // Both rounds use `invalidateOnRefresh: true` on all triggers, so the second
-    // refresh is always a correct no-op when positions haven't changed.
-    const doRefresh = () => {
-      ScrollTrigger.refresh();
-      refreshTimeout2 = setTimeout(() => ScrollTrigger.refresh(), 800);
+    // A first attempt waited on fixed timeouts (600ms/1400ms guesses), then
+    // on generic "document height stopped changing" polling. Both still
+    // raced AppleScrolly's own async init chain (fonts, dynamic imports) on
+    // a slow load, and confirmed live: even calling ScrollTrigger.refresh()
+    // well after the page had visibly settled did NOT correct an
+    // already-created trigger's position here — a brand-new ScrollTrigger
+    // measured correctly at the same moment refreshing the existing one did
+    // not. So the fix isn't "refresh more/later" — it's don't create the
+    // trigger until the actual precondition (the pin spacer existing) is
+    // true, then create it once, fresh.
+    const POLL_MS = 150;
+    const STABLE_CHECKS_REQUIRED = 3;
+    const MAX_WAIT_MS = 6000;
+
+    const isDesktopPinExpected = window.matchMedia('(min-width: 1024px)').matches;
+
+    const waitForReady = (onReady: () => void) => {
+      let lastHeight = -1;
+      let stableCount = 0;
+      let elapsedMs = 0;
+
+      const poll = () => {
+        // On desktop AppleScrolly's own breakpoint (>=1024px) is what
+        // actually creates the pin; below that it never runs, so a
+        // `.pin-spacer` would never appear and we'd wait for nothing.
+        const pinReady = !isDesktopPinExpected || !!document.querySelector('.pin-spacer');
+        const height = document.body.scrollHeight;
+        if (height === lastHeight) {
+          stableCount++;
+        } else {
+          stableCount = 0;
+          lastHeight = height;
+        }
+
+        elapsedMs += POLL_MS;
+        const heightStable = stableCount >= STABLE_CHECKS_REQUIRED;
+        if ((pinReady && heightStable) || elapsedMs >= MAX_WAIT_MS) {
+          onReady();
+          return;
+        }
+        refreshTimeout = setTimeout(poll, POLL_MS);
+      };
+      poll();
     };
-    const scheduleRefresh = () => {
-      refreshTimeout = setTimeout(doRefresh, 600);
-    };
-    if (document.readyState === 'complete') {
-      scheduleRefresh();
-    } else {
-      loadListener = scheduleRefresh;
-      window.addEventListener('load', scheduleRefresh, { once: true });
-    }
+
+    waitForReady(() => {
+      ctx = gsap.context(setupAnimations);
+
+      // Safety net for a shift that lands after this point (e.g. a web font
+      // swap reflowing text below the fold, or AppleScrolly's pin resizing
+      // on window resize). Rebuilds (not just .refresh()s) so trigger
+      // positions come from a completely fresh measurement — see the note
+      // above on why .refresh() alone was not reliable here.
+      let resizeDebounce: ReturnType<typeof setTimeout> | null = null;
+      bodyResizeObserver = new ResizeObserver(() => {
+        if (resizeDebounce !== null) clearTimeout(resizeDebounce);
+        resizeDebounce = setTimeout(() => {
+          ctx?.revert();
+          ctx = gsap.context(setupAnimations);
+        }, 300);
+      });
+      bodyResizeObserver.observe(document.body);
+    });
   });
 
   onDestroy(() => {
     ctx?.revert();
     preloadObserver?.disconnect();
+    bodyResizeObserver?.disconnect();
     if (refreshTimeout !== null) clearTimeout(refreshTimeout);
-    if (refreshTimeout2 !== null) clearTimeout(refreshTimeout2);
-    if (loadListener !== null) window.removeEventListener('load', loadListener);
   });
 </script>
 
