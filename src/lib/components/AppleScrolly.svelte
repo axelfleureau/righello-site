@@ -1002,7 +1002,65 @@
       display: flex !important;
     }
   }
-  
+
+  /* ─── SHORT DESKTOP VIEWPORTS (≤ 1050px tall, ≥ 1024px wide) ──────────────
+   * .apple-scrolly has a 700px min-height floor, common on laptop screens
+   * with browser chrome eating vertical space. .hero-text's own content
+   * (eyebrow + title + description + buttons + credibility badges) is
+   * taller than the room left after the 100px top offset across almost the
+   * whole realistic laptop-height range — not just a rare short-screen edge
+   * case: measured overlapping the strip below all the way up to ~1000px,
+   * clear again only from ~1050px. align-items:center on .scrolly-content
+   * only redistributes space when the item fits — once it doesn't, Chrome's
+   * "safe centering" falls back to top-anchoring the item at the grid row's
+   * start, so padding-bottom on .scrolly-content has no effect here
+   * (verified empirically: changing it did not move .hero-text at all).
+   * Result: the credibility badges (last child, lowest point) landed inside
+   * the space occupied by .partners-strip (position:absolute; bottom:0),
+   * overlapping "Tra i nostri clienti" and the client logos.
+   * Fix: make positioning deterministic (align-self:start instead of
+   * relying on the fit/overflow threshold) and reclaim room from the top
+   * offset, the title's own fixed-breakpoint jump (lg:text-6xl activates at
+   * this same 1024px width with no regard for a short viewport), and
+   * .hero-text's internal margins, so its bottom edge lands with real
+   * clearance above the strip. Verified empirically across 1024×680 through
+   * 1280×800 (no case found overlapping in that range with this applied),
+   * and confirmed clear again above 1050px tall with the original spacing. */
+  @media (min-width: 1024px) and (max-height: 1050px) {
+    .scrolly-content {
+      padding-top: 56px;
+    }
+
+    .hero-text {
+      align-self: start;
+    }
+
+    .hero-text > p:first-child {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Tailwind's text-3xl…xl:text-7xl steps are width-only — right at this
+     * media query's own 1024px floor, lg:text-6xl jumps the title to its
+     * biggest fixed size with no regard for a short viewport, which was the
+     * worst measured case (1024×680: title alone at 202px tall, margin
+     * -50px into the strip even with the fixes above). Fluid clamp() tied
+     * to vw keeps the title compact and predictable across this whole
+     * width range instead of jumping at the same breakpoint this query
+     * starts at. */
+    .hero-text > h1 {
+      font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-text > p:nth-child(3) {
+      margin-bottom: 1rem;
+    }
+
+    .hero-text > div:nth-child(4) {
+      margin-bottom: 1.25rem;
+    }
+  }
+
   /* Slides - absolute positioned overlay */
   .slide {
     position: absolute;
