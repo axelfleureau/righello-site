@@ -108,7 +108,7 @@
   const stats = [
     { value: 50, suffix: '+', label: 'Progetti completati' },
     { value: 30, suffix: '+', label: 'Clienti attivi' },
-    { value: 3, suffix: '', label: 'Dipartimenti integrati' },
+    { value: 4, suffix: '', label: 'Dipartimenti integrati' },
   ];
 </script>
 
