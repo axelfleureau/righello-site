@@ -1004,35 +1004,18 @@
   }
 
   /* ─── SHORT DESKTOP VIEWPORTS (≤ 1050px tall, ≥ 1024px wide) ──────────────
-   * .apple-scrolly has a 700px min-height floor, common on laptop screens
-   * with browser chrome eating vertical space. .hero-text's own content
-   * (eyebrow + title + description + buttons + credibility badges) is
-   * taller than the room left after the 100px top offset across almost the
-   * whole realistic laptop-height range — not just a rare short-screen edge
-   * case: measured overlapping the strip below all the way up to ~1000px,
-   * clear again only from ~1050px. align-items:center on .scrolly-content
-   * only redistributes space when the item fits — once it doesn't, Chrome's
-   * "safe centering" falls back to top-anchoring the item at the grid row's
-   * start, so padding-bottom on .scrolly-content has no effect here
-   * (verified empirically: changing it did not move .hero-text at all).
-   * Result: the credibility badges (last child, lowest point) landed inside
-   * the space occupied by .partners-strip (position:absolute; bottom:0),
-   * overlapping "Tra i nostri clienti" and the client logos.
-   * Fix: make positioning deterministic (align-self:start instead of
-   * relying on the fit/overflow threshold) and reclaim room from the top
-   * offset, the title's own fixed-breakpoint jump (lg:text-6xl activates at
-   * this same 1024px width with no regard for a short viewport), and
-   * .hero-text's internal margins, so its bottom edge lands with real
-   * clearance above the strip. Verified empirically across 1024×680 through
-   * 1280×800 (no case found overlapping in that range with this applied),
-   * and confirmed clear again above 1050px tall with the original spacing. */
+   * Keep the intro centred in the usable stage between the header and the
+   * absolutely-positioned partners strip. The asymmetric padding reserves
+   * real space for the strip, so centring cannot reintroduce the previous
+   * credibility-badge overlap. */
   @media (min-width: 1024px) and (max-height: 1050px) {
     .scrolly-content {
-      padding-top: 56px;
+      padding-top: clamp(72px, 10svh, 104px);
+      padding-bottom: clamp(112px, 16svh, 160px);
     }
 
     .hero-text {
-      align-self: start;
+      align-self: center;
     }
 
     .hero-text > p:first-child {
