@@ -20,9 +20,11 @@ const TEAM_EMAILS = ['edis@wearerighello.com', 'paolo@wearerighello.com', 'axel@
 function validateForm(data: unknown): ContactForm | null {
   if (!data || typeof data !== 'object') return null;
   const d = data as Record<string, unknown>;
+  const phone = typeof d.phone === 'string' ? d.phone.trim() : '';
   if (
     typeof d.name !== 'string' || d.name.trim().length === 0 ||
     typeof d.email !== 'string' || d.email.trim().length === 0 || !d.email.includes('@') ||
+    phone.replace(/\D/g, '').length < 6 ||
     typeof d.message !== 'string' || d.message.trim().length === 0
   ) {
     return null;
@@ -31,7 +33,7 @@ function validateForm(data: unknown): ContactForm | null {
   return {
     name: d.name.trim(),
     email: d.email.trim(),
-    phone: typeof d.phone === 'string' ? d.phone.trim() : '',
+    phone,
     company: typeof d.company === 'string' ? d.company.trim() : '',
     service: typeof d.service === 'string' ? d.service.trim() : '',
     budget: typeof d.budget === 'string' ? d.budget.trim() : '',
@@ -155,7 +157,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
   const form = validateForm(data);
   if (!form) {
-    return json({ success: false, error: 'Compila tutti i campi obbligatori (nome, email, messaggio)' }, { status: 400 });
+    return json({ success: false, error: 'Compila tutti i campi obbligatori (nome, email, telefono, messaggio)' }, { status: 400 });
   }
 
   const priority = getLeadPriority(form.budget);

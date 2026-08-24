@@ -9,6 +9,7 @@
   let formData = {
     name: '',
     email: '',
+    phone: '',
     company: '',
     service: '',
     budget: '',
@@ -208,7 +209,7 @@
                 </p>
                 <button 
                   class="btn-secondary"
-                  on:click={() => { submitted = false; formData = { name: '', email: '', company: '', service: '', budget: '', message: '' }; }}
+                  on:click={() => { submitted = false; formData = { name: '', email: '', phone: '', company: '', service: '', budget: '', message: '' }; }}
                 >
                   Invia un altro messaggio
                 </button>
@@ -248,15 +249,32 @@
                   </div>
                 </div>
                 
-                <div class="form-group">
-                  <label for="company" class="form-label">Azienda</label>
-                  <input 
-                    type="text" 
-                    id="company" 
-                    bind:value={formData.company}
-                    class="form-input"
-                    placeholder="Nome della tua azienda"
-                  />
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div class="form-group">
+                    <label for="phone" class="form-label">Telefono *</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      bind:value={formData.phone}
+                      required
+                      autocomplete="tel"
+                      inputmode="tel"
+                      class="form-input"
+                      placeholder="+39 333 123 4567"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="company" class="form-label">Azienda</label>
+                    <input
+                      type="text"
+                      id="company"
+                      bind:value={formData.company}
+                      autocomplete="organization"
+                      class="form-input"
+                      placeholder="Nome della tua azienda"
+                    />
+                  </div>
                 </div>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">

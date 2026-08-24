@@ -35,6 +35,7 @@ describe('Righello email templates', () => {
     expect(teamHtml).toContain('Lead cockpit');
     expect(teamHtml).toContain('Azione consigliata');
     expect(teamHtml).toContain('Primo messaggio utile');
+    expect(teamHtml).toContain('+39 333 123 4567');
   });
 
   it('escapes user supplied contact data', () => {
