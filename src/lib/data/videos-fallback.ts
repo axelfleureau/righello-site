@@ -256,17 +256,6 @@ export const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
     order: 6,
   },
   {
-    id: '3r-technology',
-    clientName: '3R Technology',
-    clientRole: 'Technology',
-    company: '3R Technology',
-    quote: 'Ho scelto Righello per la professionalità sul lavoro e la velocità. Li consiglio.',
-    cloudinaryUrl: testimonialVideo('righello/testimonials/3r-technology', 1781002839),
-    cloudinaryPublicId: 'righello/testimonials/3r-technology',
-    thumbnailUrl: testimonialThumb('righello/testimonials/3r-technology', 1781002839),
-    order: 7,
-  },
-  {
     id: 'tc-studio-immobiliare-01',
     clientName: 'TC Studio Immobiliare',
     clientRole: 'Agenzia immobiliare',
@@ -275,7 +264,7 @@ export const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
     cloudinaryUrl: testimonialVideo('righello/testimonials/tc-studio-immobiliare-01', 1781002851),
     cloudinaryPublicId: 'righello/testimonials/tc-studio-immobiliare-01',
     thumbnailUrl: testimonialThumb('righello/testimonials/tc-studio-immobiliare-01', 1781002851),
-    order: 8,
+    order: 7,
   },
   {
     id: 'tc-studio-immobiliare-02',
@@ -286,7 +275,7 @@ export const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
     cloudinaryUrl: testimonialVideo('righello/testimonials/tc-studio-immobiliare-02', 1781002863),
     cloudinaryPublicId: 'righello/testimonials/tc-studio-immobiliare-02',
     thumbnailUrl: testimonialThumb('righello/testimonials/tc-studio-immobiliare-02', 1781002863),
-    order: 9,
+    order: 8,
   },
   {
     id: 'tc-studio-immobiliare-03',
@@ -297,7 +286,7 @@ export const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
     cloudinaryUrl: testimonialVideo('righello/testimonials/tc-studio-immobiliare-03', 1781002873),
     cloudinaryPublicId: 'righello/testimonials/tc-studio-immobiliare-03',
     thumbnailUrl: testimonialThumb('righello/testimonials/tc-studio-immobiliare-03', 1781002873),
-    order: 10,
+    order: 9,
   },
   {
     id: 'clara-falomo',
@@ -308,17 +297,6 @@ export const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
     cloudinaryUrl: testimonialVideo('righello/testimonials/clara-falomo', 1781002883),
     cloudinaryPublicId: 'righello/testimonials/clara-falomo',
     thumbnailUrl: testimonialThumb('righello/testimonials/clara-falomo', 1781002883),
-    order: 11,
-  },
-  {
-    id: '3r-technology-eventi',
-    clientName: '3R Technology',
-    clientRole: 'Technology',
-    company: '3R Technology',
-    quote: 'Un ricordo del lavoro fatto insieme e dei risultati ottenuti negli eventi.',
-    cloudinaryUrl: testimonialVideo('righello/testimonials/3r-technology-eventi', 1781002893),
-    cloudinaryPublicId: 'righello/testimonials/3r-technology-eventi',
-    thumbnailUrl: testimonialThumb('righello/testimonials/3r-technology-eventi', 1781002893),
-    order: 12,
+    order: 10,
   },
 ];

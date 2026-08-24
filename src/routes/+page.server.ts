@@ -14,6 +14,10 @@ import {
 } from '$lib/data/videos-fallback';
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
+const EXCLUDED_TESTIMONIAL_SLUGS = new Set([
+  '3r-technology',
+  '3r-technology-eventi',
+]);
 
 // Extract the last path segment from a Cloudinary publicId.
 // e.g. "righello/reels/ricci-scuolasci" → "ricci-scuolasci"
@@ -22,11 +26,11 @@ function cloudinarySlug(publicId: string): string {
   return publicId.split('/').pop() ?? publicId;
 }
 
-function dedupeTestimonialsByClient(items: TestimonialItem[]): TestimonialItem[] {
+function dedupeTestimonialsByVideo(items: TestimonialItem[]): TestimonialItem[] {
   const seen = new Set<string>();
 
   return items.filter((item) => {
-    const key = (item.company || item.clientName || item.id).trim().toLowerCase();
+    const key = cloudinarySlug(item.cloudinaryPublicId || item.id).trim().toLowerCase();
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -64,7 +68,9 @@ export const load: PageServerLoad = async () => {
   const visibleCloudinaryHero = cloudinaryData.hero.filter((v) => !v.hidden);
   const visibleCloudinaryShowcase = cloudinaryData.showcase.filter((v) => !v.hidden);
   const visibleCloudinaryReels = cloudinaryData.reels.filter((v) => !v.hidden);
-  const visibleCloudinaryTestimonials = cloudinaryData.testimonials.filter((v) => !v.hidden);
+  const visibleCloudinaryTestimonials = cloudinaryData.testimonials.filter(
+    (v) => !v.hidden && !EXCLUDED_TESTIMONIAL_SLUGS.has(cloudinarySlug(v.publicId))
+  );
 
   // --- Hero ---
   const heroVideo: HeroVideo =
@@ -135,11 +141,12 @@ export const load: PageServerLoad = async () => {
     .filter((v) =>
       visibleCloudinaryTestimonials.length === 0 &&
       !hiddenFallbackIds.includes(v.id) &&
+      !EXCLUDED_TESTIMONIAL_SLUGS.has(v.id) &&
       !cloudinaryTestiSlugs.has(v.id)
     )
     .map((v) => ({ ...v, order: v.order + 1000 }));
 
-  const testimonialItems: TestimonialItem[] = dedupeTestimonialsByClient(
+  const testimonialItems: TestimonialItem[] = dedupeTestimonialsByVideo(
     [
       ...visibleCloudinaryTestimonials.map((v) => ({
         id: v.publicId,
