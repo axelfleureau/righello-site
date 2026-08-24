@@ -18,6 +18,7 @@ const EXCLUDED_TESTIMONIAL_SLUGS = new Set([
   '3r-technology',
   '3r-technology-eventi',
 ]);
+const MULTI_REVIEW_CLIENTS = new Set(['reguta 1928']);
 
 // Extract the last path segment from a Cloudinary publicId.
 // e.g. "righello/reels/ricci-scuolasci" → "ricci-scuolasci"
@@ -26,13 +27,20 @@ function cloudinarySlug(publicId: string): string {
   return publicId.split('/').pop() ?? publicId;
 }
 
-function dedupeTestimonialsByVideo(items: TestimonialItem[]): TestimonialItem[] {
-  const seen = new Set<string>();
+function dedupeTestimonials(items: TestimonialItem[]): TestimonialItem[] {
+  const seenVideos = new Set<string>();
+  const seenClients = new Set<string>();
 
   return items.filter((item) => {
-    const key = cloudinarySlug(item.cloudinaryPublicId || item.id).trim().toLowerCase();
-    if (seen.has(key)) return false;
-    seen.add(key);
+    const videoKey = cloudinarySlug(item.cloudinaryPublicId || item.id).trim().toLowerCase();
+    if (seenVideos.has(videoKey)) return false;
+
+    const clientName = item.clientName.trim().toLowerCase();
+    const clientKey = (item.company || item.clientName || item.id).trim().toLowerCase();
+    if (!MULTI_REVIEW_CLIENTS.has(clientName) && seenClients.has(clientKey)) return false;
+
+    seenVideos.add(videoKey);
+    seenClients.add(clientKey);
     return true;
   });
 }
@@ -146,7 +154,7 @@ export const load: PageServerLoad = async () => {
     )
     .map((v) => ({ ...v, order: v.order + 1000 }));
 
-  const testimonialItems: TestimonialItem[] = dedupeTestimonialsByVideo(
+  const testimonialItems: TestimonialItem[] = dedupeTestimonials(
     [
       ...visibleCloudinaryTestimonials.map((v) => ({
         id: v.publicId,
