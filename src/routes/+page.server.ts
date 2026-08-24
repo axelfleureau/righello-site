@@ -19,6 +19,10 @@ const EXCLUDED_TESTIMONIAL_SLUGS = new Set([
   '3r-technology-eventi',
 ]);
 const MULTI_REVIEW_CLIENTS = new Set(['reguta 1928']);
+const TESTIMONIAL_ORDER_OVERRIDES = new Map([
+  ['reguta-1928-commerciale', 2],
+  ['reguta-1928-alessandro', 3],
+]);
 
 // Extract the last path segment from a Cloudinary publicId.
 // e.g. "righello/reels/ricci-scuolasci" → "ricci-scuolasci"
@@ -166,7 +170,7 @@ export const load: PageServerLoad = async () => {
         cloudinaryUrl: v.url || undefined,
         cloudinaryPublicId: v.publicId,
         thumbnailUrl: v.thumbnailUrl,
-        order: v.order,
+        order: TESTIMONIAL_ORDER_OVERRIDES.get(cloudinarySlug(v.publicId)) ?? v.order,
       })),
       ...fallbackTestimonials,
     ].sort((a, b) => a.order - b.order)

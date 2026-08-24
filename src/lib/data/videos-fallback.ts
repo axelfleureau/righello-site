@@ -209,7 +209,7 @@ export const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
     cloudinaryUrl: testimonialVideo('righello/testimonials/reguta-1928-alessandro', 1781002684),
     cloudinaryPublicId: 'righello/testimonials/reguta-1928-alessandro',
     thumbnailUrl: testimonialThumb('righello/testimonials/reguta-1928-alessandro', 1781002684),
-    order: 2,
+    order: 3,
   },
   {
     id: 'reguta-1928-commerciale',
@@ -220,7 +220,7 @@ export const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
     cloudinaryUrl: testimonialVideo('righello/testimonials/reguta-1928-commerciale', 1781002699),
     cloudinaryPublicId: 'righello/testimonials/reguta-1928-commerciale',
     thumbnailUrl: testimonialThumb('righello/testimonials/reguta-1928-commerciale', 1781002699),
-    order: 3,
+    order: 2,
   },
   {
     id: 'dual-factory-lara',
