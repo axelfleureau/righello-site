@@ -167,6 +167,18 @@
       imagePosition: 'center center',
     },
     {
+      id: 'portopiccolo-apartments',
+      name: 'Portopiccolo Apartments',
+      sector: 'Short-term rental & Hospitality',
+      category: 'web',
+      headline: 'Un booking engine collegato in tempo reale al calendario Guesty, non un sito vetrina.',
+      text:
+        'Trentatré appartamenti nel borgo di Portopiccolo: prezzo "da" calcolato sul primo soggiorno davvero prenotabile — non sulla tariffa bassa stagione — e prenotazione diretta senza passare dal telefono o dal gestionale.',
+      focus: ['Booking engine', 'Integrazione Guesty', 'Pricing dinamico', 'UX prenotazione'],
+      href: 'https://www.portopiccoloapartments.com',
+      image: '/thumbnails/thumb-portopiccolo-apartments.jpg',
+    },
+    {
       id: 'riviera-resort',
       name: 'Riviera Resort',
       sector: 'Hospitality',
