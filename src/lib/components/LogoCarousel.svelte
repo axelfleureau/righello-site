@@ -274,12 +274,22 @@
     user-select: none;
     -webkit-user-drag: none;
     filter: brightness(0) invert(1);
-    opacity: 0.6;
+    opacity: 0.72;
   }
 
   .logo-image.no-filter {
     filter: none;
     opacity: 0.8;
+  }
+
+  :global([data-theme='light']) .logo-image {
+    filter: brightness(0);
+    opacity: 0.58;
+  }
+
+  :global([data-theme='light']) .logo-image.no-filter {
+    filter: none;
+    opacity: 0.78;
   }
   
   .logo-text {

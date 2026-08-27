@@ -1433,7 +1433,7 @@
     flex-shrink: 0;
     padding: 0 0.75rem;
     filter: brightness(0) invert(1);
-    opacity: 0.55;
+    opacity: 0.68;
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
@@ -1441,7 +1441,7 @@
     transition: filter 0.3s ease, opacity 0.3s ease;
   }
 
-  /* Loghi istituzionali (comuni) — mantieni i colori originali, senza inversione */
+  /* Loghi che richiedono i colori originali — nessuna inversione */
   .partner-logo.no-filter {
     filter: none;
     opacity: 0.75;
@@ -1454,15 +1454,15 @@
    * visivamente rispetto al bianco su scuro.                                      */
   :global([data-theme="light"]) .partner-logo {
     filter: brightness(0);
-    opacity: 0.35;
+    opacity: 0.55;
   }
 
-  /* Loghi istituzionali in light: manteniamo i colori ma abbassiamo l'opacità
+  /* Loghi a colori in light: manteniamo la palette ma abbassiamo l'opacità
    * e aggiungiamo un leggero grayscale per evitare che siano troppo saturi
    * rispetto al resto della palette del tema chiaro.                              */
   :global([data-theme="light"]) .partner-logo.no-filter {
     filter: grayscale(0.25);
-    opacity: 0.6;
+    opacity: 0.72;
   }
 
   @media (max-width: 767px) {
