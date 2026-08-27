@@ -182,7 +182,7 @@
           {#if item.href}
             <a href={item.href} class="logo-link" aria-label={item.name} on:click={noNav}>
               {#if item.logo}
-                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" fetchpriority="low" decoding="async" />
+                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
               {:else}
                 <span class="logo-text">{item.name}</span>
               {/if}
@@ -190,7 +190,7 @@
           {:else}
             <span class="logo-content">
               {#if item.logo}
-                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" fetchpriority="low" decoding="async" />
+                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
               {:else}
                 <span class="logo-text">{item.name}</span>
               {/if}
