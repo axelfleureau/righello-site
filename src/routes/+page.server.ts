@@ -2,6 +2,7 @@ import type { PageServerLoad } from './$types';
 import { getAllVideos } from '$lib/server/cloudinary';
 import { getHiddenFallbackIds } from '$lib/server/video-visibility';
 import { getCache, setCache } from '$lib/server/page-cache';
+import { staggerPortopiccoloReels } from '$lib/server/reel-order';
 import {
   FALLBACK_HERO,
   FALLBACK_SHOWCASE,
@@ -131,7 +132,7 @@ export const load: PageServerLoad = async () => {
     .filter((v) => !hiddenFallbackIds.includes(v.id) && !cloudinaryReelSlugs.has(v.id))
     .map((v) => ({ ...v, order: v.order + 1000 }));
 
-  const reelItems: ReelItem[] = [
+  const sortedReelItems: ReelItem[] = [
     ...visibleCloudinaryReels.map((v) => ({
       id: v.publicId,
       title: v.title,
@@ -145,6 +146,7 @@ export const load: PageServerLoad = async () => {
     })),
     ...fallbackReels,
   ].sort((a, b) => a.order - b.order);
+  const reelItems = staggerPortopiccoloReels(sortedReelItems);
 
   // --- Testimonials: Cloudinary replaces fallback once testimonial uploads exist.
   // Customer reviews are curated assets: appending old fallback videos after a
