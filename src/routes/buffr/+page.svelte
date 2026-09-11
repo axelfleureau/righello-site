@@ -10,23 +10,23 @@
   const screenshots = [
     {
       src: '/products/buffr/replay-in-un-tap.jpg',
-      alt: 'BUFFR: schermata replay in un tap',
-      label: 'Replay in un tap',
+      alt: 'BUFFR: schermata camera con il pulsante Avvia buffer',
+      label: 'Avvia il buffer',
     },
     {
       src: '/products/buffr/modalita-calcio-live.jpg',
-      alt: 'BUFFR: modalità calcio live',
-      label: 'Calcio live',
+      alt: 'BUFFR: libreria clip con filtri Tutte, Personali, Righello team',
+      label: 'Libreria clip',
     },
     {
       src: '/products/buffr/rivedi-ogni-azione.jpg',
-      alt: 'BUFFR: gallery per rivedere ogni azione',
-      label: 'Gallery clip',
+      alt: 'BUFFR: scheda Montaggi con lo stato di ogni video',
+      label: 'Montaggi pronti',
     },
     {
       src: '/products/buffr/impostazioni-da-pro.jpg',
-      alt: 'BUFFR: impostazioni camera da pro',
-      label: 'Controlli pro',
+      alt: 'BUFFR: dettaglio montaggio con risultato e azioni di condivisione',
+      label: 'Condividi il montaggio',
     },
   ];
 
@@ -555,7 +555,7 @@
       <div class="section-heading section-heading--left">
         <p class="product-kicker">Dentro l’app</p>
         <h2>Screenshot grandi, flusso semplice.</h2>
-        <p>Registri, salvi, rivedi. I controlli restano vicini all’azione.</p>
+        <p>Registri, salvi, rivedi. Un'icona compare solo quando c'è un'eccezione da segnalare — una clip senza cloud, una sincronizzazione mancata — il resto dell'interfaccia resta fuori dai piedi.</p>
       </div>
     </RevealOnScroll>
 

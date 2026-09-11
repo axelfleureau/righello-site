@@ -107,10 +107,10 @@
       name: 'BUFFR',
       sector: 'Prodotto iOS',
       category: 'digital',
-      headline: 'Da idea verticale a pagina prodotto e app pronta per App Store.',
+      headline: 'Da MVP per l\'App Store a un redesign che toglie invece di aggiungere.',
       text:
-        'Una videocamera buffer per creator e team sul campo, raccontata con una comunicazione chiara: cosa fa, quando serve e perché riduce il rischio di perdere il momento giusto.',
-      focus: ['UX mobile', 'Pagina prodotto', 'App Store', 'Video demo'],
+        'Una videocamera buffer per creator e team sul campo. Il redesign ha ridotto le schermate, sostituito le etichette fisse con icone che compaiono solo quando c\'è un\'eccezione da segnalare, e reso ogni schermata riconoscibile dalle stesse poche componenti.',
+      focus: ['UX mobile', 'Design system', 'App Store', 'Redesign iterativo'],
       href: '/buffr',
       logo: '/logo-icon.png',
       image: '/products/buffr/replay-in-un-tap.jpg',
