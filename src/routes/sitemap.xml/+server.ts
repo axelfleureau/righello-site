@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { projects } from '$lib/data/projects';
+import { caseStudies, caseStudyHref } from '$lib/data/case-studies';
 import { serviceDetails } from '$lib/data/service-details';
 
 const BASE_URL = 'https://www.wearerighello.com';
@@ -25,12 +25,16 @@ const SERVICE_PAGES = serviceDetails.map((s) => ({
   changefreq: 'monthly' as const,
 }));
 
-// Project slugs (from projects data) — case study pages.
-const PROJECT_PAGES = projects.map((p) => ({
-  loc: `/progetti/${p.slug}`,
-  priority: '0.7',
-  changefreq: 'monthly' as const,
-}));
+// Case study detail pages — generated dynamically so adding a case study to
+// $lib/data/case-studies.ts auto-includes its page here. BUFFR is excluded:
+// it resolves to /buffr, already listed in STATIC_PAGES.
+const PROJECT_PAGES = caseStudies
+  .filter((study) => study.id !== 'buffr')
+  .map((study) => ({
+    loc: caseStudyHref(study),
+    priority: '0.7',
+    changefreq: 'monthly' as const,
+  }));
 
 const PAGES = [...STATIC_PAGES, ...SERVICE_PAGES, ...PROJECT_PAGES];
 

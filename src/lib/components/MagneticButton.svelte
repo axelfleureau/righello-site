@@ -5,6 +5,8 @@
   export let href: string = '';
   export let variant: 'primary' | 'secondary' | 'outline-white' = 'primary';
   export let strength: number = 0.3;
+  export let target: string | undefined = undefined;
+  export let rel: string | undefined = undefined;
   let className: string = '';
   export { className as class };
   
@@ -54,6 +56,8 @@
   this={href ? 'a' : 'button'}
   bind:this={element}
   href={href || undefined}
+  target={href ? target : undefined}
+  rel={href ? rel : undefined}
   on:mousemove={handleMouseMove}
   on:mouseenter={handleMouseEnter}
   on:mouseleave={handleMouseLeave}
