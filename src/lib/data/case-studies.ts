@@ -145,6 +145,18 @@ export const caseStudies: CaseStudy[] = [
     href: 'https://tetha.wearerighello.com',
     image: '/thumbnails/thumb-tetha.jpg',
   },
+  {
+    id: 'dico',
+    name: 'DICO.ONLINE',
+    sector: 'Piattaforma comunicazione PA',
+    category: 'digital',
+    headline: 'Le comunicazioni istituzionali non restano sepolte in un sito: arrivano dove le persone guardano davvero.',
+    text:
+      'Comuni ed enti pubblicavano avvisi su siti istituzionali che quasi nessuno visitava. DICO porta le informazioni della PA direttamente su WhatsApp, Telegram e social, con un portale già scelto da comuni ed enti in Friuli Venezia Giulia e Veneto.',
+    focus: ['Piattaforma PA', 'Comunicazione multicanale', 'WhatsApp & Telegram', 'Portale enti'],
+    href: 'https://www.dico.online',
+    image: '/thumbnails/thumb-dico.jpg',
+  },
 ];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
