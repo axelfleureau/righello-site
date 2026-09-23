@@ -1,6 +1,5 @@
 <script lang="ts">
   import AIGrantScrollStory from '$lib/components/AIGrantScrollStory.svelte';
-  import AnimatedCountdown from '$lib/components/AnimatedCountdown.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
@@ -23,7 +22,7 @@
   const deMinimisPdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/istruzioni_per_dichiarazioni_de_minimis.pdf';
   const procedureNoticePdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/nota_informativa_procedimento.pdf';
   const privacyPdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/Informativa_privacy.pdf';
-  const informationDate = '15 giugno 2026';
+  const informationDate = '23 settembre 2026';
 
   const icons: Record<IconKey, string> = {
     percent: '<path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/>',
@@ -43,7 +42,7 @@
   const grantCards = [
     { title: 'Fino al 75% coperto', text: 'Per ogni euro investito in un progetto AI, la Regione può coprirne fino a 75 centesimi.', icon: 'percent' },
     { title: 'Fino a 10.000€', text: 'Un aiuto concreto per partire con un progetto utile, senza bloccare mesi di budget.', icon: 'wallet' },
-    { title: 'Sportello aperto', text: 'Le domande risultano presentabili dal 10 giugno al 31 luglio 2026, salvo esaurimento risorse.', icon: 'fund' },
+    { title: 'Bando 2026 chiuso', text: 'Lo sportello 2026 (10 giugno – 31 luglio) ha esaurito le risorse. Iscriviti per essere avvisato di un prossimo bando.', icon: 'fund' },
     { title: 'Per realtà FVG', text: 'Pensato per micro e piccole imprese e liberi professionisti con sede in Friuli Venezia Giulia.', icon: 'users' },
     { title: 'AI più formazione', text: 'Non solo strumenti: anche metodo, persone e uso quotidiano dentro l’azienda.', icon: 'brain' },
     { title: 'Meno sprechi operativi', text: 'Obiettivo semplice: risparmiare tempo, ridurre errori e aumentare produttività.', icon: 'chart' },
@@ -145,8 +144,8 @@
       answer: 'Il contributo può arrivare fino al 75% della spesa ammissibile, con un massimo di 10.000 euro per singolo beneficiario.',
     },
     {
-      question: 'Il bando è già aperto?',
-      answer: 'Sì. Al 15 giugno 2026 le fonti ufficiali indicano termini dal 10 giugno 2026 al 31 luglio 2026. Le domande sono a sportello e vanno presentate online entro le ore 16:00 del 31 luglio 2026.',
+      question: 'Il bando è ancora aperto?',
+      answer: 'No. Lo sportello 2026 era attivo dal 10 giugno alle ore 16:00 del 31 luglio 2026 e ha esaurito le risorse disponibili. Al momento non è stato annunciato un nuovo round: iscriviti per essere avvisato quando (e se) la Regione riaprirà la misura.',
     },
     {
       question: 'Posso finanziare software su misura?',
@@ -357,7 +356,7 @@
         '@id': 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026#webpage',
         url: 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026',
         name: 'Bando AI FVG 2026: guida e contributo 75% | Righello',
-        dateModified: '2026-06-15',
+        dateModified: '2026-09-23',
         citation: officialSources.map((source) => source.href),
       },
       {
@@ -488,21 +487,21 @@
       <RevealOnScroll animation="fly-up">
       <div class="hero-copy">
         <a class="source-pill" href={agencySourceUrl} target="_blank" rel="noopener noreferrer">
-          Bando aperto fino al 31 luglio
+          Bando 2026 chiuso — risorse esaurite
         </a>
         <h1>Bando AI FVG 2026: fino a 10.000€ per portare l’AI nella tua azienda</h1>
         <p class="hero-subtitle">
-          La misura può coprire fino al 75% della spesa ammissibile. Righello ti aiuta a usare questa occasione per costruire un progetto utile: meno attività manuali, meno errori, più tempo per il lavoro che conta.
+          La misura poteva coprire fino al 75% della spesa ammissibile. Lo sportello 2026 ha esaurito le risorse, ma Righello ti aiuta comunque a costruire il progetto AI giusto per la tua azienda, con o senza contributo.
         </p>
         <p class="status-line">
-          Situazione al {informationDate}: il bando risulta aperto. Le domande sono a sportello e vanno presentate online entro le ore 16:00 del 31 luglio 2026.
+          Situazione al {informationDate}: il bando 2026 è chiuso dal 31 luglio (ore 16:00) per esaurimento risorse. Non è stato ancora annunciato un nuovo round.
         </p>
         <p class="search-intent-line">
-          In breve: il bando AI FVG 2026 finanzia progetti di intelligenza artificiale in Friuli Venezia Giulia. Righello ti aiuta a capire requisiti, spese ammissibili e progetto da costruire.
+          In breve: il bando AI FVG 2026 finanziava progetti di intelligenza artificiale in Friuli Venezia Giulia. Questa pagina resta come guida a requisiti e spese ammissibili, utile anche se e quando la misura riaprirà.
         </p>
         <div class="hero-actions" aria-label="Azioni principali">
           <MagneticButton href="#consulenza" variant="primary" class="landing-magnetic">
-            Richiedi una consulenza gratuita
+            Iscriviti per il prossimo bando
           </MagneticButton>
           <MagneticButton href="#guida-bando" variant="secondary" class="landing-magnetic">
             Verifica i requisiti
@@ -511,16 +510,16 @@
         <div class="badge-row" aria-label="Punti chiave del bando">
           <span><span aria-hidden="true">✓</span> Fino al 75% a fondo perduto</span>
           <span><span aria-hidden="true">✓</span> Fino a 10.000€</span>
-          <span><span aria-hidden="true">✓</span> Domande fino al 31 luglio 2026</span>
+          <span><span aria-hidden="true">⏸</span> Bando 2026 chiuso: iscriviti al prossimo</span>
         </div>
       </div>
       </RevealOnScroll>
 
       <RevealOnScroll animation="scale" delay={120}>
       <div class="hero-panel" aria-label="Sintesi contributo">
-        <div class="panel-topline">Sportello aperto</div>
+        <div class="panel-topline">Bando 2026 chiuso</div>
         <div class="grant-number">75%</div>
-        <p>del progetto può essere coperto dal contributo regionale</p>
+        <p>del progetto poteva essere coperto dal contributo regionale</p>
         <div class="panel-divider"></div>
         <div class="panel-stats">
           <div>
@@ -529,11 +528,11 @@
           </div>
           <div>
             <strong>31 luglio</strong>
-            <span>scadenza ore 16:00</span>
+            <span>chiusura sportello 2026</span>
           </div>
         </div>
         <MagneticButton href="#consulenza" variant="primary" class="panel-magnetic">
-          Partiamo dal tuo processo
+          Iscriviti per il prossimo bando
         </MagneticButton>
       </div>
       </RevealOnScroll>
@@ -983,20 +982,24 @@
     <div class="section-container urgency-grid">
       <RevealOnScroll animation="fly-up">
       <div>
-        <p class="eyebrow">Perché muoversi subito</p>
-        <h2>Le risorse sono limitate</h2>
+        <p class="eyebrow">Cosa è successo</p>
+        <h2>Il fondo da 1 milione di euro si è esaurito</h2>
         <p>
-          Il fondo disponibile è pari a 1 milione di euro. La procedura è a sportello: muoversi subito significa scegliere il progetto giusto, capire quanto investire e arrivare con una proposta chiara prima che le risorse si esauriscano.
+          La procedura era a sportello: le domande arrivate prima hanno esaurito il fondo disponibile prima della scadenza formale del 31 luglio. Non è stato ancora annunciato un nuovo round per il 2026.
         </p>
       </div>
       </RevealOnScroll>
       <RevealOnScroll animation="scale" delay={100}>
-      <AnimatedCountdown
-        targetDate="2026-07-31T16:00:00+02:00"
-        title="Lo sportello chiude il 31 luglio 2026."
-        subtitle="Le domande sono valutate a sportello: prima si chiarisce il progetto, meglio si può decidere se procedere."
-        footnote="Countdown informativo basato sulla scadenza ufficiale del 31 luglio 2026, ore 16:00."
-      />
+      <div class="urgency-closed-card">
+        <p class="urgency-closed-card__eyebrow">Bando 2026</p>
+        <p class="urgency-closed-card__status">Chiuso · risorse esaurite</p>
+        <p class="urgency-closed-card__detail">
+          Sportello attivo dal 10 giugno alle ore 16:00 del 31 luglio 2026. Nessun nuovo round annunciato ad oggi.
+        </p>
+        <MagneticButton href="#consulenza" variant="secondary" class="landing-magnetic">
+          Iscriviti per il prossimo bando
+        </MagneticButton>
+      </div>
       </RevealOnScroll>
     </div>
   </section>
@@ -1028,9 +1031,9 @@
     <div class="section-container cta-grid">
       <RevealOnScroll animation="fly-up">
       <div class="final-copy">
-        <p class="eyebrow">Consulenza gratuita</p>
-        <h2>Scopri se la tua azienda può ottenere il contributo</h2>
-        <p>In 30 minuti capiamo se ha senso muoversi, quali processi migliorare e quale progetto AI può portare più valore.</p>
+        <p class="eyebrow">Bando chiuso, progetto no</p>
+        <h2>Iscriviti per sapere quando riapre (e intanto parliamo del progetto)</h2>
+        <p>Lasciaci i tuoi dati: ti avvisiamo se e quando la Regione riapre lo sportello. Nel frattempo, in 30 minuti capiamo se ha senso muoversi, quali processi migliorare e quale progetto AI può portare più valore, con o senza contributo.</p>
         <div class="final-points">
           <span>Requisiti</span>
           <span>Idea progetto</span>
@@ -1062,7 +1065,7 @@
           <textarea bind:value={formData.message} name="message" rows="5" required placeholder="Raccontaci quale attività vorresti velocizzare o semplificare"></textarea>
         </label>
         <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Invio in corso...' : 'Richiedi la consulenza gratuita'}
+          {isSubmitting ? 'Invio in corso...' : 'Iscriviti e prenota una consulenza gratuita'}
         </button>
         {#if submitMessage}
           <p class:success-message={submitStatus === 'success'} class:error-message={submitStatus === 'error'}>
@@ -1918,6 +1921,41 @@
   .faq-layout {
     display: grid;
     gap: 2rem;
+  }
+
+  .urgency-closed-card {
+    display: grid;
+    gap: 0.6rem;
+    padding: 1.6rem;
+    border-radius: 1.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.035));
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(18px);
+  }
+
+  .urgency-closed-card__eyebrow {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .urgency-closed-card__status {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #f0a4c1;
+  }
+
+  .urgency-closed-card__detail {
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .urgency-closed-card :global(.landing-magnetic) {
+    margin-top: 0.5rem;
+    width: fit-content;
   }
 
   .urgency-section h2,
