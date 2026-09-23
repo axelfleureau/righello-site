@@ -586,22 +586,6 @@
     }
   }
 
-  .section-padding {
-    padding: var(--section-padding-sm) 0;
-  }
-
-  @media (min-width: 768px) {
-    .section-padding {
-      padding: var(--section-padding-md) 0;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .section-padding {
-      padding: var(--section-padding-lg) 0;
-    }
-  }
-
   .services-section {
     padding: var(--section-padding-sm) 0;
   }

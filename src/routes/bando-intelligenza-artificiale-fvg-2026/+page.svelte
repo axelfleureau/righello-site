@@ -110,7 +110,7 @@
     { title: 'PMI commerciale', points: ['CRM intelligente', 'Email automatiche', 'Supporto vendite'] },
   ];
 
-  const clientProofs = [
+  const clientProofs: { name: string; text: string; href?: string }[] = [
     {
       name: 'Óptima',
       text: 'Una piattaforma AI per marketing, task, clienti, preventivi, contenuti e automazioni. Non una demo: un sistema operativo per far lavorare meglio un team.',
@@ -118,6 +118,7 @@
     {
       name: 'Tetha',
       text: 'Gestionale con documenti, scadenze, preventivi, PDF e assistente AI. Il tipo di progetto in cui l’AI serve a trovare informazioni e ridurre lavoro manuale.',
+      href: 'https://tetha.wearerighello.com',
     },
     {
       name: 'Hermes',
@@ -126,6 +127,7 @@
     {
       name: 'Reguta',
       text: 'Dalla comunicazione al gestionale operativo: lavoratori, sicurezza, macchinari, botti, manutenzioni, scadenze e documenti in un sistema più ordinato.',
+      href: 'https://www.instagram.com/reguta.1928/',
     },
   ];
 
@@ -918,7 +920,7 @@
         {#each clientProofs as proof, i}
           <RevealOnScroll animation="fly-up" stagger={70} index={i}>
             {#if proof.href}
-              <a href={proof.href} class="client-proof-card">
+              <a href={proof.href} target="_blank" rel="noreferrer" class="client-proof-card">
                 <span>{proof.name}</span>
                 <p>{proof.text}</p>
               </a>

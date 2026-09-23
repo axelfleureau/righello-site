@@ -752,67 +752,6 @@
     gap: 1rem;
   }
   
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #D6487E, #B83B6A);
-    color: white;
-    font-weight: 600;
-    border-radius: 9999px;
-    transition: all 0.3s ease;
-    min-height: 52px;
-    font-size: 1rem;
-  }
-  
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(214, 72, 126, 0.4);
-  }
-  
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
-    font-weight: 600;
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-    min-height: 52px;
-    font-size: 1rem;
-  }
-  
-  :global([data-theme="light"]) .btn-secondary {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.1);
-  }
-  
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(214, 72, 126, 0.5);
-  }
-  
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.875rem 1.75rem;
-    border: 2px solid #D6487E;
-    color: #D6487E;
-    font-weight: 600;
-    border-radius: 9999px;
-    transition: all 0.3s ease;
-    min-height: 48px;
-  }
-  
-  .btn-outline:hover {
-    background: #D6487E;
-    color: white;
-  }
-
   /* Local entry links */
   .local-entry-section {
     padding: 0 0 var(--section-padding-sm);
@@ -1523,13 +1462,6 @@
     min-width: 0;
   }
   
-  .cta-title {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-  }
-  
   .cta-subtitle {
     font-size: 1.0625rem;
     color: var(--text-secondary);
@@ -1547,32 +1479,12 @@
       border-radius: 1.5rem;
     }
 
-    .cta-buttons :global(.magnetic-button),
-    .cta-buttons :global(.btn-primary-large) {
+    .cta-buttons :global(.magnetic-button) {
       width: 100%;
       min-height: 56px;
     }
   }
-  
-  .btn-primary-large {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem 2.5rem;
-    background: linear-gradient(135deg, #D6487E, #B83B6A);
-    color: white;
-    font-weight: 600;
-    font-size: 1.0625rem;
-    border-radius: 9999px;
-    transition: all 0.3s ease;
-    min-height: 56px;
-  }
-  
-  .btn-primary-large:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(214, 72, 126, 0.4);
-  }
-  
+
   .cta-contact {
     font-size: 0.9375rem;
     color: var(--text-secondary);
