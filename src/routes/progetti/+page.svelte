@@ -17,47 +17,66 @@
     chips: string[];
   };
 
+  // Base data (href, image, imagePosition) comes from case-studies.ts, the single
+  // source of truth for every project. Only the hero-specific pitch copy is
+  // overridden here, since this section needs punchier copy than the case-study grid.
+  type FeaturedHighlight = {
+    id: string;
+    eyebrow: string;
+    title: string;
+    text: string;
+    chips: string[];
+  };
+
+  const featuredHighlights: FeaturedHighlight[] = [
+    {
+      id: 'buffr',
+      eyebrow: 'Prodotto iOS',
+      title: 'Replay istantanei dal tuo iPhone.',
+      text:
+        'Una camera buffer per sport, live event e creator: registra in continuo e salva gli ultimi secondi quando succede l’azione.',
+      chips: ['App iOS', 'UX prodotto', 'Mobile', 'Brand'],
+    },
+    {
+      id: 'lumis',
+      eyebrow: 'Web app proprietaria',
+      title: 'Gallery eventi pensate per lavorare, non solo per mostrare foto.',
+      text:
+        'Un prodotto per organizzare, pubblicare e condividere raccolte fotografiche in modo pulito, veloce e riconoscibile.',
+      chips: ['SaaS', 'Frontend', 'Dashboard', 'Media'],
+    },
+    {
+      id: 'neura',
+      eyebrow: 'Esperienza digitale',
+      title: 'Un prodotto complesso reso più leggibile.',
+      text:
+        'Architettura informativa, interfaccia e copy per spiegare valore, funzione e prossima azione senza appesantire il percorso.',
+      chips: ['UX/UI', 'Copy', 'Frontend', 'Posizionamento'],
+    },
+  ];
+
   const heroStats = [
     { value: '50+', label: 'brand e aziende seguite' },
     { value: '3', label: 'aree integrate: sito, contenuti, tecnologia' },
     { value: '1', label: 'obiettivo: farti scegliere meglio' },
   ];
 
-  const featuredProjects: FeaturedProject[] = [
-    {
-      name: 'BUFFR',
-      eyebrow: 'Prodotto iOS',
-      title: 'Replay istantanei dal tuo iPhone.',
-      text:
-        'Una camera buffer per sport, live event e creator: registra in continuo e salva gli ultimi secondi quando succede l’azione.',
-      href: '/buffr',
-      image: '/products/buffr/replay-in-un-tap.jpg',
-      imagePosition: 'center top',
-      chips: ['App iOS', 'UX prodotto', 'Mobile', 'Brand'],
-    },
-    {
-      name: 'Lumis',
-      eyebrow: 'Web app proprietaria',
-      title: 'Gallery eventi pensate per lavorare, non solo per mostrare foto.',
-      text:
-        'Un prodotto per organizzare, pubblicare e condividere raccolte fotografiche in modo pulito, veloce e riconoscibile.',
-      href: 'https://lumis.wearerighello.com',
-      image: '/projects/cards/lumis-card.jpg',
-      imagePosition: 'center top',
-      chips: ['SaaS', 'Frontend', 'Dashboard', 'Media'],
-    },
-    {
-      name: 'Neura',
-      eyebrow: 'Esperienza digitale',
-      title: 'Un prodotto complesso reso più leggibile.',
-      text:
-        'Architettura informativa, interfaccia e copy per spiegare valore, funzione e prossima azione senza appesantire il percorso.',
-      href: 'https://neura.wearerighello.com',
-      image: '/projects/cards/neura-card.jpg',
-      imagePosition: 'left top',
-      chips: ['UX/UI', 'Copy', 'Frontend', 'Posizionamento'],
-    },
-  ];
+  const featuredProjects: FeaturedProject[] = featuredHighlights.map((highlight) => {
+    const study = caseStudies.find((candidate) => candidate.id === highlight.id);
+    if (!study) {
+      throw new Error(`featuredHighlights references unknown case study id: ${highlight.id}`);
+    }
+    return {
+      name: study.name,
+      eyebrow: highlight.eyebrow,
+      title: highlight.title,
+      text: highlight.text,
+      href: study.href ?? caseStudyHref(study),
+      image: study.image,
+      imagePosition: study.imagePosition,
+      chips: highlight.chips,
+    };
+  });
 
   const pillars = [
     {

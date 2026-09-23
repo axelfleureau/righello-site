@@ -106,7 +106,7 @@
   ];
   
   const stats = [
-    { value: 50, suffix: '+', label: 'Progetti completati' },
+    { value: 470, suffix: '+', label: 'Progetti completati' },
     { value: 30, suffix: '+', label: 'Clienti attivi' },
     { value: 4, suffix: '', label: 'Dipartimenti integrati' },
   ];

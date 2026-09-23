@@ -91,6 +91,7 @@ export const caseStudies: CaseStudy[] = [
     text:
       'Quando il tema è sanitario, design e contenuti devono abbassare l’attrito: spiegare, rassicurare e guidare il paziente verso il passo successivo.',
     focus: ['Sito', 'Copy chiaro', 'Fiducia', 'Percorso utente'],
+    href: 'https://www.fiumepolosanitario.it',
     image: fiumedicaThumbnail,
     imagePosition: 'center center',
   },
@@ -118,6 +119,31 @@ export const caseStudies: CaseStudy[] = [
     href: 'https://www.instagram.com/rivieraresorthotel/',
     logo: '/logos/riviera-resort.png',
     image: '/thumbnails/thumb-8424e05df0ca.jpg',
+  },
+  {
+    id: 'neura',
+    name: 'Neura',
+    sector: 'EdTech per famiglie',
+    category: 'digital',
+    headline: 'Un assistente AI pensato per chi non impara come tutti gli altri, non un chatbot generico.',
+    text:
+      'Le famiglie con figli con difficoltà di apprendimento spendono in ripetizioni private senza sapere se il gap si sta davvero colmando. Neura segue lo studente quando si blocca, spiega passo passo e si adatta al suo modo di studiare, in abbonamento invece che a ripetizione.',
+    focus: ['AI education', 'UX inclusiva', 'Prodotto in abbonamento', 'Onboarding famiglie'],
+    href: 'https://neura.wearerighello.com',
+    image: '/projects/cards/neura-card.jpg',
+    imagePosition: 'left top',
+  },
+  {
+    id: 'tetha',
+    name: 'Tetha',
+    sector: 'SaaS per l\'edilizia',
+    category: 'digital',
+    headline: 'Un software che tiene il cantiere in regola prima che un documento scaduto lo fermi.',
+    text:
+      'Imprese edili, lattonieri e subappaltatori tenevano scadenze e idoneità sanitarie su fogli Excel sparsi. Tetha riconosce i documenti mandati su Telegram, avvisa trenta giorni prima di ogni scadenza e prepara in un clic il dossier che il committente chiede al cancello del cantiere.',
+    focus: ['SaaS verticale', 'Bot Telegram', 'Automazione documentale', 'Dashboard'],
+    href: 'https://tetha.wearerighello.com',
+    image: '/thumbnails/thumb-tetha.jpg',
   },
 ];
 
