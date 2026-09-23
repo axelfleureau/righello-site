@@ -186,9 +186,9 @@
   const testimonials = [
     {
       quote: 'Un team giovane e specializzato che ha capito subito le nostre esigenze. Ci hanno costruito un sito web su misura per gestire il nostro portafoglio immobiliare — funzionale, veloce e pensato per convertire.',
-      name: 'Tubaro & Co',
+      name: 'Tubaro & Co.',
       role: 'Immobiliare',
-      company: 'Tubaro & Co'
+      company: 'Tubaro & Co.'
     },
     {
       quote: 'Righello è il nostro punto di forza. Grazie a loro riusciamo a comunicare davvero il valore del nostro lavoro e a creare un legame autentico con i nostri clienti. Non è solo marketing, è relazione.',
