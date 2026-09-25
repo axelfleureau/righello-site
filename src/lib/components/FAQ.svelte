@@ -20,7 +20,7 @@
     },
     {
       question: "Quali risultati posso aspettarmi?",
-      answer: "I risultati variano in base al settore e agli obiettivi. I nostri clienti vedono in media un aumento del 340% dell'engagement e un ROAS di 8.5x sulle campagne advertising. Forniamo report mensili dettagliati con KPI trasparenti, così i numeri parlano da soli."
+      answer: "I risultati variano in base al settore e agli obiettivi. I nostri clienti vedono in media un aumento del 320% dell'engagement e un ROAS di 8.7x sulle campagne advertising. Forniamo report mensili dettagliati con KPI trasparenti, così i numeri parlano da soli."
     },
     {
       question: "Quanto tempo ci vuole per vedere i primi risultati?",
