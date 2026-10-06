@@ -2,10 +2,29 @@
   import { onDestroy } from 'svelte';
   import type { CaseStudy } from '$lib/data/case-studies';
   import PhoneFrame from './PhoneFrame.svelte';
+  import MatchProduction from './infographics/MatchProduction.svelte';
+  import CH77Plus from './infographics/CH77Plus.svelte';
+  import PAAssistant from './infographics/PAAssistant.svelte';
+  import DicoFlow from './infographics/DicoFlow.svelte';
 
   export let study: CaseStudy;
   export let eager = false;
   export let showIcon = true;
+  /** Vero quando il palco è fuori scena (vetrina a scene): le infografiche mettono in pausa. */
+  export let idle = false;
+
+  /** Dei due colori del prodotto, il più chiaro è quello che risalta sul fondo scuro delle infografiche. */
+  const luma = (hex: string) => {
+    const n = parseInt(hex.slice(1), 16);
+    return 0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255);
+  };
+
+  const graphics = {
+    'match-production': MatchProduction,
+    'ch77-plus': CH77Plus,
+    'pa-assistant': PAAssistant,
+    'dico-flow': DicoFlow,
+  };
 
   let el: HTMLElement;
   let raf = 0;
@@ -61,7 +80,15 @@
   });
 </script>
 
-{#if stage}
+{#if stage?.type === 'infographic' && stage.graphic}
+  <div
+    class="dev dev--infographic"
+    style="--a:{study.accent[0]}; --b:{study.accent[1]}; --hi:{luma(study.accent[0]) >= luma(study.accent[1]) ? study.accent[0] : study.accent[1]}"
+  >
+    <div class="dev__glow" aria-hidden="true"></div>
+    <svelte:component this={graphics[stage.graphic]} {idle} />
+  </div>
+{:else if stage}
   <div
     class="dev dev--{stage.type}"
     style="--a:{study.accent[0]}; --b:{study.accent[1]}"

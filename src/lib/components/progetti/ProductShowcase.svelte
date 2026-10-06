@@ -207,7 +207,7 @@
             </div>
 
             <div class="scene__stage" data-fx="stage">
-              <ProductDevice {study} eager={i === 0} />
+              <ProductDevice {study} eager={i === 0} idle={mode === 'scene' && i !== active} />
             </div>
           </div>
         </article>

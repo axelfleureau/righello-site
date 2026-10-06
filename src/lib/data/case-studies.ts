@@ -6,11 +6,16 @@ export interface ProjectStatus {
   label: string;
 }
 
+export type InfographicId = 'match-production' | 'ch77-plus' | 'pa-assistant' | 'dico-flow';
+
 export interface ProjectStage {
-  type: 'browser' | 'phones' | 'tablet';
+  type: 'browser' | 'phones' | 'tablet' | 'infographic';
+  /** Per 'infographic' è la copertina (anteprime, schede, social), non viene disegnata. */
   src: string;
   alt: string;
   screens?: string[];
+  /** Solo per type 'infographic': quale infografica animata disegnare. */
+  graphic?: InfographicId;
 }
 
 export interface CaseStudy {
@@ -123,6 +128,57 @@ export const caseStudies: CaseStudy[] = [
       type: 'browser',
       src: '/progetti/stage/buffr-live.webp',
       alt: 'BUFFR Live: la pagina delle partite del giorno con i risultati in diretta',
+    },
+    featured: true,
+  },
+  {
+    id: 'regia-tv-studio',
+    name: 'Produzione delle partite',
+    sector: 'Regia automatica per lo sport',
+    category: 'digital',
+    kind: 'broadcast',
+    status: { tone: 'internal', label: 'Motore interno in uso' },
+    platform: ['Render automatico'],
+    audience: 'Produzione televisiva sportiva',
+    accent: ['#E11D2E', '#F5C400'],
+    headline: 'Le riprese entrano, la partita da televisione esce.',
+    text:
+      'Il Motore TV Studio mette insieme il video dal campo, le squadre, gli eventi della partita e gli sponsor, e ne fa una partita da televisione con le grafiche già al loro posto: tempo e risultato, formazioni, rigori, pubblicità e replay.',
+    focus: ['Grafiche automatiche', 'Replay e highlights', 'Formazioni e rigori', 'Sponsor in campo'],
+    icon: '/progetti/icons/produzione-partite.webp',
+    image: '/progetti/regia/gol-scorebug.webp',
+    imagePosition: 'center center',
+    stage: {
+      type: 'infographic',
+      graphic: 'match-production',
+      src: '/progetti/regia/gol-scorebug.webp',
+      alt: 'Schema animato della produzione delle partite: riprese, squadre, eventi e sponsor entrano nel Motore TV Studio e escono come partita con le grafiche, replay e highlights, e programmi per Canale 77 e i televisori',
+    },
+    featured: true,
+  },
+  {
+    id: 'ch77-plus',
+    name: 'CH77+',
+    sector: 'Canale 77 Premium e dirette in esclusiva',
+    category: 'digital',
+    kind: 'broadcast',
+    status: { tone: 'live', label: 'Attivazione Premium in produzione' },
+    platform: ['Web', 'HbbTV', 'Smart TV', 'Android TV'],
+    audience: 'Spettatori di sport locale',
+    accent: ['#4F7CFF', '#FACC15'],
+    headline: 'Il televisore si sblocca con il telefono, in pochi secondi.',
+    text:
+      'Il televisore mostra un codice e un QR, il telefono apre la pagina di attivazione, si accede e si attiva Premium: la TV se ne accorge da sola e sblocca le dirette in esclusiva, a partire dalle partite.',
+    focus: ['Abbinamento TV e telefono', 'Accesso con account', 'Dirette in esclusiva', 'HbbTV e Android TV'],
+    href: 'https://ch77.wearerighello.com',
+    logo: '/logos/canale-77.webp',
+    icon: '/progetti/icons/ch77-plus.webp',
+    image: '/progetti/stage/canale77.webp',
+    stage: {
+      type: 'infographic',
+      graphic: 'ch77-plus',
+      src: '/progetti/stage/canale77.webp',
+      alt: 'Schema animato dell\'attivazione di CH77+: la TV mostra codice e QR, il telefono apre la pagina di attivazione, si accede, la TV controlla ogni tre secondi e si sblocca, e compaiono le dirette in esclusiva',
     },
     featured: true,
   },
@@ -266,28 +322,6 @@ export const caseStudies: CaseStudy[] = [
     imagePosition: 'center center',
   },
   {
-    id: 'regia-tv-studio',
-    name: 'Regia TV Studio',
-    sector: 'Produzione delle partite',
-    category: 'digital',
-    kind: 'broadcast',
-    status: { tone: 'internal', label: 'Motore interno in uso' },
-    platform: ['Render automatico'],
-    audience: 'Produzione televisiva sportiva',
-    accent: ['#E11D2E', '#F5C400'],
-    headline: 'La regia che monta la partita.',
-    text:
-      'Il motore di produzione che trasforma le riprese in una partita da televisione: scorebug, replay in campo, formazioni, classifica e barre pubblicitarie, tutto generato in automatico.',
-    focus: ['Grafiche broadcast', 'Replay', 'Formazioni e classifica', 'Render automatico'],
-    image: '/progetti/regia/gol-scorebug.webp',
-    imagePosition: 'center center',
-    stage: {
-      type: 'browser',
-      src: '/progetti/regia/gol-scorebug.webp',
-      alt: 'Regia TV Studio: una partita con lo scorebug che segna il tempo e si accende al gol',
-    },
-  },
-  {
     id: 'canale77',
     name: 'Canale 77 On Demand',
     sector: 'Piattaforma video on demand e diretta',
@@ -320,17 +354,42 @@ export const caseStudies: CaseStudy[] = [
     platform: ['Web'],
     audience: 'Comuni, enti e pubblica amministrazione',
     accent: ['#F2B83B', '#1E3A5F'],
-    headline: 'Le comunicazioni istituzionali non restano sepolte in un sito: arrivano dove le persone guardano davvero.',
+    headline: 'Un solo messaggio per uscita, e i dettagli a un clic.',
     text:
-      'Comuni ed enti pubblicavano avvisi su siti istituzionali che quasi nessuno visitava. DICO porta le informazioni della PA direttamente su WhatsApp, Telegram e social, con un portale già scelto da comuni ed enti in Friuli Venezia Giulia e Veneto.',
-    focus: ['Piattaforma PA', 'Comunicazione multicanale', 'WhatsApp & Telegram', 'Portale enti'],
+      'DICO porta le comunicazioni dei Comuni dove le persone guardano davvero: WhatsApp e Telegram. La piattaforma è una redazione: si incolla un testo o si indicano fino a cinque link del sito del Comune, e un pulsante, «Prepara il messaggio», legge le pagine, compila i campi e riscrive nello stile dell\'ente, usando i messaggi già pubblicati. Poi si controlla, la redazione ritocca e approva. Esce un solo messaggio per volta, di norma uno a settimana, con le emergenze in cima e una riga per tematica: ogni link apre la pagina della settimana sul sito del Comune, che resta online anche dopo. L\'archivio e gli allegati sono ospitati in Europa.',
+    focus: ['Messaggio settimanale', 'Pagine per tematica', 'Redazione con IA', 'Portale enti'],
     href: 'https://www.dico.online',
     logo: '/logos/dico-online.webp',
     image: '/progetti/stage/dico.webp',
     stage: {
-      type: 'browser',
+      type: 'infographic',
+      graphic: 'dico-flow',
       src: '/progetti/stage/dico.webp',
-      alt: 'DICO.ONLINE: la pagina iniziale con i prossimi eventi per i Comuni',
+      alt: 'Schema animato di DICO: la redazione prepara il messaggio, lo approva, esce un solo messaggio a settimana con un link per tematica e ogni link apre la pagina dedicata di quella tematica',
+    },
+  },
+  {
+    id: 'assistenti-pa',
+    name: 'Assistenti AI per i Comuni',
+    sector: 'Assistenti automatici per i cittadini',
+    category: 'digital',
+    kind: 'piattaforma',
+    status: { tone: 'live', label: 'In uso in Comuni del Friuli Venezia Giulia' },
+    platform: ['WhatsApp', 'Web'],
+    audience: 'Comuni e pubblica amministrazione',
+    accent: ['#F2B83B', '#1E3A5F'],
+    headline: 'Rispondono ai cittadini con i dati del Comune, non con quelli di Internet.',
+    text:
+      'Assistenti alimentati dai dati di ciascun ente. Il bot WhatsApp di un Comune legge le pagine ufficiali (servizi, eventi, notizie) e risponde indicando la fonte; i dati personali vengono anonimizzati prima di arrivare al modello; se l\'informazione non c\'è, lo dice onestamente invece di inventarla. Anche DICO ha una memoria per ogni Comune: i messaggi già pubblicati, usati per scrivere i nuovi nello stile dell\'ente, sempre con il controllo della redazione.',
+    focus: ['Assistente su WhatsApp', 'Risposte con la fonte', 'Dati personali anonimizzati', 'Memoria di ogni Comune'],
+    icon: '/progetti/icons/assistenti-pa.webp',
+    image: '/progetti/icons/assistenti-pa.webp',
+    imagePosition: 'center center',
+    stage: {
+      type: 'infographic',
+      graphic: 'pa-assistant',
+      src: '/progetti/icons/assistenti-pa.webp',
+      alt: 'Schema animato di un assistente del Comune: il cittadino chiede su WhatsApp, i dati personali vengono coperti, l\'assistente cerca nelle fonti del Comune e risponde indicando la fonte oppure dicendo che non lo sa',
     },
   },
   {
