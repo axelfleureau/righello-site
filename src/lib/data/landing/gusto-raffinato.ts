@@ -119,7 +119,7 @@ export default {
       bullets: [
         'Allergie (i 14 allergeni di legge), intolleranze, come mangi, cose che non mangio',
         'In ogni caso, sempre: «Dillo sempre al personale»',
-        'Le esigenze restano sul tuo telefono (nell'account solo se lo accendi); le dai al locale solo se lo decidi, per quella prenotazione',
+        "Le esigenze restano sul tuo telefono (nell'account solo se lo accendi); le dai al locale solo se lo decidi, per quella prenotazione",
         'Se le dai, il locale le vede sul tavolo: sull\'iPad e sul palmare del cameriere'
       ],
       layout: 'full'

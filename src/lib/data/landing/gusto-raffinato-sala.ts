@@ -212,7 +212,7 @@ export default {
     {
       icon: 'shield',
       title: 'Allergie in evidenza',
-      text: 'L'allergia detta al tavolo resta in evidenza sulla riga del piatto e in testa alla scheda, scelta fra i 14 allergeni di legge.'
+      text: "L'allergia detta al tavolo resta in evidenza sulla riga del piatto e in testa alla scheda, scelta fra i 14 allergeni di legge."
     },
     {
       icon: 'users',
