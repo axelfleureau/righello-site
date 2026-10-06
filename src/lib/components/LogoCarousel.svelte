@@ -237,8 +237,12 @@
     display: flex;
   }
   
+  /* Senza flex: none le sequenze si restringono alla larghezza del contenitore
+     (le immagini con max-width in % valgono 0 nel calcolo del minimo) e la copia
+     successiva finisce sopra la prima: i loghi si compenetrano. */
   .sequence {
     display: flex;
+    flex: none;
     align-items: center;
   }
   
@@ -269,6 +273,7 @@
   .logo-image {
     height: var(--logo-height);
     width: auto;
+    max-width: none;
     object-fit: contain;
     pointer-events: none;
     user-select: none;
