@@ -188,7 +188,7 @@ export const caseStudies: CaseStudy[] = [
     text:
       'Il gestionale per chi ha un locale: la sala sull\'iPad, le comande dal telefono del cameriere, le prenotazioni e le tessere fedeltà. Con un\'app per i clienti e il catalogo dei locali del Friuli Venezia Giulia.',
     focus: ['iPad e iPhone', 'Sala e comande', 'Tessere fedeltà', 'App clienti'],
-    href: 'https://gusto-raffinato.pages.dev',
+    href: 'https://gustoraffinato.com',
     icon: '/progetti/icons/gusto-raffinato.webp',
     image: '/progetti/stage/gusto-raffinato.webp',
     stage: {

@@ -11,7 +11,7 @@ const config = {
   kit: {
     adapter: isVercel 
       ? adapterVercel({
-          runtime: 'nodejs20.x'
+          runtime: 'nodejs24.x'
         })
       : adapterNode({
           out: 'build'
