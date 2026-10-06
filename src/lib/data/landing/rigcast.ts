@@ -55,7 +55,7 @@ export default {
         'La destinazione è una scheda con il nome, il protocollo e l\'indirizzo: la cambi o la modifichi, e puoi incollare direttamente il link ricevuto dalla regia. La qualità si sceglie per situazione, non a numeri. Un solo pulsante verde: Go Live.',
       bullets: [
         'Tre qualità pronte: Rete debole, Standard, Sport. Oppure su misura, da 1 a 20 Mb/s',
-        'Chiavi e passphrase stanno nel Portachiavi dell\'iPhone',
+        'Chiavi e passphrase restano custodite in modo sicuro sull\'iPhone',
         'Controlli prima della diretta: ti avvisa, per esempio, di collegare l\'alimentazione',
       ],
       media: [
@@ -99,7 +99,7 @@ export default {
       title: 'In onda il bitrate non scende da solo.',
       highlight: 'non scende da solo',
       text:
-        'Per la televisione il bitrate scelto si tiene: è costante, e l\'adattivo parte spento. Se la rete cade, l\'app riprova da sola finché torna o finché la chiudi tu. Se per cinque secondi non esce quasi niente, riapre il collegamento da sola. A fine diretta un riepilogo dice com\'è andata.',
+        'Per la televisione il bitrate scelto si tiene: è costante, e l\'adattivo parte spento. Se la rete cade, l\'app riprova da sola finché torna o finché la chiudi tu. Se per qualche secondo non esce quasi niente, riapre il collegamento da sola. A fine diretta un riepilogo dice com\'è andata.',
       bullets: [
         'Video senza fotogrammi B e un fotogramma chiave ogni secondo, per i decoder di regia',
         'Audio AAC 48 kHz stereo, che continua anche se esci dall\'app',
@@ -117,7 +117,7 @@ export default {
     { icon: 'gear', title: 'Controlli manuali', text: 'Fuoco, esposizione e bianco bloccati a mano. Stabilizzazione su tre livelli.' },
     { icon: 'chart', title: 'Telemetria', text: 'Bitrate, rete, batteria e temperatura del telefono, a portata di tocco.' },
     { icon: 'bell', title: 'Avvisi utili', text: 'Calore, batteria sotto il 20% senza carica, rete assente: te lo dice mentre sei in onda.' },
-    { icon: 'lock', title: 'Chiavi al sicuro', text: 'Chiave e passphrase nel Portachiavi. Il registro degli eventi le oscura.' },
+    { icon: 'lock', title: 'Chiavi al sicuro', text: 'Chiave e passphrase custodite in modo sicuro sul telefono. Il registro degli eventi le oscura.' },
     { icon: 'file', title: 'Riepilogo e diagnosi', text: 'A fine diretta un riepilogo. Se serve, la diagnosi si invia con un tocco.' },
   ],
 
@@ -188,32 +188,32 @@ export default {
     {
       title: 'Il nucleo si prova senza camera',
       text:
-        'Indirizzi, stato, permessi e riconnessione stanno in un nucleo Swift senza camera né rete, con stato a fette e funzioni pure. Ogni lettura e scrittura passa da un punto solo.',
-      tags: ['Swift', 'SwiftUI', '48 test'],
+        'Indirizzi, stato, permessi e riconnessione sono una parte indipendente, che si prova senza camera né rete. Ogni lettura e scrittura passa da un punto solo. 48 test automatici la tengono ferma.',
+      tags: ['Test automatici', 'App nativa'],
     },
     {
       title: 'Un motore pensato per la regia',
       text:
-        'Codifica H.264 con VideoToolbox a bitrate costante, senza fotogrammi B, con un fotogramma chiave ogni secondo. La ripresa va alla stessa cadenza della diretta, per non scaldare il telefono.',
-      tags: ['HaishinKit', 'VideoToolbox', 'H.264'],
+        'Codifica H.264 a bitrate costante, senza fotogrammi B, con un fotogramma chiave ogni secondo, come vogliono i decoder di regia. La ripresa va alla stessa cadenza della diretta, per non scaldare il telefono.',
+      tags: ['H.264', 'Bitrate costante'],
     },
     {
       title: 'Comandi che non aspettano il video',
       text:
-        'I comandi all\'obiettivo hanno una coda loro, separata dai fotogrammi: lo zoom risponde mentre il video corre. La telemetria sta in una fetta a parte, e ogni secondo si ridisegnano solo i numeri.',
-      tags: ['AVFoundation', 'Coda dedicata'],
+        'I comandi all\'obiettivo hanno una corsia loro, separata dai fotogrammi: lo zoom risponde mentre il video corre. Ogni secondo si ridisegnano solo i numeri della telemetria.',
+      tags: ['Reattività', 'Controlli dedicati'],
     },
     {
       title: 'Segreti e diagnosi',
       text:
-        'Chiave e passphrase vivono nel Portachiavi. Il registro degli eventi le oscura, e la diagnosi esportabile unisce registro e dati MetricKit.',
-      tags: ['Portachiavi', 'MetricKit'],
+        'Chiave e passphrase sono custodite in modo sicuro sul telefono. Il registro degli eventi le oscura, e la diagnosi esportabile unisce registro e dati di funzionamento del telefono.',
+      tags: ['Sicurezza', 'Diagnosi'],
     },
   ],
 
   cta: {
     title: 'Vuoi provare Rig Cast nella tua regia?',
     highlight: 'Rig Cast',
-    text: 'L\'app è in prova su TestFlight, per iPhone con iOS 17 o successivo. Il collegamento con la regia (permessi, tally, ritorno video) è in sviluppo. Scrivici e la proviamo insieme.',
+    text: 'L\'app è in prova su TestFlight, per iPhone. Il collegamento con la regia (permessi, tally, ritorno video) è in sviluppo. Scrivici e la proviamo insieme.',
   },
 } satisfies Landing;

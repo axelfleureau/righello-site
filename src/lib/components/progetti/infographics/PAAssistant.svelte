@@ -85,7 +85,7 @@
                   <li style="--i:{i}"><span>{m}</span><span class="mask__v"><i></i></span></li>
                 {/each}
               </ul>
-              <p class="eng__x"><InfoIcon name="shield" />Coperti prima di arrivare al modello.</p>
+              <p class="eng__x"><InfoIcon name="shield" />Coperti prima di essere elaborati.</p>
             {:else if step === 2}
               <ul class="docs">
                 {#each paDocs as d, i}

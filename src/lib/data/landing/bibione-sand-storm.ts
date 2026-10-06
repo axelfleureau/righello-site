@@ -9,12 +9,12 @@ export default {
     {
       value: 23,
       label: 'indirizzi nella mappa del sito',
-      note: 'voci del sitemap.xml pubblico, contate il 6 ottobre 2026',
+      note: 'voci della mappa pubblica del sito, contate il 6 ottobre 2026',
     },
     {
       value: 58,
-      label: 'vecchi indirizzi rimandati con un 301',
-      note: 'righe di public/_redirects: ogni vecchio indirizzo WordPress porta alla pagina nuova',
+      label: 'vecchi indirizzi rimandati alla pagina nuova',
+      note: 'ogni vecchio indirizzo del sito precedente porta alla pagina giusta',
     },
     {
       value: 2,
@@ -24,7 +24,7 @@ export default {
     {
       value: 0,
       label: 'violazioni di accessibilità trovate',
-      note: 'controllo automatico axe-core del 6 ottobre 2026 su 15 pagine, in 8 stati',
+      note: 'controllo automatico di accessibilità del 6 ottobre 2026 su 15 pagine, in 8 stati',
     },
   ],
 
@@ -35,10 +35,10 @@ export default {
       title: 'Cambiare sito a tre settimane dall\'evento, con il ritorno già pronto',
       highlight: 'il ritorno già pronto',
       text:
-        'Il vecchio sito era un WordPress su un hosting esterno e il dominio era già in uso. Il nuovo sito è arrivato su www con una rotta di Cloudflare, senza toccare il DNS: per tornare indietro basta togliere una riga e rifare il deploy. I 58 vecchi indirizzi rimandano con un 301 alle pagine nuove, così Google non perde quello che aveva indicizzato.',
+        'Il vecchio sito stava su un servizio esterno e il dominio era già in uso. Il nuovo sito è arrivato su www senza toccare il resto del dominio: per tornare indietro basta una sola operazione. I 58 vecchi indirizzi rimandano alle pagine nuove, così Google non perde quello che aveva indicizzato.',
       bullets: [
         'Online dal 30 settembre 2026 su www.bibionesandstorm.it.',
-        'Il dominio senza www passa da un secondo Worker che fa solo il rimando.',
+        'Anche l\'indirizzo senza www porta al sito nuovo.',
         'Prima del passaggio, ogni pagina è stata confrontata con la vecchia, testo per testo.',
       ],
       media: [
@@ -67,7 +67,7 @@ export default {
       title: 'Pagine statiche, animazioni dove servono',
       highlight: 'animazioni dove servono',
       text:
-        'Il sito è esportato come pagine statiche e servito da Cloudflare: nei giorni dell\'evento non c\'è un server da far reggere. Le animazioni a scorrimento usano GSAP, con una rete di sicurezza: se lo script non parte, la pagina è comunque completa. Il video dell\'apertura sta già nell\'HTML e parte durante il caricamento, non dopo che React ha finito di prepararsi.',
+        'Il sito è fatto di pagine statiche, pronte e servite da una rete globale: nei giorni dell\'evento non c\'è un server da far reggere. Le animazioni a scorrimento hanno una rete di sicurezza: se non partono, la pagina è comunque completa. Il video dell\'apertura parte durante il caricamento, non dopo che la pagina ha finito di prepararsi.',
       bullets: [
         'Ogni animazione che parte da invisibile ha un controllo che la riporta in vista: la pagina non resta mai bianca.',
         'Il video dell\'apertura è stato provato contando i fotogrammi disegnati, non il tempo del lettore.',
@@ -103,7 +103,7 @@ export default {
       bullets: [
         'La lingua scelta si ricorda solo se il visitatore acconsente alle preferenze.',
         'Per aggiungere un giorno statistiche servirà una voce nel banner: lo script non si carica prima del consenso.',
-        'Il riquadro delle quote è lo stesso componente su tutte le pagine d\'iscrizione.',
+        'Il riquadro delle quote è lo stesso su tutte le pagine d\'iscrizione.',
       ],
       media: [
         {
@@ -123,11 +123,11 @@ export default {
       title: 'Lo shop: pass e merchandising, incasso diretto agli organizzatori',
       highlight: 'incasso diretto agli organizzatori',
       text:
-        'Accanto al sito c\'è uno shop in ambiente di prova: un solo Worker con database D1 e pagamenti Stripe Connect. L\'incasso arriva direttamente sul conto degli organizzatori e Righello non trattiene commissioni. Non accetta ancora pagamenti veri: si accendono quando gli organizzatori collegano il proprio conto Stripe.',
+        'Accanto al sito c\'è uno shop in ambiente di prova, con pagamento con carta sicuro. L\'incasso arriva direttamente sul conto degli organizzatori e Righello non trattiene commissioni. Non accetta ancora pagamenti veri: si accendono quando gli organizzatori collegano il proprio conto di incasso.',
       bullets: [
         'Una fascia «ambiente di test» resta sempre visibile.',
-        'Il webhook di pagamento verifica la firma ed è idempotente: una consegna ripetuta non scala due volte le scorte.',
-        'Un rimborso fatto da Stripe aggiorna da solo lo stato dell\'ordine.',
+        'Ogni conferma di pagamento è verificata e conta una volta sola: un avviso ripetuto non scala due volte le scorte.',
+        'Un rimborso aggiorna da solo lo stato dell\'ordine.',
       ],
       media: [
         {
@@ -147,12 +147,12 @@ export default {
     {
       icon: 'globe',
       title: 'Italiano e inglese',
-      text: 'Un tasto nella barra cambia lingua; l\'HTML di partenza è sempre italiano.',
+      text: 'Un tasto nella barra cambia lingua; la pagina di partenza è sempre in italiano.',
     },
     {
       icon: 'play',
       title: 'Video che parte subito',
-      text: 'Il video dell\'apertura è nell\'HTML e parte durante il caricamento della pagina.',
+      text: 'Il video dell\'apertura parte durante il caricamento della pagina.',
     },
     {
       icon: 'clock',
@@ -172,7 +172,7 @@ export default {
     {
       icon: 'link',
       title: 'Indirizzi vecchi salvi',
-      text: 'Cinquantotto vecchi indirizzi rimandano con un 301 alla pagina nuova.',
+      text: 'Cinquantotto vecchi indirizzi rimandano alla pagina nuova.',
     },
     {
       icon: 'lock',
@@ -250,47 +250,47 @@ export default {
           ratio: '1600/540',
           frame: 'browser',
         },
-        note: 'L\'intestazione dello shop: finché gli organizzatori non collegano Stripe, nessun pagamento è reale.',
+        note: 'L\'intestazione dello shop: finché gli organizzatori non collegano il proprio conto, nessun pagamento è reale.',
       },
     ],
   },
 
   tech: [
     {
-      title: 'Next.js esportato statico',
+      title: 'Pagine statiche, niente da far reggere',
       text:
-        'Il sito è un export statico di Next.js, servito dagli asset di un Worker Cloudflare. Nessun codice gira sul server a ogni visita.',
-      tags: ['Next.js', 'React', 'Tailwind', 'GSAP', 'Cloudflare Workers'],
+        'Il sito è fatto di pagine già pronte, servite da una rete globale. Nessun programma lavora a ogni visita: per questo resta veloce anche nei giorni dell\'evento.',
+      tags: ['Veloce', 'Infrastruttura globale'],
     },
     {
       title: 'Un cambio che si può disfare',
       text:
-        'www arriva al Worker con una rotta, senza cambiare il DNS. Il vecchio WordPress resta consultabile in sola lettura, fuori da Google, per i confronti.',
-      tags: ['Rotte Cloudflare', 'Redirect 301', 'Worker'],
+        'Il nuovo sito è arrivato senza modificare il dominio, quindi si può tornare indietro in un attimo. Il vecchio sito resta consultabile in sola lettura, fuori da Google, per i confronti.',
+      tags: ['Passaggio reversibile', 'Indirizzi vecchi salvi'],
     },
     {
-      title: 'Immagini con un controllo prima del deploy',
+      title: 'Immagini con un controllo prima della pubblicazione',
       text:
-        'Le foto sono su Cloudinary tramite un caricatore su misura. Prima di ogni pubblicazione uno script verifica che ogni foto citata dal sito esista davvero.',
-      tags: ['Cloudinary', 'next/image'],
+        'Le foto sono servite da un archivio di immagini ottimizzate. Prima di ogni pubblicazione un controllo verifica che ogni foto citata dal sito esista davvero.',
+      tags: ['Immagini ottimizzate', 'Controlli automatici'],
     },
     {
-      title: 'Intestazioni e cache',
+      title: 'Veloce e protetto',
       text:
-        'I file con l\'impronta nel nome restano in cache un anno. Ci sono le intestazioni di sicurezza di base, e la copia di validazione è tenuta fuori dai motori di ricerca.',
-      tags: ['Cache-Control', 'Permissions-Policy', 'noindex'],
+        'I file che non cambiano restano pronti a lungo, ci sono le protezioni di base del browser, e la copia di validazione è tenuta fuori dai motori di ricerca.',
+      tags: ['Sicurezza', 'Veloce'],
     },
     {
-      title: 'Due lingue nello stesso file',
+      title: 'Due lingue nello stesso punto',
       text:
-        'Ogni testo ha la versione italiana e inglese accanto, nello stesso punto del codice: una modifica non lascia indietro una lingua senza che il tipo lo segnali.',
-      tags: ['TypeScript', 'i18n a mano'],
+        'Ogni testo ha la versione italiana e inglese accanto: una modifica non lascia indietro una lingua senza che qualcuno se ne accorga.',
+      tags: ['Italiano', 'Inglese'],
     },
     {
-      title: 'Shop su Worker, D1 e Stripe Connect',
+      title: 'Shop con incasso diretto',
       text:
-        'Un solo Worker serve l\'API e l\'app. L\'organizzatore collega il suo conto con un pulsante; il pagamento è un Direct charge senza commissione per Righello.',
-      tags: ['Cloudflare D1', 'Stripe Connect', 'React', 'Vite'],
+        'L\'organizzatore collega il suo conto con un pulsante e il pagamento va direttamente a lui, senza commissione per Righello.',
+      tags: ['Pagamenti sicuri', 'Nessuna commissione'],
     },
   ],
 

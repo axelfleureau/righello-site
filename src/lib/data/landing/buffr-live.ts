@@ -6,10 +6,9 @@ export default {
   tagline: 'Il calcio dei dilettanti, in diretta dal campo.',
 
   metrics: [
-    { value: 5, suffix: ' s', label: 'per aggiornare una partita nell\'app', note: 'intervallo di aggiornamento della scheda partita (10 s per la lista)' },
-    { value: 1, suffix: ' min', label: 'il giro con cui seguiamo le partite', note: 'frequenza del controllo automatico sul server' },
+    { value: 4, label: 'pagine, dal giorno alla squadra', note: 'partite del giorno, scheda partita, calendario del girone, squadre' },
     { value: 1125, label: 'squadre con la loro pagina', note: 'somma delle squadre nell\'indice Squadre del sito, oggi' },
-    { value: 70, label: 'test automatici', note: 'test del server che passano oggi: stato della partita, minuto, nomi, resoconti' },
+    { value: 70, label: 'test automatici', note: 'test che passano oggi: stato della partita, minuto, nomi, resoconti' },
   ],
 
   chapters: [
@@ -47,7 +46,7 @@ export default {
       bullets: [
         'Una partita dimenticata aperta non resta "in diretta": se l\'orologio è fermo da troppo, non è più ufficiale',
         'Le prove del cronista (partite finite a metà tempo, squadre "test") restano fuori dal feed',
-        'Il minuto avanza sul telefono, con la stessa regola per server e app',
+        'Il minuto avanza sul telefono, con la stessa regola sul sito e nell\'app',
       ],
       layout: 'full',
     },
@@ -83,7 +82,7 @@ export default {
       text:
         'Per mettere una partita sulla mappa serve il campo. Il Palmare non lo registra ancora, quindi BUFFR Live lo ricava dall\'indirizzo della Lega e lo controlla: se il punto cade troppo lontano dal paese della squadra di casa, non lo prende per buono. Meglio un pin dichiarato approssimato che uno preciso e sbagliato.',
       bullets: [
-        'Controllo contro un\'ancora indipendente: 15 km dal paese della squadra di casa',
+        'Il campo si confronta con un punto indipendente: se è troppo lontano dal paese della squadra di casa, non vale',
         'Il pin approssimato si vede come tale, con il gambo tratteggiato',
         'Mappa a tutto schermo nell\'app, con le partite in corso in evidenza',
       ],
@@ -147,34 +146,34 @@ export default {
 
   tech: [
     {
-      title: 'Un server che decide cosa esce',
+      title: 'Un solo punto decide cosa esce',
       text:
-        'Un solo punto trasforma i dati del cronista in partita pubblica: stato, minuto, posizione. Le pagine del sito sono composte sul server, così le leggono anche i motori di ricerca; al telefono il server risponde sempre senza cache, e tiene 5 secondi di cache solo al bordo.',
-      tags: ['Cloudflare Workers', 'D1', 'KV'],
+        'Un solo passaggio trasforma i dati del cronista in partita pubblica: stato, minuto, posizione. Le pagine del sito sono pronte quando arrivano, così le leggono anche i motori di ricerca, e l\'app riceve sempre dati freschi.',
+      tags: ['Dati sempre allineati', 'Veloce'],
     },
     {
       title: 'Lo stato vero, non quello dichiarato',
       text:
-        'Il Palmare segna "in diretta" anche partite lasciate aperte da settimane. Il server guarda l\'attività, l\'orologio e la durata, e decide da solo cosa è davvero in corso. Il minuto si calcola con la stessa funzione sul server e nell\'app.',
-      tags: ['TypeScript', 'Test automatici'],
+        'Il Palmare segna "in diretta" anche partite lasciate aperte da settimane. Il sistema guarda l\'attività, l\'orologio e la durata, e decide da solo cosa è davvero in corso. Il minuto si calcola con la stessa regola sul sito e nell\'app.',
+      tags: ['Un solo punto di verità', 'Test automatici'],
     },
     {
       title: 'Un archivio unico delle squadre',
       text:
         'Squadre, stemmi e ritratti stanno in un solo archivio, usato anche da Palmare, regia e BUFFR. I nomi si riconoscono con una sola graduatoria: nome senza sigle, corrispondenza, campionato, regione di chi chiede.',
-      tags: ['Cloudflare D1', 'R2', 'Anagrafica Righello'],
+      tags: ['Anagrafica Righello'],
     },
     {
       title: 'Posizioni che si controllano',
       text:
         'Il campo si cerca da indirizzo e mappe aperte, e si confronta con un punto indipendente. Un omonimo non diventa una certezza.',
-      tags: ['OpenStreetMap', 'Nominatim', 'Overpass'],
+      tags: ['Mappe aperte', 'Controllo incrociato'],
     },
     {
       title: 'App leggera e rispettosa',
       text:
-        'L\'app è in React Native con lo stesso stile di BUFFR, verificato a ogni build. Le animazioni rispettano "Riduci movimento". Le misure d\'uso sono anonime: un identificativo nuovo a ogni apertura, nessun profilo per persona.',
-      tags: ['Expo', 'React Native', 'PostHog'],
+        'L\'app ha lo stesso stile di BUFFR, verificato a ogni versione. Le animazioni rispettano "Riduci movimento". Le misure d\'uso sono anonime: un identificativo nuovo a ogni apertura, nessun profilo per persona.',
+      tags: ['Privacy', 'App nativa'],
     },
   ],
 

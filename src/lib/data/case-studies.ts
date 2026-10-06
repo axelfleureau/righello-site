@@ -214,7 +214,7 @@ export const caseStudies: CaseStudy[] = [
     headline: 'Un software che tiene il cantiere in regola prima che un documento scaduto lo fermi.',
     text:
       'Imprese edili, lattonieri e subappaltatori tenevano scadenze e idoneità sanitarie su fogli Excel sparsi. Tetha legge i documenti scansionati dal telefono o mandati su Telegram, avvisa trenta giorni prima di ogni scadenza e prepara in un clic il dossier che il committente chiede al cancello del cantiere.',
-    focus: ['SaaS verticale', 'Bot Telegram', 'Automazione documentale', 'Dashboard'],
+    focus: ['Software per l\'edilizia', 'Bot Telegram', 'Automazione documentale', 'Dashboard'],
     href: 'https://tetha.wearerighello.com',
     icon: '/progetti/icons/tetha.webp',
     image: '/progetti/stage/tetha.webp',
@@ -286,8 +286,8 @@ export const caseStudies: CaseStudy[] = [
     accent: ['#FF7A1A', '#E11D74'],
     headline: 'Dallo scatto alla vendita: gallery con il tuo marchio, consegna sicura.',
     text:
-      'La piattaforma per fotografi di eventi: gallery ordinate in album, anteprime con filigrana, pagamento con Stripe e download in alta risoluzione. Sul sito e, in prova, su iPhone.',
-    focus: ['Web app', 'Gallery brandizzate', 'Filigrana e originali protetti', 'Pagamenti Stripe', 'App iPhone'],
+      'La piattaforma per fotografi di eventi: gallery ordinate in album, anteprime con filigrana, pagamento con carta sicuro e download in alta risoluzione. Sul sito e, in prova, su iPhone.',
+    focus: ['Web app', 'Gallery brandizzate', 'Filigrana e originali protetti', 'Pagamenti sicuri', 'App iPhone'],
     href: 'https://lumis.wearerighello.com',
     icon: '/progetti/icons/lumis.webp',
     image: '/progetti/stage/lumis.webp',
@@ -376,7 +376,7 @@ export const caseStudies: CaseStudy[] = [
     accent: ['#F2B83B', '#1E3A5F'],
     headline: 'Rispondono ai cittadini con le pagine del Comune, e dicono quando non lo sanno.',
     text:
-      'Assistenti alimentati dai dati di ciascun ente. Il bot WhatsApp di un Comune legge le pagine ufficiali (servizi, eventi, notizie) e risponde rimandando alla fonte; i dati personali vengono anonimizzati prima di arrivare al modello; se l\'informazione non c\'è, lo dice onestamente invece di inventarla. Anche DICO ha una memoria per ogni Comune: i messaggi già pubblicati, usati per scrivere i nuovi nello stile dell\'ente, sempre con il controllo della redazione.',
+      'Assistenti alimentati dai dati di ciascun ente. Il bot WhatsApp di un Comune legge le pagine ufficiali (servizi, eventi, notizie) e risponde rimandando alla fonte; i dati personali vengono anonimizzati prima di essere elaborati; se l\'informazione non c\'è, lo dice onestamente invece di inventarla. Anche DICO ha una memoria per ogni Comune: i messaggi già pubblicati, usati per scrivere i nuovi nello stile dell\'ente, sempre con il controllo della redazione.',
     focus: ['Assistente su WhatsApp', 'Risposte con la fonte', 'Dati personali anonimizzati', 'Memoria di ogni Comune'],
     icon: '/progetti/icons/assistenti-pa.webp',
     image: '/progetti/icons/assistenti-pa.webp',
@@ -421,10 +421,10 @@ export const caseStudies: CaseStudy[] = [
     platform: ['Web'],
     audience: 'Ospiti del borgo di Portopiccolo',
     accent: ['#C9A66B', '#1F6F8B'],
-    headline: 'Un booking engine collegato in tempo reale al calendario Guesty, non un sito vetrina.',
+    headline: 'Un sito che prenota da solo, collegato in tempo reale al calendario del gestionale, non una vetrina.',
     text:
       'Trentaquattro appartamenti nel borgo di Portopiccolo: prezzo "da" calcolato sul primo soggiorno davvero prenotabile, non sulla tariffa di bassa stagione, e prenotazione diretta senza passare dal telefono.',
-    focus: ['Booking engine', 'Integrazione Guesty', 'Pricing dinamico', 'UX prenotazione'],
+    focus: ['Prenotazione diretta', 'Gestionale collegato', 'Prezzi dinamici', 'Esperienza di prenotazione'],
     href: 'https://www.portopiccoloapartments.com',
     logo: '/logos/portopiccolo-apartments.webp',
     image: '/progetti/stage/portopiccolo-apartments.webp',
@@ -447,7 +447,7 @@ export const caseStudies: CaseStudy[] = [
     headline: 'Motocross e quad sulla sabbia, con un sito che ha la stessa energia.',
     text:
       'Rifacimento completo del sito dell\'evento: diciassette pagine, animazioni a scorrimento e sezioni sagomate. Online dal 30 settembre 2026.',
-    focus: ['17 pagine', 'Animazioni a scorrimento', 'Sito di evento', 'GSAP'],
+    focus: ['17 pagine', 'Animazioni a scorrimento', 'Sito di evento', 'Bilingue'],
     href: 'https://www.bibionesandstorm.it',
     logo: '/logos/bibione-sand-storm.webp',
     image: '/progetti/stage/bibione-sand-storm.webp',
@@ -470,7 +470,7 @@ export const caseStudies: CaseStudy[] = [
     headline: 'Un sito che segue la stagione: neve e corsi d\'inverno, camp d\'estate.',
     text:
       'Corsi, prezzi e prenotazione in un unico sito. La stagione decide testi e pulsanti: in inverno corsi di sci e snowboard, in estate camp e pista sintetica.',
-    focus: ['Prenotazione corsi', 'Listino filtrabile', 'Sito stagionale', 'Next.js'],
+    focus: ['Prenotazione corsi', 'Listino filtrabile', 'Sito stagionale', 'Bilingue'],
     href: 'https://www.scuolascipiancavallo.it',
     logo: '/logos/scuola-sci-piancavallo.png',
     image: '/progetti/stage/scuola-sci-piancavallo.webp',

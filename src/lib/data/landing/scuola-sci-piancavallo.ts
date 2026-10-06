@@ -8,13 +8,13 @@ export default {
   metrics: [
     {
       value: 1,
-      label: 'file decide la stagione',
-      note: 'lib/booking-config.ts: la data, con un interruttore manuale per anticipare o ritardare',
+      label: 'regola decide la stagione',
+      note: 'la data, con un interruttore manuale per anticipare o ritardare',
     },
     {
       value: 4,
       label: 'discipline con la loro pagina',
-      note: 'sci alpino, snowboard, telemark, sci di fondo: cartelle in app/',
+      note: 'sci alpino, snowboard, telemark, sci di fondo',
     },
     {
       value: 2,
@@ -112,11 +112,11 @@ export default {
       title: 'Anche la pagina dei link cambia con la stagione',
       highlight: 'cambia con la stagione',
       text:
-        'La pagina dei link che sta nei profili social segue la stessa regola: i pulsanti e i colori cambiano con il mese. Da settembre a marzo parla di corsi e gift card; in estate mette in cima il camp. Si rigenera ogni ora, così il cambio avviene da solo.',
+        'La pagina dei link che sta nei profili social segue la stessa regola: i pulsanti e i colori cambiano con il mese. Da settembre a marzo parla di corsi e gift card; in estate mette in cima il camp. Si aggiorna da sola, così il cambio avviene senza interventi.',
       bullets: [
-        'I mesi invernali sono definiti in un punto solo del codice.',
+        'I mesi invernali sono definiti in un punto solo.',
         'L\'ordine dei pulsanti dipende dalla stagione: il primo è quello da far cliccare.',
-        'I colori sono variabili: cambiare palette non vuol dire toccare i componenti.',
+        'I colori sono definiti in un punto solo: cambiare palette non vuol dire toccare le pagine.',
       ],
       media: [
         {
@@ -248,26 +248,26 @@ export default {
     {
       title: 'Un interruttore, molte pagine',
       text:
-        'La regola della stagione sta in una funzione di poche righe. Home, prezzi, corsi, prenotazione e menu la leggono, quindi cambiare il comportamento vuol dire cambiarla in un punto.',
-      tags: ['Next.js', 'React', 'TypeScript'],
+        'La regola della stagione è una sola. Home, prezzi, corsi, prenotazione e menu la leggono, quindi cambiare il comportamento vuol dire cambiarla in un punto.',
+      tags: ['Un solo punto di verità', 'Stagione automatica'],
     },
     {
-      title: 'Stagione letta nel browser',
+      title: 'Stagione letta al momento della visita',
       text:
-        'Le pagine del sito valutano la stagione al momento della visita, non alla pubblicazione: nessun cambio rimane congelato alla data dell\'ultimo deploy. La pagina dei link, che è statica, si rigenera ogni ora.',
-      tags: ['Vercel', 'Rigenerazione ogni ora'],
+        'Le pagine valutano la stagione quando le apri, non quando sono state pubblicate: nessun cambio rimane congelato alla data dell\'ultimo aggiornamento. Anche la pagina dei link si aggiorna da sola.',
+      tags: ['Sempre aggiornato'],
     },
     {
-      title: 'Dati strutturati per i motori di ricerca',
+      title: 'Trovabile dai motori di ricerca',
       text:
-        'Ogni pagina ha i suoi titoli e la sua descrizione. Un blocco JSON-LD descrive l\'attività con coordinate, orari e punto d\'incontro, e una mappa del sito è generata dal codice.',
-      tags: ['JSON-LD', 'Sitemap', 'Metadati per pagina'],
+        'Ogni pagina ha i suoi titoli e la sua descrizione. L\'attività è descritta con coordinate, orari e punto d\'incontro, e la mappa del sito resta sempre aggiornata.',
+      tags: ['Visibilità locale', 'Dati strutturati'],
     },
     {
       title: 'Camp come progetto a parte',
       text:
-        'La landing del camp è un\'app separata, con un modulo in quattro passi. Così si cambia o si spegne senza toccare il sito principale.',
-      tags: ['React', 'Vite', 'Vercel'],
+        'La landing del camp è separata, con un modulo in quattro passi. Così si cambia o si spegne senza toccare il sito principale.',
+      tags: ['Modulo in quattro passi'],
     },
   ],
 

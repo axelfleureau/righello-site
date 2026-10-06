@@ -4,7 +4,7 @@ const A = '/progetti/landing/gusto-raffinato-sala';
 
 /*
  * Gusto Raffinato Sala: gestionale (iPad) e palmare (iPhone) per ristoranti.
- * Fatti verificati sul repository gusto_raffinato (main, 06/10/2026) e sul sito pubblico gustoraffinato.com.
+ * Fatti verificati (06/10/2026) e sul sito pubblico gustoraffinato.com.
  * Le schermate sono del locale d'esempio "Trattoria Al Glicine", inventato.
  * Niente prezzi, niente clienti, niente dettagli di come e' costruito il motore.
  */
@@ -13,15 +13,14 @@ export default {
 
   metrics: [
     {
-      value: 3,
-      suffix: ' s',
-      label: 'per rimettere in pari iPad e telefoni',
-      note: 'intervallo di aggiornamento fra i dispositivi del locale, nel codice dell\'app'
+      value: 4,
+      label: 'modi di guardare la sala',
+      note: '3D, colori veri, pianta, tessere'
     },
     {
       value: 14,
       label: 'allergeni dell\'allegato II UE',
-      note: 'l\'elenco da cui si sceglie l\'allergia di un tavolo, nel codice dell\'app'
+      note: 'l\'elenco da cui si sceglie l\'allergia di un tavolo'
     },
     {
       value: 8,
@@ -31,7 +30,7 @@ export default {
     {
       value: 1398,
       label: 'prove automatiche',
-      note: 'nel repository: 944 sull\'app, 454 sul server della sala'
+      note: 'sull\'app e sul sistema della sala, controllate a ogni modifica'
     }
   ],
 
@@ -80,7 +79,7 @@ export default {
         'Dalla seduta al tavolo di nuovo pronto, passo per passo',
         'L\'Agenda a elenco e a griglia, con il ritmo degli arrivi quarto d\'ora per quarto d\'ora',
         'Per chi non ha ancora un tavolo, l\'app ne propone uno: confermi tu',
-        'Quello che segna un dispositivo lo vedono tutti, entro tre secondi'
+        'Quello che segna un dispositivo lo vedono tutti, in pochi istanti'
       ],
       media: [
         {
@@ -316,14 +315,14 @@ export default {
 
   tech: [
     {
-      title: 'Un solo codice, due mestieri',
-      text: 'Gestionale e palmare sono lo stesso programma con due identità: cambiano permessi, nome e icona, non il codice. Si migliora una volta e migliorano entrambi.',
-      tags: ['Flutter', 'Dart', 'Swift', 'iPad', 'iPhone']
+      title: 'Un solo programma, due mestieri',
+      text: 'Gestionale e palmare sono lo stesso programma con due identità: cambiano permessi, nome e icona, non il resto. Si migliora una volta e migliorano entrambi.',
+      tags: ['Un solo punto di verità', 'iPad', 'iPhone']
     },
     {
       title: 'Il sensore fa la pianta',
       text: 'La scansione usa il sensore di profondità dell\'iPhone Pro e dell\'iPad Pro. Muri, porte e tavoli si riconoscono mentre cammini; poi sistemi tu quello che serve.',
-      tags: ['ARKit', 'LiDAR', 'Core ML']
+      tags: ['Sensore di profondità', 'App nativa']
     },
     {
       title: 'Un muro fra il banco e la sala',
@@ -333,17 +332,17 @@ export default {
     {
       title: 'Funziona anche se cade la rete',
       text: 'iPad e telefoni tengono da parte quello che fai e lo mandano al ritorno della linea. Le comande nuove arrivano in cucina appena possibile e il palmare lo scrive accanto alla riga.',
-      tags: ['Coda locale', 'Sincronizzazione']
+      tags: ['Funziona offline', 'Dati sempre allineati']
     },
     {
       title: 'Le comande sono righe, non testo',
       text: 'Ogni riga sa quale piatto è, quanto costava quando l\'hai presa e a quale posto va. È ciò che permette conto diviso, magazzino scalato e margine veri.',
-      tags: ['Redux', 'TypeScript', 'Node.js']
+      tags: ['Conto diviso', 'Margini veri']
     },
     {
       title: 'Provato prima di arrivare al banco',
-      text: 'Le schermate e le regole della sala sono controllate da prove automatiche a ogni modifica: 1.398 in tutto, fra app e server.',
-      tags: ['Prove automatiche', 'Golden test']
+      text: 'Le schermate e le regole della sala sono controllate da prove automatiche a ogni modifica: 1.398 in tutto, fra app e sistema della sala.',
+      tags: ['Prove automatiche']
     }
   ],
 

@@ -1,17 +1,17 @@
 import type { Landing } from './types';
 
 /**
- * DICO — fatti dal codice di dico-platform (src/, migrations/, wrangler.jsonc, test/) e dalle schermate
+ * DICO — fatti verificati e schermate
  * dell'interfaccia vera, avviata in locale con dati inventati ("Comune di Esempio"). Nessun Comune cliente,
- * nessun numero di iscritti o di costi, nessun fornitore di IA, nessuna persona.
+ * nessun numero di iscritti o di costi, nessuna persona.
  */
 export default {
   tagline: 'La redazione di un Comune in un posto solo: un messaggio a settimana, e i dettagli a un clic.',
   metrics: [
     { value: 1, label: 'messaggio per uscita', note: 'modello base della piattaforma: un solo messaggio per Comune a ogni uscita' },
-    { value: 10, label: 'macro tematiche pronte', note: 'GUIDA_TEMATICHE: emergenze, viabilità, rifiuti, scuola, tributi, sociale, sport, cultura, servizi, avvisi' },
+    { value: 10, label: 'macro tematiche pronte', note: 'emergenze, viabilità, rifiuti, scuola, tributi, sociale, sport, cultura, servizi, avvisi' },
     { value: 5, label: 'link di fonte al massimo', note: 'per ogni comunicazione preparata dall\'assistente' },
-    { value: 340, label: 'test automatici', note: 'vitest nel repository: 340 passati su 32 file, controllati il 6 ottobre 2026' },
+    { value: 340, label: 'test automatici', note: 'tutti superati, controllati il 6 ottobre 2026' },
   ],
   chapters: [
     {
@@ -72,8 +72,8 @@ export default {
         'Ogni Comune ha il suo indirizzo, con la forma nomecomune.dico.online/w41-cultura: settimana e tematica. La pagina si presenta come una chat, con una bolla per sezione e le voci che si aprono con un tocco. Ogni avviso ha anche un indirizzo suo, un\'anteprima con la copertina giusta e il pulsante per condividerlo. La pagina resta online dopo la settimana, e una raccolta permanente per tematica raccoglie tutto ciò che è uscito.',
       bullets: [
         'La pagina è scritta per il telefono: le righe lunghe vanno a capo, i pulsanti sono sotto il pollice',
-        'Anteprima del link 1200 × 630 generata dal server, con i colori del Comune',
-        'Risposte della bacheca tenute in cache al bordo e svuotate alla pubblicazione',
+        'Anteprima del link generata in automatico, con i colori del Comune',
+        'La bacheca si apre subito e si aggiorna appena si pubblica',
       ],
       media: [
         {
@@ -177,34 +177,34 @@ export default {
   },
   tech: [
     {
-      title: 'Un Worker per tutto, senza server',
-      text: 'Un solo Worker serve le API e l\'applicazione. Un processo programmato gira ogni minuto: pubblica le uscite programmate e ritenta gli invii che sono rimasti indietro.',
-      tags: ['Cloudflare Workers', 'D1', 'R2', 'Cron'],
+      title: 'Pensato per non fermarsi',
+      text: 'Le uscite programmate partono all’ora giusta anche se nessuno è al computer, e gli invii rimasti indietro vengono ritentati da soli, senza mai duplicare un messaggio.',
+      tags: ['Automazione', 'Infrastruttura globale'],
     },
     {
       title: 'Allegati e archivio in Europa',
-      text: 'Gli allegati stanno in un archivio di oggetti vincolato alla giurisdizione UE; il database ha la posizione preferita in Europa occidentale. Le credenziali di ogni canale sono cifrate con AES-GCM.',
-      tags: ['R2 giurisdizione UE', 'D1', 'AES-GCM'],
+      text: 'Allegati e dati restano in Europa. Le credenziali di ogni canale di invio sono custodite cifrate e non sono mai visibili a chi lavora in redazione.',
+      tags: ['Dati in Europa', 'Sicurezza'],
     },
     {
       title: 'Una pagina che non invecchia male',
-      text: 'La pagina della settimana è calcolata con la stessa regola in codice e in SQL, e quando il messaggio esce da DICO la settimana si blocca. Le risposte pubbliche stanno in cache al bordo e si svuotano alla pubblicazione.',
-      tags: ['Cache al bordo', 'Satori', 'OG 1200×630'],
+      text: 'La pagina della settimana segue una sola regola, ovunque. Quando il messaggio esce da DICO la settimana si blocca, così i link già mandati restano validi. Le pagine pubbliche si aprono in un attimo e si aggiornano appena si pubblica.',
+      tags: ['Un solo punto di verità', 'Veloce'],
     },
     {
-      title: 'Lettura di siti che non vogliono essere letti',
-      text: 'Molti siti di Comuni sono gusci che si riempiono solo con JavaScript. DICO legge direttamente i dati del CMS. Le richieste verso indirizzi forniti dagli operatori sono filtrate: niente reti private, solo nomi pubblici.',
-      tags: ['Lettura CMS', 'Anti-SSRF'],
+      title: 'Lettura di siti difficili',
+      text: 'Molti siti di Comuni si riempiono solo dopo il caricamento e sono difficili da leggere per un programma: DICO sa arrivare ai contenuti veri. Gli indirizzi indicati dagli operatori sono controllati: si leggono solo siti pubblici.',
+      tags: ['Lettura dei siti', 'Sicurezza'],
     },
     {
       title: 'Assistente che ricorda, senza addestrarsi',
-      text: 'La memoria di ogni Comune è un archivio di comunicazioni passate, ritrovate per somiglianza di significato e riletta prima dell\'uso. Il modello non viene riaddestrato: lavora sui dati del Comune a ogni richiesta.',
-      tags: ['Recupero dei dati dell\'ente', 'Embedding', 'Rilettura'],
+      text: 'La memoria di ogni Comune è l’archivio delle sue comunicazioni passate, ritrovate per somiglianza di significato e riviste prima dell’uso. L’assistente non viene riaddestrato: lavora sui dati del Comune a ogni richiesta, e non li mescola con quelli di altri.',
+      tags: ['Intelligenza artificiale', 'Dati separati per Comune'],
     },
     {
       title: 'Costruito per reggere',
-      text: 'Ogni utente appartiene a un solo Comune, e lo impone anche il database; router scritto a mano per evitare dipendenze inutili, password con PBKDF2. 340 test automatici verificano la catena, senza inviare nulla a nessuno.',
-      tags: ['TypeScript', 'React', 'Vitest', 'PBKDF2'],
+      text: 'Ogni utente appartiene a un solo Comune, e questo vincolo è imposto a ogni livello del sistema. Le password sono protette e 340 test automatici verificano l’intera catena, senza inviare nulla a nessuno.',
+      tags: ['Sicurezza', 'Test automatici'],
     },
   ],
   cta: {

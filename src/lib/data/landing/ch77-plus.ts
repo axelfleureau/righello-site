@@ -1,17 +1,16 @@
 import type { Landing } from './types';
 
 /**
- * CH77+ — fatti ricavati dal codice di canale77-ott-platform (src/premium, migrations/0001),
- * dalle schermate reali di ch77.wearerighello.com/attiva e dell'app Android TV nativa.
+ * CH77+ — fatti verificati, dalle schermate reali della pagina di attivazione e dell'app Android TV nativa.
  * Non si dice quante partite ci sono né quanti abbonati: non sono dati verificabili qui.
  */
 export default {
   tagline: 'Il televisore si sblocca con il telefono. Niente password col telecomando.',
   metrics: [
-    { value: 3, suffix: ' s', label: 'ogni quanto la TV controlla l\'attivazione', note: 'pollAfterSeconds nel servizio di abbinamento' },
-    { value: 10, suffix: ' min', label: 'validità del codice sulla TV', note: 'PAIRING_TTL_SECONDS nel codice' },
-    { value: 90, suffix: ' giorni', label: 'durata dell\'accesso sul televisore', note: 'DEVICE_SESSION_TTL_SECONDS nel codice' },
-    { value: 4, label: 'tipi di televisore abbinabili', note: 'HbbTV, Samsung Tizen, LG webOS, Android TV nel tipo TvPlatform' },
+    { value: 8, label: 'caratteri nel codice mostrato sulla TV', note: 'senza lettere che si confondono' },
+    { value: 10, suffix: ' min', label: 'validità del codice sulla TV', note: 'scaduto il tempo, la TV ne mostra uno nuovo' },
+    { value: 90, suffix: ' giorni', label: 'durata dell\'accesso sul televisore', note: 'poi si ripete l\'abbinamento' },
+    { value: 4, label: 'tipi di televisore abbinabili', note: 'HbbTV, Samsung, LG, Android TV' },
   ],
   chapters: [
     {
@@ -54,8 +53,8 @@ export default {
       text:
         'L\'accesso può arrivare da un abbonamento, che si paga e si annulla da un portale, oppure da un omaggio deciso dalla redazione. Le due strade hanno regole diverse e dichiarate: un abbonamento senza una scadenza verificabile non apre il player, un omaggio può non avere scadenza ma si può revocare.',
       bullets: [
-        'Gli abbonamenti arrivano da Stripe e ogni notifica è registrata una volta sola',
-        'Gli omaggi (redazionali, pass partita) stanno in una tabella a parte e si revocano',
+        'Il pagamento è sicuro e ogni addebito è registrato una volta sola',
+        'Gli omaggi (redazionali, pass partita) sono gestiti a parte e si revocano',
         'Chi guarda non vede la differenza; la redazione sì, e non le confonde',
       ],
       layout: 'media-left',
@@ -77,11 +76,11 @@ export default {
   ],
   graphic: 'ch77-plus',
   features: [
-    { icon: 'scan', title: 'Codice e QR', text: 'La TV mostra un codice a 8 caratteri e un QR generato dal server: si inquadra con la fotocamera.' },
-    { icon: 'device', title: 'Accesso dal telefono', text: 'Si entra con il proprio account dalla pagina /attiva, senza digitare nulla sul televisore.' },
+    { icon: 'scan', title: 'Codice e QR', text: 'La TV mostra un codice a 8 caratteri e un QR: si inquadra con la fotocamera.' },
+    { icon: 'device', title: 'Accesso dal telefono', text: 'Si entra con il proprio account dalla pagina di attivazione, senza digitare nulla sul televisore.' },
     { icon: 'clock', title: 'Il codice scade', text: 'Un codice vale 10 minuti e si usa una volta sola. Il codice non contiene lettere che si confondono.' },
     { icon: 'lock', title: 'Chiusura per default', text: 'Se non si riesce a verificare un abbonamento, il player resta chiuso. Si apre solo quando c\'è una prova.' },
-    { icon: 'cart', title: 'Pagamento e portale', text: 'Pagamento gestito da Stripe, rinnovo mensile, annullabile dal portale di fatturazione.' },
+    { icon: 'cart', title: 'Pagamento e portale', text: 'Pagamento con carta sicuro, rinnovo mensile, annullabile da un portale dedicato.' },
     { icon: 'users', title: 'Omaggi e pass', text: 'La redazione concede accesso fuori dagli abbonamenti, con scadenza facoltativa e revoca.' },
     { icon: 'play', title: 'Dirette in esclusiva', text: 'Le partite in esclusiva compaiono in una riga dedicata della scheda del calcio.' },
     { icon: 'globe', title: 'Ogni schermo', text: 'Lo stesso abbinamento funziona su HbbTV, sito, Samsung, LG e Android TV nativa.' },
@@ -112,7 +111,7 @@ export default {
           type: 'image',
           src: '/progetti/landing/ch77-plus/telefono-attiva.webp',
           alt: 'La pagina di attivazione sul telefono con il riquadro del codice mostrato sulla TV',
-          caption: 'La pagina /attiva con il codice già inserito dal QR. Il prezzo non è mostrato in questa immagine.',
+          caption: 'La pagina di attivazione con il codice già inserito dal QR. Il prezzo non è mostrato in questa immagine.',
           ratio: '390/844',
           frame: 'phone',
         },
@@ -122,28 +121,23 @@ export default {
   tech: [
     {
       title: 'Abbinamento senza segreti sul televisore',
-      text: 'La TV riceve un codice e un token di controllo. Sul database resta solo l\'impronta del token, non il token. Il codice, a 8 caratteri su un alfabeto di 32 simboli, scade in 10 minuti.',
-      tags: ['Cloudflare Workers', 'D1', 'SHA-256'],
+      text: 'La TV riceve un codice e un controllo riservato. I segreti non vengono mai conservati in chiaro. Il codice, di 8 caratteri scelti per non confondersi, scade in 10 minuti.',
+      tags: ['Sicurezza', 'Abbinamento a tempo'],
     },
     {
-      title: 'Identità e pagamenti già maturi',
-      text: 'L\'accesso usa Clerk con un\'istanza di produzione su un dominio nostro. Gli abbonamenti arrivano da Stripe con notifiche registrate una sola volta, anche se Stripe le ripete.',
-      tags: ['Clerk', 'Stripe', 'Webhook idempotenti'],
+      title: 'Pagamenti e identità affidabili',
+      text: 'L\'accesso usa un sistema di identità collaudato, su un dominio nostro. Gli addebiti sono registrati una sola volta, anche se le conferme di pagamento arrivano ripetute.',
+      tags: ['Accesso sicuro', 'Pagamenti sicuri'],
     },
     {
       title: 'Un solo posto per ogni regola',
-      text: 'Il modulo Premium è a strati: dominio con le regole (abbonamento, omaggio, abbinamento, partita), servizi, adattatori e rotte. Le regole sono funzioni pure con i loro test.',
-      tags: ['TypeScript', 'Architettura a strati', 'Test automatici'],
-    },
-    {
-      title: 'Dati dove servono relazioni',
-      text: 'Utenti, abbonamenti, omaggi, partite, codici e sessioni dei televisori vivono in tabelle relazionali con vincoli univoci. La cache (KV) resta fuori dallo stato di accesso.',
-      tags: ['D1', 'SQL', 'KV'],
+      text: 'Le regole (abbonamento, omaggio, abbinamento, partita) sono scritte una volta, separate dal resto e provate con test automatici: sito, app e televisori le applicano allo stesso modo.',
+      tags: ['Un solo punto di verità', 'Test automatici'],
     },
     {
       title: 'Protezioni contro l\'abuso',
-      text: 'Le rotte pubbliche che scrivono hanno un limite per indirizzo. La pagina di accesso ha regole di sicurezza dei contenuti che consentono solo ciò che serve.',
-      tags: ['Rate limiting', 'CSP'],
+      text: 'Le richieste pubbliche hanno un limite per indirizzo e la pagina di accesso consente solo ciò che serve. Se non si riesce a verificare un abbonamento, il player resta chiuso.',
+      tags: ['Sicurezza', 'Chiuso per default'],
     },
   ],
   cta: {

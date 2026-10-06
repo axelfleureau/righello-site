@@ -1,8 +1,7 @@
 import type { Landing, MediaRef } from './types';
 
 /**
- * Produzione delle partite (Motore TV Studio). Fatti verificati nel ramo `match-pipeline`
- * di OBS-Padel-Stream-Overlay (cartella tv-studio) e nella galleria delle animazioni del 22/09.
+ * Produzione delle partite (Motore TV Studio). Fatti verificati e galleria delle animazioni del 22/09.
  * Media: scene senza nomi di persone e senza volti riconoscibili. Unica eccezione: la clip del gol, dove
  * il marcatore ("Marco Bianchi", n. 9) e' inventato; il motore l'ha disegnato su una ripresa vera senza grafiche.
  */
@@ -54,7 +53,7 @@ export default {
   metrics: [
     { value: 27, label: 'scene nella galleria', note: 'animazioni in 8 categorie, del 22 settembre' },
     { value: 29, label: 'tipi di evento gestiti', note: 'ognuno con il suo trattamento scritto' },
-    { value: 478, label: 'test automatici', note: 'in 53 file, nel repository del motore' },
+    { value: 478, label: 'test automatici', note: 'tutti superati, a ogni modifica del motore' },
     { text: '1080p50', label: 'formato dei filmati', note: 'partita di prova: 1920×1080, 50 fotogrammi' },
   ],
   chapters: [
@@ -227,33 +226,33 @@ export default {
   tech: [
     {
       title: 'Grafiche nate come pagine web',
-      text: 'Ogni grafica è una piccola pagina HTML e CSS trasparente, fotografata da Chrome senza finestra. FFmpeg la compone sul video insieme al cronometro e al risultato.',
-      tags: ['HTML', 'CSS', 'Chrome headless', 'FFmpeg'],
+      text: 'Ogni grafica è una piccola pagina web trasparente, trasformata in immagine fotogramma per fotogramma e composta sul video insieme al cronometro e al risultato. Cambiare un disegno vuol dire cambiare una pagina.',
+      tags: ['Pagine web trasformate in immagini', 'Grafiche trasparenti'],
     },
     {
       title: 'Un solo montaggio, a 50 fotogrammi',
-      text: 'Riprese, grafiche, sponsor e replay passano in un\'unica catena di composizione. L\'uscita predefinita è a 50 fotogrammi al secondo.',
-      tags: ['FFmpeg', 'H.264', '50p', 'Python'],
+      text: 'Riprese, grafiche, sponsor e replay passano in un\'unica catena di composizione automatica. L\'uscita predefinita è a 50 fotogrammi al secondo.',
+      tags: ['Montaggio automatico', '50 fotogrammi al secondo'],
     },
     {
       title: 'Ogni evento ha il suo trattamento',
       text: 'Il contratto degli eventi elenca 29 tipi e come si disegna ciascuno. Un evento sconosciuto blocca il montaggio e lo dice, invece di sparire in silenzio.',
-      tags: ['Marker', 'Palmare', 'Contratto degli eventi'],
+      tags: ['Contratto degli eventi', 'Palmare'],
     },
     {
       title: 'Niente va in onda senza via libera',
       text: 'Replay e sponsor passano da un\'approvazione registrata con origine, ora e impronta del contenuto: le proposte automatiche restano bozze finché un operatore non le approva. Cambia il taglio e l\'approvazione decade da sola.',
-      tags: ['Approvazioni', 'Impronta del contenuto'],
+      tags: ['Approvazioni', 'Controllo umano'],
     },
     {
-      title: 'Controlli prima del render',
+      title: 'Controlli prima del montaggio',
       text: 'Prima di un montaggio lungo il motore verifica pubblicità dichiarate, formazioni e replay approvati. Se qualcosa non torna, il lavoro non parte.',
-      tags: ['Controlli', 'Consegna sul NAS', 'Link verificati'],
+      tags: ['Controlli', 'Consegna verificata'],
     },
     {
       title: 'Collaudato da 478 test',
-      text: 'I test coprono geometrie delle grafiche, eventi, replay, consegna e le pagine della regia, provate in più browser.',
-      tags: ['unittest', 'Playwright', 'FastAPI'],
+      text: 'I test coprono la geometria delle grafiche, gli eventi, i replay, la consegna e le pagine della regia, provate su più browser.',
+      tags: ['Test automatici'],
     },
   ],
   cta: {

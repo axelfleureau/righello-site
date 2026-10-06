@@ -198,32 +198,32 @@ export default {
     {
       title: 'Camera nativa su iPhone',
       text:
-        'Il buffer è scritto in Swift sopra AVFoundation, non in JavaScript. La ripresa segue l\'orientamento del telefono e la sessione gira solo quando la camera è in primo piano, per non scaldare il telefono.',
-      tags: ['Swift', 'AVFoundation', 'React Native'],
+        'Il buffer è scritto per iPhone, a livello nativo, non in una pagina web. La ripresa segue l\'orientamento del telefono e la camera lavora solo quando è in primo piano, per non scaldare il telefono.',
+      tags: ['App nativa', 'Risparmio di batteria'],
     },
     {
       title: 'Montaggio sul telefono e nel cloud',
       text:
-        'Sul telefono monta l\'esportatore nativo. Nel cloud gira un container per ogni montaggio, con ffmpeg e Python per le grafiche, che si spegne a lavoro finito. Le story e i soli gol passano dal cloud.',
-      tags: ['Cloudflare Containers', 'ffmpeg', 'Python'],
+        'Sul telefono monta l\'esportatore dell\'app. Nel cloud ogni montaggio ha il suo spazio di lavoro, che si spegne a lavoro finito: le grafiche sono pagine web trasformate in immagini. Le story e i soli gol passano dal cloud.',
+      tags: ['Montaggio automatico', 'Cloud'],
     },
     {
       title: 'Regole scritte una volta sola',
       text:
-        'Cosa è un gol, quale punteggio c\'era a ogni clip, come si taglia: sta in un solo modulo TypeScript, letto dal telefono e dal server. Il server calcola il piano delle grafiche, e il renderer lo esegue soltanto.',
-      tags: ['TypeScript', 'Cloudflare Workers'],
+        'Cosa è un gol, quale punteggio c\'era a ogni clip, come si taglia: sta in un solo posto, letto dal telefono e dal sistema di montaggio. Le grafiche vengono decise a monte, e chi le disegna le esegue soltanto.',
+      tags: ['Un solo punto di verità'],
     },
     {
       title: 'Clip in streaming, anteprime leggere',
       text:
-        'Le clip si guardano in streaming: il telefono prepara i segmenti e li carica, gli altri non scaricano il file intero. Le anteprime le disegna un generatore nativo a 480 px, circa 44 KB l\'una.',
-      tags: ['HLS', 'Cloudflare R2'],
+        'Le clip si guardano in streaming: il telefono le prepara a segmenti e le carica, gli altri non scaricano il file intero. Le anteprime sono piccole e si caricano in un attimo.',
+      tags: ['Streaming', 'Veloce'],
     },
     {
       title: 'Team e archivio condiviso',
       text:
         'Accesso con account, clip legate a team, partita e operatore. Squadre, stemmi e rose si leggono dall\'anagrafica calcistica unica di Righello, senza copie dentro l\'app.',
-      tags: ['Cloudflare D1', 'Clerk', 'Anagrafica Righello'],
+      tags: ['Team', 'Anagrafica Righello'],
     },
   ],
 

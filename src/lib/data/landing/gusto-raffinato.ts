@@ -4,7 +4,7 @@ const A = '/progetti/landing/gusto-raffinato';
 
 /*
  * Gusto Raffinato: l'app per chi esce a mangiare (iPhone, in prova su TestFlight).
- * Fatti verificati sul repository gusto_raffinato (main, 06/10/2026) e sul sito pubblico gustoraffinato.com.
+ * Fatti verificati (06/10/2026) e sul sito pubblico gustoraffinato.com.
  * Le schermate sono del locale d'esempio "Trattoria Al Glicine", inventato.
  * Nessun prezzo, nessun cliente reale, niente sulle fonti dei dati del catalogo.
  */
@@ -20,7 +20,7 @@ export default {
     {
       value: 14,
       label: 'allergeni riconosciuti',
-      note: 'i 14 dell\'allegato II del regolamento UE, nel codice dell\'app'
+      note: 'i 14 dell\'allegato II del regolamento UE'
     },
     {
       value: 4,
@@ -250,7 +250,7 @@ export default {
     {
       title: 'Un\'app sola, con il telefono dentro',
       text: 'La parte comune è scritta una volta; le cose che vogliono davvero l\'iPhone (Wallet, blocco schermo, notifiche, mappe) sono native.',
-      tags: ['Flutter', 'Dart', 'Swift', 'ActivityKit', 'PassKit']
+      tags: ['App nativa', 'Wallet', 'Blocco schermo']
     },
     {
       title: 'Niente promesse finte',
@@ -259,8 +259,8 @@ export default {
     },
     {
       title: 'Il catalogo arriva a blocchi',
-      text: 'La lista dei locali si carica a blocchi da venti, con il successivo già pronto: lo scorrimento resta fluido anche con centinaia di locali.',
-      tags: ['Paginazione a cursore', 'Mappe Apple']
+      text: 'La lista dei locali si carica a blocchi, con il successivo già pronto: lo scorrimento resta fluido anche con centinaia di locali.',
+      tags: ['Veloce', 'Mappe Apple']
     },
     {
       title: 'Le esigenze restano al tuo telefono',
@@ -270,7 +270,7 @@ export default {
     {
       title: 'Accesso e cancellazione fatti bene',
       text: 'Si entra con Apple o Google, si guarda senza account, e l\'account si elimina dall\'app, con la revoca dell\'accesso Apple.',
-      tags: ['Sign in with Apple', 'Google', 'Firebase Auth']
+      tags: ['Accesso con Apple o Google', 'Privacy']
     }
   ],
 

@@ -9,7 +9,7 @@ export default {
     {
       value: 34,
       label: 'appartamenti in catalogo',
-      note: 'contati sull\'API pubblica del sito il 6 ottobre 2026',
+      note: 'contati sul sito il 6 ottobre 2026',
     },
     {
       value: 4,
@@ -19,12 +19,12 @@ export default {
     {
       value: 103,
       label: 'indirizzi nella mappa del sito',
-      note: 'voci del sitemap.xml pubblico, contate il 6 ottobre 2026',
+      note: 'voci della mappa pubblica del sito, contate il 6 ottobre 2026',
     },
     {
-      value: 46,
-      label: 'campi interni tolti dall\'API pubblica',
-      note: 'elenco del filtro in functions/api: 40 campi della scheda e 6 dei prezzi',
+      value: 3,
+      label: 'esiti di pagamento distinti',
+      note: 'confermato, rifiutato, in attesa di conferma',
     },
   ],
 
@@ -39,7 +39,7 @@ export default {
       bullets: [
         'Un soggiorno vale solo se tutte le notti sono libere e il giorno di partenza non è occupato.',
         'Il prezzo in catalogo è tutto incluso: alloggio, pulizie e tasse, con la tariffa non rimborsabile.',
-        'Si calcola una volta e si tiene per sei ore: il catalogo non interroga il gestionale a ogni visita.',
+        'Si calcola una volta e si tiene aggiornato: il catalogo non interroga il gestionale a ogni visita.',
       ],
       media: [
         {
@@ -67,7 +67,7 @@ export default {
       title: 'Date libere in tempo reale, non una vetrina',
       highlight: 'in tempo reale',
       text:
-        'Calendario, preventivi e prenotazioni arrivano dal gestionale Guesty attraverso le sue API. Quello che il sito mostra è lo stato del momento. Se le date scelte sono occupate lo dice, e propone la richiesta di prenotazione.',
+        'Calendario, preventivi e prenotazioni arrivano direttamente dal gestionale delle prenotazioni. Quello che il sito mostra è lo stato del momento. Se le date scelte sono occupate lo dice, e propone la richiesta di prenotazione.',
       bullets: [
         'Le notti occupate sono barrate nel calendario e il minimo di notti è scritto prima della scelta.',
         'Se il gestionale è lento, il sito smette di aspettare dopo pochi secondi e ripiega sul catalogo.',
@@ -99,7 +99,7 @@ export default {
       title: 'Un pagamento non è fallito finché non lo è davvero',
       highlight: 'non lo è davvero',
       text:
-        'I dati della carta si inseriscono in un riquadro del circuito di pagamento del gestionale: non passano dal nostro server. Dopo il pagamento il sito rilegge l\'esito fino a quattro volte in circa cinque secondi. Un rifiuto vero è definitivo subito. Se l\'esito non è ancora chiaro, il sito non annulla e non fa ripagare: tiene le date bloccate e avvisa lo staff.',
+        'I dati della carta si inseriscono in un riquadro del circuito di pagamento del gestionale: non passano dal nostro server. Dopo il pagamento il sito rilegge l\'esito più volte in pochi secondi. Un rifiuto vero è definitivo subito. Se l\'esito non è ancora chiaro, il sito non annulla e non fa ripagare: tiene le date bloccate e avvisa lo staff.',
       bullets: [
         'Tre esiti, non due: confermato, rifiutato, in attesa di conferma.',
         'Una prenotazione con un pagamento riuscito o in arrivo non viene mai annullata dal sito.',
@@ -112,9 +112,9 @@ export default {
       title: 'La nuova versione: movimento che aiuta, non che rallenta',
       highlight: 'movimento che aiuta',
       text:
-        'Su un indirizzo non pubblico è in prova una nuova versione del sito: catalogo con mappa e prezzi sui punti, galleria, un orologio che segue il giorno. Tutto il movimento sta in un sistema solo: i tempi in un file, le scene dichiarate nelle pagine, la libreria di animazione caricata solo quando serve. Lo scorrimento resta quello del browser.',
+        'Su un indirizzo non pubblico è in prova una nuova versione del sito: catalogo con mappa e prezzi sui punti, galleria, un orologio che segue il giorno. Tutto il movimento segue un sistema solo, con regole in un posto solo, e si carica solo quando serve. Lo scorrimento resta quello naturale.',
       bullets: [
-        'Se lo script di animazione non parte, la pagina è comunque completa.',
+        'Se l\'animazione non parte, la pagina è comunque completa.',
         'Date e ospiti scelti vengono ricordati e il pagamento si fa in due passi.',
         'Il checkout della nuova versione è ancora in prova: non incassa.',
       ],
@@ -141,12 +141,12 @@ export default {
     {
       icon: 'link',
       title: 'Gestionale collegato',
-      text: 'Calendari, preventivi e prenotazioni passano dalle API di Guesty, senza reinserire nulla.',
+      text: 'Calendari, preventivi e prenotazioni vengono dal gestionale, senza reinserire nulla.',
     },
     {
       icon: 'shield',
-      title: 'API pulita',
-      text: 'Ogni risposta pubblica passa da un filtro che toglie proprietari, formule e campi interni.',
+      title: 'Dati riservati protetti',
+      text: 'I dati interni (proprietari, condizioni commerciali, codici di accesso) non escono mai verso il pubblico.',
     },
     {
       icon: 'cart',
@@ -171,7 +171,7 @@ export default {
     {
       icon: 'map',
       title: 'Pagine per i motori',
-      text: 'Ogni pagina ha il suo indirizzo canonico e la mappa del sito è generata dal server.',
+      text: 'Ogni pagina ha il suo indirizzo canonico e la mappa del sito è sempre aggiornata.',
     },
   ],
 
@@ -258,34 +258,34 @@ export default {
 
   tech: [
     {
-      title: 'Sito statico, API sul bordo della rete',
+      title: 'Sito veloce, collegato al gestionale',
       text:
-        'Il sito è un\'app React pubblicata su Cloudflare Pages. Le chiamate al gestionale passano da un\'unica API sul bordo della rete, così le credenziali non arrivano mai al browser.',
-      tags: ['React', 'TypeScript', 'Vite', 'Cloudflare Pages', 'Functions'],
+        'Le chiamate al gestionale passano da un unico punto protetto, così le credenziali non arrivano mai al browser. Il sito resta veloce perché le pagine pesanti sono già pronte.',
+      tags: ['Veloce', 'Sicurezza']
     },
     {
-      title: 'Cache a più livelli',
+      title: 'Aggiornato, senza interrogare tutto a ogni visita',
       text:
-        'Il catalogo sta in cache per quindici minuti, il prezzo «da» per sei ore. Le prenotazioni e i registri restano in un database.',
-      tags: ['Cloudflare D1', 'Cache sul bordo', 'Guesty Open API'],
+        'Il catalogo e il prezzo «da» restano pronti per un po\' e si rinnovano da soli. Le prenotazioni e i registri restano in un archivio sicuro.',
+      tags: ['Dati sempre allineati', 'Gestionale collegato'],
     },
     {
-      title: 'Una lista di campi vietati',
+      title: 'Dati riservati che non escono',
       text:
-        'Prima di uscire, ogni scheda pubblica perde 40 campi interni (proprietari, formule di commissione, codici di accesso) e 6 voci di prezzo che il sito non mostra. Vale per ogni strada che porta fuori una scheda.',
-      tags: ['Filtro delle risposte', 'Sicurezza API'],
+        'Prima di uscire, ogni scheda pubblica perde i dati interni (proprietari, condizioni commerciali, codici di accesso) e le voci di prezzo che il sito non mostra. Vale per ogni strada che porta fuori una scheda.',
+      tags: ['Sicurezza', 'Privacy'],
     },
     {
       title: 'Pagamento a prova di incertezza',
       text:
-        'La carta viene tokenizzata dal circuito di pagamento, con la verifica a 3 passaggi quando la banca la chiede. Il sito distingue tra confermato, rifiutato e non ancora chiaro, e nel terzo caso non annulla mai.',
-      tags: ['GuestyPay', 'Tokenizzazione', '3-D Secure'],
+        'La carta viene verificata da un circuito di pagamento specializzato, con la verifica a 3 passaggi quando la banca la chiede. Il sito distingue tra confermato, rifiutato e non ancora chiaro, e nel terzo caso non annulla mai.',
+      tags: ['Pagamenti sicuri', 'Verifica della banca'],
     },
     {
       title: 'Traduzioni a mano',
       text:
-        'Italiano, inglese, tedesco e russo stanno nel codice, scritti a mano. Nessun testo e nessun dato degli ospiti viene mandato a un servizio di traduzione.',
-      tags: ['i18n', 'TypeScript'],
+        'Italiano, inglese, tedesco e russo sono scritti a mano. Nessun testo e nessun dato degli ospiti viene mandato a un servizio di traduzione.',
+      tags: ['4 lingue', 'Privacy'],
     },
   ],
 

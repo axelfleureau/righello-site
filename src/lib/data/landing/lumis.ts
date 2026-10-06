@@ -4,7 +4,7 @@ const A = '/progetti/landing/lumis';
 
 /*
  * Lumis: web app e app iPhone per fotografi di eventi (sito online, app in prova su TestFlight).
- * Fatti verificati sul repository Photo-publisher-righello (06/10/2026) e sul sito lumis.wearerighello.com.
+ * Fatti verificati (06/10/2026) e sul sito lumis.wearerighello.com.
  * Le foto che si vedono nelle schermate sono quelle promozionali del sito, nell'account dimostrativo "Righello Demo".
  * Niente prezzi, niente commissioni, niente "import live dalla fotocamera" (non ancora validato su dispositivo vero).
  */
@@ -20,7 +20,7 @@ export default {
     {
       value: 4,
       label: 'intensità di filigrana',
-      note: 'lieve, forte, molto forte, invadente: si sceglie per evento, nel codice'
+      note: 'lieve, forte, molto forte, invadente: si sceglie per evento'
     },
     {
       value: 0,
@@ -30,7 +30,7 @@ export default {
     {
       text: 'Nativa',
       label: 'app per iPhone, senza pagine web dentro',
-      note: 'SwiftUI: nel progetto non c\'è nessuna WebView'
+      note: 'è un\'app vera, non un sito incorniciato'
     }
   ],
 
@@ -66,7 +66,7 @@ export default {
       title: 'Le anteprime si guardano. Gli originali si pagano.',
       highlight: 'Gli originali si pagano.',
       text:
-        'Quando carichi le foto, ogni scatto diventa un\'anteprima leggera con la filigrana: è l\'unica cosa che il pubblico vede. L\'originale va in un archivio privato che apri solo tu. Chi compra paga con Stripe e riceve un link firmato, con scadenza, per scaricare le foto in alta risoluzione.',
+        'Quando carichi le foto, ogni scatto diventa un\'anteprima leggera con la filigrana: è l\'unica cosa che il pubblico vede. L\'originale va in un archivio privato che apri solo tu. Chi compra paga con carta in modo sicuro e riceve un link firmato, con scadenza, per scaricare le foto in alta risoluzione.',
       bullets: [
         'Filigrana con il tuo logo e il testo, in quattro intensità, anche diversa da evento a evento',
         'Una foto già caricata non si ricarica due volte',
@@ -160,7 +160,7 @@ export default {
     },
     {
       icon: 'cart',
-      title: 'Pagamento con Stripe',
+      title: 'Pagamento con carta sicuro',
       text: 'Il cliente sceglie le foto, inserisce l\'email e paga. Nessuna registrazione.'
     },
     {
@@ -280,34 +280,34 @@ export default {
 
   tech: [
     {
-      title: 'Sul bordo della rete, non su un solo server',
-      text: 'Il sito, l\'API e l\'archivio girano su Cloudflare: le anteprime vengono servite vicino a chi guarda e restano in cache, così una gallery da migliaia di foto non si siede.',
-      tags: ['Cloudflare Pages', 'Workers', 'D1', 'R2']
+      title: 'Veloce ovunque, non su un solo server',
+      text: 'Le anteprime vengono servite vicino a chi guarda e restano pronte, così una gallery da migliaia di foto non si siede e si apre subito anche da telefono.',
+      tags: ['Infrastruttura globale', 'Veloce']
     },
     {
       title: 'Le anteprime le prepara chi carica',
       text: 'Compressione e filigrana si fanno sul dispositivo del fotografo (browser o app) prima dell\'invio. Ogni file ha un\'impronta: lo stesso scatto non viene caricato due volte.',
-      tags: ['Canvas', 'Impronta del file']
+      tags: ['Meno traffico', 'Nessun doppione']
     },
     {
       title: 'Originali mai pubblici',
-      text: 'L\'originale ha un percorso a parte e lo legge solo il proprietario dell\'evento. Chi compra riceve un link firmato che scade: senza firma valida non si scarica niente.',
-      tags: ['Link firmati HMAC', 'Scadenza', 'R2']
+      text: 'L\'originale ha un percorso a parte e lo legge solo il proprietario dell\'evento. Chi compra riceve un link firmato che scade: senza una firma valida non si scarica niente.',
+      tags: ['Sicurezza', 'Link a scadenza']
     },
     {
       title: 'Un selfie che non parte',
-      text: 'Il modello di riconoscimento gira nel browser: dal selfie esce solo una firma numerica. Il confronto con le foto procede a blocchi, per reggere anche eventi molto grandi.',
-      tags: ['ONNX Runtime Web', 'ArcFace', 'WebAssembly']
+      text: 'Il riconoscimento gira nel browser di chi cerca: dal selfie esce solo una firma numerica. Il confronto con le foto procede a blocchi, per reggere anche eventi molto grandi.',
+      tags: ['Privacy', 'Sul tuo dispositivo']
     },
     {
       title: 'App nativa, non una pagina in una cornice',
-      text: 'L\'app per iPhone è SwiftUI e parla con le stesse funzioni del sito. Accesso con Clerk, nessuna WebView.',
-      tags: ['SwiftUI', 'Clerk', 'URLSession']
+      text: 'L\'app per iPhone è fatta apposta per iPhone e parla con gli stessi dati del sito. Nessuna pagina web dentro l\'app.',
+      tags: ['App nativa', 'Dati sempre allineati']
     },
     {
-      title: 'Incassi e posta fatti da chi lo fa di mestiere',
-      text: 'I pagamenti passano da Stripe, le email di conferma e di avviso da SendGrid. L\'ordine si registra quando Stripe conferma il pagamento.',
-      tags: ['Stripe', 'SendGrid', 'Webhook']
+      title: 'Incassi e posta affidabili',
+      text: 'I pagamenti e le email di conferma e di avviso sono affidati a servizi specializzati. L\'ordine si registra solo quando il pagamento è confermato.',
+      tags: ['Pagamenti sicuri', 'Conferme automatiche']
     }
   ],
 

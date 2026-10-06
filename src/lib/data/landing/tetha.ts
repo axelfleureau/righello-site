@@ -26,9 +26,9 @@ export default {
   tagline: 'Un documento scaduto ferma il cantiere. Tetha te lo dice prima.',
 
   metrics: [
-    { value: 30, label: 'giorni di preavviso', note: 'su ogni scadenza: costante di preavviso nel codice' },
-    { value: 37, label: 'tipi di documento riconosciuti', note: 'idoneità, attestati, UNILAV, DURC e altri: elenco dei tipi nel codice, escluso "Da verificare"' },
-    { text: '30–86 s', label: 'per leggere un documento', note: 'durate registrate nelle chiamate di lettura del 30/09/2026' },
+    { value: 30, label: 'giorni di preavviso', note: 'su ogni scadenza' },
+    { value: 37, label: 'tipi di documento riconosciuti', note: 'idoneità, attestati, UNILAV, DURC e altri, escluso "Da verificare"' },
+    { text: '30–86 s', label: 'per leggere un documento', note: 'tempi misurati sulla lettura reale del 30/09/2026' },
     { value: 4, label: 'modi per caricare un documento', note: 'scansione nell’app, "Condividi con Tetha" da iPhone, trascinamento nel gestionale, bot Telegram' },
   ],
 
@@ -56,7 +56,7 @@ export default {
       text:
         'Il capocantiere inquadra il foglio: l’app lo raddrizza, lo pulisce e lo trasforma in un PDF su carta bianca. Tetha legge tipo, persona e date e le mette accanto al foglio. Senza il tuo sì in archivio non entra niente. Quando carichi un rinnovo, la scadenza vecchia si spegne e la persona torna in regola.',
       bullets: [
-        'La scansione avviene sul telefono, con gli strumenti nativi di iOS',
+        'La scansione avviene sul telefono, con gli strumenti del telefono',
         'Una data incerta si rilegge con più attenzione; quello che non riconosce va in "Da verificare"',
         'Il documento vecchio resta nello storico come "sostituito"',
       ],
@@ -128,29 +128,29 @@ export default {
 
   tech: [
     {
-      title: 'Un nucleo per sito e app',
-      text: 'Tipi dei documenti, calcolo delle scadenze, sostituzioni, piani e chiamate alle API vivono in un pacchetto solo, usato dal sito e dall’app. Un controllo automatico impedisce di farci entrare codice che sul telefono non esiste.',
-      tags: ['TypeScript', 'packages/core', 'Next.js', 'Expo'],
+      title: 'Stesse regole su sito e app',
+      text: 'Tipi di documento, calcolo delle scadenze, sostituzioni e piani sono definiti in un punto solo e usati sia dal sito sia dall’app. Cambiare una regola la cambia ovunque, e il telefono non può mai dire una cosa diversa dal computer.',
+      tags: ['Un solo punto di verità', 'Dati sempre allineati'],
     },
     {
-      title: 'Scansione nativa, offline',
-      text: 'Un modulo Swift trova il foglio, corregge la prospettiva, pulisce l’immagine, legge il testo e scrive un PDF A4. Il server è solo la riserva, per galleria, gestionale e bot.',
-      tags: ['Swift', 'VisionKit', 'Vision', 'Core Image'],
+      title: 'Scansione sul telefono, anche offline',
+      text: 'L’app trova il foglio, corregge la prospettiva, pulisce l’immagine, legge il testo e crea un PDF A4, tutto sul telefono. Il sistema in rete interviene solo come riserva, per galleria, gestionale e Telegram.',
+      tags: ['App nativa', 'Funziona offline'],
     },
     {
       title: 'Ogni impresa vede solo la sua',
-      text: 'L’impresa è un attributo firmato nel token di accesso: il client non può falsificarlo e le regole del database lo leggono direttamente. Sul server il profilo vale per la singola richiesta. L’archivio sta su Firestore, in multiregione europea.',
-      tags: ['Firebase Auth', 'Claim firmati', 'Firestore eur3'],
+      text: 'I dati di un’impresa sono separati da quelli di tutte le altre a ogni richiesta: nessun utente può vedere o falsificare un’altra impresa. L’archivio è custodito in Europa.',
+      tags: ['Sicurezza', 'Dati in Europa'],
     },
     {
       title: 'Scadenze calcolate, non salvate',
-      text: 'Lo stato di un documento si ricava dalla data, mai da un campo salvato. Chi ha sostituito chi lo decide la scadenza più lontana, calcolata in lettura: vale per ogni pagina e per l’app, senza migrazioni. Anche consigli come «un corso solo per tre persone» sono calcoli sulle date, non frasi di un modello.',
-      tags: ['Date', 'Regola unica', 'Storico'],
+      text: 'Lo stato di un documento si ricava sempre dalla data, mai da un valore memorizzato: vale per ogni pagina e per l’app, senza correzioni a mano. Anche consigli come «un corso solo per tre persone» sono calcoli sulle date, non frasi inventate da un modello.',
+      tags: ['Regola unica', 'Storico'],
     },
     {
       title: 'L’AI propone, non scrive',
-      text: 'Ogni lettura passa da un punto solo che sceglie il modello per livello di difficoltà, registra durata e costo e rispetta il tetto mensile dell’impresa. Il risultato è una proposta: senza conferma niente entra in archivio.',
-      tags: ['Registro delle chiamate', 'Tetto di spesa', 'Conferma umana'],
+      text: 'Ogni lettura è registrata con durata e costo e rispetta il tetto mensile dell’impresa. Il risultato è una proposta: senza la tua conferma niente entra in archivio.',
+      tags: ['Intelligenza artificiale', 'Controllo umano'],
     },
   ],
 

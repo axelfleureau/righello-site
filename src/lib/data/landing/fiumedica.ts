@@ -20,7 +20,7 @@ export default {
     {
       text: '0,5 s',
       label: 'per mostrare il contenuto principale',
-      note: 'LCP della home in Chrome, 6/10/2026: 0,50 s su computer, 0,45 s su telefono emulato'
+      note: 'misurato sulla home il 6/10/2026: 0,50 s su computer, 0,45 s su telefono emulato'
     },
     {
       value: 2,
@@ -265,28 +265,28 @@ export default {
   tech: [
     {
       title: 'Pagine pronte, non generate a ogni visita',
-      text: 'Il sito è costruito in Webflow e le pagine sono servite già pronte dalla rete di distribuzione. Testi e orari si cambiano dall’editor, senza toccare il codice.',
-      tags: ['Webflow', 'Cloudflare']
+      text: 'Le pagine del sito sono servite già pronte da una rete di distribuzione globale. Testi e orari si cambiano da un editor semplice, senza toccare il codice.',
+      tags: ['Veloce', 'Infrastruttura globale']
     },
     {
       title: 'Poco da caricare',
-      text: 'La home fa circa quaranta richieste e mostra il contenuto principale in mezzo secondo. Quarantasette immagini su quarantanove si caricano solo quando servono.',
-      tags: ['Immagini in differita', 'LCP 0,5 s']
+      text: 'La home mostra il contenuto principale in mezzo secondo. Quasi tutte le immagini si caricano solo quando servono, così la pagina si apre subito anche con poca rete.',
+      tags: ['Immagini in differita', '0,5 s']
     },
     {
       title: 'Prenotazione collegata al gestionale',
       text: 'Il portale delle prenotazioni è quello del gestionale della struttura: il sito vi rimanda con un pulsante, in ogni pagina.',
-      tags: ['MedGest', 'Portale prenotazioni']
+      tags: ['Portale prenotazioni', 'Gestionale collegato']
     },
     {
       title: 'Referti su un portale a parte',
       text: 'I referti radiologici stanno su un portale separato, con accesso riservato: i referti non si consultano nelle pagine pubbliche del sito.',
-      tags: ['Next.js', 'Accesso riservato']
+      tags: ['Accesso riservato', 'Privacy']
     },
     {
       title: 'Moduli con difese semplici',
-      text: 'Il modulo di richiesta ha il consenso alla privacy obbligatorio e il controllo antispam reCAPTCHA.',
-      tags: ['reCAPTCHA', 'Consenso privacy']
+      text: 'Il modulo di richiesta ha il consenso alla privacy obbligatorio e un controllo antispam.',
+      tags: ['Antispam', 'Consenso privacy']
     }
   ],
   cta: {

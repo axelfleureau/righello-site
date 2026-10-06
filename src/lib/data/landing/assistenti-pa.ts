@@ -1,18 +1,17 @@
 import type { Landing } from './types';
 
 /**
- * Assistenti AI per i Comuni — fatti dal repository del bot WhatsApp di un Comune del Friuli Venezia Giulia
- * (server.js, lib/anonymize.js, lib/grounding.js, data/*.json), dal monitor esterno e dal SAL del servizio.
+ * Assistenti AI per i Comuni — fatti verificati sul bot WhatsApp di un Comune del Friuli Venezia Giulia.
  * Il Comune non è nominato. Il bot non ha un'interfaccia propria: niente schermate, solo l'infografica illustrativa.
  * Non si riportano numeri di contatti, di messaggi o di costi.
  */
 export default {
   tagline: 'Risponde ai cittadini con le pagine del Comune. Se non trova, lo dice.',
   metrics: [
-    { value: 431, label: 'domande di prova nel repository', note: 'quattro elenchi di domande di collaudo: 110 + 88 + 183 + 50' },
-    { value: 9, label: 'tipi di dato personale coperti da regole fisse', note: 'email, IBAN, codice fiscale, targa, documento, telefono, indirizzo, partita IVA, numeri (lib/pii-redact.js)' },
+    { value: 431, label: 'domande di prova', note: 'quattro elenchi di domande di collaudo: 110 + 88 + 183 + 50' },
+    { value: 9, label: 'tipi di dato personale coperti da regole fisse', note: 'email, IBAN, codice fiscale, targa, documento, telefono, indirizzo, partita IVA, numeri' },
     { text: '≈ 1,2 s', label: 'per rispondere (p95) nelle prove', note: 'suite di conversazioni e di conoscenza del 15 settembre 2026' },
-    { value: 5, label: 'tipi di cifra che devono stare nella fonte', note: 'tempi, costi, orari, date, telefoni (lib/grounding.js)' },
+    { value: 5, label: 'tipi di cifra che devono stare nella fonte', note: 'tempi, costi, orari, date, telefoni' },
   ],
   chapters: [
     {
@@ -52,7 +51,7 @@ export default {
         'Chi scrive a un Comune può metterci un telefono, un codice fiscale, un indirizzo. Prima che il testo raggiunga un modello esterno, quei dati diventano segnaposto. Un riconoscitore locale prende anche nomi e indirizzi in forma libera; se è lento o non risponde, restano le regole fisse: il servizio non dipende mai da lui. Quando la risposta torna, i segnaposto si rimettono al loro posto.',
       bullets: [
         'Due livelli: riconoscitore locale per nomi e indirizzi, regole fisse per i dati strutturati',
-        'Se il primo non risponde entro 2,5 secondi, si prosegue con le regole',
+        'Se il primo non risponde in fretta, si prosegue con le regole',
         'Il consenso si registra all\'inizio e si ritira con una parola',
       ],
       layout: 'full',
@@ -67,33 +66,33 @@ export default {
     { icon: 'users', title: 'Consenso e revoca', text: 'Il consenso si registra al primo messaggio e si revoca scrivendo una parola. Un solo cancello per tutte le strade.' },
     { icon: 'calendar', title: 'Eventi aggiornati', text: 'Eventi e novità vengono recuperati dalle fonti ufficiali, con la differenza fra «oggi», «stasera» e «nel fine settimana».' },
     { icon: 'message', title: 'Capisce il senso', text: 'Interpreta la domanda per significato, non per parola chiave, e ripiega su regole fisse se serve.' },
-    { icon: 'bell', title: 'Sorvegliato da fuori', text: 'Un controllo esterno interroga il servizio ogni minuto e manda un\'e-mail se resta giù.' },
+    { icon: 'bell', title: 'Sorvegliato da fuori', text: 'Un controllo esterno interroga il servizio di continuo e manda un\'e-mail se resta giù.' },
   ],
   tech: [
     {
-      title: 'Una pipeline sola, tutte le strade',
-      text: 'Le richieste arrivano da più percorsi, ma passano dallo stesso cancello del consenso e dalla stessa pipeline di risposta: nessun percorso salta i controlli.',
-      tags: ['Node.js', 'Pipeline unica', 'Cancello del consenso'],
+      title: 'Una strada sola, tutte le richieste',
+      text: 'Le richieste arrivano da più percorsi, ma passano dallo stesso cancello del consenso e dalla stessa catena di risposta: nessun percorso salta i controlli.',
+      tags: ['Pipeline unica', 'Consenso'],
     },
     {
       title: 'Le pagine del Comune, sempre fresche',
-      text: 'L\'indice delle pagine ufficiali si aggiorna a differenze e si salva solo se un documento è cambiato. Il bot lavora su una copia in memoria, non rilegge il sito a ogni domanda.',
-      tags: ['Indice del sito', 'Aggiornamento a delta'],
+      text: 'L\'indice delle pagine ufficiali si aggiorna a differenze e si salva solo se un documento è cambiato. L\'assistente lavora su una copia già pronta, non rilegge il sito a ogni domanda: per questo risponde in fretta.',
+      tags: ['Fonti ufficiali', 'Risposte veloci'],
     },
     {
       title: 'Anonimizzazione che non blocca mai',
-      text: 'Riconoscitore locale con tempo massimo e ripiego automatico sulle regole fisse. I segnaposto che il modello ripete vengono ripristinati e quelli residui tolti prima di rispondere.',
-      tags: ['NER locale', 'Espressioni regolari', 'Fail-safe'],
+      text: 'Un riconoscitore dei dati personali con tempo massimo e ripiego automatico su regole fisse. I segnaposto che il modello ripete vengono ripristinati e quelli residui tolti prima di rispondere.',
+      tags: ['Privacy', 'Sicurezza'],
     },
     {
       title: 'Collaudo che cresce da solo',
-      text: 'Ogni segnalazione diventa un test permanente. Quattro elenchi di domande di collaudo, controlli prima del rilascio e una revisione dopo l\'invio, con un modello più capace, che non tocca la risposta.',
-      tags: ['Test di regressione', 'Mocha', 'Revisione AI'],
+      text: 'Ogni segnalazione diventa un test permanente. Quattro elenchi di domande di collaudo, controlli prima del rilascio e una revisione dopo l\'invio che segnala i difetti senza toccare la risposta.',
+      tags: ['Test automatici', 'Revisione AI'],
     },
     {
       title: 'Si misura, non si indovina',
-      text: 'Ogni risposta registra durata e stadi attraversati. Il profilo di esecuzione ha trovato una scansione ripetuta dei contatti: tolta quella, la risposta è scesa a circa un secondo. Un monitor esterno avvisa se il servizio non risponde per tre minuti.',
-      tags: ['Profilo CPU', 'Monitor esterno', 'Cloudflare Workers'],
+      text: 'Ogni risposta registra durata e passaggi attraversati. Così si è trovato un rallentamento nascosto: tolto quello, la risposta è scesa a circa un secondo. Un controllo esterno avvisa se il servizio non risponde per qualche minuto.',
+      tags: ['Controllo continuo', 'Prestazioni'],
     },
   ],
   cta: {

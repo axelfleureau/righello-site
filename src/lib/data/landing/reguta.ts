@@ -17,10 +17,10 @@ export default {
   tagline: 'Certificati, corsi e scadenze in un archivio che dice cosa fare per primo.',
 
   metrics: [
-    { value: 23, label: 'pagine del gestionale', note: 'rotte dell’applicazione, dalle scadenze alla cantina' },
+    { value: 23, label: 'pagine del gestionale', note: 'dalle scadenze alla cantina' },
     { value: 5, label: 'tipi di scadenza in un elenco solo', note: 'corsi, idoneità sanitarie, documenti, documenti aziendali, macchinari' },
-    { value: 33, label: 'categorie di corso con validità di legge', note: 'tabella delle validità nel codice, dal RLS annuale agli attestati senza scadenza' },
-    { text: '30 / 60', suffix: ' gg', label: 'di preavviso', note: '30 giorni per quasi tutto, 60 per le idoneità sanitarie (regola unica nel codice)' },
+    { value: 33, label: 'categorie di corso con validità di legge', note: 'dal RLS annuale agli attestati senza scadenza' },
+    { text: '30 / 60', suffix: ' gg', label: 'di preavviso', note: '30 giorni per quasi tutto, 60 per le idoneità sanitarie' },
   ],
 
   chapters: [
@@ -84,7 +84,7 @@ export default {
     { icon: 'scan', title: 'Libretti e targhe', text: 'La targa letta dal libretto è controllata sul formato italiano; se è dubbia, scegli tra le alternative.' },
     { icon: 'search', title: 'Duplicati e nomi', text: 'Corsi e mezzi doppi vengono segnalati; i nomi dei lavoratori si abbinano anche con piccole differenze di scrittura.' },
     { icon: 'lock', title: 'Archivio tracciato', text: 'Chi ha caricato, quando, cosa è cambiato. Un registro che si aggiunge e non si modifica.' },
-    { icon: 'shield', title: 'Ruoli', text: 'Amministratore, editor e sola lettura: chi è in sola lettura non può cambiare niente, e il server lo rifiuta.' },
+    { icon: 'shield', title: 'Ruoli', text: 'Amministratore, editor e sola lettura: chi è in sola lettura non può cambiare niente, e il sistema lo rifiuta.' },
     { icon: 'map', title: 'Cantina e campo', text: 'Botti, fitofarmaci, planimetrie con zoom e rotazione, inventario e segnalazione degli incidenti.' },
   ],
 
@@ -105,23 +105,23 @@ export default {
   tech: [
     {
       title: 'Una regola, un punto solo',
-      text: 'Stati, preavvisi, formato delle date e badge delle scadenze vivono in un nucleo condiviso. Prima ogni pagina rifaceva tutto a modo suo; ora cambiare una regola la cambia ovunque.',
-      tags: ['React', 'TypeScript', 'Zod', 'Tailwind'],
+      text: 'Stati, preavvisi, formato delle date e badge delle scadenze sono definiti in un punto solo. Prima ogni pagina rifaceva tutto a modo suo; ora cambiare una regola la cambia ovunque.',
+      tags: ['Un solo punto di verità'],
     },
     {
       title: 'Registro che non si modifica',
-      text: 'Ogni fatto sull’archivio è un evento che si aggiunge e non si modifica. Se la traccia non si scrive, l’operazione fallisce: un registro che perde eventi in silenzio è peggio di nessun registro.',
-      tags: ['Firestore', 'Eventi in sola aggiunta', 'GDPR art. 17'],
+      text: 'Ogni fatto sull’archivio è un evento che si aggiunge e non si modifica. Se la traccia non si scrive, l’operazione non va a buon fine: un registro che perde eventi in silenzio è peggio di nessun registro.',
+      tags: ['Tracciabilità', 'Privacy'],
     },
     {
       title: 'Importazione con anteprima',
-      text: 'La lettura dei PDF passa da un unico gateway che registra uso e costo. Il risultato è una proposta da vedere accanto al documento; nulla si salva senza conferma.',
-      tags: ['Lettura da PDF', 'Gateway AI', 'Conferma in due passi'],
+      text: 'La lettura dei PDF passa da un unico punto che registra uso e costo. Il risultato è una proposta da vedere accanto al documento; nulla si salva senza conferma.',
+      tags: ['Lettura da PDF', 'Intelligenza artificiale', 'Conferma in due passi'],
     },
     {
-      title: 'Cloudflare davanti, Firestore dietro',
-      text: 'L’applicazione gira su Cloudflare in un contenitore, con accesso protetto da Cloudflare Access. I dati e i file stanno su Firebase; il ruolo di ognuno si decide nell’applicazione e il server rifiuta le scritture di chi è in sola lettura.',
-      tags: ['Cloudflare Workers', 'Cloudflare Access', 'Firebase', 'Express'],
+      title: 'Accesso protetto, ruoli rispettati',
+      text: 'L’archivio non è raggiungibile da chiunque: l’accesso è protetto e il ruolo di ognuno decide cosa può fare. Chi è in sola lettura non può cambiare niente, e il sistema rifiuta ogni tentativo.',
+      tags: ['Sicurezza', 'Ruoli'],
     },
   ],
 

@@ -12,7 +12,7 @@ export default {
     {
       text: '0,7 s',
       label: 'per mostrare il contenuto principale',
-      note: 'LCP in Chrome, 6/10/2026: 0,74 s su computer, 0,54 s su telefono emulato'
+      note: 'misurato il 6/10/2026: 0,74 s su computer, 0,54 s su telefono emulato'
     },
     {
       value: 11,
@@ -22,7 +22,7 @@ export default {
     {
       value: 3,
       label: 'blocchi di dati strutturati per i motori di ricerca',
-      note: 'schema.org nella pagina: applicazione, organizzazione, domande frequenti'
+      note: 'nella pagina: applicazione, organizzazione, domande frequenti'
     }
   ],
   chapters: [
@@ -112,7 +112,7 @@ export default {
         'Marchio, illustrazioni e colori danno al sito un tono accogliente. La pagina si muove con lo scorrimento, ma rispetta la richiesta di ridurre i movimenti del sistema. Per i social abbiamo montato anche un video verticale di 43 secondi.',
       bullets: [
         'Quattro illustrazioni e un marchio coerenti con il sito',
-        'Movimento con GSAP ScrollTrigger e Motion',
+        'Movimento morbido allo scorrimento',
         'Con «riduci movimento» attivo, le transizioni si spengono'
       ],
       media: [
@@ -223,28 +223,28 @@ export default {
   tech: [
     {
       title: 'Una pagina sola, leggera da aprire',
-      text: 'Il sito è una pagina unica: 11 richieste e circa 230 KB di script al primo caricamento, il resto sono le illustrazioni.',
-      tags: ['React', 'Vite', 'Tailwind CSS']
+      text: 'Il sito è una pagina unica: 11 richieste al primo caricamento, e il resto sono le illustrazioni. Si apre in meno di un secondo.',
+      tags: ['Veloce', 'Leggero']
     },
     {
       title: 'Movimento a scene',
       text: 'Le animazioni seguono lo scorrimento. Sono tolte quando il sistema chiede meno movimento.',
-      tags: ['GSAP', 'ScrollTrigger', 'Motion']
+      tags: ['Animazioni', 'Accessibilità']
     },
     {
       title: 'Dati per i motori di ricerca',
-      text: 'Tre blocchi schema.org (applicazione, organizzazione, domande frequenti), indirizzo canonico e tag per le anteprime sui social.',
-      tags: ['schema.org', 'Open Graph', 'JSON-LD']
+      text: 'Tre blocchi di dati strutturati (applicazione, organizzazione, domande frequenti), indirizzo canonico e anteprime per i social.',
+      tags: ['Dati strutturati', 'Anteprime social']
     },
     {
       title: 'Pubblicazione semplice',
-      text: 'Il sito è statico, pubblicato su Vercel con un dominio proprio e certificato HTTPS.',
-      tags: ['Vercel', 'HTTPS']
+      text: 'Il sito è statico, con un dominio proprio e certificato HTTPS: si apre subito e non ha niente da rompersi.',
+      tags: ['Dominio proprio', 'HTTPS']
     },
     {
       title: 'Accessibile nelle basi',
       text: 'Una sola intestazione principale, titoli in ordine, lingua dichiarata, tutte le immagini con testo alternativo.',
-      tags: ['HTML semantico', 'Testi alternativi']
+      tags: ['Accessibilità', 'Testi alternativi']
     }
   ],
   cta: {

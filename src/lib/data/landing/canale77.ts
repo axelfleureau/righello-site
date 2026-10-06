@@ -1,17 +1,16 @@
 import type { Landing } from './types';
 
 /**
- * Canale 77 On Demand — fatti dal codice di canale77-ott-platform (README, src/*, platforms/*, wrangler),
- * dalle note di lavoro e da schermate vere (sito di produzione, app Android TV nativa su emulatore).
+ * Canale 77 On Demand — fatti verificati e schermate vere (sito di produzione, app Android TV nativa su emulatore).
  * Niente nomi di persone, credenziali, indirizzi di server.
  */
 export default {
   tagline: 'Lo stesso catalogo sul sito, sul digitale terrestre e sulle app TV. Anche su quelle vecchie.',
   metrics: [
-    { value: 5, label: 'piattaforme, un solo catalogo', note: 'web, HbbTV, Samsung Tizen, LG webOS, Android TV (PIATTAFORME nel codice)' },
-    { value: 3, label: 'testate in un posto solo', note: 'Canale 77, CalcioFVG Live, CalcioVeneto Live (fonti del catalogo)' },
-    { value: 10, suffix: ' min', label: 'ogni quanto il catalogo si rifà da solo', note: 'cron del Worker ogni 10 minuti' },
-    { value: 479, label: 'test automatici', note: 'npm test nel repository: 479 passati su 74 file, controllati il 6 ottobre 2026' },
+    { value: 5, label: 'piattaforme, un solo catalogo', note: 'web, HbbTV, Samsung, LG, Android TV' },
+    { value: 3, label: 'testate in un posto solo', note: 'Canale 77, CalcioFVG Live, CalcioVeneto Live' },
+    { text: 'in automatico', label: 'il catalogo si aggiorna da solo', note: 'nuovi contenuti e correzioni arrivano senza interventi a mano' },
+    { value: 479, label: 'test automatici', note: 'tutti superati, controllati il 6 ottobre 2026' },
   ],
   chapters: [
     {
@@ -22,7 +21,7 @@ export default {
       text:
         'Highlights, interviste, rubriche e partite di Canale 77, CalcioFVG Live e CalcioVeneto Live vivono su siti diversi, con titoli scritti in modi diversi. La piattaforma li legge, li pulisce e li riordina in un catalogo solo: per sport, per tipo di contenuto, con le novità in alto.',
       bullets: [
-        'Il catalogo si rifà da solo ogni 10 minuti',
+        'Il catalogo si rifà da solo, di continuo',
         'Le regole che decidono sport, sezione e doppioni sono scritte una volta e provate con test',
         'Lo stesso catalogo lo leggono sito, HbbTV e app TV: una correzione vale per tutti',
       ],
@@ -46,8 +45,8 @@ export default {
       text:
         'Un televisore del digitale terrestre ha un solo profilo video obbligatorio e un lettore che non perdona: se il flusso è fuori standard, resta nero senza dare errore. Per questo la compatibilità si applica solo dove serve: l\'HbbTV riceve la copia adatta, le app Samsung, LG e Android e il sito ricevono sempre l\'originale al massimo della qualità.',
       bullets: [
-        'La scelta è in un punto solo del codice, con i test che impongono di dichiarare ogni eccezione',
-        'Sui Samsung Tizen 5 un MP4 partiva in 21,8 s, lo stesso video in HLS a pezzi corti in 0,2 s (misura del 28 settembre su un TV del 2019)',
+        'La scelta è in un punto solo, e ogni eccezione va dichiarata',
+        'Sui Samsung del 2019 un MP4 partiva in 21,8 s, lo stesso video in HLS a pezzi corti in 0,2 s (misura del 28 settembre)',
         'Una partita lunga non arriva mai come file unico da gigabyte: parte in flusso adattivo',
       ],
       media: [
@@ -70,7 +69,7 @@ export default {
       text:
         'Un televisore che non parte è un guasto difficile da vedere da fuori. Per questo la piattaforma misura da sola cosa succede: ogni app manda eventi di visione, tra cui il momento in cui compare la prima immagine vera, non quando il lettore dice di aver iniziato. Quando una segnalazione trova un difetto, la regola entra nel cancello di rilascio e non si può più rompere in silenzio.',
       bullets: [
-        'Telemetria per famiglia di televisore e per formato, su database',
+        'Misure di visione per famiglia di televisore e per formato',
         'Un cancello di rilascio blocca il rilascio se il catalogo è fuori regola',
         'Una routine rifà le copie per i televisori e porta l\'audio a −23 LUFS',
       ],
@@ -146,34 +145,34 @@ export default {
   },
   tech: [
     {
-      title: 'Un Worker, quattro archivi',
-      text: 'Un Worker serve il sito, le API e il proxy per i televisori. Il catalogo sta in una cache (KV), premium, campagne e telemetria in un database relazionale, le clip on demand in HLS su un archivio di oggetti.',
-      tags: ['Cloudflare Workers', 'KV', 'D1', 'R2'],
+      title: 'Un solo sistema, tutti gli schermi',
+      text: 'Sito, app e televisori parlano con lo stesso sistema: il catalogo è sempre pronto, le clip on demand sono preparate in streaming adattivo e premium, campagne e misure di visione vivono nello stesso posto.',
+      tags: ['Infrastruttura globale', 'Dati sempre allineati'],
     },
     {
       title: 'Regole pure, provate a tavolino',
-      text: 'Sezioni, sport, doppioni, righe, chi riceve cosa, scadenze: funzioni senza rete né disco, importate da Worker, server locale, script e app. 479 test le tengono ferme.',
-      tags: ['TypeScript', 'Funzioni pure', 'Test automatici'],
+      text: 'Sezioni, sport, doppioni, righe, chi riceve cosa, scadenze: regole semplici e indipendenti, usate da sito, app e strumenti interni. 479 test le tengono ferme.',
+      tags: ['Un solo punto di verità', 'Test automatici'],
     },
     {
       title: 'Un\'app per ogni schermo, con un solo contratto',
-      text: 'L\'HbbTV è una pagina scritta in ES5 che gira nel televisore. Samsung e LG hanno il loro pacchetto, Android TV un\'app nativa in Kotlin senza librerie esterne. Tutte leggono lo stesso catalogo.',
-      tags: ['HbbTV', 'ES5', 'Kotlin', 'Tizen', 'webOS'],
+      text: 'L\'HbbTV è una pagina leggerissima che gira dentro il televisore. Samsung e LG hanno il loro pacchetto, Android TV un\'app nativa. Tutte leggono lo stesso catalogo.',
+      tags: ['HbbTV', 'Smart TV', 'Android TV'],
     },
     {
       title: 'Video che partono, anche con poco decoder',
-      text: 'Il flusso adattivo vale per tutti, l\'MP4 è la rete di sicurezza. Sul sito l\'HLS passa da hls.js. Oltre i 25 minuti il contenuto si serve da una CDN, non dall\'FTP del sito.',
-      tags: ['HLS', 'DASH', 'hls.js', 'CDN'],
+      text: 'Il flusso adattivo vale per tutti, l\'MP4 è la rete di sicurezza. I contenuti lunghi si servono da una rete di distribuzione veloce, non dal sito stesso.',
+      tags: ['Streaming adattivo', 'Veloce'],
     },
     {
       title: 'Misurare cosa vede il televisore',
-      text: 'Gli eventi di visione finiscono su database con limiti per indirizzo. La prima immagine vera conta più dell\'annuncio del lettore: è così che si sono trovati i difetti dei Samsung e dei Panasonic.',
-      tags: ['Telemetria', 'D1', 'Rate limiting'],
+      text: 'Gli eventi di visione sono raccolti con limiti anti-abuso. La prima immagine vera conta più dell\'annuncio del lettore: è così che si sono trovati i difetti di alcune marche di televisori.',
+      tags: ['Misure di visione', 'Sicurezza'],
     },
     {
       title: 'Una routine che tiene in ordine',
       text: 'Un processo automatico rifà le copie per i televisori, porta l\'audio a −23 LUFS (EBU R128) e controlla, una per una, le segnalazioni dello staff.',
-      tags: ['ffmpeg', 'EBU R128', 'Automazione'],
+      tags: ['Automazione', 'Audio livellato'],
     },
   ],
   cta: {

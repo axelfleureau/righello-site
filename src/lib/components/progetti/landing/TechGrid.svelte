@@ -19,7 +19,7 @@
           <h3>{t.title}</h3>
           <p>{t.text}</p>
           {#if t.tags?.length}
-            <ul class="tg__tags" aria-label="Tecnologie">
+            <ul class="tg__tags" aria-label="Caratteristiche">
               {#each t.tags as tag}<li>{tag}</li>{/each}
             </ul>
           {/if}

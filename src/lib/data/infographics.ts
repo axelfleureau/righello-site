@@ -155,8 +155,8 @@ export const activationSteps: FlowStep[] = [
   },
   {
     id: 'telefono',
-    title: 'Il telefono apre /attiva',
-    text: 'Sul telefono si apre la pagina /attiva e si legge il codice della TV.',
+    title: 'Il telefono apre l\'attivazione',
+    text: 'Sul telefono si apre la pagina di attivazione e si legge il codice della TV.',
     ms: 4500,
   },
   {
@@ -168,7 +168,7 @@ export const activationSteps: FlowStep[] = [
   {
     id: 'controllo',
     title: 'La TV controlla e si sblocca',
-    text: 'Ogni 3 secondi la TV chiede se l\'attivazione è arrivata. Appena c\'è, si sblocca da sola.',
+    text: 'La TV controlla da sola se l\'attivazione è arrivata. Appena c\'è, si sblocca.',
     ms: 6500,
   },
   {
@@ -199,7 +199,7 @@ export const paSteps: FlowStep[] = [
   {
     id: 'anonimizza',
     title: 'I dati personali vengono coperti',
-    text: 'Nome, telefono e simili vengono anonimizzati prima di arrivare al modello.',
+    text: 'Nome, telefono e simili vengono anonimizzati prima di essere elaborati.',
     ms: 4000,
   },
   {
