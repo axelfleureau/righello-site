@@ -2,6 +2,7 @@
   import { caseStudies, caseStudyHref } from '$lib/data/case-studies';
   import type { CaseStudy } from '$lib/data/case-studies';
   import StatusBadge from './StatusBadge.svelte';
+  import PhoneFrame from './PhoneFrame.svelte';
 
   // Una sola composizione: telefono, computer e iPad, ognuno col prodotto vero.
   // Riferimento: Flighty (Mobbin), titolo corto e dispositivi su fondo vuoto.
@@ -26,7 +27,7 @@
         <a class="fam__item fam__item--{kind}" href={caseStudyHref(s)} style="--a:{s.accent[0]}">
           <span class="fam__dev fam__dev--{kind}">
             {#if kind === 'phone'}
-              <img src={s.stage?.src} alt="" width="720" height="1560" loading="lazy" decoding="async" />
+              <PhoneFrame><img class="shot" src={s.stage?.src} alt="" width="720" height="1560" loading="lazy" decoding="async" /></PhoneFrame>
             {:else if kind === 'tablet'}
               <img src={s.stage?.src} alt="" width="1000" height="698" loading="lazy" decoding="async" />
             {:else}
@@ -111,15 +112,6 @@
     width: 100%;
     height: auto;
   }
-
-  /* telefono */
-  .fam__dev--phone {
-    padding: 0.28rem;
-    border-radius: 1.5rem;
-    background: linear-gradient(160deg, #2a2a30, #0e0e11);
-  }
-
-  .fam__dev--phone img { border-radius: 1.25rem; }
 
   /* iPad */
   .fam__dev--tablet {

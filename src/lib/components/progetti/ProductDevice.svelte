@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import type { CaseStudy } from '$lib/data/case-studies';
+  import PhoneFrame from './PhoneFrame.svelte';
 
   export let study: CaseStudy;
   export let eager = false;
@@ -94,13 +95,13 @@
       </div>
       {#if stage.screens?.[0]}
         <div class="ph ph--pal" aria-hidden="true">
-          <img src={stage.screens[0]} alt="" width="800" height="1734" loading="lazy" decoding="async" />
+          <PhoneFrame><img class="shot" src={stage.screens[0]} alt="" width="800" height="1734" loading="lazy" decoding="async" /></PhoneFrame>
         </div>
       {/if}
     {:else}
       {#each trio as src, i}
         <div class="ph ph--{i}" aria-hidden="true">
-          <img src={src} alt="" width="720" height="1560" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+          <PhoneFrame><img class="shot" src={src} alt="" width="720" height="1560" loading={eager ? 'eager' : 'lazy'} decoding="async" /></PhoneFrame>
         </div>
       {/each}
     {/if}
@@ -205,12 +206,12 @@
 
   .dev .ph--pal {
     left: auto;
-    right: -2%;
+    right: -3%;
     top: auto;
-    bottom: -9%;
-    width: 24%;
+    bottom: -10%;
+    width: 30%;
     z-index: 4;
-    transform: rotate(5deg);
+    transform: rotate(3deg);
   }
 
   .dev__icon {
@@ -243,21 +244,7 @@
     left: 50%;
     top: 4%;
     width: 38%;
-    aspect-ratio: 9 / 19.5;
-    border-radius: 2.2rem;
-    padding: 0.38rem;
-    background: linear-gradient(160deg, #26262c, #101013);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: 0 50px 80px -20px rgba(0, 0, 0, 0.7), 0 0 60px -10px color-mix(in srgb, var(--a) 50%, transparent);
-  }
-
-  .ph img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
-    border-radius: 1.85rem;
+    filter: drop-shadow(0 0 40px color-mix(in srgb, var(--a) 38%, transparent));
   }
 
   /* i laterali si aprono quanto basta perché di ognuno si legga la schermata */
