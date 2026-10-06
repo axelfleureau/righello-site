@@ -11,6 +11,7 @@
   const order: ProjectKind[] = ['app', 'gestionale', 'broadcast', 'piattaforma', 'sito', 'contenuti'];
 
   let filter: 'all' | ProjectKind = 'all';
+  let view: 'list' | 'grid' = 'list';
   let hovered: CaseStudy | null = null;
   let pv: HTMLElement;
   let canHover = false;
@@ -46,12 +47,12 @@
   }
 
   function onMove(e: PointerEvent) {
-    if (!canHover) return;
+    if (!canHover || view !== 'list') return;
     target(e.clientX, e.clientY);
   }
 
   function enter(study: CaseStudy, e: PointerEvent | FocusEvent) {
-    if (!canHover) return;
+    if (!canHover || view !== 'list') return;
     if (!hovered) {
       if (e instanceof PointerEvent) {
         px = mx = e.clientX + 30;
@@ -90,7 +91,8 @@
   </div>
 
   <div class="wi__bar">
-    <div class="section-container wi__barin" role="tablist" aria-label="Filtra per tipo">
+    <div class="section-container wi__barin">
+     <div class="wi__chips" role="tablist" aria-label="Filtra per tipo">
       <button
         type="button"
         role="tab"
@@ -109,10 +111,40 @@
           on:click={() => (filter = k)}
         >{kindLabels[k]} <sup>{count(k)}</sup></button>
       {/each}
+     </div>
+      <div class="views" role="group" aria-label="Come vedere i progetti">
+        <button type="button" class="views__b" class:is-active={view === 'list'} aria-pressed={view === 'list'} on:click={() => (view = 'list')}>Elenco</button>
+        <button type="button" class="views__b" class:is-active={view === 'grid'} aria-pressed={view === 'grid'} on:click={() => (view = 'grid')}>Schede</button>
+      </div>
     </div>
   </div>
 
   <div class="section-container">
+    {#if view === 'grid'}
+      <ul class="wi__grid">
+        {#each shown as study (study.id)}
+          <li animate:flip={{ duration: 360 }} style="--a:{study.accent[0]}; --b:{study.accent[1]}">
+            <a class="card" href={caseStudyHref(study)}>
+              <span class="card__img">
+                {#if study.icon && study.image.includes('/icons/')}
+                  <ProjectIcon {study} size={96} />
+                {:else}
+                  <img src={study.image} alt="" width="640" height="400" loading="lazy" decoding="async" style:object-position={study.imagePosition ?? 'top'} />
+                {/if}
+              </span>
+              <span class="card__body">
+                <span class="card__head">
+                  {#if study.icon}<ProjectIcon {study} size={28} />{/if}
+                  <strong>{study.name}</strong>
+                </span>
+                <span class="card__kind">{kindLabels[study.kind]} · {study.platform.join(' · ')}</span>
+                <StatusBadge status={study.status} compact />
+              </span>
+            </a>
+          </li>
+        {/each}
+      </ul>
+    {:else}
     <ul class="wi__list" bind:this={listEl} on:pointerleave={leave}>
       {#each shown as study, i (study.id)}
         <li animate:flip={{ duration: 360 }} style="--a:{study.accent[0]}">
@@ -140,9 +172,10 @@
         </li>
       {/each}
     </ul>
+    {/if}
   </div>
 
-  {#if canHover}
+  {#if canHover && view === 'list'}
     <div class="pv" class:is-on={hovered !== null} bind:this={pv} aria-hidden="true">
       {#if hovered}
         <div class="pv__card" style="--a:{hovered.accent[0]}; --b:{hovered.accent[1]}">
@@ -195,14 +228,102 @@
 
   .wi__barin {
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 1rem;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
+  }
+
+  .wi__chips {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    gap: 0.5rem;
     overflow-x: auto;
     scrollbar-width: none;
   }
 
-  .wi__barin::-webkit-scrollbar { display: none; }
+  .wi__chips::-webkit-scrollbar { display: none; }
+
+  .views {
+    display: flex;
+    flex: none;
+    padding: 0.2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+  }
+
+  .views__b {
+    padding: 0.38rem 0.85rem;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--text-secondary);
+    font: 600 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .views__b.is-active { background: var(--text-primary); color: var(--bg-primary); }
+
+  .wi__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: 1.2rem;
+    margin: 0;
+    padding: clamp(1.4rem, 3vw, 2.2rem) 0 0;
+    list-style: none;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 1.1rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    background: var(--bg-secondary);
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.3s;
+  }
+
+  .card:hover,
+  .card:focus-visible { transform: translateY(-4px); border-color: var(--a); }
+
+  .card__img {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--a), var(--b));
+  }
+
+  .card__img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem 1.1rem 1.2rem;
+  }
+
+  .card__head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+  }
+
+  .card__kind {
+    font: 500 0.7rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
 
   .chip {
     flex: none;

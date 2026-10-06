@@ -88,6 +88,15 @@
           decoding="async"
         />
       </div>
+    {:else if stage.type === 'tablet'}
+      <div class="tab">
+        <img class="tab__shot" src={stage.src} alt="" width="1000" height="698" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+      </div>
+      {#if stage.screens?.[0]}
+        <div class="ph ph--pal" aria-hidden="true">
+          <img src={stage.screens[0]} alt="" width="800" height="1734" loading="lazy" decoding="async" />
+        </div>
+      {/if}
     {:else}
       {#each trio as src, i}
         <div class="ph ph--{i}" aria-hidden="true">
@@ -173,6 +182,37 @@
     object-position: top;
   }
 
+  /* tablet: iPad con la sala, e a lato il palmare del cameriere */
+  .tab {
+    position: relative;
+    padding: clamp(0.35rem, 1.1vw, 0.7rem);
+    border-radius: clamp(1rem, 2.4vw, 1.7rem);
+    background: linear-gradient(160deg, #2a2a30, #0e0e11);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 70px 120px -40px color-mix(in srgb, var(--a) 60%, transparent),
+      0 24px 60px rgba(0, 0, 0, 0.6);
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    will-change: transform;
+  }
+
+  .tab__shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: clamp(0.6rem, 1.6vw, 1.1rem);
+  }
+
+  .dev .ph--pal {
+    left: auto;
+    right: -2%;
+    top: auto;
+    bottom: -9%;
+    width: 24%;
+    z-index: 4;
+    transform: rotate(5deg);
+  }
+
   .dev__icon {
     position: absolute;
     left: -1.3rem;
@@ -220,9 +260,10 @@
     border-radius: 1.85rem;
   }
 
-  .ph--0 { transform: translateX(-118%) rotate(-8deg) scale(0.86); z-index: 1; filter: brightness(0.82); }
+  /* i laterali si aprono quanto basta perché di ognuno si legga la schermata */
+  .ph--0 { transform: translateX(-130%) translateY(4%) rotate(-7deg) scale(0.84); z-index: 1; filter: brightness(0.85); }
   .ph--1 { transform: translateX(-50%); z-index: 3; }
-  .ph--2 { transform: translateX(18%) rotate(8deg) scale(0.86); z-index: 2; filter: brightness(0.82); }
+  .ph--2 { transform: translateX(30%) translateY(4%) rotate(7deg) scale(0.84); z-index: 2; filter: brightness(0.85); }
 
   .dev--phones .dev__icon {
     left: 6%;

@@ -7,6 +7,7 @@
   import ProgettiHero from '$lib/components/progetti/ProgettiHero.svelte';
   import ProductShowcase from '$lib/components/progetti/ProductShowcase.svelte';
   import RegiaSection from '$lib/components/progetti/RegiaSection.svelte';
+  import DeviceFamily from '$lib/components/progetti/DeviceFamily.svelte';
   import WorkIndex from '$lib/components/progetti/WorkIndex.svelte';
   import ProgettiCta from '$lib/components/progetti/ProgettiCta.svelte';
 
@@ -119,6 +120,8 @@
 <ProductShowcase items={showcaseStudies} bind:this={showcase} />
 
 <RegiaSection />
+
+<DeviceFamily />
 
 <WorkIndex items={caseStudies} />
 

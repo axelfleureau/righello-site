@@ -7,7 +7,7 @@ export interface ProjectStatus {
 }
 
 export interface ProjectStage {
-  type: 'browser' | 'phones';
+  type: 'browser' | 'phones' | 'tablet';
   src: string;
   alt: string;
   screens?: string[];
@@ -177,24 +177,49 @@ export const caseStudies: CaseStudy[] = [
   {
     id: 'gusto-raffinato',
     name: 'Gusto Raffinato',
-    sector: 'Gestionale per ristoranti e locali',
+    sector: 'App per chi esce a mangiare',
     category: 'digital',
-    kind: 'gestionale',
-    status: { tone: 'beta', label: 'iPad e iPhone in TestFlight' },
-    platform: ['iPad', 'iPhone'],
-    audience: 'Ristoranti, bar e locali',
+    kind: 'app',
+    status: { tone: 'beta', label: 'iPhone in TestFlight' },
+    platform: ['iPhone'],
+    audience: 'Chi cerca un locale in Friuli Venezia Giulia',
     accent: ['#F0A33A', '#8A4B12'],
-    headline: 'Tutta la sala in un iPad. E i clienti tornano.',
+    headline: 'Trovi il locale, prenoti, e ogni dieci caffè uno è gratis.',
     text:
-      'Il gestionale per chi ha un locale: la sala sull\'iPad, le comande dal telefono del cameriere, le prenotazioni e le tessere fedeltà. Con un\'app per i clienti e il catalogo dei locali del Friuli Venezia Giulia.',
-    focus: ['iPad e iPhone', 'Sala e comande', 'Tessere fedeltà', 'App clienti'],
+      'L\'app per i clienti: il catalogo dei locali del Friuli Venezia Giulia, la prenotazione dove il locale usa Gusto e le tessere fedeltà che si riempiono dai consumi veri, anche nel Wallet.',
+    focus: ['iPhone', 'Catalogo dei locali', 'Prenotazione', 'Tessere fedeltà'],
     href: 'https://gustoraffinato.com',
     icon: '/progetti/icons/gusto-raffinato.webp',
     image: '/progetti/stage/gusto-raffinato.webp',
     stage: {
       type: 'browser',
       src: '/progetti/stage/gusto-raffinato.webp',
-      alt: 'Gusto Raffinato: la sala di un locale gestita da un iPad',
+      alt: 'Gusto Raffinato: il sito e l\'app per i clienti dei locali',
+    },
+    featured: true,
+  },
+  {
+    id: 'gusto-raffinato-sala',
+    name: 'Gusto Raffinato Sala',
+    sector: 'Gestionale per ristoranti e locali',
+    category: 'digital',
+    kind: 'gestionale',
+    status: { tone: 'beta', label: 'iPad e iPhone in TestFlight' },
+    platform: ['iPad', 'iPhone'],
+    audience: 'Ristoratori e personale di sala',
+    accent: ['#F0A33A', '#8A4B12'],
+    headline: 'Tutta la sala su un iPad. Il cameriere, nel telefono.',
+    text:
+      'Il gestionale per chi ha un locale: la sala in 3D con tavoli e conti, l\'agenda della serata, le comande dal palmare del cameriere, il magazzino e il costo dei piatti.',
+    focus: ['iPad e iPhone', 'Sala in 3D', 'Palmare per i camerieri', 'Magazzino e costo dei piatti'],
+    href: 'https://gustoraffinato.com',
+    icon: '/progetti/icons/gusto-raffinato-sala.webp',
+    image: '/progetti/stage/gusto-sala-ipad.webp',
+    stage: {
+      type: 'tablet',
+      src: '/progetti/stage/gusto-sala-ipad.webp',
+      alt: 'Gusto Raffinato Sala: la sala di un locale in 3D su iPad, con il palmare del cameriere',
+      screens: ['/progetti/stage/gusto-sala-palmare-1.webp'],
     },
     featured: true,
   },
