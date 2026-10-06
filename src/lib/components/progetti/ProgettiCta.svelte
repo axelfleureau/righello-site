@@ -24,6 +24,8 @@
 
 <style>
   .cta {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 508px;
     position: relative;
     overflow: hidden;
     isolation: isolate;
@@ -52,10 +54,10 @@
   .cta__title {
     margin: 0;
     max-width: 16ch;
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(2.2rem, 5.6vw, 5rem);
     line-height: 0.98;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--pg-display-tracking);
     color: var(--text-primary);
   }
 
@@ -74,9 +76,9 @@
   }
 
   .cta__mail span {
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(1.5rem, 6.4vw, 6.4rem);
-    letter-spacing: -0.035em;
+    letter-spacing: var(--pg-display-tracking);
     line-height: 1;
     overflow-wrap: anywhere;
   }

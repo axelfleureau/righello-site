@@ -1,4 +1,5 @@
 <script lang="ts">
+  import '$lib/components/progetti/tokens.css';
   import { env } from '$env/dynamic/public';
   import { clients } from '$lib/data/projects';
   import { caseStudies, caseStudyHref, showcaseStudies } from '$lib/data/case-studies';
@@ -134,6 +135,8 @@
 
 <style>
   .clients {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 223px;
     padding: clamp(2.5rem, 6vw, 4rem) 0;
     background: var(--bg-primary);
     border-top: 1px solid var(--border-color);

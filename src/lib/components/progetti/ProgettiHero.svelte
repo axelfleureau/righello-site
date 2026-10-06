@@ -16,17 +16,65 @@
   let shown: number[] = stats.map((s) => s.value);
   let io: IntersectionObserver | null = null;
 
+  // Come il Dock di macOS: l'icona sotto il mouse cresce, le vicine in proporzione,
+  // e tutte si fanno spazio (tx) invece di sovrapporsi. Le posizioni di partenza
+  // vengono dal layout a riposo (offsetLeft ignora le transform): niente effetto a catena.
+  const PEAK = 0.62;
+  const SIGMA = 74;
+
   function paint() {
     raf = 0;
-    items.forEach((node) => {
-      if (!node) return;
-      let scale = 1;
-      if (pointerX !== null) {
-        const r = node.getBoundingClientRect();
-        const dx = pointerX - (r.left + r.width / 2);
-        scale = 1 + 0.62 * Math.exp(-(dx * dx) / (2 * 74 * 74));
-      }
-      node.style.setProperty('--sc', scale.toFixed(3));
+    const nodes = items.filter(Boolean);
+    if (!nodes.length || !dockEl) return;
+
+    if (pointerX === null) {
+      dockEl.style.setProperty('--gl', '0');
+      dockEl.style.setProperty('--gr', '0');
+      nodes.forEach((n) => {
+        n.style.setProperty('--sc', '1');
+        n.style.setProperty('--tx', '0');
+      });
+      return;
+    }
+
+    const w0 = nodes[0].offsetWidth;
+    const gap = nodes.length > 1 ? nodes[1].offsetLeft - nodes[0].offsetLeft - w0 : 0;
+    const rect = dockEl.getBoundingClientRect();
+    const px = pointerX - rect.left - dockEl.clientLeft;
+    const last = nodes.length - 1;
+
+    const base = nodes.map((n) => n.offsetLeft + w0 / 2);
+    const scales = base.map((c) => 1 + PEAK * Math.exp(-((px - c) ** 2) / (2 * SIGMA * SIGMA)));
+
+    // nuovo layout partendo dal bordo sinistro, poi lo si trasla in modo che
+    // il punto sotto il mouse resti sotto il mouse (come nel Dock vero)
+    let x = nodes[0].offsetLeft;
+    const centers = scales.map((sc) => {
+      const w = w0 * sc;
+      const c = x + w / 2;
+      x += w + gap;
+      return c;
+    });
+
+    let at: number;
+    if (px <= base[0]) at = centers[0] + (px - base[0]);
+    else if (px >= base[last]) at = centers[last] + (px - base[last]);
+    else {
+      let k = 0;
+      while (k < last - 1 && px >= base[k + 1]) k++;
+      const t = (px - base[k]) / (base[k + 1] - base[k]);
+      at = centers[k] + t * (centers[k + 1] - centers[k]);
+    }
+    const shift = px - at;
+
+    const left = centers[0] + shift - (w0 * scales[0]) / 2;
+    const right = centers[last] + shift + (w0 * scales[last]) / 2;
+    dockEl.style.setProperty('--gl', Math.max(0, base[0] - w0 / 2 - left).toFixed(1));
+    dockEl.style.setProperty('--gr', Math.max(0, right - (base[last] + w0 / 2)).toFixed(1));
+
+    nodes.forEach((n, i) => {
+      n.style.setProperty('--sc', scales[i].toFixed(3));
+      n.style.setProperty('--tx', (centers[i] + shift - base[i]).toFixed(1));
     });
   }
 
@@ -163,7 +211,6 @@
   .hero__orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
     opacity: 0.55;
   }
 
@@ -172,7 +219,7 @@
     height: 38rem;
     left: -10rem;
     top: -8rem;
-    background: var(--glow-pink);
+    background: radial-gradient(closest-side, var(--glow-pink), transparent);
   }
 
   .hero__orb--b {
@@ -180,7 +227,7 @@
     height: 34rem;
     right: -12rem;
     top: 6rem;
-    background: var(--glow-cyan);
+    background: radial-gradient(closest-side, var(--glow-cyan), transparent);
   }
 
   .hero__kicker {
@@ -204,10 +251,10 @@
 
   .hero__title {
     margin: 0;
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(2.9rem, 8.2vw, 8.6rem);
     line-height: 0.9;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--pg-display-tracking);
     color: var(--text-primary);
   }
 
@@ -262,10 +309,8 @@
     align-items: flex-end;
     gap: clamp(0.4rem, 1vw, 0.8rem);
     padding: 0.9rem 1.1rem 0.8rem;
-    border-radius: 2rem;
-    border: 1px solid var(--border-color);
-    background: color-mix(in srgb, var(--bg-secondary) 70%, transparent);
-    backdrop-filter: blur(14px);
+    position: relative;
+    isolation: isolate;
     max-width: 100%;
     overflow-x: auto;
     scrollbar-width: none;
@@ -273,6 +318,27 @@
   }
 
   .dock::-webkit-scrollbar { display: none; }
+
+  /* la barra è un disegno a parte: si allarga con le icone, come il Dock */
+  .dock::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(var(--gr, 0) * -1px) 0 calc(var(--gl, 0) * -1px);
+    z-index: -1;
+    border-radius: 2rem;
+    border: 1px solid var(--border-color);
+    background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
+    transition: inset 0.14s cubic-bezier(0.2, 0.9, 0.2, 1);
+  }
+
+  /* Con il mouse le icone ingrandite escono dalla barra (e dall'alto): niente ritaglio.
+     Su touch resta la riga scorrevole, dove non c'è ingrandimento. */
+  @media (hover: hover) and (pointer: fine) and (min-width: 780px) {
+    .dock {
+      overflow: visible;
+      margin-top: clamp(3.4rem, 6vw, 4.6rem);
+    }
+  }
 
   .dock__item {
     --sc: 1;
@@ -285,8 +351,8 @@
     background: none;
     cursor: pointer;
     transform-origin: 50% 100%;
-    transform: translateY(calc((var(--sc) - 1) * -14px)) scale(var(--sc));
-    transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.2, 1);
+    transform: translate3d(calc(var(--tx, 0) * 1px), calc((var(--sc) - 1) * -14px), 0) scale(var(--sc));
+    transition: transform 0.14s cubic-bezier(0.2, 0.9, 0.2, 1);
   }
 
   .dock__item img {
@@ -312,7 +378,8 @@
     position: absolute;
     left: 50%;
     bottom: calc(100% + 0.7rem);
-    transform: translateX(-50%) translateY(4px);
+    transform-origin: 50% 100%;
+    transform: translateX(-50%) translateY(4px) scale(calc(1 / var(--sc)));
     padding: 0.32rem 0.7rem;
     border-radius: 0.5rem;
     background: var(--text-primary);
@@ -328,7 +395,7 @@
   .dock__item:hover .dock__tip,
   .dock__item:focus-visible .dock__tip {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) scale(calc(1 / var(--sc)));
   }
 
   .dock__hint {
@@ -359,10 +426,10 @@
   }
 
   .stats__num {
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(2.4rem, 5vw, 4rem);
     line-height: 1;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--pg-display-tracking);
     font-variant-numeric: tabular-nums;
     color: var(--text-primary);
   }

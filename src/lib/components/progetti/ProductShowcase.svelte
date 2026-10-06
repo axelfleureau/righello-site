@@ -18,6 +18,8 @@
   let gsap: Gsap | null = null;
   let scenes: HTMLElement[] = [];
   let ticking = false;
+  let near = false;
+  let io: IntersectionObserver | null = null;
   let mq: MediaQueryList | null = null;
 
   const pad = (n: number) => String(n).padStart(2, '0');
@@ -87,6 +89,8 @@
   }
 
   function onScroll() {
+    // fuori dalla vetrina lo scorrimento non deve costare nulla
+    if (!near) return;
     if (!ticking) {
       ticking = true;
       requestAnimationFrame(measure);
@@ -130,6 +134,14 @@
     mq.addEventListener('change', apply);
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
+    io = new IntersectionObserver(
+      ([entry]) => {
+        near = entry.isIntersecting;
+        if (near) onScroll();
+      },
+      { rootMargin: '300px 0px' }
+    );
+    if (track) io.observe(track);
   });
 
   onDestroy(() => {
@@ -137,6 +149,7 @@
     mq?.removeEventListener('change', apply);
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', onScroll);
+    io?.disconnect();
     teardownScene();
   });
 </script>
@@ -249,10 +262,10 @@
 
   .vt__title {
     margin: 0;
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(2.5rem, 7vw, 6.4rem);
     line-height: 0.95;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--pg-display-tracking);
   }
 
   .vt__sub {
@@ -330,10 +343,10 @@
 
   .scene__name {
     margin: 0;
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(2.6rem, 9vw, 4rem);
     line-height: 0.95;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--pg-display-tracking);
     text-wrap: balance;
   }
 
@@ -475,8 +488,7 @@
     padding: 0.6rem 0.8rem 0.7rem;
     border-radius: 1.5rem;
     border: 1px solid var(--line);
-    background: rgba(12, 12, 14, 0.62);
-    backdrop-filter: blur(16px);
+    background: rgba(12, 12, 14, 0.82);
   }
 
   .rail ul {

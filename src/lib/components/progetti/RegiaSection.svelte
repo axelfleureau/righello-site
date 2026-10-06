@@ -138,14 +138,31 @@
               <div class="mon">
                 <div class="mon__frame">
                   {#key tab}
-                    <img
-                      class="mon__img"
-                      src={regiaTabs[tab].src}
-                      alt={regiaTabs[tab].alt}
-                      width="1600"
-                      height="900"
-                      in:fade={{ duration: 260 }}
-                    />
+                    {#if regiaTabs[tab].video && !reduce}
+                      <video
+                        class="mon__img"
+                        src={regiaTabs[tab].video}
+                        poster={regiaTabs[tab].src}
+                        aria-label={regiaTabs[tab].alt}
+                        width="960"
+                        height="540"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        in:fade={{ duration: 260 }}
+                      ></video>
+                    {:else}
+                      <img
+                        class="mon__img"
+                        src={regiaTabs[tab].src}
+                        alt={regiaTabs[tab].alt}
+                        width="1600"
+                        height="900"
+                        in:fade={{ duration: 260 }}
+                      />
+                    {/if}
                   {/key}
                   <div class="mon__calls" aria-hidden="true">
                     {#each regiaTabs[tab].callouts as c, k}
@@ -209,10 +226,10 @@
 
   .rg__title {
     margin: 0;
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(2.5rem, 7vw, 6.4rem);
     line-height: 0.95;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--pg-display-tracking);
   }
 
   .rg__sub {
@@ -294,7 +311,7 @@
   }
 
   .node__verb {
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(1.6rem, 2.8vw, 2.4rem);
     letter-spacing: -0.02em;
     line-height: 1;
@@ -510,7 +527,16 @@
     height: 0.8rem;
     border-radius: 50%;
     background: #fff;
-    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25), 0 0 0 0 rgba(255, 255, 255, 0.5);
+    position: relative;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+  }
+
+  .call i::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
     animation: ping 2.2s ease-out infinite;
   }
 
@@ -518,16 +544,15 @@
     font-style: normal;
     padding: 0.3rem 0.65rem;
     border-radius: 0.45rem;
-    background: rgba(8, 8, 10, 0.82);
+    background: rgba(8, 8, 10, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(8px);
     font: 600 0.7rem/1.1 ui-monospace, SFMono-Regular, Menlo, monospace;
     letter-spacing: 0.04em;
     white-space: nowrap;
   }
 
   @keyframes pop { from { opacity: 0; scale: 0.85; } }
-  @keyframes ping { 0% { box-shadow: 0 0 0 0.25rem rgba(255,255,255,.25), 0 0 0 0 rgba(255,255,255,.5); } 100% { box-shadow: 0 0 0 0.25rem rgba(255,255,255,.25), 0 0 0 0.9rem transparent; } }
+  @keyframes ping { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(3); opacity: 0; } }
 
   @media (max-width: 640px) {
     .call em { display: none; }
@@ -561,7 +586,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .st, .call, .call i, .tally__rec b { animation: none; }
+    .st, .call, .call i::after, .tally__rec b { animation: none; }
     .st--air { opacity: 0; }
   }
 </style>

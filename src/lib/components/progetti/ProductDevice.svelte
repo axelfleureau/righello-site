@@ -125,7 +125,6 @@
     background:
       radial-gradient(closest-side at 35% 40%, color-mix(in srgb, var(--a) 55%, transparent), transparent 70%),
       radial-gradient(closest-side at 70% 65%, color-mix(in srgb, var(--b) 60%, transparent), transparent 72%);
-    filter: blur(28px);
     opacity: 0.85;
     pointer-events: none;
   }
@@ -244,13 +243,12 @@
     left: 50%;
     top: 4%;
     width: 38%;
-    filter: drop-shadow(0 0 40px color-mix(in srgb, var(--a) 38%, transparent));
   }
 
   /* i laterali si aprono quanto basta perché di ognuno si legga la schermata */
-  .ph--0 { transform: translateX(-130%) translateY(4%) rotate(-7deg) scale(0.84); z-index: 1; filter: brightness(0.85); }
+  .ph--0 { transform: translateX(-130%) translateY(4%) rotate(-7deg) scale(0.84); z-index: 1; }
   .ph--1 { transform: translateX(-50%); z-index: 3; }
-  .ph--2 { transform: translateX(30%) translateY(4%) rotate(7deg) scale(0.84); z-index: 2; filter: brightness(0.85); }
+  .ph--2 { transform: translateX(30%) translateY(4%) rotate(7deg) scale(0.84); z-index: 2; }
 
   .dev--phones .dev__icon {
     left: 6%;

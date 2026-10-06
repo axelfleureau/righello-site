@@ -1,0 +1,6 @@
+/* Titoli della pagina Progetti: stessi del resto del sito (Degular Display 700),
+   un solo punto da cui regolare peso e spaziatura. */
+:root {
+  --pg-display-weight: 700;
+  --pg-display-tracking: -0.015em;
+}

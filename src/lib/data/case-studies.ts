@@ -279,12 +279,12 @@ export const caseStudies: CaseStudy[] = [
     text:
       'Il motore di produzione che trasforma le riprese in una partita da televisione: scorebug, replay in campo, formazioni, classifica e barre pubblicitarie, tutto generato in automatico.',
     focus: ['Grafiche broadcast', 'Replay', 'Formazioni e classifica', 'Render automatico'],
-    image: '/progetti/regia/scorebug.webp',
+    image: '/progetti/regia/gol-scorebug.webp',
     imagePosition: 'center center',
     stage: {
       type: 'browser',
-      src: '/progetti/regia/scorebug.webp',
-      alt: 'Regia TV Studio: lo scorebug di un gol con il replay e lo sponsor in sovrimpressione',
+      src: '/progetti/regia/gol-scorebug.webp',
+      alt: 'Regia TV Studio: una partita con lo scorebug che segna il tempo e si accende al gol',
     },
   },
   {

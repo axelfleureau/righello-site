@@ -46,21 +46,27 @@
     height: 0.5rem;
     border-radius: 50%;
     background: var(--c);
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 70%, transparent);
+    position: relative;
     flex: none;
   }
 
-  .sb--store .sb__dot,
-  .sb--live .sb__dot {
+  /* l'onda è un cerchio che cresce e svanisce: solo transform e opacity, niente repaint */
+  .sb--store .sb__dot::after,
+  .sb--live .sb__dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--c);
     animation: sb-pulse 2.4s ease-out infinite;
   }
 
   @keyframes sb-pulse {
-    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 65%, transparent); }
-    70%, 100% { box-shadow: 0 0 0 0.55rem transparent; }
+    0% { transform: scale(1); opacity: 0.6; }
+    70%, 100% { transform: scale(3.2); opacity: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .sb__dot { animation: none !important; }
+    .sb__dot::after { animation: none !important; display: none; }
   }
 </style>

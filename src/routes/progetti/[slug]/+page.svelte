@@ -1,4 +1,5 @@
 <script lang="ts">
+  import '$lib/components/progetti/tokens.css';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import ProductDevice from '$lib/components/progetti/ProductDevice.svelte';
   import ProjectIcon from '$lib/components/progetti/ProjectIcon.svelte';
@@ -237,10 +238,10 @@
 
   .dh__name {
     margin: 0;
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(3rem, 8.4vw, 8.4rem);
     line-height: 0.9;
-    letter-spacing: -0.04em;
+    letter-spacing: var(--pg-display-tracking);
     text-wrap: balance;
     overflow-wrap: anywhere;
   }
@@ -382,7 +383,7 @@
   }
 
   .story__n { font: 500 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--text-muted); }
-  .story__item { font-weight: 800; font-size: clamp(1.2rem, 2.2vw, 1.8rem); letter-spacing: -0.015em; color: var(--text-primary); }
+  .story__item { font-weight: var(--pg-display-weight); font-size: clamp(1.2rem, 2.2vw, 1.8rem); letter-spacing: -0.015em; color: var(--text-primary); }
 
   /* ---------- next ---------- */
   .next {
@@ -419,10 +420,10 @@
   .next__row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 
   .next__name {
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(2.6rem, 9vw, 9rem);
     line-height: 0.92;
-    letter-spacing: -0.04em;
+    letter-spacing: var(--pg-display-tracking);
     text-wrap: balance;
     overflow-wrap: anywhere;
   }
@@ -488,7 +489,7 @@
 
   .rel__top { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; margin-bottom: auto; }
 
-  .rel__name { font-weight: 900; font-size: 1.7rem; letter-spacing: -0.025em; line-height: 1; }
+  .rel__name { font-weight: var(--pg-display-weight); font-size: 1.7rem; letter-spacing: var(--pg-display-tracking); line-height: 1; }
 
   .rel__kind {
     font: 500 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;

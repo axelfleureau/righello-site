@@ -209,10 +209,10 @@
 
   .wi__title {
     margin: 0 0 clamp(1.8rem, 4vw, 3rem);
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(2.5rem, 7vw, 6.4rem);
     line-height: 0.95;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--pg-display-tracking);
     color: var(--text-primary);
   }
 
@@ -222,8 +222,7 @@
     z-index: 20;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
-    background: color-mix(in srgb, var(--bg-primary) 82%, transparent);
-    backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg-primary) 94%, transparent);
   }
 
   .wi__barin {
@@ -388,9 +387,9 @@
 
   .row__name {
     grid-area: name;
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(1.7rem, 6vw, 2.4rem);
-    letter-spacing: -0.025em;
+    letter-spacing: var(--pg-display-tracking);
     line-height: 1;
     transition: color 0.25s, transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1);
   }
@@ -508,8 +507,7 @@
     bottom: 0.7rem;
     padding: 0.3rem 0.65rem;
     border-radius: 0.4rem;
-    background: rgba(8, 8, 10, 0.78);
-    backdrop-filter: blur(8px);
+    background: rgba(8, 8, 10, 0.88);
     color: #fff;
     font: 700 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
     letter-spacing: 0.06em;

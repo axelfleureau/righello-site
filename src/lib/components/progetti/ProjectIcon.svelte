@@ -41,7 +41,7 @@
     display: inline-grid;
     place-items: center;
     color: #fff;
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: calc(var(--s) * 0.46);
     letter-spacing: -0.02em;
   }

@@ -47,6 +47,8 @@
 
 <style>
   .fam {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1100px;
     padding: clamp(4rem, 9vw, 7.5rem) 0;
     background: var(--bg-primary);
     border-top: 1px solid var(--border-color);
@@ -64,10 +66,10 @@
   .fam__title {
     margin: 0 auto;
     max-width: 18ch;
-    font-weight: 900;
+    font-weight: var(--pg-display-weight);
     font-size: clamp(2rem, 5vw, 4rem);
     line-height: 1;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--pg-display-tracking);
     color: var(--text-primary);
   }
 
@@ -101,7 +103,6 @@
     display: block;
     width: 100%;
     transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
-    filter: drop-shadow(0 28px 36px color-mix(in srgb, var(--a) 22%, rgba(0, 0, 0, 0.28)));
   }
 
   .fam__item:hover .fam__dev,
@@ -154,7 +155,7 @@
 
   .fam__cap strong {
     font-size: 1.15rem;
-    font-weight: 800;
+    font-weight: var(--pg-display-weight);
     letter-spacing: -0.01em;
     color: var(--text-primary);
   }
