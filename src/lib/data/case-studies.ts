@@ -64,11 +64,13 @@ export const kindLabels: Record<ProjectKind, string> = {
   contenuti: 'Foto e video',
 };
 
+// Schermate della build attuale (1.2.7) dal simulatore. L'ordine serve alla scena a ventaglio:
+// [0] centro, [1] sinistra, [3] destra ([2] non e' usata: tienila comunque, serve almeno 4 voci).
 const phonesBuffr = [
-  '/products/buffr/replay-in-un-tap.jpg',
-  '/products/buffr/modalita-calcio-live.jpg',
-  '/products/buffr/rivedi-ogni-azione.jpg',
-  '/products/buffr/impostazioni-da-pro.jpg',
+  '/products/buffr/libreria-v2.webp',
+  '/products/buffr/campo-v2.webp',
+  '/progetti/landing/buffr/clip.webp',
+  '/products/buffr/montaggio-v2.webp',
 ];
 
 export const caseStudies: CaseStudy[] = [
