@@ -730,3 +730,34 @@
     }
   }
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   iPhone e iPad: lo scroll non deve fermarsi.
+   Safari ricalcola ogni frame i filtri che sfocano ciò che sta dietro (la barra
+   fissa, le schede di vetro) e le grosse sfere sfocate: sul telefono costano
+   più di quanto valgono. Qui, in un punto solo, si spengono e si compensa con
+   sfondi più pieni.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  *,
+  *::before,
+  *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* la barra non sfoca più: sfondo quasi pieno, e niente animazione di layout al cambio di stato */
+  header.fixed { transition: none !important; }
+  .floating-nav.nav-scrolled { background: rgba(15, 15, 20, 0.94) !important; }
+  [data-theme='light'] .floating-nav.nav-scrolled { background: rgba(255, 255, 255, 0.95) !important; }
+
+  .glass-card { background: rgba(255, 255, 255, 0.055) !important; }
+  [data-theme='light'] .glass-card { background: rgba(255, 255, 255, 0.92) !important; }
+
+  /* sfumature a bordo e sfere luminose: solo decorazione, a lato di quello che scorre */
+  .gradual-blur,
+  .glow,
+  .ytf-glow,
+  .phone-glow,
+  .behind-glow { display: none !important; }
+}
