@@ -6,7 +6,6 @@
   import StepBar from './StepBar.svelte';
   import WaScreen from './WaScreen.svelte';
   import Bubble from './Bubble.svelte';
-  import ExampleTag from './ExampleTag.svelte';
 
   /** Vero quando il palco non è quello in primo piano. */
   export let idle = false;
@@ -59,7 +58,6 @@
   <div class="df">
     <div class="df__head">
       <p class="df__lbl">Tematica</p>
-      <ExampleTag />
     </div>
     <Chips items={chips} active={topic} label="Scegli una tematica" on:pick={(e) => pickTopic(e.detail)} />
 

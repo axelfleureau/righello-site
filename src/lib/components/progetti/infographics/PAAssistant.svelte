@@ -6,7 +6,6 @@
   import StepBar from './StepBar.svelte';
   import WaScreen from './WaScreen.svelte';
   import Bubble from './Bubble.svelte';
-  import ExampleTag from './ExampleTag.svelte';
 
   /** Vero quando il palco non è quello in primo piano. */
   export let idle = false;
@@ -48,7 +47,6 @@
   <div class="pa">
     <div class="pa__head">
       <p class="pa__lbl">Prova una domanda</p>
-      <ExampleTag />
     </div>
     <Chips items={paQuestions} active={q} label="Scegli una domanda d'esempio" on:pick={ask} />
 

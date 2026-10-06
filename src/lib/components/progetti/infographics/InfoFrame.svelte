@@ -1,5 +1,6 @@
 <script lang="ts">
   import { live } from './live';
+  import ExampleTag from './ExampleTag.svelte';
   import type { LiveState } from './live';
 
   /** Nome del gruppo per chi usa uno screen reader. */
@@ -25,6 +26,8 @@
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <div class="frame" class:is-running={running} role="group" aria-label={label} use:live={onLive} on:keydown>
   <slot />
+  <!-- Un disegno che spiega, non una schermata del prodotto: lo dice sempre, in un solo punto. -->
+  <div class="frame__tag"><ExampleTag /></div>
 </div>
 
 <style>
@@ -51,6 +54,15 @@
   .frame :global(*) {
     box-sizing: border-box;
   }
+
+  .frame__tag {
+    position: absolute;
+    z-index: 6;
+    right: 0.8rem;
+    bottom: 0.8rem;
+    pointer-events: none;
+  }
+  .frame__tag :global(.tag) { background: rgba(6, 6, 10, 0.82); }
 
   .frame:not(.is-running) :global(*) {
     animation-play-state: paused !important;

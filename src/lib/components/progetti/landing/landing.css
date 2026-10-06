@@ -1,0 +1,138 @@
+/* Landing dei prodotti: un solo punto per colori, spaziature e voci condivise.
+   Tutta la landing e' un'unica isola scura (.lp): resta scura anche con il tema chiaro.
+   Le sezioni leggono questi valori; nessun numero di spaziatura va ripetuto nei componenti. */
+.lp {
+  --lp-bg: #050505;
+  --lp-surface: #0e0e12;
+  --lp-surface-2: #15151b;
+  --lp-line: rgba(255, 255, 255, 0.1);
+  --lp-line-strong: rgba(255, 255, 255, 0.22);
+  --lp-ink: #fff;
+  --lp-ink-2: rgba(255, 255, 255, 0.78);
+  --lp-ink-3: rgba(255, 255, 255, 0.62);
+  --lp-pink: #e0558a;
+  --lp-pad-y: clamp(4.5rem, 9vw, 8rem);
+  --lp-gap: clamp(0.9rem, 1.8vw, 1.4rem);
+  --lp-radius: 1.3rem;
+  --lp-radius-sm: 0.9rem;
+  --lp-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --lp-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* sotto il menu fluttuante del sito, che resta visibile anche scorrendo */
+  --lp-nav-top: 5.4rem;
+
+  position: relative;
+  background: var(--lp-bg);
+  color: var(--lp-ink);
+}
+
+.lp-section {
+  position: relative;
+  padding: var(--lp-pad-y) 0;
+  scroll-margin-top: calc(var(--lp-nav-top) + 3.4rem);
+}
+
+/* Griglia sottile e cerchi concentrici: lo stesso disegno della pagina /progetti */
+.lp-grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 4.5rem 4.5rem;
+  mask-image: radial-gradient(70% 70% at 50% 40%, #000, transparent 80%);
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 40%, #000, transparent 80%);
+}
+
+.lp-rings {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle at center, transparent 0 4.4rem, rgba(255, 255, 255, 0.05) 4.4rem calc(4.4rem + 1px));
+  mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+}
+
+/* Etichetta in maiuscolo rosa, come nella home */
+.lp-kicker {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font: 600 0.76rem/1.2 var(--lp-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lp-pink);
+}
+
+.lp-kicker::before {
+  content: '';
+  width: 1.6rem;
+  height: 1px;
+  background: currentColor;
+}
+
+/* Titolo di sezione: Degular Display 700, la parola evidenziata in gradiente dell'accento */
+.lp-title {
+  margin: 0;
+  font-weight: var(--pg-display-weight);
+  font-size: clamp(2rem, 4.6vw, 3.8rem);
+  line-height: 1.04;
+  letter-spacing: var(--pg-display-tracking);
+  text-wrap: balance;
+  color: var(--lp-ink);
+}
+
+.lp-hl {
+  /* schiariti verso il bianco: su fondo scuro il gradiente resta leggibile anche con colori cupi */
+  background: linear-gradient(100deg, color-mix(in srgb, var(--a) 62%, #fff), color-mix(in srgb, var(--b) 62%, #fff));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lp-lead {
+  margin: 0;
+  max-width: 40rem;
+  font-size: clamp(1.02rem, 1.4vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--lp-ink-2);
+  text-wrap: pretty;
+}
+
+.lp-card {
+  border: 1px solid var(--lp-line);
+  border-radius: var(--lp-radius);
+  background: linear-gradient(180deg, var(--lp-surface-2), var(--lp-surface));
+}
+
+/* Entrata al passaggio: solo transform e opacita'. Senza JavaScript tutto resta visibile. */
+.lp.lp-js .lp-reveal:not(.is-in) {
+  opacity: 0;
+  transform: translate3d(0, 1.4rem, 0);
+}
+
+.lp-reveal {
+  transition:
+    opacity 0.7s var(--lp-ease),
+    transform 0.7s var(--lp-ease);
+  transition-delay: var(--d, 0ms);
+}
+
+.lp :focus-visible {
+  outline: 2px solid var(--lp-pink);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp.lp-js .lp-reveal:not(.is-in) {
+    opacity: 1;
+    transform: none;
+  }
+  .lp-reveal {
+    transition: none;
+  }
+}
