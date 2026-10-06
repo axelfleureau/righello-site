@@ -10,6 +10,7 @@
   import { afterNavigate } from '$app/navigation';
   import { page } from '$app/stores';
   import { initMetaPixel, trackPageView } from '$lib/tracking/metaPixel';
+  import { pauseOffscreenAnimations } from '$lib/utils/pauseOffscreenAnimations';
   import type { LayoutData } from './$types';
 
   export let data: LayoutData;
@@ -32,8 +33,12 @@
     }
     window.addEventListener('unhandledrejection', handleUnhandledRejection);
 
+    // Animazioni CSS infinite: in pausa quando l'elemento esce dallo schermo (vedi il file)
+    const stopPausingOffscreen = pauseOffscreenAnimations();
+
     return () => {
       window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+      stopPausingOffscreen();
     };
   });
   

@@ -47,7 +47,10 @@
     
     if (sequenceWidth > 0) {
       seqWidth = Math.ceil(sequenceWidth);
-      const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + 3;
+      // Per un giro senza cuciture bastano ceil(contenitore / sequenza) + 1 copie. Il +3
+      // storico (~120 immagini con filtro, ognuna un livello a se' in Safari) resta solo sui
+      // contenitori larghi; sul telefono ne bastano 2 copie.
+      const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + (containerWidth < 768 ? 1 : 3);
       copyCount = Math.max(2, copiesNeeded);
     }
   }
@@ -81,8 +84,9 @@
   
   function animate(timestamp: number) {
     if (!isVisible) {
+      // fuori vista: il ciclo si ferma (lo riavvia l'IntersectionObserver), niente rAF perenne
       lastTimestamp = null;
-      animationId = requestAnimationFrame(animate);
+      animationId = 0;
       return;
     }
 
@@ -130,6 +134,7 @@
     const visibilityObserver = new IntersectionObserver(
       (entries) => {
         isVisible = entries[0]?.isIntersecting ?? true;
+        if (isVisible && !animationId) animationId = requestAnimationFrame(animate);
       },
       { rootMargin: '100px' }
     );

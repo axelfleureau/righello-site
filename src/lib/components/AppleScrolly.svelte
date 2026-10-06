@@ -453,8 +453,22 @@
       }, { once: true });
     }
     
-    // Debounced resize handler
+    // Debounced resize handler.
+    // Su iPhone la barra di Safari che si ritira/ricompare lancia 'resize' cambiando solo
+    // l'altezza (~15%): ricalcolare tutti i ScrollTrigger a ogni scorrimento e' uno stop
+    // garantito. Stessa regola di ScrollTrigger.ignoreMobileResize: su touch si rifa il
+    // calcolo solo se cambia la larghezza (rotazione) o l'altezza di oltre il 25%.
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    let baseW = window.innerWidth;
+    let baseH = window.innerHeight;
     const handleResize = () => {
+      if (isTouchDevice) {
+        const sameWidth = window.innerWidth === baseW;
+        const smallHeightChange = Math.abs(window.innerHeight - baseH) <= window.innerHeight * 0.25;
+        if (sameWidth && smallHeightChange) return;
+        baseW = window.innerWidth;
+        baseH = window.innerHeight;
+      }
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
         if (isInitialized && ScrollTriggerModule) {

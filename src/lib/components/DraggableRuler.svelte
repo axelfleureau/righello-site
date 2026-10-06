@@ -78,7 +78,7 @@
   class="draggable-ruler relative select-none cursor-grab {isDragging ? 'scale-105' : ''}"
   style="transform: translate({translateX}px, {translateY}px) rotate({rotation}deg); transition: {isDragging ? 'none' : 'transform 0.3s ease'};"
   on:mousedown={handleMouseDown}
-  on:touchstart={handleTouchStart}
+  on:touchstart|passive={handleTouchStart}
   aria-hidden="true"
 >
   <div class="flex items-center">

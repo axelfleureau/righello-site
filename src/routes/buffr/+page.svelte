@@ -209,6 +209,7 @@
     let ctx: { revert: () => void } | null = null;
     let resizeObserver: ResizeObserver | null = null;
     let intersectionObserver: IntersectionObserver | null = null;
+    let spriteGate: IntersectionObserver | null = null;
     let frameRequest = 0;
     let activeFrame = -1;
     let isDemoVisible = false;
@@ -228,10 +229,37 @@
       const canvasContext = demoCanvas.getContext('2d', { alpha: false });
       if (!canvasContext) return;
 
+      // Lo sprite e' 2240x6816 px (15 Mpx, ~61 MB decodificati): su iPhone scaricarlo e
+      // decodificarlo al caricamento della pagina, prima ancora di arrivare alla demo,
+      // occupa memoria e main thread durante tutto lo scroll. Si parte solo quando la
+      // sezione e' a circa due schermate di distanza, e si decodifica fuori dal main thread.
+      await new Promise<void>((resolve) => {
+        if (!('IntersectionObserver' in window)) {
+          resolve();
+          return;
+        }
+        spriteGate = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+              spriteGate?.disconnect();
+              spriteGate = null;
+              resolve();
+            }
+          },
+          { rootMargin: '1800px 0px' }
+        );
+        spriteGate.observe(demoSection);
+      });
+
+      if (cancelled) return;
+
       const sprite = await new Promise<HTMLImageElement>((resolve, reject) => {
         const image = new Image();
         image.decoding = 'async';
-        image.onload = () => resolve(image);
+        image.onload = () => {
+          const ready = typeof image.decode === 'function' ? image.decode().catch(() => undefined) : Promise.resolve();
+          ready.then(() => resolve(image));
+        };
         image.onerror = () => reject(new Error('Unable to load BUFFR scroll sprite'));
         image.src = demoSpriteSrc;
       });
@@ -413,6 +441,7 @@
 
     return () => {
       cancelled = true;
+      spriteGate?.disconnect();
       if (frameRequest) window.cancelAnimationFrame(frameRequest);
       cleanupScrollFrames?.();
       resizeObserver?.disconnect();
@@ -563,7 +592,7 @@
       {#each screenshots as screenshot, i}
         <RevealOnScroll animation="fly-up" stagger={70} index={i} duration={320}>
           <figure class="screenshot-card">
-            <img src={screenshot.src} alt={screenshot.alt} loading="eager" decoding="async" />
+            <img src={screenshot.src} alt={screenshot.alt} loading="lazy" decoding="async" />
             <figcaption>{screenshot.label}</figcaption>
           </figure>
         </RevealOnScroll>

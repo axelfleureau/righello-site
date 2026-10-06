@@ -201,18 +201,19 @@
     overflow-x: clip;
   }
 
+  /* -webkit-overflow-scrolling: touch tolto: su iOS 13+ non fa più nulla per la fluidità
+     ed è noto per creare un contesto di impilamento (e un livello composto) sul nodo a cui
+     si applica — qui html, body e il contenitore dell'intera pagina. */
   @media (max-width: 767px), (hover: none) and (pointer: coarse) {
     html,
     [data-theme] {
       overflow-x: visible;
       overscroll-behavior-y: auto;
-      -webkit-overflow-scrolling: touch;
     }
 
     body {
       overflow-x: visible;
       overscroll-behavior-y: auto;
-      -webkit-overflow-scrolling: touch;
     }
   }
   
@@ -746,8 +747,15 @@
     backdrop-filter: none !important;
   }
 
-  /* la barra non sfoca più: sfondo quasi pieno, e niente animazione di layout al cambio di stato */
-  header.fixed { transition: none !important; }
+  /* la barra non sfoca più: sfondo quasi pieno, e niente animazione di layout al cambio di stato.
+     A ogni inversione di direzione dello scroll la barra si compatta/espande: padding, font-size e
+     altezza del logo animati per 0,4 s = layout + ridisegno della barra fissa in pieno scroll. */
+  header.fixed,
+  header.fixed .header-container,
+  header.fixed .floating-nav,
+  header.fixed .floating-nav img,
+  header.fixed .nav-link,
+  header.fixed .cta-button { transition: none !important; }
   .floating-nav.nav-scrolled { background: rgba(15, 15, 20, 0.94) !important; }
   [data-theme='light'] .floating-nav.nav-scrolled { background: rgba(255, 255, 255, 0.95) !important; }
 
