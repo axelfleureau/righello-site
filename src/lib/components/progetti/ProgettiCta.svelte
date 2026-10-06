@@ -1,5 +1,5 @@
 <script lang="ts">
-  import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import ProButton from './ProButton.svelte';
 
   export let schedulingUrl = '/contatti';
 </script>
@@ -16,7 +16,7 @@
     </a>
 
     <div class="cta__row">
-      <MagneticButton href={schedulingUrl} variant="primary">Prenota una call gratuita</MagneticButton>
+      <ProButton href={schedulingUrl} variant="primary" size="lg" arrow="right">Prenota una call gratuita</ProButton>
       <p>Pordenone · Mestre</p>
     </div>
   </div>

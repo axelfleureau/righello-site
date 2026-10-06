@@ -3,6 +3,7 @@
   import { caseStudyHref, kindLabels } from '$lib/data/case-studies';
   import type { CaseStudy } from '$lib/data/case-studies';
   import ProductDevice from './ProductDevice.svelte';
+  import ProButton from './ProButton.svelte';
   import StatusBadge from './StatusBadge.svelte';
   import ProjectIcon from './ProjectIcon.svelte';
 
@@ -198,11 +199,9 @@
               </dl>
               <div class="scene__cta" data-fx="copy">
                 {#if link}
-                  <a class="btn btn--solid" href={link.href} target="_blank" rel="noopener noreferrer">
-                    {link.label}<span aria-hidden="true"> ↗</span>
-                  </a>
+                  <ProButton variant="solid" arrow="up-right" external href={link.href}>{link.label}</ProButton>
                 {/if}
-                <a class="btn btn--ghost" href={caseStudyHref(study)}>Scheda completa<span aria-hidden="true"> →</span></a>
+                <ProButton variant="ghost" arrow="right" href={caseStudyHref(study)}>Scheda completa</ProButton>
               </div>
             </div>
 
@@ -396,32 +395,6 @@
     gap: 0.7rem;
     margin-top: 0.4rem;
   }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.9rem;
-    padding: 0 1.4rem;
-    border-radius: 999px;
-    font-size: 0.92rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: transform 0.2s, background 0.2s, border-color 0.2s;
-  }
-
-  .btn--solid {
-    background: #fff;
-    color: #0a0a0a;
-  }
-
-  .btn--solid:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--a) 22%, #fff); }
-
-  .btn--ghost {
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #fff;
-  }
-
-  .btn--ghost:hover { border-color: #fff; transform: translateY(-2px); }
 
   /* ---------- scene (desktop) ---------- */
   .vt--scene .vt__track {

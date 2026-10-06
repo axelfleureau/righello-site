@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy, createEventDispatcher } from 'svelte';
   import type { CaseStudy } from '$lib/data/case-studies';
-  import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import ProButton from './ProButton.svelte';
   import HeroStage from './HeroStage.svelte';
 
   export let dock: CaseStudy[];
@@ -161,10 +161,18 @@
     </div>
 
     <div class="hero__cta">
-      <MagneticButton href="#vetrina" variant="primary">Guarda i prodotti</MagneticButton>
-      <MagneticButton href="/contatti" variant="secondary">Parliamo di un progetto</MagneticButton>
+      <ProButton href="#vetrina" variant="primary" size="lg" arrow="right">Guarda i prodotti</ProButton>
+      <ProButton href="/contatti" variant="ghost" size="lg">Parliamo di un progetto</ProButton>
     </div>
 
+
+   </div>
+
+   <div class="hero__stage">
+     <HeroStage {...stage} on:pick />
+   </div>
+
+   <div class="hero__dockrow">
     <div class="dock" bind:this={dockEl} on:pointermove={onMove} on:pointerleave={onLeave} role="group" aria-label="Prodotti Righello">
       {#each dock as study, i (study.id)}
         <button
@@ -181,10 +189,6 @@
       {/each}
     </div>
     <p class="dock__hint">Tocca un'icona per aprire il prodotto</p>
-   </div>
-
-   <div class="hero__stage">
-     <HeroStage {...stage} on:pick />
    </div>
 
     <div class="stats" bind:this={statsEl}>
@@ -265,7 +269,8 @@
   }
 
   .hero__copy { min-width: 0; }
-  .hero__stage { min-width: 0; padding: 0.6rem 1.2rem 1rem 0; }
+  .hero__stage { min-width: 0; padding: 0.6rem 1.2rem 2.8rem 0; }
+  .hero__dockrow { min-width: 0; }
 
   /* la prima icona si allinea al bordo del testo, la barra sporge */
   @media (min-width: 1024px) {
@@ -273,6 +278,7 @@
   }
 
   .hero__cta {
+    color: var(--text-primary);
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
@@ -286,7 +292,8 @@
       column-gap: clamp(2rem, 4vw, 4.5rem);
     }
 
-    .hero__inner > .stats { grid-column: 1 / -1; }
+    .hero__inner > .stats,
+    .hero__inner > .hero__dockrow { grid-column: 1 / -1; }
   }
 
   .hero__kdot {
@@ -384,7 +391,7 @@
   @media (hover: hover) and (pointer: fine) and (min-width: 780px) {
     .dock {
       overflow: visible;
-      margin-top: clamp(3.4rem, 6vw, 4.6rem);
+      margin-top: 0.4rem;
     }
   }
 

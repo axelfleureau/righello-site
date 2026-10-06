@@ -253,7 +253,9 @@
   }
 
   .views__b {
-    padding: 0.38rem 0.85rem;
+    min-height: 2.1rem;
+    padding: 0 0.95rem;
+    touch-action: manipulation;
     border: 0;
     border-radius: 999px;
     background: none;
@@ -326,7 +328,10 @@
 
   .chip {
     flex: none;
-    padding: 0.5rem 1rem;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
     border-radius: 999px;
     border: 1px solid var(--border-color);
     background: none;
@@ -345,6 +350,9 @@
   }
 
   .chip:hover { border-color: var(--text-primary); color: var(--text-primary); }
+  .chip:active { transform: scale(0.97); }
+  .chip:focus-visible,
+  .views__b:focus-visible { outline: 2px solid var(--righello-pink, #d6487e); outline-offset: 2px; }
 
   .chip.is-active {
     background: var(--text-primary);

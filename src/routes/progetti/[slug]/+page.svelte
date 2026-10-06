@@ -2,6 +2,7 @@
   import '$lib/components/progetti/tokens.css';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import ProductDevice from '$lib/components/progetti/ProductDevice.svelte';
+  import ProButton from '$lib/components/progetti/ProButton.svelte';
   import ProjectIcon from '$lib/components/progetti/ProjectIcon.svelte';
   import StatusBadge from '$lib/components/progetti/StatusBadge.svelte';
   import { caseStudyHref, getNextCaseStudy, kindLabels } from '$lib/data/case-studies';
@@ -76,11 +77,9 @@
         <p class="dh__headline">{study.headline}</p>
         <div class="dh__cta">
           {#if primary}
-            <a class="btn btn--solid" href={primary.href} target="_blank" rel="noopener noreferrer">
-              {primary.label}<span aria-hidden="true"> ↗</span>
-            </a>
+            <ProButton variant="solid" arrow="up-right" external size="lg" href={primary.href}>{primary.label}</ProButton>
           {/if}
-          <a class="btn btn--ghost" href="/contatti">Parliamo di un progetto simile<span aria-hidden="true"> →</span></a>
+          <ProButton variant="ghost" arrow="right" size="lg" href="/contatti">Parliamo di un progetto simile</ProButton>
         </div>
       </div>
 
@@ -256,23 +255,6 @@
   }
 
   .dh__cta { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 0.6rem; }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    min-height: 3rem;
-    padding: 0 1.5rem;
-    border-radius: 999px;
-    font-size: 0.94rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: transform 0.2s, background 0.2s, border-color 0.2s;
-  }
-
-  .btn--solid { background: #fff; color: #0a0a0a; }
-  .btn--solid:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--a) 22%, #fff); }
-  .btn--ghost { border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; }
-  .btn--ghost:hover { border-color: #fff; transform: translateY(-2px); }
 
   .dh__stage { padding: 0 1.2rem 1.6rem 0; }
 
@@ -510,6 +492,6 @@
   .rel__card:hover .rel__arrow { transform: translate(3px, -3px); color: var(--a); }
 
   @media (prefers-reduced-motion: reduce) {
-    .next__arrow, .rel__card, .rel__arrow, .btn { transition: none; }
+    .next__arrow, .rel__card, .rel__arrow { transition: none; }
   }
 </style>
