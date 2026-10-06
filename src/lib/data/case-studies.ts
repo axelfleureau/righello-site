@@ -421,7 +421,7 @@ export const caseStudies: CaseStudy[] = [
     accent: ['#C9A66B', '#1F6F8B'],
     headline: 'Un booking engine collegato in tempo reale al calendario Guesty, non un sito vetrina.',
     text:
-      'Trentatré appartamenti nel borgo di Portopiccolo: prezzo "da" calcolato sul primo soggiorno davvero prenotabile — non sulla tariffa bassa stagione — e prenotazione diretta senza passare dal telefono o dal gestionale.',
+      'Trentaquattro appartamenti nel borgo di Portopiccolo: prezzo "da" calcolato sul primo soggiorno davvero prenotabile, non sulla tariffa di bassa stagione, e prenotazione diretta senza passare dal telefono.',
     focus: ['Booking engine', 'Integrazione Guesty', 'Pricing dinamico', 'UX prenotazione'],
     href: 'https://www.portopiccoloapartments.com',
     logo: '/logos/portopiccolo-apartments.webp',
@@ -465,10 +465,10 @@ export const caseStudies: CaseStudy[] = [
     platform: ['Web'],
     audience: 'Sciatori e famiglie',
     accent: ['#2F6BFF', '#0B1B3F'],
-    headline: 'Un sito che cambia da solo tra la stagione dello sci e il camp estivo.',
+    headline: 'Un sito che segue la stagione: neve e corsi d\'inverno, camp d\'estate.',
     text:
-      'Corsi, prezzi, maestri, meteo e prenotazione in un unico sito. In inverno parla di neve e lezioni, in estate passa al camp e alla pista sintetica, senza che nessuno debba toccarlo.',
-    focus: ['Prenotazione corsi', 'Meteo', 'Sito stagionale', 'Next.js'],
+      'Corsi, prezzi e prenotazione in un unico sito. La stagione decide testi e pulsanti: in inverno corsi di sci e snowboard, in estate camp e pista sintetica.',
+    focus: ['Prenotazione corsi', 'Listino filtrabile', 'Sito stagionale', 'Next.js'],
     href: 'https://www.scuolascipiancavallo.it',
     logo: '/logos/scuola-sci-piancavallo.png',
     image: '/progetti/stage/scuola-sci-piancavallo.webp',
