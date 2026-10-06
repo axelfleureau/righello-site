@@ -1,0 +1,27 @@
+/* BUFFR: unica sorgente di colori e spaziature della pagina /buffr.
+   Le isole scure usano i valori --bf-*; le sezioni "a tema" usano i token del sito. */
+.buffr {
+  --bf-pink: #d6487e;
+  --bf-pink-text: #f08ab1; /* rosa leggibile (AA) su fondo scuro, per testo piccolo */
+  --bf-accent-text: #f08ab1; /* come sopra, ma segue il tema del sito: scurito nel tema chiaro */
+  --bf-ink: #050505;
+  --bf-ink-2: #0d0d10;
+  --bf-line: rgba(255, 255, 255, 0.12);
+  --bf-text: #ffffff;
+  --bf-text-2: rgba(255, 255, 255, 0.74);
+  --bf-text-3: rgba(255, 255, 255, 0.58);
+
+  /* i quattro momenti, stessi colori dei pulsanti dell'app */
+  --bf-goal: #d3a21c;
+  --bf-action: #c4c4c8;
+  --bf-whistle: #cc434b;
+  --bf-start: #2f6fc0;
+
+  --bf-section-y: clamp(4.5rem, 10vw, 8rem);
+  --bf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --bf-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+[data-theme='light'] .buffr {
+  --bf-accent-text: #b02c58;
+}

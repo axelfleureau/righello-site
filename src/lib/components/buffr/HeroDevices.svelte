@@ -1,0 +1,145 @@
+<script lang="ts">
+  import { onMount, onDestroy } from 'svelte';
+  import PhoneFrame from './PhoneFrame.svelte';
+  import CameraScreen from './CameraScreen.svelte';
+
+  /** Il buffer della camera conta i secondi: nel mockup è solo un contatore che cammina. */
+  let seconds = 12;
+  let timer: ReturnType<typeof setInterval> | undefined;
+  let root: HTMLElement;
+  let io: IntersectionObserver | undefined;
+
+  const pad = (n: number) => String(n).padStart(2, '0');
+  $: clock = `${pad(Math.floor(seconds / 60))}:${pad(seconds % 60)}`;
+  $: fill = (seconds % 30) / 30;
+
+  function start() {
+    if (!timer) timer = setInterval(() => (seconds += 1), 1000);
+  }
+
+  function stop() {
+    if (timer) clearInterval(timer);
+    timer = undefined;
+  }
+
+  onMount(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    io = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()));
+    io.observe(root);
+  });
+
+  onDestroy(() => {
+    stop();
+    io?.disconnect();
+  });
+</script>
+
+<div
+  class="stage"
+  bind:this={root}
+  role="img"
+  aria-label="Tre schermate di BUFFR: la libreria delle clip, la camera con il buffer attivo e un montaggio pronto"
+>
+  <span class="stage__floor" aria-hidden="true"></span>
+
+  <div class="ph ph--l">
+    <PhoneFrame island={false}>
+      <img class="shot" src="/products/buffr/libreria.webp" alt="" width="720" height="1560" decoding="async" />
+    </PhoneFrame>
+  </div>
+
+  <div class="ph ph--c">
+    <PhoneFrame>
+      <CameraScreen {clock} {fill} />
+    </PhoneFrame>
+  </div>
+
+  <div class="ph ph--r">
+    <PhoneFrame island={false}>
+      <img class="shot" src="/products/buffr/montaggio.webp" alt="" width="720" height="1560" decoding="async" />
+    </PhoneFrame>
+  </div>
+</div>
+
+<style>
+  .stage {
+    --cw: 44%;
+    --sw: 31%;
+    position: relative;
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    aspect-ratio: 100 / 99;
+  }
+
+  .ph {
+    position: absolute;
+    width: var(--sw);
+    top: 12%;
+    animation: rise 1.1s var(--bf-ease) both;
+  }
+
+  .ph--c {
+    width: var(--cw);
+    left: calc(50% - var(--cw) / 2);
+    top: 0;
+    z-index: 3;
+    animation-delay: 0.05s;
+  }
+
+  .ph--l {
+    left: calc(50% - var(--cw) / 2 - var(--sw) * 0.86);
+    --tilt: -5deg;
+    z-index: 2;
+    animation-delay: 0.2s;
+  }
+
+  .ph--r {
+    left: calc(50% + var(--cw) / 2 - var(--sw) * 0.14);
+    --tilt: 5deg;
+    z-index: 2;
+    animation-delay: 0.3s;
+  }
+
+  .ph--l,
+  .ph--r {
+    transform: rotate(var(--tilt));
+    filter: brightness(0.9);
+  }
+
+  .stage__floor {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    bottom: -3%;
+    height: 8%;
+    background: radial-gradient(closest-side, rgba(214, 72, 126, 0.32), transparent 72%);
+    filter: blur(14px);
+  }
+
+  @media (min-width: 720px) {
+    .stage {
+      --cw: 28%;
+      --sw: 21%;
+      aspect-ratio: 100 / 64;
+    }
+
+    .ph--l,
+    .ph--r {
+      top: 8%;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      translate: 0 3.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ph {
+      animation: none;
+    }
+  }
+</style>
