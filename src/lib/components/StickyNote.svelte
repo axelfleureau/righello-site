@@ -83,7 +83,7 @@
   class="sticky-note inline-block px-4 py-2 rounded-lg font-medium shadow-md select-none {variants[variant]} {draggable ? 'cursor-grab' : ''} {isDragging ? 'scale-105' : ''}"
   style="transform: translate({translateX}px, {translateY}px) rotate({currentRotation}deg); transition: {isDragging ? 'none' : 'transform 0.3s ease, box-shadow 0.2s ease'};"
   on:mousedown={handleMouseDown}
-  on:touchstart={handleTouchStart}
+  on:touchstart|passive={handleTouchStart}
   aria-hidden="true"
 >
   <slot />

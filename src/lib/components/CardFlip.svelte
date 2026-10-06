@@ -229,7 +229,9 @@
     height: 50px;
     border-radius: 140px;
     opacity: 0;
-    box-shadow: 0 0 50px var(--accent-color);
+    /* l'ombra e' statica: animare box-shadow (blur 20-50px) costa un ridisegno a ogni
+       fotogramma per 40 elementi. Animano solo transform e opacity (compositor). */
+    box-shadow: 0 4px 36px var(--accent-color);
     animation: pulse-scale 3s linear infinite;
   }
   
@@ -241,17 +243,14 @@
     0% {
       transform: scale(2);
       opacity: 0;
-      box-shadow: 0 0 50px var(--accent-color);
     }
     50% {
       transform: translateY(-5px) scale(1);
       opacity: 1;
-      box-shadow: 0 8px 20px var(--accent-color);
     }
     100% {
       transform: translateY(5px) scale(0.1);
       opacity: 0;
-      box-shadow: 0 10px 20px transparent;
     }
   }
   

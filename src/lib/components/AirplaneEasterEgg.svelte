@@ -41,6 +41,13 @@
   const skyJpg = '/sky-easter-egg.jpg';
   const windowWebp = '/window-easter-egg.webp';
   const windowPng = '/window-easter-egg.png';
+  // Sul telefono (portrait) il cielo e la finestra si vedono tagliati al centro da
+  // object-fit: cover: la versione desktop (18 Mpx + 3 Mpx, ~85 MB decodificati)
+  // butterebbe via l'80% dei pixel. Le versioni -m sono lo stesso ritaglio centrale
+  // alla stessa risoluzione (~4 Mpx + 1 Mpx): resa identica, un quinto della memoria.
+  const skyWebpMobile = '/sky-easter-egg-m.webp';
+  const windowWebpMobile = '/window-easter-egg-m.webp';
+  const MOBILE_ART_QUERY = '(max-width: 767px) and (orientation: portrait)';
 
   function preloadImages(): Promise<void> {
     if (imagesLoaded) return Promise.resolve();
@@ -54,8 +61,9 @@
       supportsWebp = false;
     }
 
-    const skyUrl = supportsWebp ? skyWebp : skyJpg;
-    const windowUrl = supportsWebp ? windowWebp : windowPng;
+    const useMobileArt = supportsWebp && window.matchMedia(MOBILE_ART_QUERY).matches;
+    const skyUrl = useMobileArt ? skyWebpMobile : supportsWebp ? skyWebp : skyJpg;
+    const windowUrl = useMobileArt ? windowWebpMobile : supportsWebp ? windowWebp : windowPng;
 
     const loadImage = (src: string) => new Promise<void>((resolve) => {
       const img = new Image();
@@ -367,7 +375,9 @@
         tl.to(mSkyContainer, {
           y: () => {
             const buf = Math.max(8, Math.round(window.innerHeight * 0.005));
-            return -(Math.max(0, mSkyContainer.offsetHeight - window.innerHeight - buf));
+            // altezza della tavola (100lvh, costante) e non innerHeight (cambia con la barra di Safari)
+            const stageH = mSectionEl?.clientHeight || window.innerHeight;
+            return -(Math.max(0, mSkyContainer.offsetHeight - stageH - buf));
           },
           duration: ZOOM_DUR, ease: 'none', force3D: true
         }, ZOOM_START);
@@ -453,7 +463,21 @@
       // positions come from a completely fresh measurement — see the note
       // above on why .refresh() alone was not reliable here.
       let resizeDebounce: ReturnType<typeof setTimeout> | null = null;
+      // ResizeObserver spara subito alla prima osservazione, anche se nulla e' cambiato:
+      // su touch ogni caricamento rifaceva da capo tutti i ScrollTrigger (revert +
+      // ricostruzione) un istante dopo averli creati. Su desktop il comportamento resta
+      // quello di prima.
+      const skipUnchanged = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+      let lastBodyW = document.body.clientWidth;
+      let lastBodyH = document.body.offsetHeight;
       bodyResizeObserver = new ResizeObserver(() => {
+        if (skipUnchanged) {
+          const w = document.body.clientWidth;
+          const h = document.body.offsetHeight;
+          if (Math.abs(w - lastBodyW) < 1 && Math.abs(h - lastBodyH) < 1) return;
+          lastBodyW = w;
+          lastBodyH = h;
+        }
         if (resizeDebounce !== null) clearTimeout(resizeDebounce);
         resizeDebounce = setTimeout(() => {
           ctx?.revert();
@@ -490,16 +514,18 @@
 <section bind:this={sectionEl} class="easter-egg-section" class:images-ready={imagesLoaded}>
     <div class="section-top-gradient" aria-hidden="true"></div>
     <div class="section-bottom-gradient" aria-hidden="true"></div>
+    <!-- loading="lazy": questo blocco e' display:none sul telefono; un'immagine eager in un
+         sottoalbero nascosto viene comunque scaricata (~1 MB di cielo e finestra desktop). -->
     <div bind:this={skyContainer} class="sky-container">
       <picture>
         <source srcset={skyWebp} type="image/webp" />
-        <img src={skyJpg} alt="" decoding="async" draggable="false" />
+        <img src={skyJpg} alt="" loading="lazy" decoding="async" draggable="false" />
       </picture>
     </div>
     <div bind:this={windowContainer} class="window-container">
       <picture>
         <source srcset={windowWebp} type="image/webp" />
-        <img src={windowPng} alt="" decoding="async" draggable="false" />
+        <img src={windowPng} alt="" loading="lazy" decoding="async" draggable="false" />
       </picture>
     </div>
 
@@ -537,12 +563,14 @@
     <div class="section-bottom-gradient" aria-hidden="true"></div>
     <div bind:this={mSkyContainer} class="sky-container">
       <picture>
+        <source srcset={skyWebpMobile} media={MOBILE_ART_QUERY} type="image/webp" />
         <source srcset={skyWebp} type="image/webp" />
         <img src={skyJpg} alt="" decoding="async" draggable="false" />
       </picture>
     </div>
     <div bind:this={mWindowContainer} class="window-container">
       <picture>
+        <source srcset={windowWebpMobile} media={MOBILE_ART_QUERY} type="image/webp" />
         <source srcset={windowWebp} type="image/webp" />
         <img src={windowPng} alt="" decoding="async" draggable="false" />
       </picture>
@@ -827,9 +855,27 @@
       height: 100px;
     }
 
+    /* Safari iOS: dvh cambia mentre la barra degli indirizzi si ritira, e con lui la
+       tavola da 100dvh e il cielo da 350dvh (un livello da ~4 Mpx): layout e nuovo
+       raster in pieno scroll. lvh e' costante: niente ricalcolo al ritiro della barra. */
+    .easter-egg-section {
+      height: 100vh;
+      height: 100lvh;
+    }
+
+    .sky-container {
+      height: 350vh;
+      height: 350lvh;
+    }
+
+    .window-container {
+      height: 100vh;
+      height: 100lvh;
+    }
+
     .emoji-transition-zone {
       height: 70vh;
-      height: 70dvh;
+      height: 70lvh;
     }
 
     .emoji-float {

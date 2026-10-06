@@ -408,9 +408,9 @@
       on:mousemove={handleMouseMove}
       on:mouseup={handleMouseUp}
       on:mouseleave={handleMouseLeave}
-      on:touchstart={handleTouchStart}
+      on:touchstart|passive={handleTouchStart}
       on:touchmove|passive={handleTouchMove}
-      on:touchend={handleTouchEnd}
+      on:touchend|passive={handleTouchEnd}
       on:touchcancel={handleTouchCancel}
       role="list"
     >

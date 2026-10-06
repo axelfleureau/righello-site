@@ -174,11 +174,34 @@
   onMount(() => {
     if (!browser) return;
     reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let visibilityObserver: IntersectionObserver | null = null;
     if (!reducedMotion) {
       swingVelocity = 1.5;
-      animationId = requestAnimationFrame(animate);
+      // Il tesserino oscilla (e riscrive lo stile ogni fotogramma) solo mentre si vede:
+      // fuori vista il rAF perenne teneva occupato il main thread per tutta la pagina.
+      let running = false;
+      const start = () => {
+        if (running) return;
+        running = true;
+        animationId = requestAnimationFrame(animate);
+      };
+      const stop = () => {
+        running = false;
+        if (animationId) cancelAnimationFrame(animationId);
+        animationId = 0;
+      };
+      if (container && 'IntersectionObserver' in window) {
+        visibilityObserver = new IntersectionObserver(
+          (entries) => (entries[0]?.isIntersecting ? start() : stop()),
+          { rootMargin: '120px' }
+        );
+        visibilityObserver.observe(container);
+      } else {
+        start();
+      }
     }
     return () => {
+      visibilityObserver?.disconnect();
       if (animationId) cancelAnimationFrame(animationId);
     };
   });

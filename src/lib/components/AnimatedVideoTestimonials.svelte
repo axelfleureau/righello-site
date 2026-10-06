@@ -47,6 +47,7 @@
   let touchEndX = 0;
   let touchEndY = 0;
   let isSwiping = false;
+  let touchMoved = false;
   const SWIPE_THRESHOLD = 25;
   let reducedMotion = false;
   let canAutoplayInline = false;
@@ -137,6 +138,7 @@
     touchEndX = touchStartX;
     touchEndY = touchStartY;
     isSwiping = false;
+    touchMoved = false;
   }
 
   function handleTouchMove(e: TouchEvent) {
@@ -144,6 +146,7 @@
     touchEndY = e.touches[0].clientY;
     const dx = Math.abs(touchEndX - touchStartX);
     const dy = Math.abs(touchEndY - touchStartY);
+    if (dx > 10 || dy > 10) touchMoved = true;
     if (dx > dy && dx > 10) {
       isSwiping = true;
       // No preventDefault: touch-action: pan-y on container handles vertical scroll natively
@@ -152,9 +155,13 @@
 
   function handleTouchEnd() {
     if (!isSwiping) {
-      if (!isCtaActive && (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId)) {
+      // Solo un tocco fermo apre il video. Prima si apriva anche alla fine di uno scorrimento
+      // verticale iniziato sulla scheda: il lightbox compariva a meta' scroll e blocca la
+      // pagina (body overflow: hidden) — da telefono sembrava che lo scroll si fermasse.
+      if (!touchMoved && !isCtaActive && (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId)) {
         openLightbox();
       }
+      touchMoved = false;
       return;
     }
     const diff = touchStartX - touchEndX;
@@ -359,9 +366,9 @@
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div
           class="avt-touch-overlay"
-          on:touchstart={handleTouchStart}
+          on:touchstart|passive={handleTouchStart}
           on:touchmove|passive={handleTouchMove}
-          on:touchend={handleTouchEnd}
+          on:touchend|passive={handleTouchEnd}
         ></div>
       </div>
 
