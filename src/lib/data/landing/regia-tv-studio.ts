@@ -5,6 +5,10 @@ import type { Landing, MediaRef } from './types';
  * di OBS-Padel-Stream-Overlay (cartella tv-studio) e nella galleria delle animazioni del 22/09.
  * Media: scene senza nomi di persone e senza volti riconoscibili. Unica eccezione: la clip del gol, dove
  * il marcatore ("Marco Bianchi", n. 9) e' inventato; il motore l'ha disegnato su una ripresa vera senza grafiche.
+ * Schermate palmare e controllo marker: programmi veri avviati in locale su una partita dimostrativa (squadre e giocatori
+ * inventati, video di prova senza persone). Palmare: righello-match-suite (web/app.js, server.py). Controllo: tv-studio/static/timeline.html,
+ * editorial_approval.py (approvazioni con impronta), build_match_tv_studio.py (assert_export_branding), match_manager.py (/api/queue/add).
+ * Rosa dalla foto della distinta: server.py run_roster_analysis. BUFFR: tv-studio/buffr_replay_import.py (proposte replay, tutte da approvare).
  */
 const DIR = '/progetti/landing/regia-tv-studio';
 const shared = '/progetti/regia';
@@ -39,6 +43,20 @@ const sponsor: MediaRef = {
   frame: 'monitor',
 };
 
+const palmare: MediaRef = {
+  type: 'image',
+  src: `${DIR}/palmare-cronista.webp`,
+  alt: 'Il palmare del cronista su telefono: tabellone con tempo e risultato, tasti grandi per gol, sostituzione, ammonizione, replay ed espulsione, e l\'elenco degli eventi appena segnati. Partita dimostrativa con squadre inventate',
+  frame: 'phone',
+};
+
+const controllo: MediaRef = {
+  type: 'image',
+  src: `${DIR}/controllo-marker.webp`,
+  alt: 'La pagina di revisione dei marker: il video del tempo e, sotto, la linea del tempo con gol, replay, ammonizione e cambio segnati dal palmare, da spostare o correggere prima del via. Partita dimostrativa con squadre inventate',
+  frame: 'browser',
+};
+
 const secondoTempo = clip('secondo-tempo', 'Inizio del secondo tempo: il cronometro del tabellone riparte dal calcio d\'inizio');
 const recupero = clip('recupero', 'Il recupero entra sotto il tabellone senza spostare il cronometro');
 const replay = clip('replay-shutter', 'Un replay con lo stacco a due pannelli, il bollino REPLAY in basso');
@@ -49,7 +67,7 @@ const introVeneto = clip('intro-veneto', 'Sigla di apertura Calcio Veneto: due s
 const introFvg = clip('intro-fvg', 'Sigla di apertura Calcio FVG: due società, giornata, campionato e data');
 
 export default {
-  tagline: 'Le grafiche si montano da sole: le guidano gli eventi della partita.',
+  tagline: 'Il gestionale dei sogni di chi produce partite per la TV.',
   hero: gol,
   metrics: [
     { value: 27, label: 'scene nella galleria', note: 'animazioni in 8 categorie, del 22 settembre' },
@@ -76,7 +94,7 @@ export default {
       kicker: 'Come lavora',
       title: 'Sono gli eventi a guidare il video',
       highlight: 'eventi',
-      text: 'Durante la gara un operatore segna gli eventi dal palmare: gol, cartellini, cambi, recupero, replay, pause. Il motore li legge, trova il momento giusto nel video e disegna la grafica. Se arriva un evento che non conosce, non lo ignora: il montaggio si ferma finché non gli si dà un trattamento.',
+      text: 'È un gestionale in tre momenti. Il cronista segna gli eventi dal palmare mentre si gioca. Tu controlli marker, dati, loghi e approvazioni. Solo dopo parte la produzione automatica, che trova il momento giusto nel video e disegna la grafica. Un evento che il motore non conosce non viene ignorato: il montaggio si ferma finché non gli si dà un trattamento.',
       bullets: [
         '29 tipi di evento, ognuno con il suo trattamento scritto',
         'I minuti di recupero vengono dall\'evento, non dalla durata della ripresa',
@@ -119,6 +137,30 @@ export default {
     lead: 'Riprese, squadre, eventi e sponsor entrano nel motore. Escono la partita con le grafiche al loro posto, i replay e i programmi per il televisore. Tocca un blocco per vedere cosa fa.',
   },
   features: [
+    {
+      icon: 'device',
+      title: 'Palmare del cronista',
+      text: 'Chi segue la partita segna gol, cartellini, cambi, recupero e replay con un tocco, senza sapere nulla di montaggio.',
+      wide: true,
+      media: palmare,
+    },
+    {
+      icon: 'scan',
+      title: 'Rosa dalla foto della distinta',
+      text: 'L\'intelligenza artificiale legge la foto della distinta e propone le rose. Le controlli e le correggi tu: se la lettura non riesce, si inserisce a mano.',
+    },
+    {
+      icon: 'shield',
+      title: 'Controllo prima del via',
+      text: 'Marker, dati, loghi e approvazioni si rivedono prima di premere play: senza quelle, la produzione non parte.',
+      wide: true,
+      media: controllo,
+    },
+    {
+      icon: 'link',
+      title: 'Con BUFFR e BUFFR Live',
+      text: 'Gli stessi eventi del palmare alimentano BUFFR Live e diventano i marker della produzione. I momenti salvati in BUFFR arrivano come proposte di replay, tutte da approvare (oggi il passaggio è in parte manuale).',
+    },
     { icon: 'clock', title: 'Tabellone sempre vero', text: 'Tempo, risultato, sigle delle squadre e cartellini rossi restano nel tabellone e seguono gli eventi segnati.' },
     { icon: 'bolt', title: 'Gol in due tempi', text: 'Nel tabellone entrano squadra, GOL e nuovo risultato; poi in basso sale il banner del marcatore. Il cronometro non si muove.' },
     { icon: 'play', title: 'Replay con stacco', text: 'Stacco a due pannelli, un solo raccordo tra replay vicini, approvazione obbligatoria.' },

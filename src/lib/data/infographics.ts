@@ -59,7 +59,7 @@ export const matchSources: FlowNode[] = [
     id: 'eventi',
     icon: 'flag',
     label: 'Eventi della partita',
-    text: 'Gol, cartellini e cambi arrivano mentre si gioca e diventano grafica.',
+    text: 'Il cronista li segna dal palmare mentre si gioca: gol, cartellini e cambi diventano grafica. Gli stessi eventi alimentano BUFFR Live.',
   },
   {
     id: 'sponsor',

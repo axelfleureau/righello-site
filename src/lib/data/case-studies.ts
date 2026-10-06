@@ -136,9 +136,9 @@ export const caseStudies: CaseStudy[] = [
     platform: ['Render automatico'],
     audience: 'Produzione televisiva sportiva',
     accent: ['#E11D2E', '#F5C400'],
-    headline: 'Le riprese entrano, la partita da televisione esce.',
+    headline: 'Il gestionale dei sogni di chi produce partite per la TV.',
     text:
-      'Il Motore TV Studio mette insieme il video dal campo, le squadre, gli eventi della partita e gli sponsor, e ne fa una partita da televisione con le grafiche già al loro posto: tempo e risultato, formazioni, rigori, pubblicità e replay.',
+      'Il cronista segna gli eventi dal palmare, tu controlli marker, dati, loghi e approvazioni, poi la produzione automatica monta la partita da televisione con le grafiche già al loro posto: tempo e risultato, formazioni, rigori, pubblicità e replay.',
     focus: ['Grafiche automatiche', 'Replay e highlights', 'Formazioni e rigori', 'Sponsor in campo'],
     icon: '/progetti/icons/produzione-partite.webp',
     image: '/progetti/regia/gol-scorebug.webp',
