@@ -3,7 +3,8 @@ import type { Landing, MediaRef } from './types';
 /**
  * Produzione delle partite (Motore TV Studio). Fatti verificati nel ramo `match-pipeline`
  * di OBS-Padel-Stream-Overlay (cartella tv-studio) e nella galleria delle animazioni del 22/09.
- * Media: solo scene senza nomi di persone e senza volti riconoscibili.
+ * Media: scene senza nomi di persone e senza volti riconoscibili. Unica eccezione: la clip del gol, dove
+ * il marcatore ("Marco Bianchi", n. 9) e' inventato; il motore l'ha disegnato su una ripresa vera senza grafiche.
  */
 const DIR = '/progetti/landing/regia-tv-studio';
 const shared = '/progetti/regia';
@@ -24,6 +25,11 @@ const gol: MediaRef = {
   alt: 'Il banner GOL entra nel tabellone di una partita di prova, con la sigla della squadra',
   frame: 'monitor',
 };
+
+const golBanner = clip(
+  'gol-banner',
+  'Un gol in diretta: il tabellone in alto mostra squadra, GOL e il nuovo risultato, poi in basso sale il banner con numero e nome del marcatore',
+);
 
 const sponsor: MediaRef = {
   type: 'video',
@@ -75,6 +81,7 @@ export default {
         '29 tipi di evento, ognuno con il suo trattamento scritto',
         'I minuti di recupero vengono dall\'evento, non dalla durata della ripresa',
         'I rigori hanno un punteggio a parte: non diventano gol della partita',
+        'Il gol si vede in due tempi: prima nel tabellone, poi il banner del marcatore',
       ],
       media: [{ ...recupero, caption: 'Il recupero entra nel tabellone senza spostare il cronometro: i minuti sono quelli segnati.' }],
     },
@@ -113,7 +120,7 @@ export default {
   },
   features: [
     { icon: 'clock', title: 'Tabellone sempre vero', text: 'Tempo, risultato, sigle delle squadre e cartellini rossi restano nel tabellone e seguono gli eventi segnati.' },
-    { icon: 'bolt', title: 'Gol in un attimo', text: 'Il gol diventa il banner GOL e il nuovo risultato, senza toccare il cronometro.' },
+    { icon: 'bolt', title: 'Gol in due tempi', text: 'Nel tabellone entrano squadra, GOL e nuovo risultato; poi in basso sale il banner del marcatore. Il cronometro non si muove.' },
     { icon: 'play', title: 'Replay con stacco', text: 'Stacco a due pannelli, un solo raccordo tra replay vicini, approvazione obbligatoria.' },
     {
       icon: 'layers',
@@ -136,12 +143,19 @@ export default {
     kicker: 'In azione',
     title: 'Le grafiche, in scena',
     highlight: 'in scena',
-    lead: 'Estratti di prove su riprese di partite vere, senza audio. Scegli una scena. Nella galleria completa ce ne sono 27 in 8 categorie: qui mostriamo quelle senza nomi di persone.',
+    lead: 'Estratti di prove su riprese di partite vere, senza audio. Scegli una scena. Nella galleria completa ce ne sono 27 in 8 categorie: qui mostriamo quelle senza nomi di persone, più il gol, con un marcatore inventato.',
     items: [
+      {
+        id: 'gol-banner',
+        group: 'Gol',
+        label: 'Gol: tabellone e banner',
+        media: golBanner,
+        note: 'Come va in onda: prima il tabellone in alto (squadra, GOL, poi il nuovo risultato che scorre), dopo circa due secondi e mezzo sale in basso il banner con numero, nome e squadra del marcatore, il campionato e il risultato; poi esce. Il cronometro non si ferma. Marcatore e numero sono d\'esempio, inventati; le immagini sono di una partita vera.',
+      },
       {
         id: 'gol',
         group: 'Gol',
-        label: 'Gol nel tabellone',
+        label: 'Gol: solo il tabellone',
         media: gol,
         note: 'Il banner GOL entra nel tabellone con la sigla della squadra; subito dopo si aggiorna il risultato.',
       },
