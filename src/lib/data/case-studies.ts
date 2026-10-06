@@ -82,10 +82,10 @@ export const caseStudies: CaseStudy[] = [
     platform: ['iPhone'],
     audience: 'Sport, eventi live, creator e redazioni',
     accent: ['#D6487E', '#7A2B8F'],
-    headline: 'Da MVP per l\'App Store a un redesign che toglie invece di aggiungere.',
+    headline: 'Registra sempre. Salva dopo che è successo.',
     text:
-      'Una videocamera buffer per creator e team sul campo. Il redesign ha ridotto le schermate, sostituito le etichette fisse con icone che compaiono solo quando c\'è un\'eccezione da segnalare, e reso ogni schermata riconoscibile dalle stesse poche componenti.',
-    focus: ['UX mobile', 'Design system', 'App Store', 'Redesign iterativo'],
+      'La camera tiene gli ultimi secondi: quando succede qualcosa, un tocco li salva come clip, con il momento e il punteggio. Poi BUFFR monta il video della partita, anche con più telefoni.',
+    focus: ['Buffer retroattivo', 'Montaggio automatico', 'Team e partite', 'App Store'],
     href: '/buffr',
     storeUrl: 'https://apps.apple.com/it/app/buffr/id6769990725',
     logo: '/logo-icon.png',
@@ -308,7 +308,7 @@ export const caseStudies: CaseStudy[] = [
     accent: ['#3B82F6', '#22C55E'],
     headline: 'L\'iPhone diventa una camera di regia.',
     text:
-      'Il video va dritto dal telefono alla regia in RTMP, RTMPS o SRT, con ottiche e fuoco manuali, controlli rapidi e la luce tally. L\'app è tutta in orizzontale, pensata per stare sul treppiede.',
+      'Il video va dritto dal telefono alla regia in RTMP, RTMPS o SRT, con ottiche, fuoco ed esposizione manuali e controlli rapidi. L\'app è tutta in orizzontale, pensata per stare sul treppiede.',
     focus: ['Streaming dal vivo', 'Controlli manuali', 'SRT e RTMP', 'iPhone'],
     icon: '/progetti/icons/rigcast.webp',
     image: '/progetti/icons/rigcast.webp',
