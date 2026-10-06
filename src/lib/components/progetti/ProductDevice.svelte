@@ -25,6 +25,8 @@
     'pa-assistant': PAAssistant,
     'dico-flow': DicoFlow,
   };
+  /** Il palmare accanto all'iPad si può togliere quando il telefono è già altrove. */
+  export let companion = true;
 
   let el: HTMLElement;
   let raf = 0;
@@ -120,7 +122,7 @@
       <div class="tab">
         <img class="tab__shot" src={stage.src} alt="" width="1000" height="698" loading={eager ? 'eager' : 'lazy'} decoding="async" />
       </div>
-      {#if stage.screens?.[0]}
+      {#if companion && stage.screens?.[0]}
         <div class="ph ph--pal" aria-hidden="true">
           <PhoneFrame><img class="shot" src={stage.screens[0]} alt="" width="800" height="1734" loading="lazy" decoding="async" /></PhoneFrame>
         </div>

@@ -1,9 +1,13 @@
 <script lang="ts">
   import { onMount, onDestroy, createEventDispatcher } from 'svelte';
   import type { CaseStudy } from '$lib/data/case-studies';
+  import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import HeroStage from './HeroStage.svelte';
 
   export let dock: CaseStudy[];
   export let stats: Array<{ value: number; label: string }>;
+  /** I prodotti che compongono la scena a destra. */
+  export let stage: { laptop: CaseStudy; tablet: CaseStudy; phone: CaseStudy };
 
   const dispatch = createEventDispatcher<{ pick: CaseStudy }>();
 
@@ -137,6 +141,7 @@
   </div>
 
   <div class="section-container hero__inner">
+   <div class="hero__copy">
     <p class="hero__kicker">
       <span class="hero__kdot" aria-hidden="true"></span>
       Righello · Progetti
@@ -155,6 +160,11 @@
       </p>
     </div>
 
+    <div class="hero__cta">
+      <MagneticButton href="#vetrina" variant="primary">Guarda i prodotti</MagneticButton>
+      <MagneticButton href="/contatti" variant="secondary">Parliamo di un progetto</MagneticButton>
+    </div>
+
     <div class="dock" bind:this={dockEl} on:pointermove={onMove} on:pointerleave={onLeave} role="group" aria-label="Prodotti Righello">
       {#each dock as study, i (study.id)}
         <button
@@ -171,6 +181,11 @@
       {/each}
     </div>
     <p class="dock__hint">Tocca un'icona per aprire il prodotto</p>
+   </div>
+
+   <div class="hero__stage">
+     <HeroStage {...stage} on:pick />
+   </div>
 
     <div class="stats" bind:this={statsEl}>
       {#each stats as stat, i}
@@ -187,7 +202,7 @@
   .hero {
     position: relative;
     overflow: hidden;
-    padding: clamp(6.6rem, 12vh, 8.6rem) 0 clamp(3rem, 6vh, 5rem);
+    padding: clamp(6.6rem, 12vh, 8.6rem) 0 clamp(2.4rem, 5vh, 4rem);
     isolation: isolate;
   }
 
@@ -230,15 +245,48 @@
     background: radial-gradient(closest-side, var(--glow-cyan), transparent);
   }
 
+  /* stessa etichetta delle sezioni della home */
   .hero__kicker {
     display: inline-flex;
     align-items: center;
     gap: 0.7rem;
-    margin: 0 0 1.6rem;
-    font: 600 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-    letter-spacing: 0.18em;
+    margin: 0 0 1.4rem;
+    font-size: var(--text-sm);
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--text-secondary);
+    color: var(--gradient-start);
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(2.4rem, 5vw, 3.4rem);
+    align-items: center;
+  }
+
+  .hero__copy { min-width: 0; }
+  .hero__stage { min-width: 0; padding: 0.6rem 1.2rem 1rem 0; }
+
+  /* la prima icona si allinea al bordo del testo, la barra sporge */
+  @media (min-width: 1024px) {
+    .dock { margin-left: -1.1rem; }
+  }
+
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: clamp(1.4rem, 2.4vw, 2rem);
+    animation: fade-up 0.9s 0.42s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  }
+
+  @media (min-width: 1024px) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+      column-gap: clamp(2rem, 4vw, 4.5rem);
+    }
+
+    .hero__inner > .stats { grid-column: 1 / -1; }
   }
 
   .hero__kdot {
@@ -252,7 +300,7 @@
   .hero__title {
     margin: 0;
     font-weight: var(--pg-display-weight);
-    font-size: clamp(2.9rem, 8.2vw, 8.6rem);
+    font-size: clamp(2.7rem, 6.2vw, 6rem);
     line-height: 0.9;
     letter-spacing: var(--pg-display-tracking);
     color: var(--text-primary);
@@ -285,8 +333,8 @@
   }
 
   .hero__lede {
-    margin-top: clamp(1.4rem, 2.4vw, 2.2rem);
-    max-width: 40rem;
+    margin-top: clamp(1.2rem, 2vw, 1.8rem);
+    max-width: 34rem;
     animation: fade-up 0.9s 0.35s cubic-bezier(0.2, 0.9, 0.2, 1) both;
   }
 
@@ -408,7 +456,7 @@
 
   /* stats */
   .stats {
-    margin-top: clamp(2.6rem, 6vw, 4.5rem);
+    margin-top: clamp(1.6rem, 4vw, 3rem);
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     border-top: 1px solid var(--border-color);
@@ -425,21 +473,24 @@
     padding: 1.5rem 1rem 0.5rem 0;
   }
 
+  /* numeri e didascalie come le statistiche della home: titolo 700, testo normale */
   .stats__num {
     font-weight: var(--pg-display-weight);
-    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-size: clamp(2.2rem, 4.4vw, 3.4rem);
     line-height: 1;
     letter-spacing: var(--pg-display-tracking);
     font-variant-numeric: tabular-nums;
-    color: var(--text-primary);
+    background: linear-gradient(120deg, var(--gradient-start), var(--gradient-end, var(--gradient-start)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .stats__label {
-    font: 500 0.72rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 0.95rem;
+    line-height: 1.4;
     color: var(--text-secondary);
-    max-width: 14rem;
+    max-width: 15rem;
   }
 
   @media (prefers-reduced-motion: reduce) {

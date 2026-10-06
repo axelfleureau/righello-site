@@ -8,7 +8,6 @@
   import ProgettiHero from '$lib/components/progetti/ProgettiHero.svelte';
   import ProductShowcase from '$lib/components/progetti/ProductShowcase.svelte';
   import RegiaSection from '$lib/components/progetti/RegiaSection.svelte';
-  import DeviceFamily from '$lib/components/progetti/DeviceFamily.svelte';
   import WorkIndex from '$lib/components/progetti/WorkIndex.svelte';
   import ProgettiCta from '$lib/components/progetti/ProgettiCta.svelte';
 
@@ -23,6 +22,13 @@
     { value: caseStudies.filter((s) => s.kind === 'sito').length, label: 'siti su misura in vetrina' },
     { value: caseStudies.filter((s) => s.status.tone === 'store').length, label: 'già pubblicata su App Store' },
   ];
+
+  const byId = (id: string) => caseStudies.find((s) => s.id === id)!;
+  const stage = {
+    laptop: byId('tetha'),
+    tablet: byId('gusto-raffinato-sala'),
+    phone: byId('buffr'),
+  };
 
   let showcase: ProductShowcase;
 
@@ -116,13 +122,11 @@
   {@html schemaMarkup}
 </svelte:head>
 
-<ProgettiHero {dock} {stats} on:pick={pick} />
+<ProgettiHero {dock} {stats} {stage} on:pick={pick} />
 
 <ProductShowcase items={showcaseStudies} bind:this={showcase} />
 
 <RegiaSection />
-
-<DeviceFamily />
 
 <WorkIndex items={caseStudies} />
 

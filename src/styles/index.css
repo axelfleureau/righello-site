@@ -328,7 +328,7 @@
     font-size: var(--text-4xl);
     font-weight: 700;
     color: var(--text-primary);
-    line-height: 1.1;
+    line-height: 1.05;
   }
   
   @media (min-width: 768px) {
@@ -348,7 +348,7 @@
   }
   
   .heading-lg {
-    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight;
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.06];
   }
   
   .heading-md {
