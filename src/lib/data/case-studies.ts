@@ -353,6 +353,7 @@ export const caseStudies: CaseStudy[] = [
     focus: ['Messaggio settimanale', 'Pagine per tematica', 'Redazione con IA', 'Portale enti'],
     href: 'https://www.dico.online',
     logo: '/logos/dico-online.webp',
+    icon: '/progetti/icons/dico.webp',
     image: '/progetti/stage/dico.webp',
     stage: {
       type: 'infographic',
