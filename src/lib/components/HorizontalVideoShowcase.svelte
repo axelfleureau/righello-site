@@ -644,12 +644,12 @@
     font-weight: 800;
     color: var(--text-primary);
     text-align: center;
-    line-height: 1.6;
+    line-height: 1.3;
   }
   
   @media (min-width: 640px) {
     .section-title-highlight {
-      line-height: 1.4;
+      line-height: 1.22;
     }
   }
   

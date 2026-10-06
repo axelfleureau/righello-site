@@ -159,8 +159,8 @@
     <p class="vt__kicker">01 · I prodotti di punta</p>
     <h2 class="vt__title">Schermate vere,<br /><span class="gradient-text">stato reale.</span></h2>
     <p class="vt__sub">
-      Per ogni prodotto: cosa fa, per chi è, e dove puoi trovarlo oggi. Dove è già sullo store, dove è in prova
-      su TestFlight, dove è in uso sul web.
+      Per ogni prodotto: cosa fa, per chi è, e dove puoi trovarlo oggi. Dove è già sullo store, dove è ancora
+      in prova prima dell'uscita, dove è già in uso sul web.
     </p>
   </div>
 
