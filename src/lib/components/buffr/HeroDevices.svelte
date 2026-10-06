@@ -1,37 +1,7 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
   import PhoneFrame from './PhoneFrame.svelte';
-  import CameraScreen from './CameraScreen.svelte';
 
-  /** Il buffer della camera conta i secondi: nel mockup è solo un contatore che cammina. */
-  let seconds = 12;
-  let timer: ReturnType<typeof setInterval> | undefined;
   let root: HTMLElement;
-  let io: IntersectionObserver | undefined;
-
-  const pad = (n: number) => String(n).padStart(2, '0');
-  $: clock = `${pad(Math.floor(seconds / 60))}:${pad(seconds % 60)}`;
-  $: fill = (seconds % 30) / 30;
-
-  function start() {
-    if (!timer) timer = setInterval(() => (seconds += 1), 1000);
-  }
-
-  function stop() {
-    if (timer) clearInterval(timer);
-    timer = undefined;
-  }
-
-  onMount(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    io = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()));
-    io.observe(root);
-  });
-
-  onDestroy(() => {
-    stop();
-    io?.disconnect();
-  });
 </script>
 
 <div
@@ -44,19 +14,19 @@
 
   <div class="ph ph--l">
     <PhoneFrame island={false}>
-      <img class="shot" src="/products/buffr/libreria.webp" alt="" width="720" height="1560" decoding="async" />
+      <img class="shot" src="/products/buffr/libreria-v2.webp" alt="" width="720" height="1560" decoding="async" />
     </PhoneFrame>
   </div>
 
   <div class="ph ph--c">
-    <PhoneFrame>
-      <CameraScreen {clock} {fill} />
+    <PhoneFrame island={false}>
+      <img class="shot" src="/products/buffr/campo-v2.webp" alt="" width="720" height="1560" decoding="async" />
     </PhoneFrame>
   </div>
 
   <div class="ph ph--r">
     <PhoneFrame island={false}>
-      <img class="shot" src="/products/buffr/montaggio.webp" alt="" width="720" height="1560" decoding="async" />
+      <img class="shot" src="/products/buffr/montaggio-v2.webp" alt="" width="720" height="1560" decoding="async" />
     </PhoneFrame>
   </div>
 </div>

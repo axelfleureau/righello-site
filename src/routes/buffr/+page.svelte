@@ -36,7 +36,7 @@
       downloadUrl: storeUrl,
       installUrl: storeUrl,
       image: ogImage,
-      screenshot: [`${site}/products/buffr/libreria.webp`, `${site}/products/buffr/montaggio.webp`],
+      screenshot: [`${site}/products/buffr/libreria-v2.webp`, `${site}/products/buffr/montaggio-v2.webp`],
       offers: {
         '@type': 'Offer',
         price: '0',

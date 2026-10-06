@@ -2,6 +2,7 @@
   import { fly } from 'svelte/transition';
   import PhoneFrame from './PhoneFrame.svelte';
   import CameraScreen from './CameraScreen.svelte';
+  import ExampleTag from '$lib/components/progetti/infographics/ExampleTag.svelte';
   import BufferRewind from './BufferRewind.svelte';
   import MomentList from './MomentList.svelte';
   import MontagePipeline from './MontagePipeline.svelte';
@@ -69,16 +70,27 @@
         />
       </div>
       <div class="layer" class:is-on={!camera}>
-        <img class="shot" src="/products/buffr/libreria.webp" alt="" width="720" height="1560" loading="lazy" decoding="async" />
+        <img class="shot" src="/products/buffr/libreria-v2.webp" alt="" width="720" height="1560" loading="lazy" decoding="async" />
       </div>
       <div class="layer" style="opacity: {camera ? 0 : showMontage}">
-        <img class="shot" src="/products/buffr/montaggio.webp" alt="" width="720" height="1560" loading="lazy" decoding="async" />
+        <img class="shot" src="/products/buffr/montaggio-v2.webp" alt="" width="720" height="1560" loading="lazy" decoding="async" />
       </div>
     </PhoneFrame>
+    {#if camera}
+      <span class="vis__tag" style="--ink:#fff"><ExampleTag /></span>
+    {/if}
   </div>
 </div>
 
 <style>
+  /* la camera animata ricostruisce stati che non si possono fotografare: lo diciamo */
+  .vis__tag {
+    position: absolute;
+    left: 50%;
+    bottom: -0.2rem;
+    transform: translateX(-50%);
+  }
+
   .vis {
     --phone-w: min(16rem, calc((100svh - 15.5rem) * 0.4615));
     display: flex;
@@ -94,6 +106,7 @@
   }
 
   .vis__phone {
+    position: relative;
     flex: none;
     width: var(--phone-w);
   }
