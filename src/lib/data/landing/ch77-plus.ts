@@ -27,21 +27,13 @@ export default {
       title: 'Scrivere una password con il telecomando non è un accesso.',
       highlight: 'telecomando',
       text:
-        "Per guardare una partita in esclusiva bisogna accedere e pagare. Farlo sul televisore, lettera per lettera, è lento e scoraggia. CH77+ sposta tutto sul telefono, dove l'accesso e il pagamento sono già comodi, e lascia alla TV solo il compito di mostrare.",
+        "Per guardare una partita in esclusiva bisogna accedere e pagare. Farlo sul televisore, lettera per lettera, scoraggia. CH77+ sposta tutto sul telefono, dove accesso e pagamento sono già comodi, e lascia alla TV solo il compito di mostrare.",
       bullets: [
         'La TV mostra un codice e un QR',
         'Il telefono apre la pagina di attivazione, con il codice già compilato',
         'Accesso e pagamento solo dal telefono, mai dal televisore',
       ],
       media: [
-        {
-          type: 'image',
-          src: '/progetti/landing/ch77-plus/tv-codice-qr.webp',
-          alt: "Schermata dell'app Android TV di Canale 77: titolo Accedi con il telefono, un QR code, il codice di abbinamento e la scritta In attesa dell'accesso dal telefono",
-          caption: 'Sulla TV: il QR e il codice. La schermata si aggiorna da sola.',
-          ratio: '16/9',
-          frame: 'monitor',
-        },
         {
           type: 'image',
           src: '/progetti/landing/ch77-plus/telefono-attiva.webp',
@@ -59,39 +51,11 @@ export default {
       title: 'Tre mosse e la partita è sbloccata.',
       highlight: 'sbloccata',
       text:
-        "Lo spettatore non deve imparare niente: inquadra, entra con il suo account, e la televisione se ne accorge da sola. Non c'è un pulsante da premere sul telecomando.",
+        "Lo spettatore non deve imparare niente: inquadra, entra con il suo account, e la televisione se ne accorge da sola. Le dirette in esclusiva stanno dove si guarda già: nella scheda del calcio, come «Dirette esclusive · Premium».",
       bullets: [
         'Inquadra il QR con la fotocamera del telefono',
         'Entra con il tuo account e attiva Premium',
-        'La TV si sblocca da sola e mostra le dirette in esclusiva',
-      ],
-      layout: 'full',
-    },
-    {
-      id: 'redazione',
-      kicker: 'Per la redazione',
-      title: 'Abbonamenti e omaggi, senza confonderli.',
-      highlight: 'senza confonderli',
-      text:
-        "L'accesso può arrivare da un abbonamento, che si paga e si annulla da un portale, oppure da un omaggio deciso dalla redazione. Le due strade hanno regole diverse e dichiarate: chi guarda non vede la differenza, chi gestisce sì.",
-      bullets: [
-        'Abbonamento: pagamento sicuro, rinnovo mensile, annullabile da un portale',
-        'Omaggio o pass partita: concesso a mano, con scadenza facoltativa e revoca',
-        'Ogni addebito è registrato una volta sola',
-      ],
-      layout: 'media-left',
-    },
-    {
-      id: 'esclusive',
-      kicker: 'Il contenuto',
-      title: 'Le dirette in esclusiva stanno dove si guarda già.',
-      highlight: 'dove si guarda già',
-      text:
-        "Una partita in esclusiva è una riga in un elenco, con orario e stato: in programma oppure in diretta. Compare nella scheda del calcio come «Dirette esclusive · Premium», nello stesso posto su HbbTV, sito e app TV, e resta visibile finché è in corso.",
-      bullets: [
-        'Un elenco unico, letto da tutti gli schermi',
-        'In programma: visibile fino a due ore dopo l\'inizio previsto',
-        'In diretta: visibile finché non arriva l\'orario di fine',
+        'La TV si sblocca da sola e mostra le dirette',
       ],
       media: [
         {
@@ -103,41 +67,36 @@ export default {
           frame: 'monitor',
         },
       ],
-      layout: 'media-right',
+      layout: 'media-left',
+    },
+    {
+      id: 'redazione',
+      kicker: 'Per la redazione',
+      title: 'Abbonamenti e omaggi, senza confonderli.',
+      highlight: 'senza confonderli',
+      text:
+        "L'accesso arriva da un abbonamento, che si paga e si annulla da un portale, o da un omaggio deciso dalla redazione. Le regole sono diverse e dichiarate: chi guarda non vede la differenza, chi gestisce sì.",
+      bullets: [
+        'Abbonamento: pagamento sicuro, rinnovo mensile, annullabile dal portale',
+        'Omaggio o pass partita: concesso a mano dalla redazione',
+        "In programma: visibile fino a due ore dopo l'inizio previsto",
+      ],
+      layout: 'full',
     },
   ],
   graphic: 'ch77-plus',
+  how: {
+    title: 'Dal codice sulla TV allo sblocco',
+    highlight: 'allo sblocco',
+    lead: 'Cosa succede tra televisore, telefono e portale, passo dopo passo. Esempio illustrativo: tocca un passaggio per vederlo.',
+  },
   features: [
-    {
-      icon: 'scan',
-      title: 'Codice e QR',
-      text: 'La TV mostra un codice a 8 caratteri e un QR: si inquadra con la fotocamera, senza digitare nulla.',
-      wide: true,
-      media: {
-        type: 'image',
-        src: '/progetti/landing/ch77-plus/tv-codice-qr.webp',
-        alt: "La finestra Accedi con il telefono dell'app Android TV, con QR e codice",
-        ratio: '16/9',
-        frame: 'monitor',
-      },
-    },
-    {
-      icon: 'device',
-      title: 'Accesso dal telefono',
-      text: "Si entra con il proprio account dalla pagina di attivazione, già pronta con il codice.",
-      wide: true,
-      media: {
-        type: 'image',
-        src: '/progetti/landing/ch77-plus/telefono-attiva.webp',
-        alt: 'La pagina di attivazione sul telefono con il riquadro del codice',
-        ratio: '390/844',
-        frame: 'phone',
-      },
-    },
-    { icon: 'clock', title: 'Il codice scade', text: 'Vale pochi minuti e si usa una volta sola: scaduto, la TV ne mostra uno nuovo.' },
-    { icon: 'lock', title: 'Chiuso finché non c\'è una prova', text: "Se non si riesce a verificare un abbonamento il player resta chiuso, e si apre appena c'è una conferma." },
-    { icon: 'users', title: 'Omaggi e pass', text: 'La redazione concede accesso fuori dagli abbonamenti, con scadenza facoltativa e revoca.' },
+    { icon: 'scan', title: 'Codice e QR', text: 'La TV mostra un codice a 8 caratteri e un QR: si inquadra, senza digitare nulla.' },
+    { icon: 'clock', title: 'Codice a tempo', text: "Vale pochi minuti e si usa una volta sola: scaduto, la TV ne mostra uno nuovo." },
+    { icon: 'lock', title: 'Chiuso senza prova', text: "Se non si verifica un abbonamento il player resta chiuso, e si apre appena arriva una conferma." },
+    { icon: 'calendar', title: 'Elenco delle esclusive', text: 'Una riga per partita, con orario e stato, letta da ogni schermo: lo stesso elenco ovunque.' },
     { icon: 'globe', title: 'Ogni schermo', text: 'Lo stesso abbinamento funziona su HbbTV, sito, Samsung, LG e Android TV nativa.' },
+    { icon: 'users', title: 'Omaggi con scadenza', text: 'Un omaggio può avere una data di fine e si può revocare.' },
   ],
   demo: {
     kicker: 'Schermate vere',
@@ -170,6 +129,18 @@ export default {
         },
       },
       {
+        id: 'scheda',
+        label: 'La scheda di un contenuto',
+        media: {
+          type: 'image',
+          src: '/progetti/landing/canale77/android-tv-scheda.webp',
+          alt: 'App Android TV nativa: scheda di un contenuto con anteprima, titolo, data, tipo e i pulsanti Guarda ora, Lista e Chiudi',
+          caption: 'La scheda di un contenuto: guarda ora, aggiungi alla lista, chiudi.',
+          ratio: '16/9',
+          frame: 'monitor',
+        },
+      },
+      {
         id: 'telefono',
         label: 'Attivazione sul telefono',
         media: {
@@ -186,24 +157,24 @@ export default {
   tech: [
     {
       title: 'Un codice che dura il giusto',
-      text: "Il codice e' breve, senza lettere che si confondono, e vale pochi minuti: se scade la TV ne mostra uno nuovo. L'accesso sul televisore dura mesi, poi si ripete l'abbinamento.",
+      text: "Il codice è breve, senza lettere che si confondono, e vale pochi minuti: scaduto, la TV ne mostra uno nuovo. L'accesso sul televisore dura mesi, poi si ripete l'abbinamento.",
       tags: ['Abbinamento a tempo', 'Comodo da leggere'],
     },
     {
       title: 'Una regola, tutti gli schermi',
-      text: "Abbonamento, omaggio, abbinamento e partita sono regole scritte una volta sola: sito, app e televisori le applicano allo stesso modo, senza differenze fra uno schermo e l'altro.",
-      tags: ['Un solo punto di verita\'', 'Ogni schermo'],
+      text: "Abbonamento, omaggio, abbinamento e partita sono regole scritte una volta sola: sito, app e televisori le applicano allo stesso modo.",
+      tags: ["Un solo punto di verità", 'Ogni schermo'],
     },
     {
-      title: 'Chiuso finche\' non c\'e\' una prova',
-      text: "Se non si riesce a verificare un abbonamento, il player resta chiuso e si riapre appena c'e' una conferma. Chi ha diritto a guardare non aspetta, chi non ce l'ha non entra.",
+      title: 'Conti giusti, porta chiusa',
+      text: "Ogni addebito è registrato una sola volta. Senza prova di abbonamento il player resta chiuso e si riapre alla conferma: chi ha diritto non aspetta, chi non ce l'ha non entra.",
       tags: ['Accesso sicuro'],
     },
   ],
   cta: {
     title: 'Vuoi un accesso così per i tuoi contenuti?',
     highlight: 'accesso così',
-    text: 'L\'attivazione Premium di Canale 77 è online. Se hai contenuti da riservare a chi si abbona e uno schermo senza tastiera, il modello è riutilizzabile.',
+    text: "L'attivazione Premium di Canale 77 è online, e il modello si riusa per ogni contenuto riservato su uno schermo senza tastiera.",
     primary: { label: 'Apri Canale 77', href: 'https://ch77.wearerighello.com', external: true },
   },
 } satisfies Landing;
