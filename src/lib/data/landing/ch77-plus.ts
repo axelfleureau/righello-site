@@ -5,7 +5,15 @@ import type { Landing } from './types';
  * Non si dice quante partite ci sono né quanti abbonati: non sono dati verificabili qui.
  */
 export default {
-  tagline: 'Il televisore si sblocca con il telefono. Niente password col telecomando.',
+  tagline: 'Il televisore si sblocca con il telefono.',
+  hero: {
+    type: 'image',
+    src: '/progetti/landing/ch77-plus/tv-codice-qr.webp',
+    alt: "L'app Android TV di Canale 77: sul catalogo, la finestra Accedi con il telefono con il QR e il codice di abbinamento",
+    caption: "Sulla TV: la finestra di abbinamento con QR e codice. L'immagine e' dell'app vera.",
+    ratio: '16/9',
+    frame: 'monitor',
+  },
   metrics: [
     { value: 8, label: 'caratteri nel codice mostrato sulla TV', note: 'senza lettere che si confondono' },
     { value: 10, suffix: ' min', label: 'validità del codice sulla TV', note: 'scaduto il tempo, la TV ne mostra uno nuovo' },
@@ -87,31 +95,42 @@ export default {
   ],
   demo: {
     kicker: 'Schermate vere',
-    title: 'Il percorso, dal televisore al telefono.',
-    highlight: 'dal televisore al telefono',
-    lead: 'Due schermate reali, non disegni: la prima è l\'app Android TV di Canale 77, la seconda la pagina pubblica di attivazione.',
+    title: 'Dal catalogo allo sblocco.',
+    highlight: 'allo sblocco',
+    lead: "Schermate reali, non disegni: l'app Android TV di Canale 77 e la pagina pubblica di attivazione.",
     items: [
       {
+        id: 'catalogo',
+        label: 'Il catalogo sulla TV',
+        media: {
+          type: 'image',
+          src: '/progetti/landing/canale77/android-tv-home.webp',
+          alt: "L'app Android TV di Canale 77: in alto le sezioni Calcio FVG, Calcio Veneto, Rugby, Basket e il pulsante CH77+, sotto le partite intere",
+          caption: "L'app Android TV di Canale 77: sezioni, partite intere e, accanto all'icona dell'account, l'accesso con il telefono.",
+          ratio: '16/9',
+          frame: 'monitor',
+        },
+      },
+      {
         id: 'tv',
-        label: 'Sulla TV',
+        label: 'Abbinamento sulla TV',
         media: {
           type: 'image',
           src: '/progetti/landing/ch77-plus/tv-codice-qr.webp',
-          alt: 'L\'app Android TV mostra il QR e il codice di abbinamento per accedere dal telefono',
-          caption: 'L\'app Android TV in attesa dell\'accesso: codice, QR e istruzioni.',
+          alt: "L'app Android TV mostra il QR e il codice di abbinamento per accedere dal telefono",
+          caption: "La finestra Accedi con il telefono: QR, codice e istruzioni. Il codice mostrato qui e' gia' scaduto.",
           ratio: '16/9',
-          frame: 'browser',
+          frame: 'monitor',
         },
-        note: 'Il codice mostrato in questa schermata è scaduto subito dopo lo scatto.',
       },
       {
         id: 'telefono',
-        label: 'Sul telefono',
+        label: 'Attivazione sul telefono',
         media: {
           type: 'image',
           src: '/progetti/landing/ch77-plus/telefono-attiva.webp',
           alt: 'La pagina di attivazione sul telefono con il riquadro del codice mostrato sulla TV',
-          caption: 'La pagina di attivazione con il codice già inserito dal QR. Il prezzo non è mostrato in questa immagine.',
+          caption: 'La pagina di attivazione con il codice gia\' inserito dal QR. Il prezzo non e\' mostrato in questa immagine.',
           ratio: '390/844',
           frame: 'phone',
         },
@@ -120,24 +139,19 @@ export default {
   },
   tech: [
     {
-      title: 'Abbinamento senza segreti sul televisore',
-      text: 'La TV riceve un codice e un controllo riservato. I segreti non vengono mai conservati in chiaro. Il codice, di 8 caratteri scelti per non confondersi, scade in 10 minuti.',
-      tags: ['Sicurezza', 'Abbinamento a tempo'],
+      title: 'Un codice che dura il giusto',
+      text: "Il codice e' breve, senza lettere che si confondono, e vale pochi minuti: se scade la TV ne mostra uno nuovo. L'accesso sul televisore dura mesi, poi si ripete l'abbinamento.",
+      tags: ['Abbinamento a tempo', 'Comodo da leggere'],
     },
     {
-      title: 'Pagamenti e identità affidabili',
-      text: 'L\'accesso usa un sistema di identità collaudato, su un dominio nostro. Gli addebiti sono registrati una sola volta, anche se le conferme di pagamento arrivano ripetute.',
-      tags: ['Accesso sicuro', 'Pagamenti sicuri'],
+      title: 'Una regola, tutti gli schermi',
+      text: "Abbonamento, omaggio, abbinamento e partita sono regole scritte una volta sola: sito, app e televisori le applicano allo stesso modo, senza differenze fra uno schermo e l'altro.",
+      tags: ['Un solo punto di verita\'', 'Ogni schermo'],
     },
     {
-      title: 'Un solo posto per ogni regola',
-      text: 'Le regole (abbonamento, omaggio, abbinamento, partita) sono scritte una volta, separate dal resto e provate con test automatici: sito, app e televisori le applicano allo stesso modo.',
-      tags: ['Un solo punto di verità', 'Test automatici'],
-    },
-    {
-      title: 'Protezioni contro l\'abuso',
-      text: 'Le richieste pubbliche hanno un limite per indirizzo e la pagina di accesso consente solo ciò che serve. Se non si riesce a verificare un abbonamento, il player resta chiuso.',
-      tags: ['Sicurezza', 'Chiuso per default'],
+      title: 'Chiuso finche\' non c\'e\' una prova',
+      text: "Se non si riesce a verificare un abbonamento, il player resta chiuso e si riapre appena c'e' una conferma. Chi ha diritto a guardare non aspetta, chi non ce l'ha non entra.",
+      tags: ['Accesso sicuro'],
     },
   ],
   cta: {
