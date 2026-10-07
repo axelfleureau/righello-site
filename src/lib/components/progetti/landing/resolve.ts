@@ -30,3 +30,9 @@ export function resolveLanding(study: CaseStudy): Landing {
     tech: [],
   };
 }
+
+/** Quante schermate servono perche' la galleria abbia senso: con una o due non e' una galleria, la sezione non compare. */
+export const DEMO_MIN = 3;
+
+/** La galleria si mostra solo con almeno DEMO_MIN voci (e la nav di sezione la segue). */
+export const hasDemo = (landing: Landing) => (landing.demo?.items.length ?? 0) >= DEMO_MIN;

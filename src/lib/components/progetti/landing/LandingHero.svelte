@@ -13,6 +13,9 @@
   export let landing: Landing;
   export let primary: { href: string; label: string } | null;
 
+  /** Gestionali e casi: il palco e' un browser con la sua didascalia, se la schermata non ha gia' una cornice. */
+  $: heroMedia = landing.hero && landing.variant && ['gestionale', 'caso'].includes(landing.variant) && !landing.hero.frame ? { ...landing.hero, frame: 'browser' as const } : landing.hero;
+  $: isPhone = heroMedia?.frame === 'phone';
   $: isIconImage = study.image.includes('/icons/');
   /** L'infografica, se la landing ne ha una, sta in "Come funziona": il palco del hero usa altro. */
   $: stage = landing.hero ? 'media' : study.stage && !(study.stage.type === 'infographic' && landing.graphic) ? 'device' : 'cover';
@@ -22,7 +25,7 @@
   ];
 </script>
 
-<section class="lh">
+<section class="lh" class:lh--bc={landing.variant === 'broadcast'}>
   <div class="lh__glow" aria-hidden="true"></div>
   <div class="lp-grid-bg" aria-hidden="true"></div>
   <div class="lp-rings lh__rings" aria-hidden="true"></div>
@@ -55,9 +58,9 @@
         </dl>
       </div>
 
-      <div class="lh__stage">
-        {#if stage === 'media' && landing.hero}
-          <MediaFrame media={landing.hero} eager />
+      <div class="lh__stage" class:lh__stage--phone={stage === 'media' && isPhone}>
+        {#if stage === 'media' && heroMedia}
+          <MediaFrame media={heroMedia} eager maxH={isPhone ? 'var(--lp-vis-hero-phone)' : undefined} />
         {:else if stage === 'device'}
           <ProductDevice {study} eager />
         {:else}
@@ -151,7 +154,23 @@
   .lh__meta dt { margin-bottom: 0.35rem; font: 500 0.68rem/1 var(--lp-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--lp-ink-3); }
   .lh__meta dd { margin: 0; font-size: 0.92rem; font-weight: 600; color: var(--lp-ink); }
 
+  /* piattaforme di trasmissione: piu' spazio al video che al testo */
+  @media (min-width: 1024px) { .lh--bc .lh__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+
   .lh__stage { min-width: 0; padding: 0 1.2rem 1.6rem 0; }
+  .lh--bc .lh__stage { padding-right: 0; }
+
+  /* telefono nel palco: una luce del colore del prodotto dietro, cosi' non resta perso accanto al testo */
+  .lh__stage--phone { position: relative; isolation: isolate; padding: 0 0 1.6rem; }
+  .lh__stage--phone::before {
+    content: '';
+    position: absolute;
+    inset: -6% 4% -2%;
+    z-index: -1;
+    background:
+      radial-gradient(closest-side at 35% 45%, color-mix(in srgb, var(--a) 36%, transparent), transparent 80%),
+      radial-gradient(closest-side at 70% 60%, color-mix(in srgb, var(--b) 34%, transparent), transparent 82%);
+  }
 
   .lh__fig {
     margin: 0;

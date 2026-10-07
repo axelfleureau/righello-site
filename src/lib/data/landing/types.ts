@@ -74,7 +74,18 @@ export interface TechItem {
   tags?: string[];
 }
 
+/** Il tipo di prodotto: il template ne ricava piccoli adattamenti (palco, ordine delle sezioni), senza cambiare lo stampo. */
+export type LandingVariant = 'app' | 'gestionale' | 'broadcast' | 'pa' | 'caso';
+
 export interface Landing {
+  /**
+   * Archetipo del prodotto. Senza, la pagina e' neutra.
+   * app: palco telefono piu' alto e telefono sempre in primo piano nei capitoli.
+   * gestionale e caso: palco browser/tablet con didascalia.
+   * broadcast: video e monitor a tutta larghezza.
+   * pa: l'infografica sta subito dopo la fascia dei numeri.
+   */
+  variant?: LandingVariant;
   /** La frase del hero: breve, sicura, vera (puo' sostituire il headline del prodotto). */
   tagline?: string;
   /** Media del palco nel hero. Serve quando il palco non puo' essere l'infografica (che sta in "Come funziona"). */

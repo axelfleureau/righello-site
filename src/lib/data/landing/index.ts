@@ -1,6 +1,6 @@
 import type { Landing } from './types';
 
-export type { Landing, Chapter, Feature, Demo, Metric, MediaRef, TechItem, IconName } from './types';
+export type { Landing, LandingVariant, Chapter, Feature, Demo, Metric, MediaRef, TechItem, IconName } from './types';
 
 // Un file per prodotto (landing/<id>.ts, export default): niente registro da aggiornare a mano.
 const files = import.meta.glob<{ default: Landing }>('./*.ts', { eager: true });

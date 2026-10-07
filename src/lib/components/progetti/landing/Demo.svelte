@@ -2,9 +2,12 @@
   import type { Demo } from '$lib/data/landing/types';
   import SectionHead from './SectionHead.svelte';
   import MediaFrame from './MediaFrame.svelte';
+  import { ratioOf } from './layout';
   import { reveal } from './actions';
 
   export let demo: Demo;
+  /** Posizione nella pagina: le sezioni alternano il tono dello sfondo. */
+  export let tone = 0;
 
   /** Da 7 voci in su, e se hanno categorie, compare il filtro. */
   const FILTER_FROM = 7;
@@ -20,6 +23,8 @@
   $: current = visible[index] ?? visible[0];
   /** Cornice del media in mostra: il telefono sta di lato alla didascalia, gli altri sopra. */
   $: frame = current.media.frame ?? 'monitor';
+  /** Il visore ha un'altezza massima uguale per tutte le voci: cambia la larghezza col rapporto, non l'altezza della sezione. */
+  $: stageRatio = ratioOf(current.media, frame);
 
   function pick(id: string) {
     activeId = id;
@@ -50,7 +55,7 @@
   }
 </script>
 
-<section id="in-azione" class="dm lp-section">
+<section id="in-azione" class="dm lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="lp-grid-bg" aria-hidden="true"></div>
   <div class="section-container">
     <SectionHead align="center" kicker={demo.kicker} title={demo.title} highlight={demo.highlight} lead={demo.lead} />
@@ -83,7 +88,7 @@
       </div>
 
       <div class="dm__panel" class:dm__panel--side={frame === 'phone'} id="demo-panel" role="tabpanel" aria-labelledby={`demo-tab-${current.id}`}>
-        <div class="dm__stage dm__stage--{frame}">
+        <div class="dm__stage dm__stage--{frame}" style="--r:{stageRatio.toFixed(4)}">
           {#key current.id}
             <MediaFrame media={{ ...current.media, frame, caption: undefined }} eager />
           {/key}
@@ -109,7 +114,7 @@
 </section>
 
 <style>
-  .dm { border-top: 1px solid var(--lp-line); overflow-x: clip; isolation: isolate; }
+  .dm { overflow-x: clip; }
 
   .dm__ui { margin-top: clamp(2rem, 4vw, 3rem); display: flex; flex-direction: column; gap: 1.1rem; align-items: stretch; min-width: 0; }
 
@@ -168,10 +173,8 @@
 
   .dm__panel { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 0.6rem; min-width: 0; }
 
-  /* il monitor: 16:9, con una luce del colore del prodotto dietro */
-  .dm__stage { position: relative; width: min(100%, 62rem); margin-inline: auto; }
-  .dm__stage--phone { width: 15rem; max-width: 100%; }
-  .dm__stage--tablet { width: min(100%, 46rem); }
+  /* il visore: larghezza = altezza massima x rapporto, con una luce del colore del prodotto dietro */
+  .dm__stage { position: relative; width: calc(var(--lp-vis-stage) * var(--r)); max-width: 100%; margin-inline: auto; }
   .dm__stage::before {
     content: '';
     position: absolute;

@@ -9,13 +9,15 @@
   export let study: CaseStudy;
   export let cta: Landing['cta'] = undefined;
   export let primary: { href: string; label: string } | null;
+  /** Posizione nella pagina: segue l'alternanza di tono delle sezioni. */
+  export let tone = 0;
 
   $: action = cta?.primary ? { href: cta.primary.href, label: cta.primary.label, external: cta.primary.external ?? cta.primary.href.startsWith('http') } : primary ? { ...primary, external: true } : null;
   $: title = cta?.title ?? `Parliamo di ${study.name}`;
   $: text = cta?.text ?? 'Raccontaci che cosa ti serve: ti rispondiamo noi, senza giri.';
 </script>
 
-<section class="cc lp-section">
+<section class="cc lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container">
     <div class="cc__card lp-reveal" use:reveal>
       <div class="cc__glow" aria-hidden="true"></div>
@@ -33,7 +35,7 @@
 </section>
 
 <style>
-  .cc { border-top: 1px solid var(--lp-line); overflow-x: clip; }
+  .cc { overflow-x: clip; }
 
   .cc__card {
     position: relative;

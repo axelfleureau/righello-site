@@ -8,6 +8,8 @@
   export let study: CaseStudy;
   export let graphic: NonNullable<Landing['graphic']>;
   export let how: Landing['how'] = undefined;
+  /** Posizione nella pagina: le sezioni alternano il tono dello sfondo. */
+  export let tone = 0;
 
   /** L'infografica e' una sola, quella di ProductDevice: qui si presenta a tutta colonna con un palco costruito al volo. */
   $: staged = {
@@ -16,7 +18,7 @@
   };
 </script>
 
-<section id="come-funziona" class="hw lp-section">
+<section id="come-funziona" class="hw lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="lp-grid-bg" aria-hidden="true"></div>
   <div class="section-container">
     <SectionHead
@@ -33,6 +35,6 @@
 </section>
 
 <style>
-  .hw { overflow-x: clip; isolation: isolate; border-top: 1px solid var(--lp-line); }
+  .hw { overflow-x: clip; }
   .hw__stage { margin-top: clamp(2.4rem, 5vw, 3.8rem); }
 </style>

@@ -3,10 +3,13 @@
   import PhoneFrame from '../PhoneFrame.svelte';
   import { onMount } from 'svelte';
   import { playInView, prefersReducedMotion } from './actions';
+  import { ratioOf } from './layout';
 
   /** Un media della landing (immagine o video) dentro la cornice scelta. Una sola definizione per tutte le sezioni. */
   export let media: MediaRef;
   export let eager = false;
+  /** Altezza massima (lunghezza CSS, di solito una variabile --lp-vis-*): oltre, il media si restringe invece di allungare la sezione. */
+  export let maxH: string | undefined = undefined;
 
   let video: HTMLVideoElement | undefined;
   let paused = false;
@@ -34,7 +37,7 @@
   /** Il telefono ha un rapporto proprio (la cornice) e il media lo riempie. */
 </script>
 
-<figure class="mf mf--{frame}">
+<figure class="mf mf--{frame}" class:mf--capped={!!maxH} style:--mf-maxh={maxH} style:--mf-r={maxH ? ratioOf(media, frame).toFixed(4) : undefined}>
   {#if frame === 'phone'}
     <div class="mf__phone">
       <PhoneFrame>
@@ -71,6 +74,11 @@
 
 <style>
   .mf { margin: 0; width: 100%; }
+
+  /* con un'altezza massima la larghezza segue il rapporto: il telefono non si allunga oltre, il monitor non gonfia la sezione */
+  .mf--capped { max-width: calc(var(--mf-maxh) * var(--mf-r)); margin-inline: auto; }
+  .mf--capped .mf__phone { width: 100%; }
+  .mf--capped .mf__screen--natural img { max-height: var(--mf-maxh); object-fit: contain; }
 
   .mf__phone { width: min(15rem, 100%); margin-inline: auto; }
   .mf__phone :global(video.shot) { display: block; width: 100%; height: 100%; object-fit: cover; }

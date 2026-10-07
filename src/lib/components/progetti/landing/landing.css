@@ -11,8 +11,19 @@
   --lp-ink-2: rgba(255, 255, 255, 0.78);
   --lp-ink-3: rgba(255, 255, 255, 0.62);
   --lp-pink: #e0558a;
-  --lp-pad-y: clamp(4.5rem, 9vw, 8rem);
+  /* sfondo delle sezioni a tono alterno: separa senza linee, e sa un po' del colore del prodotto */
+  --lp-bg-alt: color-mix(in srgb, var(--a, #888) 5%, #0b0b0f);
+
+  /* Ritmo: tutte le sezioni respirano allo stesso modo e nessun media gonfia la sua sezione.
+     Un solo punto per padding e altezze visive massime: i componenti leggono, non ripetono. */
+  --lp-pad-y: clamp(3.6rem, 7vw, 6.2rem);
   --lp-gap: clamp(0.9rem, 1.8vw, 1.4rem);
+  --lp-vis-phone: 35rem; /* telefono nei capitoli: ~560 px */
+  --lp-vis-chapter: 34rem; /* monitor e browser nei capitoli: oltre, si riduce la larghezza */
+  --lp-vis-feature: 20rem; /* monitor e browser nelle schede larghe delle funzioni: ~320 px */
+  --lp-vis-feature-phone: 16rem; /* telefono ridotto nelle schede larghe */
+  --lp-vis-stage: 32rem; /* visore della galleria */
+  --lp-vis-hero-phone: 30rem; /* telefono nel palco del hero */
   --lp-radius: 1.3rem;
   --lp-radius-sm: 0.9rem;
   --lp-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -27,9 +38,45 @@
 
 .lp-section {
   position: relative;
+  isolation: isolate;
   padding: var(--lp-pad-y) 0;
   scroll-margin-top: calc(var(--lp-nav-top) + 3.4rem);
 }
+
+/* Tono alterno: una sezione si' e una no ha il fondo appena piu' chiaro */
+.lp-tone-alt { background: var(--lp-bg-alt); }
+
+/* Varianti per tipo di prodotto: cambiano solo le misure, mai la struttura */
+.lp--app { --lp-vis-phone: 38rem; --lp-vis-hero-phone: 40rem; }
+
+@media (max-width: 639px) {
+  .lp {
+    --lp-vis-phone: 27.5rem; /* ~440 px */
+    --lp-vis-chapter: 24rem;
+    --lp-vis-feature: 14rem;
+    --lp-vis-feature-phone: 12rem;
+    --lp-vis-stage: 30rem;
+    --lp-vis-hero-phone: 27.5rem;
+  }
+  .lp--app { --lp-vis-phone: 29rem; --lp-vis-hero-phone: 30rem; }
+}
+
+/* Griglia a 12 unita' per funzioni e tecnologia: le larghezze (--sd, --sm, --st) le calcola layout.ts
+   cosi' che ogni riga sia piena. Su telefono una colonna sola. */
+.lp-bento {
+  margin: clamp(2.2rem, 5vw, 3.4rem) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--lp-gap);
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 640px) {
+  .lp-bento { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .lp-bento > * { grid-column: span var(--st, 6); order: var(--ot, 0); }
+}
+@media (min-width: 1000px) { .lp-bento > * { grid-column: span var(--sm, 4); order: var(--om, 0); } }
+@media (min-width: 1180px) { .lp-bento > * { grid-column: span var(--sd, 4); order: var(--od, 0); } }
 
 /* Griglia sottile e cerchi concentrici: lo stesso disegno della pagina /progetti */
 .lp-grid-bg {

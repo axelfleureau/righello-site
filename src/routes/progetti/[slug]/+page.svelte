@@ -12,7 +12,7 @@
   import Demo from '$lib/components/progetti/landing/Demo.svelte';
   import TechGrid from '$lib/components/progetti/landing/TechGrid.svelte';
   import ClosingCta from '$lib/components/progetti/landing/ClosingCta.svelte';
-  import { hasOwnLanding, resolveLanding } from '$lib/components/progetti/landing/resolve';
+  import { hasDemo, hasOwnLanding, resolveLanding } from '$lib/components/progetti/landing/resolve';
   import { caseStudyHref, getNextCaseStudy, kindLabels } from '$lib/data/case-studies';
   import type { PageData } from './$types';
 
@@ -32,14 +32,33 @@
       ? { href: study.href, label: 'Visita il sito' }
       : null;
 
-  /** Le voci della mini-navigazione sono solo le sezioni che la pagina ha davvero. */
-  $: sections = [
-    { id: 'panoramica', label: 'Panoramica', on: landing.chapters.length > 0 },
-    { id: 'come-funziona', label: 'Come funziona', on: !!landing.graphic },
-    { id: 'funzioni', label: 'Funzioni', on: landing.features.length > 0 },
-    { id: 'in-azione', label: 'In azione', on: !!landing.demo?.items.length },
-    { id: 'tecnologia', label: 'Tecnologia', on: landing.tech.length > 0 },
+  $: showDemo = hasDemo(landing);
+  /** Infografica subito dopo la fascia dei numeri (prodotti per la PA) oppure dopo i capitoli. */
+  $: graphicFirst = landing.variant === 'pa' && !!landing.graphic;
+
+  /** L'ordine vero delle sezioni: la mini-navigazione e i toni dello sfondo lo seguono, cosi' non c'e' mai una voce o un tono per una sezione assente. */
+  $: how = { id: 'come-funziona', label: 'Come funziona', on: !!landing.graphic, count: 1 };
+  $: flow = [
+    ...(graphicFirst ? [how] : []),
+    { id: 'panoramica', label: 'Panoramica', on: landing.chapters.length > 0, count: landing.chapters.length },
+    ...(graphicFirst ? [] : [how]),
+    { id: 'funzioni', label: 'Funzioni', on: landing.features.length > 0, count: 1 },
+    { id: 'in-azione', label: 'In azione', on: showDemo, count: 1 },
+    { id: 'tecnologia', label: 'Tecnologia', on: landing.tech.length > 0, count: 1 },
   ].filter((s) => s.on);
+
+  $: sections = flow;
+  /** Indice di partenza di ogni sezione: toni alterni (pari = fondo base, dispari = fondo piu' chiaro). */
+  $: toneOf = (() => {
+    const t: Record<string, number> = {};
+    let n = 0;
+    for (const f of flow) {
+      t[f.id] = n;
+      n += f.count;
+    }
+    t.chiusura = n;
+    return t;
+  })();
 
   $: breadcrumbSchema = JSON.stringify({
     '@context': 'https://schema.org',
@@ -72,19 +91,20 @@
   {@html `<script type="application/ld+json">${breadcrumbSchema}<\/script>`}
 </svelte:head>
 
-<div class="lp" class:lp-js={js} style="--a:{study.accent[0]}; --b:{study.accent[1]}">
+<div class="lp {landing.variant ? `lp--${landing.variant}` : ''}" class:lp-js={js} style="--a:{study.accent[0]}; --b:{study.accent[1]}">
   <LandingHero {study} {landing} {primary} />
 
   <!-- la mini-navigazione resta attaccata solo finche' ci sono sezioni da scorrere: finisce con questo blocco -->
   <div>
     {#if sections.length > 1}<SectionNav items={sections} />{/if}
-    {#if landing.chapters.length}<Chapters chapters={landing.chapters} />{/if}
-    {#if landing.graphic}<HowItWorks {study} graphic={landing.graphic} how={landing.how} />{/if}
-    {#if landing.features.length}<Features features={landing.features} {...own ? {} : { title: 'Su cosa abbiamo lavorato', highlight: 'lavorato' }} />{/if}
-    {#if landing.demo?.items.length}<Demo demo={landing.demo} />{/if}
-    {#if landing.tech.length}<TechGrid tech={landing.tech} />{/if}
+    {#if graphicFirst && landing.graphic}<HowItWorks {study} graphic={landing.graphic} how={landing.how} tone={toneOf['come-funziona']} />{/if}
+    {#if landing.chapters.length}<Chapters chapters={landing.chapters} variant={landing.variant} tone={toneOf['panoramica']} />{/if}
+    {#if !graphicFirst && landing.graphic}<HowItWorks {study} graphic={landing.graphic} how={landing.how} tone={toneOf['come-funziona']} />{/if}
+    {#if landing.features.length}<Features features={landing.features} tone={toneOf['funzioni']} {...own ? {} : { title: 'Su cosa abbiamo lavorato', highlight: 'lavorato' }} />{/if}
+    {#if showDemo && landing.demo}<Demo demo={landing.demo} tone={toneOf['in-azione']} />{/if}
+    {#if landing.tech.length}<TechGrid tech={landing.tech} tone={toneOf['tecnologia']} />{/if}
   </div>
-  <ClosingCta {study} cta={landing.cta} {primary} />
+  <ClosingCta {study} cta={landing.cta} {primary} tone={toneOf['chiusura']} />
 </div>
 
 <a class="next" href={caseStudyHref(next)} style="--a:{next.accent[0]}; --b:{next.accent[1]}">
