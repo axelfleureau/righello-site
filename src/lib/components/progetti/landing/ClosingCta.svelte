@@ -17,7 +17,7 @@
   $: text = cta?.text ?? 'Raccontaci che cosa ti serve: ti rispondiamo noi, senza giri.';
 </script>
 
-<section class="cc lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section id="chiusura" class="cc lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container">
     <div class="cc__card lp-reveal" use:reveal>
       <div class="cc__glow" aria-hidden="true"></div>

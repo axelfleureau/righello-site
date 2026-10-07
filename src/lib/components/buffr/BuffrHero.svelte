@@ -7,7 +7,7 @@
   <div class="hero__glow" aria-hidden="true"></div>
 
   <div class="section-container hero__in">
-    <p class="hero__kicker">BUFFR · app per iPhone</p>
+    <p class="hero__kicker"><a class="hero__crumb" href="/progetti?tipo=app#indice">Progetti</a> <span aria-hidden="true">/</span> BUFFR · app per iPhone</p>
     <h1 id="buffr-titolo" class="hero__title">Prima succede.<br />Poi lo salvi.</h1>
     <p class="hero__lead">
       BUFFR tiene sempre gli ultimi secondi di quello che inquadri. Quando succede qualcosa, un tocco e sono tuoi.
@@ -58,6 +58,18 @@
     text-transform: uppercase;
     color: var(--bf-pink-text);
   }
+
+  .hero__crumb {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin-block: -1.1rem;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 40%, transparent);
+  }
+
+  .hero__crumb:hover { color: #fff; }
 
   .hero__title {
     margin: 0;

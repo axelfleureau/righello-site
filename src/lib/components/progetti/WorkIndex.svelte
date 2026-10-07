@@ -1,14 +1,12 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { flip } from 'svelte/animate';
-  import { caseStudyHref, kindLabels } from '$lib/data/case-studies';
+  import { caseStudyHref, kindLabels, kindOrder } from '$lib/data/case-studies';
   import type { CaseStudy, ProjectKind } from '$lib/data/case-studies';
   import StatusBadge from './StatusBadge.svelte';
   import ProjectIcon from './ProjectIcon.svelte';
 
   export let items: CaseStudy[];
-
-  const order: ProjectKind[] = ['app', 'gestionale', 'broadcast', 'piattaforma', 'sito', 'contenuti'];
 
   let filter: 'all' | ProjectKind = 'all';
   let view: 'list' | 'grid' = 'list';
@@ -22,8 +20,10 @@
   let raf = 0;
   let listEl: HTMLElement;
 
-  $: kinds = order.filter((k) => items.some((i) => i.kind === k));
-  $: shown = filter === 'all' ? items : items.filter((i) => i.kind === filter);
+  $: kinds = kindOrder.filter((k) => items.some((i) => i.kind === k));
+  // Lo stesso ordine del percorso "precedente / prossimo" delle schede: elenco e frecce non si contraddicono.
+  $: ordered = [...items].sort((a, b) => kindOrder.indexOf(a.kind) - kindOrder.indexOf(b.kind));
+  $: shown = filter === 'all' ? ordered : ordered.filter((i) => i.kind === filter);
   $: previewIsIcon = hovered ? hovered.image.includes('/icons/') : false;
 
   const pad = (n: number) => String(n).padStart(3, '0');
@@ -70,7 +70,30 @@
     hovered = null;
   }
 
+  /** Il filtro vive nell'indirizzo (?tipo=app): un link, il tasto indietro e "Tutti i progetti" delle schede tornano allo stesso elenco. */
+  function pick(next: 'all' | ProjectKind) {
+    filter = next;
+    const url = new URL(window.location.href);
+    if (next === 'all') url.searchParams.delete('tipo');
+    else url.searchParams.set('tipo', next);
+    history.replaceState(history.state, '', url);
+  }
+
   onMount(() => {
+    const wanted = new URLSearchParams(window.location.search).get('tipo');
+    if (wanted && kindOrder.includes(wanted as ProjectKind) && items.some((i) => i.kind === wanted)) filter = wanted as ProjectKind;
+    // La pagina sopra (vetrina a scene fisse) cambia altezza dopo il caricamento: l'ancora #indice va riallineata, finche' l'utente non scorre da se'.
+    if (window.location.hash === '#indice') {
+      let touched = false;
+      const stop = () => (touched = true);
+      window.addEventListener('wheel', stop, { once: true, passive: true });
+      window.addEventListener('touchstart', stop, { once: true, passive: true });
+      for (const ms of [250, 900, 1800]) {
+        setTimeout(() => {
+          if (!touched) document.getElementById('indice')?.scrollIntoView({ behavior: 'instant' as ScrollBehavior });
+        }, ms);
+      }
+    }
     canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     if (canHover) window.addEventListener('pointermove', onMove, { passive: true });
   });
@@ -99,7 +122,7 @@
         class="chip"
         class:is-active={filter === 'all'}
         aria-selected={filter === 'all'}
-        on:click={() => (filter = 'all')}
+        on:click={() => pick('all')}
       >Tutto <sup>{items.length}</sup></button>
       {#each kinds as k}
         <button
@@ -108,7 +131,7 @@
           class="chip"
           class:is-active={filter === k}
           aria-selected={filter === k}
-          on:click={() => (filter = k)}
+          on:click={() => pick(k)}
         >{kindLabels[k]} <sup>{count(k)}</sup></button>
       {/each}
      </div>
@@ -370,7 +393,7 @@
 
   .row {
     display: grid;
-    grid-template-columns: 3.4rem 1fr auto;
+    grid-template-columns: 3.4rem minmax(0, 1fr) auto;
     grid-template-areas:
       'n name arrow'
       'n kind arrow'
@@ -447,7 +470,7 @@
 
   @media (max-width: 1023px) {
     .row {
-      grid-template-columns: 3rem 3.2rem 1fr auto;
+      grid-template-columns: 3rem 3.2rem minmax(0, 1fr) auto;
       grid-template-areas:
         'n thumb name arrow'
         'n thumb kind arrow'

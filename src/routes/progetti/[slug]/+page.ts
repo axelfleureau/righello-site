@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import { getCaseStudyBySlug, getRelatedCaseStudies, validCaseStudySlugs } from '$lib/data/case-studies';
+import { getCaseStudyBySlug, validCaseStudySlugs } from '$lib/data/case-studies';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = ({ params }) => {
@@ -19,5 +19,5 @@ export const load: PageLoad = ({ params }) => {
     throw error(404, { message: `Progetto "${slug}" non trovato` });
   }
 
-  return { study, related: getRelatedCaseStudies(study) };
+  return { study };
 };

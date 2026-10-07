@@ -8,8 +8,11 @@
   import Audience from '$lib/components/buffr/Audience.svelte';
   import FaqList from '$lib/components/buffr/FaqList.svelte';
   import FinalCta from '$lib/components/buffr/FinalCta.svelte';
+  import ProductFlow from '$lib/components/progetti/ProductFlow.svelte';
+  import { getCaseStudyBySlug } from '$lib/data/case-studies';
   import { faqs, pageUrl, scenes, storeUrl, storeUrlUs } from '$lib/components/buffr/content';
 
+  const study = getCaseStudyBySlug('buffr')!;
   const site = 'https://www.wearerighello.com';
   const description =
     'BUFFR è l’app per iPhone di Righello che tiene gli ultimi secondi di quello che inquadri: un tocco e il gol, l’azione o il fischio diventano clip e montaggi pronti da condividere.';
@@ -110,3 +113,5 @@
   <FaqList />
   <FinalCta />
 </div>
+
+<ProductFlow {study} />

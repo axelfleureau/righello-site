@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { CaseStudy } from '$lib/data/case-studies';
-  import { kindLabels } from '$lib/data/case-studies';
+  import { kindLabels, listHref } from '$lib/data/case-studies';
   import type { Landing } from '$lib/data/landing/types';
   import ProductDevice from '../ProductDevice.svelte';
   import ProButton from '../ProButton.svelte';
@@ -32,7 +32,7 @@
 
   <div class="section-container">
     <nav class="lh__crumb" aria-label="Breadcrumb">
-      <a href="/progetti">Progetti</a><span aria-hidden="true">/</span><span>{study.name}</span>
+      <a href={listHref(study)}>Progetti</a><span aria-hidden="true">/</span><span>{study.name}</span>
     </nav>
 
     <div class="lh__grid">

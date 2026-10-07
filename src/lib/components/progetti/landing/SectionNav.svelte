@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
 
   export let items: Array<{ id: string; label: string }>;
+  /** Uscita fissa verso l'elenco: sempre a un tocco, da qualunque punto della pagina. */
+  export let back: { href: string; label: string } | null = null;
 
   let active = items[0]?.id ?? '';
   let rail: HTMLElement;
@@ -33,7 +35,7 @@
 
 <nav class="sn" aria-label="Sezioni della pagina">
   <div class="sn__rail" bind:this={rail}>
-    <span class="sn__jump" aria-hidden="true">Vai a</span>
+    {#if back}<a class="sn__back" href={back.href} aria-label={`Torna all'elenco: ${back.label}`}><span aria-hidden="true">←</span> {back.label}</a>{:else}<span class="sn__jump" aria-hidden="true">Vai a</span>{/if}
     {#each items as item}
       <a
         href={`#${item.id}`}
@@ -99,6 +101,25 @@
     transition: background-color 0.25s, color 0.25s;
   }
 
+  .sn__back {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    padding: 0 0.9rem 0 0.8rem;
+    margin-right: 0.15rem;
+    border-radius: 999px;
+    border-right: 1px solid var(--lp-line-strong);
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--lp-ink-3);
+    text-decoration: none;
+    transition: color 0.25s;
+  }
+
+  .sn__back:hover { color: var(--lp-ink); }
   .sn__item:hover { color: var(--lp-ink); }
   .sn__item.is-active { background: #fff; color: #0a0a0a; }
 </style>

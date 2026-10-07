@@ -28,7 +28,12 @@
     white-space: nowrap;
   }
 
+  /* la versione compatta sta in righe e schede strette: un'etichetta lunga va a capo invece di spingere fuori la pagina */
   .sb--compact {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    line-height: 1.25;
     padding: 0;
     border: 0;
     background: none;

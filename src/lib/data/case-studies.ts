@@ -564,21 +564,65 @@ export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
 
 export const validCaseStudySlugs = caseStudies.map((study) => study.id);
 
+/** Ordine dei tipi nell'elenco e nel percorso "precedente / prossimo": lo stesso che l'utente vede nei filtri. */
+export const kindOrder: ProjectKind[] = ['app', 'gestionale', 'broadcast', 'piattaforma', 'sito', 'contenuti'];
+
+/** Tutti i progetti raggruppati per tipo (a parita' di tipo vale l'ordine in cui sono scritti sopra). */
+export const orderedCaseStudies: CaseStudy[] = [...caseStudies].sort(
+  (a, b) => kindOrder.indexOf(a.kind) - kindOrder.indexOf(b.kind)
+);
+
+/** Prodotti che lavorano davvero insieme: una coppia per legame, il resto lo ricava getCompanions. */
+const companionPairs: Array<[string, string]> = [
+  ['buffr', 'buffr-live'],
+  ['buffr', 'regia-tv-studio'],
+  ['buffr-live', 'regia-tv-studio'],
+  ['regia-tv-studio', 'rigcast'],
+  ['regia-tv-studio', 'canale77'],
+  ['canale77', 'ch77-plus'],
+  ['dico', 'assistenti-pa'],
+  ['gusto-raffinato', 'gusto-raffinato-sala'],
+];
+
+export function getCompanions(current: CaseStudy): CaseStudy[] {
+  return companionPairs
+    .filter((pair) => pair.includes(current.id))
+    .map((pair) => getCaseStudyBySlug(pair.find((id) => id !== current.id)!))
+    .filter((study): study is CaseStudy => !!study);
+}
+
+export function getNextCaseStudy(current: CaseStudy): CaseStudy {
+  const index = orderedCaseStudies.findIndex((study) => study.id === current.id);
+  return orderedCaseStudies[(index + 1) % orderedCaseStudies.length];
+}
+
+export function getPrevCaseStudy(current: CaseStudy): CaseStudy {
+  const index = orderedCaseStudies.findIndex((study) => study.id === current.id);
+  return orderedCaseStudies[(index - 1 + orderedCaseStudies.length) % orderedCaseStudies.length];
+}
+
+/** "Altri progetti": prima i piu' vicini per tipo, mai quelli che la pagina mostra gia' come legati, precedente o prossimo. */
 export function getRelatedCaseStudies(current: CaseStudy, count = 3): CaseStudy[] {
-  const pool = caseStudies.filter((study) => study.id !== current.id);
+  const taken = new Set([
+    current.id,
+    getNextCaseStudy(current).id,
+    getPrevCaseStudy(current).id,
+    ...getCompanions(current).map((study) => study.id),
+  ]);
+  const pool = orderedCaseStudies.filter((study) => !taken.has(study.id));
   const sameKind = pool.filter((study) => study.kind === current.kind);
   const rest = pool.filter((study) => study.kind !== current.kind);
   return [...sameKind, ...rest].slice(0, count);
 }
 
-export function getNextCaseStudy(current: CaseStudy): CaseStudy {
-  const index = caseStudies.findIndex((study) => study.id === current.id);
-  return caseStudies[(index + 1) % caseStudies.length];
-}
-
 export function caseStudyHref(study: CaseStudy): string {
   if (study.id === 'buffr') return '/buffr';
   return `/progetti/${study.id}`;
+}
+
+/** Torna all'elenco gia' filtrato sul tipo del progetto da cui si arriva. */
+export function listHref(study: CaseStudy): string {
+  return `/progetti?tipo=${study.kind}#indice`;
 }
 
 export const showcaseStudies = caseStudies.filter((study) => study.featured);
