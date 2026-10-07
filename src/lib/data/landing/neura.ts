@@ -3,7 +3,8 @@ import type { Landing } from './types';
 // Cosa e' Neura: Neura Education Srl e' una startup con un assistente di studio per ragazzi con difficolta'
 // di apprendimento. Qui si racconta il NOSTRO lavoro (marchio, sito di presentazione, video), non l'assistente.
 // Fatti ricavati dal sito in produzione e misurati il 6/10/2026. Esclusi di proposito i numeri e le
-// "famiglie gia' con Neura" scritti sul sito: non sono verificabili.
+// "famiglie gia' con Neura" scritti sul sito, e le dichiarazioni dell'azienda su privacy e funzioni del
+// prodotto (la pagina le riporta, noi non le garantiamo): non sono verificabili da noi.
 const base = '/progetti/landing/neura';
 
 export default {
@@ -32,10 +33,10 @@ export default {
       title: 'Prima il problema di una sera qualsiasi',
       highlight: 'di una sera qualsiasi',
       text:
-        'La pagina non parte dalle funzioni. Parte da tre scene che un genitore riconosce: cinque strumenti che non si parlano, le 20:37 con nessuno a cui chiedere, e l’idea che non sia pigrizia ma un modo diverso di studiare. Solo dopo spiega cosa fa il prodotto.',
+        'La pagina non parte dalle funzioni ma da tre scene che un genitore riconosce: cinque strumenti che non si parlano, le 20:37 con nessuno a cui chiedere, l’idea che non sia pigrizia ma un modo diverso di studiare. Solo dopo spiega cosa fa il prodotto.',
       bullets: [
         'Tre scene numerate, una frase ciascuna',
-        'Linguaggio di tutti i giorni, rivolto al genitore',
+        'Una sola idea per scena, nessun elenco di funzioni',
         'Illustrazioni al posto delle foto di ragazzi'
       ],
       media: [
@@ -56,11 +57,11 @@ export default {
       title: 'Tre mosse e un prezzo scritto chiaro',
       highlight: 'un prezzo scritto chiaro',
       text:
-        'Scansiona, impara, progredisce: il metodo sta in tre schede. Più in basso c’è un solo piano, 14,99 euro al mese, annullabile quando si vuole, con l’elenco di cosa comprende e con scritto «prossimamente» per ciò che non c’è ancora.',
+        'Scansiona, impara, progredisce: il metodo sta in tre schede. Più in basso la pagina mostra un solo piano, 14,99 euro al mese, con l’elenco di cosa comprende e «prossimamente» per ciò che non c’è ancora.',
       bullets: [
         'Un solo piano, nessuna tabella di confronto',
         'Cosa comprende e cosa è in arrivo, separati con onestà',
-        'Quattro domande frequenti, anche «sostituisce un tutor?»'
+        'Prezzo e cosa comprende stanno nella stessa scheda'
       ],
       media: [
         {
@@ -83,14 +84,14 @@ export default {
     {
       id: 'fiducia',
       kicker: 'La fiducia',
-      title: 'La privacy dei minori, detta per intero',
-      highlight: 'detta per intero',
+      title: 'Le domande di un genitore, prima che le faccia',
+      highlight: 'prima che le faccia',
       text:
-        'I dati sono di ragazzi minorenni, quindi la pagina dedica una sezione alla privacy: protezione rafforzata sotto i 18 anni, dati ridotti al necessario, controllo della famiglia, connessioni cifrate. Sotto, le risposte alle domande che un genitore fa prima di iniziare.',
+        'I dati sono di ragazzi minorenni, quindi la pagina dedica una sezione alla privacy, in quattro schede brevi, e risponde alle domande che un genitore si pone prima di iniziare. Cosa dichiara l’azienda lo decide Neura: noi curiamo come si legge.',
       bullets: [
-        'Quattro garanzie in quattro schede brevi',
-        'Le domande frequenti sono riprese anche nei dati strutturati',
-        'Ogni garanzia è spiegata in una riga'
+        'Quattro schede brevi, una riga per ciascuna',
+        'Quattro domande frequenti, anche «sostituisce un tutor?»',
+        'Le domande sono riprese anche nei dati strutturati'
       ],
       media: [
         {
@@ -102,62 +103,13 @@ export default {
         }
       ],
       layout: 'media-right'
-    },
-    {
-      id: 'tono',
-      kicker: 'Il tono',
-      title: 'Un marchio caldo e un po’ di movimento',
-      highlight: 'caldo',
-      text:
-        'Marchio, illustrazioni e colori danno al sito un tono accogliente. La pagina si muove con lo scorrimento, ma rispetta la richiesta di ridurre i movimenti del sistema. Per i social abbiamo montato anche un video verticale di 43 secondi.',
-      bullets: [
-        'Quattro illustrazioni e un marchio coerenti con il sito',
-        'Movimento morbido allo scorrimento',
-        'Con «riduci movimento» attivo, le transizioni si spengono'
-      ],
-      media: [
-        {
-          type: 'image',
-          src: `${base}/home.webp`,
-          alt: 'La parte alta del sito Neura: titolo, illustrazione e pulsante di avvio',
-          caption: 'La pagina iniziale del sito.',
-          ratio: '2/1',
-          frame: 'browser'
-        }
-      ],
-      layout: 'full'
     }
   ],
   features: [
     {
-      icon: 'message',
-      title: 'Parte dal genitore',
-      text: 'Tre scene riconoscibili prima di ogni funzione: il testo è scritto per chi compra, non per chi studia.'
-    },
-    {
-      icon: 'layers',
-      title: 'Metodo in tre schede',
-      text: 'Scansiona, impara, progredisce: la sequenza sta in tre schede affiancate.'
-    },
-    {
-      icon: 'cart',
-      title: 'Un solo piano',
-      text: '14,99 euro al mese, annullabile in qualsiasi momento, con le funzioni elencate.'
-    },
-    {
-      icon: 'lock',
-      title: 'Sezione privacy',
-      text: 'Quattro garanzie sui dati dei minori, in schede brevi e leggibili.'
-    },
-    {
-      icon: 'search',
-      title: 'Pronto per i motori di ricerca',
-      text: 'Titolo, descrizione, indirizzo canonico, tag Open Graph e tre blocchi di dati strutturati.'
-    },
-    {
       icon: 'wand',
-      title: 'Movimento che si può spegnere',
-      text: 'Animazioni allo scorrimento, ridotte quando il sistema chiede meno movimento.'
+      title: 'Marchio e illustrazioni',
+      text: 'Un marchio e quattro illustrazioni coerenti con il sito danno un tono accogliente.'
     },
     {
       icon: 'device',
@@ -165,9 +117,24 @@ export default {
       text: 'Nessuno scorrimento laterale a 390 pixel; titoli e schede si riordinano in colonna.'
     },
     {
+      icon: 'sparkle',
+      title: 'Movimento spegnibile',
+      text: 'Animazioni allo scorrimento, tolte quando il sistema chiede meno movimento.'
+    },
+    {
       icon: 'play',
-      title: 'Video per i social',
-      text: 'Un video verticale di 43 secondi, a corredo del sito.'
+      title: 'Video per social',
+      text: 'Un video verticale di 43 secondi, montato a corredo del sito.'
+    },
+    {
+      icon: 'message',
+      title: 'Testi per famiglie',
+      text: 'Parole semplici, scritte per chi decide l’acquisto e non per chi studia.'
+    },
+    {
+      icon: 'search',
+      title: 'Motori di ricerca',
+      text: 'Titolo, descrizione, indirizzo canonico, anteprime social e tre blocchi di dati strutturati.'
     }
   ],
   demo: {
@@ -183,38 +150,20 @@ export default {
         note: 'Titolo, illustrazione e pulsante.'
       },
       {
-        id: 'sfida',
-        label: 'La sfida',
-        media: { type: 'image', src: `${base}/sfida.webp`, alt: 'Le tre scene della sfida quotidiana', ratio: '1200/940', frame: 'browser' },
-        note: 'Le tre scene che il genitore riconosce.'
-      },
-      {
-        id: 'metodo',
-        label: 'Il metodo',
-        media: { type: 'image', src: `${base}/metodo.webp`, alt: 'Le tre schede del metodo', ratio: '1200/720', frame: 'browser' },
-        note: 'Scansiona, impara, progredisce.'
-      },
-      {
-        id: 'funzioni',
-        label: 'Funzioni',
-        media: { type: 'image', src: `${base}/funzioni.webp`, alt: 'La griglia delle funzioni con le illustrazioni di ogni scheda', ratio: '1060/1490', frame: 'browser' },
-        note: 'Ogni funzione ha una piccola animazione.'
-      },
-      {
-        id: 'piano',
-        label: 'Il piano',
-        media: { type: 'image', src: `${base}/piano.webp`, alt: 'Il piano Famiglia a 14,99 euro al mese', ratio: '640/670', frame: 'browser' },
-        note: 'Un solo piano, con ciò che comprende.'
+        id: 'per-chi',
+        label: 'Per chi',
+        media: { type: 'image', src: `${base}/per-chi.webp`, alt: 'Tre schede che descrivono per chi è pensato il servizio', ratio: '4/1', frame: 'browser' },
+        note: 'Tre schede per riconoscersi in due righe.'
       },
       {
         id: 'telefono',
-        label: 'Su telefono',
+        label: 'La sfida su telefono',
         media: { type: 'image', src: `${base}/mobile-sfida.webp`, alt: 'La sfida quotidiana su telefono', ratio: '9/19.5', frame: 'phone' },
         note: 'Le stesse scene in una colonna.'
       },
       {
         id: 'telefono-piano',
-        label: 'Piano su telefono',
+        label: 'Il piano su telefono',
         media: { type: 'image', src: `${base}/mobile-piano.webp`, alt: 'Il piano su telefono', ratio: '9/19.5', frame: 'phone' },
         note: 'Il prezzo resta leggibile senza ingrandire.'
       }
@@ -227,24 +176,14 @@ export default {
       tags: ['Veloce', 'Leggero']
     },
     {
-      title: 'Movimento a scene',
-      text: 'Le animazioni seguono lo scorrimento. Sono tolte quando il sistema chiede meno movimento.',
+      title: 'Movimento a scene, accessibile nelle basi',
+      text: 'Le animazioni seguono lo scorrimento. Una sola intestazione principale, titoli in ordine, lingua dichiarata, testi alternativi su tutte le immagini.',
       tags: ['Animazioni', 'Accessibilità']
     },
     {
-      title: 'Dati per i motori di ricerca',
-      text: 'Tre blocchi di dati strutturati (applicazione, organizzazione, domande frequenti), indirizzo canonico e anteprime per i social.',
-      tags: ['Dati strutturati', 'Anteprime social']
-    },
-    {
       title: 'Pubblicazione semplice',
-      text: 'Il sito è statico, con un dominio proprio e certificato HTTPS: si apre subito e non ha niente da rompersi.',
-      tags: ['Dominio proprio', 'HTTPS']
-    },
-    {
-      title: 'Accessibile nelle basi',
-      text: 'Una sola intestazione principale, titoli in ordine, lingua dichiarata, tutte le immagini con testo alternativo.',
-      tags: ['Accessibilità', 'Testi alternativi']
+      text: 'Il sito è statico e ha un dominio proprio: si apre subito e non ha niente da rompersi.',
+      tags: ['Dominio proprio']
     }
   ],
   cta: {

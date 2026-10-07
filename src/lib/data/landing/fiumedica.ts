@@ -21,25 +21,20 @@ export default {
       text: '0,5 s',
       label: 'per mostrare il contenuto principale',
       note: 'misurato sulla home il 6/10/2026: 0,50 s su computer, 0,45 s su telefono emulato'
-    },
-    {
-      value: 2,
-      label: 'pulsanti fissi in ogni pagina',
-      note: 'Prenota ORA e Referti Online, nella barra in alto'
     }
   ],
   chapters: [
     {
       id: 'percorso',
-      kicker: 'Il problema',
+      kicker: 'Il percorso',
       title: 'Tante specialità, un solo passo successivo',
       highlight: 'un solo passo successivo',
       text:
         'Un poliambulatorio ha molte aree mediche, esami, due sedi e orari diversi. Chi cerca una visita non deve capire come è organizzato. Il sito parte da quello che il paziente vuole fare e gli tiene sempre davanti due pulsanti: prenotare e consultare i referti.',
       bullets: [
-        'Menu in poche voci: Area Medica, Area Diagnostica, Fiumove, Area Sport, Contatti',
-        'Una pagina per ogni area, con le prestazioni elencate',
-        'Orari di apertura e recapiti in fondo a ogni pagina'
+        'Menu in cinque voci, dall’Area Medica ai Contatti.',
+        'Una pagina per ogni area, con le prestazioni elencate.',
+        'Un solo percorso per prenotare, uno per i referti.'
       ],
       media: [
         {
@@ -55,15 +50,15 @@ export default {
     },
     {
       id: 'prenotare',
-      kicker: 'Il come',
+      kicker: 'Prenotare e referti',
       title: 'Prenotare e ritirare il referto senza telefonare',
       highlight: 'senza telefonare',
       text:
-        'Prenota ORA porta al portale delle prenotazioni: si prenota, si disdice un appuntamento e si guardano le disponibilità, con accesso o registrazione. Referti Online ha due ingressi, uno per la radiologia e uno per i prelievi. Chi preferisce il telefono trova il numero in ogni schermata.',
+        'Prenota ORA porta al portale delle prenotazioni: si prenota, si disdice e si guardano le disponibilità, con accesso o registrazione. Referti Online ha due ingressi, radiologia e prelievi. Chi preferisce il telefono trova il numero in ogni schermata.',
       bullets: [
-        'Avviso chiaro per chi prenota per un’altra persona, per esempio un figlio',
-        'Modulo di richiesta visita con consenso alla privacy obbligatorio',
-        'I referti radiologici stanno su un portale a parte, con accesso riservato'
+        'Avviso chiaro per chi prenota per un’altra persona.',
+        'Modulo di richiesta visita con consenso privacy obbligatorio.',
+        'I referti radiologici stanno su un portale a parte.'
       ],
       media: [
         {
@@ -86,40 +81,16 @@ export default {
       layout: 'media-right'
     },
     {
-      id: 'contenuti',
-      kicker: 'I contenuti',
-      title: 'Spiegare l’esame prima della visita',
-      highlight: 'prima della visita',
-      text:
-        'Ogni area ha la sua pagina con cosa si fa e come ci si prepara. La medicina dello sport separa l’attività non agonistica da quella agonistica e dice quali esami servono in ciascun caso. Una pagina spiega come prepararsi agli esami di laboratorio, e il Punto Prelievi ha i suoi giorni e orari.',
-      bullets: [
-        'Elenco degli esami per attività non agonistica, agonistica e integrativi',
-        'Pagina dedicata alla preparazione agli esami',
-        'Fiumove, la sede per sport e riabilitazione, ha la sua pagina'
-      ],
-      media: [
-        {
-          type: 'image',
-          src: `${base}/medicina-sport-servizi.webp`,
-          alt: 'La pagina Medicina dello sport con l’elenco dei servizi per l’atleta divisi tra attività non agonistica e agonistica',
-          caption: 'Medicina dello sport: cosa comprende la visita, a seconda dell’attività.',
-          ratio: '1240/1080',
-          frame: 'browser'
-        }
-      ],
-      layout: 'media-left'
-    },
-    {
       id: 'telefono',
       kicker: 'Da telefono',
       title: 'Si legge bene anche con una mano sola',
       highlight: 'con una mano sola',
       text:
-        'Prenotazione, referti e richiesta di visita si adattano a 390 pixel di larghezza senza scorrimento laterale: menu a pulsante, moduli a tutta larghezza, testi che vanno a capo. Le tre schermate qui sotto sono catture vere del sito.',
+        'Prenotazione, referti e richiesta di visita si adattano a 390 pixel di larghezza senza scorrimento laterale. Le schermate qui accanto sono catture vere del sito.',
       bullets: [
-        'Nessuno scorrimento orizzontale a 390 pixel, verificato sulle pagine principali',
-        'Menu a tendina sostituito da un pulsante',
-        'Campi del modulo a tutta larghezza'
+        'Nessuno scorrimento orizzontale a 390 pixel, verificato sulle pagine principali.',
+        'Menu a tendina sostituito da un pulsante.',
+        'Campi del modulo a tutta larghezza, testi che vanno a capo.'
       ],
       media: [
         {
@@ -137,23 +108,13 @@ export default {
           frame: 'phone'
         }
       ],
-      layout: 'media-right'
+      layout: 'media-left'
     }
   ],
   features: [
     {
-      icon: 'calendar',
-      title: 'Prenotazione online',
-      text: 'Il pulsante Prenota ORA, presente in ogni pagina, porta al portale con accesso e registrazione.'
-    },
-    {
-      icon: 'file',
-      title: 'Referti online',
-      text: 'Due ingressi chiari: referti radiologici e referti dei prelievi.'
-    },
-    {
       icon: 'layers',
-      title: 'Una pagina per area',
+      title: 'Pagina per area',
       text: 'Ventisei aree mediche, più diagnostica, sport, prelievi e servizi infermieristici.'
     },
     {
@@ -163,7 +124,7 @@ export default {
     },
     {
       icon: 'clock',
-      title: 'Orari sempre in vista',
+      title: 'Orari in vista',
       text: 'Orari di apertura in fondo a ogni pagina; il Punto Prelievi ha i suoi giorni.'
     },
     {
@@ -172,13 +133,13 @@ export default {
       text: 'Modulo con consenso alla privacy obbligatorio e controllo antispam.'
     },
     {
-      icon: 'device',
-      title: 'Pensato per il telefono',
-      text: 'Pagine principali senza scorrimento laterale a 390 pixel.'
+      icon: 'search',
+      title: 'Esami spiegati',
+      text: 'Ogni area dice cosa si fa; una pagina spiega come prepararsi agli esami di laboratorio.'
     },
     {
       icon: 'shield',
-      title: 'Dati di legge in chiaro',
+      title: 'Dati di legge',
       text: 'Autorizzazione sanitaria, direzione sanitaria, PEC e copertura assicurativa in fondo alla pagina.'
     }
   ],
@@ -189,16 +150,16 @@ export default {
     lead: 'Catture vere del sito in produzione, senza foto di persone né dati di pazienti.',
     items: [
       {
-        id: 'home',
-        label: 'Home',
+        id: 'telefono-richiesta',
+        label: 'Richiesta su telefono',
         media: {
           type: 'image',
-          src: `${base}/home-presentazione.webp`,
-          alt: 'Presentazione della struttura con ripresa aerea della sede',
-          ratio: '1280/380',
-          frame: 'browser'
+          src: `${base}/mobile-richiesta.webp`,
+          alt: 'Modulo di richiesta visita su telefono',
+          ratio: '9/19.5',
+          frame: 'phone'
         },
-        note: 'Presentazione e sede vista dall’alto.'
+        note: 'Il modulo di richiesta, campi a tutta larghezza.'
       },
       {
         id: 'prenotazioni',
@@ -211,18 +172,6 @@ export default {
           frame: 'browser'
         },
         note: 'Tre azioni chiare e un avviso per chi prenota per altri.'
-      },
-      {
-        id: 'referti',
-        label: 'Referti',
-        media: {
-          type: 'image',
-          src: `${base}/referti-online.webp`,
-          alt: 'Pagina Referti Online con i due ingressi',
-          ratio: '1220/720',
-          frame: 'browser'
-        },
-        note: 'Radiologia e prelievi, ognuno col suo accesso.'
       },
       {
         id: 'sport',
@@ -247,31 +196,14 @@ export default {
           frame: 'browser'
         },
         note: 'Gli orari chiudono ogni pagina del sito.'
-      },
-      {
-        id: 'telefono-richiesta',
-        label: 'Richiesta su telefono',
-        media: {
-          type: 'image',
-          src: `${base}/mobile-richiesta.webp`,
-          alt: 'Modulo di richiesta visita su telefono',
-          ratio: '9/19.5',
-          frame: 'phone'
-        },
-        note: 'Il modulo di richiesta, campi a tutta larghezza.'
       }
     ]
   },
   tech: [
     {
-      title: 'Pagine pronte, non generate a ogni visita',
-      text: 'Le pagine del sito sono servite già pronte da una rete di distribuzione globale. Testi e orari si cambiano da un editor semplice, senza toccare il codice.',
-      tags: ['Veloce', 'Infrastruttura globale']
-    },
-    {
-      title: 'Poco da caricare',
-      text: 'La home mostra il contenuto principale in mezzo secondo. Quasi tutte le immagini si caricano solo quando servono, così la pagina si apre subito anche con poca rete.',
-      tags: ['Immagini in differita', '0,5 s']
+      title: 'Pagine pronte, poco da caricare',
+      text: 'Le pagine sono servite già pronte da una rete globale e quasi tutte le immagini si caricano solo quando servono: la home mostra il contenuto principale in mezzo secondo.',
+      tags: ['Veloce', '0,5 s']
     },
     {
       title: 'Prenotazione collegata al gestionale',
@@ -280,13 +212,8 @@ export default {
     },
     {
       title: 'Referti su un portale a parte',
-      text: 'I referti radiologici stanno su un portale separato, con accesso riservato: i referti non si consultano nelle pagine pubbliche del sito.',
+      text: 'I referti radiologici stanno su un portale separato, con accesso riservato: non si consultano nelle pagine pubbliche del sito.',
       tags: ['Accesso riservato', 'Privacy']
-    },
-    {
-      title: 'Moduli con difese semplici',
-      text: 'Il modulo di richiesta ha il consenso alla privacy obbligatorio e un controllo antispam.',
-      tags: ['Antispam', 'Consenso privacy']
     }
   ],
   cta: {
