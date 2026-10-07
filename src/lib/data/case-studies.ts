@@ -351,7 +351,7 @@ export const caseStudies: CaseStudy[] = [
     accent: ['#F2B83B', '#1E3A5F'],
     headline: 'Un solo messaggio per uscita, e i dettagli a un clic.',
     text:
-      'DICO porta le comunicazioni dei Comuni dove le persone guardano davvero: WhatsApp e Telegram. La piattaforma è una redazione: si incolla un testo o si indicano fino a cinque link del sito del Comune, e un pulsante, «Prepara il messaggio», legge le pagine, compila i campi e riscrive nello stile dell\'ente, usando i messaggi già pubblicati. Poi si controlla, la redazione ritocca e approva. Esce un solo messaggio per volta, di norma uno a settimana, con le emergenze in cima e una riga per tematica: ogni link apre la pagina della settimana sul sito del Comune, che resta online anche dopo. L\'archivio e gli allegati sono ospitati in Europa.',
+      'DICO porta le comunicazioni dei Comuni dove le persone guardano davvero: WhatsApp e Telegram. Si incolla un testo o si indicano fino a cinque link del sito del Comune, e «Prepara il messaggio» compila i campi e scrive nello stile dell\'ente. La redazione ritocca e approva. Esce un solo messaggio per volta, di norma uno a settimana, con le emergenze in cima e una riga per tematica: ogni link apre la pagina della settimana sul sito del Comune. L\'archivio e gli allegati sono ospitati in Europa.',
     focus: ['Messaggio settimanale', 'Pagine per tematica', 'Redazione con IA', 'Portale enti'],
     href: 'https://www.dico.online',
     logo: '/logos/dico-online.webp',

@@ -17,28 +17,14 @@ export default {
     {
       id: 'risposte-vere',
       kicker: 'Il problema',
-      title: 'Un cittadino chiede l\'orario di un ufficio. Una risposta inventata è peggio di nessuna.',
-      highlight: 'peggio di nessuna',
+      title: 'Un orario sbagliato è una persona davanti a uno sportello chiuso.',
+      highlight: 'sportello chiuso',
       text:
-        'Un assistente generico risponde a tutto, anche quando non sa. Con un Comune è un rischio vero: un orario sbagliato è una persona che si presenta a uno sportello chiuso. Questo assistente parte da un altro punto: le risposte vengono dalle pagine ufficiali del Comune, e l\'intelligenza artificiale generativa interviene solo come ripiego, per ciò che le fonti non coprono.',
+        'Un assistente generico risponde a tutto, anche quando non sa. Questo parte dalle pagine ufficiali del Comune: l\'intelligenza artificiale generativa interviene solo come ripiego. Giorni, importi e orari si scrivono solo se stanno nella fonte; se non ci sono, lo dice e rimanda all\'ufficio.',
       bullets: [
-        'Prima le risposte curate e verificate, poi le fonti del Comune, per ultima la generazione',
+        'Prima risposte curate, poi fonti del Comune, per ultima la generazione',
         'Eventi e novità vengono letti dalle fonti ufficiali, non ricordati',
-        'Le risposte rimandano alla pagina ufficiale o all\'ufficio competente',
-      ],
-      layout: 'full',
-    },
-    {
-      id: 'non-inventa',
-      kicker: 'Il come',
-      title: 'Giorni, importi e orari si scrivono solo se stanno nella fonte.',
-      highlight: 'solo se stanno nella fonte',
-      text:
-        'Una frase scorrevole può essere sbagliata. Per questo ogni risposta generata passa da un controllo: durate, importi, orari, date e numeri di telefono devono comparire nelle pagine del Comune. Se non ci sono, la frase viene tolta e l\'assistente dice che la pagina non indica quel dato, rimandando all\'ufficio giusto.',
-      bullets: [
-        'Il controllo guarda le cifre, che sono ciò su cui un cittadino agisce',
-        'La risposta onesta («la pagina non lo indica») batte quella plausibile',
-        'Dopo l\'invio, una seconda lettura segnala i difetti senza cambiare la risposta già data',
+        'Il controllo guarda tempi, costi, orari, date e telefoni',
       ],
       layout: 'full',
     },
@@ -48,9 +34,9 @@ export default {
       title: 'I dati personali vengono coperti prima di arrivare al modello.',
       highlight: 'coperti prima',
       text:
-        'Chi scrive a un Comune può metterci un telefono, un codice fiscale, un indirizzo. Prima che il testo raggiunga un modello esterno, quei dati diventano segnaposto. Un riconoscitore locale prende anche nomi e indirizzi in forma libera; se è lento o non risponde, restano le regole fisse: il servizio non dipende mai da lui. Quando la risposta torna, i segnaposto si rimettono al loro posto.',
+        'Chi scrive a un Comune può indicare un telefono, un codice fiscale, un indirizzo. Prima che il testo raggiunga un modello esterno quei dati diventano segnaposto, rimessi al loro posto nella risposta. Se il riconoscitore locale non risponde, bastano le regole fisse.',
       bullets: [
-        'Due livelli: riconoscitore locale per nomi e indirizzi, regole fisse per i dati strutturati',
+        'Riconoscitore locale per nomi e indirizzi, regole fisse per i dati strutturati',
         'Se il primo non risponde in fretta, si prosegue con le regole',
         'Il consenso si registra all\'inizio e si ritira con una parola',
       ],
@@ -58,46 +44,44 @@ export default {
     },
   ],
   graphic: 'pa-assistant',
+  how: {
+    title: 'Dalla domanda alla risposta con la fonte',
+    highlight: 'con la fonte',
+    lead: 'Il cittadino chiede, i dati personali si coprono, l\'assistente cerca nelle fonti del Comune e risponde. Esempio illustrativo: tocca un passaggio.',
+  },
   features: [
-    { icon: 'link', title: 'Risposte con la fonte', text: 'Le risposte nascono dalle pagine del Comune e rimandano alla pagina ufficiale o all\'ufficio giusto.' },
-    { icon: 'shield', title: 'Dice quando non sa', text: 'Se la pagina non contiene l\'informazione, lo ammette e indica l\'ufficio, senza inventare.' },
-    { icon: 'scan', title: 'Cifre controllate', text: 'Tempi, costi, orari, date e telefoni compaiono solo se sono nelle fonti.' },
+    { icon: 'link', title: 'Risposte con fonte', text: 'Nascono dalle pagine del Comune e rimandano alla pagina ufficiale o all\'ufficio giusto.' },
+    { icon: 'shield', title: 'Ammette i limiti', text: 'Se la pagina non contiene l\'informazione, lo dice e indica l\'ufficio, senza inventare.' },
     { icon: 'lock', title: 'Dati personali coperti', text: 'Telefoni, e-mail, codici fiscali, IBAN, targhe e indirizzi diventano segnaposto prima del modello.' },
-    { icon: 'users', title: 'Consenso e revoca', text: 'Il consenso si registra al primo messaggio e si revoca scrivendo una parola. Un solo cancello per tutte le strade.' },
-    { icon: 'calendar', title: 'Eventi aggiornati', text: 'Eventi e novità vengono recuperati dalle fonti ufficiali, con la differenza fra «oggi», «stasera» e «nel fine settimana».' },
+    { icon: 'users', title: 'Consenso e revoca', text: 'Registrato al primo messaggio, revocato con una parola: un solo cancello per ogni percorso.' },
+    { icon: 'calendar', title: 'Eventi aggiornati', text: 'Eventi e novità arrivano dalle fonti ufficiali, distinguendo «oggi», «stasera» e «nel fine settimana».' },
     { icon: 'message', title: 'Capisce il senso', text: 'Interpreta la domanda per significato, non per parola chiave, e ripiega su regole fisse se serve.' },
-    { icon: 'bell', title: 'Sorvegliato da fuori', text: 'Un controllo esterno interroga il servizio di continuo e manda un\'e-mail se resta giù.' },
   ],
   tech: [
     {
-      title: 'Una strada sola, tutte le richieste',
-      text: 'Le richieste arrivano da più percorsi, ma passano dallo stesso cancello del consenso e dalla stessa catena di risposta: nessun percorso salta i controlli.',
+      title: 'Una strada sola',
+      text: 'Le richieste arrivano da più percorsi ma passano dallo stesso cancello del consenso e dalla stessa catena di risposta: nessun percorso salta i controlli.',
       tags: ['Pipeline unica', 'Consenso'],
     },
     {
-      title: 'Le pagine del Comune, sempre fresche',
-      text: 'L\'indice delle pagine ufficiali si aggiorna a differenze e si salva solo se un documento è cambiato. L\'assistente lavora su una copia già pronta, non rilegge il sito a ogni domanda: per questo risponde in fretta.',
+      title: 'Pagine del Comune sempre fresche',
+      text: 'L\'indice delle pagine ufficiali si aggiorna a differenze e si salva solo se un documento è cambiato. L\'assistente lavora su una copia già pronta, per questo risponde in fretta.',
       tags: ['Fonti ufficiali', 'Risposte veloci'],
     },
     {
-      title: 'Anonimizzazione che non blocca mai',
-      text: 'Un riconoscitore dei dati personali con tempo massimo e ripiego automatico su regole fisse. I segnaposto che il modello ripete vengono ripristinati e quelli residui tolti prima di rispondere.',
-      tags: ['Privacy', 'Sicurezza'],
-    },
-    {
       title: 'Collaudo che cresce da solo',
-      text: 'Ogni segnalazione diventa un test permanente. Quattro elenchi di domande di collaudo, controlli prima del rilascio e una revisione dopo l\'invio che segnala i difetti senza toccare la risposta.',
+      text: 'Ogni segnalazione diventa un test permanente: quattro elenchi di domande, controlli prima del rilascio e una revisione dopo l\'invio che segnala i difetti senza toccare la risposta.',
       tags: ['Test automatici', 'Revisione AI'],
     },
     {
       title: 'Si misura, non si indovina',
-      text: 'Ogni risposta registra durata e passaggi attraversati. Così si è trovato un rallentamento nascosto: tolto quello, la risposta è scesa a circa un secondo. Un controllo esterno avvisa se il servizio non risponde per qualche minuto.',
+      text: 'Ogni risposta registra durata e passaggi. Così si è trovato un rallentamento nascosto: tolto quello, la risposta è scesa a circa un secondo. Un controllo esterno avvisa se il servizio resta giù.',
       tags: ['Controllo continuo', 'Prestazioni'],
     },
   ],
   cta: {
     title: 'Un assistente per il tuo Comune.',
     highlight: 'per il tuo Comune',
-    text: 'Il servizio è in sperimentazione (beta) per un Comune del Friuli Venezia Giulia, ed è provabile dal vivo scrivendogli su WhatsApp. Se vuoi un assistente così per il tuo ente, parliamone.',
+    text: 'Il servizio è in sperimentazione (beta) per un Comune del Friuli Venezia Giulia: se vuoi un assistente così per il tuo ente, parliamone.',
   },
 } satisfies Landing;
