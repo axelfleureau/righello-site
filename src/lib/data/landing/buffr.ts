@@ -19,11 +19,11 @@ export default {
       title: 'Premi dopo il gol, non prima.',
       highlight: 'dopo il gol',
       text:
-        'In una partita le cose che contano durano un secondo. Con BUFFR la camera registra sempre e tiene in memoria gli ultimi secondi. Quando succede qualcosa tocchi, e quei secondi appena passati diventano una clip. Si salva solo quello che tocchi, non due ore di partita.',
+        'In una partita le cose che contano durano un secondo. La camera registra sempre e tiene in memoria gli ultimi secondi. Quando succede qualcosa tocchi, e quei secondi appena passati diventano una clip: si salva solo quello che tocchi.',
       bullets: [
         'Fino a 120 secondi di buffer, scelti in Impostazioni',
-        'Una clip non attraversa mai una pausa: parte sempre da un pezzo continuo',
-        'Uscendo dalla camera il buffer si ferma, e riparte da solo al ritorno',
+        'Una clip non attraversa mai una pausa',
+        'Uscendo dalla camera il buffer si ferma e riparte da solo',
       ],
       media: [
         {
@@ -51,11 +51,11 @@ export default {
       title: 'Un pulsante per ogni momento della partita.',
       highlight: 'ogni momento',
       text:
-        'Gol, azione, fischio, inizio: un pulsante ciascuno, con i suoi secondi e il suo nome. Dopo un gol BUFFR chiede di chi è, e il punteggio si aggiorna da solo, contando i gol in ordine. In libreria ogni clip si può correggere quando vuoi.',
+        'Gol, azione, fischio, inizio: un pulsante ciascuno, con i suoi secondi e il suo nome. Dopo un gol BUFFR chiede di chi è e il punteggio si aggiorna da solo. In libreria ogni clip si può correggere quando vuoi.',
       bullets: [
-        'Il punteggio si calcola dai gol di tutta la partita, non di un solo telefono',
-        'La distinta si fotografa: iPhone la raddrizza e la legge, e la foto non esce dal telefono',
-        'Stelline da 1 a 5 per decidere dopo cosa entra nel montaggio',
+        'Il punteggio si calcola dai gol di tutta la partita',
+        'La distinta si fotografa: iPhone la raddrizza e la legge',
+        'Stelline da 1 a 5 per scegliere cosa entra nel montaggio',
       ],
       media: [
         {
@@ -80,15 +80,14 @@ export default {
     {
       id: 'montaggio',
       kicker: 'Dal campo al video',
-      title: 'Dalle clip al video della partita, senza programmi di montaggio.',
+      title: 'Dalle clip al video della partita, anche con più telefoni.',
       highlight: 'video della partita',
       text:
-        'Scegli lo stile e la testata: BUFFR monta punteggio, stacchi e grafiche. Le uscite sono tre: la partita intera, i soli gol, la story verticale. Il montaggio può girare nel cloud, anche con il telefono in tasca.',
+        'Scegli lo stile e la testata: BUFFR monta punteggio, stacchi e grafiche, in tre uscite: la partita intera, i soli gol, la story verticale. Le clip di tutti i telefoni finiscono nella stessa partita, in ordine di tempo.',
       bullets: [
-        'Copertina all\'apertura e alla chiusura, con le grafiche del gol e dell\'intervallo',
-        'Stili per colore, oppure il look BUFFR',
         'Il logo di chi trasmette negli stacchi, al posto di quello BUFFR',
-        'Commento vocale e musica sopra il montaggio, da una pagina web',
+        'Tre ruoli: proprietario, amministratore, operatore',
+        'Il montaggio può girare nel cloud, con il telefono in tasca',
       ],
       media: [
         {
@@ -108,32 +107,16 @@ export default {
           frame: 'phone',
         },
       ],
-      layout: 'media-right',
-    },
-    {
-      id: 'team',
-      kicker: 'Il team',
-      title: 'Più telefoni, una partita sola.',
-      highlight: 'una partita sola',
-      text:
-        'Ogni cameraman riprende da dove sta. Le clip finiscono nella stessa partita, in ordine di tempo, e il montaggio lo vede tutto il team. Squadre, stemmi e rose arrivano da un archivio unico, condiviso con gli altri prodotti Righello.',
-      bullets: [
-        'Tre ruoli: proprietario, amministratore, operatore',
-        'Le testate si possono offrire agli altri team',
-        'Le partite aperte si chiudono da sole dopo 48 ore',
-      ],
       layout: 'full',
     },
   ],
 
   features: [
     { icon: 'clock', title: 'Buffer retroattivo', text: 'La camera tiene gli ultimi secondi. Tocchi dopo, e la clip parte da prima.' },
-    { icon: 'bolt', title: 'Un tocco per momento', text: 'Gol, azione, fischio, inizio. Ogni pulsante salva i suoi secondi e dà il nome alla clip.' },
-    { icon: 'scan', title: 'Distinta con la fotocamera', text: 'Si fotografa il foglio: iPhone lo trova, lo raddrizza e lo legge. Le rose vengono con i numeri di maglia.' },
-    { icon: 'sparkle', title: 'Stelline sulle clip', text: 'Voti da 1 a 5, al salvataggio o dopo. Servono a scegliere cosa entra nel montaggio.' },
+    { icon: 'bolt', title: 'Clip al tocco', text: 'Gol, azione, fischio, inizio. Ogni pulsante salva i suoi secondi e dà il nome alla clip.' },
+    { icon: 'scan', title: 'Distinta fotografata', text: 'Si fotografa il foglio: iPhone lo trova, lo raddrizza e lo legge. Le rose arrivano coi numeri.' },
     { icon: 'layers', title: 'Taglio senza rischi', text: 'Accorci una clip quando vuoi: il file originale non si tocca.' },
     { icon: 'wand', title: 'Stile e testata', text: 'Grafiche nei colori che scegli, con il logo di chi trasmette negli stacchi.' },
-    { icon: 'users', title: 'Una partita, più telefoni', text: 'Le clip di tutti nella stessa cronologia, già divise per momento.' },
     { icon: 'camera', title: 'Camera da campo', text: 'Grandangolo 0,5×, 1× e 2×. Riprende anche di traverso, e le clip restano dritte.' },
   ],
 
@@ -198,32 +181,20 @@ export default {
     {
       title: 'Camera nativa su iPhone',
       text:
-        'Il buffer è scritto per iPhone, a livello nativo, non in una pagina web. La ripresa segue l\'orientamento del telefono e la camera lavora solo quando è in primo piano, per non scaldare il telefono.',
+        'Il buffer è scritto per iPhone, a livello nativo, non in una pagina web. La camera lavora solo quando è in primo piano, per non scaldare il telefono.',
       tags: ['App nativa', 'Risparmio di batteria'],
     },
     {
       title: 'Montaggio sul telefono e nel cloud',
       text:
-        'Sul telefono monta l\'esportatore dell\'app. Nel cloud ogni montaggio ha il suo spazio di lavoro, che si spegne a lavoro finito: le grafiche sono pagine web trasformate in immagini. Le story e i soli gol passano dal cloud.',
-      tags: ['Montaggio automatico', 'Cloud'],
+        'Sul telefono monta l\'esportatore dell\'app; nel cloud ogni montaggio ha il suo spazio di lavoro, che si spegne a lavoro finito. Le clip si guardano in streaming, con anteprime leggere.',
+      tags: ['Montaggio automatico', 'Streaming'],
     },
     {
       title: 'Regole scritte una volta sola',
       text:
-        'Cosa è un gol, quale punteggio c\'era a ogni clip, come si taglia: sta in un solo posto, letto dal telefono e dal sistema di montaggio. Le grafiche vengono decise a monte, e chi le disegna le esegue soltanto.',
-      tags: ['Un solo punto di verità'],
-    },
-    {
-      title: 'Clip in streaming, anteprime leggere',
-      text:
-        'Le clip si guardano in streaming: il telefono le prepara a segmenti e le carica, gli altri non scaricano il file intero. Le anteprime sono piccole e si caricano in un attimo.',
-      tags: ['Streaming', 'Veloce'],
-    },
-    {
-      title: 'Team e archivio condiviso',
-      text:
-        'Accesso con account, clip legate a team, partita e operatore. Squadre, stemmi e rose si leggono dall\'anagrafica calcistica unica di Righello, senza copie dentro l\'app.',
-      tags: ['Team', 'Anagrafica Righello'],
+        'Cosa è un gol, quale punteggio c\'era a ogni clip, come si taglia: sta in un solo posto, letto da telefono e montaggio. Squadre, stemmi e rose vengono dall\'anagrafica unica di Righello.',
+      tags: ['Un solo punto di verità', 'Anagrafica Righello'],
     },
   ],
 

@@ -8,6 +8,24 @@ const A = '/progetti/landing/lumis';
  * Le foto che si vedono nelle schermate sono quelle promozionali del sito, nell'account dimostrativo "Righello Demo".
  * Niente prezzi, niente commissioni, niente "import live dalla fotocamera" (non ancora validato su dispositivo vero).
  */
+const web = (file: string, ratio: string, alt: string, caption?: string) => ({
+  type: 'image' as const,
+  src: `${A}/${file}.webp`,
+  alt,
+  caption,
+  ratio,
+  frame: 'browser' as const,
+});
+
+const app = (file: string, alt: string, caption?: string) => ({
+  type: 'image' as const,
+  src: `${A}/${file}.webp`,
+  alt,
+  caption,
+  ratio: '700/1521',
+  frame: 'phone' as const,
+});
+
 export default {
   tagline: 'Dallo scatto alla vendita: gallery protette, consegna sicura, il tuo marchio.',
 
@@ -18,19 +36,14 @@ export default {
       note: 'il cliente inserisce solo l\'email al pagamento; il link alla gallery basta'
     },
     {
-      value: 4,
-      label: 'intensità di filigrana',
-      note: 'lieve, forte, molto forte, invadente: si sceglie per evento'
-    },
-    {
       value: 0,
       label: 'selfie inviati al server',
       note: 'la ricerca con selfie confronta una firma numerica ricavata sul dispositivo'
     },
     {
-      text: 'Nativa',
-      label: 'app per iPhone, senza pagine web dentro',
-      note: 'è un\'app vera, non un sito incorniciato'
+      value: 4,
+      label: 'intensità di filigrana',
+      note: 'lieve, forte, molto forte, invadente: si sceglie per evento'
     }
   ],
 
@@ -41,24 +54,14 @@ export default {
       title: 'Una gallery che sembra tua, non di un servizio qualunque.',
       highlight: 'sembra tua',
       text:
-        'Un link generico a una cartella condivisa dice poco di chi ha scattato. Con Lumis ogni evento ha la sua gallery, ordinata in album, con il tuo logo, i tuoi colori e i tuoi contatti. Il cliente apre il link, sfoglia e sceglie. Niente account da creare.',
+        'Un link a una cartella condivisa dice poco di chi ha scattato. Con Lumis ogni evento ha la sua gallery in album, con il tuo logo, i tuoi colori e i tuoi contatti. Il cliente apre il link e sceglie, senza account.',
       bullets: [
-        'Gallery ordinate in album, con stato: bozza, solo link o pubblica',
-        'Il tuo profilo pubblico con logo, colore, presentazione e social',
-        'Link e codice QR da condividere o da stampare',
-        'Più marchi o studi nello stesso account'
+        'Album con stato: bozza, solo link o pubblica',
+        'Profilo pubblico con logo, colore e social',
+        'Link e codice QR da condividere o stampare'
       ],
-      media: [
-        {
-          type: 'image',
-          src: `${A}/web-gallery.webp`,
-          alt: 'Una gallery pubblica di Lumis: copertina con il titolo dell\'evento, il logo del fotografo e la griglia delle foto con la filigrana, selezionabili.',
-          caption: 'La gallery del cliente: griglia ordinata, filigrana, foto selezionabili.',
-          ratio: '1600/1100',
-          frame: 'browser'
-        }
-      ],
-      layout: 'full'
+      media: [web('web-gallery', '1600/1100', 'Una gallery pubblica di Lumis: copertina con il titolo dell\'evento, il logo del fotografo e la griglia delle foto con la filigrana, selezionabili.', 'La gallery del cliente: griglia ordinata, filigrana, foto selezionabili.')],
+      layout: 'media-right'
     },
     {
       id: 'protezione',
@@ -66,24 +69,14 @@ export default {
       title: 'Le anteprime si guardano. Gli originali si pagano.',
       highlight: 'Gli originali si pagano.',
       text:
-        'Quando carichi le foto, ogni scatto diventa un\'anteprima leggera con la filigrana: è l\'unica cosa che il pubblico vede. L\'originale va in un archivio privato che apri solo tu. Chi compra paga con carta in modo sicuro e riceve un link firmato, con scadenza, per scaricare le foto in alta risoluzione.',
+        'Quando carichi, ogni scatto diventa un\'anteprima leggera con la filigrana: è l\'unica cosa che il pubblico vede. L\'originale resta in un archivio privato. Chi compra paga con carta e riceve un link firmato, con scadenza, per scaricare in alta risoluzione.',
       bullets: [
-        'Filigrana con il tuo logo e il testo, in quattro intensità, anche diversa da evento a evento',
-        'Una foto già caricata non si ricarica due volte',
-        'Conferma d\'ordine al cliente, avviso al fotografo a ogni acquisto',
-        'Dal sito puoi rimandare il link di download a chi lo ha perso'
+        'Filigrana con logo e testo, in quattro intensità',
+        'Conferma d\'ordine al cliente, avviso al fotografo',
+        'Dal sito rimandi il link di download a chi lo perde'
       ],
-      media: [
-        {
-          type: 'image',
-          src: `${A}/app-foto.webp`,
-          alt: 'Le foto di un evento nell\'app per iPhone: selezione, cartelle e stato di pubblicazione.',
-          caption: 'Le foto di un evento, dal telefono.',
-          ratio: '700/1521',
-          frame: 'phone'
-        }
-      ],
-      layout: 'media-right'
+      media: [app('app-foto', 'Le foto di un evento nell\'app per iPhone: selezione, cartelle e stato di pubblicazione.', 'Le foto di un evento, dal telefono.')],
+      layout: 'media-left'
     },
     {
       id: 'cercami',
@@ -91,98 +84,23 @@ export default {
       title: 'Un selfie, e il cliente trova le sue foto.',
       highlight: 'trova le sue foto',
       text:
-        'Dopo un evento con migliaia di scatti, trovarsi è la parte più lenta. Nelle gallery dove il fotografo ha elaborato i volti, chi cerca carica un selfie e vede solo le foto in cui compare. Il selfie non viene mai caricato: il telefono ne ricava una firma numerica e solo quella viene confrontata.',
+        'Dopo un evento con migliaia di scatti, trovarsi è la parte più lenta. Dove il fotografo ha elaborato i volti, chi cerca scatta un selfie e vede solo le foto in cui compare. Il selfie non viene mai caricato: il telefono ne ricava una firma numerica e confronta solo quella.',
       bullets: [
-        'Il riconoscimento gira nel browser di chi cerca, non sul server',
-        'Si attiva evento per evento: il fotografo sceglie quando elaborare i volti',
-        'Si vedono solo gli scatti in cui compari, da selezionare e acquistare'
+        'Il riconoscimento gira nel browser di chi cerca',
+        'Si attiva evento per evento, a scelta del fotografo',
+        'Si vedono, si selezionano e si comprano solo i propri scatti'
       ],
       layout: 'full'
-    },
-    {
-      id: 'telefono',
-      kicker: 'Il telefono come studio',
-      title: 'Tutto il lavoro dell\'evento, in tasca.',
-      highlight: 'in tasca',
-      text:
-        'L\'app per iPhone è nativa: dall\'evento di oggi alle foto, dal link da mandare al ritratto del tuo marchio. Carichi dal telefono, selezioni con una pressione lunga, sposti negli album e pubblichi. Vendite, ordini e incassi si guardano dal sito.',
-      bullets: [
-        'La home mostra l\'evento di oggi e dice se le gallery sono pronte',
-        'Selezione a pressione lunga e trascinamento per spostare le foto',
-        'Link e codice QR in un tocco, portfolio e marchio sempre sotto mano',
-        'In prova su TestFlight'
-      ],
-      media: [
-        {
-          type: 'image',
-          src: `${A}/app-oggi.webp`,
-          alt: 'La home dell\'app Lumis: l\'evento di oggi con il pulsante per aprirlo e i numeri di foto, eventi e gallery pubblicate.',
-          caption: 'L\'evento di oggi.',
-          ratio: '700/1521',
-          frame: 'phone'
-        },
-        {
-          type: 'image',
-          src: `${A}/app-condividi.webp`,
-          alt: 'La pagina Condividi dell\'evento: codice QR e link della gallery da copiare o condividere.',
-          caption: 'Link e QR in un tocco.',
-          ratio: '700/1521',
-          frame: 'phone'
-        }
-      ],
-      layout: 'media-left'
     }
   ],
 
   features: [
-    {
-      icon: 'layers',
-      title: 'Gallery in album',
-      text: 'Ogni evento ha i suoi album e il suo stato: bozza, solo link o pubblica.',
-      wide: true,
-      media: {
-        type: 'image',
-        src: `${A}/web-gallery.webp`,
-        alt: 'La gallery pubblica con la griglia delle foto.',
-        ratio: '1600/1100',
-        frame: 'browser'
-      }
-    },
-    {
-      icon: 'shield',
-      title: 'Filigrana su misura',
-      text: 'Logo e testo sulle anteprime, in quattro intensità. Il logo si sceglie per evento.'
-    },
-    {
-      icon: 'lock',
-      title: 'Originali al sicuro',
-      text: 'Gli originali stanno in un archivio privato: li legge solo chi ha l\'evento.'
-    },
-    {
-      icon: 'cart',
-      title: 'Pagamento con carta sicuro',
-      text: 'Il cliente sceglie le foto, inserisce l\'email e paga. Nessuna registrazione.'
-    },
-    {
-      icon: 'file',
-      title: 'Download in alta risoluzione',
-      text: 'Dopo il pagamento arriva un link firmato con scadenza. Il fotografo riceve un avviso.'
-    },
-    {
-      icon: 'globe',
-      title: 'Portfolio e link',
-      text: 'Una pagina pubblica per ogni marchio, con social e contatti, e il codice QR di ogni gallery.'
-    },
-    {
-      icon: 'search',
-      title: 'Cercami con selfie',
-      text: 'Il cliente ritrova le sue foto in mezzo a migliaia. Il selfie resta sul suo dispositivo.'
-    },
-    {
-      icon: 'chart',
-      title: 'Prezzi e ordini',
-      text: 'Prezzo per foto con sconto oltre una soglia, oppure selezione gratuita. Ordini per evento e guadagni nella dashboard.'
-    }
+    { icon: 'lock', title: 'Originali al sicuro', text: 'Gli originali stanno in un archivio privato: li legge solo chi ha l\'evento.' },
+    { icon: 'cart', title: 'Pagamento sicuro', text: 'Il cliente sceglie le foto, inserisce l\'email e paga con carta. Nessuna registrazione.' },
+    { icon: 'file', title: 'Download sicuro', text: 'Dopo il pagamento arriva un link firmato con scadenza, per scaricare in alta risoluzione.' },
+    { icon: 'globe', title: 'Portfolio e link', text: 'Una pagina pubblica per ogni marchio, con social, contatti e il codice QR di ogni gallery.' },
+    { icon: 'chart', title: 'Prezzi e ordini', text: 'Prezzo per foto con sconto oltre una soglia, o selezione gratuita. Guadagni nella dashboard.' },
+    { icon: 'device', title: 'App iPhone nativa', text: 'Carichi, selezioni, sposti negli album e pubblichi dal telefono. In prova su TestFlight.' }
   ],
 
   demo: {
@@ -192,121 +110,71 @@ export default {
     lead: 'Schermate vere di Lumis, nell\'account dimostrativo di Righello. Le foto sono quelle promozionali del sito.',
     items: [
       {
-        id: 'gallery',
-        label: 'Gallery',
-        media: {
-          type: 'image',
-          src: `${A}/web-gallery.webp`,
-          alt: 'Una gallery pubblica con copertina, logo del fotografo e griglia di foto con filigrana.',
-          ratio: '1600/1100',
-          frame: 'browser'
-        },
-        note: 'Come la vede il cliente: copertina, griglia ordinata, filigrana sulle anteprime.'
-      },
-      {
-        id: 'portfolio',
-        label: 'Portfolio',
-        media: {
-          type: 'image',
-          src: `${A}/web-portfolio.webp`,
-          alt: 'La pagina pubblica di un marchio: logo, presentazione e link ai social.',
-          ratio: '1600/1000',
-          frame: 'browser'
-        },
-        note: 'La pagina pubblica del marchio, con i contatti e le gallery attive.'
-      },
-      {
         id: 'oggi',
         label: 'Oggi',
-        media: {
-          type: 'image',
-          src: `${A}/app-oggi.webp`,
-          alt: 'La home dell\'app con l\'evento di oggi.',
-          ratio: '700/1521',
-          frame: 'phone'
-        },
-        note: 'Apri l\'app e riparti dall\'evento su cui lavoravi.'
+        group: 'App iPhone',
+        media: app('app-oggi', 'La home dell\'app con l\'evento di oggi.'),
+        note: 'Apri l\'app e riparti dall\'evento su cui lavoravi, con i numeri di foto, eventi e gallery pubblicate.'
       },
       {
         id: 'eventi',
         label: 'Eventi',
-        media: {
-          type: 'image',
-          src: `${A}/app-eventi.webp`,
-          alt: 'L\'elenco degli eventi con copertina, stato e numero di foto.',
-          ratio: '700/1521',
-          frame: 'phone'
-        },
+        group: 'App iPhone',
+        media: app('app-eventi', 'L\'elenco degli eventi con copertina, stato e numero di foto.'),
         note: 'Tutti gli eventi, con copertina, stato e foto a colpo d\'occhio.'
-      },
-      {
-        id: 'foto',
-        label: 'Foto',
-        media: {
-          type: 'image',
-          src: `${A}/app-foto.webp`,
-          alt: 'Le foto di un evento con selezione e cartelle.',
-          ratio: '700/1521',
-          frame: 'phone'
-        },
-        note: 'Le foto di un evento: carichi, selezioni, sposti negli album.'
       },
       {
         id: 'condividi',
         label: 'Condividi',
-        media: {
-          type: 'image',
-          src: `${A}/app-condividi.webp`,
-          alt: 'Codice QR e link della gallery.',
-          ratio: '700/1521',
-          frame: 'phone'
-        },
+        group: 'App iPhone',
+        media: app('app-condividi', 'Codice QR e link della gallery.'),
         note: 'Il codice QR e il link della gallery, pronti da mandare o da stampare.'
       },
       {
         id: 'marchio',
         label: 'Marchio',
-        media: {
-          type: 'image',
-          src: `${A}/app-brand.webp`,
-          alt: 'Il profilo pubblico del marchio: nome, logo, colore, presentazione e contatti.',
-          ratio: '700/1521',
-          frame: 'phone'
-        },
+        group: 'App iPhone',
+        media: app('app-brand', 'Il profilo pubblico del marchio: nome, logo, colore, presentazione e contatti.'),
         note: 'Logo, colore e contatti: come ti vedono i clienti.'
+      },
+      {
+        id: 'portfolio-app',
+        label: 'Portfolio',
+        group: 'App iPhone',
+        media: app('app-portfolio', 'Il portfolio del fotografo nell\'app: le gallery attive.'),
+        note: 'Il portfolio sempre sotto mano, con le gallery attive.'
+      },
+      {
+        id: 'gallery',
+        label: 'Gallery',
+        group: 'Sito',
+        media: web('web-gallery', '1600/1100', 'Una gallery pubblica con copertina, logo del fotografo e griglia di foto con filigrana.'),
+        note: 'Come la vede il cliente: copertina, griglia ordinata, filigrana sulle anteprime.'
+      },
+      {
+        id: 'portfolio',
+        label: 'Pagina del marchio',
+        group: 'Sito',
+        media: web('web-portfolio', '1600/1000', 'La pagina pubblica di un marchio: logo, presentazione e link ai social.'),
+        note: 'La pagina pubblica del marchio, con i contatti e le gallery attive.'
       }
     ]
   },
 
   tech: [
     {
-      title: 'Veloce ovunque, non su un solo server',
-      text: 'Le anteprime vengono servite vicino a chi guarda e restano pronte, così una gallery da migliaia di foto non si siede e si apre subito anche da telefono.',
-      tags: ['Infrastruttura globale', 'Veloce']
-    },
-    {
-      title: 'Le anteprime le prepara chi carica',
-      text: 'Compressione e filigrana si fanno sul dispositivo del fotografo (browser o app) prima dell\'invio. Ogni file ha un\'impronta: lo stesso scatto non viene caricato due volte.',
-      tags: ['Meno traffico', 'Nessun doppione']
+      title: 'Anteprime pronte, nessun doppione',
+      text: 'Compressione e filigrana si fanno sul dispositivo di chi carica, prima dell\'invio. Ogni file ha un\'impronta: lo stesso scatto non si carica due volte.',
+      tags: ['Veloce', 'Meno traffico']
     },
     {
       title: 'Originali mai pubblici',
-      text: 'L\'originale ha un percorso a parte e lo legge solo il proprietario dell\'evento. Chi compra riceve un link firmato che scade: senza una firma valida non si scarica niente.',
+      text: 'L\'originale ha un percorso a parte e lo legge solo il proprietario dell\'evento. Chi compra riceve un link firmato che scade: senza firma valida non si scarica niente.',
       tags: ['Sicurezza', 'Link a scadenza']
     },
     {
-      title: 'Un selfie che non parte',
-      text: 'Il riconoscimento gira nel browser di chi cerca: dal selfie esce solo una firma numerica. Il confronto con le foto procede a blocchi, per reggere anche eventi molto grandi.',
-      tags: ['Privacy', 'Sul tuo dispositivo']
-    },
-    {
-      title: 'App nativa, non una pagina in una cornice',
-      text: 'L\'app per iPhone è fatta apposta per iPhone e parla con gli stessi dati del sito. Nessuna pagina web dentro l\'app.',
-      tags: ['App nativa', 'Dati sempre allineati']
-    },
-    {
       title: 'Incassi e posta affidabili',
-      text: 'I pagamenti e le email di conferma e di avviso sono affidati a servizi specializzati. L\'ordine si registra solo quando il pagamento è confermato.',
+      text: 'Pagamenti ed email di conferma sono affidati a servizi specializzati. L\'ordine si registra solo quando il pagamento è confermato.',
       tags: ['Pagamenti sicuri', 'Conferme automatiche']
     }
   ],
@@ -314,8 +182,7 @@ export default {
   cta: {
     title: 'Crea la tua prima gallery.',
     highlight: 'prima gallery',
-    text:
-      'Il sito è online: crei il tuo spazio, carichi un evento e mandi il link. Si può cominciare senza abbonamento. L\'app per iPhone è in prova su TestFlight.',
+    text: 'Il sito è online: crei il tuo spazio, carichi un evento e mandi il link.',
     primary: { label: 'Apri Lumis', href: 'https://lumis.wearerighello.com', external: true }
   }
 } satisfies Landing;
