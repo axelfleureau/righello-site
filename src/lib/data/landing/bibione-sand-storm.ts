@@ -8,8 +8,8 @@ export default {
   metrics: [
     {
       value: 23,
-      label: 'indirizzi nella mappa del sito',
-      note: 'voci della mappa pubblica del sito, contate il 6 ottobre 2026',
+      label: 'pagine pubbliche',
+      note: 'voci della mappa del sito, contate il 6 ottobre 2026',
     },
     {
       value: 58,
@@ -17,29 +17,24 @@ export default {
       note: 'ogni vecchio indirizzo del sito precedente porta alla pagina giusta',
     },
     {
-      value: 2,
-      label: 'lingue',
-      note: 'italiano e inglese, con un tasto nella barra',
-    },
-    {
       value: 0,
       label: 'violazioni di accessibilità trovate',
-      note: 'controllo automatico di accessibilità del 6 ottobre 2026 su 15 pagine, in 8 stati',
+      note: 'controllo automatico del 6 ottobre 2026 su 15 pagine, in 8 stati',
     },
   ],
 
   chapters: [
     {
       id: 'cambio-reversibile',
-      kicker: 'Il problema',
+      kicker: 'Il passaggio',
       title: 'Cambiare sito a tre settimane dall\'evento, con il ritorno già pronto',
       highlight: 'il ritorno già pronto',
       text:
-        'Il vecchio sito stava su un servizio esterno e il dominio era già in uso. Il nuovo sito è arrivato su www senza toccare il resto del dominio: per tornare indietro basta una sola operazione. I 58 vecchi indirizzi rimandano alle pagine nuove, così Google non perde quello che aveva indicizzato.',
+        'Il vecchio sito stava su un servizio esterno e il dominio era già in uso. Il nuovo è arrivato su www senza toccare il resto del dominio: per tornare indietro basta una sola operazione. I 58 vecchi indirizzi rimandano alle pagine nuove.',
       bullets: [
         'Online dal 30 settembre 2026 su www.bibionesandstorm.it.',
         'Anche l\'indirizzo senza www porta al sito nuovo.',
-        'Prima del passaggio, ogni pagina è stata confrontata con la vecchia, testo per testo.',
+        'Ogni pagina è stata confrontata con la vecchia, testo per testo.',
       ],
       media: [
         {
@@ -63,15 +58,15 @@ export default {
     },
     {
       id: 'leggero',
-      kicker: 'Il come',
+      kicker: 'La leggerezza',
       title: 'Pagine statiche, animazioni dove servono',
       highlight: 'animazioni dove servono',
       text:
-        'Il sito è fatto di pagine statiche, pronte e servite da una rete globale: nei giorni dell\'evento non c\'è un server da far reggere. Le animazioni a scorrimento hanno una rete di sicurezza: se non partono, la pagina è comunque completa. Il video dell\'apertura parte durante il caricamento, non dopo che la pagina ha finito di prepararsi.',
+        'Il sito è fatto di pagine statiche, pronte e servite da una rete globale: nei giorni dell\'evento non c\'è un server da far reggere. Le animazioni hanno una rete di sicurezza: se non partono, la pagina è comunque completa.',
       bullets: [
-        'Ogni animazione che parte da invisibile ha un controllo che la riporta in vista: la pagina non resta mai bianca.',
-        'Il video dell\'apertura è stato provato contando i fotogrammi disegnati, non il tempo del lettore.',
-        'Le foto stanno su un archivio di immagini, con un controllo prima di ogni pubblicazione che nessuna manchi.',
+        'Ogni animazione ha un controllo che la riporta in vista.',
+        'Il video dell\'apertura parte durante il caricamento della pagina.',
+        'Le foto sono controllate prima di ogni pubblicazione.',
       ],
       media: [
         {
@@ -95,15 +90,15 @@ export default {
     },
     {
       id: 'informazioni-vere',
-      kicker: 'Fiducia',
+      kicker: 'La fiducia',
       title: 'Informativa e consensi scritti su quello che il sito fa davvero',
       highlight: 'quello che il sito fa davvero',
       text:
-        'Il sito non ha moduli e non usa cookie di tracciamento. L\'informativa sulla privacy lo dice, perché è scritta su quello che il sito fa, non copiata da un modello. Il banner ha Accetta e Rifiuta con lo stesso peso, e mostra solo categorie vere: i cookie necessari e la preferenza di lingua.',
+        'Il sito non ha moduli e non usa cookie di tracciamento, e l\'informativa lo dice: è scritta su quello che il sito fa, non copiata da un modello. Il banner ha Accetta e Rifiuta con lo stesso peso e mostra solo categorie vere.',
       bullets: [
-        'La lingua scelta si ricorda solo se il visitatore acconsente alle preferenze.',
-        'Per aggiungere un giorno statistiche servirà una voce nel banner: lo script non si carica prima del consenso.',
-        'Il riquadro delle quote è lo stesso su tutte le pagine d\'iscrizione.',
+        'La lingua scelta si ricorda solo se il visitatore acconsente.',
+        'Le statistiche, se arriveranno, partiranno solo dopo il consenso.',
+        'Nelle iscrizioni la quota scaduta è barrata, quella in vigore in evidenza.',
       ],
       media: [
         {
@@ -117,30 +112,6 @@ export default {
       ],
       layout: 'media-right',
     },
-    {
-      id: 'shop',
-      kicker: 'In prova',
-      title: 'Lo shop: pass e merchandising, incasso diretto agli organizzatori',
-      highlight: 'incasso diretto agli organizzatori',
-      text:
-        'Accanto al sito c\'è uno shop in ambiente di prova, con pagamento con carta sicuro. L\'incasso arriva direttamente sul conto degli organizzatori e Righello non trattiene commissioni. Non accetta ancora pagamenti veri: si accendono quando gli organizzatori collegano il proprio conto di incasso.',
-      bullets: [
-        'Una fascia «ambiente di test» resta sempre visibile.',
-        'Ogni conferma di pagamento è verificata e conta una volta sola: un avviso ripetuto non scala due volte le scorte.',
-        'Un rimborso aggiorna da solo lo stato dell\'ordine.',
-      ],
-      media: [
-        {
-          type: 'image',
-          src: `${base}/shop.webp`,
-          alt: 'L\'intestazione dello shop, con la fascia «ambiente di test»',
-          caption: 'Lo shop in prova: la fascia in alto dice che nessun pagamento è reale.',
-          ratio: '1600/540',
-          frame: 'browser',
-        },
-      ],
-      layout: 'media-left',
-    },
   ],
 
   features: [
@@ -150,18 +121,13 @@ export default {
       text: 'Un tasto nella barra cambia lingua; la pagina di partenza è sempre in italiano.',
     },
     {
-      icon: 'play',
-      title: 'Video che parte subito',
-      text: 'Il video dell\'apertura parte durante il caricamento della pagina.',
-    },
-    {
       icon: 'clock',
       title: 'Conto alla rovescia',
       text: 'Giorni, ore, minuti e secondi alla partenza del 23 ottobre 2026.',
     },
     {
       icon: 'calendar',
-      title: 'Programma a tre giorni',
+      title: 'Linea del tempo',
       text: 'Venerdì, sabato e domenica in una linea del tempo che si riempie con lo scorrimento.',
     },
     {
@@ -175,14 +141,9 @@ export default {
       text: 'Cinquantotto vecchi indirizzi rimandano alla pagina nuova.',
     },
     {
-      icon: 'lock',
-      title: 'Consensi con scelta vera',
-      text: 'Accetta e Rifiuta pesano uguale, e le categorie nel banner sono solo quelle reali.',
-    },
-    {
-      icon: 'sparkle',
-      title: 'Animazioni con rete',
-      text: 'Se il movimento non parte, le pagine restano complete e leggibili.',
+      icon: 'cart',
+      title: 'Shop in prova',
+      text: 'Pass e merchandising, con incasso diretto agli organizzatori: per ora in ambiente di test.',
     },
   ],
 
@@ -230,15 +191,15 @@ export default {
       },
       {
         id: 'telefono',
-        label: 'Su telefono',
+        label: 'Programma su telefono',
         media: {
           type: 'image',
-          src: `${base}/mobile-home.webp`,
-          alt: 'La pagina iniziale su telefono',
+          src: `${base}/mobile-programma.webp`,
+          alt: 'Il programma su telefono',
           ratio: '9/19.5',
           frame: 'phone',
         },
-        note: 'La stessa pagina iniziale su uno schermo di 390 pixel.',
+        note: 'Lo stesso programma su uno schermo di 390 pixel.',
       },
       {
         id: 'shop',
@@ -265,31 +226,13 @@ export default {
     {
       title: 'Un cambio che si può disfare',
       text:
-        'Il nuovo sito è arrivato senza modificare il dominio, quindi si può tornare indietro in un attimo. Il vecchio sito resta consultabile in sola lettura, fuori da Google, per i confronti.',
+        'Il nuovo sito è arrivato senza modificare il dominio: si può tornare indietro in un attimo. Il vecchio sito resta consultabile in sola lettura, fuori dai motori di ricerca, per i confronti.',
       tags: ['Passaggio reversibile', 'Indirizzi vecchi salvi'],
-    },
-    {
-      title: 'Immagini con un controllo prima della pubblicazione',
-      text:
-        'Le foto sono servite da un archivio di immagini ottimizzate. Prima di ogni pubblicazione un controllo verifica che ogni foto citata dal sito esista davvero.',
-      tags: ['Immagini ottimizzate', 'Controlli automatici'],
-    },
-    {
-      title: 'Veloce e protetto',
-      text:
-        'I file che non cambiano restano pronti a lungo, ci sono le protezioni di base del browser, e la copia di validazione è tenuta fuori dai motori di ricerca.',
-      tags: ['Sicurezza', 'Veloce'],
-    },
-    {
-      title: 'Due lingue nello stesso punto',
-      text:
-        'Ogni testo ha la versione italiana e inglese accanto: una modifica non lascia indietro una lingua senza che qualcuno se ne accorga.',
-      tags: ['Italiano', 'Inglese'],
     },
     {
       title: 'Shop con incasso diretto',
       text:
-        'L\'organizzatore collega il suo conto con un pulsante e il pagamento va direttamente a lui, senza commissione per Righello.',
+        'L\'organizzatore collega il suo conto con un pulsante e il pagamento va direttamente a lui, senza commissione per Righello. Ogni conferma conta una volta sola, e un rimborso aggiorna da solo l\'ordine.',
       tags: ['Pagamenti sicuri', 'Nessuna commissione'],
     },
   ],

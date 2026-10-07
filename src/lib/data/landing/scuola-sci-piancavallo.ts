@@ -7,39 +7,34 @@ export default {
 
   metrics: [
     {
-      value: 1,
-      label: 'regola decide la stagione',
-      note: 'la data, con un interruttore manuale per anticipare o ritardare',
-    },
-    {
       value: 4,
       label: 'discipline con la loro pagina',
       note: 'sci alpino, snowboard, telemark, sci di fondo',
-    },
-    {
-      value: 2,
-      label: 'lingue',
-      note: 'italiano e inglese: ogni testo ha le due versioni',
     },
     {
       value: 11,
       label: 'settimane di camp nel modulo',
       note: 'settimane selezionabili nella landing del camp estivo 2026',
     },
+    {
+      value: 2,
+      label: 'lingue',
+      note: 'italiano e inglese: ogni testo ha le due versioni',
+    },
   ],
 
   chapters: [
     {
       id: 'stagione',
-      kicker: 'Il problema',
+      kicker: 'La stagione',
       title: 'Una scuola, due stagioni, un solo sito',
       highlight: 'un solo sito',
       text:
-        'La Scuola Sci Piancavallo lavora sulla neve d\'inverno e sul camp, con la pista sintetica, d\'estate. Cambiare testi e pulsanti a mano due volte l\'anno è un lavoro che si dimentica. Ora la stagione è un\'informazione sola, letta da home, prezzi, corsi, prenotazione e menu.',
+        'La scuola lavora sulla neve d\'inverno e sul camp, con la pista sintetica, d\'estate. Cambiare testi e pulsanti a mano due volte l\'anno è un lavoro che si dimentica. Ora la stagione è un\'informazione sola, letta da home, prezzi, corsi, prenotazione e menu.',
       bullets: [
-        'D\'inverno: corsi di sci e snowboard, e la prenotazione porta al sistema Skiwork.',
-        'D\'estate: camp, pista sintetica e lezioni private estive, e la prenotazione porta alla landing del camp.',
-        'Un interruttore manuale permette di anticipare o ritardare il cambio, senza aspettare la data.',
+        'D\'inverno: corsi di sci e snowboard, prenotazione sul sistema della scuola.',
+        'D\'estate: camp, pista sintetica e lezioni private, prenotazione dal camp.',
+        'Un interruttore manuale anticipa o ritarda il cambio.',
       ],
       media: [
         {
@@ -63,14 +58,14 @@ export default {
     },
     {
       id: 'listino',
-      kicker: 'Il come',
+      kicker: 'Il listino',
       title: 'Il listino si filtra con due scelte',
       highlight: 'due scelte',
       text:
-        'Sul listino 2026/27 si sceglie la disciplina, sci o snowboard, e il tipo di corso, VIP o Gioca la Neve. La pagina mostra solo quella sezione. Le scelte sono su due righe e non quattro in fila, perché sul telefono restano ordinate. Prezzi e testi sono in italiano e inglese.',
+        'Sul listino 2026/27 si sceglie la disciplina, sci o snowboard, e il tipo di corso, VIP o Gioca la Neve. La pagina mostra solo quella sezione. Le scelte stanno su due righe, non quattro in fila, così sul telefono restano ordinate.',
       bullets: [
         'Quattro combinazioni, un\'unica sezione che cambia contenuto.',
-        'Le lezioni private valgono per tutte le discipline e restano fuori dal filtro.',
+        'Le lezioni private valgono per ogni disciplina, fuori dal filtro.',
         'Il corso del lunedì e il Full Winter compaiono solo dove esistono.',
       ],
       media: [
@@ -94,29 +89,16 @@ export default {
       layout: 'media-left',
     },
     {
-      id: 'prenotare',
-      kicker: 'Prenotazione',
-      title: 'Il pulsante giusto, al momento giusto',
-      highlight: 'al momento giusto',
-      text:
-        'La prenotazione vera avviene sul sistema Skiwork, d\'inverno, e sulla landing del camp, d\'estate. Il sito porta l\'utente al punto giusto: lezioni collettive o private, con la disciplina già scelta. La landing del camp ha un modulo di preiscrizione in quattro passi e undici settimane tra cui scegliere.',
-      bullets: [
-        'Collegamenti diretti alla pagina giusta: collettive o private, per disciplina.',
-        'In estate, ogni pulsante «Prenota» porta alla landing del camp.',
-        'Il modulo del camp ricorda le settimane scelte e controlla i campi prima di andare avanti.',
-      ],
-    },
-    {
       id: 'linktree',
-      kicker: 'Anche fuori dal sito',
+      kicker: 'Fuori dal sito',
       title: 'Anche la pagina dei link cambia con la stagione',
       highlight: 'cambia con la stagione',
       text:
-        'La pagina dei link che sta nei profili social segue la stessa regola: i pulsanti e i colori cambiano con il mese. Da settembre a marzo parla di corsi e gift card; in estate mette in cima il camp. Si aggiorna da sola, così il cambio avviene senza interventi.',
+        'La pagina dei link nei profili social segue la stessa regola: pulsanti e colori cambiano con il mese. Da settembre a marzo parla di corsi e gift card; in estate mette in cima il camp. Si aggiorna da sola, senza interventi.',
       bullets: [
         'I mesi invernali sono definiti in un punto solo.',
-        'L\'ordine dei pulsanti dipende dalla stagione: il primo è quello da far cliccare.',
-        'I colori sono definiti in un punto solo: cambiare palette non vuol dire toccare le pagine.',
+        'Il primo pulsante è sempre quello da far cliccare.',
+        'I colori sono definiti in un punto solo.',
       ],
       media: [
         {
@@ -134,11 +116,6 @@ export default {
 
   features: [
     {
-      icon: 'calendar',
-      title: 'Stagione in automatico',
-      text: 'Home, prezzi, corsi, prenotazione e menu cambiano testi e pulsanti con la stagione.',
-    },
-    {
       icon: 'globe',
       title: 'Italiano e inglese',
       text: 'Ogni testo ha la sua versione in entrambe le lingue.',
@@ -149,14 +126,9 @@ export default {
       text: 'Una pagina per sci alpino, snowboard, telemark e sci di fondo.',
     },
     {
-      icon: 'search',
-      title: 'Listino filtrabile',
-      text: 'Disciplina e tipo di corso scelgono la sezione di prezzi da mostrare.',
-    },
-    {
       icon: 'link',
       title: 'Prenotazione diretta',
-      text: 'Link alla pagina giusta di Skiwork, con collettive o private e disciplina già scelte.',
+      text: 'Link alla pagina giusta del sistema di prenotazione, con collettive o private e disciplina già scelte.',
     },
     {
       icon: 'users',
@@ -194,18 +166,6 @@ export default {
         note: 'La pagina iniziale in versione invernale: titolo che si scrive da solo, prenotazione e servizi.',
       },
       {
-        id: 'chip',
-        label: 'Listino: scelte',
-        media: {
-          type: 'image',
-          src: `${base}/prezzi-chip.webp`,
-          alt: 'Le scelte di disciplina e di tipo di corso sul listino',
-          ratio: '16/10',
-          frame: 'browser',
-        },
-        note: 'Le due file di scelte: disciplina e tipo di corso.',
-      },
-      {
         id: 'listino',
         label: 'Listino: prezzi',
         media: {
@@ -218,16 +178,28 @@ export default {
         note: 'Le schede dei corsi del sabato, con date, orari e prezzo.',
       },
       {
+        id: 'chip',
+        label: 'Listino: scelte',
+        media: {
+          type: 'image',
+          src: `${base}/prezzi-chip.webp`,
+          alt: 'Le scelte di disciplina e di tipo di corso sul listino',
+          ratio: '16/10',
+          frame: 'browser',
+        },
+        note: 'Le due file di scelte: disciplina e tipo di corso.',
+      },
+      {
         id: 'telefono',
         label: 'Su telefono',
         media: {
           type: 'image',
-          src: `${base}/mobile-prezzi.webp`,
-          alt: 'Il listino su telefono',
+          src: `${base}/mobile-home.webp`,
+          alt: 'La pagina iniziale su telefono',
           ratio: '9/19.5',
           frame: 'phone',
         },
-        note: 'Lo stesso listino su uno schermo di 390 pixel.',
+        note: 'La stessa pagina iniziale su uno schermo di 390 pixel.',
       },
       {
         id: 'links',
@@ -248,14 +220,8 @@ export default {
     {
       title: 'Un interruttore, molte pagine',
       text:
-        'La regola della stagione è una sola. Home, prezzi, corsi, prenotazione e menu la leggono, quindi cambiare il comportamento vuol dire cambiarla in un punto.',
-      tags: ['Un solo punto di verità', 'Stagione automatica'],
-    },
-    {
-      title: 'Stagione letta al momento della visita',
-      text:
-        'Le pagine valutano la stagione quando le apri, non quando sono state pubblicate: nessun cambio rimane congelato alla data dell\'ultimo aggiornamento. Anche la pagina dei link si aggiorna da sola.',
-      tags: ['Sempre aggiornato'],
+        'La regola della stagione è una sola e viene letta quando apri la pagina, non quando è stata pubblicata: nessun cambio resta congelato alla data dell\'ultimo aggiornamento.',
+      tags: ['Un solo punto di verità', 'Sempre aggiornato'],
     },
     {
       title: 'Trovabile dai motori di ricerca',
@@ -266,7 +232,7 @@ export default {
     {
       title: 'Camp come progetto a parte',
       text:
-        'La landing del camp è separata, con un modulo in quattro passi. Così si cambia o si spegne senza toccare il sito principale.',
+        'La landing del camp è separata, con un modulo in quattro passi che ricorda le settimane scelte. Così si cambia o si spegne senza toccare il sito principale.',
       tags: ['Modulo in quattro passi'],
     },
   ],

@@ -17,11 +17,6 @@ export default {
       note: 'italiano, inglese, tedesco, russo: il selettore del sito',
     },
     {
-      value: 103,
-      label: 'indirizzi nella mappa del sito',
-      note: 'voci della mappa pubblica del sito, contate il 6 ottobre 2026',
-    },
-    {
       value: 3,
       label: 'esiti di pagamento distinti',
       note: 'confermato, rifiutato, in attesa di conferma',
@@ -31,15 +26,15 @@ export default {
   chapters: [
     {
       id: 'prezzo-vero',
-      kicker: 'Il problema',
+      kicker: 'Il prezzo',
       title: 'Il prezzo che vedi è quello che puoi pagare',
       highlight: 'puoi pagare',
       text:
-        'Il prezzo base di un appartamento è un punto di partenza, non una tariffa che l\'ospite trova davvero. Il sito legge il calendario del gestionale e mostra il costo del primo soggiorno che si può prenotare sul serio: stessi giorni liberi, stesso minimo di notti, stessa regola del selettore di date.',
+        'Il prezzo base non è la tariffa che l\'ospite trova davvero. Il sito legge il calendario del gestionale e mostra il costo del primo soggiorno prenotabile sul serio: stessi giorni liberi, stesso minimo di notti, stessa regola del selettore di date.',
       bullets: [
-        'Un soggiorno vale solo se tutte le notti sono libere e il giorno di partenza non è occupato.',
-        'Il prezzo in catalogo è tutto incluso: alloggio, pulizie e tasse, con la tariffa non rimborsabile.',
-        'Si calcola una volta e si tiene aggiornato: il catalogo non interroga il gestionale a ogni visita.',
+        'Un soggiorno vale solo se tutte le notti sono libere.',
+        'Il prezzo è tutto incluso: alloggio, pulizie e tasse.',
+        'Si calcola una volta e si tiene aggiornato.',
       ],
       media: [
         {
@@ -63,15 +58,15 @@ export default {
     },
     {
       id: 'disponibilita',
-      kicker: 'Il come',
+      kicker: 'Le date',
       title: 'Date libere in tempo reale, non una vetrina',
       highlight: 'in tempo reale',
       text:
-        'Calendario, preventivi e prenotazioni arrivano direttamente dal gestionale delle prenotazioni. Quello che il sito mostra è lo stato del momento. Se le date scelte sono occupate lo dice, e propone la richiesta di prenotazione.',
+        'Calendario, preventivi e prenotazioni arrivano dal gestionale: il sito mostra lo stato del momento. Se le date scelte sono occupate lo dice e propone la richiesta di prenotazione. Se il gestionale è lento, dopo pochi secondi il sito ripiega sul catalogo.',
       bullets: [
-        'Le notti occupate sono barrate nel calendario e il minimo di notti è scritto prima della scelta.',
-        'Se il gestionale è lento, il sito smette di aspettare dopo pochi secondi e ripiega sul catalogo.',
-        'I neonati non entrano mai nel conto degli ospiti: restano gratis e arrivano allo staff come nota.',
+        'Le notti occupate sono barrate; il minimo di notti è scritto prima.',
+        'I neonati restano gratis e arrivano allo staff come nota.',
+        'Si cerca per date e ospiti, filtrando per casa o animali.',
       ],
       media: [
         {
@@ -95,49 +90,21 @@ export default {
     },
     {
       id: 'pagamento',
-      kicker: 'Pagamento',
+      kicker: 'Il pagamento',
       title: 'Un pagamento non è fallito finché non lo è davvero',
       highlight: 'non lo è davvero',
       text:
-        'I dati della carta si inseriscono in un riquadro del circuito di pagamento del gestionale: non passano dal nostro server. Dopo il pagamento il sito rilegge l\'esito più volte in pochi secondi. Un rifiuto vero è definitivo subito. Se l\'esito non è ancora chiaro, il sito non annulla e non fa ripagare: tiene le date bloccate e avvisa lo staff.',
+        'I dati della carta restano nel circuito di pagamento: non passano dal nostro server. Dopo il pagamento il sito rilegge l\'esito più volte. Un rifiuto vero è definitivo. Se l\'esito non è chiaro, non annulla e non fa ripagare: tiene le date bloccate e avvisa lo staff.',
       bullets: [
-        'Tre esiti, non due: confermato, rifiutato, in attesa di conferma.',
-        'Una prenotazione con un pagamento riuscito o in arrivo non viene mai annullata dal sito.',
-        'Gli extra scelti (parcheggio, colazione, spiaggia, culla, biancheria) entrano come voci della prenotazione.',
+        'Tre esiti, non due: confermato, rifiutato, in attesa.',
+        'Un pagamento riuscito o in arrivo non viene mai annullato.',
+        'La verifica a 3 passaggi parte quando la banca la chiede.',
       ],
-    },
-    {
-      id: 'versione-2',
-      kicker: 'In collaudo',
-      title: 'La nuova versione: movimento che aiuta, non che rallenta',
-      highlight: 'movimento che aiuta',
-      text:
-        'Su un indirizzo non pubblico è in prova una nuova versione del sito: catalogo con mappa e prezzi sui punti, galleria, un orologio che segue il giorno. Tutto il movimento segue un sistema solo, con regole in un posto solo, e si carica solo quando serve. Lo scorrimento resta quello naturale.',
-      bullets: [
-        'Se l\'animazione non parte, la pagina è comunque completa.',
-        'Date e ospiti scelti vengono ricordati e il pagamento si fa in due passi.',
-        'Il checkout della nuova versione è ancora in prova: non incassa.',
-      ],
-      media: [
-        {
-          type: 'image',
-          src: `${base}/v2-home.webp`,
-          alt: 'La nuova versione del sito, in collaudo: la pagina iniziale',
-          caption: 'La nuova versione, in collaudo: la pagina iniziale.',
-          ratio: '16/10',
-          frame: 'browser',
-        },
-      ],
-      layout: 'media-right',
+      layout: 'full',
     },
   ],
 
   features: [
-    {
-      icon: 'calendar',
-      title: 'Prezzo «da» reale',
-      text: 'Calcolato dal primo soggiorno davvero prenotabile, non dalla tariffa di bassa stagione.',
-    },
     {
       icon: 'link',
       title: 'Gestionale collegato',
@@ -151,17 +118,12 @@ export default {
     {
       icon: 'cart',
       title: 'Extra in prenotazione',
-      text: 'Parcheggio, colazione, spiaggia, culla e biancheria vengono aggiunti alla prenotazione.',
+      text: 'Parcheggio, colazione, spiaggia, culla e biancheria entrano come voci della prenotazione.',
     },
     {
       icon: 'globe',
       title: 'Quattro lingue',
       text: 'Descrizioni, regolamento e testi sul quartiere sono tradotti a mano, senza servizi esterni.',
-    },
-    {
-      icon: 'search',
-      title: 'Ricerca per date',
-      text: 'Si cerca per date e ospiti e si filtra per tipo di casa o per animali ammessi.',
     },
     {
       icon: 'users',
@@ -170,7 +132,7 @@ export default {
     },
     {
       icon: 'map',
-      title: 'Pagine per i motori',
+      title: 'Pagine trovabili',
       text: 'Ogni pagina ha il suo indirizzo canonico e la mappa del sito è sempre aggiornata.',
     },
   ],
@@ -179,7 +141,7 @@ export default {
     kicker: 'Dal vivo',
     title: 'Dal sito vero',
     highlight: 'sito vero',
-    lead: 'Schermate del sito pubblico, senza dati di ospiti o di prenotazioni.',
+    lead: 'Schermate del sito pubblico e della nuova versione in collaudo, senza dati di ospiti o di prenotazioni.',
     items: [
       {
         id: 'home',
@@ -194,30 +156,6 @@ export default {
         note: 'La pagina iniziale: da qui si cerca per date, tipo di casa e numero di ospiti.',
       },
       {
-        id: 'catalogo',
-        label: 'Catalogo',
-        media: {
-          type: 'image',
-          src: `${base}/catalogo.webp`,
-          alt: 'Il catalogo con il prezzo «da» su ogni scheda',
-          ratio: '16/10',
-          frame: 'browser',
-        },
-        note: 'Trentaquattro appartamenti, ognuno col prezzo del primo soggiorno prenotabile.',
-      },
-      {
-        id: 'calendario',
-        label: 'Calendario',
-        media: {
-          type: 'image',
-          src: `${base}/calendario.webp`,
-          alt: 'Il calendario di una scheda, con i giorni occupati barrati',
-          ratio: '16/9',
-          frame: 'browser',
-        },
-        note: 'Il calendario di una scheda: i giorni occupati sono barrati e il minimo di notti è scritto sopra.',
-      },
-      {
         id: 'tedesco',
         label: 'In tedesco',
         media: {
@@ -230,16 +168,16 @@ export default {
         note: 'La stessa scheda col selettore su DE: prezzo, pulsanti e testi cambiano lingua.',
       },
       {
-        id: 'telefono',
-        label: 'Su telefono',
+        id: 'nuova-home',
+        label: 'Nuova versione',
         media: {
           type: 'image',
-          src: `${base}/mobile-scheda.webp`,
-          alt: 'Una scheda su telefono, larga 390 pixel',
-          ratio: '9/19.5',
-          frame: 'phone',
+          src: `${base}/v2-home.webp`,
+          alt: 'La nuova versione del sito, in collaudo: la pagina iniziale',
+          ratio: '16/10',
+          frame: 'browser',
         },
-        note: 'La scheda su telefono: prezzo «da» dal calendario e scelta di date e ospiti.',
+        note: 'In collaudo su un indirizzo non pubblico: il movimento segue un sistema solo e, se non parte, la pagina è comunque completa.',
       },
       {
         id: 'mappa',
@@ -251,41 +189,29 @@ export default {
           ratio: '16/10',
           frame: 'browser',
         },
-        note: 'Dalla nuova versione, in collaudo: il catalogo con la mappa e i prezzi sui punti.',
+        note: 'Sempre dalla nuova versione: la mappa con i prezzi sui punti. Il suo pagamento in due passi è in prova e non incassa.',
       },
     ],
   },
 
   tech: [
     {
-      title: 'Sito veloce, collegato al gestionale',
+      title: 'Collegato al gestionale, protetto',
       text:
-        'Le chiamate al gestionale passano da un unico punto protetto, così le credenziali non arrivano mai al browser. Il sito resta veloce perché le pagine pesanti sono già pronte.',
-      tags: ['Veloce', 'Sicurezza']
+        'Le chiamate al gestionale passano da un unico punto protetto: le credenziali non arrivano mai al browser. Il sito resta veloce perché le pagine pesanti sono già pronte.',
+      tags: ['Veloce', 'Sicurezza'],
     },
     {
-      title: 'Aggiornato, senza interrogare tutto a ogni visita',
+      title: 'Aggiornato senza interrogare tutto',
       text:
-        'Il catalogo e il prezzo «da» restano pronti per un po\' e si rinnovano da soli. Le prenotazioni e i registri restano in un archivio sicuro.',
-      tags: ['Dati sempre allineati', 'Gestionale collegato'],
+        'Catalogo e prezzo «da» restano pronti per un po\' e si rinnovano da soli: il gestionale non è interrogato a ogni visita. Prenotazioni e registri stanno in un archivio sicuro.',
+      tags: ['Dati sempre allineati'],
     },
     {
       title: 'Dati riservati che non escono',
       text:
-        'Prima di uscire, ogni scheda pubblica perde i dati interni (proprietari, condizioni commerciali, codici di accesso) e le voci di prezzo che il sito non mostra. Vale per ogni strada che porta fuori una scheda.',
+        'Prima di uscire, ogni scheda pubblica perde i dati interni e le voci di prezzo che il sito non mostra. Vale per ogni strada che porta fuori una scheda.',
       tags: ['Sicurezza', 'Privacy'],
-    },
-    {
-      title: 'Pagamento a prova di incertezza',
-      text:
-        'La carta viene verificata da un circuito di pagamento specializzato, con la verifica a 3 passaggi quando la banca la chiede. Il sito distingue tra confermato, rifiutato e non ancora chiaro, e nel terzo caso non annulla mai.',
-      tags: ['Pagamenti sicuri', 'Verifica della banca'],
-    },
-    {
-      title: 'Traduzioni a mano',
-      text:
-        'Italiano, inglese, tedesco e russo sono scritti a mano. Nessun testo e nessun dato degli ospiti viene mandato a un servizio di traduzione.',
-      tags: ['4 lingue', 'Privacy'],
     },
   ],
 
