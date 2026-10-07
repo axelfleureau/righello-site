@@ -3,6 +3,7 @@ import type { Landing } from './types';
 const base = '/progetti/landing/portopiccolo-apartments';
 
 export default {
+  variant: 'caso',
   tagline: 'Il sito che prenota da solo: prezzi, date e pagamento collegati al gestionale.',
 
   metrics: [

@@ -5,6 +5,7 @@ import type { Landing } from './types';
  * Non si dice quante partite ci sono né quanti abbonati: non sono dati verificabili qui.
  */
 export default {
+  variant: 'broadcast',
   tagline: 'Il televisore si sblocca con il telefono.',
   hero: {
     type: 'image',

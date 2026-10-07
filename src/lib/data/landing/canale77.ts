@@ -5,6 +5,7 @@ import type { Landing } from './types';
  * Niente nomi di persone, credenziali, indirizzi di server.
  */
 export default {
+  variant: 'broadcast',
   tagline: 'Lo stesso catalogo sul sito, sul digitale terrestre e sulle app TV. Anche su quelle vecchie.',
   metrics: [
     { value: 5, label: 'piattaforme, un solo catalogo', note: 'web, HbbTV, Samsung, LG, Android TV' },

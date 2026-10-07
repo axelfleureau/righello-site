@@ -14,6 +14,7 @@ const screen = (file: string, alt: string, caption: string) => ({
 });
 
 export default {
+  variant: 'gestionale',
   tagline: 'Certificati, corsi e scadenze in un archivio che dice cosa fare per primo.',
 
   metrics: [

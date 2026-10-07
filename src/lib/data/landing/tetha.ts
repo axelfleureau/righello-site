@@ -23,6 +23,7 @@ const iphone = (file: string, alt: string, caption?: string) => ({
 });
 
 export default {
+  variant: 'gestionale',
   tagline: 'Un documento scaduto ferma il cantiere. Tetha te lo dice prima.',
 
   metrics: [

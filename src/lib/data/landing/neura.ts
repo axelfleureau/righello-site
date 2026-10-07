@@ -8,6 +8,7 @@ import type { Landing } from './types';
 const base = '/progetti/landing/neura';
 
 export default {
+  variant: 'caso',
   tagline: 'Una pagina che spiega a una famiglia, con calma, perché serve un aiuto allo studio.',
   metrics: [
     {

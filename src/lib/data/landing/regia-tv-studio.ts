@@ -84,6 +84,7 @@ const introVeneto = clip('intro-veneto', 'Sigla di apertura Calcio Veneto: due s
 const introFvg = clip('intro-fvg', 'Sigla di apertura Calcio FVG: due società, giornata, campionato e data');
 
 export default {
+  variant: 'broadcast',
   tagline: 'Il gestionale dei sogni di chi produce partite per la TV.',
   hero: gol,
   metrics: [

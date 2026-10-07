@@ -18,6 +18,7 @@ const phone = (file: string, alt: string, caption?: string, ratio = '400/867') =
 });
 
 export default {
+  variant: 'app',
   tagline: 'Trova il locale, chiedi un tavolo, raccogli i timbri: tutto in un\'app.',
 
   metrics: [

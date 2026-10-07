@@ -5,6 +5,7 @@ import type { Landing } from './types';
 // niente funzioni che ripetono il capitolo: si scrive solo cio' che e' verificabile.
 
 export default {
+  variant: 'caso',
   tagline: 'Foto e video per far scegliere un hotel con spa prima ancora di prenotare.',
   metrics: [],
   chapters: [

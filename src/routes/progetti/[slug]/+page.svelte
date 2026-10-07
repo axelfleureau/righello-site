@@ -213,6 +213,7 @@
 
   .rel__grid {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
     margin: 0;
     padding: 0;
@@ -225,6 +226,7 @@
 
   .rel__card {
     position: relative;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -244,6 +246,8 @@
   .rel__card:focus-visible { outline: 2px solid var(--a); outline-offset: 3px; }
 
   .rel__top { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; margin-bottom: auto; }
+  /* le etichette di stato lunghe vanno a capo dentro la scheda invece di spingerla fuori dallo schermo */
+  .rel__top :global(.sb.sb--compact) { min-width: 0; max-width: 100%; white-space: normal; }
 
   .rel__name { font-weight: var(--pg-display-weight); font-size: 1.7rem; letter-spacing: var(--pg-display-tracking); line-height: 1; }
 

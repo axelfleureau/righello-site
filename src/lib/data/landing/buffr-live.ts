@@ -3,6 +3,7 @@ import type { Landing } from './types';
 const A = '/progetti/landing/buffr-live';
 
 export default {
+  variant: 'gestionale',
   tagline: 'Il calcio dei dilettanti, in diretta dal campo.',
 
   metrics: [

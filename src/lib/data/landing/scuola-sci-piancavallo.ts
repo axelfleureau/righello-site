@@ -3,6 +3,7 @@ import type { Landing } from './types';
 const base = '/progetti/landing/scuola-sci-piancavallo';
 
 export default {
+  variant: 'caso',
   tagline: 'Un sito che segue la stagione: d\'inverno la neve e i corsi, d\'estate il camp.',
 
   metrics: [

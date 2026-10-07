@@ -5,6 +5,7 @@ import type { Landing } from './types';
 const base = '/progetti/landing/fiumedica';
 
 export default {
+  variant: 'caso',
   tagline: 'Un sito che porta il paziente al passo giusto: prenotare, ritirare il referto, chiamare.',
   metrics: [
     {

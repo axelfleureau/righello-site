@@ -23,6 +23,7 @@ const phone = (file: string, alt: string, caption?: string) => ({
 });
 
 export default {
+  variant: 'gestionale',
   tagline: 'Clienti, task, ore e crediti in un posto solo. E un’AI che ti dice cosa conta adesso.',
 
   metrics: [

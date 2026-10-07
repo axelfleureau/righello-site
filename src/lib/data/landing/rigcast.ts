@@ -4,6 +4,7 @@ const A = '/progetti/landing/rigcast';
 const WIDE = '1400/643';
 
 export default {
+  variant: 'app',
   tagline: 'Il video va dritto dal telefono alla regia. Niente nel mezzo.',
 
   metrics: [

@@ -27,6 +27,7 @@ const app = (file: string, alt: string, caption?: string) => ({
 });
 
 export default {
+  variant: 'gestionale',
   tagline: 'Dallo scatto alla vendita: gallery protette, consegna sicura, il tuo marchio.',
 
   metrics: [

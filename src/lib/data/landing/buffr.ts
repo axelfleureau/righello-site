@@ -3,6 +3,7 @@ import type { Landing } from './types';
 const A = '/progetti/landing/buffr';
 
 export default {
+  variant: 'app',
   tagline: 'Registra sempre. Salva dopo che è successo.',
 
   metrics: [

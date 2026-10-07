@@ -6,6 +6,7 @@ import type { Landing } from './types';
  * Non si riportano numeri di contatti, di messaggi o di costi.
  */
 export default {
+  variant: 'pa',
   tagline: 'Risponde ai cittadini con le pagine del Comune. Se non trova, lo dice.',
   metrics: [
     { value: 431, label: 'domande di prova', note: 'quattro elenchi di domande di collaudo: 110 + 88 + 183 + 50' },

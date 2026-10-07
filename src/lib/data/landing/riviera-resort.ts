@@ -7,6 +7,7 @@ import type { Landing } from './types';
 const base = '/progetti/landing/riviera-resort';
 
 export default {
+  variant: 'caso',
   tagline: 'Il resort di Lignano Sabbiadoro visto dall’alto, tra mare e pineta, in 36 secondi.',
   metrics: [
     { text: '36 s', label: 'di riprese in un solo video', note: 'durata del file originale' },

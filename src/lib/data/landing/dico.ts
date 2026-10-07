@@ -6,6 +6,7 @@ import type { Landing } from './types';
  * nessun numero di iscritti o di costi, nessuna persona.
  */
 export default {
+  variant: 'pa',
   tagline: 'La redazione di un Comune in un posto solo: un messaggio a settimana, e i dettagli a un clic.',
   metrics: [
     { value: 10, label: 'macro tematiche pronte', note: 'emergenze, viabilità, rifiuti, scuola, tributi, sociale, sport, cultura, servizi, avvisi' },

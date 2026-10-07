@@ -27,6 +27,7 @@ const phone = (file: string, alt: string, caption?: string, ratio = '400/867') =
 });
 
 export default {
+  variant: 'gestionale',
   tagline: 'Tutta la sala su un iPad. E la comanda in tasca al cameriere.',
 
   metrics: [

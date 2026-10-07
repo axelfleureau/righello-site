@@ -3,6 +3,7 @@ import type { Landing } from './types';
 const base = '/progetti/landing/bibione-sand-storm';
 
 export default {
+  variant: 'caso',
   tagline: 'Il sito del mondiale su sabbia: statico, bilingue, senza tracciamenti, già in produzione.',
 
   metrics: [
