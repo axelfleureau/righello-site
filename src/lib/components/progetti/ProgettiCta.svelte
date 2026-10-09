@@ -2,12 +2,14 @@
   import ProButton from './ProButton.svelte';
 
   export let schedulingUrl = '/contatti';
+  /** L'etichetta sopra il titolo: ogni pagina che chiude con questo blocco dice il proprio numero di sezione. */
+  export let kicker = '04 · Il prossimo sei tu';
 </script>
 
 <section class="cta">
   <div class="cta__bg" aria-hidden="true"></div>
   <div class="section-container cta__in">
-    <p class="cta__kicker">04 · Il prossimo sei tu</p>
+    <p class="cta__kicker">{kicker}</p>
     <h2 class="cta__title">Hai un progetto? <span class="gradient-text">Costruiamolo davvero.</span></h2>
 
     <a class="cta__mail" href="mailto:hello@wearerighello.com">

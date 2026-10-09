@@ -237,8 +237,8 @@
   @media (min-width: 1024px) {
     .visual-column {
       display: block;
-      flex: 0 0 50%;
-      max-width: 50%;
+      flex: 0 0 38%;
+      max-width: 38%;
     }
   }
   
@@ -331,8 +331,8 @@
   @media (min-width: 1024px) {
     .content-column {
       gap: 0;
-      padding-top: 15vh;
-      padding-bottom: 45vh;
+      padding-top: 6vh;
+      padding-bottom: 12vh;
     }
   }
   
@@ -348,10 +348,10 @@
   
   @media (min-width: 1024px) {
     .content-item {
-      min-height: 40vh;
+      min-height: 22vh;
       display: flex;
       align-items: center;
-      padding: 2rem;
+      padding: 1.25rem 2rem;
       background: transparent;
       border: 1px solid transparent;
       border-radius: 1rem;

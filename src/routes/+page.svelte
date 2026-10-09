@@ -1,134 +1,66 @@
 <script lang="ts">
-  import { projects, departments, clients } from '$lib/data/projects';
+  import '$lib/components/progetti/tokens.css';
+  import '$lib/components/progetti/landing/landing.css';
+  import { clients } from '$lib/data/projects';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
-  import GlowCard from '$lib/components/GlowCard.svelte';
   import LogoCarousel from '$lib/components/LogoCarousel.svelte';
-  import MagneticButton from '$lib/components/MagneticButton.svelte';
   import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
   import AnimatedVideoTestimonials from '$lib/components/AnimatedVideoTestimonials.svelte';
-  import TestimonialsParallax from '$lib/components/TestimonialsParallax.svelte';
   import StickyScrollReveal from '$lib/components/StickyScrollReveal.svelte';
-  import AppleScrolly from '$lib/components/AppleScrolly.svelte';
-  import BenefitsSection from '$lib/components/BenefitsSection.svelte';
   import FAQ from '$lib/components/FAQ.svelte';
-  import BackgroundBeams from '$lib/components/BackgroundBeams.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
   import SocialReelShowcase from '$lib/components/SocialReelShowcase.svelte';
   import HorizontalVideoShowcase from '$lib/components/HorizontalVideoShowcase.svelte';
-  import PesoSection from '$lib/components/PesoSection.svelte';
-  import RippleGrid from '$lib/components/RippleGrid.svelte';
-  import { onMount } from 'svelte';
+  import SectionNav from '$lib/components/progetti/landing/SectionNav.svelte';
+  import ProgettiCta from '$lib/components/progetti/ProgettiCta.svelte';
+  import HomeHero from '$lib/components/home/HomeHero.svelte';
+  import HomeProducts from '$lib/components/home/HomeProducts.svelte';
+  import HomeServices from '$lib/components/home/HomeServices.svelte';
+  import HomeSites from '$lib/components/home/HomeSites.svelte';
   import { env } from '$env/dynamic/public';
   import type { PageData } from './$types';
 
   export let data: PageData;
   export let form: Record<string, unknown> | null = null;
-  
+
   const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
-  
-  const homepageServices = departments.filter(dept => dept.id !== 'agenti-ai').map(dept => ({
-    id: dept.id,
-    title: dept.name,
-    description: dept.description,
-    icon: dept.icon === 'camera' ? 'sparkles' : dept.icon === 'target' ? 'target' : 'code',
-  }));
-  
-  
-  const featuredProjects = projects.filter(p => p.featured);
-  
+
+  // Le sezioni dopo l'apertura, nello stesso ordine e con la stessa mini-navigazione delle schede prodotto.
+  const sections = [
+    { id: 'prodotti', label: 'Prodotti' },
+    { id: 'servizi', label: 'Cosa facciamo' },
+    { id: 'lavori', label: 'Lavori' },
+    { id: 'clienti', label: 'Clienti' },
+    { id: 'metodo', label: 'Metodo' },
+    { id: 'contatti', label: 'Contatti' },
+  ];
+
+  // Le tre strade dalla prima schermata: una per ogni cosa che Righello fa.
+  const paths = [
+    { n: '01', title: 'Prodotti nostri', text: 'App e gestionali che costruiamo noi.', href: '#prodotti' },
+    { n: '02', title: 'Siti e software su misura', text: 'Per le aziende del territorio.', href: '#servizi' },
+    { n: '03', title: 'Marketing e video', text: 'Social, campagne, foto e video.', href: '#video' },
+  ];
+
+  // DA CONFERMARE (Axel): numeri e riconoscimenti non verificabili dal codice. Lasciati come erano.
   const stats = [
     { value: 470, suffix: '+', label: 'Progetti completati' },
     { value: 25, suffix: 'M+', label: 'Views generate' },
     { value: 98, suffix: '%', label: 'Clienti soddisfatti' },
     { value: 8, suffix: '.5x', label: 'ROAS medio ads' },
   ];
-  
+
   const credibilityBadges = [
     { icon: 'meta', label: 'Meta Partner' },
     { icon: 'google', label: 'Google Partner' },
     { icon: 'star', label: '5.0 Rating' },
   ];
 
-  const localLandingLinks = [
-    {
-      href: '/progetti',
-      label: 'Case study e progetti Righello',
-      description: 'Siti web, campagne, contenuti, software custom e prodotti digitali realizzati per aziende reali.',
-    },
-    {
-      href: '/buffr',
-      label: 'BUFFR app iOS by Righello',
-      description: 'La camera buffer per iPhone firmata Righello S.r.l.: replay istantanei per sport, live event e creator.',
-    },
-    {
-      href: '/agenzia-marketing-pordenone',
-      label: 'Agenzia marketing a Pordenone',
-      description: 'Strategia, social, advertising, siti web e automazioni per aziende in Friuli-Venezia Giulia.',
-    },
-    {
-      href: '/agenzia-marketing-mestre',
-      label: 'Agenzia marketing a Mestre',
-      description: 'Marketing, contenuti, performance e sviluppo digitale per aziende tra Mestre, Venezia e Veneto.',
-    },
-    {
-      href: '/bando-intelligenza-artificiale-fvg-2026',
-      label: 'Bando Intelligenza Artificiale FVG 2026',
-      description: 'Consulenza per trasformare processi, documenti e workflow in un progetto AI finanziabile in Friuli Venezia Giulia.',
-    },
-  ];
-
-  // Hero poster URL — preloaded in <svelte:head> for fast cold-cache reveal.
-  // Priority order:
-  //   1. Cloudinary thumbnail (works in ALL browsers incl. in-app WebViews)
-  //   2. YouTube CDN (blocked by Instagram / Facebook / TikTok in-app browsers)
+  // Poster dell'apertura, caricato in anticipo: preferisce la miniatura Cloudinary (vale anche nei
+  // browser interni di Instagram, Facebook e TikTok, che bloccano img.youtube.com).
   const heroYoutubeId = data.heroVideo?.youtubeId ?? 'Rj5N4BMF-Vw';
-  const heroPosterUrl = data.heroVideo?.thumbnailUrl
-    ?? `https://img.youtube.com/vi/${heroYoutubeId}/hqdefault.jpg`;
+  const heroPosterUrl = data.heroVideo?.thumbnailUrl ?? `https://img.youtube.com/vi/${heroYoutubeId}/hqdefault.jpg`;
 
-  const heroPartners = [
-    { name: 'Barcolana',           logo: '/logos/barcolana.png' },
-    { name: 'Canale 77',           logo: '/logos/canale-77.webp' },
-    { name: 'Comune di Pordenone', logo: '/logos/comune-pordenone.png', noFilter: true },
-    { name: 'Ippodromo Merano',    logo: '/logos/ippodromo-merano.png' },
-    { name: 'Reguta',              logo: '/logos/reguta.png' },
-    { name: 'Ricci Group',         logo: '/logos/ricci-group.webp' },
-    { name: 'Riviera Resort',      logo: '/logos/riviera-resort.png' },
-    { name: 'Portopiccolo Apartments', logo: '/logos/portopiccolo-apartments.webp' },
-    { name: 'Quellenhof',          logo: '/logos/quellenhof.png' },
-    { name: 'Scuola Sci Piancavallo', logo: '/logos/scuola-sci-piancavallo.png', noFilter: true },
-    { name: 'Bibione Sand Storm',  logo: '/logos/bibione-sand-storm.webp', noFilter: true },
-    { name: '3R Technology',       logo: '/logos/3r-technology.png' },
-    { name: 'Tenuta Polvaro',      logo: '/logos/tenuta-polvaro.png' },
-    { name: 'VIP Motors',          logo: '/logos/vip-motors.png' },
-    { name: 'Zanutta',             logo: '/logos/zanutta.png' },
-    { name: 'La Busa del Sauc',    logo: '/logos/busa-del-sauc.png' },
-    { name: 'Ardea',               logo: '/logos/ardea-autoscuola.png' },
-    { name: 'Comune di Fanna',     logo: '/logos/comune-di-fanna.png', noFilter: true },
-    { name: 'G&M Ambiente',        logo: '/logos/gm-ambiente.png' },
-    { name: 'SystemDoc',           logo: '/logos/systemdoc.png' },
-    { name: 'DICO Online',         logo: '/logos/dico-online.webp', noFilter: true },
-    { name: 'Neura',               logo: '/logos/neura.png' },
-    { name: 'Finestre Art',        logo: '/logos/finestre-art.png' },
-    { name: 'Dual Factory',        logo: '/logos/dual-factory.png' },
-    { name: 'Solerò Sport Village', logo: '/logos/solero.png' },
-    { name: 'Noiclub',             logo: '/logos/noiclub.png' },
-    { name: 'Ennevi Costruzioni',  logo: '/logos/ennevi.png' },
-    { name: 'MG Grill BBQ',        logo: '/logos/mggrill.png', noFilter: true },
-    { name: 'Alla Catina',         logo: '/logos/alla-catina.webp' },
-    { name: 'Geom. Mauro Poles',   logo: '/logos/poles.png' },
-    { name: 'Dolfo Srl',           logo: '/logos/dolfo.png' },
-    { name: 'Hotel Miramare',      logo: '/logos/hotel-miramare.png' },
-    { name: 'Razor Padel',         logo: '/logos/razorpadel.avif' },
-    { name: 'Tubaro & Co.',        logo: '/logos/tubaro.png' },
-    { name: 'Living Door',         logo: '/logos/livingdoor.png' },
-    { name: 'Il Salotto',          logo: '/logos/salotto.png' },
-    { name: 'Hotel Elite',         logo: '/logos/hotel-elite.png' },
-    { name: 'Garden Hotel Michelangelo', logo: '/logos/hotel-michelangelo.png' },
-    { name: 'Mangio',                  logo: '/logos/mangio.png',             noFilter: true },
-    { name: 'Tomasella',               logo: '/logos/tomasella.png',          noFilter: true },
-    { name: 'Reginato Srl',            logo: '/logos/reginato.png',           noFilter: true },
-  ];
-  
   const processSteps = [
     {
       title: 'Audit e benchmark',
@@ -151,16 +83,7 @@
       icon: 'growth',
     },
   ];
-  
-  import { browser } from '$app/environment';
-  
-  let mounted = false;
-  
-  onMount(() => {
-    mounted = true;
-  });
 </script>
-
 <svelte:head>
   <title>Righello | Agenzia Marketing a Pordenone e Mestre</title>
   <meta name="description" content="Agenzia marketing a Pordenone e Mestre: social media, advertising, siti web, software e automazioni AI per aziende in Friuli-Venezia Giulia e Veneto." />
@@ -181,256 +104,116 @@
   <link rel="preload" as="image" href={heroPosterUrl} fetchpriority="high" />
 </svelte:head>
 
-<AppleScrolly 
-  {credibilityBadges} 
-  partners={heroPartners}
+<HomeHero
+  {credibilityBadges}
+  {paths}
   heroVideoCloudinaryUrl={data.heroVideo?.cloudinaryUrl}
-  heroVideoYoutubeId={data.heroVideo?.youtubeId ?? 'Rj5N4BMF-Vw'}
+  heroVideoYoutubeId={heroYoutubeId}
   heroVideoThumbnailUrl={data.heroVideo?.thumbnailUrl}
 />
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+<!-- Tutto cio' che segue sta in un contenitore solo, cosi' la mini-navigazione resta attaccata finche' ci sono sezioni.
+     "lp" porta con se' i colori della navigazione; "home-scope" lo rende trasparente al layout. -->
+<div class="lp home-scope">
+  <SectionNav items={sections} />
 
-<section id="risultati" class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
-  <div class="section-container">
-    <RevealOnScroll animation="fly-up">
-      <div class="section-header">
-        <p class="section-subtitle">Risultati reali</p>
-        <h2 class="section-title max-w-4xl mx-auto">
-          Numeri, non <span class="gradient-text">promesse</span>
-        </h2>
-      </div>
-    </RevealOnScroll>
-    
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8" style="grid-auto-rows: 1fr;">
-      {#each stats as stat, i}
-        <RevealOnScroll animation="scale" delay={0} stagger={100} index={i}>
-          <div class="glass-card rounded-2xl p-6 md:p-8 text-center hover-lift h-full flex flex-col justify-center">
-            <div class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text mb-2">
-              <AnimatedCounter target={stat.value} duration={2000} />{stat.suffix}
-            </div>
-            <p class="text-sm md:text-base text-[var(--text-secondary)]">{stat.label}</p>
-          </div>
-        </RevealOnScroll>
-      {/each}
-    </div>
+  <HomeProducts />
+
+  <HomeServices />
+
+  <HomeSites />
+
+  <div id="video" class="video-band">
+    <HorizontalVideoShowcase
+      title="Creiamo esperienze memorabili"
+      subtitle="Video Production"
+      description="Video istituzionali, contenuti dimostrativi e casi studio per raccontare il tuo brand"
+      items={data.showcaseItems}
+    />
+    <SocialReelShowcase externalItems={data.reelItems} />
   </div>
-</section>
 
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
-
-<section id="servizi" class="section-padding relative">
-  <div class="section-container">
-    <RevealOnScroll animation="fly-up">
-      <div class="section-header">
-        <p class="section-subtitle">I nostri servizi</p>
-        <h2 class="section-title mb-4">Cosa <span class="gradient-text">facciamo</span></h2>
-        <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-          Marketing, sviluppo web e automazione: tre competenze integrate che trasformano il tuo business in un sistema di crescita misurabile.
-        </p>
-      </div>
-    </RevealOnScroll>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {#each homepageServices as service, i}
-        <RevealOnScroll animation="fly-up" stagger={80} index={i}>
-          <GlowCard class="h-full">
-            <div class="p-8">
-              <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-righello-pink/20 to-cyan-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                {#if service.icon === 'palette'}
-                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                  </svg>
-                {:else if service.icon === 'sparkles'}
-                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                  </svg>
-                {:else if service.icon === 'code'}
-                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                {:else if service.icon === 'camera'}
-                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                {:else if service.icon === 'cpu'}
-                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                {:else if service.icon === 'target'}
-                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                {:else}
-                  <svg class="w-7 h-7 text-righello-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                {/if}
-              </div>
-              <h3 class="text-xl font-semibold mb-3 text-[var(--text-primary)]">{service.title}</h3>
-              <p class="text-[var(--text-secondary)] leading-relaxed">{service.description}</p>
-            </div>
-          </GlowCard>
-        </RevealOnScroll>
-      {/each}
+  <section id="clienti" class="clients section-padding">
+    <div class="section-container">
+      <RevealOnScroll animation="fly-up">
+        <div class="section-header">
+          <p class="section-subtitle">Chi lavora con noi</p>
+          <h2 class="section-title">Chi si fida di <span class="gradient-text">noi</span></h2>
+        </div>
+      </RevealOnScroll>
     </div>
-    
-    <RevealOnScroll animation="fly-up" delay={400}>
-      <div class="text-center mt-12">
-        <MagneticButton href="/servizi" variant="secondary">
-          Scopri tutti i servizi
-          <svg class="w-4 h-4 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </MagneticButton>
-      </div>
-    </RevealOnScroll>
 
-    <RevealOnScroll animation="fly-up" delay={500}>
-      <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-        {#each localLandingLinks as local}
-          <a
-            href={local.href}
-            class="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-righello-pink/50 hover:bg-white/[0.06]"
-          >
-            <span class="text-sm font-semibold uppercase tracking-[0.14em] text-righello-pink">{local.label}</span>
-            <p class="mt-2 text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">{local.description}</p>
-          </a>
+    <LogoCarousel items={clients} speed={60} pauseOnHover={true} scaleOnHover={true} fadeEdges={false} gap={64} itemHeight={48} />
+
+    <div class="clients__voices">
+      <AnimatedVideoTestimonials testimonials={data.testimonialItems} />
+    </div>
+  </section>
+
+  <section id="risultati" class="results section-padding">
+    <div class="section-container">
+      <RevealOnScroll animation="fly-up">
+        <div class="section-header">
+          <p class="section-subtitle">Risultati reali</p>
+          <h2 class="section-title max-w-4xl mx-auto">Numeri, non <span class="gradient-text">promesse</span></h2>
+        </div>
+      </RevealOnScroll>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8" style="grid-auto-rows: 1fr;">
+        {#each stats as stat, i}
+          <RevealOnScroll animation="scale" delay={0} stagger={100} index={i}>
+            <div class="glass-card rounded-2xl p-6 md:p-8 text-center hover-lift h-full flex flex-col justify-center">
+              <div class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text mb-2">
+                <AnimatedCounter target={stat.value} duration={2000} />{stat.suffix}
+              </div>
+              <p class="text-sm md:text-base text-[var(--text-secondary)]">{stat.label}</p>
+            </div>
+          </RevealOnScroll>
         {/each}
       </div>
-    </RevealOnScroll>
-  </div>
-</section>
-
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
-
-<div style="background: var(--bg-secondary);">
-  <HorizontalVideoShowcase 
-    title="Creiamo esperienze memorabili"
-    subtitle="Video Production"
-    description="Video istituzionali, contenuti dimostrativi e casi studio per raccontare il tuo brand"
-    items={data.showcaseItems}
-  />
-</div>
-
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
-
-<section id="testimonial" class="py-8 md:py-12 lg:py-16 relative overflow-hidden">
-  <div class="section-container">
-    <RevealOnScroll animation="fly-up">
-      <div class="section-header">
-        <p class="section-subtitle">Video Recensioni</p>
-        <h2 class="section-title mb-4">I clienti <span class="gradient-text">parlano di noi</span></h2>
-        <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-          Guarda le video testimonianze dei nostri clienti e scopri i risultati che abbiamo ottenuto insieme
-        </p>
-      </div>
-    </RevealOnScroll>
-  </div>
-  
-  <AnimatedVideoTestimonials testimonials={data.testimonialItems} />
-</section>
-
-<section id="clienti" class="pt-4 md:pt-8 pb-8 md:pb-12 lg:pb-16 overflow-hidden relative">
-  <div class="absolute inset-0 bg-gradient-to-r from-righello-pink/10 via-transparent to-righello-pink/10"></div>
-  <div class="absolute top-0 left-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-  <div class="absolute bottom-0 right-0 w-64 h-64 bg-righello-pink/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
-  
-  <RevealOnScroll animation="fade">
-    <div class="section-container">
-      <div class="section-header">
-        <p class="section-subtitle">I nostri clienti</p>
-        <h2 class="section-title">Chi si fida di <span class="gradient-text">noi</span></h2>
-      </div>
     </div>
-  </RevealOnScroll>
-  
-  <LogoCarousel 
-    items={clients} 
-    speed={60} 
-    pauseOnHover={true}
-    scaleOnHover={true}
-    fadeEdges={false}
-    gap={64}
-    itemHeight={48}
-  />
-</section>
+  </section>
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
+  <section id="metodo" class="method">
+    <StickyScrollReveal title="Il nostro metodo" subtitle="Come lavoriamo" content={processSteps} />
+  </section>
 
-<div class="relative" style="background: var(--bg-secondary);">
-  <SocialReelShowcase externalItems={data.reelItems} />
-</div>
-
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
-
-<div style="background: var(--bg-primary);">
-  <BenefitsSection />
-</div>
-
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
-
-<section id="metodo" class="relative" style="background: var(--bg-secondary);">
-  <StickyScrollReveal 
-    title="Il nostro metodo"
-    subtitle="Come lavoriamo"
-    content={processSteps}
-  />
-</section>
-
-<PesoSection />
-
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
-
-<div class="relative overflow-hidden">
-  <div class="absolute inset-0">
-    <RippleGrid 
-      gridColor="#D6487E"
-      opacity={0.15}
-      gridSize={12}
-      gridThickness={18}
-      rippleIntensity={0.02}
-      fadeDistance={1.8}
-      vignetteStrength={2.5}
-      glowIntensity={0.1}
-      mouseInteraction={true}
-      mouseInteractionRadius={1.2}
-    />
+  <div id="domande" class="faq-band">
+    <FAQ />
   </div>
-  <FAQ />
+
 </div>
 
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
-
-<section id="contattaci" class="section-padding relative overflow-hidden" style="background: var(--bg-secondary);">
-  <div class="absolute inset-0 cta-gradient"></div>
-  
-  <div class="section-container relative z-10">
-    <RevealOnScroll animation="scale">
-      <div class="glass-card rounded-3xl p-8 md:p-16 text-center mx-auto">
-        <h2 class="section-title mb-6">
-          Pronto a <span class="gradient-text">crescere?</span>
-        </h2>
-        <p class="text-xl text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto">
-          Ogni mese che passa senza una strategia è fatturato lasciato sul tavolo. Parliamo dei tuoi obiettivi e creiamo un piano d'azione concreto.
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <MagneticButton href={schedulingUrl} variant="primary" class="text-lg px-8 py-4">
-            Prenota una call gratuita
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </MagneticButton>
-        </div>
-      </div>
-    </RevealOnScroll>
-  </div>
-</section>
+<div id="contatti" class="closing">
+  <ProgettiCta {schedulingUrl} kicker="Contatti" />
+</div>
 
 <style>
-  .cta-gradient {
-    background: 
-      radial-gradient(ellipse at center, rgba(214, 72, 126, 0.15) 0%, transparent 60%),
-      radial-gradient(ellipse at 20% 80%, rgba(214, 72, 126, 0.1) 0%, transparent 50%);
+  /* il contenitore serve solo a portare i colori della navigazione: non deve cambiare l'impaginazione */
+  :global(.home-scope) {
+    display: contents;
+  }
+
+  .video-band,
+  .results,
+  .faq-band {
+    background: var(--bg-secondary);
+  }
+
+  .video-band,
+  .clients,
+  .results,
+  .method,
+  .faq-band,
+  .closing {
+    scroll-margin-top: calc(var(--lp-nav-top, 5.4rem) + 3.4rem);
+  }
+
+  .clients {
+    overflow: hidden;
+  }
+
+  .clients__voices {
+    margin-top: clamp(2rem, 5vw, 3.5rem);
   }
 </style>
