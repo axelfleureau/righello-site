@@ -7,7 +7,7 @@
   <div class="hero__glow" aria-hidden="true"></div>
 
   <div class="section-container hero__in">
-    <p class="hero__kicker"><a class="hero__crumb" href="/progetti?tipo=app#indice">Progetti</a> <span aria-hidden="true">/</span> BUFFR · app per iPhone</p>
+    <p class="hero__kicker"><a class="hero__crumb" href="/progetti?tipo=app#indice">Progetti</a> <span aria-hidden="true">/</span> BUFFR<span class="hero__sub"> · app per iPhone</span></p>
     <h1 id="buffr-titolo" class="hero__title">Prima succede.<br />Poi lo salvi.</h1>
     <p class="hero__lead">
       BUFFR tiene sempre gli ultimi secondi di quello che inquadri. Quando succede qualcosa, un tocco e sono tuoi.
@@ -57,6 +57,12 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--bf-pink-text);
+  }
+
+  /* sul telefono il kicker sta su una riga sola: «Progetti / BUFFR» */
+  @media (max-width: 479px) {
+    .hero__kicker { letter-spacing: 0.14em; }
+    .hero__sub { display: none; }
   }
 
   .hero__crumb {

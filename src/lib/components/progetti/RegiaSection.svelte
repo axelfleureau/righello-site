@@ -104,7 +104,7 @@
               </button>
               {#if i === active}
                 <div class="node__more" transition:fade={{ duration: 160 }}>
-                  <p>{node.line}</p>
+                  <p>{node.study.headline}</p>
                   <div class="node__meta">
                     <StatusBadge status={node.study.status} />
                     <a href={caseStudyHref(node.study)}>Scheda <span aria-hidden="true">→</span></a>
@@ -203,7 +203,7 @@
     isolation: isolate;
     --t2: rgba(255, 255, 255, 0.68);
     --line: rgba(255, 255, 255, 0.12);
-    padding: clamp(4rem, 9vw, 7rem) 0;
+    padding: var(--pg-section-pad) 0;
   }
 
   .rg__bg {
@@ -218,7 +218,7 @@
 
   .rg__kicker {
     margin: 0 0 1.2rem;
-    font: 600 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.78rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--t2);
@@ -227,7 +227,7 @@
   .rg__title {
     margin: 0;
     font-weight: var(--pg-display-weight);
-    font-size: clamp(2.5rem, 7vw, 6.4rem);
+    font-size: var(--pg-title-size);
     line-height: 0.95;
     letter-spacing: var(--pg-display-tracking);
   }
@@ -353,14 +353,19 @@
   }
 
   .node__meta a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
     color: #fff;
     font-size: 0.85rem;
     font-weight: 700;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.4);
+    text-underline-offset: 0.3em;
   }
 
-  .node__meta a:hover { border-color: #fff; }
+  .node__meta a:hover { text-decoration-color: #fff; }
+  .node__meta a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 0.3rem; }
 
   /* stage */
   .rg__stage {

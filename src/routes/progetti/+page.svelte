@@ -1,9 +1,10 @@
 <script lang="ts">
   import '$lib/components/progetti/tokens.css';
   import { env } from '$env/dynamic/public';
+  import { goto } from '$app/navigation';
   import { clients } from '$lib/data/projects';
-  import { caseStudies, caseStudyHref, showcaseStudies } from '$lib/data/case-studies';
-  import type { CaseStudy } from '$lib/data/case-studies';
+  import { caseStudies, caseStudyHref, kindChoice, kindOrder, showcaseStudies } from '$lib/data/case-studies';
+  import type { CaseStudy, ProjectKind } from '$lib/data/case-studies';
   import LogoCarousel from '$lib/components/LogoCarousel.svelte';
   import ProgettiHero from '$lib/components/progetti/ProgettiHero.svelte';
   import ProductShowcase from '$lib/components/progetti/ProductShowcase.svelte';
@@ -13,15 +14,11 @@
 
   const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
 
-  const software = caseStudies.filter((s) => ['app', 'gestionale', 'broadcast', 'piattaforma'].includes(s.kind));
   const dock = caseStudies.filter((s) => s.icon && s.kind !== 'sito');
 
-  const stats = [
-    { value: software.length, label: 'prodotti software costruiti da noi' },
-    { value: caseStudies.filter((s) => s.platform.some((p) => p === 'iPhone' || p === 'iPad')).length, label: 'app per iPhone e iPad' },
-    { value: caseStudies.filter((s) => s.kind === 'sito').length, label: 'siti su misura in vetrina' },
-    { value: caseStudies.filter((s) => s.status.tone === 'store').length, label: 'già pubblicata su App Store' },
-  ];
+  const kinds = kindOrder
+    .map((kind) => ({ kind, ...kindChoice[kind], count: caseStudies.filter((s) => s.kind === kind).length }))
+    .filter((k) => k.count > 0);
 
   const byId = (id: string) => caseStudies.find((s) => s.id === id)!;
   const stage = {
@@ -31,14 +28,17 @@
   };
 
   let showcase: ProductShowcase;
+  let index: WorkIndex;
 
+  // Un prodotto della vetrina si apre sulla sua scena; tutti gli altri vanno alla loro scheda.
   function pick(event: CustomEvent<CaseStudy>) {
     const study = event.detail;
-    if (showcaseStudies.some((s) => s.id === study.id)) {
-      showcase.goTo(study.id);
-    } else {
-      document.getElementById('regia')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    if (showcaseStudies.some((s) => s.id === study.id)) showcase.goTo(study.id);
+    else goto(caseStudyHref(study));
+  }
+
+  function pickKind(event: CustomEvent<ProjectKind>) {
+    index.show(event.detail);
   }
 
   const selectedClientNames = [
@@ -122,13 +122,13 @@
   {@html schemaMarkup}
 </svelte:head>
 
-<ProgettiHero {dock} {stats} {stage} on:pick={pick} />
+<ProgettiHero {dock} {kinds} {stage} on:pick={pick} on:kind={pickKind} />
 
 <ProductShowcase items={showcaseStudies} bind:this={showcase} />
 
 <RegiaSection />
 
-<WorkIndex items={caseStudies} />
+<WorkIndex items={caseStudies} bind:this={index} />
 
 <section class="clients" aria-label="Alcuni clienti">
   <p class="clients__label">Con chi lavoriamo</p>

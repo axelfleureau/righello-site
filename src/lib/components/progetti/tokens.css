@@ -1,6 +1,9 @@
 /* Titoli della pagina Progetti: stessi del resto del sito (Degular Display 700),
-   un solo punto da cui regolare peso e spaziatura. */
+   un solo punto da cui regolare peso, spaziatura e misure delle sezioni. */
 :root {
   --pg-display-weight: 700;
   --pg-display-tracking: -0.015em;
+  /* titolo e respiro di ogni sezione (vetrina, regia, elenco, chiusura) */
+  --pg-title-size: clamp(2.3rem, 5.6vw, 5rem);
+  --pg-section-pad: clamp(3.5rem, 7vw, 5.5rem);
 }

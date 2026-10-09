@@ -25,12 +25,18 @@
 
   const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
+  /** Scorrimento che attraversa tutte le scene: si misura al ridimensionamento, non a ogni fotogramma. */
+  let total = 0;
+  let listening = false;
+
+  function measureTotal() {
+    if (track) total = track.offsetHeight - window.innerHeight;
+  }
+
   function measure() {
     ticking = false;
-    if (mode !== 'scene' || !track) return;
+    if (mode !== 'scene' || !track || total <= 0) return;
     const rect = track.getBoundingClientRect();
-    const total = track.offsetHeight - window.innerHeight;
-    if (total <= 0) return;
     const p = Math.min(0.9999, clamp(-rect.top / total));
     const n = scenes.length;
     active = Math.min(n - 1, Math.floor(p * n));
@@ -43,10 +49,28 @@
     requestAnimationFrame(measure);
   }
 
+  function onResize() {
+    measureTotal();
+    onScroll();
+  }
+
+  /** I listener ci sono solo con le scene fisse: sul telefono lo scorrimento non costa niente. */
+  function listen(on: boolean) {
+    if (on === listening) return;
+    listening = on;
+    if (on) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize, { passive: true });
+    } else {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+    }
+  }
+
   export function goTo(i: number) {
     if (mode === 'scene') {
       const top = track.getBoundingClientRect().top + window.scrollY;
-      const total = track.offsetHeight - window.innerHeight;
+      measureTotal();
       window.scrollTo({ top: top + total * ((i + 0.35) / scenes.length), behavior: 'smooth' });
     } else {
       document.getElementById(`scena-${scenes[i].id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -92,8 +116,11 @@
     setTimeout(() => (ready = true), 60);
     if (mode === 'scene') {
       io?.disconnect();
+      measureTotal();
       measure();
+      listen(true);
     } else {
+      listen(false);
       watchPosters();
     }
   }
@@ -103,22 +130,19 @@
     mq = window.matchMedia('(min-width: 1024px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)');
     apply();
     mq.addEventListener('change', apply);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
   });
 
   onDestroy(() => {
     if (typeof window === 'undefined') return;
     mq?.removeEventListener('change', apply);
-    window.removeEventListener('scroll', onScroll);
-    window.removeEventListener('resize', onScroll);
+    listen(false);
     io?.disconnect();
     destroyed = true;
   });
 </script>
 
 <section id="funziona" class="st" class:st--scene={mode === 'scene'} class:st--ready={ready} aria-label="Come funziona BUFFR">
-  <div class="st__track" bind:this={track} style={mode === 'scene' ? `--n:${scenes.length}` : undefined}>
+  <div class="st__track" bind:this={track} style="--n:{scenes.length}">
     <div class="st__sticky">
       <div class="st__bg" aria-hidden="true"></div>
 
@@ -286,9 +310,14 @@
   }
 
   /* ---------- scene sticky (desktop) ---------- */
-  .st--scene .st__track {
-    height: calc(var(--n) * 125vh + 100vh);
-    height: calc(var(--n) * 125svh + 100svh);
+  /* L'altezza delle scene fisse è data dal CSS fin dal primo disegno: la pagina sotto non si sposta
+     quando il JavaScript le accende. */
+  @media (min-width: 1024px) and (min-height: 620px) and (prefers-reduced-motion: no-preference) {
+    .st__track {
+      height: calc(var(--n) * 95vh + 100vh);
+      height: calc(var(--n) * 95svh + 100svh);
+      overflow: clip;
+    }
   }
 
   .st--scene .st__sticky {
@@ -367,9 +396,7 @@
     padding: 0.4rem;
     border-radius: 999px;
     border: 1px solid var(--bf-line);
-    background: rgba(12, 12, 14, 0.66);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(12, 12, 14, 0.9);
   }
 
   .rail__btn {
