@@ -1,6 +1,7 @@
 <script lang="ts">
-  import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
-  import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import ServicePage from '$lib/components/servizi/ServicePage.svelte';
+  import { agencyModel } from '$lib/components/servizi/models';
+  import { getServiceBySlug, serviceFaqs } from '$lib/data/service-details';
 
   const services = [
     {
@@ -22,43 +23,13 @@
   ];
 
   const proofPoints = [
-    'Strategia, produzione, campagne e sviluppo nello stesso tavolo: niente scaricabarile tra reparti.',
-    'Partiamo dai numeri, ma non parliamo come un foglio Excel in giacca.',
-    'Ogni contenuto deve sapere dove sta andando: attenzione, fiducia, richiesta, vendita.',
+    'Strategia, produzione, campagne e sviluppo nello stesso tavolo: niente rimpalli tra reparti.',
+    'Partiamo dai numeri, ma sappiamo raccontarli in modo che si capiscano.',
+    'Ogni contenuto sa dove sta andando: attenzione, fiducia, richiesta, vendita.',
     'Il territorio conta, ma non basta: serve un sistema digitale che si faccia ricordare.',
   ];
 
-  const homeFunnelLinks = [
-    {
-      href: '/#risultati',
-      number: '01',
-      title: 'Numeri prima delle promesse',
-      description: 'Parti dai risultati: cosa misuriamo, perche\' lo misuriamo e dove vogliamo arrivare.',
-    },
-    {
-      href: '/#servizi',
-      number: '02',
-      title: 'Il sistema completo',
-      description: 'Marketing, advertising, web, software e AI nello stesso flusso operativo.',
-    },
-    {
-      href: '/#testimonial',
-      number: '03',
-      title: 'Righello in movimento',
-      description: 'Guarda video, casi e clienti: la parte che una landing locale non puo\' raccontare da sola.',
-    },
-  ];
-
-  const localAreas = [
-    'Pordenone',
-    'Cordenons',
-    'Porcia',
-    'Sacile',
-    'Spilimbergo',
-    'San Vito al Tagliamento',
-    'Maniago',
-    'Friuli-Venezia Giulia',
-  ];
+  const localAreas = ['Pordenone', 'Cordenons', 'Porcia', 'Sacile', 'Spilimbergo', 'San Vito al Tagliamento', 'Maniago', 'Friuli-Venezia Giulia'];
 
   const faqs = [
     {
@@ -136,6 +107,53 @@
       },
     ],
   };
+
+  const m = agencyModel({
+    city: 'Pordenone',
+    kicker: 'Pordenone, provincia e Friuli-Venezia Giulia',
+    title: 'Agenzia marketing a Pordenone, ma senza la solita agenzia.',
+    lead: 'Se il tuo marketing non si fa notare, non è colpa di Pordenone. Righello costruisce sistemi digitali che mettono in fila strategia, contenuti, advertising, sito e automazioni: meno rumore, più direzione.',
+    panel: { title: 'Perché Righello', points: proofPoints },
+    scope: {
+      kicker: 'Cosa facciamo',
+      title: 'Le leve giuste, nella sequenza giusta.',
+      highlight: 'nella sequenza giusta',
+      texts: Object.fromEntries(services.map((x, i) => [['marketing', 'advertising', 'web', 'agenti-ai'][i], x.description])),
+    },
+    proof: [{ id: 'fiumedica' }, { id: 'scuola-sci-piancavallo' }, { id: 'reguta' }, { id: 'tetha' }],
+    note: getServiceBySlug('agenti-ai')?.note
+      ? (() => {
+          const n = getServiceBySlug('agenti-ai')!.note!;
+          return { kicker: n.kicker, title: n.title, text: n.text, link: { href: n.href, label: n.label } };
+        })()
+      : undefined,
+    local: {
+      kicker: 'Dove operiamo',
+      title: 'Locali quando serve. Ambiziosi sempre.',
+      paragraphs: [
+        'La ricerca «agenzia marketing Pordenone» deve trovare una risposta chiara, ma la pagina non deve sembrare scritta per un motore di ricerca. Raccontiamo dove operiamo, cosa facciamo e perché un’azienda dovrebbe ricordarsi di Righello dopo dieci risultati tutti uguali.',
+      ],
+      areas: localAreas,
+      links: [
+        { href: '/servizi/marketing', label: 'Social media marketing' },
+        { href: '/servizi/advertising', label: 'Google Ads e Meta Ads' },
+        { href: '/servizi/web', label: 'Siti web e landing page' },
+        { href: '/servizi/agenti-ai', label: 'Automazioni e agenti AI' },
+        { href: '/progetti', label: 'Progetti e casi studio' },
+      ],
+    },
+    faq: [
+      ...faqs.map((f) => ({ q: f.question, a: f.answer })),
+      ...serviceFaqs.filter((f) => ['Che garanzie offrite sui risultati?', 'Come funziona il pagamento?'].includes(f.q)).map((f) => ({ q: f.q, a: f.a })),
+    ],
+    closing: {
+      kicker: 'Audit gratuito',
+      title: 'Vuoi essere trovato a Pordenone e scelto per un motivo?',
+      highlight: 'scelto per un motivo',
+      text: 'Guardiamo sito, contenuti, Google Business Profile, tracciamento e concorrenti locali. Poi decidiamo cosa va sistemato prima: visibilità, messaggio o conversione.',
+    },
+    other: { href: '/agenzia-marketing-mestre', name: 'Agenzia marketing a Mestre' },
+  });
 </script>
 
 <svelte:head>
@@ -164,462 +182,4 @@
   {@html `<script type="application/ld+json">${JSON.stringify(structuredData)}</script>`}
 </svelte:head>
 
-<section class="local-hero">
-  <div class="section-container">
-    <RevealOnScroll animation="fly-up">
-      <p class="eyebrow">Pordenone, provincia e Friuli-Venezia Giulia</p>
-      <h1>Agenzia marketing a Pordenone, ma senza la solita agenzia.</h1>
-      <p class="hero-copy">
-        Se il tuo marketing non si fa notare, non e' colpa di Pordenone. Righello costruisce sistemi digitali
-        che mettono in fila strategia, contenuti, advertising, sito e automazioni: meno rumore, piu' direzione.
-      </p>
-      <div class="hero-actions">
-        <MagneticButton href="/contatti" variant="primary">Parliamone</MagneticButton>
-        <MagneticButton href="/" variant="secondary">Entra nella home</MagneticButton>
-      </div>
-    </RevealOnScroll>
-  </div>
-</section>
-
-<section class="home-funnel">
-  <div class="section-container">
-    <RevealOnScroll animation="fly-up">
-      <div class="home-funnel-head">
-        <p class="eyebrow">La pagina giusta e' la home</p>
-        <h2>Questa pagina ti ha trovato. La home ti fa capire se siamo quelli giusti.</h2>
-        <p>
-          Qui confermiamo una cosa semplice: lavoriamo anche per aziende di Pordenone.
-          Ma la vera identita' Righello vive nella home, con ritmo, casi, video, metodo e tutto il sistema in movimento.
-        </p>
-        <MagneticButton href="/" variant="primary">Guarda Righello davvero</MagneticButton>
-      </div>
-    </RevealOnScroll>
-
-    <div class="funnel-grid">
-      {#each homeFunnelLinks as link}
-        <RevealOnScroll animation="fly-up">
-          <a href={link.href} class="funnel-card">
-            <span>{link.number}</span>
-            <h3>{link.title}</h3>
-            <p>{link.description}</p>
-          </a>
-        </RevealOnScroll>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<section class="local-section local-section-alt">
-  <div class="section-container split">
-    <RevealOnScroll animation="fly-up">
-      <div>
-        <p class="eyebrow">Perché Righello</p>
-        <h2>Non vendiamo post. Costruiamo sistemi che tengono insieme attenzione e fatturato.</h2>
-      </div>
-    </RevealOnScroll>
-    <RevealOnScroll animation="fly-up" delay={120}>
-      <div class="proof-list">
-        {#each proofPoints as point}
-          <div class="proof-item">
-            <span aria-hidden="true">✓</span>
-            <p>{point}</p>
-          </div>
-        {/each}
-      </div>
-    </RevealOnScroll>
-  </div>
-</section>
-
-<section class="local-section">
-  <div class="section-container">
-    <RevealOnScroll animation="fly-up">
-      <div class="section-heading">
-        <p class="eyebrow">Cosa facciamo</p>
-        <h2>Le leve giuste, nella sequenza giusta.</h2>
-      </div>
-    </RevealOnScroll>
-
-    <div class="service-grid">
-      {#each services as service}
-        <RevealOnScroll animation="fly-up">
-          <article class="service-card">
-            <h3>{service.title}</h3>
-            <p>{service.description}</p>
-          </article>
-        </RevealOnScroll>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<section class="local-section local-section-alt">
-  <div class="section-container split">
-    <RevealOnScroll animation="fly-up">
-      <div>
-        <p class="eyebrow">Copertura locale</p>
-        <h2>Locali quando serve. Ambiziosi sempre.</h2>
-        <p class="body-copy">
-          La ricerca "agenzia marketing Pordenone" deve trovare una risposta chiara, ma la pagina non deve sembrare
-          scritta per un motore di ricerca. Raccontiamo dove operiamo, cosa facciamo e perche' un'azienda dovrebbe
-          ricordarsi di Righello dopo dieci risultati tutti uguali.
-        </p>
-      </div>
-    </RevealOnScroll>
-    <RevealOnScroll animation="fly-up" delay={120}>
-      <div class="area-tags" aria-label="Aree servite">
-        {#each localAreas as area}
-          <span>{area}</span>
-        {/each}
-      </div>
-    </RevealOnScroll>
-  </div>
-</section>
-
-<section class="local-section">
-  <div class="section-container">
-    <RevealOnScroll animation="fly-up">
-      <div class="section-heading">
-        <p class="eyebrow">Domande frequenti</p>
-        <h2>Prima di iniziare</h2>
-      </div>
-    </RevealOnScroll>
-
-    <div class="faq-list">
-      {#each faqs as faq}
-        <RevealOnScroll animation="fly-up">
-          <article class="faq-item">
-            <h3>{faq.question}</h3>
-            <p>{faq.answer}</p>
-          </article>
-        </RevealOnScroll>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<section class="local-cta">
-  <div class="section-container">
-    <RevealOnScroll animation="scale">
-      <div class="cta-panel">
-        <p class="eyebrow">Audit gratuito</p>
-        <h2>Vuoi essere trovato a Pordenone e scelto per un motivo?</h2>
-        <p>
-          Guardiamo sito, contenuti, Google Business Profile, tracking e competitor locali.
-          Poi decidiamo cosa va sistemato prima: visibilita', messaggio o conversione.
-        </p>
-        <div class="cta-buttons">
-          <MagneticButton href="/contatti" variant="primary">Mettiamo ordine</MagneticButton>
-          <MagneticButton href="/bando-intelligenza-artificiale-fvg-2026" variant="secondary">Bando AI FVG 2026</MagneticButton>
-        </div>
-      </div>
-    </RevealOnScroll>
-  </div>
-</section>
-
-<style>
-  .local-hero {
-    padding: 10rem 0 5rem;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(214, 72, 126, 0.22), transparent 32rem),
-      radial-gradient(circle at 80% 10%, rgba(6, 182, 212, 0.18), transparent 28rem),
-      var(--bg-primary);
-  }
-
-  .local-hero h1 {
-    max-width: 880px;
-    margin: 0 0 1.5rem;
-    color: var(--text-primary);
-    font-size: clamp(2.6rem, 8vw, 5.4rem);
-    font-weight: 800;
-    line-height: 0.98;
-  }
-
-  .hero-copy,
-  .body-copy {
-    max-width: 720px;
-    color: var(--text-secondary);
-    font-size: clamp(1.05rem, 2vw, 1.3rem);
-    line-height: 1.65;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-
-  .home-funnel,
-  .local-section {
-    padding: 5rem 0;
-    background: var(--bg-primary);
-  }
-
-  .home-funnel {
-    position: relative;
-    overflow: hidden;
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-    background:
-      radial-gradient(circle at 15% 20%, rgba(214, 72, 126, 0.18), transparent 28rem),
-      radial-gradient(circle at 85% 40%, rgba(255, 255, 255, 0.08), transparent 22rem),
-      var(--bg-primary);
-  }
-
-  .home-funnel-head {
-    display: grid;
-    max-width: 920px;
-    gap: 1.35rem;
-  }
-
-  .home-funnel-head h2 {
-    max-width: 900px;
-  }
-
-  .home-funnel-head p {
-    max-width: 760px;
-    color: var(--text-secondary);
-    font-size: clamp(1.05rem, 2vw, 1.25rem);
-    line-height: 1.65;
-  }
-
-  .funnel-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-    margin-top: 2rem;
-    min-width: 0;
-  }
-
-  .funnel-card {
-    display: grid;
-    min-height: 15rem;
-    align-content: start;
-    gap: 0.85rem;
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.04);
-    color: inherit;
-    text-decoration: none;
-    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-  }
-
-  .funnel-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(214, 72, 126, 0.55);
-    background: rgba(214, 72, 126, 0.1);
-  }
-
-  .funnel-card span {
-    color: #D6487E;
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-  }
-
-  .funnel-card h3 {
-    color: var(--text-primary);
-    font-size: 1.3rem;
-    font-weight: 800;
-    line-height: 1.15;
-  }
-
-  .funnel-card p {
-    color: var(--text-secondary);
-    line-height: 1.55;
-  }
-
-  .local-section-alt {
-    background: var(--bg-secondary);
-  }
-
-  .eyebrow {
-    margin-bottom: 0.85rem;
-    color: #D6487E;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
-  h2 {
-    max-width: 760px;
-    color: var(--text-primary);
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 800;
-    line-height: 1.05;
-  }
-
-  .section-heading {
-    margin-bottom: 2rem;
-  }
-
-  .split {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 3rem;
-    align-items: start;
-    min-width: 0;
-  }
-
-  .proof-list,
-  .faq-list {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .proof-item {
-    display: grid;
-    grid-template-columns: 2rem 1fr;
-    gap: 0.75rem;
-    align-items: start;
-    color: var(--text-secondary);
-    font-size: 1.05rem;
-    line-height: 1.55;
-  }
-
-  .proof-item span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 999px;
-    background: rgba(214, 72, 126, 0.14);
-    color: #D6487E;
-    font-weight: 800;
-  }
-
-  .service-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
-    min-width: 0;
-  }
-
-  .service-card,
-  .faq-item,
-  .cta-panel {
-    border: 1px solid var(--border-color);
-    background: rgba(255, 255, 255, 0.035);
-  }
-
-  .service-card {
-    min-height: 15rem;
-    padding: 1.5rem;
-    border-radius: 1rem;
-  }
-
-  .service-card h3,
-  .faq-item h3 {
-    margin-bottom: 0.75rem;
-    color: var(--text-primary);
-    font-size: 1.3rem;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .service-card p,
-  .faq-item p,
-  .cta-panel p {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-
-  .area-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .area-tags span {
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
-    border: 1px solid var(--border-color);
-    border-radius: 999px;
-    padding: 0.45rem 1rem;
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.04);
-    font-weight: 600;
-  }
-
-  .faq-item {
-    border-radius: 1rem;
-    padding: 1.5rem;
-  }
-
-  .local-cta {
-    padding: 5rem 0 6rem;
-    background: var(--bg-secondary);
-  }
-
-  .cta-panel {
-    max-width: 900px;
-    margin: 0 auto;
-    border-radius: 1.25rem;
-    padding: clamp(2rem, 5vw, 3.5rem);
-    text-align: center;
-    min-width: 0;
-  }
-
-  .cta-panel h2 {
-    margin: 0 auto 1rem;
-  }
-
-  .cta-panel p {
-    max-width: 680px;
-    margin: 0 auto 2rem;
-  }
-
-  .cta-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-  }
-
-  @media (max-width: 1024px) {
-    .service-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 768px) {
-    .local-hero {
-      padding: 8rem 0 4rem;
-    }
-
-    .home-funnel,
-    .local-section,
-    .local-cta {
-      padding: 4rem 0;
-    }
-
-    .split,
-    .funnel-grid,
-    .service-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .funnel-card {
-      min-height: auto;
-    }
-
-    .service-card {
-      min-height: auto;
-    }
-
-    .cta-buttons {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .cta-buttons :global(.magnetic-button) {
-      width: 100%;
-      min-height: 56px;
-    }
-  }
-</style>
+<ServicePage {m} />

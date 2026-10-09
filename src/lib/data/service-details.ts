@@ -1,5 +1,12 @@
+import type { IconName } from '$lib/data/landing/types';
+
+/**
+ * Tutto cio' che dicono le pagine /servizi e /servizi/<slug> sta qui, in un punto solo.
+ * Le prove sono SOLO schede progetto vere (`proof` rimanda agli id di case-studies.ts): niente numeri o clienti che non si possano aprire.
+ */
+
 export interface ServiceItem {
-  icon: string;
+  icon: IconName;
   title: string;
   description: string;
 }
@@ -22,17 +29,43 @@ export interface LocalProductSeo {
   points: string[];
 }
 
+export interface Outcome {
+  title: string;
+  text: string;
+}
+
+/** Una scheda progetto che dimostra il servizio; `note` dice in una riga quale parte del lavoro c'entra. */
+export interface ProofRef {
+  id: string;
+  note?: string;
+}
+
+/** Un rimando discreto (non un secondo invito): una frase e un link di testo. */
+export interface ServiceNote {
+  kicker: string;
+  title: string;
+  text: string;
+  href: string;
+  label: string;
+}
+
 export interface ServiceDetail {
   slug: string;
   category: string;
+  /** Nome breve: nel menu, nei rimandi e nel "prossimo servizio". */
+  name: string;
   titleLine1: string;
   titleHighlight: string;
   subtitle: string;
-  ctaText: string;
-  ctaHref: string;
-  color: string;
+  /** Una riga per l'indice dei servizi. */
+  tagline: string;
+  accent: [string, string];
+  /** Cosa ottiene chi sceglie questo servizio (tre frasi, nel riquadro dell'apertura). */
+  outcomes: Outcome[];
   services: ServiceItem[];
   workflow: WorkflowStep[];
+  proof: ProofRef[];
+  note?: ServiceNote;
   seo: ServiceSeo;
   localSeo: LocalProductSeo;
 }
@@ -41,74 +74,86 @@ export const serviceDetails: ServiceDetail[] = [
   {
     slug: 'marketing',
     category: 'Marketing & Social Media',
-    titleLine1: 'Strategie di Marketing',
-    titleHighlight: 'Che Generano Risultati',
-    subtitle: 'Gestione completa dei social media, produzione contenuti e strategie editoriali pensate per generare engagement reale e conversioni misurabili.',
-    ctaText: 'Richiedi un Preventivo',
-    ctaHref: '/contatti',
-    color: '#D6487E',
+    name: 'Marketing e social media',
+    titleLine1: 'Strategie di marketing',
+    titleHighlight: 'che generano risultati',
+    subtitle:
+      'Gestione completa dei social media, produzione dei contenuti e piano editoriale, pensati per creare un rapporto vero con chi ti segue e portare richieste.',
+    tagline: 'Strategie che generano risultati',
+    accent: ['#D6487E', '#7A2B8F'],
+    outcomes: [
+      { title: 'Una linea chiara', text: 'Cosa dire, a chi e con quale obiettivo, in un piano mensile con calendario e rubriche.' },
+      { title: 'Contenuti fatti in casa', text: 'Foto, video e testi prodotti dallo stesso team: niente passaggi fra fornitori diversi.' },
+      { title: 'Numeri che si leggono', text: 'Un report ogni mese: cosa ha funzionato, cosa cambiamo.' },
+    ],
     services: [
       {
-        icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
-        title: 'Social Media Management',
-        description: 'Strategia, pianificazione editoriale e community management per i tuoi canali social con analisi delle performance e report mensili.'
+        icon: 'message',
+        title: 'Gestione dei social media',
+        description: 'Strategia, pianificazione editoriale e gestione dei tuoi canali, con analisi dei risultati e report mensili.',
       },
       {
-        icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
-        title: 'Video Production',
-        description: 'Reel, TikTok, YouTube: produzione video completa con storytelling, editing professionale e formati ottimizzati per ogni piattaforma.'
+        icon: 'play',
+        title: 'Produzione video',
+        description: 'Reel, TikTok, YouTube: video completi, dalla storia al montaggio, nei formati giusti per ogni piattaforma.',
       },
       {
-        icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
-        title: 'Copywriting & Storytelling',
-        description: 'Testi persuasivi per social, advertising e web. Tone of voice su misura, caption efficaci e storytelling che converte.'
+        icon: 'wand',
+        title: 'Testi e racconto',
+        description: 'Testi per social, pubblicità e sito. Un tono di voce su misura, didascalie efficaci, storie che portano al contatto.',
       },
       {
-        icon: 'M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z M15 13a3 3 0 11-6 0 3 3 0 016 0z',
-        title: 'Shooting Fotografici',
-        description: 'Produzioni fotografiche professionali per campagne, e-commerce e branding con attrezzatura di ultima generazione e team dedicato.'
+        icon: 'camera',
+        title: 'Servizi fotografici',
+        description: 'Fotografia professionale per campagne, negozi online e immagine del marchio, con un team dedicato.',
       },
       {
-        icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
-        title: 'Community Management',
-        description: 'Gestione attiva della community, moderazione, risposte rapide e creazione di relazioni autentiche con il tuo pubblico.'
+        icon: 'users',
+        title: 'Gestione della community',
+        description: 'Moderazione, risposte rapide e un rapporto costruito con il tuo pubblico, giorno per giorno.',
       },
       {
-        icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01',
-        title: 'Piano Editoriale',
-        description: 'Pianificazione strategica dei contenuti su base mensile con calendario editoriale, rubriche tematiche e analisi dei trend.'
-      }
+        icon: 'calendar',
+        title: 'Piano editoriale',
+        description: 'Contenuti pianificati mese per mese, con calendario, rubriche a tema e lettura delle tendenze.',
+      },
     ],
     workflow: [
       {
         num: '01',
-        title: 'Audit & Analisi',
-        description: 'Analizziamo la tua presenza digitale, il pubblico e i competitor. Identifichiamo opportunità, definiamo tone of voice e KPI.'
+        title: 'Analisi',
+        description: 'Guardiamo la tua presenza online, il pubblico e i concorrenti. Individuiamo le opportunità e fissiamo tono di voce e obiettivi.',
       },
       {
         num: '02',
-        title: 'Strategia Editoriale',
-        description: 'Creiamo il piano editoriale con rubriche, format e calendario di pubblicazione ottimizzato per ogni piattaforma.'
+        title: 'Piano editoriale',
+        description: 'Prepariamo rubriche, formati e calendario di pubblicazione, adatti a ogni piattaforma.',
       },
       {
         num: '03',
-        title: 'Produzione Contenuti',
-        description: 'Shooting, video editing, copywriting: produciamo tutti i contenuti necessari con il nostro team creativo interno.'
+        title: 'Produzione',
+        description: 'Servizi fotografici, montaggio video, testi: produciamo tutto con il nostro team creativo.',
       },
       {
         num: '04',
-        title: 'Pubblicazione & Community',
-        description: 'Pubblichiamo i contenuti, gestiamo la community e monitoriamo le performance in tempo reale.'
+        title: 'Pubblicazione e community',
+        description: 'Pubblichiamo, rispondiamo alla community e seguiamo i risultati mentre arrivano.',
       },
       {
         num: '05',
-        title: 'Report & Ottimizzazione',
-        description: 'Report mensili dettagliati con insight e ottimizzazioni continue per massimizzare engagement e conversioni.'
-      }
+        title: 'Report e miglioramenti',
+        description: 'Ogni mese un report con quello che abbiamo imparato, e le correzioni per il mese dopo.',
+      },
+    ],
+    proof: [
+      { id: 'reguta', note: 'Contenuti per i social di un marchio storico del vino.' },
+      { id: 'elite-hotel-spa', note: 'Foto e video per il profilo e le campagne di un hotel con spa.' },
+      { id: 'riviera-resort', note: 'Riprese aeree montate in un video pronto per sito e YouTube.' },
+      { id: 'neura', note: 'Marchio, testi e un video verticale per i social.' },
     ],
     seo: {
       title: 'Agenzia Marketing e Social Media a Pordenone e Mestre | Righello',
-      description: 'Gestione social media, video production, copywriting, piano editoriale e contenuti per aziende tra Pordenone, Mestre e Nord Italia.'
+      description: 'Gestione social media, video production, copywriting, piano editoriale e contenuti per aziende tra Pordenone, Mestre e Nord Italia.',
     },
     localSeo: {
       eyebrow: 'Marketing locale',
@@ -117,76 +162,85 @@ export const serviceDetails: ServiceDetail[] = [
       points: [
         'Strategia social, piano editoriale, copywriting e community management.',
         'Produzione foto e video pensata per campagne, reel, adv e sito.',
-        'Presidio operativo tra Pordenone, Mestre, Friuli-Venezia Giulia e Veneto.'
-      ]
-    }
+        'Presidio operativo tra Pordenone, Mestre, Friuli-Venezia Giulia e Veneto.',
+      ],
+    },
   },
   {
     slug: 'advertising',
     category: 'Advertising & Automazione',
-    titleLine1: 'Campagne Advertising',
-    titleHighlight: 'Data-Driven',
-    subtitle: 'Campagne pubblicitarie con tracking avanzato e automazioni intelligenti per ottimizzare ogni euro investito. Massimo ritorno, minimo spreco.',
-    ctaText: 'Richiedi un Preventivo',
-    ctaHref: '/contatti',
-    color: '#06B6D4',
+    name: 'Advertising e automazione',
+    titleLine1: 'Campagne advertising',
+    titleHighlight: 'guidate dai dati',
+    subtitle:
+      'Campagne pubblicitarie con misurazione precisa e automazioni per ottimizzare ogni euro investito: più ritorno, meno spreco.',
+    tagline: 'Ogni euro tracciato, ogni processo ottimizzato',
+    accent: ['#06B6D4', '#0B5C73'],
+    outcomes: [
+      { title: 'Ogni euro tracciato', text: 'Seguiamo ogni contatto, dal clic alla richiesta, con tracciamento sul sito e cruscotti su misura.' },
+      { title: 'Prove continue', text: 'Mettiamo alla prova creatività, testi e pubblici: si toglie ciò che non rende.' },
+      { title: 'Il budget va dove rende', text: 'La spesa cresce sulle campagne che funzionano e si prova qualche canale nuovo.' },
+    ],
     services: [
       {
-        icon: 'M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11',
+        icon: 'globe',
         title: 'Meta Ads',
-        description: 'Campagne Facebook e Instagram Ads con targeting avanzato, creatività ottimizzate e scaling progressivo per massimizzare il ROAS.'
+        description: 'Campagne su Facebook e Instagram con pubblici ben definiti, creatività curate e budget aumentato un passo alla volta.',
       },
       {
-        icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
+        icon: 'search',
         title: 'Google Ads',
-        description: 'Search, Display, Shopping e Performance Max per intercettare la domanda consapevole e generare conversioni ad alto valore.'
+        description: 'Ricerca, Display, Shopping e Performance Max per intercettare chi sta già cercando e portarlo a una richiesta.',
       },
       {
-        icon: 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+        icon: 'play',
         title: 'TikTok Ads',
-        description: 'Campagne native con formati creativi e virali su TikTok per raggiungere nuove audience e generare awareness ad alto impatto.'
+        description: 'Campagne con formati nativi di TikTok per raggiungere nuovi pubblici e farsi ricordare.',
       },
       {
-        icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
-        title: 'Tracking & Attribution',
-        description: 'Setup pixel, server-side tracking, GA4 e dashboard personalizzate per tracciare ogni touchpoint del customer journey.'
+        icon: 'chart',
+        title: 'Tracciamento e attribuzione',
+        description: 'Pixel, tracciamento lato server, GA4 e cruscotti su misura per seguire ogni passaggio del cliente.',
       },
       {
-        icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
-        title: 'A/B Testing',
-        description: 'Test continui su creatività, copy, landing page e audience per ottimizzare le performance e ridurre il costo per conversione.'
+        icon: 'layers',
+        title: 'Test A/B',
+        description: 'Prove continue su creatività, testi, pagine di arrivo e pubblici, per abbassare il costo di ogni richiesta.',
       },
       {
-        icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
-        title: 'Marketing Automation',
-        description: 'Workflow automatizzati per lead nurturing, email marketing e CRM integration. Processi che lavorano per te 24/7.'
-      }
+        icon: 'gear',
+        title: 'Automazione del marketing',
+        description: 'Flussi automatici per accompagnare i contatti, inviare email e collegarsi al CRM. Lavorano anche quando il team è offline.',
+      },
     ],
     workflow: [
       {
         num: '01',
-        title: 'Analisi & Setup',
-        description: 'Audit dell\'account, setup tracking avanzato, definizione audience e struttura delle campagne con obiettivi chiari.'
+        title: 'Analisi e impostazione',
+        description: 'Controlliamo l’account, impostiamo il tracciamento, definiamo i pubblici e la struttura delle campagne con obiettivi chiari.',
       },
       {
         num: '02',
-        title: 'Strategia & Creatività',
-        description: 'Definiamo la strategia di bidding, creiamo le creatività e costruiamo i funnel di conversione ottimizzati.'
+        title: 'Strategia e creatività',
+        description: 'Decidiamo come fare le offerte, creiamo le grafiche e i testi e costruiamo il percorso che porta alla richiesta.',
       },
       {
         num: '03',
-        title: 'Lancio & Testing',
-        description: 'Attiviamo le campagne con A/B testing su creatività, copy e audience. Monitoraggio quotidiano delle performance.'
+        title: 'Lancio e prove',
+        description: 'Attiviamo le campagne con test su creatività, testi e pubblici. Guardiamo i risultati ogni giorno.',
       },
       {
         num: '04',
-        title: 'Ottimizzazione & Scaling',
-        description: 'Ottimizzazione continua basata sui dati, scaling del budget sulle campagne performanti e esplorazione di nuovi canali.'
-      }
+        title: 'Ottimizzazione e crescita',
+        description: 'Miglioriamo sui dati, aumentiamo la spesa dove rende e proviamo nuovi canali.',
+      },
+    ],
+    proof: [
+      { id: 'elite-hotel-spa', note: 'Foto e video pensati anche come materiale per le campagne dell’hotel.' },
     ],
     seo: {
       title: 'Google Ads, Meta Ads e Advertising a Pordenone e Mestre | Righello',
-      description: 'Campagne Google Ads, Meta Ads e TikTok Ads con tracking avanzato, marketing automation e ottimizzazione budget per aziende tra Pordenone e Mestre.'
+      description: 'Campagne Google Ads, Meta Ads e TikTok Ads con tracking avanzato, marketing automation e ottimizzazione budget per aziende tra Pordenone e Mestre.',
     },
     localSeo: {
       eyebrow: 'Performance locale',
@@ -195,76 +249,95 @@ export const serviceDetails: ServiceDetail[] = [
       points: [
         'Google Ads, Meta Ads, TikTok Ads e funnel di conversione.',
         'GA4, pixel, server-side tracking, dashboard e ottimizzazione continua.',
-        'Campagne per aziende locali e B2B che vogliono misurare prima di scalare.'
-      ]
-    }
+        'Campagne per aziende locali e B2B che vogliono misurare prima di scalare.',
+      ],
+    },
   },
   {
     slug: 'web',
     category: 'Sviluppo Web & Software',
-    titleLine1: 'Siti Web, E-commerce',
-    titleHighlight: 'e Software su Misura',
-    subtitle: 'Progettiamo e sviluppiamo siti web, e-commerce, web app e software custom per aziende a Pordenone e Mestre. Soluzioni scalabili, integrate e potenziate dall\'intelligenza artificiale.',
-    ctaText: 'Richiedi un Preventivo',
-    ctaHref: '/contatti',
-    color: '#8B5CF6',
+    name: 'Siti web e software',
+    titleLine1: 'Siti web, e-commerce',
+    titleHighlight: 'e software su misura',
+    subtitle:
+      'Progettiamo e sviluppiamo siti web, negozi online, web app e software su misura per aziende a Pordenone e Mestre. Soluzioni che crescono con te, collegate ai tuoi strumenti e potenziate dall’intelligenza artificiale.',
+    tagline: 'Soluzioni digitali su misura',
+    accent: ['#8B5CF6', '#4C2A9A'],
+    outcomes: [
+      { title: 'Si fa trovare e si fa capire', text: 'Struttura, testi e SEO tecnico pensati perché chi cerca arrivi alla richiesta.' },
+      { title: 'Semplice da far crescere', text: 'Veloce da caricare e facile da aggiornare quando l’azienda cambia passo.' },
+      { title: 'Collegato ai tuoi strumenti', text: 'CRM, gestionale, pagamenti e servizi esterni parlano fra loro.' },
+    ],
     services: [
       {
-        icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
-        title: 'Siti Web',
-        description: 'Siti istituzionali, landing page e portali corporate ottimizzati per UX, SEO e lead generation con design system personalizzati.'
+        icon: 'globe',
+        title: 'Siti web',
+        description: 'Siti aziendali, pagine di atterraggio e portali pensati per l’uso, la ricerca e le richieste, con un design costruito su misura.',
       },
       {
-        icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z',
-        title: 'E-Commerce',
-        description: 'Piattaforme e-commerce Shopify e custom con gestione catalogo, checkout ottimizzato e integrazioni ERP per B2B e B2C.'
+        icon: 'cart',
+        title: 'E-commerce',
+        description: 'Negozi online su Shopify o su misura: catalogo, pagamento semplice e collegamento al gestionale, per vendere a privati e aziende.',
       },
       {
-        icon: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
-        title: 'Web App',
-        description: 'Applicazioni web custom, portali clienti, configuratori di prodotto e dashboard di business intelligence su misura.'
+        icon: 'device',
+        title: 'Web app',
+        description: 'Applicazioni web su misura, portali per i clienti, configuratori di prodotto e cruscotti per leggere l’azienda.',
       },
       {
-        icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
+        icon: 'search',
         title: 'SEO',
-        description: 'SEO tecnico e on-page per migliorare il posizionamento organico, aumentare il traffico qualificato e le conversioni.'
+        description: 'SEO tecnico e dei contenuti per salire nei risultati di ricerca e portare più visite utili.',
       },
       {
-        icon: 'M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z',
-        title: 'UX/UI Design',
-        description: 'Interfacce utente intuitive e accessibili, wireframe, prototipi interattivi e design system modulari per garantire coerenza.'
+        icon: 'layers',
+        title: 'Progettazione di interfacce',
+        description: 'Interfacce chiare e accessibili: schemi, prototipi da provare e componenti riutilizzabili che tengono tutto coerente.',
       },
       {
-        icon: 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1',
+        icon: 'link',
         title: 'Integrazioni',
-        description: 'Connessione di siti e app con CRM, ERP, sistemi di pagamento e API di terze parti per un flusso dati unificato.'
-      }
+        description: 'Siti e app collegati a CRM, gestionali, sistemi di pagamento e servizi esterni, con dati che passano da soli.',
+      },
     ],
     workflow: [
       {
         num: '01',
-        title: 'Discovery & UX',
-        description: 'Analisi dei requisiti, architettura dell\'informazione, wireframe e prototipi interattivi per validare la struttura.'
+        title: 'Analisi e struttura',
+        description: 'Capiamo cosa serve, disegniamo la struttura delle pagine e prepariamo prototipi da provare prima di costruire.',
       },
       {
         num: '02',
-        title: 'UI Design',
-        description: 'Design delle interfacce con design system, componenti riutilizzabili e visual identity coerente con il brand.'
+        title: 'Grafica',
+        description: 'Disegniamo le interfacce con componenti riutilizzabili e un’immagine coerente con il marchio.',
       },
       {
         num: '03',
-        title: 'Sviluppo & Testing',
-        description: 'Sviluppo frontend e backend con tecnologie moderne, testing automatizzato e code review per garantire qualità.'
+        title: 'Sviluppo e prove',
+        description: 'Costruiamo la parte che si vede e quella che gira dietro, con prove automatiche e revisione del codice per tenere alta la qualità.',
       },
       {
         num: '04',
-        title: 'Lancio & Supporto',
-        description: 'Deploy, monitoring, formazione e supporto post-lancio con manutenzione e ottimizzazioni continue.'
-      }
+        title: 'Pubblicazione e assistenza',
+        description: 'Mettiamo online, controlliamo che tutto vada, formiamo chi lo userà e restiamo per correzioni e miglioramenti.',
+      },
     ],
+    proof: [
+      { id: 'portopiccolo-apartments', note: 'Prenotazione diretta collegata al calendario del gestionale.' },
+      { id: 'scuola-sci-piancavallo', note: 'Corsi, prezzi e prenotazione in un sito che segue la stagione.' },
+      { id: 'fiumedica', note: 'Una pagina per ogni area medica, con prenotazione e referti.' },
+      { id: 'bibione-sand-storm', note: 'Sito di un evento sportivo, con animazioni a scorrimento.' },
+    ],
+    note: {
+      kicker: 'Dal sito agli agenti',
+      title: 'Gli agenti AI nascono qui',
+      text: 'È il nostro team di sviluppo che progetta, integra e fa girare gli agenti digitali sui sistemi reali delle aziende. Senza una base tecnica solida, un agente resta un’idea: così diventa operativo.',
+      href: '/servizi/agenti-ai',
+      label: 'Scopri gli agenti AI',
+    },
     seo: {
       title: 'Agenzia Siti Web Pordenone e Mestre | Righello',
-      description: 'Agenzia siti web a Pordenone e Mestre: siti aziendali, e-commerce, web app, software custom, UX/UI, SEO tecnico e integrazioni.'
+      description: 'Agenzia siti web a Pordenone e Mestre: siti aziendali, e-commerce, web app, software custom, UX/UI, SEO tecnico e integrazioni.',
     },
     localSeo: {
       eyebrow: 'Web agency locale',
@@ -273,81 +346,100 @@ export const serviceDetails: ServiceDetail[] = [
       points: [
         'Siti aziendali, landing page, e-commerce, web app e software custom.',
         'UX/UI, performance, SEO tecnico, analytics e integrazioni in un unico processo.',
-        'Architettura pensata per far crescere home, servizi e contenuti senza cannibalizzarsi.'
-      ]
-    }
+        'Architettura pensata per far crescere home, servizi e contenuti senza cannibalizzarsi.',
+      ],
+    },
   },
   {
     slug: 'agenti-ai',
     category: 'Agenti AI & Automazione Intelligente',
-    titleLine1: 'Il Tuo Nuovo',
-    titleHighlight: 'Dipendente Digitale',
-    subtitle: 'Agenti AI progettati sui flussi reali della tua azienda. Riducono i costi operativi, eliminano le attività ridondanti e si integrano con i tuoi sistemi esistenti — lavorando al fianco del team, non al suo posto.',
-    ctaText: 'Scopri come funziona',
-    ctaHref: '/contatti',
-    color: '#10B981',
+    name: 'Agenti AI',
+    titleLine1: 'Il tuo nuovo',
+    titleHighlight: 'dipendente digitale',
+    subtitle:
+      'Agenti AI progettati sui flussi reali della tua azienda. Riducono i costi operativi, eliminano le attività ripetitive e si integrano con i tuoi sistemi: lavorano al fianco del team, non al suo posto.',
+    tagline: 'Il tuo nuovo dipendente digitale',
+    accent: ['#10B981', '#0A5C42'],
+    outcomes: [
+      { title: 'Meno lavoro ripetitivo', text: 'Amministrazione, assistenza di base e documenti diventano processi che girano da soli.' },
+      { title: 'Dentro i tuoi sistemi', text: 'Gli agenti lavorano con gestionale, CRM, email e database che hai già, senza cambiarli.' },
+      { title: 'Sempre sotto controllo', text: 'Il team capisce cosa fa l’agente e gestisce le eccezioni che chiedono una persona.' },
+    ],
     services: [
       {
-        icon: 'M13 10V3L4 14h7v7l9-11h-7z',
-        title: 'Agenti AI su Misura',
-        description: 'Agenti digitali progettati ad hoc sui tuoi flussi reali: eseguono task, memorizzano procedure e dati, e operano in modo strutturato e coerente con i processi aziendali.'
+        icon: 'sparkle',
+        title: 'Agenti AI su misura',
+        description: 'Agenti progettati sui tuoi flussi reali: eseguono compiti, ricordano procedure e dati, e lavorano come vuole la tua azienda.',
       },
       {
-        icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
-        title: 'Automazione Processi Ripetitivi',
-        description: 'Trasformiamo attività ridondanti — amministrazione, customer service base, gestione documentale — in processi digitali strutturati e gestiti in modo continuativo senza intervento manuale.'
+        icon: 'gear',
+        title: 'Automazione dei compiti ripetitivi',
+        description: 'Amministrazione, assistenza di base e gestione dei documenti diventano processi digitali che girano senza intervento manuale.',
       },
       {
-        icon: 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1',
-        title: 'Integrazione ERP & CRM',
-        description: 'Gli agenti dialogano con i sistemi interni: ERP, CRM, email, database e API aziendali. Il know-how resta nella tua struttura, ottimizzato e sempre accessibile.'
+        icon: 'database',
+        title: 'Collegamento a gestionale e CRM',
+        description: 'Gli agenti dialogano con i sistemi interni: gestionale, CRM, email, database e servizi aziendali. Il sapere resta nella tua struttura.',
       },
       {
-        icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z',
-        title: 'Customer Service AI',
-        description: 'Assistenza clienti intelligente per richieste standard e frequenti: tempi di risposta azzerati, qualità costante, escalation automatica al team umano per casi complessi.'
+        icon: 'message',
+        title: 'Assistenza ai clienti',
+        description: 'Risposte alle richieste standard e più frequenti, con qualità costante e passaggio automatico al team per i casi complessi.',
       },
       {
-        icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
-        title: 'Reportistica Automatizzata',
-        description: 'Report e dashboard aggiornate automaticamente. I dati aziendali vengono raccolti, elaborati e presentati senza intervento manuale, con alert sulle anomalie.'
+        icon: 'chart',
+        title: 'Report automatici',
+        description: 'Report e cruscotti che si aggiornano da soli: i dati vengono raccolti, elaborati e presentati, con avvisi sulle anomalie.',
       },
       {
-        icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
-        title: 'Gestione Documentale',
-        description: 'Archiviazione, classificazione e recupero automatico di documenti. Contratti, fatture, schede prodotto: tutto indicizzato e recuperabile in secondi dall\'agente corretto.'
-      }
+        icon: 'file',
+        title: 'Gestione dei documenti',
+        description: 'Archiviazione, classificazione e ricerca dei documenti: contratti, fatture, schede prodotto, ritrovati dall’agente giusto.',
+      },
     ],
     workflow: [
       {
         num: '01',
-        title: 'Mappatura dei Processi',
-        description: 'Analizziamo i flussi operativi reali della tua azienda: identifichiamo le attività ripetitive, i colli di bottiglia e i punti di maggiore spreco di tempo e costi.'
+        title: 'Mappa dei processi',
+        description: 'Guardiamo come si lavora davvero: le attività ripetitive, i colli di bottiglia, dove si perde più tempo e denaro.',
       },
       {
         num: '02',
-        title: 'Progettazione degli Agenti',
-        description: 'Progettiamo gli agenti AI su misura: definiamo obiettivi, regole di comportamento, fonti dati e modalità di integrazione con i sistemi esistenti.'
+        title: 'Progetto degli agenti',
+        description: 'Definiamo obiettivi, regole di comportamento, fonti dei dati e modo di collegarsi ai sistemi che già usi.',
       },
       {
         num: '03',
-        title: 'Sviluppo & Integrazione',
-        description: 'Sviluppiamo gli agenti e li colleghiamo ai tuoi sistemi: ERP, CRM, email, database e API aziendali. Tutto in sicurezza, senza sostituire l\'infrastruttura esistente.'
+        title: 'Sviluppo e collegamenti',
+        description: 'Costruiamo gli agenti e li colleghiamo a gestionale, CRM, email, database e servizi aziendali, in sicurezza e senza cambiare ciò che hai.',
       },
       {
         num: '04',
-        title: 'Test & Training',
-        description: 'Test approfonditi su scenari reali. Il team viene formato per lavorare con gli agenti, capire i loro output e gestire le eccezioni che richiedono intervento umano.'
+        title: 'Prove e formazione',
+        description: 'Proviamo su casi reali. Il team impara a usare gli agenti, a leggere ciò che producono e a gestire le eccezioni.',
       },
       {
         num: '05',
-        title: 'Deploy & Monitoraggio',
-        description: 'Deploy in produzione con monitoraggio continuo delle performance. Ottimizziamo gli agenti nel tempo sulla base dei dati operativi reali.'
-      }
+        title: 'Messa in uso e controllo',
+        description: 'Lo mettiamo in uso e lo teniamo d’occhio. Con i dati di lavoro veri lo miglioriamo nel tempo.',
+      },
     ],
+    proof: [
+      { id: 'tetha', note: 'Legge i documenti di cantiere, avvisa delle scadenze e prepara il dossier.' },
+      { id: 'optima', note: 'Un assistente che risponde dai dati dello studio, dentro il gestionale.' },
+      { id: 'assistenti-pa', note: 'Risponde ai cittadini con le pagine del Comune e dice quando non lo sa.' },
+      { id: 'dico', note: 'Scrive il messaggio settimanale nello stile dell’ente; la redazione lo approva.' },
+    ],
+    note: {
+      kicker: 'Opportunità per le aziende del Friuli Venezia Giulia',
+      title: 'Bando Intelligenza Artificiale FVG 2026',
+      text: 'Per i progetti di intelligenza artificiale delle piccole imprese la Regione ha previsto un contributo fino al 75% della spesa ammissibile. Lo sportello 2026 si è chiuso con le risorse esaurite: nella guida trovi come funzionava e puoi iscriverti per essere avvisato se la Regione lo riapre.',
+      href: '/bando-intelligenza-artificiale-fvg-2026',
+      label: 'Leggi la guida al bando',
+    },
     seo: {
       title: 'Agenti AI e Automazioni per Aziende a Pordenone e Mestre | Righello',
-      description: 'Agenti AI e automazioni per aziende tra Pordenone e Mestre: riduzione dei costi operativi, integrazione con ERP, CRM e sistemi interni.'
+      description: 'Agenti AI e automazioni per aziende tra Pordenone e Mestre: riduzione dei costi operativi, integrazione con ERP, CRM e sistemi interni.',
     },
     localSeo: {
       eyebrow: 'AI operativa',
@@ -356,14 +448,123 @@ export const serviceDetails: ServiceDetail[] = [
       points: [
         'Agenti AI su misura, automazioni operative e flussi documentali.',
         'Integrazione con CRM, ERP, email, database e strumenti già in uso.',
-        'Progetti pensati per ridurre lavoro ripetitivo senza perdere controllo umano.'
-      ]
-    }
-  }
+        'Progetti pensati per ridurre lavoro ripetitivo senza perdere controllo umano.',
+      ],
+    },
+  },
 ];
 
 export function getServiceBySlug(slug: string): ServiceDetail | undefined {
-  return serviceDetails.find(s => s.slug === slug);
+  return serviceDetails.find((s) => s.slug === slug);
 }
 
-export const validSlugs = serviceDetails.map(s => s.slug);
+export const validSlugs = serviceDetails.map((s) => s.slug);
+
+/** Percorso unico dei servizi: lo stesso nel menu a tendina, nell'indice e nel "precedente / prossimo". */
+export function getNextService(slug: string): ServiceDetail {
+  const i = serviceDetails.findIndex((s) => s.slug === slug);
+  return serviceDetails[(i + 1) % serviceDetails.length];
+}
+
+export function getPrevService(slug: string): ServiceDetail {
+  const i = serviceDetails.findIndex((s) => s.slug === slug);
+  return serviceDetails[(i - 1 + serviceDetails.length) % serviceDetails.length];
+}
+
+/** Colori dell'insieme dei servizi (indice e pagine di agenzia): quelli del marchio. */
+export const agencyAccent: [string, string] = ['#D6487E', '#7C5CFF'];
+
+/** Il metodo comune a tutti i servizi: lo mostrano l'indice e le pagine di agenzia. Le durate sono quelle gia' scritte sul sito. */
+export const commonMethod: Array<{ title: string; text: string; when?: string }> = [
+  {
+    title: 'Analisi e strategia',
+    text: 'Studiamo il tuo lavoro, il pubblico e i concorrenti. Fissiamo obiettivi, tono di voce, contenuti e un piano su misura.',
+    when: '1-2 settimane',
+  },
+  {
+    title: 'Produzione creativa',
+    text: 'Servizi fotografici, montaggio video, testi e immagine: creiamo tutto per i tuoi canali e per le campagne.',
+    when: '2-3 settimane',
+  },
+  {
+    title: 'Lancio e campagne',
+    text: 'Pubblichiamo e attiviamo le campagne. Prove sui risultati, budget corretto strada facendo, controllo in tempo reale.',
+    when: '2-4 settimane',
+  },
+  {
+    title: 'Miglioramento e crescita',
+    text: 'Report mensili, miglioramenti continui a contenuti e campagne, e più spazio a ciò che funziona.',
+    when: 'Continuo',
+  },
+];
+
+export interface ServiceFaq {
+  q: string;
+  a: string;
+  /** Nelle pagine dei servizi si mostrano solo le domande dei servizi indicati; sull'indice, tutte. */
+  services: string[];
+}
+
+const all = ['marketing', 'advertising', 'web', 'agenti-ai'];
+
+export const serviceFaqs: ServiceFaq[] = [
+  {
+    q: 'Quanto tempo ci vuole per vedere i risultati?',
+    a: 'I primi miglioramenti si vedono dai 3 mesi. In questo periodo costruiamo le fondamenta: strategia, contenuti, campagne e tracciamento. Per i siti web, i tempi di sviluppo variano da 4 a 12 settimane a seconda della complessità.',
+    services: ['marketing', 'advertising'],
+  },
+  {
+    q: 'Quanto tempo ci vuole per un sito web?',
+    a: 'Siti vetrina: 4-6 settimane. E-commerce: 6-10 settimane. Web app su misura: 8-16 settimane. Includiamo sempre le fasi di strategia, progetto grafico, sviluppo e prove.',
+    services: ['web'],
+  },
+  {
+    q: 'Lavorate solo con aziende del Veneto?',
+    a: 'No, la nostra base è nel Nord Italia ma lavoriamo con clienti in tutta Europa. Gestiamo i progetti da remoto, con incontri regolari e strumenti condivisi, e ci spostiamo sul posto quando serve.',
+    services: all,
+  },
+  {
+    q: 'Posso mantenere il sito da solo dopo il lancio?',
+    a: 'Sì, forniamo formazione e documentazione. Consigliamo comunque un piano di manutenzione per aggiornamenti, sicurezza e miglioramenti continui.',
+    services: ['web'],
+  },
+  {
+    q: 'Che garanzie offrite sui risultati?',
+    a: 'Definiamo obiettivi chiari all’inizio del progetto. Per l’advertising offriamo periodi di prova e ottimizzazione. Per lo sviluppo, la correzione dei difetti è inclusa per 6 mesi dopo la pubblicazione.',
+    services: all,
+  },
+  {
+    q: 'Come funziona il pagamento?',
+    a: 'Di norma: 30% all’avvio, 40% alla consegna del progetto grafico approvato, 30% alla pubblicazione. Per i lavori che continuano nel tempo (advertising, social) si fattura ogni mese in anticipo.',
+    services: all,
+  },
+  {
+    q: 'Posso vedere il codice sorgente?',
+    a: 'Sì, il codice è tuo. Ti diamo accesso all’archivio del codice, alla documentazione e a tutti i materiali. Nessun vincolo, nessuna sorpresa.',
+    services: ['web', 'agenti-ai'],
+  },
+  {
+    q: 'Offrite assistenza dopo la pubblicazione?',
+    a: 'Sì, con piani di manutenzione mensili che includono: hosting gestito, copie di sicurezza, aggiornamenti di sicurezza, piccole modifiche e assistenza prioritaria.',
+    services: ['web', 'agenti-ai'],
+  },
+];
+
+/** Le pagine per citta' e il bando: raggiungibili dall'indice dei servizi. */
+export const localLandingLinks = [
+  {
+    href: '/agenzia-marketing-pordenone',
+    label: 'Agenzia marketing a Pordenone',
+    description: 'Il sistema Righello per aziende in Friuli-Venezia Giulia: contenuti, advertising, web, software e AI.',
+  },
+  {
+    href: '/agenzia-marketing-mestre',
+    label: 'Agenzia marketing a Mestre',
+    description: 'Strategia, campagne, siti e automazioni per aziende tra Mestre, Venezia, Veneto e Nord Italia.',
+  },
+  {
+    href: '/bando-intelligenza-artificiale-fvg-2026',
+    label: 'Bando Intelligenza Artificiale FVG 2026',
+    description: 'Come funzionava il bando regionale per i progetti AI delle piccole imprese del Friuli Venezia Giulia, e come essere avvisati se riapre.',
+  },
+];
