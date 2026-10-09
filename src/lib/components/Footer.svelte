@@ -1,5 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment';
+  import { page } from '$app/stores';
   import MagneticButton from './MagneticButton.svelte';
   import {
     COMPANY,
@@ -7,6 +8,7 @@
     PRIVACY_URL,
     footerColumns,
     footerProducts,
+    hasOwnClosing,
     socialLinks,
   } from '$lib/data/site';
 
@@ -43,6 +45,7 @@
 <footer class="footer">
   <div class="footer-top-border"></div>
 
+  {#if !hasOwnClosing($page.url.pathname)}
   <div class="footer-cta section-container">
     <div class="cta-inner">
       <div class="cta-text">
@@ -57,6 +60,7 @@
       </MagneticButton>
     </div>
   </div>
+  {/if}
 
   <div class="footer-main section-container" data-nosnippet>
     <div class="footer-grid">

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CONTACT, mailHref } from '$lib/data/contact';
   import ProButton from './ProButton.svelte';
 
   export let schedulingUrl = '/contatti';
@@ -12,8 +13,8 @@
     <p class="cta__kicker">{kicker}</p>
     <h2 class="cta__title">Hai un progetto? <span class="gradient-text">Costruiamolo davvero.</span></h2>
 
-    <a class="cta__mail" href="mailto:hello@wearerighello.com">
-      <span>hello@wearerighello.com</span>
+    <a class="cta__mail" href={mailHref()}>
+      <span>{CONTACT.email}</span>
       <i aria-hidden="true">↗</i>
     </a>
 

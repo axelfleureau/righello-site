@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CONTACT } from '$lib/data/contact';
   import AIGrantScrollStory from '$lib/components/AIGrantScrollStory.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
@@ -380,7 +381,7 @@
         name: 'Righello S.r.l.',
         url: 'https://www.wearerighello.com',
         image: 'https://www.wearerighello.com/logo-full.png',
-        email: 'hello@wearerighello.com',
+        email: CONTACT.email,
         priceRange: '€€€',
         vatID: 'IT01979970934',
         address: {

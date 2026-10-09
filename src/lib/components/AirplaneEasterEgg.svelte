@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CONTACT } from '$lib/data/contact';
   import { onMount, onDestroy, tick } from 'svelte';
   import { browser } from '$app/environment';
 
@@ -31,11 +32,10 @@
   let refreshTimeout: ReturnType<typeof setTimeout> | null = null;
 
   const DISCOUNT_CODE = 'scrollerevenue26';
-  const WA_NUMBER = '393393998351';
   const WA_MSG = encodeURIComponent(
     `Ciao! Sono interessato/a a collaborare con Righello. Ho trovato il codice sconto "${DISCOUNT_CODE}" sul vostro sito. Vorrei saperne di più!`
   );
-  const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
+  const WA_URL = `https://wa.me/${CONTACT.whatsapp}?text=${WA_MSG}`;
 
   const skyWebp = '/sky-easter-egg.webp';
   const skyJpg = '/sky-easter-egg.jpg';

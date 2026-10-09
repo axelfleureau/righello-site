@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CONTACT } from '$lib/data/contact';
   import ServicePage from '$lib/components/servizi/ServicePage.svelte';
   import { indexModel } from '$lib/components/servizi/models';
   import { serviceDetails } from '$lib/data/service-details';
@@ -12,7 +13,7 @@
     provider: {
       '@type': 'Organization',
       name: 'Righello',
-      email: 'hello@wearerighello.com',
+      email: CONTACT.email,
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'Via Pio X 21',

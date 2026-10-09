@@ -118,6 +118,7 @@
           thumbnailUrl={heroVideoThumbnailUrl}
           muted={videoMuted}
           disable3dTilt={true}
+          disableEntranceAnimation={true}
           on:mobiletap={unlockAudio}
         />
       </div>

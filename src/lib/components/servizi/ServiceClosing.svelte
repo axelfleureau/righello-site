@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CONTACT, mailHref } from '$lib/data/contact';
   import ProButton from '../progetti/ProButton.svelte';
   import SectionHead from '../progetti/landing/SectionHead.svelte';
   import { reveal } from '../progetti/landing/actions';
@@ -15,7 +16,7 @@
       <div class="lp-rings sc__rings" aria-hidden="true"></div>
       <SectionHead align="center" kicker={c.kicker} title={c.title} highlight={c.highlight} lead={c.text} />
       <ProButton variant="solid" arrow="right" size="lg" href={c.button.href}>{c.button.label}</ProButton>
-      <p class="sc__mail">Oppure scrivici a <a href="mailto:hello@wearerighello.com">hello@wearerighello.com</a></p>
+      <p class="sc__mail">Oppure scrivici a <a href={mailHref()}>{CONTACT.email}</a></p>
     </div>
   </div>
 </section>

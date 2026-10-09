@@ -3,10 +3,11 @@
  * Le pagine (contatti, chi siamo, schede prodotto) leggono da qui e non riscrivono mai un recapito.
  */
 import { env } from '$env/dynamic/public';
+import { COMPANY, PRIVACY_URL } from './site';
 import { getCaseStudyBySlug, type CaseStudy, type ProjectKind } from './case-studies';
 
 export const CONTACT = {
-  email: 'hello@wearerighello.com',
+  email: COMPANY.email,
   /** Numero WhatsApp in formato internazionale senza il "+" (e' quello gia' pubblico sul sito). */
   whatsapp: '393393998351',
   /**
@@ -19,12 +20,12 @@ export const CONTACT = {
   /** Tempi di risposta e orari gia' dichiarati sul sito. */
   reply: 'entro 72 ore lavorative',
   hours: 'Lun - Ven: 9:00 - 18:00',
-  legalSeat: 'Pordenone',
-  office: 'Mestre - Venezia',
-  street: 'Via Pio X 21, 30174 Mestre (VE)',
+  legalSeat: COMPANY.legalSeat,
+  office: COMPANY.operationsBase,
+  street: `${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city} (VE)`,
   /** Chi riceve i messaggi del modulo: i tre fondatori (vedi TEAM_EMAILS in api/contact/+server.ts). */
   recipients: 'i tre fondatori',
-  privacyUrl: 'https://www.iubenda.com/privacy-policy/47301653',
+  privacyUrl: PRIVACY_URL,
 } as const;
 
 /** "+39 339 399 8351" a partire dal formato internazionale. */

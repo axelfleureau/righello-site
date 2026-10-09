@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CONTACT } from '$lib/data/contact';
   import ServicePage from '$lib/components/servizi/ServicePage.svelte';
   import { agencyModel } from '$lib/components/servizi/models';
   import { getServiceBySlug, serviceFaqs } from '$lib/data/service-details';
@@ -59,7 +60,7 @@
           '@id': 'https://www.wearerighello.com/#localbusiness',
           name: 'Righello S.r.l.',
           url: 'https://www.wearerighello.com',
-          email: 'hello@wearerighello.com',
+          email: CONTACT.email,
           image: 'https://www.wearerighello.com/og.png',
           address: {
             '@type': 'PostalAddress',

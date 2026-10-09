@@ -80,6 +80,16 @@ export function isCurrent(item: NavItem, pathname: string): boolean {
   return prefixes.some((p) => (p.endsWith('-') ? pathname.startsWith(p) : pathname === p || pathname.startsWith(`${p}/`)));
 }
 
+/**
+ * Pagine che chiudono con un invito proprio (home, schede, servizi, contatti): il piede non ne ripete un secondo.
+ * Restano senza invito nostro solo chi siamo, il bando e gli errori, dove quello del piede e' l'unico.
+ */
+const OWN_CLOSING = ['/', '/progetti', '/buffr', '/servizi', '/contatti', '/agenzia-marketing-'];
+
+export function hasOwnClosing(pathname: string): boolean {
+  return OWN_CLOSING.some((p) => (p === '/' ? pathname === '/' : p.endsWith('-') ? pathname.startsWith(p) : pathname === p || pathname.startsWith(`${p}/`)));
+}
+
 export interface ServiceMenuItem {
   /** Id del reparto in `departments` (titolo e frase vengono da li'). */
   department: string;
