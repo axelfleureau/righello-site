@@ -5,6 +5,8 @@
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import RippleGrid from '$lib/components/RippleGrid.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
+  import ServiceFlow from '$lib/components/servizi/ServiceFlow.svelte';
+  import { getServiceBySlug } from '$lib/data/service-details';
 
   type IconKey = 'percent' | 'wallet' | 'fund' | 'users' | 'brain' | 'chart' | 'file' | 'bot' | 'search' | 'dashboard' | 'quote' | 'workflow';
 
@@ -22,6 +24,7 @@
   const deMinimisPdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/istruzioni_per_dichiarazioni_de_minimis.pdf';
   const procedureNoticePdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/nota_informativa_procedimento.pdf';
   const privacyPdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/Informativa_privacy.pdf';
+  const agentsService = getServiceBySlug('agenti-ai')!;
   const informationDate = '23 settembre 2026';
 
   const icons: Record<IconKey, string> = {
@@ -50,7 +53,7 @@
 
   const useCases = [
     { title: 'Automazione documentale', text: 'Lettura intelligente di PDF, email, allegati e documentazione aziendale.', icon: 'file' },
-    { title: 'Assistenti AI', text: 'Chat aziendali addestrate sui documenti e sulle procedure interne.', icon: 'bot' },
+    { title: 'Assistenti AI', text: 'Chat aziendali che rispondono dai documenti e dalle procedure interne.', icon: 'bot' },
     { title: 'Knowledge Base Aziendale', text: 'Trasforma anni di documentazione in un motore di ricerca intelligente.', icon: 'search' },
     { title: 'Analisi Dati', text: 'Dashboard, KPI e strumenti di supporto alle decisioni.', icon: 'dashboard' },
     { title: 'Preventivi e Offerte', text: 'Riduci i tempi di preparazione delle offerte commerciali.', icon: 'quote' },
@@ -1085,6 +1088,14 @@
     </div>
   </section>
 </div>
+
+<ServiceFlow
+  accent={agentsService.accent}
+  flow={{
+    nextKicker: 'Cosa possiamo realizzare',
+    next: { href: '/servizi/agenti-ai', name: agentsService.name, sub: agentsService.tagline, accent: agentsService.accent },
+    all: { href: '/servizi', label: 'Tutti i servizi' },
+  }} />
 
 <style>
   :global(html) {
