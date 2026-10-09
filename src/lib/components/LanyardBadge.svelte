@@ -6,6 +6,8 @@
   export let logoSrc: string = '/logo-white.png';
   export let title: string = 'Righello';
   export let subtitle: string = 'Growth Agency';
+  /** Riga in fondo alla targhetta (le cinque stelle di prima suggerivano una valutazione che non esiste). */
+  export let footer: string = '';
 
   let container: HTMLElement;
   let isDragging = false;
@@ -254,17 +256,11 @@
             <img src={logoSrc} alt={title} class="logo-image" />
           </div>
           <div class="card-text">
-            <h3 class="card-title">{title}</h3>
+            <p class="card-title">{title}</p>
             <p class="card-subtitle">{subtitle}</p>
           </div>
           <div class="card-footer">
-            <div class="stars">
-              {#each Array(5) as _}
-                <svg class="star" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-              {/each}
-            </div>
+            {#if footer}<p class="card-place">{footer}</p>{/if}
           </div>
         </div>
         <div class="card-shine"></div>
@@ -466,15 +462,15 @@
     margin-top: auto;
   }
   
-  .stars {
-    display: flex;
-    gap: 4px;
+  .card-place {
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
   }
-  
-  .star {
-    width: 20px;
-    height: 20px;
-    color: #facc15;
+
+  :global([data-theme="light"]) .card-place {
+    color: rgba(17, 24, 39, 0.62);
   }
   
   .card-shine {

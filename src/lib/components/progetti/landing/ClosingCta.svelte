@@ -5,6 +5,7 @@
   import ProjectIcon from '../ProjectIcon.svelte';
   import SectionHead from './SectionHead.svelte';
   import { reveal } from './actions';
+  import { contactHref } from '$lib/data/contact';
 
   export let study: CaseStudy;
   export let cta: Landing['cta'] = undefined;
@@ -28,7 +29,7 @@
         {#if action}
           <ProButton variant="solid" arrow="up-right" external={action.external} size="lg" href={action.href}>{action.label}</ProButton>
         {/if}
-        <ProButton variant={action ? 'ghost' : 'solid'} arrow="right" size="lg" href="/contatti">Parliamo di un progetto simile</ProButton>
+        <ProButton variant={action ? 'ghost' : 'solid'} arrow="right" size="lg" href={contactHref(study)}>Parliamo di un progetto simile</ProButton>
       </div>
     </div>
   </div>
