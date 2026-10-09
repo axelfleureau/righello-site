@@ -1,4 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
+import { dropOverriddenDefaults } from '$lib/seo/head';
 
 const BLOCKED_BOTS = [
   'HTTrack', 'WebCopier', 'WebZIP', 'Teleport', 'SiteSnagger',
@@ -10,6 +11,14 @@ const BLOCKED_BOTS = [
   'Google-Extended',
 ];
 
+/** Una sola etichetta per chiave nel <head>: vince quella della pagina (vedi `$lib/seo/head`). */
+function dedupeHead(html: string): string {
+  const start = html.indexOf('<head');
+  const end = html.indexOf('</head>');
+  if (start === -1 || end === -1) return html;
+  return html.slice(0, start) + dropOverriddenDefaults(html.slice(start, end)) + html.slice(end);
+}
+
 export const handle: Handle = async ({ event, resolve }) => {
   const ua = event.request.headers.get('user-agent') || '';
 
@@ -18,7 +27,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     return new Response('Access denied', { status: 403 });
   }
 
-  const response = await resolve(event);
+  const response = await resolve(event, { transformPageChunk: ({ html }) => dedupeHead(html) });
 
   if (response.status >= 400) {
     response.headers.set('X-Robots-Tag', 'noindex, nofollow');

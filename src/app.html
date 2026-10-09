@@ -1,13 +1,19 @@
 <!doctype html>
 <html lang="it">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18003003969"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-18003003969');
+      // Tema scelto dall'utente: va applicato PRIMA del primo disegno, altrimenti chi usa il
+      // tema chiaro vede un lampo scuro finche' la pagina non si "accende".
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'light' || t === 'dark') {
+            document.documentElement.setAttribute('data-theme', t);
+          }
+        } catch (e) {}
+      })();
     </script>
     <script>
       // Suppress non-Error uncaught exceptions and unhandled rejections.
@@ -21,31 +27,34 @@
         if (e.reason == null || !(e.reason instanceof Error)) { e.preventDefault(); }
       });
     </script>
-    <meta charset="utf-8" />
+    <script>
+      // Google tag: la coda e la configurazione restano subito qui (nessun evento si perde),
+      // ma la libreria (~160 kB) si scarica a pagina caricata, per non contendere banda a
+      // stili, caratteri e immagini del primo schermo.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-18003003969');
+      window.addEventListener('load', function () {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18003003969';
+        document.head.appendChild(s);
+      });
+    </script>
     <link rel="icon" type="image/x-icon" href="%sveltekit.assets%/favicon.ico" />
     <link rel="icon" type="image/png" sizes="192x192" href="%sveltekit.assets%/icon-192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="%sveltekit.assets%/icon-512.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="%sveltekit.assets%/apple-touch-icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="google-site-verification" content="VcNrLrBqzUI2ljwcUKeMvthK2DvlVMPKmB40NA-SrYI" />
-    <meta name="theme-color" content="#050505" />
     <link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
-    <!-- DegularDisplay-Semibold (600) and Bold (700) removed from preload:
-         Safari warns "preloaded but not used within a few seconds" because these
-         weights are not rendered above the fold. Removing the preload hint stops
-         the warning; the @font-face declarations in index.css still load them
-         on-demand when the browser first needs to render text in those weights. -->
-    <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin />
+    <!-- Nessun preconnect globale: ogni connessione anticipata costa una stretta di mano TLS
+         anche nelle pagine che non usano quel server (contatti, servizi, chi siamo non scaricano
+         nulla da fuori). Basta il dns-prefetch; chi serve un video o un'immagine da fuori sul
+         primo schermo dichiara il proprio preconnect nel head della pagina. -->
     <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
-    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
     <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-    <link rel="preconnect" href="https://www.youtube.com" crossorigin />
-    <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin />
-    <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
-    <link rel="preconnect" href="https://img.youtube.com" crossorigin />
     <link rel="dns-prefetch" href="https://img.youtube.com" />
-    <link rel="preconnect" href="https://i.ytimg.com" crossorigin />
-    <link rel="dns-prefetch" href="https://i.ytimg.com" />
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">

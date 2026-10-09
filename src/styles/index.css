@@ -127,6 +127,21 @@
   --glow-cyan: rgba(6, 182, 212, 0.4);
   --gradient-start: #D6487E;
   --gradient-end: #06B6D4;
+
+  /* Marchio: il rosa e' definito qui e solo qui. `--brand-pink-ink` e' il rosa per il TESTO
+     sul fondo del tema (sul bianco il rosa pieno arriva a 4,1:1, sotto la soglia di 4,5:1). */
+  --brand-pink: #D6487E;
+  --brand-pink-deep: #C03A6E;
+  --brand-pink-ink: #D6487E;
+  --brand-pink-soft: rgba(214, 72, 126, 0.1);
+  --focus-ring: var(--brand-pink-ink);
+
+  /* Pannelli che si aprono sopra la pagina (menu a tendina, menu del telefono): pieni, mai
+     trasparenti, cosi' il testo sotto non si legge attraverso. */
+  --surface-menu: #17171c;
+  --surface-menu-border: rgba(255, 255, 255, 0.12);
+  --surface-menu-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  --scrim: rgba(0, 0, 0, 0.6);
   
   /* Spacing Scale (8px base) */
   --space-xs: 0.5rem;    /* 8px */
@@ -176,6 +191,12 @@
   --border-color: #d1d5db;
   --glow-pink: rgba(214, 72, 126, 0.3);
   --glow-cyan: rgba(6, 182, 212, 0.25);
+  --brand-pink-ink: #B02F66;
+  --brand-pink-soft: rgba(176, 47, 102, 0.09);
+  --surface-menu: #ffffff;
+  --surface-menu-border: rgba(0, 0, 0, 0.1);
+  --surface-menu-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
+  --scrim: rgba(17, 24, 39, 0.45);
 }
 
 @layer base {
@@ -220,6 +241,13 @@
   p {
     @apply text-lg md:text-xl leading-relaxed;
   }
+
+  /* Il segno del fuoco da tastiera e' uno solo per tutto il sito; i componenti che ne
+     hanno uno proprio lo dichiarano e vincono per specificita'. */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
   
   ::selection {
     @apply bg-righello-pink text-white;
@@ -232,6 +260,40 @@
 }
 
 @layer components {
+  /* "Vai al contenuto": visibile solo quando prende il fuoco da tastiera. */
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    background: var(--brand-pink-deep);
+    color: #fff;
+    font-weight: 600;
+    font-size: var(--text-sm);
+    transform: translateY(-200%);
+    transition: transform 0.2s ease;
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
+  /* Due versioni dello stesso logo (scuro/chiaro): si mostra quella del tema senza aspettare
+     lo script, cosi' chi usa il tema chiaro non vede un logo bianco su fondo bianco. */
+  .logo-on-light {
+    display: none;
+  }
+
+  [data-theme='light'] .logo-on-dark {
+    display: none;
+  }
+
+  [data-theme='light'] .logo-on-light {
+    display: block;
+  }
+
   .btn-primary {
     @apply inline-flex items-center justify-center px-8 py-4 bg-righello-pink text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 active:scale-95;
     box-shadow: 0 0 30px var(--glow-pink), 0 0 60px rgba(214, 72, 126, 0.3);
@@ -732,6 +794,23 @@
   }
 }
 
+/* Chi ha chiesto meno movimento non deve vedere scorrimenti ne' dissolvenze lunghe:
+   un solo interruttore per tutto il sito, senza che ogni componente se ne ricordi. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ───────────────────────────────────────────────────────────────────────────
    iPhone e iPad: lo scroll non deve fermarsi.
    Safari ricalcola ogni frame i filtri che sfocano ciò che sta dietro (la barra
@@ -768,4 +847,25 @@
   .ytf-glow,
   .phone-glow,
   .behind-glow { display: none !important; }
+}
+
+/* Il menu del telefono e' aperto: la pagina sotto resta ferma (la barra di scorrimento, dove
+   esiste, e' compensata cosi' il contenuto non salta di lato). */
+html.menu-open {
+  overflow: hidden;
+  padding-right: var(--scrollbar-w, 0);
+}
+
+/* Il fuoco arriva su <main> dal collegamento "Vai al contenuto": non serve un riquadro
+   intorno a tutta la pagina. */
+main:focus {
+  outline: none;
+}
+
+/* Avviso cookie (iubenda): testi e scelte sono suoi, qui si sistema solo cio' che lo rende
+   scomodo da toccare. Rifiuta e Accetta restano identici fra loro (scelta equa); tutti i
+   pulsanti arrivano ai 44 px di altezza minima per il dito. */
+#iubenda-cs-banner .iubenda-cs-btn-primary,
+#iubenda-cs-banner .iubenda-cs-customize-btn {
+  min-height: 44px;
 }
