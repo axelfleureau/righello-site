@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { CaseStudy } from '$lib/data/case-studies';
   import { kindLabels, listHref } from '$lib/data/case-studies';
+  import { contactHref } from '$lib/data/contact';
   import type { Landing } from '$lib/data/landing/types';
   import ProductDevice from '../ProductDevice.svelte';
   import ProButton from '../ProButton.svelte';
@@ -49,7 +50,7 @@
           {#if primary}
             <ProButton variant="solid" arrow="up-right" external size="lg" href={primary.href}>{primary.label}</ProButton>
           {/if}
-          <ProButton variant="ghost" arrow="right" size="lg" href="/contatti">Parliamo di un progetto simile</ProButton>
+          <ProButton variant="ghost" arrow="right" size="lg" href={contactHref(study)}>Parliamo di un progetto simile</ProButton>
         </div>
         <dl class="lh__meta">
           {#each meta as m}

@@ -1,437 +1,253 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import ScrollReveal from '$lib/components/ScrollReveal.svelte';
-  import AnimatedCounter from '$lib/components/AnimatedCounter.svelte';
-  import ProfileCard from '$lib/components/ProfileCard.svelte';
-  import Highlight from '$lib/components/Highlight.svelte';
-  import TechWord from '$lib/components/TechWord.svelte';
-  import MagneticButton from '$lib/components/MagneticButton.svelte';
+  import { theme } from '$lib/stores/theme';
   import LanyardBadge from '$lib/components/LanyardBadge.svelte';
-  import SectionDivider from '$lib/components/SectionDivider.svelte';
-  
+  import ProButton from '$lib/components/progetti/ProButton.svelte';
+  import ProjectIcon from '$lib/components/progetti/ProjectIcon.svelte';
+  import '$lib/components/progetti/tokens.css';
+  import { caseStudies, caseStudyHref, kindLabels, type CaseStudy } from '$lib/data/case-studies';
+  import { CONTACT, contactHref } from '$lib/data/contact';
+
+  /** Le persone sono quelle gia' pubbliche sul sito: nome e ruolo, niente altro. `pos` tiene il volto dentro il quadrato. */
   const team = [
-    {
-      name: 'Edis Bali',
-      role: 'CEO & Co-Founder',
-      description: 'Visione strategica e leadership. Trasforma obiettivi di business in roadmap concrete.',
-      image: '/team-edis.jpg',
-    },
-    {
-      name: 'Paolo Aileni',
-      role: 'COO & Co-Founder',
-      description: 'Operations e project management. Garantisce delivery puntuale e qualità costante.',
-      image: '/team-paolo.jpg?v=20260611',
-    },
-    {
-      name: 'Axel N. L. Fleureau',
-      role: 'CTO & Co-Founder',
-      description: 'Architettura tecnica e sviluppo. Dal design system al codice production-ready.',
-      image: '/team-axel.jpg',
-    },
-    {
-      name: 'Omar ElKharroubi',
-      role: 'Agente di Commercio',
-      description: 'Sviluppo business e relazioni. Collega le esigenze dei clienti alle nostre soluzioni.',
-      image: '/team-omar.jpg',
-    },
+    { name: 'Edis Bali', role: 'CEO e cofondatore', image: '/team/edis.webp', pos: '50% 30%' },
+    { name: 'Paolo Aileni', role: 'COO e cofondatore', image: '/team/paolo.webp', pos: '50% 22%' },
+    { name: 'Axel N. L. Fleureau', role: 'CTO e cofondatore', image: '/team/axel.webp', pos: '50% 18%' },
+    { name: 'Omar ElKharroubi', role: 'Agente di commercio', image: '/team/omar.webp', pos: '50% 30%' },
   ];
-  
-  const departments = [
-    {
-      title: 'Marketing & Social Media',
-      subtitle: 'Il nostro cavallo di battaglia',
-      description: 'Strategie di marketing, piano editoriale, shooting, video, copy. Contenuti che generano engagement misurabile e community attive.',
-      icon: '🎬',
-      highlight: true,
-    },
-    {
-      title: 'Advertising & Automazione',
-      subtitle: 'ROAS tracciabile + processi automatizzati',
-      description: 'Campagne Meta, Google, TikTok. Budget ottimizzati, conversioni tracciate, workflow automatizzati e scaling data-driven.',
-      icon: '📈',
-      highlight: false,
-    },
-    {
-      title: 'Sviluppo Web & Software',
-      subtitle: 'Design + Performance + Codice',
-      description: 'Siti web, e-commerce, web app e software custom. Mobile-first, SEO integrato, automazioni intelligenti.',
-      icon: '💻',
-      highlight: false,
-    },
+
+  /** Il lavoro, raggruppato come lo dichiarano i dati dei progetti: i numeri si contano, non si scrivono. */
+  const groups: Array<{ id: string; title: (n: number) => string; items: CaseStudy[] }> = [
+    { id: 'prodotti', title: (n) => `${n} prodotti digitali`, items: caseStudies.filter((s) => s.category === 'digital') },
+    { id: 'siti', title: (n) => `${n} siti web`, items: caseStudies.filter((s) => s.category === 'web') },
+    { id: 'contenuti', title: (n) => `${n} progetti di foto, video e social`, items: caseStudies.filter((s) => s.category === 'content' || s.category === 'marketing') },
   ];
-  
-  const workflow = [
-    {
-      step: '01',
-      title: 'Strategia',
-      description: 'Definiamo obiettivi chiari, KPI misurabili, target e competitor. Brief tecnico prima di ogni azione.',
-    },
-    {
-      step: '02',
-      title: 'Produzione',
-      description: 'Shooting, video, copy, design. Contenuti calibrati per ogni canale e formato.',
-    },
-    {
-      step: '03',
-      title: 'Distribuzione',
-      description: 'Formati ottimizzati per ogni piattaforma. Calendario editoriale e pubblicazione sincronizzata.',
-    },
-    {
-      step: '04',
-      title: 'Ottimizzazione AI & Scaling',
-      description: 'Test, learn, scale. Insight AI-powered, ottimizzazione continua, crescita sostenibile.',
-    },
+
+  const steps = [
+    { title: 'Una chiamata per capire', text: 'Partiamo da obiettivi, mercato e situazione di oggi. La prima chiamata è gratuita.' },
+    { title: 'Una proposta scritta', text: 'Un preventivo su misura, con tempi e consegne chiari prima di partire.' },
+    { title: 'Piano e lavoro', text: 'Approvata la proposta, definiamo il piano operativo e iniziamo. Dalla strategia all’esecuzione, senza passaggi esterni.' },
   ];
-  
-  const values = [
-    {
-      title: 'Dati Prima di Tutto',
-      description: 'Ogni decisione è supportata da numeri. No intuizioni, solo evidenze.',
-      icon: '📊',
-    },
-    {
-      title: 'Trasparenza Totale',
-      description: 'Dashboard condivise, report settimanali, comunicazione diretta.',
-      icon: '🔍',
-    },
-    {
-      title: 'Ownership Completa',
-      description: 'Codice, design, asset: tutto è di proprietà del cliente.',
-      icon: '🔑',
-    },
-    {
-      title: 'Mobile-First',
-      description: 'Il 70%+ del traffico è mobile. Progettiamo per smartphone, sempre.',
-      icon: '📱',
-    },
+
+  const principles = [
+    { title: 'Un interlocutore solo', text: 'Parli con chi fa il lavoro, dall’idea alla consegna.' },
+    { title: 'Quello che costruiamo è tuo', text: 'Codice, design e materiali sono del cliente.' },
+    { title: 'Prima i numeri', text: 'Le scelte importanti partono da dati veri, non da impressioni.' },
   ];
-  
-  const stats = [
-    { value: 470, suffix: '+', label: 'Progetti completati' },
-    { value: 30, suffix: '+', label: 'Clienti attivi' },
-    { value: 4, suffix: '', label: 'Dipartimenti integrati' },
-  ];
+
+  /** La targhetta appesa e' uno spettacolo da mouse: sul telefono non si carica nemmeno. */
+  let showBadge = false;
+  onMount(() => {
+    showBadge = window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
+  });
+
+  const TITLE = 'Chi siamo | Righello, studio digitale tra Pordenone e Mestre';
+  const DESC = 'Righello costruisce prodotti digitali propri e lavora su misura per aziende: app, software, siti web, contenuti e campagne. Sede legale a Pordenone, base operativa a Mestre.';
 </script>
 
 <svelte:head>
-  <title>Chi Siamo | Team, Metodo e Visione - Righello</title>
-  <meta name="description" content="Scopri il team Righello: strategia, social, advertising, siti web, software e contenuti per aziende tra Pordenone, Mestre e Nord Italia." />
+  <title>{TITLE}</title>
+  <meta name="description" content={DESC} />
   <link rel="canonical" href="https://www.wearerighello.com/chi-siamo" />
-  <meta property="og:title" content="Chi Siamo | Team, Metodo e Visione - Righello" />
-  <meta property="og:description" content="Scopri il team Righello: strategia, social, advertising, siti web, software e contenuti per aziende tra Pordenone, Mestre e Nord Italia." />
+  <meta property="og:title" content={TITLE} />
+  <meta property="og:description" content={DESC} />
   <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
   <meta property="og:url" content="https://www.wearerighello.com/chi-siamo" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="it_IT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chi Siamo | Team, Metodo e Visione - Righello" />
-  <meta name="twitter:description" content="Scopri il team Righello: strategia, social, advertising, siti web, software e contenuti per aziende tra Pordenone, Mestre e Nord Italia." />
+  <meta name="twitter:title" content={TITLE} />
+  <meta name="twitter:description" content={DESC} />
   <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
 </svelte:head>
 
-<section id="chi-siamo-hero" class="pt-24 pb-12 md:pt-32 md:pb-20">
-  <div class="section-container">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-      <div class="order-2 lg:order-1">
-        <ScrollReveal animation="fade-up">
-          <p class="section-subtitle text-left">Chi Siamo</p>
-          <h1 class="section-title text-left mb-6">
-            <span class="block">Crescita Misurabile.</span>
-            <span class="block"><Highlight variant="pink">Nessuna Promessa Vuota.</Highlight></span>
-          </h1>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={100}>
-          <p class="text-lg md:text-xl mb-6" style="color: var(--text-secondary);">
-            Siamo una <TechWord>growth agency</TechWord> specializzata in marketing digitale, sviluppo web e automazione. Tre Co-Founder con competenze complementari — strategia, creatività e tecnologia — con base nel Nord Italia e progetti in tutta Europa.
-          </p>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={200}>
-          <p class="text-lg md:text-xl mb-8" style="color: var(--text-secondary);">
-            Il nostro approccio? <TechWord highlight>Zero dispersioni</TechWord>. Un interlocutore unico, KPI condivisi, risultati tracciabili. Non vendiamo ore, vendiamo crescita.
-          </p>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={300}>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <MagneticButton href="/contatti" variant="primary">
-              Parliamone
-              <svg class="w-5 h-5 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </MagneticButton>
-            <MagneticButton href="/servizi" variant="secondary">
-              Scopri i servizi
-            </MagneticButton>
-          </div>
-        </ScrollReveal>
-      </div>
-      
-      <div class="order-1 lg:order-2 flex justify-center">
-        <ScrollReveal animation="scale" delay={200}>
-          <LanyardBadge 
-            logoSrc="/logo-white.png"
-            title="RIGHELLO"
-            subtitle="Growth Agency"
-          />
-        </ScrollReveal>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="mt-16 md:mt-24">
-  <SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
-</div>
-
-<section id="team" class="section-padding" style="background-color: var(--bg-secondary);">
-  <div class="section-container">
-    <ScrollReveal>
-      <div class="section-header">
-        <p class="section-subtitle">Il Team</p>
-        <h2 class="section-title text-center mb-4">I Volti di Righello</h2>
-        <p class="text-lg md:text-xl text-center max-w-3xl mx-auto mb-12" style="color: var(--text-secondary);">
-          Tre Co-Founder, competenze complementari, un obiettivo comune: far crescere il tuo business.
-        </p>
-      </div>
-    </ScrollReveal>
-    
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-      {#each team as member, i}
-        <ScrollReveal animation="fade-up" delay={i * 100}>
-          <div class="team-card group">
-            <div class="relative overflow-hidden rounded-2xl mb-4">
-              <img 
-                src={member.image} 
-                alt={member.name}
-                class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </div>
-            <h3 class="text-xl font-bold mb-1">{member.name}</h3>
-            <p class="text-righello-pink font-medium mb-2">{member.role}</p>
-            <p class="text-base" style="color: var(--text-secondary);">{member.description}</p>
-          </div>
-        </ScrollReveal>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
-
-<section id="dipartimenti" class="section-padding">
-  <div class="section-container">
-    <ScrollReveal>
-      <div class="section-header">
-        <p class="section-subtitle">I 3 Dipartimenti</p>
-        <h2 class="section-title text-center mb-4">Tre Anime, Un Unico Team</h2>
-        <p class="text-lg md:text-xl text-center max-w-3xl mx-auto mb-12" style="color: var(--text-secondary);">
-          Marketing, Advertising e Sviluppo Software: competenze integrate per progetti completi.
-        </p>
-      </div>
-    </ScrollReveal>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-      {#each departments as dept, i}
-        <ScrollReveal animation="fade-up" delay={i * 100}>
-          <div 
-            class="department-card p-6 md:p-8 rounded-2xl border transition-all duration-300 h-full {dept.highlight ? 'featured' : ''}"
-            style="background-color: var(--bg-secondary); border-color: {dept.highlight ? 'var(--righello-pink)' : 'var(--border-color)'};"
-          >
-            {#if dept.highlight}
-              <span class="inline-block px-3 py-1 text-sm font-medium bg-righello-pink text-white rounded-full mb-4">
-                Cavallo di Battaglia
-              </span>
-            {/if}
-            <div class="text-4xl mb-4">{dept.icon}</div>
-            <h3 class="text-xl md:text-2xl font-bold mb-2">{dept.title}</h3>
-            <p class="text-righello-pink font-medium mb-3">{dept.subtitle}</p>
-            <p class="text-base" style="color: var(--text-secondary);">{dept.description}</p>
-          </div>
-        </ScrollReveal>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
-
-<section class="section-padding" style="background-color: var(--bg-secondary);">
-  <div class="section-container">
-    <ScrollReveal>
-      <div class="section-header">
-        <p class="section-subtitle">Come Lavoriamo</p>
-        <h2 class="section-title text-center mb-4">Il Nostro Workflow</h2>
-        <p class="text-lg md:text-xl text-center max-w-3xl mx-auto mb-12" style="color: var(--text-secondary);">
-          4 step chiari, risultati tracciabili. Dalla strategia allo scaling.
-        </p>
-      </div>
-    </ScrollReveal>
-    
-    <div class="workflow-grid">
-      {#each workflow as step, i}
-        <ScrollReveal animation="fade-up" delay={i * 100}>
-          <div class="workflow-step group">
-            <div class="step-number">{step.step}</div>
-            <div class="step-content">
-              <h3 class="text-xl md:text-2xl font-bold mb-2 group-hover:text-righello-pink transition-colors">{step.title}</h3>
-              <p class="text-base" style="color: var(--text-secondary);">{step.description}</p>
-            </div>
-            {#if i < workflow.length - 1}
-              <div class="step-connector hidden md:block"></div>
-            {/if}
-          </div>
-        </ScrollReveal>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-primary)" />
-
-<section class="section-padding">
-  <div class="section-container">
-    <ScrollReveal>
-      <div class="section-header">
-        <p class="section-subtitle">I Nostri Valori</p>
-        <h2 class="section-title text-center mb-4">Cosa Ci Guida</h2>
-        <p class="text-lg md:text-xl text-center max-w-3xl mx-auto mb-12" style="color: var(--text-secondary);">
-          Principi concreti, non buzzword. Ecco come lavoriamo.
-        </p>
-      </div>
-    </ScrollReveal>
-    
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {#each values as value, i}
-        <ScrollReveal animation="fade-up" delay={i * 100}>
-          <div class="value-card p-6 rounded-2xl border transition-all duration-300 hover:border-righello-pink/50 h-full" style="background-color: var(--bg-secondary); border-color: var(--border-color);">
-            <div class="text-3xl mb-4">{value.icon}</div>
-            <h3 class="text-lg font-bold mb-2">{value.title}</h3>
-            <p class="text-base" style="color: var(--text-secondary);">{value.description}</p>
-          </div>
-        </ScrollReveal>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<SectionDivider fromColor="var(--bg-primary)" toColor="var(--bg-secondary)" />
-
-<section class="section-padding" style="background-color: var(--bg-secondary);">
-  <div class="section-container">
-    <ScrollReveal>
-      <div class="section-header">
-        <p class="section-subtitle">I Numeri</p>
-        <h2 class="section-title text-center mb-12">Il Nostro Impatto</h2>
-      </div>
-    </ScrollReveal>
-    
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 text-center">
-      {#each stats as stat, i}
-        <ScrollReveal animation="scale" delay={i * 100}>
-          <div class="p-8 group rounded-2xl transition-colors duration-300" style="background-color: var(--bg-primary);">
-            <div class="text-5xl md:text-6xl font-bold text-righello-pink mb-4">
-              <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={2000} />
-            </div>
-            <p class="text-base" style="color: var(--text-secondary);">{stat.label}</p>
-          </div>
-        </ScrollReveal>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<SectionDivider fromColor="var(--bg-secondary)" toColor="var(--bg-tertiary)" />
-
-<section class="section-padding" style="background-color: var(--bg-tertiary);">
-  <div class="section-container text-center">
-    <ScrollReveal animation="fade-up">
-      <div class="section-header">
-        <h2 class="section-title mb-4"><Highlight>Pronto a Crescere?</Highlight></h2>
-      </div>
-    </ScrollReveal>
-    <ScrollReveal animation="fade-up" delay={100}>
-      <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto" style="color: var(--text-secondary);">
-        Risposta garantita in 72 ore. Parliamo del tuo progetto e vediamo come possiamo aiutarti.
+<section id="chi-siamo-hero" class="cs-hero">
+  <div class="section-container cs-hero__grid">
+    <div class="cs-hero__copy">
+      <p class="section-subtitle">Chi siamo</p>
+      <h1 class="cs-title">Costruiamo prodotti nostri e software su misura per i clienti.</h1>
+      <p class="cs-lead">
+        Righello è uno studio digitale: app, gestionali, siti web, contenuti e campagne. Lavoriamo dal 2023, con sede legale a {CONTACT.legalSeat} e base operativa a {CONTACT.office.split(' - ')[0]}.
       </p>
-    </ScrollReveal>
-    <ScrollReveal animation="fade-up" delay={200}>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <MagneticButton href="/contatti" variant="primary">
-          Contattaci Ora
-          <svg class="w-5 h-5 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </MagneticButton>
-        <MagneticButton href="mailto:hello@wearerighello.com" variant="secondary">
-          hello@wearerighello.com
-        </MagneticButton>
+      <div class="cs-cta">
+        <ProButton href={contactHref()} variant="primary" size="lg" arrow="right">Parliamo di un progetto</ProButton>
+        <ProButton href="/progetti" variant="ghost" size="lg">Guarda i progetti</ProButton>
       </div>
+    </div>
+    {#if showBadge}
+      <div class="cs-hero__badge">
+        <LanyardBadge logoSrc={$theme === 'dark' ? '/logo-white.png' : '/logo-full.png'} title="RIGHELLO" subtitle="Studio digitale" footer="Pordenone · Mestre" />
+      </div>
+    {/if}
+  </div>
+</section>
+
+<section id="perche" class="cs-section cs-section--alt">
+  <div class="section-container">
+    <ScrollReveal>
+      <h2 class="cs-h2">Due modi di lavorare, un solo mestiere</h2>
     </ScrollReveal>
-    <ScrollReveal animation="fade-up" delay={300}>
-      <p class="mt-8 text-base" style="color: var(--text-muted);">
-        Sede legale Pordenone · base operativa Mestre - Venezia
-      </p>
+    <div class="cs-two">
+      <ScrollReveal delay={60}>
+        <article class="cs-pillar">
+          <h3>Prodotti nostri</h3>
+          <p>
+            Un prodotto proprio va tenuto in piedi ogni giorno: aggiornamenti, store, pagamenti, assistenza. È il modo più onesto per imparare cosa regge davvero, e quello che impariamo lo portiamo nel lavoro per gli altri.
+          </p>
+        </article>
+      </ScrollReveal>
+      <ScrollReveal delay={120}>
+        <article class="cs-pillar">
+          <h3>Lavoro su misura</h3>
+          <p>
+            Quando un’azienda ha un problema che nessun prodotto già pronto risolve, lo costruiamo con lei: un sito, un’app o un software fatto sul suo modo di lavorare.
+          </p>
+        </article>
+      </ScrollReveal>
+    </div>
+  </div>
+</section>
+
+<section id="lavoro" class="cs-section">
+  <div class="section-container">
+    <ScrollReveal>
+      <h2 class="cs-h2">Quello che abbiamo costruito</h2>
+      <p class="cs-sub">Ogni scheda dice lo stato vero del progetto: online, in prova o in uso interno.</p>
     </ScrollReveal>
+
+    {#each groups as g}
+      <div class="cs-group">
+        <h3 class="cs-group__title">{g.title(g.items.length)}</h3>
+        <ul class="cs-tiles">
+          {#each g.items as study}
+            <li>
+              <a class="cs-tile" href={caseStudyHref(study)}>
+                <ProjectIcon {study} size={44} />
+                <span class="cs-tile__txt">
+                  <span class="cs-tile__name">{study.name}</span>
+                  <span class="cs-tile__kind">{kindLabels[study.kind]}</span>
+                </span>
+              </a>
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/each}
+
+    <p class="cs-more"><a href="/progetti">Apri l’elenco completo dei {caseStudies.length} progetti</a></p>
+  </div>
+</section>
+
+<section id="metodo" class="cs-section cs-section--alt">
+  <div class="section-container">
+    <ScrollReveal>
+      <h2 class="cs-h2">Come lavoriamo</h2>
+    </ScrollReveal>
+    <ol class="cs-steps">
+      {#each steps as s, i}
+        <li>
+          <ScrollReveal delay={i * 80}>
+            <span class="cs-steps__n" aria-hidden="true">0{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </ScrollReveal>
+        </li>
+      {/each}
+    </ol>
+    <ul class="cs-principles">
+      {#each principles as p}
+        <li><strong>{p.title}.</strong> {p.text}</li>
+      {/each}
+    </ul>
+  </div>
+</section>
+
+<section id="persone" class="cs-section">
+  <div class="section-container">
+    <ScrollReveal>
+      <h2 class="cs-h2">Le persone</h2>
+      <p class="cs-sub">Quando scrivi dal modulo dei contatti, il messaggio arriva ai tre fondatori.</p>
+    </ScrollReveal>
+    <ul class="cs-team">
+      {#each team as m}
+        <li>
+          <img src={m.image} alt={m.name} width="480" height="480" loading="lazy" decoding="async" style="object-position: {m.pos}" />
+          <p class="cs-team__name">{m.name}</p>
+          <p class="cs-team__role">{m.role}</p>
+        </li>
+      {/each}
+    </ul>
   </div>
 </section>
 
 <style>
-  .team-card {
-    text-align: center;
+  .cs-hero { padding: clamp(6.5rem, 14vw, 9rem) 0 clamp(3rem, 7vw, 5rem); }
+  .cs-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; align-items: center; }
+  @media (min-width: 1024px) { .cs-hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); min-height: 34rem; } }
+  .cs-hero__badge { display: flex; justify-content: center; }
+
+  .cs-title { font-size: clamp(2.2rem, 5.4vw, 3.9rem); font-weight: 700; line-height: 1.06; letter-spacing: var(--pg-display-tracking, -0.015em); margin-bottom: 1.2rem; max-width: 20ch; }
+  .cs-lead { font-size: clamp(1.05rem, 2vw, 1.3rem); line-height: 1.6; color: var(--text-secondary); max-width: 40rem; margin-bottom: 1.8rem; }
+  .cs-cta { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+  .cs-cta--center { justify-content: center; margin-top: 1.6rem; }
+
+  .cs-section { padding: clamp(3rem, 7vw, 5.5rem) 0; }
+  .cs-section--alt { background: var(--bg-secondary); }
+  .cs-h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); font-weight: 700; line-height: 1.1; letter-spacing: var(--pg-display-tracking, -0.015em); margin-bottom: 0.8rem; }
+  .cs-sub { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6; max-width: 40rem; }
+
+  .cs-two { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; margin-top: 1.8rem; }
+  @media (min-width: 768px) { .cs-two { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem; } }
+  .cs-pillar { height: 100%; padding: clamp(1.3rem, 3vw, 2rem); border: 1px solid var(--border-color); border-radius: 1.3rem; background: var(--bg-primary); }
+  .cs-pillar h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .cs-pillar p { color: var(--text-secondary); line-height: 1.65; }
+
+  .cs-group { margin-top: clamp(1.8rem, 4vw, 2.8rem); }
+  .cs-group__title { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding-bottom: 0.7rem; margin-bottom: 0.9rem; border-bottom: 1px solid var(--border-color); }
+  .cs-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+  @media (min-width: 560px) { .cs-tiles { gap: 0.6rem; } }
+  @media (min-width: 760px) { .cs-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .cs-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.8rem; } }
+  .cs-tile {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: 3.9rem;
+    height: 100%;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    background: var(--bg-secondary);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+    -webkit-tap-highlight-color: transparent;
   }
-  
-  .department-card.featured {
-    position: relative;
-    box-shadow: 0 0 30px rgba(214, 72, 126, 0.15);
-  }
-  
-  .workflow-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  @media (min-width: 768px) {
-    .workflow-grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-    }
-  }
-  
-  .workflow-step {
-    position: relative;
-    padding: 1.5rem;
-    text-align: center;
-  }
-  
-  @media (min-width: 768px) {
-    .workflow-step {
-      text-align: left;
-      padding: 1.5rem 2rem;
-    }
-  }
-  
-  .step-number {
-    font-size: 3rem;
-    font-weight: 800;
-    color: var(--righello-pink);
-    opacity: 0.3;
-    line-height: 1;
-    margin-bottom: 1rem;
-  }
-  
-  .step-connector {
-    position: absolute;
-    top: 2rem;
-    right: 0;
-    width: 2rem;
-    height: 2px;
-    background: linear-gradient(90deg, var(--righello-pink), transparent);
-    transform: translateX(50%);
-  }
-  
-  .value-card:hover {
-    transform: translateY(-4px);
-  }
+  .cs-tile:hover { border-color: var(--gradient-start); transform: translateY(-2px); }
+  .cs-tile:active { transform: none; }
+  .cs-tile:focus-visible { outline: 2px solid var(--gradient-start); outline-offset: 3px; }
+  .cs-tile__txt { display: grid; gap: 0.1rem; min-width: 0; }
+  .cs-tile__name { font-weight: 700; font-size: 0.98rem; line-height: 1.2; overflow-wrap: break-word; }
+  /* sul telefono la tessera e' piu' stretta: il tipo si legge nella scheda del progetto */
+  @media (max-width: 559px) { .cs-tile__kind { display: none; } .cs-tile { min-height: 3.4rem; gap: 0.6rem; padding: 0.5rem 0.6rem; } .cs-tile__name { font-size: 0.92rem; } }
+  .cs-tile__kind { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.25; }
+  .cs-more { margin-top: 1.6rem; }
+  .cs-more a { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 600; color: var(--gradient-start); text-decoration: underline; text-underline-offset: 4px; }
+
+  .cs-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.6rem; margin-top: 1.8rem; }
+  @media (min-width: 768px) { .cs-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; } }
+  .cs-steps li { padding-top: 1rem; border-top: 1px solid var(--border-color); }
+  .cs-steps__n { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; color: var(--gradient-start); margin-bottom: 0.7rem; }
+  .cs-steps h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .cs-steps p { color: var(--text-secondary); line-height: 1.6; }
+  .cs-principles { display: grid; gap: 0.5rem; margin-top: clamp(1.8rem, 4vw, 2.6rem); padding-top: 1.4rem; border-top: 1px solid var(--border-color); color: var(--text-secondary); line-height: 1.6; }
+  .cs-principles strong { color: var(--text-primary); }
+
+  .cs-team { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem 1rem; margin-top: 2rem; }
+  @media (min-width: 768px) { .cs-team { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.6rem; } }
+  .cs-team img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 1.1rem; background: var(--bg-tertiary); margin-bottom: 0.8rem; }
+  .cs-team__name { font-weight: 700; font-size: 1.05rem; line-height: 1.25; }
+  .cs-team__role { color: var(--text-secondary); font-size: 0.93rem; margin-top: 0.15rem; }
+
 </style>
