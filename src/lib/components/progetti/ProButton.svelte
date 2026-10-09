@@ -4,7 +4,8 @@
    *  - primary: rosa Righello, l'azione principale
    *  - solid:   bianco pieno, per le isole scure (vetrina, schede)
    *  - ghost:   solo bordo, prende il colore del testo attorno: vale su scuro e su chiaro
-   * Riferimenti Mobbin: Square, Intercom, Flora (coppia pieno + contorno, freccia che scorre).
+   * Perche' due pesi: l'azione principale e quella di ripiego devono distinguersi a colpo
+   * d'occhio, e la freccia che scorre dice «porta altrove» senza aggiungere parole.
    */
   export let href = '';
   export let variant: 'primary' | 'solid' | 'ghost' = 'primary';

@@ -1,9 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { caseStudies, caseStudyHref } from '$lib/data/case-studies';
 import { serviceDetails } from '$lib/data/service-details';
-
-const BASE_URL = 'https://www.wearerighello.com';
-const TODAY = new Date().toISOString().split('T')[0];
+import { SITE_URL } from '$lib/data/site';
 
 const STATIC_PAGES = [
   { loc: '/',                       priority: '1.0',  changefreq: 'weekly'  },
@@ -38,12 +36,13 @@ const PROJECT_PAGES = caseStudies
 
 const PAGES = [...STATIC_PAGES, ...SERVICE_PAGES, ...PROJECT_PAGES];
 
+// Niente <lastmod>: una data uguale per tutte le pagine e sempre "oggi" non dice nulla
+// e toglie credibilita' alla mappa. Si aggiungera' quando ogni pagina avra' una data vera.
 export const GET: RequestHandler = () => {
   const urls = PAGES.map(
     ({ loc, priority, changefreq }) => `
   <url>
-    <loc>${BASE_URL}${loc}</loc>
-    <lastmod>${TODAY}</lastmod>
+    <loc>${SITE_URL}${loc}</loc>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`

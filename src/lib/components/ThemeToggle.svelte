@@ -8,7 +8,7 @@
 
 <button
   on:click={toggle}
-  class="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+  class="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
   style="background-color: var(--bg-secondary);"
   aria-label={$theme === 'light' ? 'Attiva modalità scura' : 'Attiva modalità chiara'}
 >

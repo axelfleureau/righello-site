@@ -1,41 +1,41 @@
 <script lang="ts">
-  import { theme } from '$lib/stores/theme';
   import { browser } from '$app/environment';
-  import { onMount } from 'svelte';
   import MagneticButton from './MagneticButton.svelte';
+  import {
+    COMPANY,
+    COOKIE_POLICY_URL,
+    PRIVACY_URL,
+    footerColumns,
+    footerProducts,
+    socialLinks,
+  } from '$lib/data/site';
 
   const currentYear = new Date().getFullYear();
 
-  onMount(() => {
-    if (browser && !document.querySelector('script[src*="iubenda.js"]')) {
-      const s = document.createElement('script');
-      s.src = 'https://cdn.iubenda.com/iubenda.js';
-      document.body.appendChild(s);
-    }
-  });
-
-  const pageLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/servizi', label: 'Servizi' },
-    { href: '/agenzia-marketing-pordenone', label: 'Agenzia Marketing Pordenone' },
-    { href: '/agenzia-marketing-mestre', label: 'Agenzia Marketing Mestre' },
-    { href: '/chi-siamo', label: 'Chi siamo' },
-    { href: '/contatti', label: 'Contatti' },
+  const columns = [
+    footerColumns[0],
+    { title: 'App e progetti', links: [...footerProducts, { href: '/progetti', label: 'Tutti i progetti' }] },
+    ...footerColumns.slice(1),
   ];
 
-  const socialLinks = [
-    { href: 'https://www.instagram.com/wearerighello', label: 'Instagram', icon: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z' },
-    { href: 'https://www.linkedin.com/company/righello', label: 'LinkedIn', icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z' },
-    { href: 'https://www.tiktok.com/@wearerighello', label: 'TikTok', icon: 'M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z' },
-  ];
-
+  // Privacy e cookie: testi e gestione del consenso sono di iubenda (collegamenti semplici,
+  // niente finestrella incorporata: meno script e nessun badge bianco sul fondo scuro). "Preferenze cookie"
+  // riapre il pannello della scelta; se lo script non e' disponibile (bloccato dal browser)
+  // si ripiega sulla pagina della cookie policy.
   const legalLinks = [
-    { href: 'https://www.iubenda.com/privacy-policy/47301653', label: 'Privacy Policy', external: true },
+    { href: PRIVACY_URL, label: 'Privacy Policy' },
+    { href: COOKIE_POLICY_URL, label: 'Cookie Policy' },
   ];
+
+  function openCookiePreferences() {
+    const iub = (window as unknown as { _iub?: { cs?: { api?: { openPreferences?: () => void } } } })._iub;
+    if (iub?.cs?.api?.openPreferences) iub.cs.api.openPreferences();
+    else window.open(COOKIE_POLICY_URL, '_blank', 'noopener');
+  }
 
   function scrollToTop() {
     if (browser) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     }
   }
 </script>
@@ -46,7 +46,7 @@
   <div class="footer-cta section-container">
     <div class="cta-inner">
       <div class="cta-text">
-        <h3 class="cta-title">Hai un progetto in mente?</h3>
+        <h2 class="cta-title">Hai un progetto in mente?</h2>
         <p class="cta-subtitle">Rispondiamo entro 72 ore. Preventivo gratuito e personalizzato.</p>
       </div>
       <MagneticButton href="/contatti" variant="primary">
@@ -61,58 +61,48 @@
   <div class="footer-main section-container" data-nosnippet>
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="footer-logo-link" aria-label="Righello - Torna alla home">
-          {#if $theme === 'dark'}
-            <img src="/logo-white.png" alt="Righello" class="footer-logo" loading="lazy" decoding="async" width="140" height="28" />
-          {:else}
-            <img src="/logo-full.png" alt="Righello" class="footer-logo" loading="lazy" decoding="async" width="140" height="28" />
-          {/if}
+        <a href="/" class="footer-logo-link" aria-label="Righello, torna alla home">
+          <img src="/logo-white.png" alt="" class="footer-logo logo-on-dark" loading="lazy" decoding="async" width="114" height="28" />
+          <img src="/logo-full.png" alt="" class="footer-logo logo-on-light" loading="lazy" decoding="async" width="114" height="28" />
         </a>
         <p class="footer-tagline">Marketing, advertising e sviluppo digitale con un approccio data-driven.</p>
-        <div class="social-icons">
+        <ul class="social-icons">
           {#each socialLinks as social}
-            <a
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-icon-link"
-              aria-label={social.label}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d={social.icon} />
-              </svg>
-            </a>
-          {/each}
-        </div>
-      </div>
-
-      <nav class="footer-column" aria-label="Navigazione principale">
-        <h4 class="footer-heading">Pagine</h4>
-        <ul class="footer-links">
-          {#each pageLinks as link}
-            <li><a href={link.href}>{link.label}</a></li>
-          {/each}
-        </ul>
-      </nav>
-
-      <nav class="footer-column footer-social-col" aria-label="Social media">
-        <h4 class="footer-heading">Social</h4>
-        <ul class="footer-links">
-          {#each socialLinks as link}
             <li>
-              <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+              <a
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-icon-link"
+                aria-label="{social.label} (si apre in una nuova scheda)"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d={social.icon} />
+                </svg>
+              </a>
             </li>
           {/each}
         </ul>
-      </nav>
+      </div>
+
+      {#each columns as column}
+        <nav class="footer-column" aria-label={column.title}>
+          <h3 class="footer-heading">{column.title}</h3>
+          <ul class="footer-links">
+            {#each column.links as link}
+              <li><a href={link.href}>{link.label}</a></li>
+            {/each}
+          </ul>
+        </nav>
+      {/each}
 
       <div class="footer-column">
-        <h4 class="footer-heading">Contatti</h4>
+        <h3 class="footer-heading">Contatti</h3>
         <address class="footer-address">
-          <a href="mailto:hello@wearerighello.com" class="contact-link">hello@wearerighello.com</a>
-          <span class="contact-text">Sede legale: Pordenone</span>
-          <span class="contact-text">Base operativa: Mestre - Venezia</span>
-          <span class="contact-text">P.IVA: 01979970934</span>
+          <a href="mailto:{COMPANY.email}" class="contact-link">{COMPANY.email}</a>
+          <span class="contact-text">Sede legale: {COMPANY.legalSeat}</span>
+          <span class="contact-text">Base operativa: {COMPANY.operationsBase}</span>
+          <span class="contact-text">P.IVA: {COMPANY.vat}</span>
         </address>
       </div>
     </div>
@@ -120,16 +110,12 @@
 
   <div class="footer-bottom section-container" data-nosnippet>
     <div class="footer-bottom-inner">
-      <p class="footer-copyright">&copy; {currentYear} Righello S.r.l. Tutti i diritti riservati.</p>
-      <nav class="footer-legal" aria-label="Link legali">
-        {#each legalLinks as link, i}
-          {#if i > 0}<span class="legal-separator" aria-hidden="true">&middot;</span>{/if}
-          {#if link.external}
-            <a href={link.href} class="iubenda-white iubenda-noiframe iubenda-embed" title={link.label} target="_blank" rel="noopener noreferrer">{link.label}</a>
-          {:else}
-            <a href={link.href}>{link.label}</a>
-          {/if}
+      <p class="footer-copyright">&copy; {currentYear} {COMPANY.legalName} Tutti i diritti riservati.</p>
+      <nav class="footer-legal" aria-label="Informative legali">
+        {#each legalLinks as link}
+          <a href={link.href} title={link.label} target="_blank" rel="noopener noreferrer">{link.label}</a>
         {/each}
+        <button type="button" class="legal-button" on:click={openCookiePreferences}>Preferenze cookie</button>
       </nav>
       <button
         class="back-to-top"
@@ -144,11 +130,8 @@
   </div>
 
   <div class="footer-giant-logo" aria-hidden="true">
-    {#if $theme === 'dark'}
-      <img src="/logo-white.png" alt="" class="footer-giant-logo-img" loading="eager" decoding="async" />
-    {:else}
-      <img src="/logo-full.png" alt="" class="footer-giant-logo-img" loading="eager" decoding="async" />
-    {/if}
+    <img src="/logo-white.png" alt="" class="footer-giant-logo-img logo-on-dark" loading="lazy" decoding="async" width="1200" height="294" />
+    <img src="/logo-full.png" alt="" class="footer-giant-logo-img logo-on-light" loading="lazy" decoding="async" width="1200" height="294" />
   </div>
 </footer>
 
@@ -206,8 +189,8 @@
 
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
-    gap: 3rem;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1.2fr;
+    gap: 2.5rem;
   }
 
   .footer-brand {
@@ -223,8 +206,6 @@
   }
 
   .footer-logo-link:focus-visible {
-    outline: 2px solid #D6487E;
-    outline-offset: 4px;
     border-radius: 4px;
   }
 
@@ -244,15 +225,17 @@
   .social-icons {
     display: flex;
     gap: 0.5rem;
-    margin-top: 0.25rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    list-style: none;
   }
 
   .social-icon-link {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 0.5rem;
     color: var(--text-secondary);
     background: rgba(255, 255, 255, 0.05);
@@ -260,14 +243,10 @@
   }
 
   .social-icon-link:hover {
-    color: #D6487E;
+    color: var(--brand-pink-ink);
     background: rgba(214, 72, 126, 0.1);
   }
 
-  .social-icon-link:focus-visible {
-    outline: 2px solid #D6487E;
-    outline-offset: 2px;
-  }
 
   :global([data-theme="light"]) .social-icon-link {
     background: rgba(0, 0, 0, 0.04);
@@ -295,7 +274,7 @@
     gap: 0.625rem;
   }
 
-  .footer-links li a {
+  .footer-links a {
     color: var(--text-secondary);
     text-decoration: none;
     font-size: 0.9375rem;
@@ -305,15 +284,10 @@
     padding: 0.125rem 0;
   }
 
-  .footer-links li a:hover {
-    color: #D6487E;
+  .footer-links a:hover {
+    color: var(--brand-pink-ink);
   }
 
-  .footer-links li a:focus-visible {
-    outline: 2px solid #D6487E;
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
 
   .footer-address {
     font-style: normal;
@@ -333,14 +307,9 @@
   }
 
   .contact-link:hover {
-    color: #D6487E;
+    color: var(--brand-pink-ink);
   }
 
-  .contact-link:focus-visible {
-    outline: 2px solid #D6487E;
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
 
   .contact-text {
     color: var(--text-secondary);
@@ -366,37 +335,41 @@
   .footer-copyright {
     color: var(--text-secondary);
     font-size: 0.8125rem;
-    opacity: 0.7;
   }
 
   .footer-legal {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 0.25rem 1.25rem;
   }
 
-  .footer-legal a {
+  .footer-legal a,
+  .legal-button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--text-secondary);
     text-decoration: none;
     font-size: 0.8125rem;
     transition: color 0.2s ease;
   }
 
-  .footer-legal a:hover {
-    color: #D6487E;
+  .legal-button {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
   }
 
-  .footer-legal a:focus-visible {
-    outline: 2px solid #D6487E;
-    outline-offset: 2px;
-    border-radius: 2px;
+  .footer-legal a:hover,
+  .legal-button:hover {
+    color: var(--brand-pink-ink);
   }
 
-  .legal-separator {
-    color: var(--text-secondary);
-    opacity: 0.4;
-    font-size: 0.8125rem;
-  }
+
 
   .back-to-top {
     display: flex;
@@ -416,15 +389,11 @@
   }
 
   .back-to-top:hover {
-    color: #D6487E;
+    color: var(--brand-pink-ink);
     border-color: rgba(214, 72, 126, 0.3);
     background: rgba(214, 72, 126, 0.05);
   }
 
-  .back-to-top:focus-visible {
-    outline: 2px solid #D6487E;
-    outline-offset: 2px;
-  }
 
   .footer-giant-logo {
     user-select: none;
@@ -443,7 +412,6 @@
   .footer-giant-logo-img {
     width: 100%;
     height: auto;
-    display: block;
     object-fit: contain;
   }
 
@@ -456,6 +424,18 @@
 
   :global([data-theme="light"]) .footer-giant-logo {
     opacity: 0.075;
+  }
+
+  /* ── Tablet: marchio in cima, le colonne sotto ── */
+  @media (max-width: 1023px) {
+    .footer-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem 1.5rem;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
   }
 
   /* ── Mobile: compact, premium layout ── */
@@ -501,20 +481,16 @@
       max-width: none;
     }
 
-    .footer-social-col {
-      display: none;
-    }
-
     .footer-heading {
-      margin-bottom: 0.75rem;
-      font-size: 0.6875rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.75rem;
     }
 
     .footer-links {
       gap: 0.25rem;
     }
 
-    .footer-links li a {
+    .footer-links a {
       font-size: 0.875rem;
       min-height: 44px;
       display: inline-flex;
@@ -549,7 +525,7 @@
     }
 
     .footer-copyright {
-      font-size: 0.75rem;
+      font-size: 0.8125rem;
       order: 2;
     }
 
@@ -557,8 +533,9 @@
       order: 1;
     }
 
-    .footer-legal a {
-      font-size: 0.75rem;
+    .footer-legal a,
+    .legal-button {
+      font-size: 0.8125rem;
     }
 
     .back-to-top {
