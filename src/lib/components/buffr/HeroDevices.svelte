@@ -74,7 +74,17 @@
   .ph--l,
   .ph--r {
     transform: rotate(var(--tilt));
-    filter: brightness(0.9);
+  }
+
+  /* i due telefoni laterali un filo più scuri, senza filtri: un velo sopra lo schermo */
+  .ph--l::after,
+  .ph--r::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 15.5% / 7.2%;
+    background: rgba(0, 0, 0, 0.12);
+    pointer-events: none;
   }
 
   .stage__floor {
@@ -84,7 +94,6 @@
     bottom: -3%;
     height: 8%;
     background: radial-gradient(closest-side, rgba(214, 72, 126, 0.32), transparent 72%);
-    filter: blur(14px);
   }
 
   @media (min-width: 720px) {

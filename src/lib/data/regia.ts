@@ -1,7 +1,7 @@
 export interface RegiaNode {
   projectId: string;
+  /** Il passaggio della produzione che questo prodotto copre. Il resto (nome, frase, stato) viene dalla scheda del prodotto. */
   verb: string;
-  line: string;
   visual: 'tally' | 'device' | 'monitor';
 }
 
@@ -26,31 +26,26 @@ export const regiaNodes: RegiaNode[] = [
   {
     projectId: 'rigcast',
     verb: 'Riprendi',
-    line: 'L\'iPhone diventa una camera di regia: il video parte dal campo e arriva dritto in regia.',
     visual: 'tally',
   },
   {
     projectId: 'buffr',
     verb: 'Rivedi',
-    line: 'Il buffer registra sempre: con un tocco l\'azione è già un replay e una clip.',
     visual: 'device',
   },
   {
     projectId: 'regia-tv-studio',
     verb: 'Monta',
-    line: 'Scorebug, formazioni, classifica e replay messi in grafica in automatico.',
     visual: 'monitor',
   },
   {
     projectId: 'buffr-live',
     verb: 'Racconta',
-    line: 'Il cronista aggiorna dal campo e i risultati arrivano a tutti in tempo reale.',
     visual: 'device',
   },
   {
     projectId: 'canale77',
     verb: 'Manda in onda',
-    line: 'Highlights, interviste e rubriche on demand, anche sul televisore.',
     visual: 'device',
   },
 ];

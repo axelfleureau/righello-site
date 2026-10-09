@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { flip } from 'svelte/animate';
-  import { caseStudyHref, kindLabels, kindOrder } from '$lib/data/case-studies';
+  import { caseStudyHref, kindChoice, kindLabels, kindOrder, thumbOf } from '$lib/data/case-studies';
   import type { CaseStudy, ProjectKind } from '$lib/data/case-studies';
   import StatusBadge from './StatusBadge.svelte';
   import ProjectIcon from './ProjectIcon.svelte';
@@ -18,7 +18,6 @@
   let px = 0;
   let py = 0;
   let raf = 0;
-  let listEl: HTMLElement;
 
   $: kinds = kindOrder.filter((k) => items.some((i) => i.kind === k));
   // Lo stesso ordine del percorso "precedente / prossimo" delle schede: elenco e frecce non si contraddicono.
@@ -46,8 +45,9 @@
     if (!raf) raf = requestAnimationFrame(loop);
   }
 
+  // Ascolta solo sopra l'elenco: fuori, il passaggio del mouse non costa niente.
   function onMove(e: PointerEvent) {
-    if (!canHover || view !== 'list') return;
+    if (!canHover || view !== 'list' || e.pointerType !== 'mouse') return;
     target(e.clientX, e.clientY);
   }
 
@@ -79,6 +79,15 @@
     history.replaceState(history.state, '', url);
   }
 
+  /** Dalla scelta in apertura: filtra e porta all'elenco (senza scorrere in mezzo a tutta la pagina). */
+  export function show(next: ProjectKind) {
+    pick(next);
+    const url = new URL(window.location.href);
+    url.hash = 'indice';
+    history.replaceState(history.state, '', url);
+    document.getElementById('indice')?.scrollIntoView({ behavior: 'instant' as ScrollBehavior, block: 'start' });
+  }
+
   onMount(() => {
     const wanted = new URLSearchParams(window.location.search).get('tipo');
     if (wanted && kindOrder.includes(wanted as ProjectKind) && items.some((i) => i.kind === wanted)) filter = wanted as ProjectKind;
@@ -95,12 +104,9 @@
       }
     }
     canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (canHover) window.addEventListener('pointermove', onMove, { passive: true });
   });
 
   onDestroy(() => {
-    if (typeof window === 'undefined') return;
-    window.removeEventListener('pointermove', onMove);
     if (raf) cancelAnimationFrame(raf);
   });
 </script>
@@ -108,8 +114,14 @@
 <section id="indice" class="wi">
   <div class="section-container">
     <header class="wi__head">
-      <p class="wi__kicker">03 · Tutto il lavoro</p>
-      <h2 class="wi__title">Tutto quello che<br /><span class="gradient-text">abbiamo costruito.</span></h2>
+      <div>
+        <p class="wi__kicker">03 · Tutto il lavoro</p>
+        <h2 class="wi__title">Tutto quello che<br /><span class="gradient-text">abbiamo costruito.</span></h2>
+      </div>
+      <div class="views" role="group" aria-label="Come vedere i progetti">
+        <button type="button" class="views__b" class:is-active={view === 'list'} aria-pressed={view === 'list'} on:click={() => (view = 'list')}>Elenco</button>
+        <button type="button" class="views__b" class:is-active={view === 'grid'} aria-pressed={view === 'grid'} on:click={() => (view = 'grid')}>Schede</button>
+      </div>
     </header>
   </div>
 
@@ -132,13 +144,9 @@
           class:is-active={filter === k}
           aria-selected={filter === k}
           on:click={() => pick(k)}
-        >{kindLabels[k]} <sup>{count(k)}</sup></button>
+        >{kindChoice[k].label} <sup>{count(k)}</sup></button>
       {/each}
      </div>
-      <div class="views" role="group" aria-label="Come vedere i progetti">
-        <button type="button" class="views__b" class:is-active={view === 'list'} aria-pressed={view === 'list'} on:click={() => (view = 'list')}>Elenco</button>
-        <button type="button" class="views__b" class:is-active={view === 'grid'} aria-pressed={view === 'grid'} on:click={() => (view = 'grid')}>Schede</button>
-      </div>
     </div>
   </div>
 
@@ -168,7 +176,7 @@
         {/each}
       </ul>
     {:else}
-    <ul class="wi__list" bind:this={listEl} on:pointerleave={leave}>
+    <ul class="wi__list" on:pointermove={onMove} on:pointerleave={leave}>
       {#each shown as study, i (study.id)}
         <li animate:flip={{ duration: 360 }} style="--a:{study.accent[0]}">
           <a
@@ -183,7 +191,7 @@
               {#if study.icon}
                 <ProjectIcon {study} size={44} />
               {:else}
-                <img src={study.image} alt="" width="88" height="55" loading="lazy" decoding="async" style:object-position={study.imagePosition ?? 'top'} />
+                <img src={thumbOf(study).src} alt="" width="70" height="44" loading="lazy" decoding="async" />
               {/if}
             </span>
             <span class="row__name">{study.name}</span>
@@ -218,7 +226,7 @@
 <style>
   .wi {
     position: relative;
-    padding: clamp(4rem, 9vw, 7rem) 0 clamp(3rem, 6vw, 5rem);
+    padding: var(--pg-section-pad) 0 clamp(3rem, 6vw, 4.5rem);
     background: var(--bg-primary);
   }
 
@@ -230,10 +238,18 @@
     color: var(--text-secondary);
   }
 
+  .wi__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: clamp(1.6rem, 3.4vw, 2.4rem);
+  }
+
   .wi__title {
-    margin: 0 0 clamp(1.8rem, 4vw, 3rem);
+    margin: 0;
     font-weight: var(--pg-display-weight);
-    font-size: clamp(2.5rem, 7vw, 6.4rem);
+    font-size: var(--pg-title-size);
     line-height: 0.95;
     letter-spacing: var(--pg-display-tracking);
     color: var(--text-primary);
@@ -245,7 +261,7 @@
     z-index: 20;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
-    background: color-mix(in srgb, var(--bg-primary) 94%, transparent);
+    background: var(--bg-primary);
   }
 
   .wi__barin {
@@ -270,6 +286,7 @@
   .views {
     display: flex;
     flex: none;
+    margin-bottom: 0.4rem;
     padding: 0.2rem;
     border: 1px solid var(--border-color);
     border-radius: 999px;
@@ -393,15 +410,15 @@
 
   .row {
     display: grid;
-    grid-template-columns: 3.4rem minmax(0, 1fr) auto;
+    grid-template-columns: 2.4rem 4.4rem minmax(0, 1fr) auto;
     grid-template-areas:
-      'n name arrow'
-      'n kind arrow'
-      'n status arrow';
+      'n thumb name arrow'
+      'n thumb kind arrow'
+      'n thumb status arrow';
     align-items: center;
-    column-gap: 0.8rem;
+    column-gap: 0.9rem;
     row-gap: 0.25rem;
-    padding: 1.2rem 0;
+    padding: 0.95rem 0;
     color: var(--text-primary);
     text-decoration: none;
     transition: padding 0.35s cubic-bezier(0.2, 0.9, 0.2, 1), background 0.3s;
@@ -413,15 +430,24 @@
     color: var(--text-muted);
   }
 
-  .row__thumb { display: none; }
+  .row__thumb { grid-area: thumb; display: grid; place-items: center start; }
+
+  .row__thumb img {
+    width: 70px;
+    height: 44px;
+    border-radius: 0.45rem;
+    object-fit: cover;
+  }
+
   .row__plat { display: none; }
 
   .row__name {
     grid-area: name;
     font-weight: var(--pg-display-weight);
-    font-size: clamp(1.7rem, 6vw, 2.4rem);
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
     letter-spacing: var(--pg-display-tracking);
-    line-height: 1;
+    line-height: 1.05;
+    text-wrap: balance;
     transition: color 0.25s, transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1);
   }
 
@@ -447,11 +473,32 @@
 
   .row:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
 
+  /* il numero d'ordine serve a chi ha spazio: sul telefono si lascia più larghezza al nome */
+  @media (max-width: 639px) {
+    .row {
+      grid-template-columns: 4.4rem minmax(0, 1fr) auto;
+      grid-template-areas:
+        'thumb name arrow'
+        'thumb kind arrow'
+        'thumb status arrow';
+    }
+
+    .row__n { display: none; }
+    .views { display: none; }
+
+    /* la fila dei tipi scorre di lato: il bordo che sfuma dice che c'è altro */
+    .wi__chips {
+      padding-right: 1.8rem;
+      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+      mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+    }
+  }
+
   @media (min-width: 1024px) {
     .row {
-      grid-template-columns: 3.4rem minmax(0, 1fr) 13rem 11rem 14rem 2rem;
-      grid-template-areas: 'n name kind plat status arrow';
-      padding: 1.55rem 0;
+      grid-template-columns: 2.6rem 4.4rem minmax(0, 1fr) 9.5rem 10.5rem 12.5rem 1.6rem;
+      grid-template-areas: 'n thumb name kind plat status arrow';
+      padding: 0.85rem 0;
     }
 
     .row__plat {
@@ -461,35 +508,11 @@
       color: var(--text-secondary);
     }
 
-    .row__name { font-size: clamp(2rem, 3.6vw, 3.4rem); }
+    .row__name { font-size: clamp(1.5rem, 2.5vw, 2.4rem); }
 
     .row:hover { padding-left: 1rem; background: color-mix(in srgb, var(--a) 7%, transparent); }
     .row:hover .row__name,
     .row:focus-visible .row__name { color: var(--a); transform: translateX(0.3rem); }
-  }
-
-  @media (max-width: 1023px) {
-    .row {
-      grid-template-columns: 3rem 3.2rem minmax(0, 1fr) auto;
-      grid-template-areas:
-        'n thumb name arrow'
-        'n thumb kind arrow'
-        'n thumb status arrow';
-    }
-
-    .row__thumb {
-      display: block;
-      grid-area: thumb;
-    }
-
-    .row__thumb img {
-      width: 3.2rem;
-      height: 2.6rem;
-      border-radius: 0.45rem;
-      object-fit: cover;
-    }
-
-    .row__name { font-size: 1.45rem; }
   }
 
   /* preview */

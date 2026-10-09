@@ -29,7 +29,7 @@
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    padding: clamp(4.5rem, 10vw, 8rem) 0;
+    padding: var(--pg-section-pad) 0;
     background: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
   }
@@ -55,7 +55,7 @@
     margin: 0;
     max-width: 16ch;
     font-weight: var(--pg-display-weight);
-    font-size: clamp(2.2rem, 5.6vw, 5rem);
+    font-size: var(--pg-title-size);
     line-height: 0.98;
     letter-spacing: var(--pg-display-tracking);
     color: var(--text-primary);

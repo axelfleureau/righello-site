@@ -58,10 +58,23 @@ export const categoryLabels: Record<CaseStudy['category'], string> = {
 export const kindLabels: Record<ProjectKind, string> = {
   app: 'App iOS',
   gestionale: 'Gestionale',
-  broadcast: 'Regia e broadcast',
+  broadcast: 'Regia TV',
   piattaforma: 'Piattaforma web',
   sito: 'Sito su misura',
   contenuti: 'Foto e video',
+};
+
+/**
+ * Come si sceglie un tipo di progetto (filtri dell'elenco e scelta in apertura): una parola breve
+ * e una riga che dice a cosa serve. Una sola sorgente: i conteggi si ricavano da caseStudies.
+ */
+export const kindChoice: Record<ProjectKind, { label: string; hint: string }> = {
+  app: { label: 'App', hint: 'Per iPhone e iPad' },
+  gestionale: { label: 'Gestionali', hint: 'Per chi lavora ogni giorno' },
+  broadcast: { label: 'Regia TV', hint: 'Dal campo allo schermo' },
+  piattaforma: { label: 'Piattaforme', hint: 'Sul web, per molti utenti' },
+  sito: { label: 'Siti', hint: 'Su misura, per i clienti' },
+  contenuti: { label: 'Foto e video', hint: 'Per far scegliere un marchio' },
 };
 
 // Schermate della build attuale (1.2.7) dal simulatore. L'ordine serve alla scena a ventaglio:
@@ -626,3 +639,9 @@ export function listHref(study: CaseStudy): string {
 }
 
 export const showcaseStudies = caseStudies.filter((study) => study.featured);
+
+/** Miniatura per le righe dell'elenco: l'icona dell'app, oppure la cattura ritagliata (160 x 100) di chi non ha un'icona. */
+export function thumbOf(study: CaseStudy): { kind: 'icon' | 'image'; src: string } {
+  if (study.icon) return { kind: 'icon', src: study.icon };
+  return { kind: 'image', src: `/progetti/thumbs/${study.id}.webp` };
+}

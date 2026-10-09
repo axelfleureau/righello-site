@@ -1,24 +1,21 @@
 <script lang="ts">
-  import { onMount, onDestroy, createEventDispatcher } from 'svelte';
-  import type { CaseStudy } from '$lib/data/case-studies';
+  import { onDestroy, createEventDispatcher } from 'svelte';
+  import type { CaseStudy, ProjectKind } from '$lib/data/case-studies';
   import ProButton from './ProButton.svelte';
   import HeroStage from './HeroStage.svelte';
 
   export let dock: CaseStudy[];
-  export let stats: Array<{ value: number; label: string }>;
+  /** Una voce per tipo di progetto: porta all'elenco già filtrato. */
+  export let kinds: Array<{ kind: ProjectKind; label: string; hint: string; count: number }>;
   /** I prodotti che compongono la scena a destra. */
   export let stage: { laptop: CaseStudy; tablet: CaseStudy; phone: CaseStudy };
 
-  const dispatch = createEventDispatcher<{ pick: CaseStudy }>();
+  const dispatch = createEventDispatcher<{ pick: CaseStudy; kind: ProjectKind }>();
 
   let dockEl: HTMLElement;
   let items: HTMLElement[] = [];
   let raf = 0;
   let pointerX: number | null = null;
-  let statsEl: HTMLElement;
-  let counted = false;
-  let shown: number[] = stats.map((s) => s.value);
-  let io: IntersectionObserver | null = null;
 
   // Come il Dock di macOS: l'icona sotto il mouse cresce, le vicine in proporzione,
   // e tutte si fanno spazio (tx) invece di sovrapporsi. Le posizioni di partenza
@@ -93,43 +90,8 @@
     if (!raf) raf = requestAnimationFrame(paint);
   }
 
-  function countUp() {
-    if (counted) return;
-    counted = true;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) {
-      shown = stats.map((s) => s.value);
-      return;
-    }
-    const t0 = performance.now();
-    const dur = 1400;
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - t0) / dur);
-      const e = 1 - Math.pow(1 - p, 3);
-      shown = stats.map((s) => Math.round(s.value * e));
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }
-
-  onMount(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      counted = true;
-      return;
-    }
-    shown = stats.map(() => 0);
-    io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) countUp();
-      },
-      { threshold: 0.4 }
-    );
-    if (statsEl) io.observe(statsEl);
-  });
-
   onDestroy(() => {
     if (raf) cancelAnimationFrame(raf);
-    io?.disconnect();
   });
 </script>
 
@@ -155,8 +117,8 @@
 
     <div class="hero__lede">
       <p>
-        App per iPhone e iPad, gestionali che le imprese usano ogni giorno, la regia che porta le partite in
-        onda e i siti dei nostri clienti. Tutto quello che abbiamo costruito, con lo stato vero di ognuno.
+        App, gestionali, la regia che porta le partite in onda e i siti dei nostri clienti. Con lo stato vero di
+        ognuno.
       </p>
     </div>
 
@@ -165,6 +127,21 @@
       <ProButton href="/contatti" variant="ghost" size="lg">Parliamo di un progetto</ProButton>
     </div>
 
+    <nav class="kinds" aria-label="Scegli per tipo">
+      <p class="kinds__label">Cerchi qualcosa di preciso?</p>
+      <ul>
+        {#each kinds as k (k.kind)}
+          <li>
+            <a
+              class="kinds__pill"
+              href={`/progetti?tipo=${k.kind}#indice`}
+              title={k.hint}
+              on:click|preventDefault={() => dispatch('kind', k.kind)}
+            >{k.label} <sup>{k.count}</sup></a>
+          </li>
+        {/each}
+      </ul>
+    </nav>
 
    </div>
 
@@ -188,17 +165,9 @@
         </button>
       {/each}
     </div>
-    <p class="dock__hint">Tocca un'icona per aprire il prodotto</p>
+    <p class="dock__hint">Tocca un'icona per vedere il prodotto</p>
    </div>
 
-    <div class="stats" bind:this={statsEl}>
-      {#each stats as stat, i}
-        <div class="stats__cell">
-          <span class="stats__num">{shown[i]}</span>
-          <span class="stats__label">{stat.label}</span>
-        </div>
-      {/each}
-    </div>
   </div>
 </section>
 
@@ -292,7 +261,6 @@
       column-gap: clamp(2rem, 4vw, 4.5rem);
     }
 
-    .hero__inner > .stats,
     .hero__inner > .hero__dockrow { grid-column: 1 / -1; }
   }
 
@@ -461,48 +429,45 @@
     color: var(--text-muted);
   }
 
-  /* stats */
-  .stats {
-    margin-top: clamp(1.6rem, 4vw, 3rem);
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    border-top: 1px solid var(--border-color);
+  /* scelta per tipo: stessa forma dei filtri dell'elenco, a cui porta */
+  .kinds { margin-top: clamp(1.4rem, 2.4vw, 1.9rem); animation: fade-up 0.9s 0.48s cubic-bezier(0.2, 0.9, 0.2, 1) both; }
+
+  .kinds__label {
+    margin: 0 0 0.7rem;
+    font: 600 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
   }
 
-  @media (min-width: 900px) {
-    .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .kinds ul { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
+
+  .kinds__pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background: color-mix(in srgb, var(--bg-secondary) 70%, transparent);
+    color: var(--text-primary);
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: border-color 0.2s, background-color 0.2s;
   }
 
-  .stats__cell {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1.5rem 1rem 0.5rem 0;
-  }
-
-  /* numeri e didascalie come le statistiche della home: titolo 700, testo normale */
-  .stats__num {
-    font-weight: var(--pg-display-weight);
-    font-size: clamp(2.2rem, 4.4vw, 3.4rem);
-    line-height: 1;
-    letter-spacing: var(--pg-display-tracking);
-    font-variant-numeric: tabular-nums;
-    background: linear-gradient(120deg, var(--gradient-start), var(--gradient-end, var(--gradient-start)));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .stats__label {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    color: var(--text-secondary);
-    max-width: 15rem;
-  }
+  .kinds__pill sup { margin-left: 0.3rem; font-size: 0.66rem; color: var(--text-muted); }
+  .kinds__pill:hover { border-color: var(--text-primary); }
+  .kinds__pill:focus-visible { outline: 2px solid var(--righello-pink, #d6487e); outline-offset: 2px; }
 
   @media (prefers-reduced-motion: reduce) {
     .hero__line > span,
     .hero__lede,
+    .hero__cta,
+    .kinds,
     .dock { animation: none; }
     .dock__item { transition: none; }
   }

@@ -1,12 +1,10 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
   import PhoneFrame from './PhoneFrame.svelte';
-  import CameraScreen from './CameraScreen.svelte';
-  import ExampleTag from '$lib/components/progetti/infographics/ExampleTag.svelte';
   import BufferRewind from './BufferRewind.svelte';
   import MomentList from './MomentList.svelte';
   import MontagePipeline from './MontagePipeline.svelte';
-  import { moments } from './content';
+  import ExampleTag from '$lib/components/progetti/infographics/ExampleTag.svelte';
 
   /** Scena mostrata: 0 buffer, 1 momenti, 2 montaggio. */
   export let index = 0;
@@ -17,32 +15,26 @@
   export let instant = false;
 
   const clamp = (v: number) => Math.min(1, Math.max(0, v));
-  const pad = (n: number) => String(n).padStart(2, '0');
 
-  // ---- scena 0: il buffer che torna indietro
-  $: rewinding = index === 0 && local >= 0.42 && local < 0.76;
-  $: elapsed = Math.round(14 + local * 40);
-  $: back = Math.round(clamp((local - 0.42) / 0.3) * 30);
-  $: clock0 = rewinding ? `−00:${pad(back)}` : `00:${pad(elapsed % 60)}`;
-
-  // ---- scena 1: un tocco per momento
+  // scena 1: quale dei quattro momenti si sta mostrando nello schema
   $: seg = Math.min(3, Math.floor(local * 4));
   $: s = local * 4 - seg;
-  $: hit = index === 1 && s > 0.08 && s < 0.42 ? seg : -1;
   $: listOn = index === 1 && s > 0.08 ? seg : -1;
-  $: who = index === 1 && seg === 0 && s > 0.32;
-  $: toast =
-    index === 1 && seg > 0 && s > 0.18 ? `${moments[seg].name} · ${moments[seg].seconds} s salvati` : '';
-  $: score = index === 1 ? (seg > 0 || s > 0.32 ? '1 – 0' : '0 – 0') : '';
 
-  // ---- scena 2: montaggio
+  // scena 2: lo schema del montaggio parte quando la libreria è già in vista
   $: showMontage = clamp((local - 0.55) / 0.12);
 
-  $: camera = index < 2;
+  // Il telefono mostra sempre schermate vere dell'app: l'accoglienza, la camera, la libreria e l'esportazione.
+  const screens = [
+    { src: '/progetti/landing/buffr/benvenuto.webp', alt: 'BUFFR, la prima schermata: «Tocchi dopo. La clip parte da prima.»' },
+    { src: '/products/buffr/campo-v2.webp', alt: 'La camera di BUFFR con i quattro pulsanti dei momenti: gol, azione, fischio e inizio' },
+    { src: '/products/buffr/libreria-v2.webp', alt: 'La libreria di BUFFR con le clip divise per giorno' },
+  ];
 </script>
 
 <div class="vis" class:vis--compact={compact} class:vis--instant={instant}>
   <div class="vis__side">
+    <span class="vis__tag" style="--ink:#fff"><ExampleTag /></span>
     {#key index}
       <div class="vis__panel" in:fly={{ x: compact ? 0 : -24, y: compact ? 16 : 0, duration: instant ? 0 : 500 }}>
         {#if index === 0}
@@ -57,40 +49,20 @@
   </div>
 
   <div class="vis__phone">
-    <PhoneFrame island={camera}>
-      <div class="layer" class:is-on={camera}>
-        <CameraScreen
-          clock={index === 0 ? clock0 : '00:41'}
-          fill={index === 0 ? (rewinding ? 1 - clamp((local - 0.42) / 0.3) : (elapsed % 30) / 30) : 0.62}
-          {hit}
-          {toast}
-          {who}
-          {score}
-          {rewinding}
-        />
-      </div>
-      <div class="layer" class:is-on={!camera}>
-        <img class="shot" src="/products/buffr/libreria-v2.webp" alt="" width="720" height="1560" loading="lazy" decoding="async" />
-      </div>
-      <div class="layer" style="opacity: {camera ? 0 : showMontage}">
-        <img class="shot" src="/products/buffr/montaggio-v2.webp" alt="" width="720" height="1560" loading="lazy" decoding="async" />
+    <PhoneFrame island={false}>
+      {#each screens as screen, i}
+        <div class="layer" class:is-on={index === i}>
+          <img class="shot" src={screen.src} alt={screen.alt} width="720" height="1560" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+        </div>
+      {/each}
+      <div class="layer" style="opacity: {index === 2 ? showMontage : 0}">
+        <img class="shot" src="/products/buffr/montaggio-v2.webp" alt="Il foglio di esportazione di BUFFR: formato, colore delle grafiche e pulsante Monta" width="720" height="1560" loading="lazy" decoding="async" />
       </div>
     </PhoneFrame>
-    {#if camera}
-      <span class="vis__tag" style="--ink:#fff"><ExampleTag /></span>
-    {/if}
   </div>
 </div>
 
 <style>
-  /* la camera animata ricostruisce stati che non si possono fotografare: lo diciamo */
-  .vis__tag {
-    position: absolute;
-    left: 50%;
-    bottom: -0.2rem;
-    transform: translateX(-50%);
-  }
-
   .vis {
     --phone-w: min(16rem, calc((100svh - 15.5rem) * 0.4615));
     display: flex;
@@ -103,6 +75,12 @@
   .vis__side {
     flex: 0 1 22rem;
     min-width: 0;
+  }
+
+  /* lo schema accanto è un disegno che spiega, non una schermata: lo dice */
+  .vis__tag {
+    display: inline-block;
+    margin-bottom: 0.7rem;
   }
 
   .vis__phone {

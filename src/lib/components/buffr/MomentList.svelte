@@ -24,10 +24,8 @@
     width: 100%;
     padding: 1.1rem 1.15rem 1.15rem;
     border-radius: 1.2rem;
-    background: rgba(14, 14, 18, 0.78);
+    background: rgba(14, 14, 18, 0.94);
     border: 1px solid var(--bf-line);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.8);
     color: var(--bf-text);
   }

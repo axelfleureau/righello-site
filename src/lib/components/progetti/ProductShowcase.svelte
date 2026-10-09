@@ -19,8 +19,11 @@
   let gsap: Gsap | null = null;
   let scenes: HTMLElement[] = [];
   let ticking = false;
+  let listening = false;
   let near = false;
   let io: IntersectionObserver | null = null;
+  /** Quanto scorrimento serve per attraversare tutte le scene: si misura al ridimensionamento, non a ogni fotogramma. */
+  let total = 0;
   let mq: MediaQueryList | null = null;
 
   const pad = (n: number) => String(n).padStart(2, '0');
@@ -34,12 +37,20 @@
   export function goTo(id: string) {
     const i = items.findIndex((s) => s.id === id);
     if (i < 0) return;
+    const top = track.getBoundingClientRect().top + window.scrollY;
     if (mode === 'scene') {
-      const top = track.getBoundingClientRect().top + window.scrollY;
-      const total = track.offsetHeight - window.innerHeight;
+      measureTotal();
       window.scrollTo({ top: top + total * ((i + 0.5) / items.length), behavior: 'smooth' });
+      return;
+    }
+    const card = document.getElementById(`vetrina-${id}`);
+    if (!card) return;
+    if (getComputedStyle(sticky).overflowX === 'auto') {
+      // telefono: le schede scorrono di lato, la pagina si ferma sulla fila
+      window.scrollTo({ top: top - 96, behavior: 'smooth' });
+      sticky.scrollTo({ left: card.offsetLeft - parseFloat(getComputedStyle(sticky).paddingLeft), behavior: 'smooth' });
     } else {
-      document.getElementById(`vetrina-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
@@ -78,13 +89,15 @@
     transition(prev, next);
   }
 
+  function measureTotal() {
+    if (track) total = track.offsetHeight - window.innerHeight;
+  }
+
+  // Niente letture di layout dentro lo scorrimento: solo la posizione della vetrina e un numero già misurato.
   function measure() {
     ticking = false;
-    if (mode !== 'scene' || !track) return;
-    const r = track.getBoundingClientRect();
-    const total = track.offsetHeight - window.innerHeight;
-    if (total <= 0) return;
-    const p = Math.min(0.9999, Math.max(0, -r.top / total));
+    if (mode !== 'scene' || !track || total <= 0) return;
+    const p = Math.min(0.9999, Math.max(0, -track.getBoundingClientRect().top / total));
     progress = p;
     setActive(Math.min(items.length - 1, Math.floor(p * items.length)));
   }
@@ -98,10 +111,29 @@
     }
   }
 
+  function onResize() {
+    measureTotal();
+    onScroll();
+  }
+
+  /** I listener esistono solo mentre la vetrina è a scene: sul telefono lo scorrimento non costa niente. */
+  function listen(on: boolean) {
+    if (on === listening) return;
+    listening = on;
+    if (on) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize, { passive: true });
+    } else {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+    }
+  }
+
   function prepareScene() {
     scenes = Array.from(sticky.querySelectorAll<HTMLElement>('.scene'));
     gsap!.set(scenes, { autoAlpha: 0 });
     gsap!.set(scenes[active], { autoAlpha: 1 });
+    measureTotal();
     measure();
   }
 
@@ -118,10 +150,13 @@
   async function apply() {
     if (mq?.matches) {
       if (!gsap) gsap = (await import('gsap')).default;
+      if (!mq.matches) return;
       mode = 'scene';
       await tick();
       prepareScene();
+      listen(true);
     } else {
+      listen(false);
       teardownScene();
       mode = 'stack';
     }
@@ -133,12 +168,10 @@
     );
     apply();
     mq.addEventListener('change', apply);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
     io = new IntersectionObserver(
       ([entry]) => {
         near = entry.isIntersecting;
-        if (near) onScroll();
+        if (near) onResize();
       },
       { rootMargin: '300px 0px' }
     );
@@ -148,8 +181,7 @@
   onDestroy(() => {
     if (typeof window === 'undefined') return;
     mq?.removeEventListener('change', apply);
-    window.removeEventListener('scroll', onScroll);
-    window.removeEventListener('resize', onScroll);
+    listen(false);
     io?.disconnect();
     teardownScene();
   });
@@ -160,15 +192,16 @@
     <p class="vt__kicker">01 · I prodotti di punta</p>
     <h2 class="vt__title">Schermate vere,<br /><span class="gradient-text">stato reale.</span></h2>
     <p class="vt__sub">
-      Per ogni prodotto: cosa fa, per chi è, e dove puoi trovarlo oggi. Dove è già sullo store, dove è ancora
-      in prova prima dell'uscita, dove è già in uso sul web.
+      Per ogni prodotto: cosa fa, per chi è e dove lo trovi oggi. Sullo store, in prova prima dell'uscita o già in
+      uso sul web.
     </p>
+    <p class="vt__swipe" aria-hidden="true">Scorri di lato · {items.length} prodotti <span>→</span></p>
   </div>
 
   <div
     class="vt__track"
     bind:this={track}
-    style={mode === 'scene' ? `--n:${items.length}` : undefined}
+    style="--n:{items.length}"
   >
     <div class="vt__sticky" bind:this={sticky}>
       {#each items as study, i (study.id)}
@@ -242,12 +275,14 @@
     position: relative;
     background: #050505;
     color: #fff;
+    /* quanto scorrimento dura ogni scena nella vetrina fissa */
+    --per: 64;
     --t2: rgba(255, 255, 255, 0.68);
     --line: rgba(255, 255, 255, 0.12);
   }
 
   .vt__intro {
-    padding-top: clamp(4rem, 9vw, 7rem);
+    padding-top: var(--pg-section-pad);
     padding-bottom: clamp(2rem, 5vw, 3.5rem);
   }
 
@@ -262,9 +297,18 @@
   .vt__title {
     margin: 0;
     font-weight: var(--pg-display-weight);
-    font-size: clamp(2.5rem, 7vw, 6.4rem);
+    font-size: var(--pg-title-size);
     line-height: 0.95;
     letter-spacing: var(--pg-display-tracking);
+  }
+
+  .vt__swipe {
+    display: none;
+    margin: 1.1rem 0 0;
+    font: 600 0.72rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--t2);
   }
 
   .vt__sub {
@@ -332,9 +376,10 @@
     align-items: center;
     gap: 0.6rem;
     font: 600 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--t2);
+    white-space: nowrap;
   }
 
   .scene__kicker b { color: #fff; font-weight: 700; }
@@ -396,10 +441,52 @@
     margin-top: 0.4rem;
   }
 
+  /* ---------- telefono: le schede scorrono di lato, la pagina resta corta ---------- */
+  @media (max-width: 899px) {
+    .vt__swipe { display: block; }
+
+    .vt__sticky {
+      position: relative;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 0.9rem;
+      max-width: none;
+      margin: 0;
+      padding: 0 var(--container-padding) clamp(2rem, 6vw, 3rem);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--container-padding);
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    .vt__sticky::-webkit-scrollbar { display: none; }
+
+    .scene {
+      display: flex;
+      flex: 0 0 min(86vw, 25rem);
+      scroll-snap-align: start;
+    }
+
+    .scene__in { flex: 1; gap: 1.1rem; padding: 1rem 1rem 1.3rem; }
+    .scene__copy { flex: 1; gap: 0.7rem; }
+    .scene__name { font-size: clamp(2.2rem, 9vw, 2.8rem); }
+    .scene__line { font-size: 1.02rem; }
+    .scene__facts { gap: 0.4rem; padding-top: 0.7rem; }
+    .scene__facts div { grid-template-columns: 4.4rem 1fr; gap: 0.6rem; }
+    .scene__facts dd { font-size: 0.9rem; }
+    .scene__cta { margin-top: auto; padding-top: 0.5rem; }
+  }
+
   /* ---------- scene (desktop) ---------- */
-  .vt--scene .vt__track {
-    height: calc(var(--n) * 88vh + 100vh);
-    height: calc(var(--n) * 88svh + 100svh);
+  /* L'altezza della vetrina fissa è data dal CSS fin dal primo disegno (non dal JavaScript): la pagina sotto
+     non si sposta quando le scene si accendono. */
+  @media (min-width: 1024px) and (min-height: 620px) and (prefers-reduced-motion: no-preference) {
+    .vt__track {
+      height: calc(var(--n) * var(--per) * 1vh + 100vh);
+      height: calc(var(--n) * var(--per) * 1svh + 100svh);
+      overflow: clip;
+    }
   }
 
   .vt--scene .vt__sticky {
