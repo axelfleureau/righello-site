@@ -218,7 +218,7 @@
 
   .rg__kicker {
     margin: 0 0 1.2rem;
-    font: 600 0.78rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.78rem/1.5 var(--font-label);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--t2);
@@ -295,7 +295,7 @@
   }
 
   .node__num {
-    font: 600 0.8rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.8rem/1 var(--font-label);
     color: rgba(255, 255, 255, 0.45);
     transition: color 0.3s;
   }
@@ -429,7 +429,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font: 700 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 0.7rem/1 var(--font-label);
     letter-spacing: 0.14em;
     color: rgba(255, 255, 255, 0.8);
   }
@@ -458,7 +458,7 @@
     display: grid;
     place-items: center;
     border-radius: 0.4rem;
-    font: 800 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 800 0.72rem/1 var(--font-label);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     animation: cycle 5s ease-in-out infinite;
@@ -489,7 +489,7 @@
     padding: 0.32rem 0.7rem;
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.25);
-    font: 600 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.68rem/1 var(--font-label);
     letter-spacing: 0.1em;
     color: rgba(255, 255, 255, 0.78);
   }
@@ -551,7 +551,7 @@
     border-radius: 0.45rem;
     background: rgba(8, 8, 10, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    font: 600 0.7rem/1.1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.7rem/1.1 var(--font-label);
     letter-spacing: 0.04em;
     white-space: nowrap;
   }

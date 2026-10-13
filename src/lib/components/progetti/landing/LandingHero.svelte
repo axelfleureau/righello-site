@@ -111,7 +111,7 @@
     display: flex;
     gap: 0.6rem;
     margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
-    font: 500 0.74rem/1 var(--lp-mono);
+    font: 500 0.74rem/1 var(--lp-label);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--lp-ink-3);
@@ -130,7 +130,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.7rem;
-    font: 600 0.76rem/1.2 var(--lp-mono);
+    font: 600 0.76rem/1.2 var(--lp-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--lp-ink-2);
@@ -152,7 +152,7 @@
   .lh__cta { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 0.4rem; }
 
   .lh__meta { display: flex; flex-wrap: wrap; gap: 0.6rem 2rem; margin: 0.6rem 0 0; }
-  .lh__meta dt { margin-bottom: 0.35rem; font: 500 0.68rem/1 var(--lp-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--lp-ink-3); }
+  .lh__meta dt { margin-bottom: 0.35rem; font: 500 0.68rem/1 var(--lp-label); letter-spacing: 0.14em; text-transform: uppercase; color: var(--lp-ink-3); }
   .lh__meta dd { margin: 0; font-size: 0.92rem; font-weight: 600; color: var(--lp-ink); }
 
   /* piattaforme di trasmissione: piu' spazio al video che al testo */

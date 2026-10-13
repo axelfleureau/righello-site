@@ -105,7 +105,7 @@
   }
 
   .cta__facts dt {
-    font: 500 0.7rem/1 var(--bf-mono);
+    font: 500 0.7rem/1 var(--bf-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--bf-text-3);

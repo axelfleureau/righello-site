@@ -48,7 +48,7 @@
 
   .cta__kicker {
     margin: 0 0 1.2rem;
-    font: 600 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.78rem/1 var(--font-label);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--text-secondary);
@@ -106,7 +106,7 @@
 
   .cta__row p {
     margin: 0;
-    font: 500 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.78rem/1 var(--font-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-secondary);

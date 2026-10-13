@@ -152,7 +152,7 @@
     border-radius: 50%;
     border: 1px solid var(--line);
     background: #0a0a0e;
-    font: 700 0.82rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 0.82rem/1 var(--font-label);
     letter-spacing: 0.02em;
     transition: background-color 0.25s, color 0.25s, border-color 0.25s;
   }

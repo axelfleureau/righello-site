@@ -188,7 +188,7 @@
 
   .df__lbl {
     margin: 0;
-    font: 600 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.7rem/1 var(--font-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink2);
@@ -603,7 +603,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font: 500 0.66rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.66rem/1.2 var(--font-label);
     color: #027eb5;
     text-decoration: underline;
   }
@@ -670,7 +670,7 @@
     border-radius: 999px;
     background: #fff;
     white-space: nowrap;
-    font: 500 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.7rem/1 var(--font-label);
   }
 
   .addr__s {

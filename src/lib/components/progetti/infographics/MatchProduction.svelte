@@ -602,7 +602,7 @@
 
   .pn__kicker {
     margin: 0;
-    font: 600 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.72rem/1 var(--font-label);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--hi);
@@ -687,7 +687,7 @@
 
   .pn__lbl {
     margin: 0.2rem 0 0;
-    font: 600 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.68rem/1 var(--font-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink2);

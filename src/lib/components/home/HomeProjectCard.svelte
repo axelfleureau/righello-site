@@ -123,7 +123,7 @@
 
   .card__kind {
     margin: 0 0 0.2rem;
-    font: 600 0.68rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.68rem/1.2 var(--font-label);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-secondary);

@@ -279,7 +279,7 @@
     display: flex;
     gap: 2.4cqw;
     margin: 0;
-    font: 800 10.5cqw/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 800 10.5cqw/1 var(--font-label);
     letter-spacing: 0.04em;
     transition: opacity 0.4s;
   }
@@ -619,7 +619,7 @@
     padding: 2cqw 6cqw;
     border-radius: 99px;
     background: rgba(255, 255, 255, 0.1);
-    font: 600 7.5cqw/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 7.5cqw/1 var(--font-label);
     color: var(--hi);
   }
 
@@ -642,7 +642,7 @@
     border-radius: 4cqw;
     border: 0.8cqw solid var(--a);
     background: rgba(255, 255, 255, 0.06);
-    font: 800 9.5cqw/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 800 9.5cqw/1 var(--font-label);
     white-space: pre;
   }
 

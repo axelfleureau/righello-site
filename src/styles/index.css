@@ -115,6 +115,9 @@
 }
 
 :root {
+  /* Carattere di etichette, sopratitoli e sigle: lo stesso del resto del sito (Degular), mai un monospazio. */
+  --font-label: 'Degular Display', system-ui, -apple-system, sans-serif;
+
   /* Colors */
   --bg-primary: #050505;
   --bg-secondary: #0a0a0a;

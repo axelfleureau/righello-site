@@ -288,7 +288,7 @@
 
   .vt__kicker {
     margin: 0 0 1.2rem;
-    font: 600 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.78rem/1 var(--font-label);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--t2);
@@ -305,7 +305,7 @@
   .vt__swipe {
     display: none;
     margin: 1.1rem 0 0;
-    font: 600 0.72rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.72rem/1.3 var(--font-label);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--t2);
@@ -375,7 +375,7 @@
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    font: 600 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.72rem/1 var(--font-label);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--t2);
@@ -421,7 +421,7 @@
   }
 
   .scene__facts dt {
-    font: 500 0.7rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.7rem/1.3 var(--font-label);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.5);

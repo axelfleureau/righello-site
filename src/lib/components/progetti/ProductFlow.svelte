@@ -96,7 +96,7 @@
   .next__in { display: flex; flex-direction: column; gap: 0.9rem; }
 
   .next__kicker {
-    font: 600 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.78rem/1 var(--font-label);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.8);
@@ -123,7 +123,7 @@
   .next:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
 
   .next__sub {
-    font: 500 0.8rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.8rem/1 var(--font-label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.82);
@@ -136,7 +136,7 @@
 
   .rel__kicker {
     margin: 0 0 1.4rem;
-    font: 600 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.78rem/1 var(--font-label);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--text-secondary);
@@ -181,7 +181,7 @@
   .rel__name { font-weight: var(--pg-display-weight); font-size: 1.7rem; letter-spacing: var(--pg-display-tracking); line-height: 1; }
 
   .rel__kind {
-    font: 500 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.72rem/1 var(--font-label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-secondary);
@@ -223,7 +223,7 @@
 
   .bar__link:hover { color: var(--text-primary); }
   .bar__link:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; border-radius: 0.4rem; }
-  .bar__link small { font: 500 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+  .bar__link small { font: 500 0.7rem/1 var(--font-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
 
   @media (prefers-reduced-motion: reduce) {
     .next__arrow, .rel__card, .rel__arrow, .bar__link { transition: none; }

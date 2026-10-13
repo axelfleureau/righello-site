@@ -71,7 +71,7 @@
     flex-wrap: wrap;
     gap: 0.6rem;
     margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
-    font: 500 0.74rem/1 var(--lp-mono);
+    font: 500 0.74rem/1 var(--lp-label);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--lp-ink-3);
@@ -100,12 +100,12 @@
 
   .sh__panel { padding: clamp(1.3rem, 2.4vw, 1.9rem); min-width: 0; }
 
-  .sh__ptitle { margin: 0 0 0.4rem; font: 600 0.7rem/1.2 var(--lp-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--lp-ink-3); }
+  .sh__ptitle { margin: 0 0 0.4rem; font: 600 0.7rem/1.2 var(--lp-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--lp-ink-3); }
 
   .sh__list { margin: 0; padding: 0; list-style: none; }
   .sh__list li { display: flex; gap: 1rem; padding: 1.1rem 0; border-top: 1px solid var(--lp-line); }
   .sh__list li:first-child { border-top: 0; }
-  .sh__n { flex: none; width: 1.6rem; padding-top: 0.2rem; font: 600 0.72rem/1 var(--lp-mono); letter-spacing: 0.1em; color: var(--lp-pink); }
+  .sh__n { flex: none; width: 1.6rem; padding-top: 0.2rem; font: 600 0.72rem/1 var(--lp-label); letter-spacing: 0.1em; color: var(--lp-pink); }
   .sh__list .sh__h { margin: 0 0 0.3rem; color: var(--lp-ink); font-weight: var(--pg-display-weight); font-size: 1.15rem; line-height: 1.2; letter-spacing: var(--pg-display-tracking); }
   .sh__list p.sh__only { font-size: 1rem; color: var(--lp-ink); }
   .sh__list p:not(.sh__h) { margin: 0; font-size: 0.94rem; line-height: 1.5; color: var(--lp-ink-2); text-wrap: pretty; }

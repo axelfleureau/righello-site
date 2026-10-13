@@ -32,7 +32,7 @@
 
   .ml__head {
     margin: 0 0 0.8rem;
-    font: 600 0.72rem/1 var(--bf-mono);
+    font: 600 0.72rem/1 var(--bf-label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--bf-text-2);
@@ -80,7 +80,7 @@
   }
 
   .ml__sec {
-    font: 500 0.74rem/1 var(--bf-mono);
+    font: 500 0.74rem/1 var(--bf-label);
     color: var(--bf-text-2);
     font-variant-numeric: tabular-nums;
   }

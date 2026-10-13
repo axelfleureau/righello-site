@@ -243,7 +243,7 @@
 
   .copy__kicker {
     margin: 0;
-    font: 600 0.74rem/1.3 var(--bf-mono);
+    font: 600 0.74rem/1.3 var(--bf-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--bf-text-2);
@@ -418,7 +418,7 @@
   }
 
   .rail__btn span {
-    font: 700 0.7rem/1 var(--bf-mono);
+    font: 700 0.7rem/1 var(--bf-label);
     color: var(--bf-pink-text);
   }
 

@@ -142,7 +142,7 @@
     border: 0;
     border-bottom: 2px solid transparent;
     background: none;
-    font: 600 0.68rem/1 var(--lp-mono);
+    font: 600 0.68rem/1 var(--lp-label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--lp-ink-3);
@@ -196,7 +196,7 @@
     border-top: 1px solid var(--lp-line);
   }
 
-  .dm__count { font: 600 1.5rem/1 var(--lp-mono); color: var(--lp-ink); }
+  .dm__count { font: 600 1.5rem/1 var(--lp-label); color: var(--lp-ink); }
   .dm__count span { font-size: 0.8rem; color: var(--lp-ink-3); }
 
   .dm__txt h3 { margin: 0 0 0.4rem; font-weight: var(--pg-display-weight); font-size: 1.3rem; line-height: 1.2; letter-spacing: var(--pg-display-tracking); }

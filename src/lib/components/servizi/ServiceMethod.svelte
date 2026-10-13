@@ -55,8 +55,8 @@
     box-shadow: 0 0 0 4px var(--sm-bg);
     background: linear-gradient(135deg, var(--a), var(--b));
   }
-  .sm__n { font: 600 0.72rem/1 var(--lp-mono); letter-spacing: 0.16em; color: var(--lp-pink); }
+  .sm__n { font: 600 0.72rem/1 var(--lp-label); letter-spacing: 0.16em; color: var(--lp-pink); }
   .sm__step h3 { margin: 0.8rem 0 0.6rem; font-weight: var(--pg-display-weight); font-size: 1.25rem; line-height: 1.15; letter-spacing: var(--pg-display-tracking); }
   .sm__step p { margin: 0; font-size: 0.96rem; line-height: 1.55; color: var(--lp-ink-2); text-wrap: pretty; }
-  .sm__step .sm__when { margin-top: 0.9rem; font: 500 0.7rem/1.3 var(--lp-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--lp-ink-3); }
+  .sm__step .sm__when { margin-top: 0.9rem; font: 500 0.7rem/1.3 var(--lp-label); letter-spacing: 0.1em; text-transform: uppercase; color: var(--lp-ink-3); }
 </style>

@@ -54,7 +54,7 @@
     background: linear-gradient(135deg, var(--a), var(--b));
   }
 
-  .tg__n { font: 600 0.72rem/1 var(--lp-mono); letter-spacing: 0.16em; color: var(--lp-pink); }
+  .tg__n { font: 600 0.72rem/1 var(--lp-label); letter-spacing: 0.16em; color: var(--lp-pink); }
   .tg__item h3 { margin: 0.8rem 0 0.6rem; font-weight: var(--pg-display-weight); font-size: 1.3rem; line-height: 1.15; letter-spacing: var(--pg-display-tracking); }
   .tg__item p { margin: 0; font-size: 0.96rem; line-height: 1.55; color: var(--lp-ink-2); text-wrap: pretty; }
 
@@ -63,7 +63,7 @@
     padding: 0.32rem 0.7rem;
     border: 1px solid var(--lp-line-strong);
     border-radius: 999px;
-    font: 500 0.7rem/1.2 var(--lp-mono);
+    font: 500 0.7rem/1.2 var(--lp-label);
     letter-spacing: 0.04em;
     color: var(--lp-ink-2);
   }

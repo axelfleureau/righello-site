@@ -103,7 +103,7 @@
 
   .ms__note {
     margin: 0.4rem 0 0;
-    font: 500 0.66rem/1.5 var(--lp-mono);
+    font: 500 0.66rem/1.5 var(--lp-label);
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--lp-ink-3);

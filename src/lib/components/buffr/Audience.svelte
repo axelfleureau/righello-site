@@ -42,7 +42,7 @@
 
   .aud__kicker {
     margin: 0 0 1rem;
-    font: 600 0.78rem/1 var(--bf-mono);
+    font: 600 0.78rem/1 var(--bf-label);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--bf-accent-text);

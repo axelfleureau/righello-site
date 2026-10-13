@@ -232,7 +232,7 @@
 
   .wi__kicker {
     margin: 0 0 1.2rem;
-    font: 600 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.78rem/1 var(--font-label);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--text-secondary);
@@ -300,7 +300,7 @@
     border-radius: 999px;
     background: none;
     color: var(--text-secondary);
-    font: 600 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.72rem/1 var(--font-label);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     cursor: pointer;
@@ -360,7 +360,7 @@
   }
 
   .card__kind {
-    font: 500 0.7rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.7rem/1.3 var(--font-label);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-muted);
@@ -376,7 +376,7 @@
     border: 1px solid var(--border-color);
     background: none;
     color: var(--text-secondary);
-    font: 600 0.74rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.74rem/1 var(--font-label);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     cursor: pointer;
@@ -426,7 +426,7 @@
 
   .row__n {
     grid-area: n;
-    font: 500 0.74rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.74rem/1 var(--font-label);
     color: var(--text-muted);
   }
 
@@ -453,7 +453,7 @@
 
   .row__kind {
     grid-area: kind;
-    font: 500 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.72rem/1.2 var(--font-label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-secondary);
@@ -563,7 +563,7 @@
     border-radius: 0.4rem;
     background: rgba(8, 8, 10, 0.88);
     color: #fff;
-    font: 700 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 0.72rem/1 var(--font-label);
     letter-spacing: 0.06em;
   }
 

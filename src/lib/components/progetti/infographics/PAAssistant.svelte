@@ -125,7 +125,7 @@
   .pa__lbl,
   .pa__kick {
     margin: 0;
-    font: 600 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.7rem/1 var(--font-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink2);

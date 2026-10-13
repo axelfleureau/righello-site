@@ -78,7 +78,7 @@
   .sn__jump {
     flex: none;
     padding: 0 0.7rem 0 0.9rem;
-    font: 500 0.66rem/1 var(--lp-mono);
+    font: 500 0.66rem/1 var(--lp-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--lp-ink-3);

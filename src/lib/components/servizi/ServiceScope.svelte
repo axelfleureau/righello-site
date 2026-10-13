@@ -72,10 +72,10 @@
     color: inherit;
     text-decoration: none;
   }
-  .rw__n { grid-row: 1; padding-top: 0.35rem; font: 600 0.78rem/1 var(--lp-mono); letter-spacing: 0.1em; color: var(--lp-pink); }
+  .rw__n { grid-row: 1; padding-top: 0.35rem; font: 600 0.78rem/1 var(--lp-label); letter-spacing: 0.1em; color: var(--lp-pink); }
   .rw__main { grid-column: 2; display: flex; flex-direction: column; gap: 0.45rem; min-width: 0; }
   .rw__main > * { margin: 0; }
-  .rw__tag { font: 600 0.7rem/1.3 var(--lp-mono); letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in srgb, var(--a) 70%, #fff); }
+  .rw__tag { font: 600 0.7rem/1.3 var(--lp-label); letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in srgb, var(--a) 70%, #fff); }
   .rw__main .rw__name { font-weight: var(--pg-display-weight); font-size: clamp(1.6rem, 2.6vw, 2.2rem); line-height: 1.05; letter-spacing: var(--pg-display-tracking); }
   .rw__text { max-width: 34rem; font-size: 0.96rem; line-height: 1.55; color: var(--lp-ink-2); text-wrap: pretty; }
   .rw__bul { grid-column: 2; margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5rem 1.4rem; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; }
@@ -141,7 +141,7 @@
   .ss__card p { margin: 0; font-size: 0.96rem; line-height: 1.55; color: var(--lp-ink-2); text-wrap: pretty; }
 
   .ss__terms { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 0; padding: 0; list-style: none; }
-  .ss__terms li { padding: 0.3rem 0.7rem; border: 1px solid var(--lp-line-strong); border-radius: 999px; font: 500 0.7rem/1.2 var(--lp-mono); letter-spacing: 0.04em; color: var(--lp-ink-2); }
+  .ss__terms li { padding: 0.3rem 0.7rem; border: 1px solid var(--lp-line-strong); border-radius: 999px; font: 500 0.7rem/1.2 var(--lp-label); letter-spacing: 0.04em; color: var(--lp-ink-2); }
 
   .ss__go { margin-top: auto; padding-top: 0.6rem; font-size: 1.2rem; color: var(--lp-ink-3); transition: transform 0.3s var(--lp-ease), color 0.3s; }
   .ss__card--link:hover .ss__go { transform: translateX(4px); color: #fff; }

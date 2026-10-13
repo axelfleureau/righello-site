@@ -70,7 +70,7 @@
     margin: 1.4rem 0 0;
     padding: 0;
     list-style: none;
-    font: 600 0.74rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.74rem/1.4 var(--font-label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-muted);

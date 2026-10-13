@@ -423,7 +423,7 @@
 
   .dock__hint {
     margin: 0.9rem 0 0;
-    font: 500 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.7rem/1 var(--font-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-muted);
@@ -434,7 +434,7 @@
 
   .kinds__label {
     margin: 0 0 0.7rem;
-    font: 600 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.7rem/1 var(--font-label);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-muted);

@@ -88,7 +88,7 @@
     align-items: center;
     gap: 0.5rem;
     margin: 0 0 1.2rem;
-    font: 600 0.78rem/1 var(--bf-mono);
+    font: 600 0.78rem/1 var(--bf-label);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--bf-pink-text);
@@ -239,7 +239,7 @@
   }
 
   .match li small {
-    font: 500 0.76rem/1 var(--bf-mono);
+    font: 500 0.76rem/1 var(--bf-label);
     color: var(--bf-text-2);
   }
 

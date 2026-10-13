@@ -150,7 +150,7 @@
   .clients__label {
     margin: 0 0 1.6rem;
     text-align: center;
-    font: 600 0.74rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 600 0.74rem/1 var(--font-label);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--text-muted);

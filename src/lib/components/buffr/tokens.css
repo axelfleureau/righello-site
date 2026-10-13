@@ -19,7 +19,7 @@
 
   --bf-section-y: clamp(4.5rem, 10vw, 8rem);
   --bf-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --bf-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --bf-label: var(--font-label);
 }
 
 [data-theme='light'] .buffr {

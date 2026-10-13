@@ -61,7 +61,7 @@
   .sl__points { margin: 0.4rem 0 0; padding: 0; list-style: none; max-width: 44rem; }
   .sl__points li { display: flex; gap: 1rem; padding: 0.95rem 0; border-top: 1px solid var(--lp-line); }
   .sl__points li:last-child { border-bottom: 1px solid var(--lp-line); }
-  .sl__points span { flex: none; width: 1.6rem; padding-top: 0.2rem; font: 600 0.72rem/1 var(--lp-mono); letter-spacing: 0.1em; color: var(--lp-pink); }
+  .sl__points span { flex: none; width: 1.6rem; padding-top: 0.2rem; font: 600 0.72rem/1 var(--lp-label); letter-spacing: 0.1em; color: var(--lp-pink); }
   .sl__points p { margin: 0; font-size: 0.98rem; line-height: 1.5; color: var(--lp-ink-2); text-wrap: pretty; }
 
   .sl__signals { display: grid; gap: var(--lp-gap); margin: 0; padding: 0; list-style: none; }

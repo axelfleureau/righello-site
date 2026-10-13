@@ -196,7 +196,7 @@
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.07);
     color: rgba(255, 255, 255, 0.6);
-    font: 500 0.66rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 0.66rem/1.2 var(--font-label);
     max-width: 62%;
     overflow: hidden;
     text-overflow: ellipsis;

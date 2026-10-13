@@ -71,7 +71,7 @@
     align-items: center;
     justify-content: space-between;
     min-height: 1.6rem;
-    font: 600 0.72rem/1 var(--bf-mono);
+    font: 600 0.72rem/1 var(--bf-label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
@@ -152,7 +152,7 @@
   }
 
   .br__window span {
-    font: 600 0.62rem/1 var(--bf-mono);
+    font: 600 0.62rem/1 var(--bf-label);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #fff;
@@ -180,7 +180,7 @@
     position: absolute;
     right: 0.5rem;
     top: 0.25rem;
-    font: 600 0.58rem/1 var(--bf-mono);
+    font: 600 0.58rem/1 var(--bf-label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--bf-pink-text);

@@ -97,7 +97,7 @@
 
   .sp__body { display: flex; flex: 1; flex-direction: column; gap: 0.5rem; padding: 1.2rem 1.3rem 1.3rem; }
   .sp__icon { display: inline-flex; }
-  .sp__kind { font: 500 0.68rem/1 var(--lp-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--lp-ink-3); }
+  .sp__kind { font: 500 0.68rem/1 var(--lp-label); letter-spacing: 0.14em; text-transform: uppercase; color: var(--lp-ink-3); }
   .sp__name { font-weight: var(--pg-display-weight); font-size: 1.35rem; line-height: 1.1; letter-spacing: var(--pg-display-tracking); }
   .sp__text { font-size: 0.93rem; line-height: 1.5; color: var(--lp-ink-2); text-wrap: pretty; }
   .sp__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; margin-top: auto; padding-top: 0.8rem; }

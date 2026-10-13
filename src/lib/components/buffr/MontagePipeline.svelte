@@ -93,7 +93,7 @@
     height: 1.65rem;
     border-radius: 50%;
     border: 1.5px solid var(--bf-line);
-    font: 700 0.74rem/1 var(--bf-mono);
+    font: 700 0.74rem/1 var(--bf-label);
     color: var(--bf-text-2);
     transition:
       background 0.3s,
