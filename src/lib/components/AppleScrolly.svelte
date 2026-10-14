@@ -678,16 +678,20 @@
     
     <!-- Phone column: on mobile this is in normal flex flow between buttons and badges -->
     <div bind:this={phoneWrapper} class="phone-area">
-      <PhoneMockup 
-        youtubeId={heroVideoCloudinaryUrl ? undefined : heroVideoYoutubeId}
-        videoSrc={heroVideoCloudinaryUrl}
-        thumbnailUrl={heroVideoThumbnailUrl}
-        muted={videoMuted}
-        disableVisibilityObserver={true}
-        disable3dTilt={true}
-        disableEntranceAnimation={true}
-        on:mobiletap={unlockAudio}
-      />
+      <!-- .phone-fit: unico punto dove il telefono si rimpicciolisce nelle finestre basse, DENTRO
+           il contenitore che GSAP muove: cosi' non interferisce con x/xPercent. -->
+      <div class="phone-fit">
+        <PhoneMockup 
+          youtubeId={heroVideoCloudinaryUrl ? undefined : heroVideoYoutubeId}
+          videoSrc={heroVideoCloudinaryUrl}
+          thumbnailUrl={heroVideoThumbnailUrl}
+          muted={videoMuted}
+          disableVisibilityObserver={true}
+          disable3dTilt={true}
+          disableEntranceAnimation={true}
+          on:mobiletap={unlockAudio}
+        />
+      </div>
     </div>
 
     <!-- Mobile only: credibility badges appear BELOW the phone mockup.
@@ -1045,6 +1049,26 @@
       display: flex !important;
     }
   }
+
+  /* ─── TELEFONO NELLE FINESTRE BASSE (≥ 1024px di larghezza) ────────────────
+   * Il telefono e' alto 600px e sta al centro dell'altezza: sotto circa 840px di
+   * finestra il suo bordo basso arriva sulla scritta "Tra i nostri clienti" e la
+   * tocca. Lo si rimpicciolisce a gradini quanto basta perche' resti un respiro
+   * fra il telefono e la fascia dei clienti (fascia ~130px + margine).
+   * La scala sta su .phone-fit, dentro .phone-area: GSAP muove solo .phone-area
+   * (x e xPercent) e la scala resta fissa, mai animata (vedi la nota sul livello
+   * del video). Su telefono e tablet vale 1: ci pensa gia' .phone-area. */
+  .phone-fit {
+    transform: scale(var(--phone-fit, 1));
+    transform-origin: center center;
+  }
+  @media (min-width: 1024px) and (max-height: 880px) { .phone-area { --phone-fit: 0.97; } }
+  @media (min-width: 1024px) and (max-height: 840px) { .phone-area { --phone-fit: 0.9; } }
+  @media (min-width: 1024px) and (max-height: 800px) { .phone-area { --phone-fit: 0.84; } }
+  @media (min-width: 1024px) and (max-height: 760px) { .phone-area { --phone-fit: 0.77; } }
+  @media (min-width: 1024px) and (max-height: 720px) { .phone-area { --phone-fit: 0.7; } }
+  @media (min-width: 1024px) and (max-height: 680px) { .phone-area { --phone-fit: 0.63; } }
+  @media (min-width: 1024px) and (max-height: 640px) { .phone-area { --phone-fit: 0.57; } }
 
   /* ─── SHORT DESKTOP VIEWPORTS (≤ 1050px tall, ≥ 1024px wide) ──────────────
    * Keep the intro centred in the usable stage between the header and the
