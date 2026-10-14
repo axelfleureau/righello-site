@@ -4,6 +4,7 @@
   import { browser } from '$app/environment';
   import { getThumbnailUrl, getYoutubeThumbnailUrl } from '$lib/data/thumbnail-map';
   import ReelViewer from './ReelViewer.svelte';
+  import { watchNearViewport } from '$lib/utils/nearViewport';
 
   export let title = '';
   export let useReelViewer = false;
@@ -308,31 +309,51 @@
       if (anyActive) startRaf(); else stopRaf();
     }
 
+    let stopWatchingViewport: (() => void) | null = null;
     if (canAutoplayCards && !reducedMotion) {
+      // Le schede "in vista" nel carosello; riproducono solo quando il carosello stesso e'
+      // vicino alla finestra (vedi nearViewport).
+      const visibleCards = new Set<number>();
+      let near = false;
+      const playCard = (idx: number) => {
+        const video = videoRefs[idx];
+        if (!video || reelViewerOpen) return;
+        scrollPlayingSet.add(idx);
+        video.play().catch(() => {});
+      };
+      const stopCard = (idx: number) => {
+        scrollPlayingSet.delete(idx);
+        videoRefs[idx]?.pause();
+        const bar = progressBarEls[idx];
+        if (bar) bar.style.transform = 'scaleX(0)';
+        const label = timeLabelEls[idx];
+        if (label) label.textContent = '';
+      };
+
+      stopWatchingViewport = watchNearViewport(container, 600, (value) => {
+        near = value;
+        if (near) visibleCards.forEach(playCard);
+        else [...scrollPlayingSet].forEach(stopCard);
+        syncRaf();
+      });
+
       videoObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             const card = entry.target as HTMLElement;
             const idx = parseInt(card.dataset.cardIdx ?? '-1');
             if (idx < 0) return;
-            const video = card.querySelector<HTMLVideoElement>('.card-video-native');
-            if (!video) return;
+            if (!card.querySelector('.card-video-native')) return;
 
             if (entry.isIntersecting && entry.intersectionRatio >= 0.60) {
-              if (reelViewerOpen) return;
-              scrollPlayingSet.add(idx);
-              video.play().catch(() => {});
-              syncRaf();
+              visibleCards.add(idx);
+              if (near) playCard(idx);
             } else if (entry.intersectionRatio < 0.3) {
-              scrollPlayingSet.delete(idx);
-              video.pause();
-              const bar = progressBarEls[idx];
-              if (bar) bar.style.transform = 'scaleX(0)';
-              const label = timeLabelEls[idx];
-              if (label) label.textContent = '';
-              syncRaf();
+              visibleCards.delete(idx);
+              stopCard(idx);
             }
           });
+          syncRaf();
         },
         { root: container, threshold: [0, 0.3, 0.6, 0.85, 1.0] }
       );
@@ -368,6 +389,7 @@
       container?.removeEventListener('pause', syncRaf, { capture: true });
       container?.removeEventListener('play', syncRaf, { capture: true });
       videoObserver?.disconnect();
+      stopWatchingViewport?.();
       if (rafId) cancelAnimationFrame(rafId);
     };
   });

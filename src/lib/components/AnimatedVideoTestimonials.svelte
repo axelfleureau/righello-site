@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { watchNearViewport } from '$lib/utils/nearViewport';
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import { fade, scale, fly } from 'svelte/transition';
@@ -42,6 +43,8 @@
   let containerEl: HTMLElement;
   let isInView = false;
   let observer: IntersectionObserver | null = null;
+  let stopWatchingViewport: (() => void) | null = null;
+  let nearOnce = false;
   let touchStartX = 0;
   let touchStartY = 0;
   let touchEndX = 0;
@@ -196,16 +199,25 @@
       canAutoplayInline = window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reducedMotion;
       window.addEventListener('keydown', handleKeydown);
 
-      testimonials.forEach((t) => {
-        const img = new Image();
-        if (t.youtubeId) {
-          img.src = getYoutubeThumbnailUrl(t.youtubeId);
-        } else if (t.thumbnailUrl) {
-          img.src = t.thumbnailUrl;
-        } else if (t.videoSrc) {
-          img.src = getThumbnailUrl(t.videoSrc);
-        }
-      });
+      // Le anteprime si scaldano (e il video parte) solo quando la sezione e' vicina: prima
+      // erano ~1 MB di immagini e un video scaricati al caricamento, a migliaia di px di distanza.
+      if (containerEl) {
+        stopWatchingViewport = watchNearViewport(containerEl, 800, (near) => {
+          if (!near || nearOnce) return;
+          nearOnce = true;
+          stopWatchingViewport?.();
+          testimonials.forEach((t) => {
+            const img = new Image();
+            if (t.youtubeId) {
+              img.src = getYoutubeThumbnailUrl(t.youtubeId);
+            } else if (t.thumbnailUrl) {
+              img.src = t.thumbnailUrl;
+            } else if (t.videoSrc) {
+              img.src = getThumbnailUrl(t.videoSrc);
+            }
+          });
+        });
+      }
 
       observer = new IntersectionObserver(
         (entries) => {
@@ -233,6 +245,7 @@
       window.removeEventListener('keydown', handleKeydown);
     }
     observer?.disconnect();
+    stopWatchingViewport?.();
   });
 </script>
 
@@ -318,7 +331,7 @@
                 <div class="avt-thumb-fallback">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>
                 </div>
-                {#if canAutoplayInline && (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc)}
+                {#if canAutoplayInline && nearOnce && (activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc)}
                   <video
                     bind:this={videoElement}
                     src={activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc}
