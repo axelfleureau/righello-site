@@ -86,6 +86,10 @@
   const heroPosterUrl = data.heroVideo?.thumbnailUrl
     ?? `https://img.youtube.com/vi/${heroYoutubeId}/hqdefault.jpg`;
 
+  // Il poster e il video del telefono arrivano da un server esterno: la connessione (DNS + TLS)
+  // parte insieme all'HTML invece che alla prima richiesta di immagine.
+  const heroPosterOrigin = new URL(heroPosterUrl).origin;
+
   const heroPartners = [
     { name: 'Barcolana',           logo: '/logos/barcolana.png' },
     { name: 'Canale 77',           logo: '/logos/canale-77.webp' },
@@ -179,6 +183,7 @@
   <!-- Preload hero poster: shaves ~500ms-1.5s off the cold-cache reveal of the
        iPhone mockup screen. heroPosterUrl prefers the Cloudinary thumbnail (universal)
        over img.youtube.com (blocked in Instagram/Facebook/TikTok in-app browsers). -->
+  <link rel="preconnect" href={heroPosterOrigin} />
   <link rel="preload" as="image" href={heroPosterUrl} fetchpriority="high" />
 </svelte:head>
 
