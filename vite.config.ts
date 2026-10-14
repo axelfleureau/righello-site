@@ -26,6 +26,16 @@ export default defineConfig({
       allow: process.env.NODE_ENV === 'development' ? ['/'] : undefined
     }
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // I pezzi di codice sotto i ~10 kB si fondono col vicino: una richiesta in meno ciascuno
+        // al primo caricamento (a pagina aperta il browser le fa tutte in parallelo, ma ognuna
+        // costa intestazioni e una coda sulla rete lenta).
+        experimentalMinChunkSize: 10_000
+      }
+    }
+  },
   optimizeDeps: {
     exclude: process.env.NODE_ENV === 'development' ? ['@significa/svelte-ui'] : []
   }

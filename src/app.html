@@ -48,6 +48,14 @@
     <link rel="apple-touch-icon" sizes="180x180" href="%sveltekit.assets%/apple-touch-icon.png" />
     <meta name="google-site-verification" content="VcNrLrBqzUI2ljwcUKeMvthK2DvlVMPKmB40NA-SrYI" />
     <link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
+    <!-- Caratteri del primo schermo: i quattro pesi dritti che compaiono subito (400 testo,
+         500 menu, 600 pulsanti, 700 titoli). Sono gli unici preload: gli altri pesi e i corsivi
+         si scaricano solo quando una pagina li usa. Senza l'anticipo partono dopo l'analisi del
+         CSS e, con i loghi in coda, arrivano oltre un secondo dopo il testo di riserva. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="%sveltekit.assets%/fonts/DegularDisplay-Regular_1768475446675.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="%sveltekit.assets%/fonts/DegularDisplay-Medium_1768475446675.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="%sveltekit.assets%/fonts/DegularDisplay-Semibold_1768475446675.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="%sveltekit.assets%/fonts/DegularDisplay-Bold_1768475446675.woff2" />
     <!-- Nessun preconnect globale: ogni connessione anticipata costa una stretta di mano TLS
          anche nelle pagine che non usano quel server (contatti, servizi, chi siamo non scaricano
          nulla da fuori). Basta il dns-prefetch; chi serve un video o un'immagine da fuori sul
