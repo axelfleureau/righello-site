@@ -11,9 +11,9 @@
   const pad = (n: number) => String(n + 1).padStart(2, '0');
 </script>
 
-<section {id} class="sm lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section {id} aria-labelledby="{id}-titolo" class="sm lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container">
-    <SectionHead kicker={head.kicker} title={head.title} highlight={head.highlight} lead={head.lead} />
+    <SectionHead id="{id}-titolo" kicker={head.kicker} title={head.title} highlight={head.highlight} lead={head.lead} />
     <ol class="sm__list" style="--n:{steps.length}">
       {#each steps as s, i (s.title)}
         <li class="sm__step lp-reveal" use:reveal={(i % 5) * 70}>

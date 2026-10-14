@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import SeoHead from '$lib/components/SeoHead.svelte';
   import ScrollReveal from '$lib/components/ScrollReveal.svelte';
   import { theme } from '$lib/stores/theme';
   import LanyardBadge from '$lib/components/LanyardBadge.svelte';
@@ -8,14 +9,7 @@
   import '$lib/components/progetti/tokens.css';
   import { caseStudies, caseStudyHref, kindLabels, type CaseStudy } from '$lib/data/case-studies';
   import { CONTACT, contactHref } from '$lib/data/contact';
-
-  /** Le persone sono quelle gia' pubbliche sul sito: nome e ruolo, niente altro. `pos` tiene il volto dentro il quadrato. */
-  const team = [
-    { name: 'Edis Bali', role: 'CEO e cofondatore', image: '/team/edis.webp', pos: '50% 30%' },
-    { name: 'Paolo Aileni', role: 'COO e cofondatore', image: '/team/paolo.webp', pos: '50% 22%' },
-    { name: 'Axel N. L. Fleureau', role: 'CTO e cofondatore', image: '/team/axel.webp', pos: '50% 18%' },
-    { name: 'Omar ElKharroubi', role: 'Agente di commercio', image: '/team/omar.webp', pos: '50% 30%' },
-  ];
+  import { team } from '$lib/data/team';
 
   /** Il lavoro, raggruppato come lo dichiarano i dati dei progetti: i numeri si contano, non si scrivono. */
   const groups: Array<{ id: string; title: (n: number) => string; items: CaseStudy[] }> = [
@@ -42,25 +36,13 @@
     showBadge = window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
   });
 
-  const TITLE = 'Chi siamo | Righello, studio digitale tra Pordenone e Mestre';
-  const DESC = 'Righello costruisce prodotti digitali propri e lavora su misura per aziende: app, software, siti web, contenuti e campagne. Sede legale a Pordenone, base operativa a Mestre.';
 </script>
 
-<svelte:head>
-  <title>{TITLE}</title>
-  <meta name="description" content={DESC} />
-  <link rel="canonical" href="https://www.wearerighello.com/chi-siamo" />
-  <meta property="og:title" content={TITLE} />
-  <meta property="og:description" content={DESC} />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
-  <meta property="og:url" content="https://www.wearerighello.com/chi-siamo" />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="it_IT" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={TITLE} />
-  <meta name="twitter:description" content={DESC} />
-  <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
-</svelte:head>
+<SeoHead
+  path="/chi-siamo"
+  title="Chi siamo | Righello, studio digitale tra Pordenone e Mestre"
+  description="Righello è uno studio digitale con sede legale a Pordenone e base operativa a Mestre: prodotti propri e lavoro su misura, dal 2023."
+/>
 
 <section id="chi-siamo-hero" class="cs-hero">
   <div class="section-container cs-hero__grid">

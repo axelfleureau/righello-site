@@ -2,6 +2,8 @@
   import { page } from '$app/stores';
   import ContactForm from '$lib/components/ContactForm.svelte';
   import FaqList from '$lib/components/FaqList.svelte';
+  import SeoHead from '$lib/components/SeoHead.svelte';
+  import { contactFaqs } from '$lib/data/faqs/contact';
   import ProjectIcon from '$lib/components/progetti/ProjectIcon.svelte';
   import '$lib/components/progetti/tokens.css';
   import { CONTACT, formatPhone, mailHref, prefillFromQuery, whatsappHref } from '$lib/data/contact';
@@ -41,39 +43,13 @@
     { title: 'Ricevi una proposta', text: 'Dopo la chiamata, un preventivo gratuito con tempi e consegne chiari.' },
   ];
 
-  const faqs = [
-    { question: 'Quanto ci mettete a rispondere?', answer: `Rispondiamo ${CONTACT.reply}. Se è urgente, scrivilo nel messaggio o mandaci un messaggio su WhatsApp.` },
-    { question: 'Posso prenotare una chiamata?', answer: 'Sì. La prima chiamata è gratuita: scrivici dal modulo o su WhatsApp e ti proponiamo alcune date.' },
-    { question: 'Il preventivo è gratuito?', answer: 'Sì, è gratuito e fatto su misura, con tempi e consegne scritti chiari.' },
-    {
-      question: 'Quanto costa lavorare con voi?',
-      answer: 'Dipende dal progetto. Un sito aziendale parte da qualche migliaio di euro; per social e pubblicità il costo dipende dai servizi e dal budget da gestire. Lo definiamo insieme nella prima chiamata.',
-    },
-    {
-      question: 'Lavorate solo in Veneto?',
-      answer: `No. Lavoriamo soprattutto in Friuli-Venezia Giulia, Veneto e Nord Italia, e da remoto con clienti in tutta Italia. La base operativa è a ${CONTACT.office.split(' - ')[0]}.`,
-    },
-  ];
-
-  const TITLE = 'Contatti | Parla con Righello';
-  const DESC = 'Scrivici su WhatsApp, via email o dal modulo: rispondiamo entro 72 ore lavorative. Siti, app, software, social e pubblicità. Sede a Pordenone, base operativa a Mestre.';
 </script>
 
-<svelte:head>
-  <title>{TITLE}</title>
-  <meta name="description" content={DESC} />
-  <meta property="og:title" content={TITLE} />
-  <meta property="og:description" content={DESC} />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
-  <link rel="canonical" href="https://www.wearerighello.com/contatti" />
-  <meta property="og:url" content="https://www.wearerighello.com/contatti" />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="it_IT" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={TITLE} />
-  <meta name="twitter:description" content={DESC} />
-  <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
-</svelte:head>
+<SeoHead
+  path="/contatti"
+  title="Contatti | Parla con Righello a Pordenone e Mestre"
+  description="Scrivici su WhatsApp, via email o dal modulo: rispondiamo {CONTACT.reply}. Sede legale a Pordenone, base operativa a Mestre."
+/>
 
 <section class="ct-hero">
   <div class="section-container">
@@ -160,7 +136,7 @@
       <p class="section-subtitle">Domande frequenti</p>
       <h2 class="ct-h2">Prima di scriverci</h2>
     </div>
-    <FaqList items={faqs} name="contatti" schema />
+    <FaqList items={contactFaqs} name="contatti" />
   </div>
 </section>
 

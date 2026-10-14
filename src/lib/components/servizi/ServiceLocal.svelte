@@ -8,10 +8,10 @@
   export let tone = 0;
 </script>
 
-<section {id} class="sl lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section {id} aria-labelledby="{id}-titolo" class="sl lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container sl__grid">
     <div class="sl__copy">
-      <SectionHead kicker={block.kicker} title={block.title} highlight={block.highlight} />
+      <SectionHead id="{id}-titolo" kicker={block.kicker} title={block.title} highlight={block.highlight} />
       {#each block.paragraphs as p, k}
         <p class="sl__p lp-reveal" use:reveal={60 + k * 60}>{p}</p>
       {/each}

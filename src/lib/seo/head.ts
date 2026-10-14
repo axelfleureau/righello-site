@@ -16,6 +16,9 @@
 
 export const DEFAULT_ATTR = 'data-seo-default';
 
+/** Attributo dello script con i dati strutturati che il server aggiunge al <head> (il layout lo toglie quando si cambia pagina senza ricaricare). */
+export const LD_ATTR = 'data-seo-ld';
+
 /** Chiave dell'etichetta: `description`, `og:image`, `canonical`... oppure null se non ci interessa. */
 export function headTagKey(attr: (name: string) => string | null | undefined, tagName: string): string | null {
   if (tagName === 'link') return attr('rel') === 'canonical' ? 'canonical' : null;
@@ -62,4 +65,36 @@ export function overriddenKeys(head: HTMLHeadElement): Set<string> {
     if (key) keys.add(key);
   }
   return keys;
+}
+
+const decode = (s: string) =>
+  s
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
+
+/** Titolo, descrizione e immagine di condivisione cosi' come la pagina li ha scritti nel suo <head>. */
+export function readHeadMeta(headHtml: string): {
+  title?: string;
+  description?: string;
+  image?: string;
+} {
+  // Vince il valore della pagina; quello di partenza del layout solo se la pagina non ne ha dichiarato uno.
+  const meta = (key: string) => {
+    const found: Array<{ value: string; own: boolean }> = [];
+    for (const m of headHtml.matchAll(/<meta\b[^>]*>/g)) {
+      const attr = attrOf(m[0]);
+      if (attr('name') === key || attr('property') === key)
+        found.push({ value: decode(attr('content') ?? ''), own: !m[0].includes(DEFAULT_ATTR) });
+    }
+    return (found.find((f) => f.own) ?? found[0])?.value;
+  };
+  const title = headHtml.match(/<title>([\s\S]*?)<\/title>/)?.[1];
+  return {
+    title: title === undefined ? undefined : decode(title),
+    description: meta('description'),
+    image: meta('og:image')
+  };
 }

@@ -14,9 +14,9 @@
   const pad = (n: number) => String(n + 1).padStart(2, '0');
 </script>
 
-<section id="tecnologia" class="tg lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section id="tecnologia" aria-labelledby="tecnologia-titolo" class="tg lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container">
-    <SectionHead kicker="Sotto il cofano" title="Come è costruito" highlight="costruito" />
+    <SectionHead id="tecnologia-titolo" kicker="Sotto il cofano" title="Come è costruito" highlight="costruito" />
     <ol class="tg__grid lp-bento">
       {#each grid.items as { item: t, i, sd, sm, st, od, om, ot }, k (i)}
         <li class="tg__item lp-reveal" style="--sd:{sd}; --sm:{sm}; --st:{st}; --od:{od}; --om:{om}; --ot:{ot}" use:reveal={(k % 3) * 80}>

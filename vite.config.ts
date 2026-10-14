@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import { loadEnv } from 'vite'; 
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
@@ -13,7 +14,9 @@ export default defineConfig({
     ...extraPlugins
   ],
   test: {
-    include: ['src/**/*.{test,spec}.{js,ts}']
+    include: ['src/**/*.{test,spec}.{js,ts}'],
+    // Fuori da SvelteKit le variabili pubbliche non esistono: i test usano un insieme vuoto.
+    alias: { '$env/dynamic/public': fileURLToPath(new URL('./src/test/env-public.ts', import.meta.url)) }
   },
   server: {
     https: HTTPS_ENABLED,

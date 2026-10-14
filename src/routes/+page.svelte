@@ -12,6 +12,7 @@
   import HomeProducts from '$lib/components/home/HomeProducts.svelte';
   import BenefitsSection from '$lib/components/BenefitsSection.svelte';
   import FAQ from '$lib/components/FAQ.svelte';
+  import SeoHead from '$lib/components/SeoHead.svelte';
   import BackgroundBeams from '$lib/components/BackgroundBeams.svelte';
   import SectionDivider from '$lib/components/SectionDivider.svelte';
   import SocialReelShowcase from '$lib/components/SocialReelShowcase.svelte';
@@ -166,20 +167,14 @@
   });
 </script>
 
+<SeoHead
+  path="/"
+  title="Righello | Agenzia Marketing a Pordenone e Mestre"
+  description="Agenzia marketing a Pordenone e Mestre: social media, advertising, siti web, software e automazioni AI per aziende in Friuli-Venezia Giulia e Veneto."
+  imageAlt="Righello, agenzia marketing a Pordenone e Mestre: social, advertising, siti web, software e agenti AI"
+/>
+
 <svelte:head>
-  <title>Righello | Agenzia Marketing a Pordenone e Mestre</title>
-  <meta name="description" content="Agenzia marketing a Pordenone e Mestre: social media, advertising, siti web, software e automazioni AI per aziende in Friuli-Venezia Giulia e Veneto." />
-  <link rel="canonical" href="https://www.wearerighello.com/" />
-  <meta property="og:title" content="Righello | Agenzia Marketing a Pordenone e Mestre" />
-  <meta property="og:description" content="Agenzia marketing a Pordenone e Mestre: social media, advertising, siti web, software e automazioni AI per aziende in Friuli-Venezia Giulia e Veneto." />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
-  <meta property="og:url" content="https://www.wearerighello.com/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="it_IT" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Righello | Agenzia Marketing a Pordenone e Mestre" />
-  <meta name="twitter:description" content="Agenzia marketing a Pordenone e Mestre: social media, advertising, siti web, software e automazioni AI per aziende in Friuli-Venezia Giulia e Veneto." />
-  <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=2" />
   <!-- Preload hero poster: shaves ~500ms-1.5s off the cold-cache reveal of the
        iPhone mockup screen. heroPosterUrl prefers the Cloudinary thumbnail (universal)
        over img.youtube.com (blocked in Instagram/Facebook/TikTok in-app browsers). -->

@@ -8,11 +8,11 @@
   export let tone = 0;
 </script>
 
-<section {id} class="sf lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section {id} aria-labelledby="{id}-titolo" class="sf lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container sf__grid">
     <header class="sf__head lp-reveal" use:reveal>
       <p class="lp-kicker">{head.kicker}</p>
-      <h2 class="lp-title">{head.title}</h2>
+      <h2 class="lp-title" id="{id}-titolo">{head.title}</h2>
       {#if head.lead}<p class="lp-lead">{head.lead}</p>{/if}
     </header>
     <div class="sf__list lp-reveal" use:reveal={80}>

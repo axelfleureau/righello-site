@@ -1,22 +1,11 @@
 <script lang="ts">
   /**
    * Domande e risposte a fisarmonica, una aperta alla volta, funziona anche senza JavaScript.
-   * Con `schema` aggiunge il FAQPage JSON-LD dagli stessi dati: testo e markup non possono divergere.
+   * I dati strutturati (FAQPage) li aggiunge il server dalle stesse domande: vedi `$lib/seo/schema`.
    */
   export let items: Array<{ question: string; answer: string }>;
   export let name = 'faq';
-  export let schema = false;
-
-  $: jsonLd = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: items.map((i) => ({ '@type': 'Question', name: i.question, acceptedAnswer: { '@type': 'Answer', text: i.answer } })),
-  }).replace(/</g, '\\u003c');
 </script>
-
-<svelte:head>
-  {#if schema}{@html `<script type="application/ld+json">${jsonLd}</script>`}{/if}
-</svelte:head>
 
 <div class="faq">
   {#each items as item}

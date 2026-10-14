@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { CONTACT } from '$lib/data/contact';
+  import SeoHead from '$lib/components/SeoHead.svelte';
+  import { bandoFaqs } from '$lib/data/faqs/bando';
+  import { agencySourceUrl, guidePdfUrl, incentivesPortalUrl, officialSources, onlineApplicationsUrl, regionNoticeUrl, regionPressUrl } from '$lib/data/bando';
   import AIGrantScrollStory from '$lib/components/AIGrantScrollStory.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
@@ -11,12 +13,6 @@
 
   type IconKey = 'percent' | 'wallet' | 'fund' | 'users' | 'brain' | 'chart' | 'file' | 'bot' | 'search' | 'dashboard' | 'quote' | 'workflow';
 
-  const agencySourceUrl = 'https://www.lavoroimpresa.fvg.it/portale/incentivi_dettaglio.aspx?AltID=1681&GUID=9e99d2dc-470e-463c-b695-adf01428af32&ID=9e99d2dc-470e-463c-b695-adf01428af32&PreviewKey=manduph3cvcxpm2yuuputsw0';
-  const regionNoticeUrl = 'https://www.regione.fvg.it/rafvg/cms/RAFVG/economia-imprese/industria/FOGLIA204/articolo.html';
-  const regionPressUrl = 'https://www.regione.fvg.it/rafvg/comunicati/comunicato.act;jsessionid=8F18B21A1BB38C039AF6ABC6E1EAAF32?dir=/rafvg/cms/RAFVG/&nm=20260608134346003';
-  const incentivesPortalUrl = 'https://incentivi.regione.fvg.it/';
-  const onlineApplicationsUrl = 'https://istanze-web.regione.fvg.it/CruscottoBeneficiario/login.aspx?ID_CON=2&ID_PROC=646459';
-  const guidePdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/LineeGuida_IA.pdf';
   const facsimilePdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/Fac-simile_Intelligenza_artificiale.pdf';
   const decreePdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/Decreto_bando_IA_n._29347_2026_allegato.pdf';
   const faqPdfUrl = 'https://www.regione.fvg.it/rafvg/export/sites/default/RAFVG/economia-imprese/industria/FOGLIA204/allegati/FAQ_IA_14.05.26.pdf';
@@ -134,95 +130,8 @@
     },
   ];
 
-  const faqs = [
-    {
-      question: 'Cos’è il Bando AI FVG 2026?',
-      answer: 'È il bando della Regione Friuli Venezia Giulia per aiutare micro e piccole imprese e liberi professionisti a introdurre tecnologie di Intelligenza Artificiale nei processi aziendali.',
-    },
-    {
-      question: 'Chi può partecipare?',
-      answer: 'Il bando è rivolto a micro e piccole imprese e liberi professionisti con sede legale o operativa attiva in Friuli Venezia Giulia.',
-    },
-    {
-      question: 'Quanto posso ottenere?',
-      answer: 'Il contributo può arrivare fino al 75% della spesa ammissibile, con un massimo di 10.000 euro per singolo beneficiario.',
-    },
-    {
-      question: 'Il bando è ancora aperto?',
-      answer: 'No. Lo sportello 2026 era attivo dal 10 giugno alle ore 16:00 del 31 luglio 2026 e ha esaurito le risorse disponibili. Al momento non è stato annunciato un nuovo round: iscriviti per essere avvisato quando (e se) la Regione riaprirà la misura.',
-    },
-    {
-      question: 'Posso finanziare software su misura?',
-      answer: 'Sì, se il progetto rientra nell’introduzione di tecnologie basate sull’intelligenza artificiale. Le spese indicate includono anche personalizzazione, configurazione e integrazione di soluzioni IA con i sistemi aziendali esistenti.',
-    },
-    {
-      question: 'Quali spese tecniche risultano ammissibili?',
-      answer: 'La scheda ufficiale cita software, piattaforme e sistemi di IA, licenze, dispositivi digitali intelligenti, integrazione con sistemi aziendali, manutenzione, aggiornamento, assistenza tecnica, consulenze specialistiche, addestramento dei modelli sui dati aziendali e formazione.',
-    },
-    {
-      question: 'Il contributo copre anche crediti IA o API?',
-      answer: 'Sì, se coerenti con l’utilizzo di soluzioni IA e classificati come canoni, abbonamenti o costi di utilizzo con utilità limitata all’esercizio, secondo quanto previsto dal bando.',
-    },
-    {
-      question: 'L’IVA è finanziata?',
-      answer: 'Solo se costituisce un costo per il beneficiario. Se l’impresa recupera o detrae l’IVA, la base di calcolo è al netto IVA.',
-    },
-    {
-      question: 'Quando posso iniziare le spese?',
-      answer: 'Le spese devono essere sostenute successivamente alla presentazione della domanda.',
-    },
-    {
-      question: 'Quanto devo spendere per ottenere 10.000€ di contributo?',
-      answer: 'Poiché il contributo è pari al 75%, per ottenere il massimo di 10.000€ servono circa 13.333,33€ di spese ammissibili. Con 10.000€ di spese ammissibili, il contributo stimato è 7.500€.',
-    },
-    {
-      question: 'Posso comprare la marca da bollo in tabaccheria?',
-      answer: 'Sì. In alternativa a F23/F24 puoi usare il modello ufficiale di assolvimento bollo con contrassegno da 16€ acquistato presso intermediario convenzionato.',
-    },
-    {
-      question: 'Serve già un progetto definito?',
-      answer: 'No. La prima consulenza serve proprio a trasformare un problema operativo in un progetto AI chiaro e realizzabile.',
-    },
-    {
-      question: 'Righello segue anche la parte progettuale?',
-      answer: 'Sì. Ti aiutiamo a capire dove usare l’AI, a progettare la soluzione e a realizzarla con un approccio concreto.',
-    },
-    {
-      question: 'Righello presenta la domanda al posto mio?',
-      answer: 'Righello segue la parte tecnica e progettuale della soluzione AI. Per la pratica amministrativa possiamo coordinare materiali e informazioni con il tuo consulente, commercialista o soggetto incaricato.',
-    },
-    {
-      question: 'Quanto dura la consulenza iniziale?',
-      answer: 'Circa 30 minuti. È gratuita e serve a capire requisiti, priorità e primi casi d’uso possibili.',
-    },
-  ];
+  const faqs = bandoFaqs;
 
-  const officialSources = [
-    {
-      label: 'Scheda Agenzia Lavoro & SviluppoImpresa',
-      href: agencySourceUrl,
-    },
-    {
-      label: 'Pagina ufficiale Regione FVG',
-      href: regionNoticeUrl,
-    },
-    {
-      label: 'Istanze On Line',
-      href: onlineApplicationsUrl,
-    },
-    {
-      label: 'Linee guida domanda',
-      href: guidePdfUrl,
-    },
-    {
-      label: 'Comunicato Regione FVG',
-      href: regionPressUrl,
-    },
-    {
-      label: 'Portale Incentivi FVG',
-      href: incentivesPortalUrl,
-    },
-  ];
 
   const officialResources = [
     { label: 'Pagina ufficiale bando Regione FVG', href: regionNoticeUrl },
@@ -352,51 +261,6 @@
     }
   }
 
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'WebPage',
-        '@id': 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026#webpage',
-        url: 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026',
-        name: 'Bando AI FVG 2026: guida e contributo 75% | Righello',
-        dateModified: '2026-09-23',
-        citation: officialSources.map((source) => source.href),
-      },
-      {
-        '@type': 'FAQPage',
-        '@id': 'https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026#faq',
-        mainEntity: faqs.map((faq) => ({
-          '@type': 'Question',
-          name: faq.question,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: faq.answer,
-          },
-        })),
-      },
-      {
-        '@type': 'LocalBusiness',
-        '@id': 'https://www.wearerighello.com/#localbusiness',
-        name: 'Righello S.r.l.',
-        url: 'https://www.wearerighello.com',
-        image: 'https://www.wearerighello.com/logo-full.png',
-        email: CONTACT.email,
-        priceRange: '€€€',
-        vatID: 'IT01979970934',
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: 'Via Pio X 21',
-          addressLocality: 'Mestre',
-          addressRegion: 'Venezia',
-          addressCountry: 'IT',
-        },
-        areaServed: ['Friuli-Venezia Giulia', 'Pordenone', 'Udine', 'Gorizia', 'Trieste', 'Mestre', 'Venezia'],
-        description: 'Righello S.r.l. progetta siti web, software, automazioni e soluzioni di Intelligenza Artificiale per aziende, PMI e professionisti.',
-      },
-    ],
-  };
-
   let formData = {
     name: '',
     company: '',
@@ -455,22 +319,11 @@
   }
 </script>
 
-<svelte:head>
-  <title>Bando AI FVG 2026: guida e contributo 75% | Righello</title>
-  <meta name="description" content="Guida interattiva Righello al Bando AI FVG 2026: requisiti, calcolo contributo, documenti e progetto tecnico per Intelligenza Artificiale." />
-  <link rel="canonical" href="https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026" />
-  <meta property="og:title" content="Bando AI FVG 2026: guida e contributo 75% | Righello" />
-  <meta property="og:description" content="Guida interattiva Righello al Bando AI FVG 2026: requisiti, calcolo contributo, documenti e progetto tecnico per Intelligenza Artificiale." />
-  <meta property="og:url" content="https://www.wearerighello.com/bando-intelligenza-artificiale-fvg-2026" />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="it_IT" />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bando AI FVG 2026: guida e contributo 75% | Righello" />
-  <meta name="twitter:description" content="Guida interattiva Righello al Bando AI FVG 2026: requisiti, calcolo contributo, documenti e progetto tecnico per Intelligenza Artificiale." />
-  <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
-  {@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}</script>`}
-</svelte:head>
+<SeoHead
+  path="/bando-intelligenza-artificiale-fvg-2026"
+  title="Bando AI FVG 2026: guida, requisiti e documenti | Righello"
+  description="Guida Righello al Bando Intelligenza Artificiale FVG 2026: requisiti, calcolo del contributo e documenti. Lo sportello 2026 ha esaurito le risorse."
+/>
 
 <div class="ai-grant-page">
   <section class="hero-section">

@@ -1,6 +1,8 @@
 <script lang="ts">
   import { reveal } from './actions';
 
+  /** Identificativo del titolo: la sezione lo usa come suo nome (`aria-labelledby`). */
+  export let id: string | undefined = undefined;
   export let kicker: string;
   export let title: string;
   export let highlight: string | undefined = undefined;
@@ -13,7 +15,7 @@
 
 <header class="sh sh--{align} lp-reveal" use:reveal>
   <p class="lp-kicker">{kicker}</p>
-  <h2 class="lp-title">
+  <h2 class="lp-title" {id}>
     {#if parts}{parts[0]}<span class="lp-hl">{highlight}</span>{parts.slice(1).join(highlight)}{:else}{title}{/if}
   </h2>
   {#if lead}<p class="lp-lead">{lead}</p>{/if}

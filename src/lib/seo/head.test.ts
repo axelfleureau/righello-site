@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dropOverriddenDefaults } from './head';
+import { dropOverriddenDefaults, readHeadMeta } from './head';
 
 describe('dropOverriddenDefaults', () => {
   const head = [
@@ -19,5 +19,30 @@ describe('dropOverriddenDefaults', () => {
 
   it('tiene il valore di partenza se la pagina non lo dichiara', () => {
     expect(dropOverriddenDefaults(head)).toContain('og:image');
+  });
+});
+
+describe('readHeadMeta', () => {
+  it('legge titolo, descrizione e immagine che la pagina ha dichiarato, non quelli di partenza', () => {
+    const head = [
+      '<title>Agenti AI &amp; automazioni | Righello</title>',
+      '<meta name="description" content="Generica" data-seo-default>',
+      '<meta name="description" content="Meno lavoro &quot;ripetitivo&quot;">',
+      '<meta property="og:image" content="https://www.wearerighello.com/og/home.jpg?v=1" data-seo-default>',
+      '<meta property="og:image" content="https://www.wearerighello.com/og/servizi.jpg?v=1">'
+    ].join('\n');
+    expect(readHeadMeta(head)).toEqual({
+      title: 'Agenti AI & automazioni | Righello',
+      description: 'Meno lavoro "ripetitivo"',
+      image: 'https://www.wearerighello.com/og/servizi.jpg?v=1'
+    });
+  });
+
+  it('non inventa nulla se la pagina non dichiara niente', () => {
+    expect(readHeadMeta('<meta charset="utf-8">')).toEqual({
+      title: undefined,
+      description: undefined,
+      image: undefined
+    });
   });
 });

@@ -55,10 +55,10 @@
   }
 </script>
 
-<section id="in-azione" class="dm lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section id="in-azione" aria-labelledby="in-azione-titolo" class="dm lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="lp-grid-bg" aria-hidden="true"></div>
   <div class="section-container">
-    <SectionHead align="center" kicker={demo.kicker} title={demo.title} highlight={demo.highlight} lead={demo.lead} />
+    <SectionHead id="in-azione-titolo" align="center" kicker={demo.kicker} title={demo.title} highlight={demo.highlight} lead={demo.lead} />
 
     <div class="dm__ui lp-reveal" use:reveal={80}>
       {#if filterable}

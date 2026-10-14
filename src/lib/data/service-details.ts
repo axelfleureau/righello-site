@@ -1,4 +1,5 @@
 import type { IconName } from '$lib/data/landing/types';
+import type { Faq } from './faqs/types';
 
 /**
  * Tutto cio' che dicono le pagine /servizi e /servizi/<slug> sta qui, in un punto solo.
@@ -152,7 +153,7 @@ export const serviceDetails: ServiceDetail[] = [
       { id: 'neura', note: 'Marchio, testi e un video verticale per i social.' },
     ],
     seo: {
-      title: 'Agenzia Marketing e Social Media a Pordenone e Mestre | Righello',
+      title: 'Social media marketing a Pordenone e Mestre | Righello',
       description: 'Gestione social media, video production, copywriting, piano editoriale e contenuti per aziende tra Pordenone, Mestre e Nord Italia.',
     },
     localSeo: {
@@ -239,7 +240,7 @@ export const serviceDetails: ServiceDetail[] = [
       { id: 'elite-hotel-spa', note: 'Foto e video pensati anche come materiale per le campagne dell’hotel.' },
     ],
     seo: {
-      title: 'Google Ads, Meta Ads e Advertising a Pordenone e Mestre | Righello',
+      title: 'Google Ads e Meta Ads a Pordenone e Mestre | Righello',
       description: 'Campagne Google Ads, Meta Ads e TikTok Ads con tracking avanzato, marketing automation e ottimizzazione budget per aziende tra Pordenone e Mestre.',
     },
     localSeo: {
@@ -336,7 +337,7 @@ export const serviceDetails: ServiceDetail[] = [
       label: 'Scopri gli agenti AI',
     },
     seo: {
-      title: 'Agenzia Siti Web Pordenone e Mestre | Righello',
+      title: 'Agenzia siti web a Pordenone e Mestre | Righello',
       description: 'Agenzia siti web a Pordenone e Mestre: siti aziendali, e-commerce, web app, software custom, UX/UI, SEO tecnico e integrazioni.',
     },
     localSeo: {
@@ -438,8 +439,8 @@ export const serviceDetails: ServiceDetail[] = [
       label: 'Leggi la guida al bando',
     },
     seo: {
-      title: 'Agenti AI e Automazioni per Aziende a Pordenone e Mestre | Righello',
-      description: 'Agenti AI e automazioni per aziende tra Pordenone e Mestre: riduzione dei costi operativi, integrazione con ERP, CRM e sistemi interni.',
+      title: 'Agenti AI e automazioni a Pordenone e Mestre | Righello',
+      description: 'Agenti AI e automazioni per aziende tra Pordenone e Mestre: meno lavoro ripetitivo, collegati a gestionale, CRM, email e sistemi interni.',
     },
     localSeo: {
       eyebrow: 'AI operativa',
@@ -503,6 +504,8 @@ export interface ServiceFaq {
   a: string;
   /** Nelle pagine dei servizi si mostrano solo le domande dei servizi indicati; sull'indice, tutte. */
   services: string[];
+  /** `false`: la domanda si vede nella pagina ma non entra nei dati strutturati ne' in llms.txt (cifre o impegni da far confermare: vedi docs/seo-audit.md). */
+  structured?: false;
 }
 
 const all = ['marketing', 'advertising', 'web', 'agenti-ai'];
@@ -512,16 +515,19 @@ export const serviceFaqs: ServiceFaq[] = [
     q: 'Quanto tempo ci vuole per vedere i risultati?',
     a: 'I primi miglioramenti si vedono dai 3 mesi. In questo periodo costruiamo le fondamenta: strategia, contenuti, campagne e tracciamento. Per i siti web, i tempi di sviluppo variano da 4 a 12 settimane a seconda della complessità.',
     services: ['marketing', 'advertising'],
+    structured: false,
   },
   {
     q: 'Quanto tempo ci vuole per un sito web?',
     a: 'Siti vetrina: 4-6 settimane. E-commerce: 6-10 settimane. Web app su misura: 8-16 settimane. Includiamo sempre le fasi di strategia, progetto grafico, sviluppo e prove.',
     services: ['web'],
+    structured: false,
   },
   {
     q: 'Lavorate solo con aziende del Veneto?',
     a: 'No, la nostra base è nel Nord Italia ma lavoriamo con clienti in tutta Europa. Gestiamo i progetti da remoto, con incontri regolari e strumenti condivisi, e ci spostiamo sul posto quando serve.',
     services: all,
+    structured: false,
   },
   {
     q: 'Posso mantenere il sito da solo dopo il lancio?',
@@ -532,6 +538,7 @@ export const serviceFaqs: ServiceFaq[] = [
     q: 'Che garanzie offrite sui risultati?',
     a: 'Definiamo obiettivi chiari all’inizio del progetto. Per l’advertising offriamo periodi di prova e ottimizzazione. Per lo sviluppo, la correzione dei difetti è inclusa per 6 mesi dopo la pubblicazione.',
     services: all,
+    structured: false,
   },
   {
     q: 'Come funziona il pagamento?',
@@ -549,6 +556,15 @@ export const serviceFaqs: ServiceFaq[] = [
     services: ['web', 'agenti-ai'],
   },
 ];
+
+/** Le domande di un servizio; senza argomento, tutte (l'indice dei servizi le mostra tutte). */
+export const faqsForService = (slug?: string): Faq[] =>
+  serviceFaqs.filter((f) => !slug || f.services.includes(slug)).map(toFaq);
+
+/** Una domanda di servizio nella forma comune a tutte le pagine (`structured` compreso). */
+export function toFaq(f: ServiceFaq): Faq {
+  return { question: f.q, answer: f.a, ...(f.structured === false ? { structured: false as const } : {}) };
+}
 
 /** Le pagine per citta' e il bando: raggiungibili dall'indice dei servizi. */
 export const localLandingLinks = [

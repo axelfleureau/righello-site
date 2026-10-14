@@ -19,9 +19,9 @@
     .filter((c): c is { study: NonNullable<typeof c.study>; note: string | undefined } => !!c.study);
 </script>
 
-<section {id} class="sp lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section {id} aria-labelledby="{id}-titolo" class="sp lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container">
-    <SectionHead kicker={head.kicker} title={head.title} highlight={head.highlight} lead={head.lead} />
+    <SectionHead id="{id}-titolo" kicker={head.kicker} title={head.title} highlight={head.highlight} lead={head.lead} />
     <ul class="sp__grid" data-n={cases.length}>
       {#each cases as { study, note }, k (study.id)}
         <li class="sp__cell lp-reveal" use:reveal={(k % 4) * 70}>

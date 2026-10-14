@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { CONTACT } from '$lib/data/contact';
+  import SeoHead from '$lib/components/SeoHead.svelte';
+  import { pordenoneFaqs } from '$lib/data/faqs/pordenone';
   import ServicePage from '$lib/components/servizi/ServicePage.svelte';
   import { agencyModel } from '$lib/components/servizi/models';
-  import { getServiceBySlug, serviceFaqs } from '$lib/data/service-details';
+  import { getServiceBySlug } from '$lib/data/service-details';
 
   const services = [
     {
@@ -31,83 +32,6 @@
   ];
 
   const localAreas = ['Pordenone', 'Cordenons', 'Porcia', 'Sacile', 'Spilimbergo', 'San Vito al Tagliamento', 'Maniago', 'Friuli-Venezia Giulia'];
-
-  const faqs = [
-    {
-      question: 'Righello è una agenzia marketing di Pordenone?',
-      answer: 'Righello lavora con aziende a Pordenone e in Friuli-Venezia Giulia su marketing, advertising, siti web, software e automazioni. Siamo un partner operativo: strategia, contenuti, campagne e tecnologia nello stesso processo.',
-    },
-    {
-      question: 'Lavorate anche con aziende fuori dal centro di Pordenone?',
-      answer: 'Si. Gestiamo progetti in tutta la provincia di Pordenone e nel Nord Italia, con incontri da remoto e sessioni operative sul territorio quando servono shooting, workshop o contenuti.',
-    },
-    {
-      question: 'Che cosa include un progetto di marketing locale?',
-      answer: 'Di solito partiamo da audit, posizionamento, tracking e piano di crescita. Poi mettiamo in fila contenuti, campagne, sito o landing page e reportistica: il marketing locale deve essere riconoscibile, non solo geolocalizzato.',
-    },
-  ];
-
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Service',
-        '@id': 'https://www.wearerighello.com/agenzia-marketing-pordenone#service',
-        name: 'Agenzia marketing a Pordenone',
-        serviceType: 'Marketing, advertising, sviluppo web e automazioni',
-        provider: {
-          '@type': 'LocalBusiness',
-          '@id': 'https://www.wearerighello.com/#localbusiness',
-          name: 'Righello S.r.l.',
-          url: 'https://www.wearerighello.com',
-          email: CONTACT.email,
-          image: 'https://www.wearerighello.com/og.png',
-          address: {
-            '@type': 'PostalAddress',
-            streetAddress: 'Via Pio X 21',
-            addressLocality: 'Mestre',
-            addressRegion: 'Venezia',
-            addressCountry: 'IT',
-          },
-        },
-        areaServed: [
-          { '@type': 'City', name: 'Pordenone' },
-          { '@type': 'AdministrativeArea', name: 'Provincia di Pordenone' },
-          { '@type': 'AdministrativeArea', name: 'Friuli-Venezia Giulia' },
-        ],
-        hasOfferCatalog: {
-          '@type': 'OfferCatalog',
-          name: 'Servizi marketing e sviluppo per aziende a Pordenone',
-          itemListElement: services.map((service) => ({
-            '@type': 'Offer',
-            itemOffered: {
-              '@type': 'Service',
-              name: service.title,
-              description: service.description,
-            },
-          })),
-        },
-      },
-      {
-        '@type': 'BreadcrumbList',
-        '@id': 'https://www.wearerighello.com/agenzia-marketing-pordenone#breadcrumb',
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Home',
-            item: 'https://www.wearerighello.com/',
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: 'Agenzia marketing Pordenone',
-            item: 'https://www.wearerighello.com/agenzia-marketing-pordenone',
-          },
-        ],
-      },
-    ],
-  };
 
   const m = agencyModel({
     city: 'Pordenone',
@@ -143,10 +67,7 @@
         { href: '/progetti', label: 'Progetti e casi studio' },
       ],
     },
-    faq: [
-      ...faqs.map((f) => ({ q: f.question, a: f.answer })),
-      ...serviceFaqs.filter((f) => ['Che garanzie offrite sui risultati?', 'Come funziona il pagamento?'].includes(f.q)).map((f) => ({ q: f.q, a: f.a })),
-    ],
+    faq: pordenoneFaqs.map((f) => ({ q: f.question, a: f.answer })),
     closing: {
       kicker: 'Audit gratuito',
       title: 'Vuoi essere trovato a Pordenone e scelto per un motivo?',
@@ -157,30 +78,10 @@
   });
 </script>
 
-<svelte:head>
-  <title>Agenzia Marketing Pordenone | Righello - Web, Advertising e AI</title>
-  <meta
-    name="description"
-    content="Agenzia marketing a Pordenone: social media, advertising, siti web, software e automazioni AI per aziende in Friuli-Venezia Giulia."
-  />
-  <link rel="canonical" href="https://www.wearerighello.com/agenzia-marketing-pordenone" />
-  <meta property="og:title" content="Agenzia Marketing Pordenone | Righello" />
-  <meta
-    property="og:description"
-    content="Marketing, advertising, siti web e automazioni per aziende a Pordenone e in Friuli-Venezia Giulia."
-  />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
-  <meta property="og:url" content="https://www.wearerighello.com/agenzia-marketing-pordenone" />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="it_IT" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Agenzia Marketing Pordenone | Righello" />
-  <meta
-    name="twitter:description"
-    content="Strategia, contenuti, campagne, siti web e automazioni per aziende a Pordenone."
-  />
-  <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
-  {@html `<script type="application/ld+json">${JSON.stringify(structuredData)}</script>`}
-</svelte:head>
+<SeoHead
+  path="/agenzia-marketing-pordenone"
+  title="Agenzia marketing a Pordenone: social, ads e siti web"
+  description="Agenzia marketing a Pordenone: social media, advertising, siti web, software e automazioni AI per aziende in Friuli-Venezia Giulia."
+/>
 
 <ServicePage {m} />

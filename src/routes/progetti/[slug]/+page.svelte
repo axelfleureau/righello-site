@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import SeoHead from '$lib/components/SeoHead.svelte';
   import '$lib/components/progetti/tokens.css';
   import '$lib/components/progetti/landing/landing.css';
   import ProductFlow from '$lib/components/progetti/ProductFlow.svelte';
@@ -12,7 +13,7 @@
   import TechGrid from '$lib/components/progetti/landing/TechGrid.svelte';
   import ClosingCta from '$lib/components/progetti/landing/ClosingCta.svelte';
   import { hasDemo, hasOwnLanding, resolveLanding } from '$lib/components/progetti/landing/resolve';
-  import { kindLabels, listHref } from '$lib/data/case-studies';
+  import { caseStudyHref, listHref } from '$lib/data/case-studies';
   import type { PageData } from './$types';
 
   export let data: PageData;
@@ -20,9 +21,6 @@
   $: study = data.study;
   $: landing = resolveLanding(study);
   $: own = hasOwnLanding(study);
-  $: canonical = `https://www.wearerighello.com/progetti/${study.id}`;
-  $: seoTitle = `${study.name} | ${kindLabels[study.kind]} | Righello`;
-  $: ogImage = study.image.startsWith('http') ? study.image : `https://www.wearerighello.com${study.image}`;
   $: primary = study.storeUrl
     ? { href: study.storeUrl, label: 'Scarica su App Store' }
     : study.href?.startsWith('http')
@@ -57,36 +55,12 @@
     return t;
   })();
 
-  $: breadcrumbSchema = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Progetti', item: 'https://www.wearerighello.com/progetti' },
-      { '@type': 'ListItem', position: 2, name: study.name, item: canonical },
-    ],
-  }).replace(/</g, '\\u003c');
-
   // Le entrate al passaggio nascondono i blocchi solo quando il JavaScript c'e': senza, la pagina resta intera.
   let js = false;
   onMount(() => (js = true));
 </script>
 
-<svelte:head>
-  <title>{seoTitle}</title>
-  <meta name="description" content={`${study.headline} ${study.text}`.slice(0, 300)} />
-  <link rel="canonical" href={canonical} />
-  <meta property="og:title" content={seoTitle} />
-  <meta property="og:description" content={study.headline} />
-  <meta property="og:image" content={ogImage} />
-  <meta property="og:url" content={canonical} />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="it_IT" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={seoTitle} />
-  <meta name="twitter:description" content={study.headline} />
-  <meta name="twitter:image" content={ogImage} />
-  {@html `<script type="application/ld+json">${breadcrumbSchema}<\/script>`}
-</svelte:head>
+<SeoHead path={caseStudyHref(study)} title={study.seo.title} description={study.seo.description} imageAlt="{study.name}: {study.status.label}" />
 
 <div class="lp {landing.variant ? `lp--${landing.variant}` : ''}" class:lp-js={js} style="--a:{study.accent[0]}; --b:{study.accent[1]}">
   <LandingHero {study} {landing} {primary} />

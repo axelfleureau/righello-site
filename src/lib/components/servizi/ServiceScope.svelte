@@ -12,9 +12,9 @@
   export let layout: 'cards' | 'rows' = 'cards';
 </script>
 
-<section {id} class="ss lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section {id} aria-labelledby="{id}-titolo" class="ss lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container">
-    <SectionHead kicker={head.kicker} title={head.title} highlight={head.highlight} lead={head.lead} />
+    <SectionHead id="{id}-titolo" kicker={head.kicker} title={head.title} highlight={head.highlight} lead={head.lead} />
     {#if layout === 'rows'}
       <ol class="rw">
         {#each items as it, k (it.title)}

@@ -6,13 +6,19 @@
  *
  *   node scripts/seo-audit.mjs http://127.0.0.1:5300            tabella in Markdown
  *   node scripts/seo-audit.mjs http://127.0.0.1:5300 --json     dati grezzi
+ *   node scripts/seo-audit.mjs --from dati.json [--compact]      rilegge dati grezzi salvati (per confrontare prima e dopo)
  *
  * Le pagine sono quelle della mappa del sito del server interrogato (con l'indirizzo di
  * produzione riscritto su quello locale) piu' `/_non-esiste` per controllare la pagina di errore.
  */
 
-const base = (process.argv[2] ?? 'http://127.0.0.1:5300').replace(/\/$/, '');
-const asJson = process.argv.includes('--json');
+import { readFileSync } from 'node:fs';
+
+const args = process.argv.slice(2);
+const base = (args.find((a) => a.startsWith('http')) ?? 'http://127.0.0.1:5300').replace(/\/$/, '');
+const asJson = args.includes('--json');
+const compact = args.includes('--compact');
+const fromFile = args.includes('--from') ? args[args.indexOf('--from') + 1] : null;
 
 const TITLE = { min: 30, max: 60 };
 const DESCRIPTION = { min: 70, max: 160 };
@@ -36,7 +42,7 @@ function flatten(json) {
 function inspect(html) {
   const head = html.slice(html.indexOf('<head'), html.indexOf('</head>'));
   const body = html.slice(html.indexOf('</head>'));
-  const ld = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  const ld = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
   let valid = true;
   const nodes = [];
   for (const raw of ld) {
@@ -77,6 +83,15 @@ function inspect(html) {
     problems,
     htmlBytes: Buffer.byteLength(html),
     mainCount: (body.match(/<main\b/g) ?? []).length,
+    // Immagini senza attributo alt (alt="" e' lecito: immagine decorativa) e link con testo che non dice dove portano.
+    imgNoAlt: [...body.matchAll(/<img\b[^>]*>/g)].filter((m) => !/\balt=/.test(m[0])).length,
+    genericLinks: [...body.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/g)].filter((m) => /^\s*(clicca qui|qui|click here|leggi( di più)?|scopri( di più)?|vai)\s*$/i.test(m[1].replace(/<[^>]+>/g, ''))).length,
+    sections: (body.match(/<section\b/g) ?? []).length,
+    sectionsNamed: (body.match(/<section\b[^>]*\baria-(labelledby|label)=/g) ?? []).length,
+    nav: (body.match(/<nav\b/g) ?? []).length,
+    navNamed: (body.match(/<nav\b[^>]*\baria-label=/g) ?? []).length,
+    htmlLang: /<html[^>]*\blang="it"/.test(html),
+    ssrTextBytes: Buffer.byteLength(body.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<[^>]+>/g, ' ').replace(/\s+/g, ' ')),
   };
 }
 
@@ -85,7 +100,7 @@ async function get(path) {
   return { status: res.status, html: await res.text() };
 }
 
-async function main() {
+async function collect() {
   const sitemap = (await get('/sitemap.xml')).html;
   const paths = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
   const rows = [];
@@ -93,6 +108,11 @@ async function main() {
     const { status, html } = await get(path);
     rows.push({ path, status, ...inspect(html) });
   }
+  return rows;
+}
+
+async function main() {
+  const rows = fromFile ? JSON.parse(readFileSync(fromFile, 'utf8')).rows : await collect();
   const dupes = (key) => {
     const seen = new Map();
     for (const r of rows.filter((r) => r.status === 200)) {
@@ -125,11 +145,20 @@ async function main() {
   };
 
   const out = [];
-  out.push('| Pagina | Title (car.) | Description (car.) | Canonical | og:image | H1 | JSON-LD (tipi) | kB LD | Note |');
-  out.push('|---|---|---|---|---|---|---|---|---|');
+  if (compact) {
+    out.push('| Pagina | Title (caratteri) | Descr. (car.) | og:image | H1 | JSON-LD (tipi) | kB | Note |');
+    out.push('|---|---|---|---|---|---|---|---|');
+  } else {
+    out.push('| Pagina | Title (car.) | Description (car.) | Canonical | og:image | H1 | JSON-LD (tipi) | kB LD | Note |');
+    out.push('|---|---|---|---|---|---|---|---|---|');
+  }
   for (const r of rows) {
     const note = r.status !== 200 ? `HTTP ${r.status}${r.robots.length ? ', ' + r.robots[0] : ''}` : flag(r).join('; ');
     const cell = (s) => String(s).replace(/\|/g, '\\|');
+    if (compact) {
+      out.push(`| ${r.path} | ${cell(r.title)} (${r.title.length}) | ${(r.description[0] ?? '').length} | ${r.ogImage[0]?.replace(/^https?:\/\/[^/]+/, '') || '-'} | ${r.h1.length} | ${r.jsonLdTypes.join(', ') || '-'} | ${(r.jsonLdBytes / 1024).toFixed(1)} | ${note || 'ok'} |`);
+      continue;
+    }
     out.push(
       `| ${r.path} | ${cell(r.title)} (${r.title.length}) | ${cell(r.description[0] ?? '-')} (${(r.description[0] ?? '').length}) | ${r.canonical[0]?.replace(/^https?:\/\/[^/]+/, '') || '-'} | ${r.ogImage[0]?.replace(/^https?:\/\/[^/]+/, '') || '-'} | ${r.h1.length}: ${cell(r.h1[0] ?? '-').slice(0, 60)} | ${r.jsonLdTypes.join(', ') || '-'} | ${(r.jsonLdBytes / 1024).toFixed(1)} | ${note || 'ok'} |`
     );
@@ -139,6 +168,8 @@ async function main() {
   console.log('Description duplicate:', JSON.stringify(summary.descriptionDupes));
   console.log('og:image uguale su piu\' pagine:', JSON.stringify(summary.ogImageDupes));
   const totals = rows.filter((r) => r.status === 200);
+  const sum = (key) => totals.reduce((n, r) => n + r[key], 0);
+  console.log(`Struttura: <main> per pagina ${[...new Set(totals.map((r) => r.mainCount))]}; lang="it" su ${totals.filter((r) => r.htmlLang).length}/${totals.length}; immagini senza alt ${sum('imgNoAlt')}; link generici ${sum('genericLinks')}; <nav> con nome ${sum('navNamed')}/${sum('nav')}; <section> con nome ${sum('sectionsNamed')}/${sum('sections')}; testo nel HTML iniziale: min ${Math.min(...totals.map((r) => r.ssrTextBytes))} byte`);
   console.log(`HTML medio: ${(totals.reduce((s, r) => s + r.htmlBytes, 0) / totals.length / 1024).toFixed(1)} kB; JSON-LD medio: ${(totals.reduce((s, r) => s + r.jsonLdBytes, 0) / totals.length / 1024).toFixed(1)} kB; massimo JSON-LD: ${(Math.max(...totals.map((r) => r.jsonLdBytes)) / 1024).toFixed(1)} kB`);
 }
 

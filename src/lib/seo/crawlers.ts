@@ -20,11 +20,20 @@ export const SEARCH_CRAWLERS = [
   'DuckDuckBot',
   'Baiduspider',
   'YandexBot',
-  'Applebot',
+  'Applebot'
 ] as const;
 
 /** Chi costruisce l'anteprima di un link condiviso (social e messaggi). */
-export const PREVIEW_CRAWLERS = ['facebookexternalhit', 'Facebot', 'Twitterbot', 'LinkedInBot', 'WhatsApp', 'TelegramBot', 'Slackbot', 'Discordbot'] as const;
+export const PREVIEW_CRAWLERS = [
+  'facebookexternalhit',
+  'Facebot',
+  'Twitterbot',
+  'LinkedInBot',
+  'WhatsApp',
+  'TelegramBot',
+  'Slackbot',
+  'Discordbot'
+] as const;
 
 /** Assistenti e motori di risposta AI: addestramento, ricerca e lettura di una pagina richiesta da una persona. */
 export const AI_CRAWLERS = [
@@ -46,7 +55,7 @@ export const AI_CRAWLERS = [
   'Meta-ExternalAgent',
   'Meta-ExternalFetcher',
   'DuckAssistBot',
-  'YouBot',
+  'YouBot'
 ] as const;
 
 /** Copiatori di siti e analizzatori SEO di terzi: fuori. */
@@ -74,7 +83,7 @@ export const BLOCKED_CRAWLERS = [
   'magpie-crawler',
   'Bytespider',
   'PetalBot',
-  'ia_archiver',
+  'ia_archiver'
 ] as const;
 
 export const ALLOWED_CRAWLERS = [...SEARCH_CRAWLERS, ...PREVIEW_CRAWLERS, ...AI_CRAWLERS] as const;
@@ -90,15 +99,18 @@ export function isBlockedUserAgent(userAgent: string): boolean {
 
 /** Il testo di `/robots.txt`. */
 export function robotsTxt(): string {
-  const group = (agents: readonly string[], rules: string[]) => [...agents.map((a) => `User-agent: ${a}`), ...rules].join('\n');
+  const group = (agents: readonly string[], rules: string[]) =>
+    [...agents.map((a) => `User-agent: ${a}`), ...rules].join('\n');
   const open = ['Allow: /', ...PRIVATE_PATHS.map((p) => `Disallow: ${p}`)];
   return [
-    '# Righello: il sito si lascia leggere a motori di ricerca, assistenti AI e anteprime dei social.',
-    '# L\'elenco vive in src/lib/seo/crawlers.ts (lo legge anche il server per rispondere 403 ai bot bloccati).',
+    [
+      '# Righello: il sito si lascia leggere a motori di ricerca, assistenti AI e anteprime dei social.',
+      "# L'elenco vive in src/lib/seo/crawlers.ts (lo legge anche il server per rispondere 403 ai bot bloccati)."
+    ].join('\n'),
     group(ALLOWED_CRAWLERS, open),
     group(BLOCKED_CRAWLERS, ['Disallow: /']),
     group(['*'], open),
     `Sitemap: ${SITE_URL}/sitemap.xml`,
-    '',
+    ''
   ].join('\n\n');
 }

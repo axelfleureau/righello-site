@@ -26,7 +26,7 @@
   ];
 </script>
 
-<section class="lh" class:lh--bc={landing.variant === 'broadcast'}>
+<section class="lh" class:lh--bc={landing.variant === 'broadcast'} aria-labelledby="titolo-pagina">
   <div class="lh__glow" aria-hidden="true"></div>
   <div class="lp-grid-bg" aria-hidden="true"></div>
   <div class="lp-rings lh__rings" aria-hidden="true"></div>
@@ -43,7 +43,7 @@
           <span>{study.name}</span>
           <span class="lh__kind">{kindLabels[study.kind]}</span>
         </p>
-        <h1 class="lh__title"><span class="sr-only">{study.name}: </span>{landing.tagline ?? study.headline}</h1>
+        <h1 class="lh__title" id="titolo-pagina"><span class="sr-only">{study.name}: </span>{landing.tagline ?? study.headline}</h1>
         <div><StatusBadge status={study.status} /></div>
         {#if landing.tagline}<p class="lh__lead">{study.headline}</p>{/if}
         <div class="lh__cta">

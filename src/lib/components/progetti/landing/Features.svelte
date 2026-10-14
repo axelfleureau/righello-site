@@ -19,9 +19,9 @@
   $: grid = placeGrid(features, isWide);
 </script>
 
-<section id="funzioni" class="ft lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section id="funzioni" aria-labelledby="funzioni-titolo" class="ft lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container">
-    <SectionHead kicker="Funzioni" {title} {highlight} />
+    <SectionHead id="funzioni-titolo" kicker="Funzioni" {title} {highlight} />
     <ul class="ft__grid lp-bento" data-cols={grid.cols}>
       {#each grid.items as { item: f, i, sd, sm, st, od, om, ot }, k (i)}
         {@const wide = isWide(f)}

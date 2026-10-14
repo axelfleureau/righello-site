@@ -7,7 +7,7 @@
   const pad = (n: number) => String(n + 1).padStart(2, '0');
 </script>
 
-<section class="sh">
+<section class="sh" aria-labelledby="titolo-pagina">
   <div class="sh__glow" aria-hidden="true"></div>
   <div class="lp-grid-bg" aria-hidden="true"></div>
   <div class="lp-rings sh__rings" aria-hidden="true"></div>
@@ -20,7 +20,7 @@
     <div class="sh__grid">
       <div class="sh__copy">
         <p class="lp-kicker">{m.kicker}</p>
-        <h1 class="sh__title">{m.title}{#if m.highlight}<br /><span class="lp-hl">{m.highlight}</span>{/if}</h1>
+        <h1 class="sh__title" id="titolo-pagina">{m.title}{#if m.highlight}<br /><span class="lp-hl">{m.highlight}</span>{/if}</h1>
         <p class="sh__lead">{m.lead}</p>
         <div class="sh__cta">
           <ProButton variant="solid" arrow="right" size="lg" href={m.primary.href}>{m.primary.label}</ProButton>

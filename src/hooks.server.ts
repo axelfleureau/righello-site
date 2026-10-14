@@ -1,16 +1,31 @@
 import type { Handle } from '@sveltejs/kit';
 import { isBlockedUserAgent } from '$lib/seo/crawlers';
-import { dropOverriddenDefaults } from '$lib/seo/head';
+import { dropOverriddenDefaults, LD_ATTR, readHeadMeta } from '$lib/seo/head';
+import { jsonLdFor } from '$lib/seo/schema';
 
-/** Una sola etichetta per chiave nel <head>: vince quella della pagina (vedi `$lib/seo/head`). */
-function dedupeHead(html: string): string {
+/**
+ * Il <head> che parte dal server:
+ *  - una sola etichetta per chiave: vince quella della pagina (vedi `$lib/seo/head`);
+ *  - i dati strutturati delle pagine pubbliche (vedi `$lib/seo/schema`), costruiti dal titolo e dalla
+ *    descrizione che la pagina ha appena dichiarato. Stanno nel HTML iniziale e non pesano sul codice del browser.
+ */
+function transformHead(html: string, path: string): string {
   const start = html.indexOf('<head');
   const end = html.indexOf('</head>');
   if (start === -1 || end === -1) return html;
-  return html.slice(0, start) + dropOverriddenDefaults(html.slice(start, end)) + html.slice(end);
+  let head = dropOverriddenDefaults(html.slice(start, end));
+  const meta = readHeadMeta(head);
+  const ld = meta.title && meta.description ? jsonLdFor(path, { title: meta.title, description: meta.description, image: meta.image }) : null;
+  if (ld) head += `<script type="application/ld+json" ${LD_ATTR}>${ld}</script>`;
+  return html.slice(0, start) + head + html.slice(end);
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
+  // Il nome `dedupeHead` e la riga `resolve` qui sotto restano come sono: li cerca la patch del ponte
+  // Cloudflare (righello-bridge/bridge-patch.diff), che altrimenti non si applica piu'.
+  const path = event.url.pathname.replace(/\/$/, '') || '/';
+  const dedupeHead = (html: string) => transformHead(html, path);
+
   // Chi e' bloccato (copiatori di siti, analizzatori SEO di terzi) lo decide `$lib/seo/crawlers`,
   // la stessa lista che `/robots.txt` dichiara: i motori di ricerca e gli assistenti AI passano.
   if (isBlockedUserAgent(event.request.headers.get('user-agent') || '')) {

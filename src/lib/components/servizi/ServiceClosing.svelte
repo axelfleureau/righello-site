@@ -9,12 +9,12 @@
   export let tone = 0;
 </script>
 
-<section id="chiusura" class="sc lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section id="chiusura" aria-labelledby="chiusura-titolo" class="sc lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container">
     <div class="sc__card lp-reveal" use:reveal>
       <div class="sc__glow" aria-hidden="true"></div>
       <div class="lp-rings sc__rings" aria-hidden="true"></div>
-      <SectionHead align="center" kicker={c.kicker} title={c.title} highlight={c.highlight} lead={c.text} />
+      <SectionHead id="chiusura-titolo" align="center" kicker={c.kicker} title={c.title} highlight={c.highlight} lead={c.text} />
       <ProButton variant="solid" arrow="right" size="lg" href={c.button.href}>{c.button.label}</ProButton>
       <p class="sc__mail">Oppure scrivici a <a href={mailHref()}>{CONTACT.email}</a></p>
     </div>

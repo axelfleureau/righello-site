@@ -10,8 +10,8 @@
   import { afterNavigate } from '$app/navigation';
   import { page } from '$app/stores';
   import { pauseOffscreenAnimations } from '$lib/utils/pauseOffscreenAnimations';
-  import { COMPANY, OG_IMAGE, SITE_URL, sameAs } from '$lib/data/site';
-  import { DEFAULT_ATTR, overriddenKeys } from '$lib/seo/head';
+  import { COMPANY, OG_IMAGE, SITE_URL } from '$lib/data/site';
+  import { DEFAULT_ATTR, LD_ATTR, overriddenKeys } from '$lib/seo/head';
   import type { LayoutData } from './$types';
 
   export let data: LayoutData;
@@ -48,7 +48,10 @@
   function syncOverrides() {
     overridden = overriddenKeys(document.head);
   }
-  afterNavigate(async () => {
+  afterNavigate(async ({ type }) => {
+    // I dati strutturati arrivano col HTML della prima pagina (li aggiunge il server). Cambiando pagina senza
+    // ricaricare resterebbero quelli della pagina di prima: meglio nessuno che quelli sbagliati.
+    if (type !== 'enter') document.querySelectorAll(`script[${LD_ATTR}]`).forEach((el) => el.remove());
     await tick();
     syncOverrides();
   });
@@ -85,60 +88,13 @@
   ].filter((d) => !overridden.has(d.key));
 
   $: showChrome = !$page.url.pathname.startsWith('/busadelsauc');
-
-  const address = {
-    '@type': 'PostalAddress',
-    streetAddress: COMPANY.street,
-    addressLocality: COMPANY.city,
-    addressRegion: COMPANY.region,
-    postalCode: COMPANY.postalCode,
-    addressCountry: 'IT',
-  };
-
-  const jsonLd = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Organization',
-        '@id': `${SITE_URL}/#organization`,
-        name: COMPANY.name,
-        legalName: COMPANY.legalName,
-        url: SITE_URL,
-        logo: `${SITE_URL}/logo-full.png`,
-        description: 'Studio digitale operativo tra Pordenone e Mestre, specializzato in siti web, software, advertising, contenuti foto/video e automazioni per aziende, hospitality, eventi e PMI in Friuli-Venezia Giulia e Veneto.',
-        email: COMPANY.email,
-        address,
-        sameAs,
-        vatID: `IT${COMPANY.vat}`,
-        foundingDate: COMPANY.founded,
-        numberOfEmployees: { '@type': 'QuantitativeValue', value: 4 },
-      },
-      {
-        '@type': 'LocalBusiness',
-        '@id': `${SITE_URL}/#localbusiness`,
-        name: COMPANY.legalName,
-        url: SITE_URL,
-        email: COMPANY.email,
-        address,
-        areaServed: ['Pordenone', 'Venezia', 'Mestre', 'Treviso', 'Udine', 'Friuli-Venezia Giulia', 'Veneto', 'Italia'],
-        priceRange: '€€€',
-        description: 'Studio digitale per siti web, software, advertising, contenuti foto/video e automazioni. Operiamo tra Pordenone, Mestre, Friuli-Venezia Giulia, Veneto e Nord Italia.',
-      },
-      {
-        '@type': 'WebSite',
-        '@id': `${SITE_URL}/#website`,
-        url: SITE_URL,
-        name: COMPANY.name,
-        publisher: { '@id': `${SITE_URL}/#organization` },
-        inLanguage: 'it-IT',
-      },
-    ],
-  });
 </script>
 
 <svelte:head>
   <meta name="theme-color" content={THEME_COLOR[$theme]} />
   <meta property="og:site_name" content={COMPANY.name} />
+  <!-- Il testo piano del sito per chi legge con un assistente AI -->
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="Righello in testo piano (llms.txt)" />
   {#each seoDefaults as d (d.key)}
     {#if d.tag === 'link'}
       <link {...d.attrs} {...{ [DEFAULT_ATTR]: '' }} />
@@ -146,7 +102,6 @@
       <meta {...d.attrs} {...{ [DEFAULT_ATTR]: '' }} />
     {/if}
   {/each}
-  {@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
 <div data-theme={$theme}>

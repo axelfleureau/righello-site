@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { CONTACT } from '$lib/data/contact';
+  import SeoHead from '$lib/components/SeoHead.svelte';
+  import { mestreFaqs } from '$lib/data/faqs/mestre';
   import ServicePage from '$lib/components/servizi/ServicePage.svelte';
   import { agencyModel } from '$lib/components/servizi/models';
 
@@ -94,162 +95,6 @@
     { href: '/contatti', label: 'Audit gratuito' },
   ];
 
-  const faqs = [
-    {
-      question: 'Righello è una agenzia marketing di Mestre?',
-      answer: 'Righello ha sede indicata a Mestre e lavora con aziende a Mestre, Venezia e Veneto su marketing, advertising, siti web, software e automazioni. Il team unisce strategia, contenuti, campagne e tecnologia in un processo unico.',
-    },
-    {
-      question: 'Lavorate anche con aziende fuori da Mestre?',
-      answer: 'Si. Gestiamo progetti per aziende a Venezia, in Veneto e nel Nord Italia, con incontri da remoto e sessioni operative sul territorio quando servono contenuti, shooting o workshop.',
-    },
-    {
-      question: 'Che cosa include un progetto di marketing locale?',
-      answer: 'Di solito partiamo da audit, posizionamento, tracking e piano di crescita. Poi costruiamo contenuti, campagne, sito o landing page e reportistica: il marketing locale deve farsi trovare, ma soprattutto scegliere.',
-    },
-    {
-      question: 'Quanto costa una agenzia marketing a Mestre?',
-      answer: 'Dipende da obiettivi, canali e lavoro necessario. Per questo partiamo da una consulenza gratuita: prima capiamo dove il budget puo\' produrre impatto, poi proponiamo un piano con priorita\', tempi e costi chiari.',
-    },
-    {
-      question: 'Righello segue anche Google Ads e Meta Ads?',
-      answer: 'Si. Gestiamo campagne Google Ads, Meta Ads e TikTok Ads con tracking, landing page, creativita\' e lettura dei dati. L\'obiettivo non e\' spendere di piu\', ma capire quali campagne generano richieste utili.',
-    },
-    {
-      question: 'Potete migliorare il posizionamento locale su Google?',
-      answer: 'Possiamo lavorare su struttura del sito, contenuti, SEO tecnica, pagine locali, Google Business Profile e segnali di fiducia. Nessuno puo\' garantire una posizione precisa, ma si puo\' rendere la presenza molto piu\' forte e coerente.',
-    },
-    {
-      question: 'Meglio una agenzia o un consulente freelance?',
-      answer: 'Dipende dal progetto. Se ti serve solo una singola competenza, un freelance puo\' bastare. Se vuoi collegare strategia, sito, contenuti, campagne, tracking e automazioni, un team integrato riduce passaggi e dispersione.',
-    },
-  ];
-
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'WebPage',
-        '@id': 'https://www.wearerighello.com/agenzia-marketing-mestre#webpage',
-        url: 'https://www.wearerighello.com/agenzia-marketing-mestre',
-        name: 'Agenzia di marketing a Mestre',
-        description: 'Pagina locale Righello per aziende che cercano agenzia marketing, agenzia di comunicazione, web agency, social media marketing, advertising e SEO a Mestre e Venezia.',
-        inLanguage: 'it-IT',
-        isPartOf: {
-          '@type': 'WebSite',
-          '@id': 'https://www.wearerighello.com/#website',
-          name: 'Righello',
-          url: 'https://www.wearerighello.com',
-        },
-        about: [
-          'agenzia marketing Mestre',
-          'agenzia di marketing a Mestre',
-          'agenzia comunicazione Mestre',
-          'agenzia di comunicazione a Mestre',
-          'web agency Mestre',
-          'social media marketing Mestre',
-          'Google Ads Mestre',
-          'SEO locale Mestre',
-        ],
-        mainEntity: {
-          '@id': 'https://www.wearerighello.com/agenzia-marketing-mestre#service',
-        },
-      },
-      {
-        '@type': 'ProfessionalService',
-        '@id': 'https://www.wearerighello.com/agenzia-marketing-mestre#service',
-        name: 'Agenzia di marketing e comunicazione a Mestre',
-        alternateName: [
-          'Agenzia marketing Mestre',
-          'Agenzia comunicazione Mestre',
-          'Web agency Mestre',
-          'Digital marketing agency Mestre',
-        ],
-        serviceType: 'Marketing digitale, comunicazione, advertising, sviluppo web, SEO locale e automazioni',
-        url: 'https://www.wearerighello.com/agenzia-marketing-mestre',
-        description: 'Servizi di marketing digitale, comunicazione, social media, advertising, sviluppo siti web, e-commerce, SEO locale e automazioni per aziende a Mestre, Venezia e Veneto.',
-        termsOfService: 'https://www.wearerighello.com/contatti',
-        image: 'https://www.wearerighello.com/og.png?v=3',
-        slogan: 'Strategia, contenuti, campagne e sviluppo digitale per aziende a Mestre.',
-        audience: {
-          '@type': 'BusinessAudience',
-          audienceType: 'PMI, professionisti, hospitality, retail, sport, B2B e servizi locali',
-        },
-        provider: {
-          '@type': 'ProfessionalService',
-          '@id': 'https://www.wearerighello.com/#localbusiness',
-          name: 'Righello S.r.l.',
-          url: 'https://www.wearerighello.com',
-          email: CONTACT.email,
-          image: 'https://www.wearerighello.com/og.png',
-          priceRange: '€€€',
-          address: {
-            '@type': 'PostalAddress',
-            streetAddress: 'Via Pio X 21',
-            addressLocality: 'Mestre',
-            addressRegion: 'Veneto',
-            postalCode: '30174',
-            addressCountry: 'IT',
-          },
-          sameAs: [
-            'https://www.instagram.com/wearerighello',
-            'https://www.linkedin.com/company/righello',
-            'https://www.tiktok.com/@wearerighello',
-          ],
-        },
-        areaServed: [
-          { '@type': 'City', name: 'Mestre' },
-          { '@type': 'City', name: 'Venezia' },
-          { '@type': 'City', name: 'Marghera' },
-          { '@type': 'City', name: 'Treviso' },
-          { '@type': 'AdministrativeArea', name: 'Veneto' },
-        ],
-        hasOfferCatalog: {
-          '@type': 'OfferCatalog',
-          name: 'Servizi marketing, comunicazione e sviluppo per aziende a Mestre',
-          itemListElement: services.map((service) => ({
-            '@type': 'Offer',
-            itemOffered: {
-              '@type': 'Service',
-              name: service.title,
-              description: service.description,
-            },
-          })),
-        },
-      },
-      {
-        '@type': 'FAQPage',
-        '@id': 'https://www.wearerighello.com/agenzia-marketing-mestre#faq',
-        mainEntity: faqs.map((faq) => ({
-          '@type': 'Question',
-          name: faq.question,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: faq.answer,
-          },
-        })),
-      },
-      {
-        '@type': 'BreadcrumbList',
-        '@id': 'https://www.wearerighello.com/agenzia-marketing-mestre#breadcrumb',
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Home',
-            item: 'https://www.wearerighello.com/',
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: 'Agenzia marketing Mestre',
-            item: 'https://www.wearerighello.com/agenzia-marketing-mestre',
-          },
-        ],
-      },
-    ],
-  };
-
   const m = agencyModel({
     city: 'Mestre',
     kicker: 'Mestre, Venezia e Veneto',
@@ -290,7 +135,7 @@
       signals: localSeoSignals,
       links: internalLinks,
     },
-    faq: faqs.map((f) => ({ q: f.question, a: f.answer })),
+    faq: mestreFaqs.map((f) => ({ q: f.question, a: f.answer })),
     closing: {
       kicker: 'Audit gratuito',
       title: 'Vuoi essere trovato a Mestre e ricordato dopo il primo clic?',
@@ -301,30 +146,10 @@
   });
 </script>
 
-<svelte:head>
-  <title>Agenzia di Marketing a Mestre | SEO, Ads, Social | Righello</title>
-  <meta
-    name="description"
-    content="Agenzia di marketing e comunicazione a Mestre: SEO locale, Google Ads, Meta Ads, social media, siti web e automazioni per aziende a Venezia e Veneto."
-  />
-  <link rel="canonical" href="https://www.wearerighello.com/agenzia-marketing-mestre" />
-  <meta property="og:title" content="Agenzia di Marketing a Mestre | SEO, Ads, Social | Righello" />
-  <meta
-    property="og:description"
-    content="Marketing e comunicazione a Mestre: SEO locale, Google Ads, Meta Ads, social media, siti web e automazioni per aziende a Venezia e Veneto."
-  />
-  <meta property="og:image" content="https://www.wearerighello.com/og.png?v=3" />
-  <meta property="og:url" content="https://www.wearerighello.com/agenzia-marketing-mestre" />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="it_IT" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Agenzia di Marketing a Mestre | SEO, Ads, Social | Righello" />
-  <meta
-    name="twitter:description"
-    content="Strategia, contenuti, campagne, siti web, SEO locale e automazioni per aziende a Mestre e Venezia."
-  />
-  <meta name="twitter:image" content="https://www.wearerighello.com/og.png?v=3" />
-  {@html `<script type="application/ld+json">${JSON.stringify(structuredData)}</script>`}
-</svelte:head>
+<SeoHead
+  path="/agenzia-marketing-mestre"
+  title="Agenzia di Marketing a Mestre | SEO, Ads, Social | Righello"
+  description="Agenzia di marketing e comunicazione a Mestre: SEO locale, Google Ads, Meta Ads, social media, siti web e automazioni per aziende a Venezia e Veneto."
+/>
 
 <ServicePage {m} />

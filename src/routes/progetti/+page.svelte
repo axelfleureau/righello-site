@@ -5,6 +5,7 @@
   import { clients } from '$lib/data/projects';
   import { caseStudies, caseStudyHref, kindChoice, kindOrder, showcaseStudies } from '$lib/data/case-studies';
   import type { CaseStudy, ProjectKind } from '$lib/data/case-studies';
+  import SeoHead from '$lib/components/SeoHead.svelte';
   import LogoCarousel from '$lib/components/LogoCarousel.svelte';
   import ProgettiHero from '$lib/components/progetti/ProgettiHero.svelte';
   import ProductShowcase from '$lib/components/progetti/ProductShowcase.svelte';
@@ -60,67 +61,13 @@
     'Finestre Art',
   ];
   const clientLogos = clients.filter((c) => c.logo).filter((c) => selectedClientNames.includes(c.name));
-
-  const schema = JSON.stringify([
-    {
-      '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      name: 'Progetti Righello: app, gestionali, regia delle partite e siti',
-      description:
-        'App per iPhone e iPad, gestionali, la regia che produce le partite, piattaforme web e siti su misura realizzati da Righello S.r.l.',
-      url: 'https://www.wearerighello.com/progetti',
-      inLanguage: 'it-IT',
-      publisher: {
-        '@type': 'Organization',
-        name: 'Righello S.r.l.',
-        url: 'https://www.wearerighello.com',
-        logo: 'https://www.wearerighello.com/logo-icon.png',
-      },
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      name: 'Prodotti e progetti Righello',
-      itemListElement: caseStudies.map((study, index) => ({
-        '@type': 'ListItem',
-        position: index + 1,
-        name: study.name,
-        url: `https://www.wearerighello.com${caseStudyHref(study)}`,
-      })),
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.wearerighello.com' },
-        { '@type': 'ListItem', position: 2, name: 'Progetti', item: 'https://www.wearerighello.com/progetti' },
-      ],
-    },
-  ]);
-
-  const schemaMarkup = `<script type="application/ld+json">${schema.replace(/</g, '\\u003c')}<\/script>`;
 </script>
 
-<svelte:head>
-  <title>Progetti | App, gestionali, regia delle partite e siti | Righello</title>
-  <meta
-    name="description"
-    content="I prodotti costruiti da Righello: app per iPhone e iPad come BUFFR, gestionali come Tetha e Óptima, la regia che produce le partite, piattaforme web e siti su misura. Con lo stato reale di ognuno."
-  />
-  <link rel="canonical" href="https://www.wearerighello.com/progetti" />
-  <meta property="og:title" content="Progetti | Righello: costruiamo prodotti, non presentazioni" />
-  <meta
-    property="og:description"
-    content="App negli store, gestionali in uso ogni giorno, la regia delle partite e i siti dei nostri clienti. Tutto quello che abbiamo costruito."
-  />
-  <meta property="og:url" content="https://www.wearerighello.com/progetti" />
-  <meta name="twitter:title" content="Progetti | Righello" />
-  <meta
-    name="twitter:description"
-    content="App negli store, gestionali, regia delle partite e siti su misura costruiti da Righello."
-  />
-  {@html schemaMarkup}
-</svelte:head>
+<SeoHead
+  path="/progetti"
+  title="Progetti: app, gestionali, regia delle partite e siti"
+  description="I prodotti costruiti da Righello: app come BUFFR, gestionali come Tetha e Óptima, regia delle partite, piattaforme web e siti, con lo stato vero di ognuno."
+/>
 
 <ProgettiHero {dock} {kinds} {stage} on:pick={pick} on:kind={pickKind} />
 

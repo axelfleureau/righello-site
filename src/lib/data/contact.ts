@@ -6,6 +6,13 @@ import { env } from '$env/dynamic/public';
 import { COMPANY, PRIVACY_URL } from './site';
 import { getCaseStudyBySlug, type CaseStudy, type ProjectKind } from './case-studies';
 
+/** Giorni e ore in cui si risponde (la riga `CONTACT.hours` si ricava da qui; i dati strutturati la leggono cosi'). */
+export const CONTACT_HOURS = {
+  days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+  opens: '09:00',
+  closes: '18:00',
+} as const;
+
 export const CONTACT = {
   email: COMPANY.email,
   /** Numero WhatsApp in formato internazionale senza il "+" (e' quello gia' pubblico sul sito). */
@@ -19,7 +26,7 @@ export const CONTACT = {
   schedulingUrl: (env.PUBLIC_SCHEDULING_URL || null) as string | null,
   /** Tempi di risposta e orari gia' dichiarati sul sito. */
   reply: 'entro 72 ore lavorative',
-  hours: 'Lun - Ven: 9:00 - 18:00',
+  hours: `Lun - Ven: ${CONTACT_HOURS.opens.replace(/^0/, '')} - ${CONTACT_HOURS.closes}`,
   legalSeat: COMPANY.legalSeat,
   office: COMPANY.operationsBase,
   street: `${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city} (VE)`,

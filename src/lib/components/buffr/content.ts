@@ -5,7 +5,6 @@ const entry = caseStudies.find((study) => study.id === 'buffr');
 /** Indirizzo App Store: una sola sorgente, quella della vetrina Progetti. */
 export const storeUrl = entry?.storeUrl ?? 'https://apps.apple.com/it/app/buffr/id6769990725';
 export const storeUrlUs = storeUrl.replace('/it/app/', '/us/app/');
-export const pageUrl = 'https://www.wearerighello.com/buffr';
 
 export interface SceneCopy {
   id: string;

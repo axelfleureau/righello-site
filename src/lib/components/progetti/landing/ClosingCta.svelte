@@ -18,13 +18,13 @@
   $: text = cta?.text ?? 'Raccontaci che cosa ti serve: ti rispondiamo noi, senza giri.';
 </script>
 
-<section id="chiusura" class="cc lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section id="chiusura" aria-labelledby="chiusura-titolo" class="cc lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="section-container">
     <div class="cc__card lp-reveal" use:reveal>
       <div class="cc__glow" aria-hidden="true"></div>
       <div class="lp-rings cc__rings" aria-hidden="true"></div>
       <div class="cc__icon"><ProjectIcon {study} size={72} /></div>
-      <SectionHead align="center" kicker={study.name} {title} highlight={cta?.highlight} lead={text} />
+      <SectionHead id="chiusura-titolo" align="center" kicker={study.name} {title} highlight={cta?.highlight} lead={text} />
       <div class="cc__cta">
         {#if action}
           <ProButton variant="solid" arrow="up-right" external={action.external} size="lg" href={action.href}>{action.label}</ProButton>

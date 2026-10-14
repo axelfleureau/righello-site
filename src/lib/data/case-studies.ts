@@ -37,6 +37,10 @@ export interface CaseStudy {
   icon?: string;
   image: string;
   imagePosition?: string;
+  /** Titolo (30-60 caratteri) e descrizione (70-160) della scheda per i motori di ricerca e le anteprime: dicono lo stato vero, senza promesse. */
+  seo: { title: string; description: string };
+  /** Lavoro fatto per un cliente (marchio, sito, video), non un prodotto di Righello: nei dati strutturati non e' un'app. */
+  clientWork?: boolean;
   stage?: ProjectStage;
   featured?: boolean;
 }
@@ -114,6 +118,11 @@ export const caseStudies: CaseStudy[] = [
       screens: phonesBuffr,
     },
     featured: true,
+    seo: {
+      title: 'BUFFR: app per iPhone che salva gli ultimi secondi',
+      description:
+        'BUFFR è l’app per iPhone di Righello: la camera tiene gli ultimi secondi e un tocco li salva come clip. Poi monta il video della partita.',
+    },
   },
   {
     id: 'buffr-live',
@@ -138,6 +147,11 @@ export const caseStudies: CaseStudy[] = [
       alt: 'BUFFR Live: la pagina delle partite del giorno con i risultati in diretta',
     },
     featured: true,
+    seo: {
+      title: 'BUFFR Live: calcio dilettanti in diretta, Veneto e Friuli',
+      description:
+        'Risultati live, cronaca, formazioni, calendari e mappa dei campi per il calcio dilettantistico di Veneto e Friuli. Sito online, app iPhone in prova.',
+    },
   },
   {
     id: 'regia-tv-studio',
@@ -163,6 +177,11 @@ export const caseStudies: CaseStudy[] = [
       alt: 'Schema animato della produzione delle partite: riprese, squadre, eventi e sponsor entrano nel Motore TV Studio e escono come partita con le grafiche, replay e highlights, e programmi per Canale 77 e i televisori',
     },
     featured: true,
+    seo: {
+      title: 'Produzione delle partite: regia automatica per lo sport',
+      description:
+        'Il cronista segna gli eventi dal palmare e la produzione automatica monta la partita da televisione con grafiche e replay. Motore in uso interno.',
+    },
   },
   {
     id: 'ch77-plus',
@@ -189,6 +208,11 @@ export const caseStudies: CaseStudy[] = [
       alt: 'Schema animato dell\'attivazione di CH77+: la TV mostra codice e QR, il telefono apre la pagina di attivazione, si accede, la TV controlla ogni tre secondi e si sblocca, e compaiono le dirette in esclusiva',
     },
     featured: true,
+    seo: {
+      title: 'CH77+: dirette in esclusiva sulla TV, attivate dal telefono',
+      description:
+        'CH77+ mostra un codice e un QR sulla TV: dal telefono si accede e si attiva Premium, e la TV sblocca le dirette in esclusiva di Canale 77.',
+    },
   },
   {
     id: 'optima',
@@ -213,6 +237,11 @@ export const caseStudies: CaseStudy[] = [
       alt: 'Óptima: la pagina iniziale con l\'assistente che risponde dai dati dello studio',
     },
     featured: true,
+    seo: {
+      title: 'Óptima: gestionale con AI per agenzie e studi | Righello',
+      description:
+        'Óptima è il gestionale con intelligenza artificiale per agenzie e studi: clienti, task, revisioni, preventivi, ore e buoni. Sul web e su iPhone (in prova).',
+    },
   },
   {
     id: 'tetha',
@@ -237,6 +266,11 @@ export const caseStudies: CaseStudy[] = [
       alt: 'Tetha: la scadenza dei documenti di cantiere su telefono e su web',
     },
     featured: true,
+    seo: {
+      title: 'Tetha: software per scadenze e documenti del cantiere',
+      description:
+        'Tetha legge i documenti scansionati dal telefono, avvisa trenta giorni prima di ogni scadenza e prepara il dossier per imprese edili e subappaltatori.',
+    },
   },
   {
     id: 'gusto-raffinato',
@@ -261,6 +295,11 @@ export const caseStudies: CaseStudy[] = [
       alt: 'Gusto Raffinato: il sito e l\'app per i clienti dei locali',
     },
     featured: true,
+    seo: {
+      title: 'Gusto Raffinato: app per prenotare nei locali del FVG',
+      description:
+        'L’app per i clienti: catalogo dei locali del Friuli-Venezia Giulia, prenotazione dove il locale usa Gusto e tessere fedeltà anche in Wallet. In prova su iPhone.',
+    },
   },
   {
     id: 'gusto-raffinato-sala',
@@ -286,6 +325,11 @@ export const caseStudies: CaseStudy[] = [
       screens: ['/progetti/stage/gusto-sala-palmare-1.webp'],
     },
     featured: true,
+    seo: {
+      title: 'Gusto Raffinato Sala: gestionale per ristoranti su iPad',
+      description:
+        'Gestionale per chi ha un locale: sala in 3D con tavoli e conti, agenda della serata, comande dal telefono del cameriere. App iPad e iPhone in prova.',
+    },
   },
   {
     id: 'lumis',
@@ -310,6 +354,11 @@ export const caseStudies: CaseStudy[] = [
       alt: 'Lumis: la pagina iniziale della piattaforma per vendere le foto degli eventi',
     },
     featured: true,
+    seo: {
+      title: 'Lumis: gallery e vendita foto per fotografi di eventi',
+      description:
+        'La piattaforma per fotografi di eventi: gallery in album, anteprime con filigrana, pagamento con carta e download in alta risoluzione. Sito online.',
+    },
   },
   {
     id: 'rigcast',
@@ -328,6 +377,11 @@ export const caseStudies: CaseStudy[] = [
     icon: '/progetti/icons/rigcast.webp',
     image: '/progetti/icons/rigcast.webp',
     imagePosition: 'center center',
+    seo: {
+      title: 'Rig Cast: l’iPhone come camera di regia in RTMP e SRT',
+      description:
+        'Rig Cast manda il video dal telefono alla regia in RTMP, RTMPS o SRT, con ottiche, fuoco ed esposizione manuali. App per iPhone in prova.',
+    },
   },
   {
     id: 'canale77',
@@ -350,6 +404,11 @@ export const caseStudies: CaseStudy[] = [
       type: 'browser',
       src: '/progetti/stage/canale77.webp',
       alt: 'Canale 77 On Demand: la pagina iniziale con highlights, interviste e rubriche',
+    },
+    seo: {
+      title: 'Canale 77 On Demand: partite su sito, TV e HbbTV',
+      description:
+        'Il catalogo di Canale 77, CalcioFVG Live e CalcioVeneto Live: highlights, interviste e partite su sito, HbbTV, smart TV e Android TV. Sviluppato da Righello.',
     },
   },
   {
@@ -376,6 +435,11 @@ export const caseStudies: CaseStudy[] = [
       src: '/progetti/stage/dico.webp',
       alt: 'Schema animato di DICO: la redazione prepara il messaggio, lo approva, esce un solo messaggio a settimana con un link per tematica e ogni link apre la pagina dedicata di quella tematica',
     },
+    seo: {
+      title: 'DICO.ONLINE: messaggi dei Comuni su WhatsApp e Telegram',
+      description:
+        'DICO porta le comunicazioni dei Comuni su WhatsApp e Telegram: un solo messaggio per uscita, con i dettagli sul sito del Comune. Online.',
+    },
   },
   {
     id: 'assistenti-pa',
@@ -400,6 +464,11 @@ export const caseStudies: CaseStudy[] = [
       src: '/progetti/icons/assistenti-pa.webp',
       alt: 'Schema animato di un assistente del Comune: il cittadino chiede su WhatsApp, i dati personali vengono coperti, l\'assistente cerca nelle fonti del Comune e risponde indicando la fonte oppure dicendo che non lo sa',
     },
+    seo: {
+      title: 'Assistenti AI per i Comuni: risposte dalle pagine dell’ente',
+      description:
+        'Il bot WhatsApp di un Comune risponde con le pagine ufficiali dell’ente e, se l’informazione non c’è, lo dice. In sperimentazione in un Comune del FVG.',
+    },
   },
   {
     id: 'neura',
@@ -423,6 +492,12 @@ export const caseStudies: CaseStudy[] = [
       src: '/progetti/stage/neura.webp',
       alt: 'Neura: la pagina iniziale dell\'assistente di studio per ragazzi con difficoltà di apprendimento',
     },
+    seo: {
+      title: 'Neura Education: marchio, sito e video per una startup',
+      description:
+        'Per Neura Education, startup con un assistente di studio per ragazzi con difficoltà di apprendimento, Righello ha curato marchio, sito e video verticale.',
+    },
+    clientWork: true,
   },
   {
     id: 'portopiccolo-apartments',
@@ -445,6 +520,11 @@ export const caseStudies: CaseStudy[] = [
       type: 'browser',
       src: '/progetti/stage/portopiccolo-apartments.webp',
       alt: 'Portopiccolo Apartments: la pagina iniziale con la ricerca delle date',
+    },
+    seo: {
+      title: 'Portopiccolo Apartments: sito con prenotazione diretta',
+      description:
+        'Il sito di trentaquattro appartamenti nel borgo di Portopiccolo: calendario collegato al gestionale, prezzo “da” reale e prenotazione diretta. Online.',
     },
   },
   {
@@ -469,6 +549,11 @@ export const caseStudies: CaseStudy[] = [
       src: '/progetti/stage/bibione-sand-storm.webp',
       alt: 'Bibione Sand Storm: la pagina iniziale del campionato del mondo su sabbia',
     },
+    seo: {
+      title: 'Bibione Sand Storm: il sito dell’evento su sabbia',
+      description:
+        'Rifacimento completo del sito di Bibione Sand Storm, motocross e quad sulla sabbia: diciassette pagine, online dal 30 settembre 2026.',
+    },
   },
   {
     id: 'scuola-sci-piancavallo',
@@ -492,6 +577,11 @@ export const caseStudies: CaseStudy[] = [
       src: '/progetti/stage/scuola-sci-piancavallo.webp',
       alt: 'Scuola Sci Piancavallo: la pagina iniziale con i corsi e la prenotazione',
     },
+    seo: {
+      title: 'Scuola Sci Piancavallo: sito con corsi e prenotazione',
+      description:
+        'Un sito che segue la stagione: corsi di sci e snowboard d’inverno, camp e pista sintetica d’estate, con prezzi e prenotazione in un unico posto.',
+    },
   },
   {
     id: 'fiumedica',
@@ -514,6 +604,11 @@ export const caseStudies: CaseStudy[] = [
       src: '/progetti/stage/fiumedica.webp',
       alt: 'Fiumedica: la pagina iniziale del polo sanitario',
     },
+    seo: {
+      title: 'Fiumedica: sito del polo sanitario di Fiume Veneto',
+      description:
+        'Il sito di Fiumedica: ventisei aree mediche, diagnostica, sport e prelievi, con orari in vista e prenotazione e referti a un pulsante di distanza.',
+    },
   },
   {
     id: 'reguta',
@@ -532,6 +627,11 @@ export const caseStudies: CaseStudy[] = [
     href: 'https://www.instagram.com/reguta.1928/',
     logo: '/logos/reguta.png',
     image: '/thumbnails/thumb-f89791b0c4c7.jpg',
+    seo: {
+      title: 'Reguta 1928: contenuti social e gestionale di conformità',
+      description:
+        'Righello cura i contenuti social di Reguta 1928 e ha costruito il gestionale che raccoglie corsi, idoneità, mezzi e documenti e dice cosa scade.',
+    },
   },
   {
     id: 'elite-hotel-spa',
@@ -550,6 +650,11 @@ export const caseStudies: CaseStudy[] = [
     href: 'https://www.instagram.com/elitehotelandspa/',
     logo: '/logos/hotel-elite.png',
     image: '/thumbnails/thumb-ca926bab868e.jpg',
+    seo: {
+      title: 'Elite Hotel & Spa: foto e video per profilo e campagne',
+      description:
+        'Foto e video che raccontano camere, atmosfera e servizi dell’Elite Hotel & Spa, per il profilo Instagram dell’hotel e per le campagne.',
+    },
   },
   {
     id: 'riviera-resort',
@@ -568,6 +673,11 @@ export const caseStudies: CaseStudy[] = [
     href: 'https://www.instagram.com/rivieraresorthotel/',
     logo: '/logos/riviera-resort.png',
     image: '/thumbnails/thumb-8424e05df0ca.jpg',
+    seo: {
+      title: 'Riviera Resort: video aereo del resort a Lignano',
+      description:
+        'Riprese aeree del Riviera Resort di Lignano Sabbiadoro, dal mare alla terrazza, montate in un video Full HD di 36 secondi per sito e YouTube.',
+    },
   },
 ];
 

@@ -18,10 +18,11 @@
   };
 </script>
 
-<section id="come-funziona" class="hw lp-section" class:lp-tone-alt={tone % 2 === 1}>
+<section id="come-funziona" aria-labelledby="come-funziona-titolo" class="hw lp-section" class:lp-tone-alt={tone % 2 === 1}>
   <div class="lp-grid-bg" aria-hidden="true"></div>
   <div class="section-container">
     <SectionHead
+      id="come-funziona-titolo"
       align="center"
       kicker="Come funziona"
       title={how?.title ?? 'Guarda come funziona'}

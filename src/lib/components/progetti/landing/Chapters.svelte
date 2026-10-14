@@ -25,10 +25,10 @@
     {@const layout = layouts[i]}
     {@const media = c.media ?? []}
     {@const arr = media.length ? mediaArrangement(media) : 'single'}
-    <article class="ch ch--{layout} lp-section" class:lp-tone-alt={(tone + i) % 2 === 1} class:ch--bc={variant === 'broadcast'} id={c.id}>
+    <article class="ch ch--{layout} lp-section" class:lp-tone-alt={(tone + i) % 2 === 1} class:ch--bc={variant === 'broadcast'} id={c.id} aria-labelledby="{c.id}-titolo">
       <div class="section-container ch__grid">
         <div class="ch__copy">
-          <SectionHead kicker={c.kicker} title={c.title} highlight={c.highlight} align={layout === 'text' || layout === 'full' ? 'center' : 'left'} />
+          <SectionHead id="{c.id}-titolo" kicker={c.kicker} title={c.title} highlight={c.highlight} align={layout === 'text' || layout === 'full' ? 'center' : 'left'} />
           <p class="ch__text lp-reveal" use:reveal={80}>{c.text}</p>
           {#if c.bullets?.length}
             <ul class="ch__bullets" style="--nb:{bulletCols(c.bullets.length)}">
