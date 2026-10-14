@@ -90,6 +90,7 @@
   
   let ScrollTriggerModule: any = null;
   let resizeTimeout: ReturnType<typeof setTimeout>;
+  let heroVideoPauseTimer: ReturnType<typeof setTimeout>;
   
   // Wait only for critical layout assets (fonts) - NOT video
   // Video loading should not block scrollytelling functionality
@@ -181,10 +182,17 @@
     window.addEventListener('pointerdown', retryUnmute, { passive: true });
     window.addEventListener('keydown', retryUnmute, { passive: true });
 
-    // Mute/unmute based on whether the hero is in viewport
+    // Mute/unmute based on whether the hero is in viewport.
+    // Lo stesso osservatore ferma anche il video del telefono quando la hero e' lontana:
+    // prima restava in riproduzione (decodifica 1080p) per tutta la pagina, a 40 000 px di
+    // distanza. L'arresto e' ritardato di 400 ms: lo spostamento del contenitore nel
+    // pin-spacer di GSAP puo' dare un "fuori vista" spurio che non deve fermare niente.
+    const heroVideo = () => container.querySelector<HTMLVideoElement>('video');
     audioObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
+        clearTimeout(heroVideoPauseTimer);
         if (entry.isIntersecting) {
+          heroVideo()?.play().catch(() => {});
           // Re-enter viewport: unmute if user had already unlocked audio.
           // Also call sendUnmuteToIframes() directly: the Svelte reactive only
           // handles mute now (not unMute, to avoid gesture-policy rejections on
@@ -199,6 +207,7 @@
         } else {
           // Left viewport: always mute
           videoMuted = true;
+          heroVideoPauseTimer = setTimeout(() => heroVideo()?.pause(), 400);
         }
       });
     }, { threshold: 0.2 });
@@ -556,6 +565,7 @@
     mm?.revert();
     ctx?.revert();
     audioObserver?.disconnect();
+    clearTimeout(heroVideoPauseTimer);
     if (browser) {
       window.removeEventListener('pointerdown', retryUnmute);
       window.removeEventListener('keydown', retryUnmute);
