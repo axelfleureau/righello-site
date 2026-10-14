@@ -22,6 +22,11 @@
   let animationId: number;
   let uniforms: any = null;
   
+  // Il disegno gira solo mentre il riquadro e' (quasi) a schermo: fuori vista il WebGL
+  // continuava a ridisegnare uno schermo intero a ogni fotogramma per niente. Il tempo
+  // dello shader e' quello assoluto del rAF, quindi alla ripresa l'onda e' dove sarebbe stata.
+  let inView = true;
+
   let mousePosition = { x: 0.5, y: 0.5 };
   let targetMouse = { x: 0.5, y: 0.5 };
   let mouseInfluence = 0;
@@ -202,7 +207,7 @@ void main() {
           uniforms.mousePosition.value = [mousePosition.x, mousePosition.y];
           
           renderer.render({ scene: mesh });
-          animationId = requestAnimationFrame(render);
+          animationId = inView ? requestAnimationFrame(render) : 0;
         } catch (renderErr) {
           // Stop the loop silently — OGL may throw non-Error strings on GPU/WebGL
           // failures (e.g. shader errors, context loss). Cancelling is the right action.
@@ -215,8 +220,18 @@ void main() {
       resize();
       animationId = requestAnimationFrame(render);
 
+      const visibilityObserver = new IntersectionObserver(
+        (entries) => {
+          inView = entries[entries.length - 1].isIntersecting;
+          if (inView && !animationId) animationId = requestAnimationFrame(render);
+        },
+        { rootMargin: '200px' }
+      );
+      visibilityObserver.observe(container);
+
       // Store cleanup so onDestroy can call it
       _cleanup = () => {
+        visibilityObserver.disconnect();
         window.removeEventListener('resize', resize);
         if (animationId) cancelAnimationFrame(animationId);
         renderer?.gl?.getExtension('WEBGL_lose_context')?.loseContext();

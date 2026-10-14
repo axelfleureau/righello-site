@@ -60,6 +60,11 @@
   let lastPhoneX = -Infinity;
   let currentSlide = -1;
   let activeStep = 0;
+  // Fuori dal proprio intervallo ogni pannello e il testo di apertura vanno riportati a
+  // "spento" UNA volta, non a ogni tick dello scroll: lo stesso valore riscritto su ~400
+  // elementi per fotogramma costava uno ricalcolo di stile continuo per niente.
+  let heroHidden = false;
+  let slideIdle: boolean[] = [];
   // slideAnimated removed — text animation now replays on every snap/re-entry
   // so each landing at a step feels alive and reinforces the magnetic snap.
   let scrollTriggerInstance: any = null;
@@ -235,6 +240,9 @@
           // to read each panel before the next snap triggers.
           const scrollDistance = slides.length * 800;
           
+          heroHidden = false;
+          slideIdle = [];
+
           // Initialize slides as invisible
           slideRefs.forEach((slideEl) => {
             if (!slideEl) return;
@@ -292,7 +300,9 @@
                   opacity: 1 - fadeProgress, 
                   yPercent: -10 * fadeProgress 
                 });
-              } else {
+                heroHidden = false;
+              } else if (!heroHidden) {
+                heroHidden = true;
                 gsap.set(heroContent, { opacity: 0, yPercent: -10 });
               }
               
@@ -337,6 +347,7 @@
                 const slideEnd = (i + 2) / totalSlides;
                 
                 if (progress >= slideStart - 0.05 && progress < slideEnd + 0.05) {
+                  slideIdle[i] = false;
                   let slideOpacity = 1;
                   if (progress < slideStart + 0.1) {
                     slideOpacity = (progress - (slideStart - 0.05)) / 0.15;
@@ -357,14 +368,17 @@
                   // i===currentSlide → animateSlideText never fires → headline stays
                   // opacity:0 from the gsap.set reset below.
                   if (currentSlide === i) currentSlide = -1;
-                  gsap.set(slideEl, { opacity: 0 });
-                  // Reset text elements so the entrance animation plays cleanly on re-entry.
-                  // Without this, desc-chars would retain their animated-in state (opacity 1)
-                  // and the next visit to the slide would skip the stagger animation.
-                  const title = slideEl.querySelector('.slide-title');
-                  const descChars = slideEl.querySelectorAll('.desc-char');
-                  if (title) gsap.set(title, { opacity: 0, y: 40 });
-                  if (descChars.length) gsap.set(descChars, { opacity: 0, y: 20 });
+                  if (!slideIdle[i]) {
+                    slideIdle[i] = true;
+                    gsap.set(slideEl, { opacity: 0 });
+                    // Reset text elements so the entrance animation plays cleanly on re-entry.
+                    // Without this, desc-chars would retain their animated-in state (opacity 1)
+                    // and the next visit to the slide would skip the stagger animation.
+                    const title = slideEl.querySelector('.slide-title');
+                    const descChars = slideEl.querySelectorAll('.desc-char');
+                    if (title) gsap.set(title, { opacity: 0, y: 40 });
+                    if (descChars.length) gsap.set(descChars, { opacity: 0, y: 20 });
+                  }
                 }
               });
             }

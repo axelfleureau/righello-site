@@ -17,7 +17,6 @@
   let container: HTMLElement;
   let activeIndex = 0;
   let scrollHandler: (() => void) | null = null;
-  let rafPending = false;
   
   onMount(() => {
     if (!browser || typeof window === 'undefined') return;
@@ -58,14 +57,9 @@
         return;
       }
       
-      scrollHandler = () => {
-        if (rafPending) return;
-        rafPending = true;
-        requestAnimationFrame(() => {
-          calculateActiveIndex();
-          rafPending = false;
-        });
-      };
+      // Direttamente nell'evento `scroll` (uno per fotogramma, a stile ancora pulito): dentro un
+      // rAF, dopo i ticker che hanno sporcato il layout, `getBoundingClientRect` lo ricalcolava.
+      scrollHandler = calculateActiveIndex;
       
       window.addEventListener('scroll', scrollHandler, { passive: true });
       calculateActiveIndex();

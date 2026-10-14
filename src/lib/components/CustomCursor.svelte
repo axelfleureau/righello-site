@@ -11,7 +11,7 @@
   let isVisible = false;
   let shouldRender = false;
   let prefersReducedMotion = false;
-  let rafId: number;
+  let rafId = 0;
   let isLightboxOpen = false;
   let dotEl: HTMLDivElement;
   let ringEl: HTMLDivElement;
@@ -39,6 +39,8 @@
     dotY = e.clientY;
     if (!isVisible) setVisible(true);
     updateDotTransform();
+    // l'anello si e' fermato quando ha raggiunto il punto: riparte con il mouse
+    if (!rafId) rafId = requestAnimationFrame(animate);
   }
 
   function handleMouseDown() {
@@ -94,9 +96,20 @@
     isVisible = nextVisible;
   }
 
+  // Con il mouse fermo e l'anello arrivato, il ciclo si ferma (prima girava a ogni fotogramma
+  // per tutta la vita della pagina, anche scorrendo con la rotella a mouse fermo).
+  const RING_REST = 0.01;
+
   function animate() {
     ringX += (dotX - ringX) * RING_LERP;
     ringY += (dotY - ringY) * RING_LERP;
+    if (Math.abs(dotX - ringX) < RING_REST && Math.abs(dotY - ringY) < RING_REST) {
+      ringX = dotX;
+      ringY = dotY;
+      updateRingTransform();
+      rafId = 0;
+      return;
+    }
     updateRingTransform();
     rafId = requestAnimationFrame(animate);
   }

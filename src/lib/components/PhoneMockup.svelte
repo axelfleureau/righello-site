@@ -18,6 +18,10 @@
   let mounted = false;
   let isHovered = false;
   let videoLoading = true;
+  // Dissolto lo scheletro di caricamento (opacity 0), le sue animazioni infinite (riflesso e
+  // rotella) continuavano a girare, invisibili, a ogni fotogramma: si fermano a dissolvenza finita.
+  let skeletonGone = false;
+  $: if (videoLoading) skeletonGone = false;
   let videoError = false;
   let containerEl: HTMLElement;
   let videoElement: HTMLVideoElement;
@@ -685,7 +689,12 @@
             <!-- Skeleton always in DOM — removing it via {#if} while GSAP has pinned
                  this container triggers _swapPinOut2 → insertBefore NotFoundError.
                  Show/hide via CSS class only; opacity transition replicates the old fade. -->
-            <div class="video-skeleton" class:skeleton-hidden={!videoLoading}>
+            <div
+              class="video-skeleton"
+              class:skeleton-hidden={!videoLoading}
+              class:skeleton-gone={skeletonGone}
+              on:transitionend={() => { if (!videoLoading) skeletonGone = true; }}
+            >
               <div class="skeleton-shimmer"></div>
               <div class="skeleton-loader">
                 <div class="loader-spinner"></div>
@@ -1234,6 +1243,11 @@
   .video-skeleton.skeleton-hidden {
     opacity: 0;
     pointer-events: none;
+  }
+
+  .video-skeleton.skeleton-gone .skeleton-shimmer,
+  .video-skeleton.skeleton-gone .loader-spinner {
+    animation: none;
   }
   
   .skeleton-shimmer {

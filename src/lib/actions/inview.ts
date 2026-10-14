@@ -27,6 +27,9 @@ export function inview(node: HTMLElement, options: InviewOptions = {}) {
         
         if (inView && once) {
           hasTriggered = true;
+          // detto una volta, l'osservatore non ha piu' niente da fare: smette di calcolare
+          // le intersezioni a ogni scroll
+          observer.disconnect();
         }
         
         node.dispatchEvent(

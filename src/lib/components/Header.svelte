@@ -113,10 +113,15 @@
 
   onMount(() => {
     let rafId: number | null = null;
+    // Il valore di scroll si legge nel gestore dell'evento `scroll` (a inizio fotogramma, con
+    // lo stile ancora pulito) e non dentro il rAF: li' arriva dopo i ticker che hanno gia'
+    // sporcato stile e layout, e `scrollY` costringe a ricalcolarli subito (un secondo layout
+    // per fotogramma durante tutto lo scorrimento).
+    let latestScrollY = window.scrollY;
 
     const updateHeaderState = () => {
       rafId = null;
-      const currentScrollY = window.scrollY;
+      const currentScrollY = latestScrollY;
       const scrollDelta = currentScrollY - lastScrollY;
       const nextIsAtTop = currentScrollY <= 30;
       let nextIsCompact = isCompact;
@@ -136,6 +141,7 @@
     };
 
     const handleScroll = () => {
+      latestScrollY = window.scrollY;
       if (rafId !== null) return;
       rafId = window.requestAnimationFrame(updateHeaderState);
     };

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { paintVideoBar, paintVideoProgress } from '$lib/utils/videoProgress';
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import { getThumbnailUrl, getYoutubeThumbnailUrl } from '$lib/data/thumbnail-map';
@@ -252,12 +253,6 @@
   let progressBarEls: (HTMLElement | null)[] = items.map(() => null);
   let timeLabelEls: (HTMLElement | null)[] = items.map(() => null);
 
-  function formatTime(secs: number): string {
-    const m = Math.floor(secs / 60);
-    const s = Math.floor(secs % 60);
-    return `${m}:${s.toString().padStart(2, '0')}`;
-  }
-
   function handleVideoLoaded(index: number) {
     videoLoaded[index] = true;
     videoLoaded = [...videoLoaded];
@@ -286,11 +281,7 @@
         const video = videoRefs[idx];
         if (!bar || !video || !video.duration) return;
         if (!scrollPlayingSet.has(idx) && video !== activeVideo) return;
-        bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
-        const label = timeLabelEls[idx];
-        if (label) {
-          label.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
-        }
+        paintVideoProgress(bar, timeLabelEls[idx], video);
       });
       rafId = requestAnimationFrame(tick);
     }
@@ -365,7 +356,7 @@
       if (!scrollPlayingSet.has(idx)) return;
       const bar = progressBarEls[idx];
       if (!bar) return;
-      bar.style.transform = `scaleX(${video.currentTime / video.duration})`;
+      paintVideoBar(bar, video);
     }
     container.addEventListener('timeupdate', handleTimeUpdate, { capture: true, passive: true });
 
