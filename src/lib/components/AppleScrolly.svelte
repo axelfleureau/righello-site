@@ -27,6 +27,9 @@
     description: 'Marketing, advertising e sviluppo digitale a Pordenone e Mestre con un approccio data-driven. Ogni euro investito, ogni conversione tracciata.'
   };
   
+  /** Scroll (in altezze di finestra x100) per ogni passo della hero fissa: regola la lunghezza della hero. */
+  const HERO_STEP_VH = 200;
+
   const slides = [
     {
       step: '01',
@@ -244,10 +247,12 @@
         mm.add("(min-width: 1024px)", () => {
           const totalSlides = slides.length + 1;
           const snapPoints = Array.from({ length: totalSlides }, (_, i) => i / (totalSlides - 1));
-          // Per-step scroll distance (in vh).  Higher = more scroll needed
-          // to advance from one step to the next, giving the user more time
-          // to read each panel before the next snap triggers.
-          const scrollDistance = slides.length * 800;
+          // Quanto si scorre per passare da un passo al successivo (in vh): una sola
+          // costante, cosi' la lunghezza della hero si regola in un punto.
+          // Era 800 (24 schermate di scroll fisso in tutto, oltre 21.000 px su un
+          // 900 px di altezza): troppo. Con il passo agganciato (snap) bastano poche
+          // schermate per leggere ogni pannello.
+          const scrollDistance = slides.length * HERO_STEP_VH;
           
           heroHidden = false;
           slideIdle = [];
