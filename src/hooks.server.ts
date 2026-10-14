@@ -1,15 +1,6 @@
 import type { Handle } from '@sveltejs/kit';
+import { isBlockedUserAgent } from '$lib/seo/crawlers';
 import { dropOverriddenDefaults } from '$lib/seo/head';
-
-const BLOCKED_BOTS = [
-  'HTTrack', 'WebCopier', 'WebZIP', 'Teleport', 'SiteSnagger',
-  'WebStripper', 'SiteSucker', 'WebReaper', 'NetAnts', 'BlackWidow',
-  'Offline Explorer', 'Scrapy', 'scrapy', 'libwww-perl', 'lwp-trivial',
-  'MJ12bot', 'DotBot', 'AhrefsBot', 'SemrushBot', 'BLEXBot',
-  'DataForSeoBot', 'magpie-crawler', 'Bytespider', 'PetalBot',
-  'GPTBot', 'CCBot', 'ChatGPT-User', 'anthropic-ai', 'ClaudeBot',
-  'Google-Extended',
-];
 
 /** Una sola etichetta per chiave nel <head>: vince quella della pagina (vedi `$lib/seo/head`). */
 function dedupeHead(html: string): string {
@@ -20,10 +11,9 @@ function dedupeHead(html: string): string {
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-  const ua = event.request.headers.get('user-agent') || '';
-
-  const isLegitBot = /Googlebot|Bingbot|Slurp|DuckDuckBot|Applebot|facebookexternalhit|Twitterbot|LinkedInBot/i.test(ua);
-  if (!isLegitBot && BLOCKED_BOTS.some(bot => ua.includes(bot))) {
+  // Chi e' bloccato (copiatori di siti, analizzatori SEO di terzi) lo decide `$lib/seo/crawlers`,
+  // la stessa lista che `/robots.txt` dichiara: i motori di ricerca e gli assistenti AI passano.
+  if (isBlockedUserAgent(event.request.headers.get('user-agent') || '')) {
     return new Response('Access denied', { status: 403 });
   }
 
