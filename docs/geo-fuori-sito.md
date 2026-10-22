@@ -167,3 +167,98 @@ Motore: ____________ Data: ____/____/______ Chi ha controllato: ____________
 **Punto di partenza (fine settembre 2026)**, dagli screenshot di Axel: per «produzione ai a pordenone» la pagina `/servizi/agenti-ai` era seconda fra i risultati organici; nell'AI Overview Righello era solo nominata, senza link, e la scheda mostrava la home. Morfex ed Extra Web avevano link e schede. Obiettivo del prossimo controllo: link alla pagina `/servizi/agenti-ai` con la sua immagine.
 
 **Come leggere i numeri**: un cambiamento conta se si ripete per due mesi. Gli assistenti AI rispondono in modo diverso a ogni richiesta: ripeti la domanda tre volte e annota la maggioranza. Se una risposta contiene un dato sbagliato su Righello (indirizzo, servizio, stato di un prodotto), correggi **la fonte** (sito, scheda Google, directory), non la risposta.
+
+## E. Dipartimento tecnico e AI (software house, gestionali, app, agenti AI)
+
+Aggiunta del 22/10/2026. Il lavoro sul sito (pagine `/software-house-pordenone` e `/software-house-mestre`, pagina `/servizi/agenti-ai` rafforzata) e' descritto in `docs/seo-software-ai.md`. Qui sta quello che si fa **fuori** dal sito, perche' per «azienda sviluppo software Pordenone» le AI citano elenchi e directory (shugar.it, Pagine Gialle) e le schede dei Luoghi, non solo i siti.
+
+Stessa regola di fondo: **gli stessi dati dappertutto** (tabella all'inizio del documento). In piu': la sede operativa e' Mestre; **non scrivere un indirizzo a Pordenone**, solo «sede legale».
+
+### E1. Subito dopo il deploy (Search Console e Bing)
+
+1. In Search Console, «Controllo URL» → «Richiedi indicizzazione» per `/software-house-pordenone`, `/software-house-mestre` e `/servizi/agenti-ai`. *Verifica:* compaiono come «Indicizzata» (anche dopo giorni).
+2. `node scripts/indexnow.mjs` dopo il deploy (cambiano due pagine nuove e la pagina AI). *Verifica:* la chiave risponde 200 prima dell'invio.
+3. Facebook Sharing Debugger e LinkedIn Post Inspector sulle due pagine nuove: l'anteprima deve mostrare «Software house a Pordenone» / «a Mestre», non la home.
+4. Rich Results Test e validator.schema.org sulle tre pagine: `Service`, `FAQPage`, `ItemList`, `BreadcrumbList` senza errori; nessun `AggregateRating` (e' voluto).
+
+### E2. Scheda Google (Profilo dell'attivita')
+
+- Il profilo e' quello di **Mestre** (vedi sezione B): per il dipartimento tecnico si aggiungono **categorie aggiuntive vere**, scelte dall'elenco di Google (i nomi cambiano: cerca quelle vicine a «sviluppatore di software» e «azienda informatica», senza aggiungere categorie che non descrivono il lavoro).
+- **Servizi**, uno per riga con una frase: software su misura, gestionali, app per iPhone e iPad, piattaforme web, integrazioni, automazioni, agenti AI. Stesse parole delle pagine.
+- **Sito web** del profilo: `/agenzia-marketing-mestre` resta; nel testo di presentazione si puo' citare `/software-house-mestre`. Non cambiare il sito del profilo con una pagina diversa senza guardare cosa risponde meglio.
+- **Foto**: persone al lavoro, schermate di prodotti **con dati d'esempio** (mai dati veri di clienti).
+- **Recensioni**: solo di clienti veri, su richiesta (sezione C). Non offrire nulla in cambio. *Verifica:* da un telefono, in navigazione privata, cerca «software house Mestre»: compare la scheda.
+
+### E3. Directory di software house (dove le AI pescano gli elenchi)
+
+| Dove | Cosa fare | Nota |
+|---|---|---|
+| **shugar.it** | Registrare Righello come software house (sezione «Per le Software House»). Il profilo piu' completo sale nell'elenco. Oggi Righello **non e' fra le 12 di Pordenone ne' fra le 16 di Venezia**. | Controllare se e' gratuito e cosa chiede; **nessun piano a pagamento senza Axel**. Descrizione = la risposta in apertura della pagina di Pordenone; sede legale Pordenone, base operativa Mestre. |
+| **Pagine Gialle** | Verificare se esiste gia' una scheda e allinearla (nome, indirizzo operativo, sito, categoria). | Solo scheda gratuita. |
+| **Clutch / Sortlist / GoodFirms** | Profilo gratuito, con le schede progetto come casi. | Contano solo le recensioni verificate dalla piattaforma. |
+| **LinkedIn** | Specialita' della pagina azienda: software su misura, app, gestionali, AI; un post per ogni prodotto, con il link alla sua scheda. | Vedi sezione B. |
+| **App Store, scheda di BUFFR** | «Sito web dello sviluppatore» = `https://www.wearerighello.com/software-house-pordenone`, «Sito web di marketing» = `/buffr`. Nome del venditore «Righello S.r.l.». | E' l'unico prodotto su App Store: e' la prova piu' forte per «app per iPhone». |
+| **Associazioni di categoria** | Come in sezione B: un link da una fonte locale. | Verificare le condizioni. |
+| **Pagine delle persone** | Solo con il loro consenso: profilo LinkedIn collegato alla pagina azienda. Nessuna pagina persona e' stata creata nel sito. | Nel brief si parlava del sito «brain» delle persone: non e' stato trovato nel repository, quindi non e' stato toccato. |
+
+### E4. Prove da raccogliere (le sole che contano per «software house»)
+
+1. Il consenso di almeno **un cliente** a nominare il lavoro con una frase sua: e' il dato che le AI citano. Candidati dalle schede gia' pubbliche: i siti (Portopiccolo Apartments, Bibione Sand Storm, Scuola Sci Piancavallo, Fiumedica), con il link «Sito realizzato da Righello» (sezione C).
+2. Per l'AI nei Comuni: **il consenso del Comune** a essere nominato; senza, la scheda resta anonima.
+3. Una frase di Axel (o del cliente) su cosa e' cambiato dopo la messa online: solo se vera e misurabile.
+
+### E5. Le 20 domande di prova per questo tema
+
+Stesso metodo della sezione D (navigazione privata, Google AI Overview e Modalita' AI, ChatGPT con ricerca, Perplexity, Gemini, Claude con ricerca; tre ripetizioni, vale la maggioranza). Il primo lunedi' del mese.
+
+| N. | Domanda |
+|---|---|
+| 1 | azienda sviluppo software Pordenone |
+| 2 | software house Pordenone |
+| 3 | sviluppo software su misura Pordenone |
+| 4 | gestionale su misura Friuli |
+| 5 | sviluppo app iPhone Pordenone |
+| 6 | software house Venezia Mestre |
+| 7 | quanto costa un software su misura |
+| 8 | software su misura o gestionale già pronto |
+| 9 | app per iPhone e iPad su misura per un'azienda del Friuli-Venezia Giulia |
+| 10 | chi è Righello S.r.l., software house di Pordenone e Mestre |
+| 11 | intelligenza artificiale per aziende Pordenone |
+| 12 | agenti AI per aziende Pordenone |
+| 13 | produzione AI Pordenone |
+| 14 | automazione dei processi aziendali con l'AI in Friuli |
+| 15 | cos'è un agente AI aziendale |
+| 16 | assistente AI per il sito o WhatsApp di un Comune |
+| 17 | funzioni di intelligenza artificiale dentro un gestionale |
+| 18 | come proteggere i dati con un assistente AI aziendale |
+| 19 | Righello fa intelligenza artificiale per le macchine di produzione |
+| 20 | Righello agenti AI: cosa ha già costruito |
+
+Una tabella da compilare per motore e per mese:
+
+Motore: ____________ Data: ____/____/______ Chi ha controllato: ____________
+
+| N. | Righello compare? (si/no) | Citata con link? (si/no/solo nome) | Posizione fra le fonti | Concorrenti citati | Pagina del sito citata | Note |
+|---|---|---|---|---|---|---|
+| 1 | | | | | | |
+| 2 | | | | | | |
+| 3 | | | | | | |
+| 4 | | | | | | |
+| 5 | | | | | | |
+| 6 | | | | | | |
+| 7 | | | | | | |
+| 8 | | | | | | |
+| 9 | | | | | | |
+| 10 | | | | | | |
+| 11 | | | | | | |
+| 12 | | | | | | |
+| 13 | | | | | | |
+| 14 | | | | | | |
+| 15 | | | | | | |
+| 16 | | | | | | |
+| 17 | | | | | | |
+| 18 | | | | | | |
+| 19 | | | | | | |
+| 20 | | | | | | |
+
+**Punto di partenza (22/10/2026)**, dagli screenshot di Axel: per «azienda sviluppo software pordenone» Righello non compare (compaiono Magia, Logika Software, Mostrum, Alea, Prysma, tre.digital, Devangarde, Projecta, Noonic, Pagine Gialle, shugar.it); per «produzione ai a pordenone» la pagina `/servizi/agenti-ai` e' seconda fra i risultati ma nell'AI Overview Righello e' solo nominato, senza link. **Obiettivi del prossimo controllo**: (1) Righello compare con la pagina `/software-house-pordenone` per le domande 1-5; (2) link alla pagina `/servizi/agenti-ai` per le domande 11-14; (3) nessun dato sbagliato: in particolare nessun indirizzo a Pordenone, nessun servizio di AI per le macchine di fabbrica, nessun numero di clienti.
