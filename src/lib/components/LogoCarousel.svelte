@@ -2,7 +2,14 @@
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import GradualBlur from './GradualBlur.svelte';
+  import { logoSagoma, logoSagomaSuChiaro } from '$lib/data/logos';
   
+  // Sagoma bianca/nera = filtro: ci vuole il file senza targa piena; a colori il file vero.
+  const srcOf = (item: { logo?: string; noFilter?: boolean }) => (item.logo ? (item.noFilter ? item.logo : logoSagoma(item.logo)) : '');
+  // A colori sullo scuro ma con parti bianche: sul tema chiaro diventa sagoma scura.
+  const clsOf = (item: { logo?: string; noFilter?: boolean }) =>
+    (item.noFilter ? ' no-filter' : '') + (item.noFilter && item.logo && logoSagomaSuChiaro(item.logo) ? ' sagoma-chiaro' : '');
+
   export interface LogoItem {
     name: string;
     logo?: string;
@@ -187,7 +194,7 @@
           {#if item.href}
             <a href={item.href} class="logo-link" aria-label={item.name} on:click={noNav}>
               {#if item.logo}
-                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
+                <img src={srcOf(item)} alt={item.name} class="logo-image{clsOf(item)}" loading="eager" decoding="async" />
               {:else}
                 <span class="logo-text">{item.name}</span>
               {/if}
@@ -195,7 +202,7 @@
           {:else}
             <span class="logo-content">
               {#if item.logo}
-                <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" />
+                <img src={srcOf(item)} alt={item.name} class="logo-image{clsOf(item)}" loading="eager" decoding="async" />
               {:else}
                 <span class="logo-text">{item.name}</span>
               {/if}
@@ -212,7 +219,7 @@
             {#if item.href}
               <a href={item.href} class="logo-link" tabindex="-1" aria-label={item.name} on:click={noNav}>
                 {#if item.logo}
-                  <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
+                  <img src={srcOf(item)} alt={item.name} class="logo-image{clsOf(item)}" loading="lazy" decoding="async" />
                 {:else}
                   <span class="logo-text">{item.name}</span>
                 {/if}
@@ -220,7 +227,7 @@
             {:else}
               <span class="logo-content">
                 {#if item.logo}
-                  <img src={item.logo} alt={item.name} class="logo-image{item.noFilter ? ' no-filter' : ''}" loading="lazy" decoding="async" />
+                  <img src={srcOf(item)} alt={item.name} class="logo-image{clsOf(item)}" loading="lazy" decoding="async" />
                 {:else}
                   <span class="logo-text">{item.name}</span>
                 {/if}
@@ -300,6 +307,11 @@
   :global([data-theme='light']) .logo-image.no-filter {
     filter: none;
     opacity: 0.78;
+  }
+
+  :global([data-theme='light']) .logo-image.no-filter.sagoma-chiaro {
+    filter: brightness(0);
+    opacity: 0.58;
   }
   
   .logo-text {

@@ -4,9 +4,9 @@
   import PhoneMockup from './PhoneMockup.svelte';
   import MagneticButton from './MagneticButton.svelte';
   import RippleGrid from './RippleGrid.svelte';
+  import { logoSize, logoSagoma, logoSagomaSuChiaro, larghezzaRiquadroMax } from '$lib/data/logos';
   
   export let credibilityBadges: { icon: string; label: string }[] = [];
-  export let partnerNames: string[] = [];
   export let partners: { name: string; logo?: string; noFilter?: boolean }[] = [];
   export let heroVideoCloudinaryUrl: string | undefined = undefined;
   export let heroVideoYoutubeId: string | undefined = 'Rj5N4BMF-Vw';
@@ -14,6 +14,47 @@
   // poster image so in-app browsers (Instagram, Facebook WebViews) can show content
   // even when they block cross-origin requests to img.youtube.com.
   export let heroVideoThumbnailUrl: string | undefined = undefined;
+
+  /**
+   * Fascia «Tra i nostri clienti»: i loghi vanno due volte (la seconda copia riempie il vuoto mentre
+   * la prima esce, translateX(-50%) = esattamente una copia) e sono divisi in 4 tronconi, ognuno nel
+   * suo livello composito: un unico livello largo ~7800 px (x3 sugli iPhone = ~23000 px di texture)
+   * supera il limite delle GPU mobili; ogni troncone ne resta sotto la meta' di quel limite.
+   * I primi LOGHI_SUBITO sono eager (coprono anche uno schermo da 2560 px), gli altri lazy e poi
+   * promossi a eager appena la pagina e' ferma, cosi' non competono con poster, video e script.
+   */
+  const LOGHI_SUBITO = 20;
+  let marqueeEl: HTMLElement;
+  let logoRotti: Record<string, boolean> = {};
+  type LogoFascia = { name: string; logo?: string; src?: string; w?: number; h?: number; maxW?: number; noFilter: boolean; sagomaChiaro: boolean; eager: boolean };
+  function logoFascia(p: { name: string; logo?: string; noFilter?: boolean }, i: number): LogoFascia {
+    const dim = p.logo ? logoSize(p.logo) : undefined;
+    const maxW = dim ? larghezzaRiquadroMax(dim.width, dim.height) : 100;
+    return {
+      name: p.name, logo: p.logo, noFilter: !!p.noFilter,
+      // in sagoma (filtro) si usa la versione senza targa piena; a colori il file vero
+      src: p.logo ? (p.noFilter ? p.logo : logoSagoma(p.logo)) : undefined,
+      w: dim?.width, h: dim?.height, maxW: maxW === 100 ? undefined : maxW,
+      sagomaChiaro: !!p.logo && !!p.noFilter && logoSagomaSuChiaro(p.logo),
+      eager: i < LOGHI_SUBITO
+    };
+  }
+  $: partnerCopies = [partners.map(logoFascia), partners.map((p, i) => ({ ...logoFascia(p, i), eager: false }))];
+  $: partnerSegments = partnerCopies.flatMap((copy) => {
+    const meta = Math.ceil(copy.length / 2);
+    return [copy.slice(0, meta), copy.slice(meta)];
+  });
+  onMount(() => {
+    // I loghi lazy sono fuori dal primo schermo ma la corsia li porta in vista in pochi secondi: si
+    // chiedono appena il browser e' libero, cosi' non arrivano mai dopo il loro ingresso.
+    const promuovi = () => marqueeEl?.querySelectorAll<HTMLImageElement>('img[loading="lazy"]').forEach((img) => (img.loading = 'eager'));
+    if ('requestIdleCallback' in window) {
+      const id = requestIdleCallback(promuovi, { timeout: 3000 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(promuovi, 2000);
+    return () => clearTimeout(t);
+  });
 
   let videoMuted = true;
   let audioUnlocked = false;
@@ -362,11 +403,18 @@
                 
                 if (progress >= slideStart - 0.05 && progress < slideEnd + 0.05) {
                   slideIdle[i] = false;
+                  // Il pannello deve essere pieno (1) esattamente dove lo snap si ferma: i punti di
+                  // aggancio sono 1/3, 2/3 e 1, la rampa originale arrivava a 1 solo fra .35 e .4 /
+                  // .6 e .65 / .85 e .9, cosi' il pannello restava a 0,89 - 0,89 - 0,33 da fermo.
+                  // Le rampe sono quelle di prima, il plateau si allarga fino al punto di aggancio.
+                  const snapAt = (i + 1) / (totalSlides - 1);
+                  const inFine = Math.min(slideStart + 0.1, snapAt);
+                  const outInizio = Math.max(slideEnd - 0.1, snapAt);
                   let slideOpacity = 1;
-                  if (progress < slideStart + 0.1) {
-                    slideOpacity = (progress - (slideStart - 0.05)) / 0.15;
-                  } else if (progress > slideEnd - 0.1) {
-                    slideOpacity = 1 - ((progress - (slideEnd - 0.1)) / 0.15);
+                  if (progress < inFine) {
+                    slideOpacity = (progress - (slideStart - 0.05)) / (inFine - (slideStart - 0.05));
+                  } else if (progress > outInizio) {
+                    slideOpacity = 1 - ((progress - outInizio) / (slideEnd + 0.05 - outInizio));
                   }
                   gsap.set(slideEl, { opacity: Math.max(0, Math.min(1, slideOpacity)) });
                   
@@ -743,26 +791,23 @@
     {/each}
   </div>
   
-  {#if partners.length > 0 || partnerNames.length > 0}
+  {#if partners.length > 0}
     <div class="partners-strip" aria-hidden="true">
       <p class="partners-label">Tra i nostri clienti</p>
       <div class="partners-marquee-wrapper">
-        <div class="partners-marquee">
-          {#if partners.length > 0}
-            {#each [0,1].flatMap(() => partners) as p}
-              {#if p.logo}
-                <img src={p.logo} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" height="28" />
-              {:else}
-                <span class="partner-name">{p.name}</span>
-              {/if}
-              <span class="partner-sep">·</span>
+        <div class="partners-marquee" bind:this={marqueeEl}>
+            {#each partnerSegments as seg}
+              <div class="partners-seg">
+                {#each seg as p}
+                  {#if p.src && !logoRotti[p.logo ?? '']}
+                    <img src={p.src} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}{p.sagomaChiaro ? ' sagoma-chiaro' : ''}" width={p.w} height={p.h} style={p.maxW ? `max-width:${p.maxW}px` : undefined} loading={p.eager ? 'eager' : 'lazy'} decoding="async" on:error={() => (logoRotti = { ...logoRotti, [p.logo ?? '']: true })} />
+                  {:else}
+                    <span class="partner-name">{p.name}</span>
+                  {/if}
+                  <span class="partner-sep">·</span>
+                {/each}
+              </div>
             {/each}
-          {:else}
-            {#each [0,1].flatMap(() => partnerNames) as name}
-              <span class="partner-name">{name}</span>
-              <span class="partner-sep">·</span>
-            {/each}
-          {/if}
         </div>
       </div>
     </div>
@@ -1471,10 +1516,19 @@
    * The old calc(-100% / 6) divided a non-integer max-content width by 6,
    * producing a sub-pixel remainder that browsers rounded inconsistently —
    * causing a visible jump at every loop reset. -50% is an exact CSS value:
-   * no rounding, no jump. */
+   * no rounding, no jump. Both halves are built from the same list and every <img> has its
+   * real width/height, so their widths cannot diverge while the logos load. */
   @keyframes partners-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+
+  /* Un troncone = un quarto della corsia, nel suo livello composito (vedi lo script). */
+  .partners-seg {
+    display: flex;
+    align-items: center;
+    flex: none;
+    will-change: transform;
   }
 
   .partner-name {
@@ -1530,6 +1584,13 @@
   :global([data-theme="light"]) .partner-logo.no-filter {
     filter: grayscale(0.25);
     opacity: 0.72;
+  }
+
+  /* Colori veri sullo scuro, ma con parti bianche (Comune di Pordenone, Fanna, Tomasella): sul chiaro
+   * il bianco sparirebbe e resterebbero scritte a meta', quindi sagoma scura come gli altri. */
+  :global([data-theme="light"]) .partner-logo.no-filter.sagoma-chiaro {
+    filter: brightness(0);
+    opacity: 0.55;
   }
 
   @media (max-width: 767px) {
