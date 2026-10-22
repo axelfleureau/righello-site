@@ -55,6 +55,18 @@ const FIXED: Record<string, Fixed> = {
     note: 'Marketing, SEO locale, advertising e siti web per le aziende di Venezia e del Veneto',
     accent: agencyAccent
   },
+  '/software-house-pordenone': {
+    kicker: 'Software house',
+    title: 'Software house a Pordenone',
+    note: 'Software su misura, gestionali, app per iPhone e iPad e piattaforme web',
+    accent: agencyAccent
+  },
+  '/software-house-mestre': {
+    kicker: 'Software house',
+    title: 'Software house a Mestre',
+    note: 'Software su misura, app e piattaforme per Venezia e il Veneto',
+    accent: agencyAccent
+  },
   '/bando-intelligenza-artificiale-fvg-2026': {
     kicker: 'Guida',
     title: 'Bando AI FVG 2026',

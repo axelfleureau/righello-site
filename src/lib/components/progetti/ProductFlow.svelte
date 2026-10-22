@@ -12,10 +12,13 @@
     listHref,
   } from '$lib/data/case-studies';
   import type { CaseStudy } from '$lib/data/case-studies';
+  import { softwareHouseLinks } from '$lib/data/site';
 
   /** In fondo a ogni scheda di progetto (anche la landing di BUFFR): continua, torna all'elenco, scopri chi lavora insieme. */
   export let study: CaseStudy;
 
+  /** Chi vuole un software come questo trova la pagina di chi lo costruisce: i lavori per i clienti e i prodotti, non le sole foto e video. */
+  $: wantsSoftware = study.kind !== 'contenuti';
   $: next = getNextCaseStudy(study);
   $: prev = getPrevCaseStudy(study);
   $: companions = getCompanions(study);
@@ -42,6 +45,7 @@
 <nav class="bar" aria-label="Spostarsi fra i progetti" style="--a:{study.accent[0]}">
   <div class="section-container bar__in">
     <a class="bar__link" href={caseStudyHref(prev)}><span aria-hidden="true">←</span><span><small>Precedente{#if together(prev.id)}{' '}· lavora insieme{/if}</small><br />{prev.name}</span></a>
+    {#if wantsSoftware}<a class="bar__link" href={softwareHouseLinks[0].href}>{softwareHouseLinks[0].label} <span aria-hidden="true">↗</span></a>{/if}
     <a class="bar__link" href={listHref(study)}>Tutti i progetti · {kindLabels[study.kind]} <span aria-hidden="true">↗</span></a>
   </div>
 </nav>

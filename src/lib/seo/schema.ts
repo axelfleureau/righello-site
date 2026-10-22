@@ -38,8 +38,9 @@ import {
   serviceDetails,
   type ServiceDetail
 } from '../data/service-details';
+import { softwareHousePages, type SoftwareHousePage } from '../data/software-house';
 import { COMPANY, OG_SIZE, SITE_URL, sameAs } from '../data/site';
-import { AREAS_SERVED, COMPANY_SUMMARY, LEGAL_SEAT_REGION } from '../data/profile';
+import { AREAS_SERVED, COMPANY_SUMMARY, KNOWS_ABOUT, LEGAL_SEAT_REGION } from '../data/profile';
 import { founders } from '../data/team';
 import { lastModified } from './dates';
 import { ogImageUrl } from './og';
@@ -106,6 +107,15 @@ export function organization(): Node {
       postal({ addressLocality: COMPANY.legalSeat, addressRegion: LEGAL_SEAT_REGION })
     ],
     areaServed: areas(),
+    knowsAbout: [...KNOWS_ABOUT],
+    // Cio' che si puo' chiedere a Righello: le quattro pagine di servizio e le due di software house (stesse pagine, stessi nomi).
+    makesOffer: [
+      ...serviceDetails.map((svc) => ({ name: svc.name, path: servicePath(svc) })),
+      ...softwareHousePages.map((sh) => ({ name: sh.name, path: sh.path }))
+    ].map((o) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: o.name, url: pageUrl(o.path) }
+    })),
     sameAs,
     founder: founders.map((p) => ({ '@type': 'Person', name: p.name, jobTitle: p.role })),
     contactPoint: [
@@ -325,6 +335,67 @@ function creativeWorkNode(study: CaseStudy, path: string): Node {
 }
 
 // ---------------------------------------------------------------------------------------------
+// Pagine «software house»
+// ---------------------------------------------------------------------------------------------
+
+function softwareHouseServiceNode(p: SoftwareHousePage): Node {
+  return {
+    '@type': 'Service',
+    '@id': nodeId(p.path, 'service'),
+    name: p.name,
+    serviceType: 'Sviluppo di software su misura',
+    description: p.seo.description,
+    url: pageUrl(p.path),
+    provider: ref(ORG_ID),
+    areaServed: areas(p.areas),
+    mainEntityOfPage: ref(nodeId(p.path, 'webpage')),
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Software, app e piattaforme su misura',
+      itemListElement: p.scope.items.map((x) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: x.title }
+      }))
+    }
+  };
+}
+
+/** Un lavoro dentro un elenco: l'app o l'opera com'e' descritta nella sua scheda, senza rimandi a nodi di un'altra pagina. */
+function listedWork(study: CaseStudy): Node {
+  const path = caseStudyHref(study);
+  const node = isSoftware(study) ? softwareNode(study, path) : creativeWorkNode(study, path);
+  // Nell'elenco basta il necessario per riconoscere l'opera (nome, tipo, indirizzo, stato dello store): il resto sta nella sua pagina.
+  for (const key of ['mainEntityOfPage', 'screenshot', 'image', 'inLanguage', 'description', 'publisher']) delete node[key];
+  return node;
+}
+
+/** Le schede che dimostrano la pagina, come elenco: i prodotti sono `SoftwareApplication` (il collegamento allo store solo per quelli pubblicati). */
+function proofList(p: SoftwareHousePage): Node {
+  const items = p.proof
+    .map((it) => getCaseStudyBySlug(it.id))
+    .filter((study): study is CaseStudy => !!study);
+  return {
+    '@type': 'ItemList',
+    '@id': nodeId(p.path, 'list'),
+    name: 'Lavori e prodotti che dimostrano la pagina',
+    numberOfItems: items.length,
+    itemListElement: items.map((study, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: pageUrl(caseStudyHref(study)),
+      item: listedWork(study)
+    }))
+  };
+}
+
+/** Le pagine con una risposta in apertura pensata per essere letta ad alta voce o citata: titolo e primo paragrafo (`.sh__lead`). */
+const SPEAKABLE_PATHS = new Set([...softwareHousePages.map((p) => p.path), '/servizi/agenti-ai']);
+const SPEAKABLE = {
+  '@type': 'SpeakableSpecification',
+  cssSelector: ['#titolo-pagina', '.sh__lead']
+};
+
+// ---------------------------------------------------------------------------------------------
 // Una pagina
 // ---------------------------------------------------------------------------------------------
 
@@ -355,6 +426,12 @@ function trailFor(path: string): Array<{ name: string; path: string }> {
     return [
       { name: 'Servizi', path: '/servizi' },
       { name: service.name, path }
+    ];
+  const software = softwareHousePages.find((p) => p.path === path);
+  if (software)
+    return [
+      { name: 'Servizi', path: '/servizi' },
+      { name: software.name, path }
     ];
   const local = localLandingLinks.find((l) => l.href === path);
   if (local)
@@ -402,6 +479,9 @@ function nodesFor(path: string): Node[] {
     );
   } else if (path === '/buffr') {
     out.push(softwareNode(getCaseStudyBySlug('buffr')!, path), faq(buffrFaqs));
+  } else if (softwareHousePages.some((p) => p.path === path)) {
+    const sh = softwareHousePages.find((p) => p.path === path)!;
+    out.push(softwareHouseServiceNode(sh), proofList(sh), faq(sh.faqs));
   } else {
     const service = serviceDetails.find((s) => servicePath(s) === path);
     const study = caseStudies.find((s) => caseStudyHref(s) === path);
@@ -433,6 +513,7 @@ function webPage(path: string, meta: PageMeta, main: Node[]): Node {
     ...(path === '/' ? {} : { breadcrumb: ref(nodeId(path, 'breadcrumb')) }),
     ...(lastModified(path) ? { dateModified: lastModified(path) } : {}),
     ...(path === BANDO_PATH ? { citation: officialSources.map((s) => s.href) } : {}),
+    ...(SPEAKABLE_PATHS.has(path) ? { speakable: SPEAKABLE } : {}),
     ...(path === '/chi-siamo'
       ? { mainEntity: ref(ORG_ID) }
       : entity

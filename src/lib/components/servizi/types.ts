@@ -66,6 +66,9 @@ export interface FlowLink {
   accent?: [string, string];
 }
 
+/** Un elenco di schede con il suo titolo: serve a `scope2` e alle sezioni in piu' di una pagina (es. chiarire cosa si fa e cosa no). */
+export type ScopeBlock = Heading & { id: string; label: string; items: ScopeItem[] };
+
 export interface PageModel {
   accent: [string, string];
   /** `servizio` e `agenzia` sono modificatori della stessa struttura: cambiano le sezioni presenti, non il disegno. */
@@ -81,7 +84,9 @@ export interface PageModel {
   panel: Panel;
   scope: Heading & { items: ScopeItem[] };
   /** Seconda lista (agenzia: cosa cercano le aziende), con parole chiave a pillole. */
-  scope2?: Heading & { id: string; label: string; items: ScopeItem[] };
+  scope2?: ScopeBlock;
+  /** Altre sezioni a schede, dopo `scope2`, nell'ordine in cui compaiono. */
+  extras?: ScopeBlock[];
   local?: LocalBlock;
   note?: { kicker: string; title: string; text: string; link: Link };
   method: Heading & { steps: MethodStep[] };
