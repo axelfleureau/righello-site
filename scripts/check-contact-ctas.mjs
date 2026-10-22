@@ -60,7 +60,7 @@ if (!host?.text.includes('installContactInterception(')) fail('a', 'src/lib/comp
 const PATH_OWNERS = [
   /^src\/lib\/data\/(contact|site)\.ts$/, // dove si dichiarano
   /^src\/lib\/seo\//, // mappa del sito, dati strutturati, testo piano: indirizzi canonici
-  /^src\/lib\/contact\/intercept\.ts$/, // riconosce l'indirizzo
+  /^src\/lib\/contact\/(intercept|headCss)\.ts$/, // riconoscono l'indirizzo (l'apertura dei link; la pagina che ha il modulo gia' sul server)
   /^src\/lib\/components\/contact\/ContactBar\.svelte$/, // sa di non comparire su /contatti
   /^src\/routes\/contatti\//, // la pagina stessa
   /^src\/lib\/server\//,
