@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { serviceModel } from '$lib/components/servizi/models';
+import { readFileSync } from 'node:fs';
+import { serviceModel, softwareHouseModel } from '$lib/components/servizi/models';
+import { KNOWS_ABOUT } from '$lib/data/profile';
+import { softwareHousePages } from '$lib/data/software-house';
 import { caseStudies, caseStudyHref } from '$lib/data/case-studies';
 import { serviceDetails, serviceFaqs } from '$lib/data/service-details';
 import { COMPANY, socialLinks } from '$lib/data/site';
@@ -220,5 +223,82 @@ describe('dati strutturati', () => {
     expect(type('/progetti')['@type']).toBe('CollectionPage');
     expect(type('/servizi')['@type']).toBe('CollectionPage');
     expect(find(graph('/progetti'), 'ItemList')!['numberOfItems']).toBe(caseStudies.length);
+  });
+
+  describe('pagine software house e agenti AI', () => {
+    it('ogni pagina «software house» ha il suo Service con societa\' come fornitore, zona servita, sotto-servizi veri e le domande che la pagina mostra', () => {
+      for (const p of softwareHousePages) {
+        const nodes = graph(p.path);
+        const service = find(nodes, 'Service')!;
+        expect(service['provider']).toEqual({ '@id': ORG_ID });
+        expect(service['serviceType']).toBe('Sviluppo di software su misura');
+        expect((service['areaServed'] as Node[]).map((a) => a['name']).sort()).toEqual([...p.areas].sort());
+        const catalog = (service['hasOfferCatalog'] as Node)['itemListElement'] as Node[];
+        expect(catalog.map((o) => (o['itemOffered'] as Node)['name'])).toEqual(p.scope.items.map((x) => x.title));
+        const shown = softwareHouseModel(p).faq!.items.map((f) => [f.q, f.a]);
+        const declared = (find(nodes, 'FAQPage')!['mainEntity'] as Node[]).map((q) => [
+          q['name'],
+          (q['acceptedAnswer'] as Node)['text']
+        ]);
+        expect(declared).toEqual(shown);
+        expect(shown.length).toBe(p.faqs.length);
+      }
+    });
+
+    it("l'elenco delle prove contiene le schede della pagina, con SoftwareApplication per il software e il collegamento allo store solo per BUFFR", () => {
+      for (const p of softwareHousePages) {
+        const list = find(graph(p.path), 'ItemList')!;
+        const entries = list['itemListElement'] as Node[];
+        expect(list['numberOfItems']).toBe(p.proof.length);
+        expect(entries.map((e) => e['position'])).toEqual(entries.map((_, i) => i + 1));
+        expect(entries.map((e) => e['url'])).toEqual(
+          p.proof.map((it) => `https://www.wearerighello.com${caseStudyHref(caseStudies.find((c) => c.id === it.id)!)}`)
+        );
+        for (const [i, entry] of entries.entries()) {
+          const study = caseStudies.find((c) => c.id === p.proof[i].id)!;
+          const item = entry['item'] as Node;
+          expect(item['name']).toBe(study.name);
+          const published = study.status.tone === 'store';
+          expect('installUrl' in item, `${study.id} installUrl`).toBe(published);
+          expect(types(item).some((t) => ['SoftwareApplication', 'CreativeWork'].includes(t))).toBe(true);
+          expect(item['mainEntityOfPage'], 'nessun rimando a nodi di un\'altra pagina').toBeUndefined();
+        }
+      }
+      const installs = JSON.stringify(graph('/software-house-pordenone')).match(/apps\.apple\.com[^"]*/g) ?? [];
+      expect(installs.length).toBeGreaterThan(0);
+      for (const url of installs) expect(url).toContain('/buffr/');
+    });
+
+    it('la risposta in apertura e il titolo sono dichiarati `speakable` con selettori che esistono davvero nella pagina', () => {
+      const hero = readFileSync('src/lib/components/servizi/ServiceHero.svelte', 'utf8');
+      for (const path of [...softwareHousePages.map((p) => p.path), '/servizi/agenti-ai']) {
+        const page = graph(path).find((n) => String(n['@id']).endsWith('#webpage'))!;
+        const selectors = (page['speakable'] as Node)['cssSelector'] as string[];
+        expect(types(page['speakable'] as Node)).toEqual(['SpeakableSpecification']);
+        for (const sel of selectors) expect(hero, sel).toContain(sel.startsWith('#') ? `id="${sel.slice(1)}"` : `class="${sel.slice(1)}"`);
+      }
+      const other = graph('/servizi/web').find((n) => String(n['@id']).endsWith('#webpage'))!;
+      expect(other['speakable']).toBeUndefined();
+    });
+
+    it('la societa\' dichiara di cosa si occupa e cosa offre, solo con pagine che esistono', () => {
+      const org = find(graph('/'), 'Organization')!;
+      expect(org['knowsAbout']).toEqual([...KNOWS_ABOUT]);
+      const offers = org['makesOffer'] as Node[];
+      const known = new Set(sitePages.map((p) => `https://www.wearerighello.com${p.path}`));
+      for (const o of offers) {
+        expect(known.has((o['itemOffered'] as Node)['url'] as string)).toBe(true);
+      }
+      expect(offers).toHaveLength(serviceDetails.length + softwareHousePages.length);
+      // Niente di cio' che non ha una scheda: industria 4.0, visione artificiale, ERP.
+      expect(JSON.stringify(org['knowsAbout'])).not.toMatch(/industria|visione|ERP|MES/i);
+    });
+
+    it('la pagina degli agenti AI dichiara le domande nuove; l\'indice dei servizi non le ripete', () => {
+      const ai = JSON.stringify(find(graph('/servizi/agenti-ai'), 'FAQPage'));
+      for (const q of serviceFaqs.filter((f) => f.onlyOnPage).map((f) => f.q)) expect(ai).toContain(q);
+      const index = JSON.stringify(find(graph('/servizi'), 'FAQPage'));
+      for (const q of serviceFaqs.filter((f) => f.onlyOnPage).map((f) => f.q)) expect(index).not.toContain(q);
+    });
   });
 });

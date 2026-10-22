@@ -4,6 +4,7 @@
   import { mestreFaqs } from '$lib/data/faqs/mestre';
   import ServicePage from '$lib/components/servizi/ServicePage.svelte';
   import { agencyModel } from '$lib/components/servizi/models';
+  import { softwareHouseLinks } from '$lib/data/site';
 
   const services = [
     {
@@ -91,6 +92,7 @@
     { href: '/servizi/advertising', label: 'Google Ads e Meta Ads' },
     { href: '/servizi/web', label: 'Siti web e landing page' },
     { href: '/servizi/agenti-ai', label: 'Automazioni e agenti AI' },
+    { href: softwareHouseLinks[1].href, label: softwareHouseLinks[1].label },
     { href: '/progetti', label: 'Progetti e casi studio' },
     { href: '/buffr', label: 'Prodotti digitali Righello' },
     { href: contactHref(), label: 'Audit gratuito' },

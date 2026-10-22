@@ -1,14 +1,15 @@
-import { contactHref } from '$lib/data/contact';
 import {
   agencyAccent,
   commonMethod,
   getNextService,
+  faqsForService,
   getPrevService,
   localLandingLinks,
   serviceDetails,
-  serviceFaqs,
   type ServiceDetail,
 } from '$lib/data/service-details';
+import { contactHref } from '$lib/data/contact';
+import type { SoftwareHousePage } from '$lib/data/software-house';
 import type { Heading, Link, LocalBlock, MethodStep, PageModel, ProofItem, ScopeItem, FaqItem } from './types';
 
 /** Dalle schede dei servizi alla struttura comune: una funzione per il caso generale, una per la variante di agenzia. */
@@ -19,7 +20,7 @@ const ALL_PROJECTS: Link = { href: '/progetti', label: 'Tutti i progetti' };
 export function serviceModel(s: ServiceDetail): PageModel {
   const next = getNextService(s.slug);
   const prev = getPrevService(s.slug);
-  const faq: FaqItem[] = serviceFaqs.filter((f) => f.services.includes(s.slug)).map((f) => ({ q: f.q, a: f.a }));
+  const faq: FaqItem[] = faqsForService(s.slug).map((f) => ({ q: f.question, a: f.answer }));
 
   return {
     accent: s.accent,
@@ -38,6 +39,8 @@ export function serviceModel(s: ServiceDetail): PageModel {
       highlight: 'in concreto',
       items: s.services.map((x) => ({ icon: x.icon, title: x.title, text: x.description })),
     },
+    scope2: s.sections?.[0],
+    extras: s.sections?.slice(1),
     note: s.note ? { kicker: s.note.kicker, title: s.note.title, text: s.note.text, link: { href: s.note.href, label: s.note.label } } : undefined,
     method: {
       kicker: 'Come lavoriamo',
@@ -50,6 +53,7 @@ export function serviceModel(s: ServiceDetail): PageModel {
       title: s.proof.length === 1 ? 'Un lavoro da aprire' : 'Lavori veri, con la scheda da aprire',
       highlight: 'da aprire',
       lead: 'Ogni lavoro ha la sua scheda: cosa abbiamo fatto, per chi, a che punto è.',
+      ...s.proofHead,
       items: s.proof,
       more: ALL_PROJECTS,
     },
@@ -58,6 +62,7 @@ export function serviceModel(s: ServiceDetail): PageModel {
       title: s.localSeo.title,
       paragraphs: [s.localSeo.copy],
       points: s.localSeo.points,
+      links: s.localSeo.links,
     },
     faq: faq.length ? { kicker: 'Domande', title: 'Prima di iniziare', items: faq } : undefined,
     closing: {
@@ -92,18 +97,24 @@ export interface AgencyInput {
   city: string;
   kicker: string;
   title: string;
+  highlight?: string;
   lead: string;
   panel: { title: string; points: string[] };
-  scope: Heading & { texts: Record<string, string> };
+  /** I quattro servizi con una frase ciascuno (`texts`), oppure schede proprie della pagina (`items`). */
+  scope: Heading & ({ texts: Record<string, string> } | { items: ScopeItem[] });
   scope2?: PageModel['scope2'];
   method?: Heading & { steps: MethodStep[] };
   proof: ProofItem[];
+  /** Titolo della sezione dei lavori, se non e' quello comune. */
+  proofHead?: Partial<Heading>;
   local: LocalBlock;
   note?: PageModel['note'];
   faq: FaqItem[];
-  closing: { kicker: string; title: string; highlight?: string; text: string };
+  closing: { kicker: string; title: string; highlight?: string; text: string; button?: Link };
   /** L'altra pagina di agenzia, come "precedente". */
-  other: { href: string; name: string };
+  other?: { href: string; name: string };
+  /** Il percorso dopo e prima, se non e' quello di una pagina di agenzia (indice dei servizi). */
+  flow?: PageModel['flow'];
 }
 
 export function agencyModel(a: AgencyInput): PageModel {
@@ -113,11 +124,18 @@ export function agencyModel(a: AgencyInput): PageModel {
     crumb: { trail: [{ href: '/servizi', label: 'Servizi' }], current: a.city },
     kicker: a.kicker,
     title: a.title,
+    highlight: a.highlight,
     lead: a.lead,
     primary: { href: contactHref(), label: 'Parliamone' },
     secondary: { href: '#lavori', label: 'Vedi i lavori' },
     panel: { title: a.panel.title, items: a.panel.points.map((text) => ({ text })) },
-    scope: { kicker: a.scope.kicker, title: a.scope.title, highlight: a.scope.highlight, lead: a.scope.lead, items: serviceLinks(a.scope.texts) },
+    scope: {
+      kicker: a.scope.kicker,
+      title: a.scope.title,
+      highlight: a.scope.highlight,
+      lead: a.scope.lead,
+      items: 'items' in a.scope ? a.scope.items : serviceLinks(a.scope.texts),
+    },
     scope2: a.scope2,
     note: a.note,
     method: a.method ?? {
@@ -131,19 +149,47 @@ export function agencyModel(a: AgencyInput): PageModel {
       title: 'Lavori veri, con la scheda da aprire',
       highlight: 'da aprire',
       lead: 'Prove, non promesse: ogni lavoro ha la sua scheda con cosa abbiamo fatto e a che punto è.',
+      ...a.proofHead,
       items: a.proof,
       more: ALL_PROJECTS,
     },
     local: a.local,
     faq: { kicker: 'Domande', title: 'Prima di iniziare', items: a.faq },
-    closing: { ...a.closing, button: { href: contactHref(), label: 'Richiedi l’audit gratuito' } },
-    flow: {
+    closing: { ...a.closing, button: a.closing.button ?? { href: contactHref(), label: 'Richiedi l’audit gratuito' } },
+    flow: a.flow ?? {
       nextKicker: 'Prossimo: cosa facciamo',
       next: { href: '/servizi', name: 'Tutti i servizi', sub: serviceDetails.map((s) => s.name).join(' · ') },
       prev: a.other,
       all: ALL_PROJECTS,
     },
   };
+}
+
+/** Le pagine «software house»: la stessa struttura delle pagine di agenzia, con i testi di `software-house.ts` con il pulsante «Parliamone». */
+export function softwareHouseModel(p: SoftwareHousePage): PageModel {
+  return agencyModel({
+    city: p.name,
+    kicker: p.kicker,
+    title: p.title,
+    highlight: p.highlight,
+    lead: p.lead,
+    panel: { title: 'Perché Righello', points: p.panel },
+    scope: p.scope,
+    scope2: p.scope2,
+    note: { kicker: p.note.kicker, title: p.note.title, text: p.note.text, link: p.note.link },
+    method: p.method,
+    proof: p.proof,
+    proofHead: p.proofHead,
+    local: p.local,
+    faq: p.faqs.map((f) => ({ q: f.question, a: f.answer })),
+    closing: { ...p.closing, button: { href: contactHref(), label: 'Parliamone' } },
+    flow: {
+      nextKicker: 'Prossimo: l’altra sede',
+      next: { href: p.flow.next.href, name: p.flow.next.name, sub: p.flow.next.sub },
+      prev: p.flow.prev,
+      all: ALL_PROJECTS,
+    },
+  });
 }
 
 /** L'indice dei servizi: stessa struttura, con i quattro servizi come righe numerate e il metodo comune. */
@@ -204,7 +250,7 @@ export function indexModel(): PageModel {
     faq: {
       kicker: 'Domande',
       title: 'Domande frequenti',
-      items: serviceFaqs.map((f) => ({ q: f.q, a: f.a })),
+      items: faqsForService().map((f) => ({ q: f.question, a: f.answer })),
     },
     closing: {
       kicker: 'Parliamone',

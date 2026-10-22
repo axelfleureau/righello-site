@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { caseStudies } from '$lib/data/case-studies';
 import { serviceDetails } from '$lib/data/service-details';
+import { softwareHousePages } from '$lib/data/software-house';
 import { OG_SIZE } from '$lib/data/site';
 import { ogCards } from './og-cards';
 import { sitePages } from './pages';
@@ -46,10 +47,21 @@ describe('titoli e descrizioni dei dati', () => {
         `${s.slug}: descrizione di ${s.seo.description.length} caratteri`
       ).toBe(true);
     }
+    for (const p of softwareHousePages) {
+      expect(inRange(p.seo.title, TITLE), `${p.zone}: titolo di ${p.seo.title.length} caratteri`).toBe(true);
+      expect(
+        inRange(p.seo.description, DESCRIPTION),
+        `${p.zone}: descrizione di ${p.seo.description.length} caratteri`
+      ).toBe(true);
+    }
   });
 
   it('nessun titolo e nessuna descrizione si ripete', () => {
-    const all = [...caseStudies.map((s) => s.seo), ...serviceDetails.map((s) => s.seo)];
+    const all = [
+      ...caseStudies.map((s) => s.seo),
+      ...serviceDetails.map((s) => s.seo),
+      ...softwareHousePages.map((p) => p.seo)
+    ];
     expect(new Set(all.map((s) => s.title)).size).toBe(all.length);
     expect(new Set(all.map((s) => s.description)).size).toBe(all.length);
   });
@@ -57,7 +69,8 @@ describe('titoli e descrizioni dei dati', () => {
   it('niente promesse o cifre che il sito non dimostra', () => {
     for (const { title, description } of [
       ...caseStudies.map((s) => s.seo),
-      ...serviceDetails.map((s) => s.seo)
+      ...serviceDetails.map((s) => s.seo),
+      ...softwareHousePages.map((p) => p.seo)
     ]) {
       expect(`${title} ${description}`).not.toMatch(
         /\b(470|98\s?%|340\s?%|ROAS|garantit|migliore|numero 1|leader)\b/i

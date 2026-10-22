@@ -13,7 +13,8 @@ import { homeFaqs } from '../data/faqs/home';
 import { mestreFaqs } from '../data/faqs/mestre';
 import { pordenoneFaqs } from '../data/faqs/pordenone';
 import type { Faq } from '../data/faqs/types';
-import { faqsForService, localLandingLinks, serviceDetails } from '../data/service-details';
+import { faqsForService, getServiceBySlug, localLandingLinks, serviceDetails } from '../data/service-details';
+import { softwareHousePages } from '../data/software-house';
 import { COMPANY, SITE_URL, socialLinks } from '../data/site';
 import { AREAS_SERVED, COMPANY_SUMMARY } from '../data/profile';
 import { founders } from '../data/team';
@@ -54,6 +55,12 @@ function facts(): string[] {
   ];
 }
 
+/** I lavori che mostrano l'intelligenza artificiale all'opera: gli stessi che la pagina degli agenti AI dichiara come prova. */
+const aiProof = () =>
+  (getServiceBySlug('agenti-ai')?.proof ?? [])
+    .map((p) => caseStudies.find((c) => c.id === p.id))
+    .filter((c): c is CaseStudy => !!c);
+
 export function llmsTxt(): string {
   const prodotti = caseStudies.filter((s) => s.category === 'digital');
   const lavori = caseStudies.filter((s) => s.category !== 'digital');
@@ -74,6 +81,18 @@ ${facts()
 
 ${serviceDetails.map((s) => link(s.name, `/servizi/${s.slug}`, s.seo.description)).join('\n')}
 ${localLandingLinks.map((l) => link(l.label, l.href, l.description)).join('\n')}
+
+## Software house
+
+${softwareHousePages.map((p) => link(p.name, p.path, `${p.seo.description} ${p.zone === 'pordenone' ? 'Sede legale' : 'Base operativa'}: ${p.zone === 'pordenone' ? COMPANY.legalSeat : CONTACT.street}.`)).join('\n')}
+
+## AI
+
+${link('Agenti AI e automazioni', '/servizi/agenti-ai', getServiceBySlug('agenti-ai')!.subtitle)}
+${aiProof()
+  .map((s) => link(s.name, caseStudyHref(s), `${s.seo.description} Stato: ${statusLine(s)}.`))
+  .join('\n')}
+${link('Bando Intelligenza Artificiale FVG 2026', BANDO, 'Guida al bando regionale: lo sportello 2026 si è chiuso con le risorse esaurite.')}
 
 ## Prodotti di Righello
 
@@ -124,6 +143,22 @@ export function llmsFullTxt(): string {
     })
     .join('\n\n');
 
+  const software = softwareHousePages
+    .map((p) =>
+      [
+        `### ${p.name} (${url(p.path)})`,
+        p.lead,
+        `Cosa costruiamo:\n${p.scope.items.map((x) => `- ${x.title}: ${x.text}`).join('\n')}`,
+        `Prove (schede con lo stato vero): ${p.proof
+          .map((it) => caseStudies.find((c) => c.id === it.id))
+          .filter((c): c is CaseStudy => !!c)
+          .map((c) => `${c.name} (${url(caseStudyHref(c))}, ${c.status.label})`)
+          .join(', ')}.`,
+        `Domande frequenti:\n\n${qa(p.faqs)}`
+      ].join('\n\n')
+    )
+    .join('\n\n');
+
   const progetti = caseStudies
     .map((s) =>
       [
@@ -166,6 +201,7 @@ ${section(
 )}
 ${section('Domande generali', qa(homeFaqs))}
 ${section('Servizi', servizi)}
+${section('Software house', software)}
 ${section('Pagine per zona', zone)}
 ${section('Prodotti e lavori, con lo stato vero di ognuno', progetti)}
 ${section('BUFFR: domande frequenti', qa(buffrFaqs))}

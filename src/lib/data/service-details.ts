@@ -28,6 +28,19 @@ export interface LocalProductSeo {
   title: string;
   copy: string;
   points: string[];
+  /** Una riga di rimandi sotto il blocco (le pagine che approfondiscono: sedi, prodotti). */
+  links?: Array<{ href: string; label: string }>;
+}
+
+/** Una sezione a schede in piu' di una pagina di servizio (titolo, schede senza collegamento): vedi `ServiceDetail.sections`. */
+export interface ServiceSection {
+  id: string;
+  label: string;
+  kicker: string;
+  title: string;
+  highlight?: string;
+  lead?: string;
+  items: Array<{ title: string; text: string }>;
 }
 
 export interface Outcome {
@@ -66,6 +79,10 @@ export interface ServiceDetail {
   services: ServiceItem[];
   workflow: WorkflowStep[];
   proof: ProofRef[];
+  /** Titolo della sezione dei lavori, se non e' quello comune. */
+  proofHead?: { title: string; highlight?: string; lead?: string };
+  /** Sezioni a schede dopo «Cosa facciamo» (la pagina degli agenti AI chiarisce dove lavora e cosa non fa). */
+  sections?: ServiceSection[];
   note?: ServiceNote;
   seo: ServiceSeo;
   localSeo: LocalProductSeo;
@@ -349,6 +366,11 @@ export const serviceDetails: ServiceDetail[] = [
         'UX/UI, performance, SEO tecnico, analytics e integrazioni in un unico processo.',
         'Architettura pensata per far crescere home, servizi e contenuti senza cannibalizzarsi.',
       ],
+      links: [
+        { href: '/software-house-pordenone', label: 'Software house a Pordenone' },
+        { href: '/software-house-mestre', label: 'Software house a Mestre' },
+        { href: '/progetti', label: 'Progetti e casi studio' },
+      ],
     },
   },
   {
@@ -358,7 +380,7 @@ export const serviceDetails: ServiceDetail[] = [
     titleLine1: 'Il tuo nuovo',
     titleHighlight: 'dipendente digitale',
     subtitle:
-      'Agenti AI progettati sui flussi reali della tua azienda. Riducono i costi operativi, eliminano le attività ripetitive e si integrano con i tuoi sistemi: lavorano al fianco del team, non al suo posto.',
+      'Righello, studio digitale con sede legale a Pordenone e base operativa a Mestre, costruisce agenti AI su misura. Un agente AI è un programma che svolge compiti ripetitivi al posto di una persona e passa al team i casi dubbi. Risponde partendo dai dati dell’azienda, collegato a gestionale, email e documenti: lavora al fianco del team, non al suo posto.',
     tagline: 'Il tuo nuovo dipendente digitale',
     accent: ['#10B981', '#0A5C42'],
     outcomes: [
@@ -431,6 +453,56 @@ export const serviceDetails: ServiceDetail[] = [
       { id: 'assistenti-pa', note: 'Risponde ai cittadini con le pagine del Comune e dice quando non lo sa.' },
       { id: 'dico', note: 'Scrive il messaggio settimanale nello stile dell’ente; la redazione lo approva.' },
     ],
+    proofHead: {
+      title: 'Cosa abbiamo già costruito',
+      highlight: 'già costruito',
+      lead: 'Ogni lavoro ha la sua scheda: cosa fa l’intelligenza artificiale, per chi, e a che punto è (online, in prova, in sperimentazione).',
+    },
+    sections: [
+      {
+        id: 'dove-lavora',
+        label: 'Dove lavora',
+        kicker: 'Dove l’AI lavora già',
+        title: 'Tre posti dove gli assistenti sono già al lavoro',
+        highlight: 'già al lavoro',
+        items: [
+          {
+            title: 'Per i Comuni e gli enti',
+            text: 'Un assistente WhatsApp, in sperimentazione in un Comune del Friuli-Venezia Giulia, risponde ai cittadini con le pagine ufficiali dell’ente, rimanda alla fonte e dice quando non sa. DICO prepara il messaggio settimanale nello stile dell’ente: la redazione lo approva.',
+          },
+          {
+            title: 'Dentro i gestionali',
+            text: 'In Óptima l’assistente risponde dai dati dello studio e chiede conferma prima di scrivere. In Tetha la lettura dei documenti scansionati propone tipo, persona e date: senza il sì di una persona non entra niente in archivio.',
+          },
+          {
+            title: 'Per i processi di un’azienda',
+            text: 'Si parte dai flussi reali: documenti da archiviare e ritrovare, richieste ripetitive dei clienti, report da aggiornare, dati da portare dal gestionale al CRM. Cosa automatizzare e cosa no si decide insieme, caso per caso.',
+          },
+        ],
+      },
+      {
+        id: 'produzione-ai',
+        label: 'Produzione e AI',
+        kicker: 'Produzione AI: cosa facciamo e cosa no',
+        title: 'Chi cerca «produzione AI» può intendere cose diverse',
+        highlight: 'cose diverse',
+        lead: 'Per dirlo chiaro: ecco dove Righello lavora con l’intelligenza artificiale e dove no.',
+        items: [
+          {
+            title: 'AI nel lavoro di ogni giorno: sì',
+            text: 'Documenti, messaggi, risposte e report: agenti che leggono i dati dell’azienda e li usano per svolgere compiti ripetitivi. È quello che costruiamo, con gli esempi che trovi in questa pagina.',
+          },
+          {
+            title: 'AI dentro il software che usi: sì',
+            text: 'Funzioni di intelligenza artificiale nei gestionali e nelle piattaforme, collegate ai dati del cliente, come in Óptima, Tetha e DICO.',
+          },
+          {
+            title: 'AI sulle macchine di produzione: no',
+            text: 'Non costruiamo sistemi per linee e macchine di fabbrica, come visione artificiale o manutenzione predittiva: tra i nostri lavori non ce n’è nessuno, e non li proponiamo come servizio.',
+          },
+        ],
+      },
+    ],
     note: {
       kicker: 'Opportunità per le aziende del Friuli Venezia Giulia',
       title: 'Bando Intelligenza Artificiale FVG 2026',
@@ -450,6 +522,12 @@ export const serviceDetails: ServiceDetail[] = [
         'Agenti AI su misura, automazioni operative e flussi documentali.',
         'Integrazione con CRM, ERP, email, database e strumenti già in uso.',
         'Progetti pensati per ridurre lavoro ripetitivo senza perdere controllo umano.',
+      ],
+      links: [
+        { href: '/software-house-pordenone', label: 'Software house a Pordenone' },
+        { href: '/software-house-mestre', label: 'Software house a Mestre' },
+        { href: '/progetti/assistenti-pa', label: 'Assistenti AI per i Comuni' },
+        { href: '/servizi/web', label: 'Siti web e software' },
       ],
     },
   },
@@ -506,11 +584,61 @@ export interface ServiceFaq {
   services: string[];
   /** `false`: la domanda si vede nella pagina ma non entra nei dati strutturati ne' in llms.txt (cifre o impegni da far confermare: vedi docs/seo-audit.md). */
   structured?: false;
+  /** `true`: la domanda e' solo della pagina di quel servizio; l'indice dei servizi non la ripete. */
+  onlyOnPage?: true;
 }
 
 const all = ['marketing', 'advertising', 'web', 'agenti-ai'];
 
 export const serviceFaqs: ServiceFaq[] = [
+  {
+    q: 'Cos’è un agente AI aziendale?',
+    a: 'Un agente AI aziendale è un programma che svolge compiti al posto di una persona: legge email e documenti, inserisce dati nel gestionale o nel CRM, risponde alle richieste più semplici. Righello lo costruisce sui flussi dell’azienda, lo collega ai sistemi che già usa e lascia al team i casi che chiedono una persona.',
+    services: ['agenti-ai'],
+    onlyOnPage: true,
+  },
+  {
+    q: 'Cosa significa produzione con l’AI?',
+    a: 'Può voler dire cose diverse. L’AI nel lavoro di ogni giorno e dentro il software dell’azienda è quello che costruiamo: Óptima, Tetha, DICO e gli assistenti per i Comuni. L’AI sulle macchine di fabbrica non è un nostro servizio. Per foto, video e testi c’è il servizio di marketing, prodotto dal team di Righello.',
+    services: ['agenti-ai'],
+    onlyOnPage: true,
+  },
+  {
+    q: 'Fate intelligenza artificiale per le macchine e le linee di produzione?',
+    a: 'No. Tra i nostri lavori non ci sono sistemi per macchine o linee di fabbrica, come la visione artificiale o la manutenzione predittiva, e non li proponiamo come servizio. Costruiamo agenti e assistenti che lavorano su documenti, messaggi, risposte e dati di gestionale e CRM.',
+    services: ['agenti-ai'],
+    onlyOnPage: true,
+  },
+  {
+    q: 'Esistono esempi di assistenti AI per i Comuni?',
+    a: 'Sì. Un assistente WhatsApp è in sperimentazione in un Comune del Friuli-Venezia Giulia: risponde con le pagine ufficiali dell’ente, rimanda alla fonte e, se l’informazione non c’è, lo dice invece di inventarla. DICO.ONLINE, già online, porta le comunicazioni dei Comuni su WhatsApp e Telegram.',
+    services: ['agenti-ai'],
+    onlyOnPage: true,
+  },
+  {
+    q: 'L’agente AI sostituisce il personale?',
+    a: 'No: lavora al fianco del team, non al suo posto. Si occupa dei compiti ripetitivi e passa a una persona i casi che chiedono una decisione. Negli esempi che abbiamo costruito, come Tetha e Óptima, l’assistente propone e chiede conferma prima di scrivere o archiviare.',
+    services: ['agenti-ai'],
+    onlyOnPage: true,
+  },
+  {
+    q: 'Come proteggete i dati?',
+    a: 'Dipende dal progetto, e gli esempi che abbiamo costruito mostrano come. Nell’assistente per i Comuni i dati personali sono coperti prima di arrivare al modello. In Tetha i dati di ogni impresa sono separati da quelli delle altre e l’archivio è in Europa. DICO tiene archivio e allegati in Europa.',
+    services: ['agenti-ai'],
+    onlyOnPage: true,
+  },
+  {
+    q: 'Gli agenti AI vengono addestrati con i dati dei clienti?',
+    a: 'Non nel senso di un nuovo addestramento. In DICO l’assistente non è riaddestrato: a ogni richiesta lavora sui dati del Comune (recupero dei dati), e la memoria di ogni Comune è quella dei suoi messaggi già usciti, senza prestiti da un ente all’altro. L’assistente per i Comuni risponde cercando nelle pagine dell’ente.',
+    services: ['agenti-ai'],
+    onlyOnPage: true,
+  },
+  {
+    q: 'Quanto costa un agente AI?',
+    a: 'Non c’è un listino: il costo dipende dai flussi da automatizzare, dai sistemi da collegare e da quanti dati vanno letti. La prima chiamata è gratuita; poi Righello prepara una proposta scritta con tempi e consegne chiari, prima di iniziare, così sai cosa ricevi.',
+    services: ['agenti-ai'],
+    onlyOnPage: true,
+  },
   {
     q: 'Quanto tempo ci vuole per vedere i risultati?',
     a: 'I primi miglioramenti si vedono dai 3 mesi. In questo periodo costruiamo le fondamenta: strategia, contenuti, campagne e tracciamento. Per i siti web, i tempi di sviluppo variano da 4 a 12 settimane a seconda della complessità.',
@@ -559,7 +687,7 @@ export const serviceFaqs: ServiceFaq[] = [
 
 /** Le domande di un servizio; senza argomento, tutte (l'indice dei servizi le mostra tutte). */
 export const faqsForService = (slug?: string): Faq[] =>
-  serviceFaqs.filter((f) => !slug || f.services.includes(slug)).map(toFaq);
+  serviceFaqs.filter((f) => (slug ? f.services.includes(slug) : !f.onlyOnPage)).map(toFaq);
 
 /** Una domanda di servizio nella forma comune a tutte le pagine (`structured` compreso). */
 export function toFaq(f: ServiceFaq): Faq {

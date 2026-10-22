@@ -18,3 +18,20 @@ export const AREAS_SERVED = [
   { type: 'AdministrativeArea', name: 'Friuli-Venezia Giulia' },
   { type: 'AdministrativeArea', name: 'Veneto' },
 ] as const;
+
+/**
+ * Di cosa si occupa Righello, per `knowsAbout` dei dati strutturati: solo cio' che le pagine dei servizi e le schede dei progetti dimostrano.
+ * (Niente industria 4.0, visione artificiale, ERP: non ci sono schede.)
+ */
+export const KNOWS_ABOUT = [
+  'Sviluppo di software su misura',
+  'Gestionali',
+  'App per iPhone e iPad',
+  'Piattaforme web',
+  'Integrazioni tra sistemi',
+  'Agenti AI e automazioni',
+  'Assistenti AI per i Comuni',
+  'Siti web e e-commerce',
+  'Social media marketing',
+  'Advertising online'
+] as const;
