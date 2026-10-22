@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import { watchNearViewport } from '$lib/utils/nearViewport';
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
@@ -317,7 +318,7 @@
                   </div>
                   <p class="avt-cta-card__title">E molto altro<br/>in arrivo</p>
                   <p class="avt-cta-card__subtitle">Nuove recensioni ogni mese</p>
-                  <a href="/contatti" class="avt-cta-card__btn">Vuoi sapere di più?</a>
+                  <a href={contactHref()} class="avt-cta-card__btn">Vuoi sapere di più?</a>
                 </div>
               {:else if activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId}
                 <img

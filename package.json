@@ -21,7 +21,8 @@
     "seo:dates": "tsx scripts/page-dates.ts",
     "seo:indexnow": "node scripts/indexnow.mjs",
     "lint": "prettier --check . && eslint .",
-    "validate": "npm run check && npm run lint",
+    "check:contact": "node scripts/check-contact-ctas.mjs",
+    "validate": "npm run check && npm run lint && npm run check:contact",
     "format": "prettier --write ."
   },
   "devDependencies": {

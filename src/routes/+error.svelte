@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import { page } from '$app/stores';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
   import { COMPANY } from '$lib/data/site';
@@ -13,7 +14,7 @@
   const ways = [
     { href: '/progetti', label: 'Cosa abbiamo costruito', note: 'App, gestionali e siti' },
     { href: '/servizi', label: 'Di cosa ci occupiamo', note: 'Marketing, advertising, web, AI' },
-    { href: '/contatti', label: 'Scrivici', note: 'Rispondiamo entro 72 ore' },
+    { href: contactHref(), label: 'Scrivici', note: 'Rispondiamo entro 72 ore' },
   ];
 </script>
 
@@ -34,7 +35,7 @@
       <MagneticButton href="/progetti" variant="secondary">Vedi i progetti</MagneticButton>
     </div>
 
-    <ul class="err__ways">
+    <ul class="err__ways" data-cta="errore">
       {#each ways as way}
         <li>
           <a href={way.href} class="err__way">

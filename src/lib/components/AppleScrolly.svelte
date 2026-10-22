@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import { onMount, onDestroy, tick } from 'svelte';
   import { browser } from '$app/environment';
   import PhoneMockup from './PhoneMockup.svelte';
@@ -742,7 +743,7 @@
       </p>
       
       <div class="flex flex-wrap gap-3 md:gap-4 mb-6 md:mb-10 justify-center lg:justify-start">
-        <MagneticButton href="/contatti" variant="primary">
+        <MagneticButton href={contactHref()} variant="primary">
           Iniziamo a parlare
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

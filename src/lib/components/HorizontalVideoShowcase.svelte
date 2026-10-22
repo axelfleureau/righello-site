@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import { paintVideoBar, paintVideoProgress } from '$lib/utils/videoProgress';
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
@@ -559,7 +560,7 @@
     {/each}
     
     <article class="carousel-card cta-card-wrapper" role="listitem">
-      <a href="/contatti" class="cta-end-card">
+      <a href={contactHref()} class="cta-end-card">
         <div class="cta-end-card__inner">
           <div class="cta-end-card__icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">

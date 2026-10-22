@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import { projects, departments, clients } from '$lib/data/projects';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
@@ -26,7 +27,7 @@
   export let data: PageData;
   export let form: Record<string, unknown> | null = null;
   
-  const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
+  const schedulingUrl = env.PUBLIC_SCHEDULING_URL || contactHref();
   
   const homepageServices = departments.filter(dept => dept.id !== 'agenti-ai').map(dept => ({
     id: dept.id,
