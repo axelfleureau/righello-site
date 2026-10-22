@@ -309,7 +309,17 @@
     if (!v || reduceMotion || audioFailures >= AUDIO_MAX_AUTO_FAILURES) return;
     try {
       if (nav.getAutoplayPolicy?.(v) === 'allowed') requestHeroAudio();
+      // Gesto gia' dato su questa pagina (banner dei cookie, menu, clic precedente): l'attivazione e'
+      // persistente, il suono puo' partire senza altro gesto. Se il browser rifiuta, verifyAudio torna a muto.
+      else if ((navigator as Navigator & { userActivation?: { hasBeenActive: boolean } }).userActivation?.hasBeenActive) requestHeroAudio();
     } catch { /* API non disponibile: si resta sul gesto */ }
+  }
+
+  // Primo movimento della pagina (rotella, dito, scorrimento): se nel frattempo il browser ha concesso il suono
+  // (attivazione data prima dello scorrimento) parte ora; altrimenti nulla, ci pensa il controllo sul telefono.
+  function onFirstMove() {
+    ['wheel', 'touchmove', 'scroll'].forEach(t => window.removeEventListener(t, onFirstMove));
+    if (heroInView && !audioUnlocked) tryPolicyAutounmute();
   }
 
   onMount(async () => {
@@ -355,6 +365,7 @@
 
     audioObserver.observe(container);
     tryPolicyAutounmute();
+    ['wheel', 'touchmove', 'scroll'].forEach(t => window.addEventListener(t, onFirstMove, { passive: true }));
     // --- end audio management ---
     
     // Single initialization - wait for window load
@@ -722,6 +733,7 @@
     if (browser) {
       cancelAnimationFrame(audioRampFrame);
       (['pointerdown', 'pointerup', 'click', 'keydown'] as const).forEach(t => window.removeEventListener(t, onUserActivation, { capture: true }));
+      ['wheel', 'touchmove', 'scroll'].forEach(t => window.removeEventListener(t, onFirstMove));
       document.removeEventListener('visibilitychange', onVisibilityChange);
     }
   });
