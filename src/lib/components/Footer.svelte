@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref, pageLink } from '$lib/data/contact';
   import { browser } from '$app/environment';
   import { page } from '$app/stores';
   import MagneticButton from './MagneticButton.svelte';
@@ -52,7 +53,7 @@
         <h2 class="cta-title">Hai un progetto in mente?</h2>
         <p class="cta-subtitle">Rispondiamo entro 72 ore. Preventivo gratuito e personalizzato.</p>
       </div>
-      <MagneticButton href="/contatti" variant="primary">
+      <MagneticButton href={contactHref()} variant="primary">
         Parliamone
         <svg class="w-5 h-5 ml-2 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -94,7 +95,7 @@
           <h3 class="footer-heading">{column.title}</h3>
           <ul class="footer-links">
             {#each column.links as link}
-              <li><a href={link.href}>{link.label}</a></li>
+              <li><a href={link.href} data-contact-link={pageLink(link.href)}>{link.label}</a></li>
             {/each}
           </ul>
         </nav>

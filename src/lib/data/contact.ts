@@ -4,7 +4,7 @@
  */
 import { env } from '$env/dynamic/public';
 import { COMPANY, PRIVACY_URL } from './site';
-import { getCaseStudyBySlug, type CaseStudy, type ProjectKind } from './case-studies';
+import type { CaseStudy } from './case-studies';
 
 /** Giorni e ore in cui si risponde (la riga `CONTACT.hours` si ricava da qui; i dati strutturati la leggono cosi'). */
 export const CONTACT_HOURS = {
@@ -45,8 +45,9 @@ export function formatPhone(international: string): string {
 export const whatsappHref = (text = 'Ciao, vorrei parlare di un progetto con Righello.') =>
   `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(text)}`;
 
-export const mailHref = (subject = 'Vorrei parlare di un progetto') =>
-  `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}`;
+/** Con `body` il testo e' gia' scritto: serve quando l'invio dal sito non e' riuscito e si ripiega sulla posta. */
+export const mailHref = (subject = 'Vorrei parlare di un progetto', body = '') =>
+  `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}${body ? `&body=${encodeURIComponent(body)}` : ''}`;
 
 /** Servizi del modulo: `value` e' cio' che arriva al team (resta quello di sempre), `label` cio' che legge chi scrive. */
 export const CONTACT_TOPICS = [
@@ -59,28 +60,14 @@ export const CONTACT_TOPICS = [
 
 export const CONTACT_BUDGETS = ['Meno di 5.000€', '5.000€ - 10.000€', '10.000€ - 25.000€', 'Oltre 25.000€', 'Da definire'] as const;
 
-const topicByKind: Record<ProjectKind, (typeof CONTACT_TOPICS)[number]['value']> = {
-  app: 'Sviluppo Web & Software',
-  gestionale: 'Sviluppo Web & Software',
-  broadcast: 'Sviluppo Web & Software',
-  piattaforma: 'Sviluppo Web & Software',
-  sito: 'Sviluppo Web & Software',
-  contenuti: 'Marketing & Social Media',
-};
+/**
+ * Un link verso /contatti e' un pulsante che apre il foglio. Il "Contatti" dei menu e' invece una voce di navigazione:
+ * porta alla pagina, che ha anche sedi, orari e domande frequenti. Si dichiara con questo attributo.
+ */
+export const pageLink = (href: string) => (href === '/contatti' ? 'page' : undefined);
 
 /** Link a /contatti: con un prodotto di partenza il modulo si apre gia' sul suo tema (`?da=<id>`). */
 export function contactHref(from?: Pick<CaseStudy, 'id'> | string | null): string {
   const id = typeof from === 'string' ? from : from?.id;
   return id ? `/contatti?da=${encodeURIComponent(id)}` : '/contatti';
-}
-
-/** Cio' che il modulo precompila a partire dall'indirizzo. Il parametro non viene mai scritto cosi' com'e': si accetta solo un id o uno slug noto. */
-export function prefillFromQuery(params: URLSearchParams): { study: CaseStudy | null; topic: string; message: string } {
-  const da = params.get('da');
-  const study = da ? (getCaseStudyBySlug(da) ?? null) : null;
-  const slug = params.get('servizio');
-  const bySlug = CONTACT_TOPICS.find((t) => t.slug === slug);
-  const topic = bySlug?.value ?? (study ? topicByKind[study.kind] : '');
-  const message = study ? `Mi interessa un progetto simile a ${study.name}. ` : '';
-  return { study, topic, message };
 }
