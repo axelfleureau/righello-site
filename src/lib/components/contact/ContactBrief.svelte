@@ -128,7 +128,8 @@
   .cbf__row:first-child { border-top: 0; }
   dt { font-family: var(--font-label); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cx-muted); padding-top: 0.12rem; }
   dd { margin: 0; min-width: 0; overflow-wrap: anywhere; white-space: pre-wrap; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; line-clamp: 5; overflow: hidden; }
-  .cbf__row.is-empty dd { color: var(--cx-muted); font-style: italic; }
+  /* l'invito e' solo piu' tenue, non corsivo: il corsivo e' un altro file di carattere che arriva dopo e fa saltare le righe quando si apre il foglio */
+  .cbf__row.is-empty dd { color: var(--cx-muted); }
 
   /* la riga cambiata: uno strato rosa che si accende e sfuma (solo opacity), dietro al testo */
   .cbf__row::after { content: ''; position: absolute; inset: 0 calc(-1 * var(--cx-2)); z-index: -1; border-radius: var(--cx-r-s); background: var(--brand-pink-soft); opacity: 0; pointer-events: none; }
