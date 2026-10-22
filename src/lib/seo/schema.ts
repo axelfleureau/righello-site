@@ -354,7 +354,7 @@ function softwareHouseServiceNode(p: SoftwareHousePage): Node {
       name: 'Software, app e piattaforme su misura',
       itemListElement: p.scope.items.map((x) => ({
         '@type': 'Offer',
-        itemOffered: { '@type': 'Service', name: x.title, description: x.text }
+        itemOffered: { '@type': 'Service', name: x.title }
       }))
     }
   };
@@ -364,7 +364,8 @@ function softwareHouseServiceNode(p: SoftwareHousePage): Node {
 function listedWork(study: CaseStudy): Node {
   const path = caseStudyHref(study);
   const node = isSoftware(study) ? softwareNode(study, path) : creativeWorkNode(study, path);
-  for (const key of ['mainEntityOfPage', 'screenshot', 'image', 'inLanguage']) delete node[key];
+  // Nell'elenco basta il necessario per riconoscere l'opera (nome, tipo, indirizzo, stato dello store): il resto sta nella sua pagina.
+  for (const key of ['mainEntityOfPage', 'screenshot', 'image', 'inLanguage', 'description', 'publisher']) delete node[key];
   return node;
 }
 

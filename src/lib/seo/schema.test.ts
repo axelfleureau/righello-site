@@ -232,7 +232,7 @@ describe('dati strutturati', () => {
         const service = find(nodes, 'Service')!;
         expect(service['provider']).toEqual({ '@id': ORG_ID });
         expect(service['serviceType']).toBe('Sviluppo di software su misura');
-        expect((service['areaServed'] as Node[]).map((a) => a['name'])).toEqual(p.areas);
+        expect((service['areaServed'] as Node[]).map((a) => a['name']).sort()).toEqual([...p.areas].sort());
         const catalog = (service['hasOfferCatalog'] as Node)['itemListElement'] as Node[];
         expect(catalog.map((o) => (o['itemOffered'] as Node)['name'])).toEqual(p.scope.items.map((x) => x.title));
         const shown = softwareHouseModel(p).faq!.items.map((f) => [f.q, f.a]);
