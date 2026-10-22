@@ -3,6 +3,7 @@ import { getCaseStudyBySlug } from './case-studies';
 import { serviceDetails, serviceFaqs } from './service-details';
 import { getSoftwareHouse, softwareHousePages, type SoftwareHousePage } from './software-house';
 import { footerColumns, softwareHouseLinks } from './site';
+import { ogCards } from '../seo/og-cards';
 import { sitePages } from '../seo/pages';
 
 const words = (text: string) => text.trim().split(/\s+/).length;
@@ -49,6 +50,8 @@ describe('pagine software house: dati', () => {
       expect(sitePages.map((p) => p.path)).toContain(link.href);
     }
     expect(getSoftwareHouse('milano')).toBeUndefined();
+    // L'immagine di condivisione dice lo stesso nome della pagina.
+    for (const p of softwareHousePages) expect(ogCards.find((c) => c.path === p.path)?.title, p.path).toBe(p.name);
   });
 
   describe.each(softwareHousePages)('$path', (p) => {

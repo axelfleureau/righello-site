@@ -7,7 +7,7 @@
  */
 import { caseStudies, caseStudyHref, type CaseStudy } from '../data/case-studies';
 import { serviceDetails, type ServiceDetail } from '../data/service-details';
-import { softwareHousePages } from '../data/software-house';
+import { softwareHouseLinks } from '../data/site';
 
 /** Un file intero, oppure solo il blocco di un elemento dentro un file di dati (si cerca la riga d'apertura). */
 export type Source = string | { file: string; opens: string };
@@ -94,12 +94,13 @@ const servicePages = (): SitePage[] =>
     sources: [{ file: SERVICE_DATA, opens: `slug: '${s.slug}',` }]
   }));
 
+/** Le due pagine «software house»: indirizzi da `site.ts`, contenuto da `software-house.ts` (un blocco per sede). */
 const softwareHouseSitePages = (): SitePage[] =>
-  softwareHousePages.map((p) => ({
-    path: p.path,
+  softwareHouseLinks.map((l) => ({
+    path: l.href,
     priority: '0.9',
     changefreq: 'monthly',
-    sources: [{ file: SOFTWARE_DATA, opens: `zone: '${p.zone}',` }]
+    sources: [{ file: SOFTWARE_DATA, opens: `zone: '${l.zone}',` }]
   }));
 
 /** BUFFR e' escluso: la sua pagina e' `/buffr`, gia' fra quelle fisse. */

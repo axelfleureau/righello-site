@@ -24,8 +24,6 @@ export interface SoftwareHousePage {
   areas: string[];
   /** Titolo (30-60 caratteri) e descrizione (70-160) per i motori di ricerca e le anteprime. */
   seo: { title: string; description: string };
-  /** Immagine di condivisione. */
-  card: { kicker: string; title: string; note: string };
   kicker: string;
   title: string;
   highlight?: string;
@@ -65,11 +63,6 @@ export const softwareHousePages: SoftwareHousePage[] = [
       title: 'Software house a Pordenone: software su misura | Righello',
       description:
         'Software house a Pordenone e in Friuli-Venezia Giulia: software su misura, gestionali, app per iPhone e iPad, piattaforme web e integrazioni.',
-    },
-    card: {
-      kicker: 'Software house',
-      title: 'Software house a Pordenone',
-      note: 'Software su misura, gestionali, app per iPhone e iPad e piattaforme web',
     },
     kicker: 'Pordenone e Friuli-Venezia Giulia',
     title: 'Software house a Pordenone',
@@ -272,11 +265,6 @@ export const softwareHousePages: SoftwareHousePage[] = [
       title: 'Software house a Mestre: app, gestionali e siti | Righello',
       description:
         'Software house a Mestre per Venezia e il Veneto: software su misura, app per iPhone e iPad, piattaforme web e siti per sport, eventi e turismo.',
-    },
-    card: {
-      kicker: 'Software house',
-      title: 'Software house a Mestre',
-      note: 'Software su misura, app e piattaforme per Venezia e il Veneto',
     },
     kicker: 'Mestre, Venezia e Veneto',
     title: 'Software house a Mestre',
