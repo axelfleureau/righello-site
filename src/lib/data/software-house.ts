@@ -314,7 +314,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
       title: 'Dove siamo, quando rispondiamo, come si parte.',
       highlight: 'come si parte',
       items: [
-        { title: 'Dove siamo', text: `${CONTACT.street}. La sede legale è a ${COMPANY.legalSeat}: è la stessa società, ${COMPANY.legalName}.` },
+        { title: 'Dove siamo', text: `${CONTACT.street}. La sede legale è a ${COMPANY.legalSeat}: è la stessa società (${COMPANY.legalName}).` },
         { title: 'Quando rispondiamo', text: `${CONTACT.hours}. Scrivi su WhatsApp, per email o dal modulo: rispondiamo ${CONTACT.reply}.` },
         { title: 'Come si parte', text: 'Una chiamata gratuita, poi una proposta scritta con tempi e consegne. Incontri da remoto con strumenti condivisi; ci spostiamo da te quando serve.' },
       ],
@@ -322,7 +322,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
     note: {
       kicker: 'Il Veneto nei nostri lavori',
       title: 'Dallo sport ai siti di evento',
-      text: 'BUFFR Live segue il calcio dilettantistico di Veneto e Friuli, Canale 77 On Demand raccoglie CalcioVeneto Live e CalcioFVG Live, e il sito di Bibione Sand Storm è stato rifatto da zero. Sono lavori veri, aperti: ogni scheda dice a che punto sono.',
+      text: 'BUFFR Live segue il calcio dilettantistico di Veneto e Friuli, Canale 77 On Demand raccoglie CalcioVeneto Live e CalcioFVG Live, e il sito di Bibione Sand Storm è stato rifatto da zero. Sono lavori veri: ogni scheda dice a che punto sono.',
       link: { href: '/progetti', label: 'Tutti i progetti' },
     },
     method: {
