@@ -14,7 +14,7 @@ import type { Heading, Link, LocalBlock, MethodStep, PageModel, ProofItem, Scope
 
 /** Dalle schede dei servizi alla struttura comune: una funzione per il caso generale, una per la variante di agenzia. */
 
-const CONTACT: Link = { href: '/contatti', label: 'Richiedi un preventivo' };
+const CONTACT: Link = { href: contactHref(), label: 'Richiedi un preventivo' };
 const ALL_PROJECTS: Link = { href: '/progetti', label: 'Tutti i progetti' };
 
 export function serviceModel(s: ServiceDetail): PageModel {
@@ -70,7 +70,7 @@ export function serviceModel(s: ServiceDetail): PageModel {
       title: 'Parliamo del tuo progetto',
       highlight: 'tuo progetto',
       text: 'Raccontaci cosa ti serve: ti diciamo come possiamo aiutarti a raggiungere i tuoi obiettivi.',
-      button: { href: '/contatti', label: 'Parliamone' },
+      button: { href: contactHref(), label: 'Parliamone' },
     },
     flow: {
       nextKicker: 'Prossimo servizio',
@@ -115,8 +115,6 @@ export interface AgencyInput {
   other?: { href: string; name: string };
   /** Il percorso dopo e prima, se non e' quello di una pagina di agenzia (indice dei servizi). */
   flow?: PageModel['flow'];
-  /** Il collegamento verso i contatti, se non e' quello solito (le pagine nuove usano `contactHref()`). */
-  contact?: Link;
 }
 
 export function agencyModel(a: AgencyInput): PageModel {
@@ -128,7 +126,7 @@ export function agencyModel(a: AgencyInput): PageModel {
     title: a.title,
     highlight: a.highlight,
     lead: a.lead,
-    primary: a.contact ?? { href: '/contatti', label: 'Parliamone' },
+    primary: { href: contactHref(), label: 'Parliamone' },
     secondary: { href: '#lavori', label: 'Vedi i lavori' },
     panel: { title: a.panel.title, items: a.panel.points.map((text) => ({ text })) },
     scope: {
@@ -157,7 +155,7 @@ export function agencyModel(a: AgencyInput): PageModel {
     },
     local: a.local,
     faq: { kicker: 'Domande', title: 'Prima di iniziare', items: a.faq },
-    closing: { ...a.closing, button: a.closing.button ?? { href: '/contatti', label: 'Richiedi l’audit gratuito' } },
+    closing: { ...a.closing, button: a.closing.button ?? { href: contactHref(), label: 'Richiedi l’audit gratuito' } },
     flow: a.flow ?? {
       nextKicker: 'Prossimo: cosa facciamo',
       next: { href: '/servizi', name: 'Tutti i servizi', sub: serviceDetails.map((s) => s.name).join(' · ') },
@@ -167,7 +165,7 @@ export function agencyModel(a: AgencyInput): PageModel {
   };
 }
 
-/** Le pagine «software house»: la stessa struttura delle pagine di agenzia, con i testi di `software-house.ts` e il modulo di contatto dei prodotti. */
+/** Le pagine «software house»: la stessa struttura delle pagine di agenzia, con i testi di `software-house.ts` con il pulsante «Parliamone». */
 export function softwareHouseModel(p: SoftwareHousePage): PageModel {
   return agencyModel({
     city: p.name,
@@ -185,7 +183,6 @@ export function softwareHouseModel(p: SoftwareHousePage): PageModel {
     local: p.local,
     faq: p.faqs.map((f) => ({ q: f.question, a: f.answer })),
     closing: { ...p.closing, button: { href: contactHref(), label: 'Parliamone' } },
-    contact: { href: contactHref(), label: 'Parliamone' },
     flow: {
       nextKicker: 'Prossimo: l’altra sede',
       next: { href: p.flow.next.href, name: p.flow.next.name, sub: p.flow.next.sub },
@@ -210,7 +207,7 @@ export function indexModel(): PageModel {
     title: 'Quattro servizi.',
     highlight: 'Un solo team.',
     lead: 'Marketing, advertising, siti web e agenti AI: competenze che lavorano insieme per far crescere la tua azienda. Un solo interlocutore, risultati che si misurano.',
-    primary: { href: '/contatti', label: 'Richiedi un preventivo' },
+    primary: { href: contactHref(), label: 'Richiedi un preventivo' },
     secondary: { href: '/progetti', label: 'Vedi i progetti' },
     panel: { title: 'Come lavoriamo', items: principles },
     scope: {
@@ -260,7 +257,7 @@ export function indexModel(): PageModel {
       title: 'Parliamo del tuo progetto',
       highlight: 'tuo progetto',
       text: 'Prenota una call gratuita di 30 minuti per analizzare insieme le opportunità di crescita per il tuo lavoro.',
-      button: { href: '/contatti', label: 'Richiedi una consulenza gratuita' },
+      button: { href: contactHref(), label: 'Richiedi una consulenza gratuita' },
     },
     flow: {
       nextKicker: 'Parti da qui',

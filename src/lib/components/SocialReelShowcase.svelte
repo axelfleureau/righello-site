@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import AppleCardsCarousel from './AppleCardsCarousel.svelte';
   import RevealOnScroll from './RevealOnScroll.svelte';
   
@@ -69,7 +70,7 @@
     title: '...e molto altro in arrivo',
     subtitle: 'Nuovi contenuti ogni mese',
     isCta: true,
-    ctaHref: '/contatti',
+    ctaHref: contactHref(),
     ctaLabel: 'Vuoi sapere di più?'
   };
 

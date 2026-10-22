@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import SeoHead from '$lib/components/SeoHead.svelte';
   import { mestreFaqs } from '$lib/data/faqs/mestre';
   import ServicePage from '$lib/components/servizi/ServicePage.svelte';
@@ -94,7 +95,7 @@
     { href: softwareHouseLinks[1].href, label: softwareHouseLinks[1].label },
     { href: '/progetti', label: 'Progetti e casi studio' },
     { href: '/buffr', label: 'Prodotti digitali Righello' },
-    { href: '/contatti', label: 'Audit gratuito' },
+    { href: contactHref(), label: 'Audit gratuito' },
   ];
 
   const m = agencyModel({

@@ -199,7 +199,7 @@ Stessa regola di fondo: **gli stessi dati dappertutto** (tabella all'inizio del 
 | **LinkedIn** | Specialita' della pagina azienda: software su misura, app, gestionali, AI; un post per ogni prodotto, con il link alla sua scheda. | Vedi sezione B. |
 | **App Store, scheda di BUFFR** | «Sito web dello sviluppatore» = `https://www.wearerighello.com/software-house-pordenone`, «Sito web di marketing» = `/buffr`. Nome del venditore «Righello S.r.l.». | E' l'unico prodotto su App Store: e' la prova piu' forte per «app per iPhone». |
 | **Associazioni di categoria** | Come in sezione B: un link da una fonte locale. | Verificare le condizioni. |
-| **Pagine delle persone** | Solo con il loro consenso: profilo LinkedIn collegato alla pagina azienda. Nessuna pagina persona e' stata creata nel sito. | Nel brief si parlava del sito «brain» delle persone: non e' stato trovato nel repository, quindi non e' stato toccato. |
+| **Pagine delle persone** | Solo con il loro consenso: profilo LinkedIn collegato alla pagina azienda. Nessuna pagina persona e' stata creata nel sito. | Un sito «brain» delle persone, indicato per questo lavoro, non e' nel repository e non e' stato toccato. |
 
 ### E4. Prove da raccogliere (le sole che contano per «software house»)
 

@@ -4,6 +4,7 @@
   import Header from '$lib/components/Header.svelte';
   import Footer from '$lib/components/Footer.svelte';
   import CustomCursor from '$lib/components/CustomCursor.svelte';
+  import ContactHost from '$lib/components/contact/ContactHost.svelte';
   import { theme } from '$lib/stores/theme';
   import { onMount, tick } from 'svelte';
   import { browser } from '$app/environment';
@@ -117,6 +118,8 @@
   </main>
   {#if showChrome}
     <Footer />
+    <!-- Ogni link verso /contatti apre il foglio di contatto senza cambiare pagina; sul telefono compare la barra fissa. -->
+    <ContactHost />
   {/if}
   {#if isHome && AirplaneEasterEgg}
     <svelte:component this={AirplaneEasterEgg} />
