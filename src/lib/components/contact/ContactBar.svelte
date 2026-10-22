@@ -8,6 +8,7 @@
   import { onMount } from 'svelte';
   import { afterNavigate } from '$app/navigation';
   import { page } from '$app/stores';
+  import CxButton from '$lib/components/contact/CxButton.svelte';
   import { cookieUi, watchCookieUi } from '$lib/contact/cookieBanner';
   import { contactSheet } from '$lib/contact/sheet';
   import { contactHref, whatsappHref } from '$lib/data/contact';
@@ -100,7 +101,7 @@
 
 {#if eligible}
   <div class="cb-bar" class:is-on={visible} inert={visible ? undefined : true} use:measure style="--cb-left:{left}px" data-cta="barra">
-    <a class="cb-bar__main" href={contactHref()} data-cta="barra">Parliamone</a>
+    <div class="cb-bar__main"><CxButton href={contactHref()} full>Parliamone</CxButton></div>
     <a class="cb-bar__wa" href={whatsappHref()} target="_blank" rel="noopener noreferrer" aria-label="Scrivici su WhatsApp (si apre in una nuova scheda)">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.9 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z" /><path d="M9 9.2c.2 2.2 2.6 4.6 4.8 4.8l1.2-1.1-1.6-1-.8.6a3.3 3.3 0 0 1-1.6-1.6l.6-.8-1-1.6L9 9.2Z" /></svg>
     </a>
@@ -116,47 +117,37 @@
     bottom: 0;
     z-index: 40;
     display: flex;
-    gap: 0.6rem;
+    gap: var(--cx-3);
     align-items: center;
-    padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom, 0px)) var(--cb-left, 1rem);
+    padding: var(--cx-3) max(var(--cx-4), env(safe-area-inset-right, 0px)) calc(var(--cx-3) + env(safe-area-inset-bottom, 0px)) max(var(--cb-left, 1rem), calc(env(safe-area-inset-left, 0px) + var(--cx-4)));
     background: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
     box-shadow: 0 -10px 28px -14px rgba(0, 0, 0, 0.5);
+    /* compare e sparisce salendo/scendendo e dissolvendosi: solo transform e opacity */
     transform: translateY(105%);
-    transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.34s var(--cx-ease), opacity 0.22s ease;
     will-change: transform;
   }
-  .cb-bar.is-on { transform: none; }
-  .cb-bar__main {
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 3rem;
-    padding: 0 1.25rem;
-    border-radius: 999px;
-    background: linear-gradient(135deg, var(--brand-pink-deep) 0%, #a8325f 100%);
-    box-shadow: 0 4px 15px rgba(214, 72, 126, 0.3);
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .cb-bar__main:active { transform: scale(0.985); }
+  .cb-bar.is-on { transform: none; opacity: 1; pointer-events: auto; }
+  .cb-bar__main { flex: 1 1 auto; min-width: 0; }
   .cb-bar__wa {
     flex: none;
     display: grid;
     place-items: center;
+    position: relative;
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    border: 1px solid var(--border-color);
     background: var(--bg-primary);
+    box-shadow: inset 0 0 0 1px var(--border-color);
     color: var(--text-primary);
     -webkit-tap-highlight-color: transparent;
+    transition: transform 0.14s var(--cx-ease);
   }
+  .cb-bar__wa:active { transform: scale(0.94); }
   .cb-bar a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
   .cb-spacer { width: 100%; pointer-events: none; }
-  @media (prefers-reduced-motion: reduce) { .cb-bar { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .cb-bar, .cb-bar__wa { transition: none; } .cb-bar__wa:active { transform: none; } }
 </style>

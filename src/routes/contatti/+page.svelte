@@ -3,6 +3,7 @@
   import { afterNavigate, goto } from '$app/navigation';
   import { page } from '$app/stores';
   import ContactBrief from '$lib/components/contact/ContactBrief.svelte';
+  import ContactSteps from '$lib/components/contact/ContactSteps.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
   import FaqList from '$lib/components/FaqList.svelte';
   import SeoHead from '$lib/components/SeoHead.svelte';
@@ -11,7 +12,6 @@
   import '$lib/components/progetti/tokens.css';
   import { createContactFlow } from '$lib/contact/flow';
   import { CONTACT, formatPhone, mailHref, whatsappHref } from '$lib/data/contact';
-  import { CONTACT_STEPS } from '$lib/data/contact-steps';
   import { resolveContactContext, type ContactContext } from '$lib/data/contact-prefill';
 
   /** Un prodotto di partenza (`?da=tetha`) o un servizio (`?servizio=web`) precompilano il modulo. */
@@ -120,17 +120,7 @@
     <aside class="ct-aside">
       <div class="ct-brief"><ContactBrief {flow} /></div>
       <h2 class="ct-h2">Cosa succede dopo</h2>
-      <ol class="ct-steps">
-        {#each CONTACT_STEPS as s, i}
-          <li>
-            <span class="ct-steps__n" aria-hidden="true">{i + 1}</span>
-            <div>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
-            </div>
-          </li>
-        {/each}
-      </ol>
+      <div class="ct-steps"><ContactSteps variant="page" /></div>
 
       <address class="ct-where">
         <p><strong>Sede legale</strong> {CONTACT.legalSeat}</p>
@@ -193,15 +183,21 @@
     background: var(--bg-secondary);
     color: inherit;
     text-decoration: none;
-    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    transition: transform 0.24s var(--cx-ease);
     -webkit-tap-highlight-color: transparent;
   }
-  .ct-card:hover { border-color: var(--gradient-start); transform: translateY(-2px); }
-  .ct-card:active { transform: none; }
+  /* il bordo che si accende al passaggio e' uno strato sopra la scheda (opacity), non un colore che cambia */
+  .ct-card::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; border: 1px solid var(--gradient-start); opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+  @media (hover: hover) {
+    .ct-card:hover { transform: translateY(-2px); }
+    .ct-card:hover::after { opacity: 1; }
+  }
+  .ct-card:active { transform: scale(0.99); }
   .ct-card:focus-visible { outline: 2px solid var(--gradient-start); outline-offset: 3px; }
   /* sul telefono la scheda e' una riga bassa (icona a sinistra); da 720 px e' una colonna con l'icona in testa */
   .ct-card__top { display: contents; }
-  .ct-card__icon { grid-row: 1 / span 3; align-self: center; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: rgba(214, 72, 126, 0.12); color: var(--gradient-start); }
+  .ct-card__icon { grid-row: 1 / span 3; align-self: center; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--brand-pink-soft); color: var(--brand-pink-ink); }
   .ct-card__label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); }
   .ct-card__value { font-size: 1.15rem; font-weight: 700; line-height: 1.25; overflow-wrap: anywhere; }
   .ct-card__note { font-size: 0.92rem; color: var(--text-secondary); }
@@ -219,11 +215,7 @@
   @media (min-width: 960px) { .ct-form { order: 0; } .ct-aside { position: sticky; top: 6.5rem; } }
 
   .ct-h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 700; line-height: 1.12; margin-bottom: 1.2rem; }
-  .ct-steps { display: grid; gap: 1.3rem; margin-bottom: 2rem; }
-  .ct-steps li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 0.9rem; }
-  .ct-steps__n { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; border: 1px solid var(--gradient-start); color: var(--gradient-start); font-weight: 700; font-size: 0.9rem; }
-  .ct-steps h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem; }
-  .ct-steps p { color: var(--text-secondary); line-height: 1.55; font-size: 1rem; }
+  .ct-steps { margin-bottom: var(--cx-8); }
 
   /* il brief a colonna sta a fianco da 960 px; sotto, il modulo ha il suo a riga */
   .ct-brief { display: none; margin-bottom: 2rem; }
@@ -237,4 +229,6 @@
   .ct-faq__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
   @media (min-width: 960px) { .ct-faq__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 3.5rem); } }
   .ct-faq__grid :global(.section-subtitle) { text-align: left; }
+
+  @media (prefers-reduced-motion: reduce) { .ct-card, .ct-card::after { transition: none; } .ct-card:hover, .ct-card:active { transform: none; } }
 </style>

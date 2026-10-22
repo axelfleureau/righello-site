@@ -40,10 +40,12 @@
 </div>
 
 <style>
-  .csb { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.2rem; min-width: 0; }
+  .csb { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--cx-5); min-width: 0; min-height: 100%; padding: 0 var(--cs-pad); }
+  .csb__form { display: flex; flex-direction: column; min-width: 0; }
+  .csb__form > :global(*) { flex: 1 1 auto; }
   .csb__brief { display: none; }
   @media (min-width: 960px) {
-    .csb { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(1.5rem, 3vw, 2.5rem); align-items: start; }
-    .csb__brief { display: block; position: sticky; top: 0; }
+    .csb { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(1.5rem, 3vw, 2.5rem); align-items: stretch; }
+    .csb__brief { display: block; align-self: start; position: sticky; top: 0; }
   }
 </style>

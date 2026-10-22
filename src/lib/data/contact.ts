@@ -32,6 +32,8 @@ export const CONTACT = {
   street: `${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city} (VE)`,
   /** Chi riceve i messaggi del modulo: i tre fondatori (vedi TEAM_EMAILS in api/contact/+server.ts). */
   recipients: 'i tre fondatori',
+  /** La stessa frase dopo una preposizione articolata ("arriva ai tre fondatori"). */
+  recipientsTo: 'ai tre fondatori',
   privacyUrl: PRIVACY_URL,
 } as const;
 

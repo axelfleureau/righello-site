@@ -25,6 +25,7 @@
   let panel: HTMLElement;
   let grip: HTMLElement;
   let scroller: HTMLElement;
+  let backdrop: HTMLElement;
   let shown = false;
   let closing = false;
   let autofocus = false;
@@ -36,11 +37,13 @@
   // Il rettangolo davvero visibile: sotto la tastiera del telefono e sopra l'avviso cookie.
   let stageTop = 0;
   let stageH = 0;
+  /** La tastiera del telefono e' aperta: il foglio occupa tutto lo spazio rimasto (niente fascia di pagina sopra). */
+  let keyboardOpen = false;
 
   $: if ($contactSheet.open) open();
   $: if (!$contactSheet.open && shown && !closing) close();
   // il comportamento da dito e da tastiera parte appena e' scaricato e il foglio e' in pagina
-  $: if (attach && shown && !closing && panel && grip && scroller && !detach) detach = attach(panel, grip, scroller, closeContactSheet);
+  $: if (attach && shown && !closing && panel && grip && scroller && !detach) detach = attach(panel, grip, scroller, closeContactSheet, backdrop);
 
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   /** Il pulsante delle preferenze cookie ha il livello piu' alto che esiste: finche' il foglio e' aperto non deve coprirlo. */
@@ -90,7 +93,7 @@
     release();
     const trigger = sheetTrigger();
     if (trigger?.isConnected) trigger.focus({ preventScroll: true });
-    closeTimer = setTimeout(() => ((shown = false), (closing = false)), reduced() ? 0 : 180);
+    closeTimer = setTimeout(() => ((shown = false), (closing = false)), reduced() ? 0 : 220);
   }
 
   // (onMount e non onDestroy: quest'ultimo gira anche sul server, dove `window` non esiste)
@@ -105,11 +108,20 @@
     const h = vv?.height ?? window.innerHeight;
     const top = vv?.offsetTop ?? 0;
     const keyboard = Math.round(window.innerHeight - h - top) > 40;
+    const toggled = keyboard !== keyboardOpen;
+    keyboardOpen = keyboard;
     // l'avviso cookie (iubenda) sta in basso e ci passa sopra: il foglio resta sopra di lui. Con la tastiera aperta e' sotto di lei.
     const banner = document.querySelector('#iubenda-cs-banner.iubenda-cs-visible .iubenda-cs-container');
     const hold = !keyboard && banner ? Math.ceil(banner.getBoundingClientRect().height) : 0;
     stageTop = Math.round(top);
     stageH = Math.max(240, Math.round(h - hold));
+    // la tastiera si e' aperta o chiusa con un campo gia' in uso: dopo che il foglio ha preso la nuova altezza lo si riporta in vista (sopra la barra col pulsante)
+    if (toggled && scroller) {
+      const field = document.activeElement;
+      if (field instanceof HTMLElement && scroller.contains(field) && field.matches('input, textarea, select')) {
+        requestAnimationFrame(() => requestAnimationFrame(() => field.scrollIntoView({ block: 'nearest', inline: 'nearest' })));
+      }
+    }
   }
 
   function onKeydown(e: KeyboardEvent) {
@@ -123,8 +135,8 @@
 <svelte:window on:keydown={onKeydown} on:resize={() => shown && syncViewport()} />
 
 {#if shown}
-  <div class="cs-root" class:is-closing={closing} class:is-tight={stageH < 620} bind:this={root} data-contact-root>
-    <div class="cs-backdrop" role="presentation" on:click={closeContactSheet} on:wheel|preventDefault|nonpassive on:touchmove|preventDefault|nonpassive></div>
+  <div class="cs-root" class:is-closing={closing} class:is-tight={stageH < 620} class:is-kb={keyboardOpen} bind:this={root} data-contact-root>
+    <div class="cs-backdrop" role="presentation" bind:this={backdrop} on:click={closeContactSheet} on:wheel|preventDefault|nonpassive on:touchmove|preventDefault|nonpassive></div>
     <div class="cs-stage" style="top:{stageTop}px;height:{stageH}px">
       <div class="cs-panel" role="dialog" aria-modal="true" aria-labelledby="cs-title" tabindex="-1" bind:this={panel}>
         <div class="cs-grip" bind:this={grip} role="presentation">
@@ -155,10 +167,11 @@
 
 <style>
   .cs-root { position: fixed; inset: 0; z-index: 1000; }
-  .cs-backdrop { position: absolute; inset: 0; background: var(--scrim); overscroll-behavior: contain; animation: cs-fade 0.2s ease-out; }
+  .cs-backdrop { position: absolute; inset: 0; background: var(--scrim); overscroll-behavior: contain; animation: cs-fade 0.24s ease-out; }
+  .cs-backdrop:global(.is-settling) { transition: opacity 0.32s var(--cx-ease); }
   .cs-stage { position: absolute; left: 0; right: 0; display: flex; align-items: flex-end; justify-content: center; pointer-events: none; }
   .cs-panel {
-    --cs-pad: 1.25rem;
+    --cs-pad: var(--cx-5);
     pointer-events: auto;
     display: flex;
     flex-direction: column;
@@ -169,50 +182,61 @@
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-bottom: 0;
-    border-radius: 1.5rem 1.5rem 0 0;
+    border-radius: var(--cx-r-l) var(--cx-r-l) 0 0;
     box-shadow: var(--surface-menu-shadow);
     color: var(--text-primary);
     outline: none;
     overflow: hidden;
-    animation: cs-up 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transition: transform 0.2s ease;
+    /* una curva che frena e non rimbalza: il foglio si posa */
+    animation: cs-up 0.34s var(--cx-ease);
+    will-change: transform;
   }
   .cs-panel:global(.is-dragging) { transition: none; }
-  .is-closing .cs-panel { animation: cs-down 0.18s ease-in forwards; }
-  .is-closing .cs-backdrop { animation: cs-fade 0.18s ease-in reverse forwards; }
+  .cs-panel:global(.is-settling) { transition: transform 0.32s var(--cx-ease); }
+  .is-kb .cs-panel { height: 100%; border-radius: var(--cx-r-m) var(--cx-r-m) 0 0; }
+  .is-closing .cs-panel { animation: cs-down 0.22s var(--cx-ease-in) forwards; }
+  .is-closing .cs-backdrop { animation: cs-fade 0.22s ease-in reverse forwards; }
 
   .cs-grip { touch-action: none; flex: none; cursor: default; }
-  .cs-handle { display: block; width: 2.6rem; height: 0.3rem; margin: 0.55rem auto 0; border-radius: 999px; background: var(--border-color); }
+  .cs-handle { display: block; width: 2.6rem; height: 0.3rem; margin: var(--cx-2) auto 0; border-radius: 999px; background: var(--border-color); }
   .cs-head {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 0.7rem var(--cs-pad) 0.9rem;
+    gap: var(--cx-4);
+    padding: var(--cx-3) var(--cs-pad) var(--cx-3);
     background: radial-gradient(70% 140% at 0% 0%, var(--brand-pink-soft), transparent 70%);
   }
   .cs-head__text { min-width: 0; }
   .cs-title { margin: 0; font-size: clamp(1.4rem, 3vw, 1.75rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }
-  .is-tight .cs-sub { display: none; }
-  .cs-sub { margin: 0.25rem 0 0; font-size: 0.95rem; line-height: 1.4; color: var(--text-secondary); }
+  .is-tight .cs-sub, .cs-panel:global(.is-sent) .cs-sub { display: none; }
+  .is-kb .cs-head { padding-bottom: var(--cx-2); }
+  .is-kb .cs-title { font-size: 1.2rem; }
+  .cs-sub { margin: var(--cx-1) 0 0; font-size: 0.95rem; line-height: 1.4; color: var(--text-secondary); }
   .cs-close {
     flex: none;
     display: grid;
     place-items: center;
+    position: relative;
     width: 2.75rem;
     height: 2.75rem;
     margin: -0.2rem -0.3rem 0 0;
-    border: 1px solid var(--border-color);
+    border: 0;
     border-radius: 50%;
     background: var(--bg-primary);
+    box-shadow: inset 0 0 0 1px var(--border-color);
     color: var(--text-primary);
     cursor: pointer;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    transition: transform 0.14s var(--cx-ease);
   }
-  .cs-close:hover { border-color: var(--brand-pink); color: var(--brand-pink-ink); }
+  .cs-close::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--brand-pink); opacity: 0; transition: opacity 0.2s ease; }
+  .cs-close:active { transform: scale(0.94); }
+  @media (hover: hover) { .cs-close:hover::after { opacity: 1; } }
   .cs-close:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
+  /* il padding laterale sta nel contenuto (`--cs-pad`), non qui: la barra col pulsante e' larga quanto il foglio e resta sempre in fondo */
   .cs-scroll {
     flex: 1 1 auto;
     min-height: 0;
@@ -220,43 +244,49 @@
     overscroll-behavior: contain;
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
-    padding: 0.2rem var(--cs-pad) calc(1.1rem + env(safe-area-inset-bottom, 0px));
+    padding: var(--cx-1) 0 0;
+    scroll-padding: var(--cx-2) 0 calc(var(--cx-dock, 0px) + var(--cx-3));
   }
 
-  .cs-skel { display: grid; gap: 0.9rem; padding-top: 0.5rem; }
-  .cs-skel i { display: block; height: 3rem; border-radius: 0.8rem; background: var(--bg-tertiary); animation: cs-pulse 1.2s ease-in-out infinite; }
+  /* il contenuto che scorre sotto la testata sfuma invece di tagliarsi a filo */
+  .cs-scroll::before { content: ''; position: sticky; top: 0; z-index: 3; display: block; height: var(--cx-3); margin-bottom: calc(-1 * var(--cx-3)); background: linear-gradient(var(--bg-secondary), transparent); pointer-events: none; }
+
+  .cs-skel { display: grid; gap: var(--cx-4); padding: var(--cx-2) var(--cs-pad) var(--cx-5); }
+  .cs-skel i { display: block; height: 3rem; border-radius: var(--cx-r-s); background: var(--bg-tertiary); animation: cs-pulse 1.2s ease-in-out infinite; }
   .cs-skel i.w { height: 5rem; }
 
   /* Tablet verticale e schermi piu' larghi: finestra centrata. Da 960 px, due colonne larghe quanto il contenitore del sito. */
   @media (min-width: 640px) {
     .cs-stage { align-items: center; }
     .cs-panel {
-      --cs-pad: 1.75rem;
+      --cs-pad: var(--cx-8);
       width: min(40rem, calc(100% - 2rem));
       height: auto;
       min-height: min(34rem, calc(100% - 2rem));
       max-height: calc(100% - 2rem);
       border-bottom: 1px solid var(--border-color);
-      border-radius: 1.6rem;
+      border-radius: var(--cx-r-l);
       animation-name: cs-pop;
+      animation-duration: 0.26s;
     }
+    .is-kb .cs-panel { height: auto; border-radius: var(--cx-r-l); }
     .cs-handle { display: none; }
-    .cs-head { padding-top: 1.4rem; }
-    .is-closing .cs-panel { animation-name: cs-pop-out; }
+    .cs-head { padding-top: var(--cx-5); }
+    .is-closing .cs-panel { animation-name: cs-pop-out; animation-duration: 0.16s; }
   }
   @media (min-width: 960px) {
-    .cs-panel { width: min(var(--container-max), calc(100% - 2 * var(--space-lg))); max-height: min(52rem, calc(100% - 3rem)); min-height: min(34rem, calc(100% - 3rem)); --cs-pad: 2rem; }
+    .cs-panel { width: min(var(--container-max), calc(100% - 2 * var(--space-lg))); max-height: min(52rem, calc(100% - 3rem)); min-height: min(34rem, calc(100% - 3rem)); }
   }
 
   @keyframes cs-fade { from { opacity: 0; } }
   @keyframes cs-up { from { transform: translateY(100%); } }
   @keyframes cs-down { to { transform: translateY(100%); } }
-  @keyframes cs-pop { from { opacity: 0; transform: translateY(0.8rem) scale(0.985); } }
+  @keyframes cs-pop { from { opacity: 0; transform: translateY(0.75rem) scale(0.985); } }
   @keyframes cs-pop-out { to { opacity: 0; transform: translateY(0.5rem) scale(0.99); } }
   @keyframes cs-pulse { 50% { opacity: 0.5; } }
 
   @media (prefers-reduced-motion: reduce) {
     .cs-backdrop, .cs-panel, .is-closing .cs-panel, .is-closing .cs-backdrop, .cs-skel i { animation: none; }
-    .cs-panel { transition: none; }
+    .cs-panel:global(.is-settling), .cs-backdrop:global(.is-settling), .cs-close, .cs-close::after { transition: none; }
   }
 </style>

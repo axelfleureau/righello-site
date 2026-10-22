@@ -21,7 +21,8 @@
     "seo:indexnow": "node scripts/indexnow.mjs",
     "lint": "prettier --check . && eslint .",
     "check:contact": "node scripts/check-contact-ctas.mjs",
-    "validate": "npm run check && npm run lint && npm run check:contact",
+    "check:contact-motion": "node scripts/check-contact-motion.mjs",
+    "validate": "npm run check && npm run lint && npm run check:contact && npm run check:contact-motion",
     "format": "prettier --write ."
   },
   "devDependencies": {

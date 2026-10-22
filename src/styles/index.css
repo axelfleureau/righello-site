@@ -145,6 +145,28 @@
   --surface-menu-border: rgba(255, 255, 255, 0.12);
   --surface-menu-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
   --scrim: rgba(0, 0, 0, 0.6);
+
+  /* Percorso di contatto (foglio, barra, pagina /contatti): una sola scala di spazi, raggi e movimento.
+     Spazi a quarti di rem; i colori "cx" sono varianti dei token del sito che passano 4,5:1 sul fondo delle schede
+     (--text-muted scende a 3,9:1 sulle schede scure e a 4,4:1 su quelle chiare). */
+  --cx-1: 0.25rem;
+  --cx-2: 0.5rem;
+  --cx-3: 0.75rem;
+  --cx-4: 1rem;
+  --cx-5: 1.25rem;
+  --cx-6: 1.5rem;
+  --cx-8: 2rem;
+  --cx-r-s: 0.75rem;
+  --cx-r-m: 1rem;
+  --cx-r-l: 1.5rem;
+  --cx-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --cx-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --cx-ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --cx-muted: #8f8f99;
+  --cx-ok: #4ade80;
+  --cx-bad: #f87171;
+  --cx-soft-ink: #ec7aa3;
+  --cx-fill: linear-gradient(135deg, var(--brand-pink-deep) 0%, #a8325f 100%);
   
   /* Spacing Scale (8px base) */
   --space-xs: 0.5rem;    /* 8px */
@@ -200,6 +222,10 @@
   --surface-menu-border: rgba(0, 0, 0, 0.1);
   --surface-menu-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
   --scrim: rgba(17, 24, 39, 0.45);
+  --cx-muted: #5b6472;
+  --cx-ok: #15803d;
+  --cx-bad: #b91c1c;
+  --cx-soft-ink: #b02f66;
 }
 
 @layer base {
