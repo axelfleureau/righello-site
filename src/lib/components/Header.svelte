@@ -4,6 +4,8 @@
   import { onMount, tick } from 'svelte';
   import ThemeToggle from './ThemeToggle.svelte';
   import Icon from './progetti/landing/Icon.svelte';
+  import { contactSheet } from '$lib/contact/sheet';
+  import { pageLink } from '$lib/data/contact';
   import { departments } from '$lib/data/projects';
   import { mainNav, NAV_CTA, isCurrent, serviceMenu } from '$lib/data/site';
 
@@ -50,6 +52,12 @@
     if (locked) root.style.setProperty('--scrollbar-w', `${window.innerWidth - root.clientWidth}px`);
     root.classList.toggle('menu-open', locked);
   }
+  // Il foglio di contatto si apre sopra il menu: il menu si chiude, cosi' non resta aperto dietro.
+  $: if ($contactSheet.open) {
+    servicesOpen = false;
+    closeMenu();
+  }
+  // (prima del blocco che compensa lo scorrimento: le istruzioni reattive girano nell'ordine in cui sono scritte)
   $: if (typeof document !== 'undefined') setScrollLock(mobileMenuOpen);
 
   /** Elementi raggiungibili con Tab dentro la testata (esclude quelli nascosti). */
@@ -232,7 +240,7 @@
               </div>
             </div>
           {:else}
-            <a href={link.href} class="nav-link" aria-current={isCurrent(link, pathname) ? 'page' : undefined}>
+            <a href={link.href} class="nav-link" aria-current={isCurrent(link, pathname) ? 'page' : undefined} data-contact-link={pageLink(link.href)}>
               {link.label}
             </a>
           {/if}
@@ -299,7 +307,7 @@
           </li>
         {:else}
           <li>
-            <a href={link.href} class="mobile-nav-link" aria-current={isCurrent(link, pathname) ? 'page' : undefined}>
+            <a href={link.href} class="mobile-nav-link" aria-current={isCurrent(link, pathname) ? 'page' : undefined} data-contact-link={pageLink(link.href)}>
               {link.label}
             </a>
           </li>
