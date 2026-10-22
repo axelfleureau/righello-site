@@ -21,14 +21,13 @@
    * la prima esce, translateX(-50%) = esattamente una copia) e sono divisi in 4 tronconi, ognuno nel
    * suo livello composito: un unico livello largo ~7800 px (x3 sugli iPhone = ~23000 px di texture)
    * supera il limite delle GPU mobili; ogni troncone ne resta sotto la meta' di quel limite.
-   * I primi LOGHI_SUBITO sono eager (coprono anche uno schermo da 2560 px), gli altri lazy e poi
-   * promossi a eager appena la pagina e' ferma, cosi' non competono con poster, video e script.
+   * La prima copia e' eager (serve subito); la seconda e' lazy: sono gli stessi file, quindi non costa
+   * una richiesta in piu' (arrivano dalla cache) ma 41 immagini non si decodificano al caricamento.
    */
-  const LOGHI_SUBITO = 20;
   let marqueeEl: HTMLElement;
   let logoRotti: Record<string, boolean> = {};
-  type LogoFascia = { name: string; logo?: string; src?: string; w?: number; h?: number; maxW?: number; noFilter: boolean; sagomaChiaro: boolean; eager: boolean };
-  function logoFascia(p: { name: string; logo?: string; noFilter?: boolean }, i: number): LogoFascia {
+  type LogoFascia = { name: string; logo?: string; src?: string; w?: number; h?: number; maxW?: number; noFilter: boolean; sagomaChiaro: boolean };
+  function logoFascia(p: { name: string; logo?: string; noFilter?: boolean }): LogoFascia {
     const dim = p.logo ? logoSize(p.logo) : undefined;
     const maxW = dim ? larghezzaRiquadroMax(dim.width, dim.height) : 100;
     return {
@@ -36,25 +35,23 @@
       // in sagoma (filtro) si usa la versione senza targa piena; a colori il file vero
       src: p.logo ? (p.noFilter ? p.logo : logoSagoma(p.logo)) : undefined,
       w: dim?.width, h: dim?.height, maxW: maxW === 100 ? undefined : maxW,
-      sagomaChiaro: !!p.logo && !!p.noFilter && logoSagomaSuChiaro(p.logo),
-      eager: i < LOGHI_SUBITO
+      sagomaChiaro: !!p.logo && !!p.noFilter && logoSagomaSuChiaro(p.logo)
     };
   }
-  $: partnerCopies = [partners.map(logoFascia), partners.map((p, i) => ({ ...logoFascia(p, i), eager: false }))];
-  $: partnerSegments = partnerCopies.flatMap((copy) => {
-    const meta = Math.ceil(copy.length / 2);
-    return [copy.slice(0, meta), copy.slice(meta)];
+  $: partnerSegments = [0, 1].flatMap((copia) => {
+    const logos = partners.map(logoFascia);
+    const meta = Math.ceil(logos.length / 2);
+    return [logos.slice(0, meta), logos.slice(meta)].map((seg) => ({ lazy: copia > 0, logos: seg }));
   });
   onMount(() => {
-    // I loghi lazy sono fuori dal primo schermo ma la corsia li porta in vista in pochi secondi: si
-    // chiedono appena il browser e' libero, cosi' non arrivano mai dopo il loro ingresso.
-    const promuovi = () => marqueeEl?.querySelectorAll<HTMLImageElement>('img[loading="lazy"]').forEach((img) => (img.loading = 'eager'));
-    if ('requestIdleCallback' in window) {
-      const id = requestIdleCallback(promuovi, { timeout: 3000 });
-      return () => cancelIdleCallback(id);
-    }
-    const t = setTimeout(promuovi, 2000);
-    return () => clearTimeout(t);
+    // Un logo che non si e' caricato prima dell'idratazione non manda piu' l'evento `error` a Svelte:
+    // si cerca qui e ricade sul nome, invece di lasciare un buco nella corsia.
+    marqueeEl?.querySelectorAll<HTMLImageElement>('img').forEach((img) => {
+      if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) {
+        const logo = partnerSegments.flatMap((s) => s.logos).find((p) => p.src === img.getAttribute('src'))?.logo;
+        if (logo) logoRotti = { ...logoRotti, [logo]: true };
+      }
+    });
   });
 
   let videoMuted = true;
@@ -784,8 +781,8 @@
           {slide.title}
         </h2>
         <p class="slide-description overflow-hidden">
-          {#each slide.description.split('') as char}
-            <span class="desc-char">{char === ' ' ? '\u00A0' : char}</span>
+          {#each slide.description.split(' ') as word, wi}
+            <span class="desc-word">{#each word.split('') as char}<span class="desc-char">{char}</span>{/each}{#if wi < slide.description.split(' ').length - 1}<span class="desc-char">{'\u00A0'}</span>{/if}</span>
           {/each}
         </p>
       </div>
@@ -797,18 +794,18 @@
       <p class="partners-label">Tra i nostri clienti</p>
       <div class="partners-marquee-wrapper">
         <div class="partners-marquee" bind:this={marqueeEl}>
-            {#each partnerSegments as seg}
-              <div class="partners-seg">
-                {#each seg as p}
-                  {#if p.src && !logoRotti[p.logo ?? '']}
-                    <img src={p.src} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}{p.sagomaChiaro ? ' sagoma-chiaro' : ''}" width={p.w} height={p.h} style={p.maxW ? `max-width:${p.maxW}px` : undefined} loading={p.eager ? 'eager' : 'lazy'} decoding="async" on:error={() => (logoRotti = { ...logoRotti, [p.logo ?? '']: true })} />
-                  {:else}
-                    <span class="partner-name">{p.name}</span>
-                  {/if}
-                  <span class="partner-sep">·</span>
-                {/each}
-              </div>
-            {/each}
+          {#each partnerSegments as seg}
+            <div class="partners-seg">
+              {#each seg.logos as p}
+                {#if p.src && !logoRotti[p.logo ?? '']}
+                  <img src={p.src} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}{p.sagomaChiaro ? ' sagoma-chiaro' : ''}" width={p.w} height={p.h} style={p.maxW ? `max-width:${p.maxW}px` : undefined} loading={seg.lazy ? 'lazy' : 'eager'} decoding="async" on:error={() => (logoRotti = { ...logoRotti, [p.logo ?? '']: true })} />
+                {:else}
+                  <span class="partner-name">{p.name}</span>
+                {/if}
+                <span class="partner-sep">·</span>
+              {/each}
+            </div>
+          {/each}
         </div>
       </div>
     </div>
@@ -1257,6 +1254,13 @@
 
   .desc-char {
     display: inline-block;
+  }
+
+  /* Ogni lettera e' un inline-block per l'animazione: senza questo raggruppamento il browser puo'
+     andare a capo fra due lettere qualsiasi («misurabi-/li»). La parola (con il suo spazio) non si spezza. */
+  .desc-word {
+    display: inline-block;
+    white-space: nowrap;
   }
   
   /* Step Progress Indicator */

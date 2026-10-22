@@ -125,8 +125,8 @@ async function scatta(c, clip, dpr) {
 }
 
 /* ───────────────────── analisi di un logo, dentro la pagina ───────────────────── */
-// Sagoma = solo alfa. Blocco pieno = una componente che occupa una parte grande del logo, quasi
-// piena nel suo riquadro e senza segni dentro (disco o targa che il filtro ha reso bianco).
+// Sagoma = solo alfa. Blocco pieno = una targa che occupa la meta' del logo o piu', quasi piena nel suo
+// riquadro e senza segni dentro (disco o quadrato che il filtro ha reso bianco).
 const ANALISI_LOGO = `(async (src, modo, bgLum, maxW, H) => {
   const img = new Image(); img.src = src; await img.decode();
   let w = Math.max(1, Math.round(img.naturalWidth * H / img.naturalHeight)), h = H;
@@ -176,8 +176,10 @@ const ANALISI_LOGO = `(async (src, modo, bgLum, maxW, H) => {
   let blocco = null;
   for (const c of comp) {
     const quota = c.area / tot, riemp = c.area / (c.bw * c.bh), vuoti = buchi(c);
-    // pieno: grande, alto almeno meta' del logo, quasi pieno nel suo riquadro, senza segni dentro
-    const pieno = quota >= 0.2 && c.bh >= 0.5 * bh && c.bh >= 8 * S && c.bw >= 0.6 * c.bh && riemp >= 0.7 && (riemp + vuoti) >= 0.95 && vuoti < 0.06;
+    // pieno: la parte piu' grande del logo (meta' o piu'), larga quanto alta, quasi piena nel suo
+    // riquadro (disco/quadrato) e senza simbolo dentro (buchi < 5%): e' la targa che il filtro ha
+    // reso bianca. Lettere grasse (Noiclub) non superano mai il 40% del logo.
+    const pieno = quota >= 0.5 && c.bh >= 0.5 * bh && c.bh >= 8 * S && c.bw >= 0.6 * c.bh && riemp >= 0.7 && vuoti < 0.05;
     if (pieno && (!blocco || c.area > blocco.area)) blocco = { area: c.area, quota: +quota.toFixed(2), riemp: +riemp.toFixed(2), vuoti: +vuoti.toFixed(3) };
   }
   return { w, h, rendH: Math.round(bh / S), rendW: Math.round(bw / S), riempBbox: +(tot / (bw * bh)).toFixed(2), inchiostro: +(inchiostro / tot).toFixed(2), blocco };
@@ -241,7 +243,9 @@ try {
       if (a.vuoto) { ko(`[${tema}] ${el.alt}: logo senza pixel opachi`); problemi++; continue; }
       if (tema === 'dark' && a.rendH < ALTEZZA_MIN) { ko(`${el.alt}: disegnato alto ${a.rendH}px (< ${ALTEZZA_MIN}): quasi invisibile`); problemi++; }
       if (modo === 'sagoma' && a.blocco) { ko(`[${tema}] ${el.alt}: in sagoma e' un blocco pieno (${JSON.stringify(a.blocco)}) senza segno dentro`); problemi++; }
-      if (modo === 'colori' && a.inchiostro < 0.4) { ko(`[${tema}] ${el.alt}: a colori ma solo il ${Math.round(a.inchiostro * 100)}% del logo si distingue dallo sfondo`); problemi++; }
+      // sullo scuro un logo a colori ha sempre parti scure (targhe nere) che si confondono con lo sfondo e vanno bene;
+      // sul chiaro il bianco e' il difetto vero: bianco su bianco
+      if (modo === 'colori' && a.inchiostro < (tema === 'dark' ? 0.4 : 0.7)) { ko(`[${tema}] ${el.alt}: a colori ma solo il ${Math.round(a.inchiostro * 100)}% del logo si distingue dallo sfondo`); problemi++; }
     }
     if (ESPLORA) for (const r of righe) console.log('      ', r.nome.padEnd(26), r.modo.padEnd(7), JSON.stringify({ ...r, nome: undefined, modo: undefined }));
     if (!problemi) ok(`[${tema}] nessun logo e' un blocco pieno, illeggibile o piu' basso di ${ALTEZZA_MIN}px`);
@@ -257,6 +261,8 @@ try {
     console.log(`\n[${cfg.tema}] ${cfg.w}x${cfg.h} fotogrammi`);
     await apri(c, cfg);
     const dpr = cfg.mobile ? 2 : 1;
+    // prova di sensibilita': CHECK_NEGATIVO=1 nasconde un logo, il controllo deve segnalare il riquadro vuoto
+    if (process.env.CHECK_NEGATIVO) await c.ev(`(() => { const st = document.createElement('style'); st.textContent = '.partners-marquee img { visibility: hidden !important }'; document.head.appendChild(st); })()`);
     const box = await c.ev(`(() => { const b = document.querySelector('.partners-strip').getBoundingClientRect(); return { x: 0, y: Math.round(b.y + scrollY), width: innerWidth, height: Math.round(b.height) }; })()`);
     await c.ev(`document.querySelector('.partners-marquee').style.visibility = 'hidden'`);
     await sleep(250);
