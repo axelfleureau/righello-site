@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import BentoGrid from './BentoGrid.svelte';
   import CardFlip from './CardFlip.svelte';
   import StatCard from './StatCard.svelte';
@@ -15,7 +16,7 @@
       features: ['CTR ottimizzato', 'CPL tracciato', 'ROAS continuo', 'A/B Testing'],
       color: '#D6487E',
       buttonText: 'Scopri Paid',
-      buttonHref: '/contatti'
+      buttonHref: contactHref()
     },
     {
       id: 'earned',
@@ -25,7 +26,7 @@
       features: ['Menzioni tracking', 'Sentiment analysis', 'PR digitale', 'Influencer UGC'],
       color: '#06B6D4',
       buttonText: 'Scopri Earned',
-      buttonHref: '/contatti'
+      buttonHref: contactHref()
     },
     {
       id: 'shared',
@@ -35,7 +36,7 @@
       features: ['Engagement rate', 'Crescita community', 'Content virali', 'Brand ambassador'],
       color: '#A855F7',
       buttonText: 'Scopri Shared',
-      buttonHref: '/contatti'
+      buttonHref: contactHref()
     },
     {
       id: 'owned',
@@ -45,7 +46,7 @@
       features: ['Traffico organico', 'Lead generation', 'Email automation', 'Conversioni'],
       color: '#22C55E',
       buttonText: 'Scopri Owned',
-      buttonHref: '/contatti'
+      buttonHref: contactHref()
     }
   ];
   

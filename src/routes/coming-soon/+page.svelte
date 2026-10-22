@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import MagneticButton from '$lib/components/MagneticButton.svelte';
 </script>
 
@@ -18,7 +19,7 @@
       Stiamo preparando qualcosa di speciale. Molto presto potrai esplorare tutti i nostri progetti e i risultati ottenuti con i nostri clienti.
     </p>
     <div class="coming-soon__actions">
-      <MagneticButton href="/contatti" variant="primary">
+      <MagneticButton href={contactHref()} variant="primary">
         Contattaci nel frattempo
         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

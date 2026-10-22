@@ -1,15 +1,37 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { afterNavigate, goto } from '$app/navigation';
   import { page } from '$app/stores';
+  import ContactBrief from '$lib/components/contact/ContactBrief.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
   import FaqList from '$lib/components/FaqList.svelte';
   import SeoHead from '$lib/components/SeoHead.svelte';
   import { contactFaqs } from '$lib/data/faqs/contact';
   import ProjectIcon from '$lib/components/progetti/ProjectIcon.svelte';
   import '$lib/components/progetti/tokens.css';
-  import { CONTACT, formatPhone, mailHref, prefillFromQuery, whatsappHref } from '$lib/data/contact';
+  import { createContactFlow } from '$lib/contact/flow';
+  import { CONTACT, formatPhone, mailHref, whatsappHref } from '$lib/data/contact';
+  import { CONTACT_STEPS } from '$lib/data/contact-steps';
+  import { resolveContactContext, type ContactContext } from '$lib/data/contact-prefill';
 
   /** Un prodotto di partenza (`?da=tetha`) o un servizio (`?servizio=web`) precompilano il modulo. */
-  $: pre = prefillFromQuery($page.url.searchParams);
+  $: params = $page.url.searchParams;
+  $: ctx = { path: '/contatti', cta: 'pagina', from: params.get('da') ?? undefined, service: params.get('servizio') ?? undefined } satisfies ContactContext;
+  $: pre = resolveContactContext(ctx);
+
+  // Lo stesso flusso del foglio: stesso brief in diretta, stessa convalida, stessa conferma.
+  const flow = createContactFlow({ surface: 'page' });
+  let mounted = false;
+  onMount(() => {
+    flow.open(ctx);
+    mounted = true;
+  });
+  $: if (mounted) flow.setContext(ctx);
+
+  // "Torna dove eri": se si arriva da un'altra pagina del sito si torna indietro, altrimenti alla home.
+  let cameFromSite = false;
+  afterNavigate(({ from }) => (cameFromSite = !!from));
+  const back = () => (cameFromSite ? history.back() : goto('/'));
 
   /** I canali, in ordine di velocita'. La chiamata compare solo se esiste davvero: prenotazione online, oppure "ti chiamiamo noi" dal modulo. */
   $: channels = [
@@ -35,12 +57,6 @@
     CONTACT.schedulingUrl
       ? { id: 'call', label: 'Prenota una chiamata', value: 'Scegli giorno e ora', note: 'La prima chiamata è gratuita', href: CONTACT.schedulingUrl, external: true }
       : { id: 'call', label: 'Ti chiamiamo noi', value: 'Lascia il numero nel modulo', note: 'La prima chiamata è gratuita', href: '#modulo', external: false },
-  ];
-
-  const steps = [
-    { title: 'Leggiamo il messaggio', text: `Arriva a ${CONTACT.recipients}.` },
-    { title: 'Ti rispondiamo', text: `${CONTACT.reply[0].toUpperCase()}${CONTACT.reply.slice(1)}, con alcune date per una chiamata conoscitiva gratuita.` },
-    { title: 'Ricevi una proposta', text: 'Dopo la chiamata, un preventivo gratuito con tempi e consegne chiari.' },
   ];
 
 </script>
@@ -102,9 +118,10 @@
 <section class="ct-main">
   <div class="section-container ct-split">
     <aside class="ct-aside">
+      <div class="ct-brief"><ContactBrief {flow} /></div>
       <h2 class="ct-h2">Cosa succede dopo</h2>
       <ol class="ct-steps">
-        {#each steps as s, i}
+        {#each CONTACT_STEPS as s, i}
           <li>
             <span class="ct-steps__n" aria-hidden="true">{i + 1}</span>
             <div>
@@ -123,9 +140,7 @@
     </aside>
 
     <div class="ct-form" id="modulo">
-      {#key `${pre.study?.id ?? ''}|${pre.topic}`}
-        <ContactForm topic={pre.topic} message={pre.message} />
-      {/key}
+      <ContactForm {flow} layout="page" onBack={back} />
     </div>
   </div>
 </section>
@@ -209,6 +224,10 @@
   .ct-steps__n { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; border: 1px solid var(--gradient-start); color: var(--gradient-start); font-weight: 700; font-size: 0.9rem; }
   .ct-steps h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem; }
   .ct-steps p { color: var(--text-secondary); line-height: 1.55; font-size: 1rem; }
+
+  /* il brief a colonna sta a fianco da 960 px; sotto, il modulo ha il suo a riga */
+  .ct-brief { display: none; margin-bottom: 2rem; }
+  @media (min-width: 960px) { .ct-brief { display: block; } }
 
   .ct-where { display: grid; gap: 0.4rem; padding-top: 1.3rem; border-top: 1px solid var(--border-color); font-style: normal; color: var(--text-secondary); font-size: 0.95rem; }
   .ct-where p { display: grid; grid-template-columns: 8.2rem minmax(0, 1fr); gap: 0.6rem; }

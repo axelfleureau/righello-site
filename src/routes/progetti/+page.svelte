@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import '$lib/components/progetti/tokens.css';
   import { env } from '$env/dynamic/public';
   import { goto } from '$app/navigation';
@@ -13,7 +14,7 @@
   import WorkIndex from '$lib/components/progetti/WorkIndex.svelte';
   import ProgettiCta from '$lib/components/progetti/ProgettiCta.svelte';
 
-  const schedulingUrl = env.PUBLIC_SCHEDULING_URL || '/contatti';
+  const schedulingUrl = env.PUBLIC_SCHEDULING_URL || contactHref();
 
   const dock = caseStudies.filter((s) => s.icon && s.kind !== 'sito');
 

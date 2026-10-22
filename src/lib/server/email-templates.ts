@@ -1,3 +1,6 @@
+import { internationalDigits, telHref } from './contact-validation';
+import type { LeadAnalysis } from './contact-analysis';
+
 const SITE_URL = 'https://www.wearerighello.com';
 const LOGO_WHITE_URL = `${SITE_URL}/logo-white.png`;
 const EMAIL_ASSET_URL = `${SITE_URL}/email`;
@@ -14,20 +17,46 @@ const SOFT_PINK = '#FFF3F7';
 const SOFT_CYAN = '#EEFDFE';
 const PRIVACY_URL = 'https://www.iubenda.com/privacy-policy/47301653';
 
+
+
+/** Da dove arriva il contatto: il client lo manda, il server lo ripulisce, la mail al team lo mostra. */
+export interface ContactSource {
+  path: string;
+  cta?: string;
+  from?: string;
+  referrer?: string;
+  utm?: { source?: string; medium?: string; campaign?: string; term?: string; content?: string };
+}
+
 export interface ContactForm {
   name: string;
+  /** Vuota se il visitatore ha lasciato solo il telefono. */
   email: string;
+  /** Vuoto se il visitatore ha lasciato solo l'email. */
   phone: string;
   company: string;
   service: string;
   budget: string;
   message: string;
+  /** Codice `RH-XXXXXX`: nell'oggetto e nel corpo di entrambe le mail. */
+  reference: string;
+  source?: ContactSource;
 }
 
 export interface LeadPriority {
   label: string;
   color: string;
   bg: string;
+}
+
+/** Cio' che le mail dicono dei canali di Righello: arriva da `$lib/data/contact` (una sola sorgente), mai scritto qui. */
+export interface EmailChannels {
+  /** "entro 72 ore lavorative" */
+  reply: string;
+  /** Indirizzo da dare a chi non riesce a inviare il modulo. */
+  email: string;
+  /** Link WhatsApp di Righello con il testo gia' scritto. */
+  whatsappHref: (text: string) => string;
 }
 
 interface ShellOptions {
@@ -54,29 +83,13 @@ function escAttr(str: string): string {
   return escHtml(str).replace(/`/g, '&#96;');
 }
 
-export function getLeadPriority(budget: string): LeadPriority {
-  const b = budget.toLowerCase().trim();
-  const digits = b.replace(/[^0-9]/g, '');
-  const numericValue = digits ? parseInt(digits, 10) : 0;
-  const normalizedNum = numericValue < 100 && /k/i.test(b) ? numericValue * 1000 : numericValue;
-
-  if (normalizedNum >= 10000 || /alto|alta|high|premium/i.test(b)) {
-    return { label: 'Alta priorità', color: '#B42318', bg: '#FDECEC' };
-  }
-
-  if (normalizedNum >= 3000 || /medi[oa]|medium/i.test(b)) {
-    return { label: 'Media priorità', color: '#A15C07', bg: '#FFF4D8' };
-  }
-
-  return { label: 'Standard', color: '#047857', bg: '#E7F7EF' };
-}
 
 export function buildClientSubject(form: ContactForm): string {
-  return `${form.name}, abbiamo ricevuto la tua richiesta - Righello`;
+  return `${form.name}, abbiamo ricevuto la tua richiesta (${form.reference}) - Righello`;
 }
 
 export function buildTeamSubject(form: ContactForm, priority: LeadPriority): string {
-  return `${priority.label} | Nuovo contatto: ${form.name}${form.company ? ` - ${form.company}` : ''}`;
+  return `[${form.reference}] ${priority.label} | Nuovo contatto: ${form.name}${form.company ? ` - ${form.company}` : ''}`;
 }
 
 function compact(value: string | undefined, fallback = 'Non indicato'): string {
@@ -94,12 +107,12 @@ function paragraphsFromText(text: string, fallback: string): string {
     .join('');
 }
 
-function detailRow(label: string, value: string, accent = false): string {
+function detailRow(label: string, value: string, accent = false, href?: string): string {
   return `
     <tr>
       <td class="rh-detail-row" style="padding:14px 0;border-bottom:1px solid #EEEEEE;">
         <div class="rh-muted" style="font-size:11px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">${escHtml(label)}</div>
-        <div class="rh-detail-value" style="margin-top:6px;font-size:15px;line-height:1.5;color:${accent ? BRAND_PINK : '#202020'};font-weight:${accent ? '700' : '500'};">${escHtml(value)}</div>
+        <div class="rh-detail-value" style="margin-top:6px;font-size:15px;line-height:1.5;color:${accent ? BRAND_PINK : '#202020'};font-weight:${accent ? '700' : '500'};">${href ? `<a href="${escAttr(href)}" style="color:inherit;text-decoration:none;border-bottom:1px solid ${BRAND_PINK};">${escHtml(value)}</a>` : escHtml(value)}</div>
       </td>
     </tr>`;
 }
@@ -130,30 +143,6 @@ function summaryStrip(items: Array<{ label: string; value: string; color?: strin
     </table>`;
 }
 
-function featureCell(icon: EmailIconName, title: string, text: string, color = BRAND_PINK): string {
-  return `
-    <td class="rh-feature-col" width="33.33%" valign="top" style="padding:0 8px 16px 0;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-icon-card" style="background:#FFFFFF;border:1px solid ${PANEL_BORDER};border-radius:20px;box-shadow:0 12px 34px rgba(0,0,0,0.045);">
-        <tr>
-          <td style="padding:18px 16px 17px 16px;">
-            ${emailIcon(icon, '', 40)}
-            <div style="margin-top:14px;font-size:15px;line-height:1.18;color:${color};font-weight:800;">${escHtml(title)}</div>
-            <div class="rh-soft-copy" style="margin-top:7px;font-size:13px;line-height:1.45;color:#484848;">${escHtml(text)}</div>
-          </td>
-        </tr>
-      </table>
-    </td>`;
-}
-
-function featureGrid(items: Array<{ icon: EmailIconName; title: string; text: string; color?: string }>): string {
-  return `
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:2px 0 24px 0;">
-      <tr>
-        ${items.map((item) => featureCell(item.icon, item.title, item.text, item.color)).join('')}
-      </tr>
-    </table>`;
-}
-
 function processStep(index: string, title: string, text: string, color = BRAND_PINK): string {
   return `
     <tr>
@@ -178,6 +167,7 @@ function ctaButton(href: string, label: string, variant: 'primary' | 'dark' = 'p
       </tr>
     </table>`;
 }
+
 
 function emailShell(options: ShellOptions): string {
   const intro = options.intro
@@ -222,7 +212,6 @@ function emailShell(options: ShellOptions): string {
       .rh-title { font-size: 29px !important; line-height: 1.08 !important; }
       .rh-two-col { display: block !important; width: 100% !important; }
       .rh-summary-col { display: block !important; width: auto !important; padding: 13px 16px !important; }
-      .rh-feature-col { display: block !important; width: auto !important; padding: 0 0 12px 0 !important; }
       .rh-header-eyebrow { display: none !important; }
     }
     @media (prefers-color-scheme: dark) {
@@ -231,7 +220,6 @@ function emailShell(options: ShellOptions): string {
       .rh-title, .rh-copy, .rh-detail-value, .rh-soft-copy { color: #F4F4F4 !important; }
       .rh-intro, .rh-muted, .rh-footer-note, .rh-footer-text { color: #BDBDBD !important; }
       .rh-panel, .rh-summary { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
-      .rh-icon-card { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
       .rh-detail-row { border-bottom-color: #343434 !important; }
       .rh-message-box { background: #101010 !important; border-color: #2B2B2B !important; color: #EDEDED !important; }
       .rh-soft-cyan { background: #07191B !important; border-color: #0D3D42 !important; }
@@ -246,7 +234,6 @@ function emailShell(options: ShellOptions): string {
     [data-ogsc] .rh-title, [data-ogsc] .rh-copy, [data-ogsc] .rh-detail-value, [data-ogsc] .rh-soft-copy { color: #F4F4F4 !important; }
     [data-ogsc] .rh-intro, [data-ogsc] .rh-muted, [data-ogsc] .rh-footer-note, [data-ogsc] .rh-footer-text { color: #BDBDBD !important; }
     [data-ogsc] .rh-panel, [data-ogsc] .rh-summary { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
-    [data-ogsc] .rh-icon-card { background: #181818 !important; border-color: #303030 !important; box-shadow: none !important; }
     [data-ogsc] .rh-detail-row { border-bottom-color: #343434 !important; }
     [data-ogsc] .rh-message-box { background: #101010 !important; border-color: #2B2B2B !important; color: #EDEDED !important; }
     [data-ogsc] .rh-soft-cyan { background: #07191B !important; border-color: #0D3D42 !important; }
@@ -312,111 +299,148 @@ function emailShell(options: ShellOptions): string {
 </html>`;
 }
 
-export function buildClientEmailHtml(form: ContactForm, enhancedBody: string): string {
+function sourceRows(source: ContactForm['source']): Array<[string, string]> {
+  if (!source) return [];
+  const rows: Array<[string, string]> = [];
+  if (source.path) rows.push(['Pagina', source.path]);
+  if (source.cta) rows.push(['Pulsante', source.cta]);
+  if (source.from) rows.push(['Scheda o servizio di provenienza', source.from]);
+  if (source.referrer) rows.push(['Arrivato da', source.referrer]);
+  const u = source.utm;
+  if (u) {
+    const campaign = [u.source, u.medium, u.campaign].filter(Boolean).join(' / ');
+    const extra = [u.term && `termine: ${u.term}`, u.content && `contenuto: ${u.content}`].filter(Boolean).join(', ');
+    const value = [campaign, extra].filter(Boolean).join(' - ');
+    if (value) rows.push(['Campagna', value]);
+  }
+  return rows;
+}
+
+/** Recapiti cliccabili del contatto: email, telefono, WhatsApp (solo se il numero si legge con sicurezza). */
+function replyLinks(form: ContactForm): Array<{ label: string; value: string; href: string }> {
+  const links: Array<{ label: string; value: string; href: string }> = [];
+  if (form.email) {
+    links.push({
+      label: 'Email',
+      value: form.email,
+      href: `mailto:${form.email}?subject=${encodeURIComponent(`Re: la tua richiesta a Righello (${form.reference})`)}`,
+    });
+  }
+  if (form.phone) {
+    links.push({ label: 'Telefono', value: form.phone, href: telHref(form.phone) });
+    const wa = internationalDigits(form.phone);
+    if (wa) {
+      const text = `Ciao ${form.name}, siamo Righello: ti scriviamo per la tua richiesta ${form.reference}.`;
+      links.push({ label: 'WhatsApp', value: form.phone, href: `https://wa.me/${wa}?text=${encodeURIComponent(text)}` });
+    }
+  }
+  return links;
+}
+
+export function buildClientEmailHtml(form: ContactForm, enhancedBody: string, channels: EmailChannels): string {
   const fallbackBody = [
     `Ciao ${form.name}, grazie per averci scritto.`,
-    `Abbiamo ricevuto la tua richiesta${form.service ? ` su ${form.service}` : ''} e la stiamo leggendo con attenzione. Ti risponderemo entro 72 ore lavorative con un riscontro concreto, non con una risposta automatica travestita da email.`,
-    'Nel frattempo mettiamo a fuoco contesto, obiettivi e prime domande utili per capire come aiutarti nel modo giusto.'
+    `Abbiamo ricevuto la tua richiesta${form.service ? ` su ${form.service}` : ''}. Una persona del team la legge e ti risponde ${channels.reply}${form.email ? ` all’indirizzo ${form.email}` : ''}.`,
   ].join('\n\n');
 
-  const summaryRows = [
-    detailRow('Azienda', compact(form.company)),
-    detailRow('Area richiesta', compact(form.service)),
-    detailRow('Budget indicativo', compact(form.budget), Boolean(form.budget)),
-  ].join('');
+  const summary: Array<[string, string]> = [];
+  if (form.service) summary.push(['Cosa serve', form.service]);
+  if (form.company) summary.push(['Azienda', form.company]);
+  if (form.budget) summary.push(['Budget indicativo', form.budget]);
+  summary.push(['Recapito', form.email || form.phone]);
+  const summaryRows = summary.map(([label, value]) => detailRow(label, value)).join('');
+  const waText = `Ciao, ho inviato una richiesta dal sito (riferimento ${form.reference}).`;
 
   const body = `
     ${paragraphsFromText(enhancedBody, fallbackBody)}
-    ${featureGrid([
-      {
-        icon: 'map',
-        title: 'Mettiamo ordine',
-        text: 'Processo, priorità e vincoli prima della soluzione.',
-      },
-      {
-        icon: 'target',
-        title: 'Cerchiamo impatto',
-        text: 'Proponiamo solo passi utili e sostenibili.',
-        color: BRAND_CYAN,
-      },
-      {
-        icon: 'reply',
-        title: 'Risposta umana',
-        text: 'Niente automatismi generici: ti risponde il team.',
-      },
-    ])}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-panel" style="margin:28px 0 26px 0;background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-soft-pink" style="margin:6px 0 24px 0;background:${SOFT_PINK};border:1px solid #F5D6E2;border-radius:20px;">
+      <tr>
+        <td style="padding:20px 22px;">
+          <div style="font-size:12px;line-height:1.2;color:${BRAND_PINK};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:8px;">Il tuo codice di riferimento</div>
+          <div class="rh-priority-title" style="font-size:30px;line-height:1.1;color:${BRAND_PINK};font-weight:800;letter-spacing:0.06em;">${escHtml(form.reference)}</div>
+          <p class="rh-soft-copy" style="margin:10px 0 0 0;font-size:14px;line-height:1.55;color:${TEXT_MAIN};">Se ci scrivi su WhatsApp o per email, indicalo: ritroviamo subito la tua richiesta.</p>
+        </td>
+      </tr>
+    </table>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-panel" style="margin:0 0 24px 0;background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
       <tr>
         <td style="padding:24px 24px 18px 24px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_PINK};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Riepilogo richiesta</div>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             ${summaryRows}
-            <tr>
+            ${
+              form.message
+                ? `<tr>
               <td style="padding:14px 0 0 0;">
                 <div class="rh-muted" style="font-size:11px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Messaggio</div>
-                <p class="rh-copy" style="margin:8px 0 0 0;font-size:15px;line-height:1.6;color:#303030;">${escHtml(form.message)}</p>
+                <p class="rh-copy" style="margin:8px 0 0 0;font-size:15px;line-height:1.6;color:#303030;white-space:pre-line;">${escHtml(form.message)}</p>
               </td>
-            </tr>
+            </tr>`
+                : ''
+            }
           </table>
         </td>
       </tr>
     </table>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-dark-block" style="margin:0 0 20px 0;background:${BRAND_BLACK};border-radius:24px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-dark-block" style="margin:0 0 26px 0;background:${BRAND_BLACK};border-radius:24px;">
       <tr>
         <td style="padding:26px 26px 8px 26px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:18px;">Cosa succede ora</div>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-            ${processStep('1', 'Lettura umana', 'Leggiamo contesto, obiettivo e vincoli. Niente risposta automatica generica.')}
-            ${processStep('2', 'Prima direzione', 'Se c’è fit, ti proponiamo un prossimo passo chiaro e sostenibile.', BRAND_CYAN)}
-            ${processStep('3', 'Call concreta', 'Quando serve, partiamo da una call breve per capire priorità e impatto.', BRAND_PINK)}
+            ${processStep('1', 'Lettura', 'Una persona del team legge la tua richiesta, non un automatismo.')}
+            ${processStep('2', 'Risposta', `Ti rispondiamo ${channels.reply}${form.email ? ` all’indirizzo ${form.email}` : ''}.`, BRAND_CYAN)}
+            ${processStep('3', 'Prossimo passo', 'Se serve, fissiamo una chiamata breve per capire priorità e tempi.', BRAND_PINK)}
           </table>
         </td>
       </tr>
     </table>
-    ${summaryStrip([
-      { label: 'Tempo', value: '72 ore lavorative', icon: 'clock' },
-      { label: 'Metodo', value: 'prima analisi', color: BRAND_CYAN, icon: 'map' },
-      { label: 'Output', value: 'prossimo passo', icon: 'spark' },
-    ])}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-soft-cyan" style="margin:0 0 28px 0;background:${SOFT_CYAN};border:1px solid #D8F6F8;border-radius:20px;">
-      <tr>
-        <td style="padding:20px 22px;">
-          <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:8px;">Metodo Righello</div>
-          <p class="rh-soft-copy" style="margin:0;font-size:15px;line-height:1.65;color:${TEXT_MAIN};">Prima capiamo il processo. Poi scegliamo canali, sito, automazioni e strumenti. L’obiettivo è costruire qualcosa che lavori davvero, non solo qualcosa che “sembra bello”.</p>
-        </td>
-      </tr>
-    </table>
-    ${ctaButton(`${SITE_URL}/progetti`, 'Guarda i progetti Righello')}
+    ${ctaButton(channels.whatsappHref(waText), 'Scrivici su WhatsApp')}
+    <p class="rh-soft-copy" style="margin:16px 0 0 0;font-size:13px;line-height:1.5;color:#696969;text-align:center;">Non hai inviato tu questa richiesta? Rispondi a questa email e la cancelliamo.</p>
   `;
 
   return emailShell({
-    preheader: 'Abbiamo ricevuto la tua richiesta. Il team Righello ti risponderà entro 72 ore lavorative.',
+    preheader: `Abbiamo ricevuto la tua richiesta (${form.reference}). Il team Righello ti risponde ${channels.reply}.`,
     eyebrow: 'Richiesta ricevuta',
-    title: 'Richiesta ricevuta. Ora la leggiamo sul serio.',
-    intro: 'Grazie per averci contattato. Il punto non è rispondere in fretta: è rispondere con criterio.',
+    title: 'Richiesta ricevuta.',
+    intro: `Grazie per averci contattato. Il tuo riferimento è ${form.reference}.`,
     body,
   });
 }
 
-export function buildClientEmailText(form: ContactForm, enhancedBody: string): string {
-  const body = enhancedBody.trim() || `Ciao ${form.name}, grazie per averci scritto. Abbiamo ricevuto la tua richiesta e ti risponderemo entro 72 ore lavorative.`;
+export function buildClientEmailText(form: ContactForm, enhancedBody: string, channels: EmailChannels): string {
+  const body =
+    enhancedBody.trim() ||
+    `Ciao ${form.name}, grazie per averci scritto. Abbiamo ricevuto la tua richiesta: una persona del team la legge e ti risponde ${channels.reply}${form.email ? ` all’indirizzo ${form.email}` : ''}.`;
   return [
-    'Righello - richiesta ricevuta',
+    `Righello - richiesta ricevuta (${form.reference})`,
     '',
     body,
     '',
-    'Riepilogo richiesta',
-    `Azienda: ${compact(form.company)}`,
-    `Area richiesta: ${compact(form.service)}`,
-    `Budget indicativo: ${compact(form.budget)}`,
-    `Messaggio: ${form.message}`,
+    `Il tuo codice di riferimento: ${form.reference}`,
+    'Se ci scrivi su WhatsApp o per email, indicalo: ritroviamo subito la tua richiesta.',
     '',
+    'Riepilogo richiesta',
+    form.service ? `Cosa serve: ${form.service}` : '',
+    form.company ? `Azienda: ${form.company}` : '',
+    form.budget ? `Budget indicativo: ${form.budget}` : '',
+    `Recapito: ${form.email || form.phone}`,
+    form.message ? `Messaggio: ${form.message}` : '',
+    '',
+    'Cosa succede ora',
+    '1. Una persona del team legge la tua richiesta.',
+    `2. Ti rispondiamo ${channels.reply}${form.email ? ` all’indirizzo ${form.email}` : ''}.`,
+    '3. Se serve, fissiamo una chiamata breve.',
+    '',
+    `WhatsApp: ${channels.whatsappHref(`Ciao, ho inviato una richiesta dal sito (riferimento ${form.reference}).`)}`,
     `Progetti Righello: ${SITE_URL}/progetti`,
-    'Contatti: hello@wearerighello.com',
-  ].join('\n');
+    'Non hai inviato tu questa richiesta? Rispondi a questa email e la cancelliamo.',
+  ]
+    .filter((line, i, all) => line !== '' || all[i - 1] !== '')
+    .join('\n');
 }
 
-export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, priority: LeadPriority): string {
+export function buildTeamEmailHtml(form: ContactForm, analysis: LeadAnalysis): string {
+  const { priority, window: actionWindow } = analysis;
   const now = new Date().toLocaleString('it-IT', {
     timeZone: 'Europe/Rome',
     day: '2-digit',
@@ -426,73 +450,73 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
     minute: '2-digit',
   });
 
-  const replyHref = `mailto:${encodeURIComponent(form.email)}?subject=${encodeURIComponent(`Re: richiesta a Righello - ${form.name}`)}`;
-  const actionWindow = priority.label.toLowerCase().includes('alta') ? 'entro 24 ore' : 'entro 72 ore';
+  const links = replyLinks(form);
+  const wa = links.find((l) => l.label === 'WhatsApp');
   const rows = [
     detailRow('Ricevuto', now),
+    detailRow('Codice', form.reference, true),
     detailRow('Nome', form.name),
-    detailRow('Email', form.email, true),
-    detailRow('Telefono', compact(form.phone)),
+    ...links.map((l) => detailRow(l.label, l.value, l.label === 'Email' || (l.label === 'Telefono' && !form.email), l.href)),
     detailRow('Azienda', compact(form.company)),
     detailRow('Area richiesta', compact(form.service)),
     detailRow('Budget indicativo', compact(form.budget), Boolean(form.budget)),
   ].join('');
 
-  const analysisHtml = leadAnalysis.trim()
-    ? `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-dark-block" style="margin:28px 0 0 0;background:#050505;border-radius:22px;">
+  const origin = sourceRows(form.source);
+  const originHtml = `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-panel" style="margin:22px 0 0 0;background:${PANEL_BG};border-radius:22px;border:1px solid ${PANEL_BORDER};">
+      <tr>
+        <td style="padding:22px 24px 10px 24px;">
+          <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:4px;">Da dove arriva</div>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            ${origin.length ? origin.map(([label, value]) => detailRow(label, value)).join('') : detailRow('Provenienza', 'Non indicata (richiesta senza dati di provenienza)')}
+          </table>
+        </td>
+      </tr>
+    </table>`;
+
+  const analysisHtml = `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-dark-block" style="margin:22px 0 0 0;background:#050505;border-radius:22px;">
         <tr>
           <td style="padding:24px;">
             <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:12px;">Analisi operativa</div>
-            ${leadAnalysis
-              .split(/\n+/)
-              .map((line) => line.trim())
-              .filter(Boolean)
-              .map((line) => `<p style="margin:0 0 10px 0;font-size:14px;line-height:1.6;color:#F4F4F4;">${escHtml(line)}</p>`)
-              .join('')}
+            ${analysis.lines.map((line) => `<p style="margin:0 0 10px 0;font-size:14px;line-height:1.6;color:#F4F4F4;">${escHtml(line)}</p>`).join('')}
           </td>
         </tr>
-      </table>`
-    : '';
+      </table>`;
+
+  const quickLinks = links
+    .map((l) => `<a href="${escAttr(l.href)}" style="color:#FFFFFF;text-decoration:underline;font-size:15px;line-height:1.6;font-weight:600;">${escHtml(l.label === 'Email' ? l.value : `${l.label} ${l.value}`)}</a>`)
+    .join('<span style="color:#8A8A8A;"> &nbsp;·&nbsp; </span>');
+
+  const buttons = [
+    form.email ? { href: links.find((l) => l.label === 'Email')!.href, label: 'Rispondi per email', variant: 'primary' as const } : null,
+    wa ? { href: wa.href, label: 'Scrivi su WhatsApp', variant: form.email ? ('dark' as const) : ('primary' as const) } : null,
+    form.phone ? { href: telHref(form.phone), label: 'Chiama', variant: 'dark' as const } : null,
+  ].filter((b): b is { href: string; label: string; variant: 'primary' | 'dark' } => b !== null);
 
   const body = `
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-dark-block" style="margin:0 0 24px 0;background:${BRAND_BLACK};border-radius:24px;">
       <tr>
         <td style="padding:24px 26px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_CYAN};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Lead cockpit</div>
-          <div style="font-size:24px;line-height:1.05;color:#FFFFFF;font-weight:800;">${escHtml(priority.label)}</div>
-          <p style="margin:10px 0 0 0;font-size:15px;line-height:1.6;color:#D8D8D8;">Rispondere ${escHtml(actionWindow)} con una domanda mirata, una proposta di call breve e un primo criterio di valutazione.</p>
+          <div style="font-size:24px;line-height:1.1;color:#FFFFFF;font-weight:800;">${escHtml(priority.label)} <span style="color:${BRAND_PINK};letter-spacing:0.06em;">${escHtml(form.reference)}</span></div>
+          <div style="margin-top:12px;font-size:19px;line-height:1.25;color:#FFFFFF;font-weight:700;">${escHtml(form.name)}${form.company ? ` <span style="color:#BDBDBD;font-weight:500;">· ${escHtml(form.company)}</span>` : ''}</div>
+          <div style="margin-top:8px;">${quickLinks}</div>
+          <p style="margin:14px 0 0 0;font-size:15px;line-height:1.6;color:#D8D8D8;">Rispondere ${escHtml(actionWindow)} con una domanda mirata e una proposta di chiamata breve.</p>
         </td>
       </tr>
     </table>
-    ${featureGrid([
-      {
-        icon: 'target',
-        title: 'Valuta fit',
-        text: 'Capire subito se richiesta, budget e urgenza sono allineati.',
-      },
-      {
-        icon: 'clock',
-        title: actionWindow,
-        text: 'Finestra consigliata per la prima risposta commerciale.',
-        color: BRAND_CYAN,
-      },
-      {
-        icon: 'reply',
-        title: 'Prima risposta',
-        text: 'Domanda mirata, call breve e un criterio di avanzamento.',
-      },
-    ])}
     ${summaryStrip([
       { label: 'Priorità', value: priority.label, color: priority.color, icon: 'target' },
       { label: 'Risposta', value: actionWindow, icon: 'clock' },
-      { label: 'Fonte', value: 'form sito', color: BRAND_CYAN, icon: 'spark' },
+      { label: 'Codice', value: form.reference, color: BRAND_CYAN, icon: 'spark' },
     ])}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px 0;">
       <tr>
         <td class="rh-priority-box" style="padding:18px 20px;border-radius:20px;background:${priority.bg};border:1px solid rgba(0,0,0,0.04);">
           <div class="rh-priority-title" style="font-size:11px;line-height:1.2;color:${priority.color};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">Azione consigliata</div>
-          <div class="rh-priority-copy" style="margin-top:7px;font-size:18px;line-height:1.35;color:${priority.color};font-weight:800;">Rispondere ${escHtml(actionWindow)} con una domanda mirata e una proposta di call breve.</div>
+          <div class="rh-priority-copy" style="margin-top:7px;font-size:18px;line-height:1.35;color:${priority.color};font-weight:800;">Rispondere ${escHtml(actionWindow)}${form.email ? ' per email' : ' al telefono o su WhatsApp'}, con una domanda mirata e una chiamata breve.</div>
         </td>
       </tr>
     </table>
@@ -504,64 +528,64 @@ export function buildTeamEmailHtml(form: ContactForm, leadAnalysis: string, prio
             <tr>
               <td style="padding:16px 0 0 0;">
                 <div class="rh-muted" style="font-size:11px;line-height:1.2;color:#8A8A8A;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Messaggio</div>
-                <p class="rh-message-box" style="margin:8px 0 0 0;font-size:15px;line-height:1.6;color:#303030;background:#FFFFFF;border-radius:16px;padding:18px;border:1px solid #EEEEEE;">${escHtml(form.message)}</p>
+                <p class="rh-message-box" style="margin:8px 0 0 0;font-size:15px;line-height:1.6;color:#303030;background:#FFFFFF;border-radius:16px;padding:18px;border:1px solid #EEEEEE;white-space:pre-line;">${form.message ? escHtml(form.message) : 'Nessun messaggio: ha scelto solo il tema.'}</p>
               </td>
             </tr>
           </table>
         </td>
       </tr>
     </table>
+    ${originHtml}
     ${analysisHtml}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-soft-pink" style="margin:28px 0 0 0;background:${SOFT_PINK};border:1px solid #F5D6E2;border-radius:20px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="rh-soft-pink" style="margin:22px 0 0 0;background:${SOFT_PINK};border:1px solid #F5D6E2;border-radius:20px;">
       <tr>
         <td style="padding:20px 22px;">
           <div style="font-size:12px;line-height:1.2;color:${BRAND_PINK};text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:10px;">Primo messaggio utile</div>
-          <p class="rh-soft-copy" style="margin:0;font-size:15px;line-height:1.6;color:${TEXT_MAIN};">Ciao ${escHtml(form.name)}, grazie per il messaggio. Abbiamo letto il contesto e ti proponiamo una call breve per capire obiettivi, priorità e prossimi passi.</p>
+          <p class="rh-soft-copy" style="margin:0;font-size:15px;line-height:1.6;color:${TEXT_MAIN};">Ciao ${escHtml(form.name)}, grazie per il messaggio (${escHtml(form.reference)}). Abbiamo letto il contesto e ti proponiamo una chiamata breve per capire obiettivi, priorità e prossimi passi.</p>
         </td>
       </tr>
     </table>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:30px 0 0 0;">
-      <tr>
-        <td align="center" style="padding-bottom:12px;">
-          ${ctaButton(replyHref, 'Rispondi al cliente', 'primary')}
-        </td>
-      </tr>
-      <tr>
-        <td align="center">
-          <a href="mailto:${encodeURIComponent(form.email)}" style="font-size:13px;line-height:1.5;color:#777777;text-decoration:none;">${escHtml(form.email)}</a>
-        </td>
-      </tr>
+      ${buttons.map((b) => `<tr><td align="center" style="padding-bottom:12px;">${ctaButton(b.href, b.label, b.variant)}</td></tr>`).join('')}
     </table>
   `;
 
   return emailShell({
-    preheader: `Nuovo contatto da ${form.name}${form.company ? `, ${form.company}` : ''}. ${priority.label}.`,
+    preheader: `${form.reference} · ${priority.label} · ${form.name}${form.company ? `, ${form.company}` : ''}${form.service ? ` · ${form.service}` : ''}`,
     eyebrow: 'Nuovo lead',
     title: 'Nuovo lead dal sito.',
-    intro: 'Dati essenziali, priorità e prima azione consigliata per rispondere senza perdere contesto.',
+    intro: 'Codice, priorità, recapito e provenienza: tutto per rispondere senza perdere contesto.',
     body,
     footerNote: 'Notifica interna generata dal sito Righello.',
   });
 }
 
-export function buildTeamEmailText(form: ContactForm, leadAnalysis: string, priority: LeadPriority): string {
+export function buildTeamEmailText(form: ContactForm, analysis: LeadAnalysis): string {
+  const links = replyLinks(form);
+  const origin = sourceRows(form.source);
   return [
-    `Nuova richiesta dal sito - ${priority.label}`,
+    `[${form.reference}] Nuova richiesta dal sito - ${analysis.priority.label}`,
     '',
     `Nome: ${form.name}`,
-    `Email: ${form.email}`,
-    `Telefono: ${compact(form.phone)}`,
+    form.email ? `Email: ${form.email}` : '',
+    form.phone ? `Telefono: ${form.phone}` : '',
     `Azienda: ${compact(form.company)}`,
     `Area richiesta: ${compact(form.service)}`,
     `Budget indicativo: ${compact(form.budget)}`,
     '',
     'Messaggio:',
-    form.message,
+    form.message || '(nessun messaggio: ha scelto solo il tema)',
     '',
-    leadAnalysis.trim() ? `Analisi operativa:\n${leadAnalysis.trim()}` : '',
+    'Da dove arriva:',
+    ...(origin.length ? origin.map(([label, value]) => `${label}: ${value}`) : ['Non indicata']),
     '',
-    `Rispondi: mailto:${form.email}`,
-  ].filter(Boolean).join('\n');
+    `Analisi operativa:\n${analysis.lines.join('\n')}`,
+    '',
+    'Come rispondere:',
+    ...links.map((l) => `${l.label}: ${l.href}`),
+  ]
+    .filter((line, i, all) => line !== '' || all[i - 1] !== '')
+    .join('\n');
 }
 
 export function buildPreviewContactForm(): ContactForm {
@@ -570,18 +594,11 @@ export function buildPreviewContactForm(): ContactForm {
     email: 'axel@wearerighello.com',
     phone: '+39 333 123 4567',
     company: 'Nordest Components S.r.l.',
-    service: 'Sito web, automazioni AI e acquisizione lead',
-    budget: '10.000 - 20.000 euro',
-    message: 'Vorremmo rifare il sito aziendale e capire come automatizzare preventivi, richieste commerciali e gestione dei contatti. Cerchiamo un partner che ci aiuti a mettere ordine nei processi e a trasformare il sito in uno strumento commerciale concreto.',
+    service: 'Sviluppo Web & Software',
+    budget: '10.000€ - 25.000€',
+    message:
+      'Vorremmo rifare il sito aziendale e capire come automatizzare preventivi, richieste commerciali e gestione dei contatti. Cerchiamo un partner che ci aiuti a mettere ordine nei processi e a trasformare il sito in uno strumento commerciale concreto.',
+    reference: 'RH-7K2M9Q',
+    source: { path: '/progetti/tetha', cta: 'chiusura-pagina', from: 'tetha', referrer: 'https://www.google.com/', utm: { source: 'google', medium: 'cpc', campaign: 'sito-aziendale' } },
   };
-}
-
-export function buildPreviewLeadAnalysis(): string {
-  return [
-    'Score: 8/10',
-    'Priorità: alta. Il lead ha budget coerente, contesto aziendale chiaro e una richiesta collegata a sito, automazioni e vendite.',
-    'Profilo: PMI B2B con bisogno operativo concreto, probabilmente interessata a un progetto integrato e non a una semplice landing.',
-    'Azione consigliata: rispondere con una call breve, chiedendo esempi di preventivi, flusso lead attuale e obiettivi commerciali dei prossimi 6 mesi.',
-    'Segnali chiave: budget dichiarato, problema ripetitivo, richiesta di partner strategico.'
-  ].join('\n');
 }

@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import { CONTACT, mailHref } from '$lib/data/contact';
   import ProButton from './ProButton.svelte';
 
-  export let schedulingUrl = '/contatti';
+  export let schedulingUrl = contactHref();
   /** L'etichetta sopra il titolo: ogni pagina che chiude con questo blocco dice il proprio numero di sezione. */
   export let kicker = '04 · Il prossimo sei tu';
 </script>

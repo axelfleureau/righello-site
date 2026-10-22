@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { contactHref } from '$lib/data/contact';
   import { onDestroy, createEventDispatcher } from 'svelte';
   import type { CaseStudy, ProjectKind } from '$lib/data/case-studies';
   import ProButton from './ProButton.svelte';
@@ -124,7 +125,7 @@
 
     <div class="hero__cta">
       <ProButton href="#vetrina" variant="primary" size="lg" arrow="right">Guarda i prodotti</ProButton>
-      <ProButton href="/contatti" variant="ghost" size="lg">Parliamo di un progetto</ProButton>
+      <ProButton href={contactHref()} variant="ghost" size="lg">Parliamo di un progetto</ProButton>
     </div>
 
     <nav class="kinds" aria-label="Scegli per tipo">
