@@ -5,9 +5,9 @@
   import PhoneMockup from './PhoneMockup.svelte';
   import MagneticButton from './MagneticButton.svelte';
   import RippleGrid from './RippleGrid.svelte';
+  import { logoSize, logoSagoma, logoSagomaSuChiaro, larghezzaRiquadroMax } from '$lib/data/logos';
   
   export let credibilityBadges: { icon: string; label: string }[] = [];
-  export let partnerNames: string[] = [];
   export let partners: { name: string; logo?: string; noFilter?: boolean }[] = [];
   export let heroVideoCloudinaryUrl: string | undefined = undefined;
   export let heroVideoYoutubeId: string | undefined = 'Rj5N4BMF-Vw';
@@ -15,6 +15,44 @@
   // poster image so in-app browsers (Instagram, Facebook WebViews) can show content
   // even when they block cross-origin requests to img.youtube.com.
   export let heroVideoThumbnailUrl: string | undefined = undefined;
+
+  /**
+   * Fascia «Tra i nostri clienti»: i loghi vanno due volte (la seconda copia riempie il vuoto mentre
+   * la prima esce, translateX(-50%) = esattamente una copia) e sono divisi in 4 tronconi, ognuno nel
+   * suo livello composito: un unico livello largo ~7800 px (x3 sugli iPhone = ~23000 px di texture)
+   * supera il limite delle GPU mobili; ogni troncone ne resta sotto la meta' di quel limite.
+   * La prima copia e' eager (serve subito); la seconda e' lazy: sono gli stessi file, quindi non costa
+   * una richiesta in piu' (arrivano dalla cache) ma 41 immagini non si decodificano al caricamento.
+   */
+  let marqueeEl: HTMLElement;
+  let logoRotti: Record<string, boolean> = {};
+  type LogoFascia = { name: string; logo?: string; src?: string; w?: number; h?: number; maxW?: number; noFilter: boolean; sagomaChiaro: boolean };
+  function logoFascia(p: { name: string; logo?: string; noFilter?: boolean }): LogoFascia {
+    const dim = p.logo ? logoSize(p.logo) : undefined;
+    const maxW = dim ? larghezzaRiquadroMax(dim.width, dim.height) : 100;
+    return {
+      name: p.name, logo: p.logo, noFilter: !!p.noFilter,
+      // in sagoma (filtro) si usa la versione senza targa piena; a colori il file vero
+      src: p.logo ? (p.noFilter ? p.logo : logoSagoma(p.logo)) : undefined,
+      w: dim?.width, h: dim?.height, maxW: maxW === 100 ? undefined : maxW,
+      sagomaChiaro: !!p.logo && !!p.noFilter && logoSagomaSuChiaro(p.logo)
+    };
+  }
+  $: partnerSegments = [0, 1].flatMap((copia) => {
+    const logos = partners.map(logoFascia);
+    const meta = Math.ceil(logos.length / 2);
+    return [logos.slice(0, meta), logos.slice(meta)].map((seg) => ({ lazy: copia > 0, logos: seg }));
+  });
+  onMount(() => {
+    // Un logo che non si e' caricato prima dell'idratazione non manda piu' l'evento `error` a Svelte:
+    // si cerca qui e ricade sul nome, invece di lasciare un buco nella corsia.
+    marqueeEl?.querySelectorAll<HTMLImageElement>('img').forEach((img) => {
+      if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) {
+        const logo = partnerSegments.flatMap((s) => s.logos).find((p) => p.src === img.getAttribute('src'))?.logo;
+        if (logo) logoRotti = { ...logoRotti, [logo]: true };
+      }
+    });
+  });
 
   let videoMuted = true;
   let audioUnlocked = false;
@@ -271,7 +309,17 @@
     if (!v || reduceMotion || audioFailures >= AUDIO_MAX_AUTO_FAILURES) return;
     try {
       if (nav.getAutoplayPolicy?.(v) === 'allowed') requestHeroAudio();
+      // Gesto gia' dato su questa pagina (banner dei cookie, menu, clic precedente): l'attivazione e'
+      // persistente, il suono puo' partire senza altro gesto. Se il browser rifiuta, verifyAudio torna a muto.
+      else if ((navigator as Navigator & { userActivation?: { hasBeenActive: boolean } }).userActivation?.hasBeenActive) requestHeroAudio();
     } catch { /* API non disponibile: si resta sul gesto */ }
+  }
+
+  // Primo movimento della pagina (rotella, dito, scorrimento): se nel frattempo il browser ha concesso il suono
+  // (attivazione data prima dello scorrimento) parte ora; altrimenti nulla, ci pensa il controllo sul telefono.
+  function onFirstMove() {
+    ['wheel', 'touchmove', 'scroll'].forEach(t => window.removeEventListener(t, onFirstMove));
+    if (heroInView && !audioUnlocked) tryPolicyAutounmute();
   }
 
   onMount(async () => {
@@ -317,6 +365,7 @@
 
     audioObserver.observe(container);
     tryPolicyAutounmute();
+    ['wheel', 'touchmove', 'scroll'].forEach(t => window.addEventListener(t, onFirstMove, { passive: true }));
     // --- end audio management ---
     
     // Single initialization - wait for window load
@@ -463,11 +512,18 @@
                 
                 if (progress >= slideStart - 0.05 && progress < slideEnd + 0.05) {
                   slideIdle[i] = false;
+                  // Il pannello deve essere pieno (1) esattamente dove lo snap si ferma: i punti di
+                  // aggancio sono 1/3, 2/3 e 1, la rampa originale arrivava a 1 solo fra .35 e .4 /
+                  // .6 e .65 / .85 e .9, cosi' il pannello restava a 0,89 - 0,89 - 0,33 da fermo.
+                  // Le rampe sono quelle di prima, il plateau si allarga fino al punto di aggancio.
+                  const snapAt = (i + 1) / (totalSlides - 1);
+                  const inFine = Math.min(slideStart + 0.1, snapAt);
+                  const outInizio = Math.max(slideEnd - 0.1, snapAt);
                   let slideOpacity = 1;
-                  if (progress < slideStart + 0.1) {
-                    slideOpacity = (progress - (slideStart - 0.05)) / 0.15;
-                  } else if (progress > slideEnd - 0.1) {
-                    slideOpacity = 1 - ((progress - (slideEnd - 0.1)) / 0.15);
+                  if (progress < inFine) {
+                    slideOpacity = (progress - (slideStart - 0.05)) / (inFine - (slideStart - 0.05));
+                  } else if (progress > outInizio) {
+                    slideOpacity = 1 - ((progress - outInizio) / (slideEnd + 0.05 - outInizio));
                   }
                   gsap.set(slideEl, { opacity: Math.max(0, Math.min(1, slideOpacity)) });
                   
@@ -677,6 +733,7 @@
     if (browser) {
       cancelAnimationFrame(audioRampFrame);
       (['pointerdown', 'pointerup', 'click', 'keydown'] as const).forEach(t => window.removeEventListener(t, onUserActivation, { capture: true }));
+      ['wheel', 'touchmove', 'scroll'].forEach(t => window.removeEventListener(t, onFirstMove));
       document.removeEventListener('visibilitychange', onVisibilityChange);
     }
   });
@@ -841,34 +898,31 @@
           {slide.title}
         </h2>
         <p class="slide-description overflow-hidden">
-          {#each slide.description.split('') as char}
-            <span class="desc-char">{char === ' ' ? '\u00A0' : char}</span>
+          {#each slide.description.split(' ') as word, wi}
+            <span class="desc-word">{#each word.split('') as char}<span class="desc-char">{char}</span>{/each}{#if wi < slide.description.split(' ').length - 1}<span class="desc-char">{'\u00A0'}</span>{/if}</span>
           {/each}
         </p>
       </div>
     {/each}
   </div>
   
-  {#if partners.length > 0 || partnerNames.length > 0}
+  {#if partners.length > 0}
     <div class="partners-strip" aria-hidden="true">
       <p class="partners-label">Tra i nostri clienti</p>
       <div class="partners-marquee-wrapper">
-        <div class="partners-marquee">
-          {#if partners.length > 0}
-            {#each [0,1].flatMap(() => partners) as p}
-              {#if p.logo}
-                <img src={p.logo} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}" loading="eager" decoding="async" height="28" />
-              {:else}
-                <span class="partner-name">{p.name}</span>
-              {/if}
-              <span class="partner-sep">·</span>
-            {/each}
-          {:else}
-            {#each [0,1].flatMap(() => partnerNames) as name}
-              <span class="partner-name">{name}</span>
-              <span class="partner-sep">·</span>
-            {/each}
-          {/if}
+        <div class="partners-marquee" bind:this={marqueeEl}>
+          {#each partnerSegments as seg}
+            <div class="partners-seg">
+              {#each seg.logos as p}
+                {#if p.src && !logoRotti[p.logo ?? '']}
+                  <img src={p.src} alt={p.name} class="partner-logo{p.noFilter ? ' no-filter' : ''}{p.sagomaChiaro ? ' sagoma-chiaro' : ''}" width={p.w} height={p.h} style={p.maxW ? `max-width:${p.maxW}px` : undefined} loading={seg.lazy ? 'lazy' : 'eager'} decoding="async" on:error={() => (logoRotti = { ...logoRotti, [p.logo ?? '']: true })} />
+                {:else}
+                  <span class="partner-name">{p.name}</span>
+                {/if}
+                <span class="partner-sep">·</span>
+              {/each}
+            </div>
+          {/each}
         </div>
       </div>
     </div>
@@ -1312,6 +1366,13 @@
   .desc-char {
     display: inline-block;
   }
+
+  /* Ogni lettera e' un inline-block per l'animazione: senza questo raggruppamento il browser puo'
+     andare a capo fra due lettere qualsiasi («misurabi-/li»). La parola (con il suo spazio) non si spezza. */
+  .desc-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
   
   /* Step Progress Indicator */
   .step-indicator {
@@ -1553,10 +1614,19 @@
    * The old calc(-100% / 6) divided a non-integer max-content width by 6,
    * producing a sub-pixel remainder that browsers rounded inconsistently —
    * causing a visible jump at every loop reset. -50% is an exact CSS value:
-   * no rounding, no jump. */
+   * no rounding, no jump. Both halves are built from the same list and every <img> has its
+   * real width/height, so their widths cannot diverge while the logos load. */
   @keyframes partners-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+
+  /* Un troncone = un quarto della corsia, nel suo livello composito (vedi lo script). */
+  .partners-seg {
+    display: flex;
+    align-items: center;
+    flex: none;
+    will-change: transform;
   }
 
   .partner-name {
@@ -1612,6 +1682,13 @@
   :global([data-theme="light"]) .partner-logo.no-filter {
     filter: grayscale(0.25);
     opacity: 0.72;
+  }
+
+  /* Colori veri sullo scuro, ma con parti bianche (Comune di Pordenone, Fanna, Tomasella): sul chiaro
+   * il bianco sparirebbe e resterebbero scritte a meta', quindi sagoma scura come gli altri. */
+  :global([data-theme="light"]) .partner-logo.no-filter.sagoma-chiaro {
+    filter: brightness(0);
+    opacity: 0.55;
   }
 
   @media (max-width: 767px) {

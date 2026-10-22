@@ -7,6 +7,8 @@ quella piu' grande, quindi nitidi anche su schermi a 3x); cio' che e' gia' piu' 
 si tocca. Stessi nomi e stessi formati: nessun riferimento nel codice cambia.
 
 Uso: python3 scripts/ottimizza-loghi.py [--dry-run]   (serve Pillow)
+Dopo aver cambiato un logo: python3 scripts/logo-dimensioni.py (larghezze/altezze per la fascia clienti)
+e, se e' uno dei loghi con targa piena, python3 scripts/loghi-mono.py.
 """
 import sys
 from pathlib import Path

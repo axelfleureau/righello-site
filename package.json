@@ -20,6 +20,7 @@
     "seo:og": "tsx scripts/og-images.ts",
     "seo:dates": "tsx scripts/page-dates.ts",
     "seo:indexnow": "node scripts/indexnow.mjs",
+    "check:hero-loghi": "node scripts/check-hero-loghi.mjs http://127.0.0.1:5322",
     "lint": "prettier --check . && eslint .",
     "check:contact": "node scripts/check-contact-ctas.mjs",
     "check:contact-motion": "node scripts/check-contact-motion.mjs",
