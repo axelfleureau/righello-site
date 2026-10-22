@@ -20,6 +20,23 @@
   let audioUnlocked = false;
   let audioActiveVisible = false;
   let audioObserver: IntersectionObserver | null = null;
+  // L'audio parte alla prima attivazione utente valida (clic, tocco, tasto) con la hero in vista:
+  // lo scorrimento (rotella, trackpad, swipe) NON e' un'attivazione e nessun browser lo permette.
+  // heroInView alimenta il controllo «Attiva l'audio» sul telefono per chi scorre soltanto.
+  let heroInView = false;
+  let reduceMotion = false;
+  let audioFailures = 0;
+  let audioActiveTimer: ReturnType<typeof setTimeout>;
+  let audioVerifyTimer: ReturnType<typeof setTimeout>;
+  let audioRampFrame = 0;
+  $: audioOn = audioUnlocked && !videoMuted;
+  $: showAudioCue = heroInView && !audioOn;
+  /** Entrata progressiva del volume, per non spaventare chi si trova il suono all'improvviso. */
+  const AUDIO_FADE_MS = 400;
+  /** Dopo tanti rifiuti del browser (iOS in risparmio energetico, Safari) non si insiste da soli: si aspetta il gesto successivo. */
+  const AUDIO_MAX_AUTO_FAILURES = 2;
+  /** Tasti che non esprimono l'intenzione di guardare il video: modificatori, Esc e Tab (sposta solo il focus: chi naviga a tastiera o con un lettore di schermo non si trova il suono addosso). */
+  const IGNORED_KEYS = new Set(['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Fn', 'NumLock', 'ScrollLock', 'Escape', 'AltGraph', 'OS', 'ContextMenu', 'Tab']);
   
   const heroSlide = {
     subtitle: 'Agenzia Marketing',
@@ -130,37 +147,131 @@
     });
   }
 
-  function unlockAudio() {
-    if (!audioUnlocked) {
-      audioUnlocked = true;
-      videoMuted = false;
-      audioActiveVisible = true;
-      setTimeout(() => { audioActiveVisible = false; }, 2500);
+  function heroVideoEl(): HTMLVideoElement | null {
+    return container?.querySelector<HTMLVideoElement>('.phone-screen video') ?? null;
+  }
 
-      // Send unMute synchronously while still in the gesture call-stack.
-      // touchstart qualifies; wheel does NOT on some browsers/YouTube versions
-      // (see retryUnmute below for the reliable fallback).
-      sendUnmuteToIframes();
+  function rampVolume(v: HTMLVideoElement) {
+    cancelAnimationFrame(audioRampFrame);
+    const t0 = performance.now();
+    const step = (now: number) => {
+      // il tempo del fotogramma puo' precedere t0 di qualche ms: senza il minimo a 0 il volume va sotto zero e lancia
+      const k = Math.min(1, Math.max(0, (now - t0) / AUDIO_FADE_MS));
+      v.volume = k;
+      if (k < 1) audioRampFrame = requestAnimationFrame(step);
+    };
+    audioRampFrame = requestAnimationFrame(step);
+  }
+
+  /** Il browser ha rifiutato il suono (video fermato o ancora muto): si torna a muto in riproduzione, senza schermo fermo. */
+  function revertToMuted() {
+    cancelAnimationFrame(audioRampFrame);
+    const v = heroVideoEl();
+    if (v) { v.muted = true; v.volume = 1; if (!reduceMotion) v.play().catch(() => {}); }
+    audioUnlocked = false;
+    videoMuted = true;
+    audioActiveVisible = false;
+    clearTimeout(audioActiveTimer);
+    audioFailures++;
+  }
+
+  function verifyAudio() {
+    clearTimeout(audioVerifyTimer);
+    audioVerifyTimer = setTimeout(() => {
+      const v = heroVideoEl();
+      if (!v || !audioUnlocked || !heroInView || document.hidden) return;
+      if (v.paused || v.muted) revertToMuted();
+    }, AUDIO_FADE_MS + 150);
+  }
+
+  // Toglie il muto al video della hero. Va chiamata DENTRO un gesto (o, a gesto gia' dato, perche' l'attivazione
+  // e' persistente per la pagina). Idempotente. Il percorso YouTube resta sulle postMessage (stesso gesto).
+  function requestHeroAudio() {
+    if (!browser) return;
+    const v = heroVideoEl();
+    const first = !audioUnlocked;
+    audioUnlocked = true;
+    videoMuted = false;
+    if (v) {
+      if (v.muted || v.volume === 1) v.volume = 0;
+      v.muted = false;
+      if (v.paused) v.play().catch(() => {});
+      rampVolume(v);
+      verifyAudio();
+    }
+    sendUnmuteToIframes();
+    // Gesto successivo a un unMute rifiutato (YouTube lo ferma): oltre a togliere il muto, riprende la riproduzione.
+    if (!first) playYoutube();
+    if (first) {
+      audioActiveVisible = true;
+      clearTimeout(audioActiveTimer);
+      audioActiveTimer = setTimeout(() => { audioActiveVisible = false; }, 2500);
     }
   }
 
-  // Called from click / pointerdown / keydown listeners — these are qualifying
-  // user-activation events on every browser including Safari iOS.  If unlockAudio
-  // was already triggered via wheel (which may NOT qualify) and YouTube rejected
-  // the unMute (pausing the video), this will un-pause and unmute cleanly on the
-  // user's next natural interaction with the page.
-  function retryUnmute() {
-    if (!audioUnlocked || videoMuted) return;
-    sendUnmuteToIframes();
-    // If YouTube paused the video because an earlier unMute failed, we also need
-    // to resume playback.  Send playVideo so it resumes from where it froze.
-    if (browser) {
-      document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube"]').forEach(iframe => {
-        iframe.contentWindow?.postMessage(
-          JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
-        );
-      });
+  // Chiamata dal tocco sul play del telefono (percorso YouTube con autoplay bloccato).
+  function unlockAudio() {
+    if (!audioUnlocked) requestHeroAudio();
+  }
+
+  // Vale come attivazione solo cio' che il browser stesso conta: clic/pressione del mouse, tocco (alla
+  // fine, solo se non e' uno scorrimento), tasti veri. Esc e i soli modificatori no, rotella e swipe no.
+  function onUserActivation(e: Event) {
+    if (e instanceof KeyboardEvent && IGNORED_KEYS.has(e.key)) return;
+    if (e.type === 'pointerdown' && (e as PointerEvent).pointerType === 'touch') return;
+    if (!heroInView && !audioUnlocked) return;
+    // Movimento ridotto: il video parte solo dal controllo esplicito, non da un clic qualunque.
+    if (reduceMotion) return;
+    if (audioUnlocked && audioOn) {
+      // Gia' attivo: se il browser lo aveva fermato/silenziato (iframe non pronto, Safari), ritenta col gesto nuovo.
+      const v = heroVideoEl();
+      if (v && !v.paused && !v.muted) return;
     }
+    requestHeroAudio();
+  }
+
+  function onAudioCue() {
+    if (reduceMotion) { const v = heroVideoEl(); v?.play().catch(() => {}); }
+    audioFailures = 0;
+    requestHeroAudio();
+  }
+
+  // Scheda in secondo piano: video fermo (e niente audio che continua); al ritorno riprende, con suono se era attivo.
+  function onVisibilityChange() {
+    const v = heroVideoEl();
+    if (document.hidden) {
+      clearTimeout(heroVideoPauseTimer);
+      v?.pause();
+      pauseYoutube();
+    } else if (heroInView && v && (!reduceMotion || audioUnlocked)) {
+      v.play().catch(() => { if (audioUnlocked) revertToMuted(); });
+      if (audioUnlocked) verifyAudio();
+    }
+  }
+
+  function playYoutube() {
+    if (!browser) return;
+    document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube"]').forEach(iframe => {
+      iframe.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+    });
+  }
+
+  function pauseYoutube() {
+    if (!browser) return;
+    document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube"]').forEach(iframe => {
+      iframe.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');
+    });
+  }
+
+  // Alcuni browser (Safari con «Consenti sempre», Firefox con permesso, Chrome con alto coinvolgimento
+  // sul sito) dichiarano che il suono automatico e' permesso: li' il suono parte senza alcun gesto.
+  function tryPolicyAutounmute() {
+    const v = heroVideoEl();
+    const nav = navigator as Navigator & { getAutoplayPolicy?: (el: HTMLMediaElement) => string };
+    if (!v || reduceMotion || audioFailures >= AUDIO_MAX_AUTO_FAILURES) return;
+    try {
+      if (nav.getAutoplayPolicy?.(v) === 'allowed') requestHeroAudio();
+    } catch { /* API non disponibile: si resta sul gesto */ }
   }
 
   onMount(async () => {
@@ -172,51 +283,40 @@
     if (!container) return;
 
     // --- Audio management ---
-    // Do NOT unlock audio on scroll/touchstart.
-    //
-    // A fast first swipe can fire while the YouTube iframe is still booting. If
-    // we call unMute at that moment, YouTube may reject the request and pause the
-    // player, leaving the hero video frozen until refresh. Scroll must remain a
-    // pure navigation gesture; the hero video stays muted and stable. Explicit
-    // tap-to-play inside PhoneMockup still calls unlockAudio through mobiletap.
-
-    // Gesture-safe unMute retry: after an explicit unlock, click / pointerdown /
-    // keydown are qualifying user-activation events on every browser including
-    // Safari iOS. retryUnmute is a no-op until audioUnlocked=true.
-    window.addEventListener('pointerdown', retryUnmute, { passive: true });
-    window.addEventListener('keydown', retryUnmute, { passive: true });
+    // Lo scorrimento non sblocca l'audio (nessun browser lo consente e un unMute fuori da un
+    // gesto fa FERMARE il video: provato su Chrome). Il primo clic / tocco / tasto qualunque con la
+    // hero in vista toglie il muto; chi scorre soltanto ha il controllo «Attiva l'audio» sul
+    // telefono. L'attivazione e' persistente: alla riapertura della hero il suono torna da solo.
+    reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const activationEvents = ['pointerdown', 'pointerup', 'click', 'keydown'] as const;
+    activationEvents.forEach(t => window.addEventListener(t, onUserActivation, { passive: true, capture: true }));
+    document.addEventListener('visibilitychange', onVisibilityChange);
 
     // Mute/unmute based on whether the hero is in viewport.
     // Lo stesso osservatore ferma anche il video del telefono quando la hero e' lontana:
     // prima restava in riproduzione (decodifica 1080p) per tutta la pagina, a 40 000 px di
     // distanza. L'arresto e' ritardato di 400 ms: lo spostamento del contenitore nel
     // pin-spacer di GSAP puo' dare un "fuori vista" spurio che non deve fermare niente.
-    const heroVideo = () => container.querySelector<HTMLVideoElement>('video');
     audioObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         clearTimeout(heroVideoPauseTimer);
+        heroInView = entry.isIntersecting;
         if (entry.isIntersecting) {
-          heroVideo()?.play().catch(() => {});
-          // Re-enter viewport: unmute if user had already unlocked audio.
-          // Also call sendUnmuteToIframes() directly: the Svelte reactive only
-          // handles mute now (not unMute, to avoid gesture-policy rejections on
-          // first load). For already-playing muted videos on re-entry this send
-          // is safe — browsers only restrict starting playback, not unMuting a
-          // video that is already in a playing state. retryUnmute() on pointerdown
-          // acts as a fallback for strict browsers (Safari desktop).
-          if (audioUnlocked) {
-            videoMuted = false;
-            sendUnmuteToIframes();
-          }
+          const v = heroVideoEl();
+          if (!reduceMotion || audioUnlocked) v?.play().catch(() => {});
+          // Rientro nella hero: se l'utente aveva gia' attivato l'audio torna da solo (l'attivazione
+          // della pagina e' persistente; se il browser rifiuta, verifyAudio riporta a muto senza fermare il video).
+          if (audioUnlocked) requestHeroAudio();
         } else {
           // Left viewport: always mute
           videoMuted = true;
-          heroVideoPauseTimer = setTimeout(() => heroVideo()?.pause(), 400);
+          heroVideoPauseTimer = setTimeout(() => heroVideoEl()?.pause(), 400);
         }
       });
     }, { threshold: 0.2 });
 
     audioObserver.observe(container);
+    tryPolicyAutounmute();
     // --- end audio management ---
     
     // Single initialization - wait for window load
@@ -572,9 +672,12 @@
     ctx?.revert();
     audioObserver?.disconnect();
     clearTimeout(heroVideoPauseTimer);
+    clearTimeout(audioActiveTimer);
+    clearTimeout(audioVerifyTimer);
     if (browser) {
-      window.removeEventListener('pointerdown', retryUnmute);
-      window.removeEventListener('keydown', retryUnmute);
+      cancelAnimationFrame(audioRampFrame);
+      (['pointerdown', 'pointerup', 'click', 'keydown'] as const).forEach(t => window.removeEventListener(t, onUserActivation, { capture: true }));
+      document.removeEventListener('visibilitychange', onVisibilityChange);
     }
   });
 </script>
@@ -687,10 +790,12 @@
           videoSrc={heroVideoCloudinaryUrl}
           thumbnailUrl={heroVideoThumbnailUrl}
           muted={videoMuted}
+          audioCue={showAudioCue}
           disableVisibilityObserver={true}
           disable3dTilt={true}
           disableEntranceAnimation={true}
           on:mobiletap={unlockAudio}
+          on:audiocue={onAudioCue}
         />
       </div>
     </div>
@@ -769,12 +874,13 @@
     </div>
   {/if}
 
-  <!-- Audio state badges – ALWAYS in DOM, hidden via CSS class only.
+  <!-- Badge «Audio attivato» – ALWAYS in DOM, hidden via CSS class only.
+       (Il controllo «Attiva l'audio» vive nello schermo del telefono, in PhoneMockup.)
        Using {#if} here caused a NotFoundError crash in GSAP's ScrollTrigger:
        when audioUnlocked/audioActiveVisible changed mid-scroll, Svelte removed
        these nodes from the pinned container and GSAP's insertBefore pin-spacer
        logic referenced a stale node → crash → full hero section re-render.
-       Fix: keep both badge divs permanently in the DOM; toggle "audio-badge-gone"
+       Fix: keep the badge div permanently in the DOM; toggle "audio-badge-gone"
        (display:none) so GSAP never sees a structural DOM change during scroll.
        Changing display:none → flex (or vice versa) also correctly re-triggers
        the CSS keyframe animations (audio-on-in / audio-on-out). -->
@@ -785,14 +891,6 @@
       <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
     </svg>
     Audio attivato
-  </div>
-  <div class="audio-badge audio-hint" class:audio-badge-gone={true} aria-hidden="true">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-icon">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <line x1="23" y1="9" x2="17" y2="15"/>
-      <line x1="17" y1="9" x2="23" y2="15"/>
-    </svg>
-    Scorri per audio
   </div>
 
   <div class="scroll-hint" aria-hidden="true">
@@ -904,7 +1002,8 @@
   /* Allow the tap-to-play button inside the phone to receive pointer events
      even though .phone-area has pointer-events:none (needed to prevent the
      phone's large layout box from blocking page scroll on mobile). */
-  .phone-area :global(.mobile-tap-hint) {
+  .phone-area :global(.mobile-tap-hint),
+  .phone-area :global(.audio-cue:not(.audio-cue-hidden)) {
     pointer-events: auto;
   }
 
@@ -1331,13 +1430,6 @@
     display: none;
   }
 
-  .audio-hint {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.5);
-    animation: audio-hint-pulse 3s ease-in-out infinite;
-  }
-
   .audio-on {
     background: rgba(214, 72, 126, 0.2);
     border: 1px solid rgba(214, 72, 126, 0.4);
@@ -1351,11 +1443,6 @@
     flex-shrink: 0;
   }
 
-  @keyframes audio-hint-pulse {
-    0%, 100% { opacity: 0.5; }
-    50%       { opacity: 1; }
-  }
-
   @keyframes audio-on-in {
     from { opacity: 0; transform: scale(0.9) translateY(4px); }
     to   { opacity: 1; transform: scale(1) translateY(0); }
@@ -1364,12 +1451,6 @@
   @keyframes audio-on-out {
     from { opacity: 1; }
     to   { opacity: 0; }
-  }
-
-  :global([data-theme="light"]) .audio-hint {
-    background: rgba(0, 0, 0, 0.06);
-    border-color: rgba(0, 0, 0, 0.1);
-    color: rgba(0, 0, 0, 0.4);
   }
 
   /* ─── CREDIBILITY BADGES: desktop version (inside hero-text) ───────────── */

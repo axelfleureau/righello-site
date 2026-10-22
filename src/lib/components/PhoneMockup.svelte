@@ -3,7 +3,7 @@
   import { spring } from 'svelte/motion';
   import { browser } from '$app/environment';
 
-  const dispatch = createEventDispatcher<{ mobiletap: void }>();
+  const dispatch = createEventDispatcher<{ mobiletap: void; audiocue: void }>();
   
   export let videoSrc: string | null = null;
   export let youtubeId: string | null = null;
@@ -14,6 +14,9 @@
   export let thumbnailUrl: string | undefined = undefined;
   export let showPlaceholder = true;
   export let muted: boolean = true;
+  // Controllo «Attiva l'audio» sullo schermo del telefono: lo decide il genitore (hero in vista,
+  // audio non ancora attivo). Il clic e' un'attivazione utente valida: il genitore toglie il muto.
+  export let audioCue = false;
   
   let mounted = false;
   let isHovered = false;
@@ -142,6 +145,13 @@
     // Notify parent (AppleScrolly) to unlock audio state.
     dispatch('mobiletap');
   }
+  // true se l'iframe di YouTube ha davvero un indirizzo caricato. Un gestore dei consensi (iubenda)
+  // puo' sostituirlo con about:blank finche' il visitatore non accetta: i timer di sicurezza non
+  // devono togliere la miniatura se dietro non c'e' nessun video (schermo vuoto per sempre).
+  function ytIframeLoaded(): boolean {
+    const src = iframeEl?.getAttribute('src');
+    return !!src && src !== 'about:blank';
+  }
   // Computed thumbnail URLs — reactive so they update if the prop changes.
   // ytCdnThumb: YouTube's own image CDN (blocked by some in-app browsers).
   // activeThumbnailSrc: preferred source; Cloudinary URL takes priority over CDN.
@@ -240,7 +250,7 @@
   //   ↳ !ytLooping: suppressed during the ~2s manual loop window (state=0 cross-fade).
   //     The loop deliberately sets ytPlaying=false (to show thumbnail for a smooth
   //     transition); the guard must not override this before the cross-fade completes.
-  $: if (!muted && iframeEl && ytSrcActive && !ytPlaying && !ytLooping) {
+  $: if (!muted && iframeEl && ytSrcActive && !ytPlaying && !ytLooping && ytIframeLoaded()) {
     ytVisible = true;
     ytPlaying = true;
   }
@@ -286,6 +296,14 @@
       }, 3000);
     }
     
+    // Movimento ridotto: il video non parte da solo. Resta il primo fotogramma (poster) e il
+    // controllo «Attiva l'audio» lo avvia (il genitore chiama play() dentro quel gesto).
+    if (videoElement && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      videoElement.removeAttribute('autoplay');
+      videoElement.pause();
+      videoLoading = false;
+    }
+
     // If video is already cached/ready, update loading state
     if (videoElement && videoElement.readyState >= 3) {
       videoLoading = false;
@@ -354,7 +372,7 @@
           // API hiccup, browser throttle), force the thumbnail out so the user
           // doesn't see a stuck poster image forever.
           ytFallbackTimer = setTimeout(() => {
-            if (!ytPlaying) {
+            if (!ytPlaying && ytIframeLoaded()) {
               ytVisible = true;
               ytPlaying = true;
             }
@@ -498,7 +516,7 @@
       // within the first 5s, ytSrcActive='' (iframe gone). Forcing ytPlaying=true with
       // no iframe would hide the thumbnail without any video behind it → black screen.
       setTimeout(() => {
-        if (!ytPlaying && ytSrcActive) {
+        if (!ytPlaying && ytSrcActive && ytIframeLoaded()) {
           ytVisible = true;
           ytPlaying = true;
         }
@@ -557,7 +575,7 @@
               // fallback is needed. ytSrcActive check prevents the black-screen bug if
               // the phone leaves again before the 5s is up.
               setTimeout(() => {
-                if (!ytPlaying && ytSrcActive) {
+                if (!ytPlaying && ytSrcActive && ytIframeLoaded()) {
                   ytVisible = true;
                   ytPlaying = true;
                 }
@@ -707,6 +725,7 @@
               muted 
               playsinline
               preload="metadata"
+              poster={thumbnailUrl}
               on:canplay={handleVideoCanPlay}
               on:error={handleVideoError}
               class="w-full h-full object-cover"
@@ -758,6 +777,25 @@
               </div>
             </div>
           {/if}
+
+          <!-- Controllo audio: sempre nel DOM (mai {#if}: vedi il crash di GSAP piu' sopra), si
+               mostra e si nasconde solo via classe. -->
+          <button
+            type="button"
+            class="audio-cue"
+            class:audio-cue-hidden={!audioCue}
+            tabindex={audioCue ? 0 : -1}
+            aria-hidden={audioCue ? undefined : 'true'}
+            aria-label="Attiva l'audio del video"
+            on:click|stopPropagation={() => dispatch('audiocue')}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-cue-icon" aria-hidden="true">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+            Attiva l'audio
+          </button>
         </div>
         
         <div class="phone-home-indicator"></div>
@@ -985,6 +1023,69 @@
   .mobile-tap-hint.tap-hint-hidden {
     opacity: 0;
     pointer-events: none;
+  }
+
+  /* Controllo «Attiva l'audio»: stesso linguaggio dei badge audio della hero (pillola, bordo rosa,
+     vetro). Scuro in entrambi i temi perche' sta sopra il video. */
+  .audio-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 26px;
+    z-index: 12;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(214, 72, 126, 0.55);
+    background: rgba(10, 10, 15, 0.55);
+    color: #fff;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -webkit-tap-highlight-color: transparent;
+    transform: translateX(-50%);
+    opacity: 1;
+    /* compare dopo un istante: non deve lampeggiare mentre il video sta ancora partendo */
+    transition: opacity 0.35s ease 0.8s, visibility 0s;
+    animation: audio-cue-pulse 3s ease-in-out 1.2s infinite;
+  }
+
+  .audio-cue-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+  }
+
+  .audio-cue-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    flex-shrink: 0;
+    color: #D6487E;
+  }
+
+  @keyframes audio-cue-pulse {
+    0%, 100% { border-color: rgba(214, 72, 126, 0.35); }
+    50%      { border-color: rgba(214, 72, 126, 0.85); }
+  }
+
+  /* Sul telefono lo schermo e' scalato a 0,65: il testo va ingrandito di pari passo. */
+  @media (max-width: 767px) {
+    .audio-cue {
+      bottom: 34px;
+      font-size: 1.05rem;
+      padding: 0.55rem 1.2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .audio-cue { animation: none; transition: none; }
   }
 
   .mobile-tap-hint::before {
