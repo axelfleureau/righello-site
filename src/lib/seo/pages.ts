@@ -7,6 +7,7 @@
  */
 import { caseStudies, caseStudyHref, type CaseStudy } from '../data/case-studies';
 import { serviceDetails, type ServiceDetail } from '../data/service-details';
+import { softwareHousePages } from '../data/software-house';
 
 /** Un file intero, oppure solo il blocco di un elemento dentro un file di dati (si cerca la riga d'apertura). */
 export type Source = string | { file: string; opens: string };
@@ -20,6 +21,7 @@ export interface SitePage {
 
 const SERVICE_DATA = 'src/lib/data/service-details.ts';
 const CASE_DATA = 'src/lib/data/case-studies.ts';
+const SOFTWARE_DATA = 'src/lib/data/software-house.ts';
 
 const STATIC_PAGES: SitePage[] = [
   {
@@ -92,6 +94,14 @@ const servicePages = (): SitePage[] =>
     sources: [{ file: SERVICE_DATA, opens: `slug: '${s.slug}',` }]
   }));
 
+const softwareHouseSitePages = (): SitePage[] =>
+  softwareHousePages.map((p) => ({
+    path: p.path,
+    priority: '0.9',
+    changefreq: 'monthly',
+    sources: [{ file: SOFTWARE_DATA, opens: `zone: '${p.zone}',` }]
+  }));
+
 /** BUFFR e' escluso: la sua pagina e' `/buffr`, gia' fra quelle fisse. */
 const projectPages = (): SitePage[] =>
   caseStudies
@@ -103,4 +113,9 @@ const projectPages = (): SitePage[] =>
       sources: [{ file: CASE_DATA, opens: `id: '${s.id}',` }, `src/lib/data/landing/${s.id}.ts`]
     }));
 
-export const sitePages: SitePage[] = [...STATIC_PAGES, ...servicePages(), ...projectPages()];
+export const sitePages: SitePage[] = [
+  ...STATIC_PAGES,
+  ...servicePages(),
+  ...softwareHouseSitePages(),
+  ...projectPages()
+];

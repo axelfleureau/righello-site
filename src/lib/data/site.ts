@@ -72,7 +72,7 @@ export interface NavItem {
 /** Voci della testata, nell'ordine in cui si leggono. */
 export const mainNav: NavItem[] = [
   { href: '/', label: 'Home' },
-  { href: '/servizi', label: 'Servizi', match: ['/servizi', '/agenzia-marketing-', '/bando-intelligenza-artificiale-fvg-2026'] },
+  { href: '/servizi', label: 'Servizi', match: ['/servizi', '/agenzia-marketing-', '/software-house-', '/bando-intelligenza-artificiale-fvg-2026'] },
   { href: '/progetti', label: 'Progetti', match: ['/progetti', '/buffr'] },
   { href: '/chi-siamo', label: 'Chi siamo' },
   { href: '/contatti', label: 'Contatti' },
@@ -91,11 +91,20 @@ export function isCurrent(item: NavItem, pathname: string): boolean {
  * Pagine che chiudono con un invito proprio (home, schede, servizi, contatti): il piede non ne ripete un secondo.
  * Restano senza invito nostro solo chi siamo, il bando e gli errori, dove quello del piede e' l'unico.
  */
-const OWN_CLOSING = ['/', '/progetti', '/buffr', '/servizi', '/contatti', '/agenzia-marketing-'];
+const OWN_CLOSING = ['/', '/progetti', '/buffr', '/servizi', '/contatti', '/agenzia-marketing-', '/software-house-'];
 
 export function hasOwnClosing(pathname: string): boolean {
   return OWN_CLOSING.some((p) => (p === '/' ? pathname === '/' : p.endsWith('-') ? pathname.startsWith(p) : pathname === p || pathname.startsWith(`${p}/`)));
 }
+
+/**
+ * Le due pagine «software house»: una per sede (legale e operativa). Il piede, i rimandi dalle altre pagine,
+ * la mappa del sito e `llms.txt` leggono da qui; il contenuto delle pagine sta in `software-house.ts`.
+ */
+export const softwareHouseLinks = [
+  { zone: 'pordenone', href: '/software-house-pordenone', label: 'Software house a Pordenone' },
+  { zone: 'mestre', href: '/software-house-mestre', label: 'Software house a Mestre' },
+] as const;
 
 export interface ServiceMenuItem {
   /** Id del reparto in `departments` (titolo e frase vengono da li'). */
@@ -145,6 +154,7 @@ export const footerColumns: FooterColumn[] = [
     links: [
       { href: '/agenzia-marketing-pordenone', label: 'Agenzia a Pordenone' },
       { href: '/agenzia-marketing-mestre', label: 'Agenzia a Mestre' },
+      ...softwareHouseLinks.map(({ href, label }) => ({ href, label })),
       { href: '/bando-intelligenza-artificiale-fvg-2026', label: 'Bando AI Friuli-Venezia Giulia' },
     ],
   },

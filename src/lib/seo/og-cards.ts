@@ -8,6 +8,7 @@
  */
 import { caseStudies, caseStudyHref, kindLabels, type CaseStudy } from '../data/case-studies';
 import { serviceDetails, agencyAccent } from '../data/service-details';
+import { softwareHousePages } from '../data/software-house';
 import { COMPANY } from '../data/site';
 import { ogKey } from './og';
 import { sitePages } from './pages';
@@ -91,6 +92,8 @@ function fixedFor(path: string): Fixed {
     const title = service.seo.title.replace(BRAND_SUFFIX, '');
     return { kicker: 'Servizi', title, note: place, accent: service.accent };
   }
+  const software = softwareHousePages.find((p) => p.path === path);
+  if (software) return { ...software.card, accent: agencyAccent };
   const study = studyOf(path);
   if (study) {
     return {

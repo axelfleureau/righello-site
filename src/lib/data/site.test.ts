@@ -18,6 +18,8 @@ describe('site', () => {
     expect(isCurrent(by('/'), '/servizi')).toBe(false);
     expect(isCurrent(by('/servizi'), '/servizi/web')).toBe(true);
     expect(isCurrent(by('/servizi'), '/agenzia-marketing-mestre')).toBe(true);
+    expect(isCurrent(by('/servizi'), '/software-house-pordenone')).toBe(true);
+    expect(isCurrent(by('/servizi'), '/software-house-mestre')).toBe(true);
     expect(isCurrent(by('/progetti'), '/buffr')).toBe(true);
     expect(isCurrent(by('/progetti'), '/progetti/dico')).toBe(true);
     expect(isCurrent(by('/contatti'), '/progetti')).toBe(false);

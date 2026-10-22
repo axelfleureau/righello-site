@@ -25,6 +25,7 @@
   $: flow = [
     { id: 'cosa-facciamo', label: m.variant === 'indice' ? 'I servizi' : 'Cosa facciamo', on: m.scope.items.length > 0 },
     { id: m.scope2?.id ?? 'richiesti', label: m.scope2?.label ?? '', on: !!m.scope2?.items.length },
+    ...(m.extras ?? []).map((x) => ({ id: x.id, label: x.label, on: x.items.length > 0 })),
     { id: 'come-lavoriamo', label: 'Come lavoriamo', on: m.method.steps.length > 0 },
     { id: 'lavori', label: 'Lavori', on: m.proof.items.length > 0 },
     { id: 'zona', label: 'Dove operiamo', on: !!m.local },
@@ -48,6 +49,7 @@
     <SectionNav items={nav} back={back ? { href: back.href, label: back.label } : null} />
     <ServiceScope id="cosa-facciamo" head={m.scope} items={m.scope.items} layout={m.variant === 'indice' ? 'rows' : 'cards'} tone={tone['cosa-facciamo']} />
     {#if m.scope2?.items.length}<ServiceScope id={m.scope2.id} head={m.scope2} items={m.scope2.items} tone={tone[m.scope2.id]} />{/if}
+    {#each m.extras ?? [] as x (x.id)}{#if x.items.length}<ServiceScope id={x.id} head={x} items={x.items} tone={tone[x.id]} />{/if}{/each}
     {#if m.note}<ServiceNote note={m.note} />{/if}
     <ServiceMethod head={m.method} steps={m.method.steps} tone={tone['come-lavoriamo']} />
     {#if m.proof.items.length}<ServiceProof head={m.proof} items={m.proof.items} more={m.proof.more} tone={tone['lavori']} />{/if}
