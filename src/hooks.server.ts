@@ -2,6 +2,7 @@ import type { Handle } from '@sveltejs/kit';
 import { isBlockedUserAgent } from '$lib/seo/crawlers';
 import { dropOverriddenDefaults, LD_ATTR, readHeadMeta } from '$lib/seo/head';
 import { jsonLdFor } from '$lib/seo/schema';
+import { stripLazyContactCss } from '$lib/contact/headCss';
 
 /**
  * Il <head> che parte dal server:
@@ -13,7 +14,7 @@ function transformHead(html: string, path: string): string {
   const start = html.indexOf('<head');
   const end = html.indexOf('</head>');
   if (start === -1 || end === -1) return html;
-  let head = dropOverriddenDefaults(html.slice(start, end));
+  let head = stripLazyContactCss(dropOverriddenDefaults(html.slice(start, end)), path);
   const meta = readHeadMeta(head);
   const ld = meta.title && meta.description ? jsonLdFor(path, { title: meta.title, description: meta.description, image: meta.image }) : null;
   if (ld) head += `<script type="application/ld+json" ${LD_ATTR}>${ld}</script>`;

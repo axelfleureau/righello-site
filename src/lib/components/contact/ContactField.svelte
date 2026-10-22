@@ -41,7 +41,7 @@
 <style>
   .cxf { min-width: 0; }
   .cxf__row { display: flex; align-items: center; justify-content: space-between; gap: var(--cx-3); margin-bottom: var(--cx-2); min-height: 1.4rem; }
-  .cxf__label { min-width: 0; font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
+  .cxf__label { min-width: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.25; color: var(--text-primary); }
   .cxf__opt { margin-left: var(--cx-2); font-size: 0.8rem; font-weight: 500; color: var(--cx-muted); }
 
   .cxf__ctl { position: relative; }

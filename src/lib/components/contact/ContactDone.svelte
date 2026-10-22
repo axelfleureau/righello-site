@@ -104,7 +104,7 @@
 
   <ContactDock {layout}>
     {#if layout === 'sheet'}
-      <CxButton variant="primary" full on:click={onClose}>Chiudi</CxButton>
+      <CxButton variant="primary" fullPhone on:click={onClose}>Chiudi</CxButton>
     {:else}
       <CxButton variant="primary" size="lg" full on:click={onBack}>Torna dove eri</CxButton>
       <CxButton variant="ghost" size="lg" full on:click={() => flow.again()}>Scrivi un altro messaggio</CxButton>
@@ -115,7 +115,9 @@
 <style>
   .cd { display: grid; justify-items: center; gap: var(--cx-4); text-align: center; padding: var(--cx-4) 0 0; min-height: 100%; align-content: start; }
   .cd--page { padding-top: var(--cx-6); }
-  .cd > :global(.cxd) { align-self: end; width: 100%; }
+  /* la barra e' larga quanto il foglio (margini negativi del padding): si allarga da sola, senza width */
+  .cd > :global(.cxd) { align-self: end; justify-self: stretch; }
+  .cd--page > :global(.cxd) { width: 100%; }
   .cd--sheet > :global(.cxd) { margin-top: auto; }
 
   .cd__mark { position: relative; display: grid; place-items: center; width: 4.2rem; height: 4.2rem; border-radius: 50%; color: var(--cx-ok); background: color-mix(in srgb, var(--cx-ok) 14%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cx-ok) 40%, transparent); animation: cd-pop 0.5s var(--cx-ease-pop) backwards; }
@@ -131,7 +133,7 @@
   .cd__ref-row { display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--cx-3) var(--cx-4); }
   .cd__code { font-family: var(--font-label); font-size: 1.5rem; font-weight: 700; letter-spacing: 0.1em; font-variant-numeric: tabular-nums; color: var(--brand-pink-ink); user-select: all; white-space: nowrap; }
   .cd__code span { display: inline-block; animation: cd-letter 0.34s calc(0.34s + var(--i) * 0.045s) var(--cx-ease) backwards; }
-  .cd__copy { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--cx-2); min-width: 5.6rem; min-height: 2.75rem; padding: 0 var(--cx-4); border: 0; border-radius: 999px; background: transparent; box-shadow: inset 0 0 0 1px var(--border-color); color: var(--text-primary); font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform 0.14s var(--cx-ease); }
+  .cd__copy { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--cx-2); min-width: 6.2rem; min-height: 2.75rem; padding: 0 var(--cx-4); border: 0; border-radius: 999px; background: transparent; box-shadow: inset 0 0 0 1px var(--border-color); color: var(--text-primary); font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform 0.14s var(--cx-ease); }
   .cd__copy:active { transform: scale(0.96); }
   .cd__copy:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
   .cd__copy svg { flex: none; overflow: visible; }

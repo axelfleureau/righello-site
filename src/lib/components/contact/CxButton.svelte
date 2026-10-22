@@ -12,6 +12,8 @@
   export let type: 'button' | 'submit' = 'button';
   export let external = false;
   export let full = false;
+  /** A tutta larghezza solo sul telefono: da 640 px e' un pulsante della sua misura, al centro (una finestra larga non vuole una barra rosa da un bordo all'altro). */
+  export let fullPhone = false;
   /** Invio in corso: la rotellina e la barra sottile prendono il posto dell'etichetta. */
   export let busy = false;
   export let busyLabel = '';
@@ -27,6 +29,7 @@
   this={href ? 'a' : 'button'}
   class="cxb cxb--{variant} cxb--{size}"
   class:cxb--full={full}
+  class:cxb--full-phone={fullPhone}
   class:is-busy={busy}
   class:is-done={done}
   href={href || undefined}
@@ -80,7 +83,8 @@
     transition: transform 0.14s var(--cx-ease);
   }
   .cxb--lg { min-height: 3.4rem; padding: 0 var(--cx-8); }
-  .cxb--full { display: grid; width: 100%; }
+  .cxb--full, .cxb--full-phone { display: grid; width: 100%; }
+  @media (min-width: 640px) { .cxb--full-phone { width: auto; min-width: 14rem; justify-self: center; } }
 
   /* lo strato sopra: si accende al passaggio, senza animare il colore sotto */
   .cxb::after { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: currentColor; opacity: 0; transition: opacity 0.2s ease; }

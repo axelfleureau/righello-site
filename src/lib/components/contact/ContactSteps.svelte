@@ -39,7 +39,9 @@
   /* conferma da 640 px in su: i tre passi in fila, con la linea che li unisce in orizzontale (poca altezza: il foglio sta in 900 px) */
   @media (min-width: 640px) {
     .cxs--done { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cx-4); }
-    .cxs--done li { grid-template-columns: minmax(0, 1fr); row-gap: var(--cx-2); padding-bottom: 0; }
+    .cxs--done li { grid-template-columns: minmax(0, 1fr); align-content: start; row-gap: var(--cx-2); padding-bottom: 0; }
+    /* i tempi possono andare a capo ("Entro 72 ore lavorative"): hanno lo spazio di due righe e stanno in basso, cosi' i titoli sono allineati */
+    .cxs--done .cxs__when { display: flex; align-items: flex-end; min-height: 2.5em; }
     .cxs--done li:not(:last-child)::before { left: 2.5rem; right: calc(-1 * var(--cx-4) + 0.5rem); top: 1rem; bottom: auto; width: auto; height: 1px; margin: 0; }
   }
 

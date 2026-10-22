@@ -262,7 +262,8 @@
       --cs-pad: var(--cx-8);
       width: min(40rem, calc(100% - 2rem));
       height: auto;
-      min-height: min(34rem, calc(100% - 2rem));
+      /* alta quanto basta per il modulo: quando arriva dal pacchetto pigro il foglio non cresce, non salta */
+      min-height: min(50rem, calc(100% - 2rem));
       max-height: calc(100% - 2rem);
       border-bottom: 1px solid var(--border-color);
       border-radius: var(--cx-r-l);
@@ -275,7 +276,7 @@
     .is-closing .cs-panel { animation-name: cs-pop-out; animation-duration: 0.16s; }
   }
   @media (min-width: 960px) {
-    .cs-panel { width: min(var(--container-max), calc(100% - 2 * var(--space-lg))); max-height: min(52rem, calc(100% - 3rem)); min-height: min(34rem, calc(100% - 3rem)); }
+    .cs-panel { width: min(var(--container-max), calc(100% - 2 * var(--space-lg))); max-height: min(52rem, calc(100% - 3rem)); min-height: min(50rem, calc(100% - 3rem)); }
   }
 
   @keyframes cs-fade { from { opacity: 0; } }
