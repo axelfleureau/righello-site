@@ -151,7 +151,7 @@
       <h2 class="cs-h2">Le persone</h2>
       <p class="cs-sub">Quando scrivi dal modulo dei contatti, il messaggio arriva ai tre fondatori.</p>
     </ScrollReveal>
-    <ul class="cs-team">
+    <ul class="cs-team" style="--cols: {Math.min(team.length, 4)}; --cols-m: {team.length % 2 === 1 && team.length <= 3 ? team.length : 2}">
       {#each team as m}
         <li>
           <img src={m.image} alt={m.name} width="480" height="480" loading="lazy" decoding="async" style="object-position: {m.pos}" />
@@ -226,8 +226,8 @@
   .cs-principles { display: grid; gap: 0.5rem; margin-top: clamp(1.8rem, 4vw, 2.6rem); padding-top: 1.4rem; border-top: 1px solid var(--border-color); color: var(--text-secondary); line-height: 1.6; }
   .cs-principles strong { color: var(--text-primary); }
 
-  .cs-team { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem 1rem; margin-top: 2rem; }
-  @media (min-width: 768px) { .cs-team { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.6rem; } }
+  .cs-team { display: grid; grid-template-columns: repeat(var(--cols-m), minmax(0, 1fr)); gap: 1.6rem 1rem; margin-top: 2rem; }
+  @media (min-width: 768px) { .cs-team { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); max-width: calc(var(--cols) * 16.5rem); gap: 1.6rem; } }
   .cs-team img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 1.1rem; background: var(--bg-tertiary); margin-bottom: 0.8rem; }
   .cs-team__name { font-weight: 700; font-size: 1.05rem; line-height: 1.25; }
   .cs-team__role { color: var(--text-secondary); font-size: 0.93rem; margin-top: 0.15rem; }
