@@ -34,7 +34,7 @@ export const regiaNodes: RegiaNode[] = [
     visual: 'device',
   },
   {
-    projectId: 'regia-tv-studio',
+    projectId: 'bordocampo',
     verb: 'Monta',
     visual: 'monitor',
   },

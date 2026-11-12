@@ -9,6 +9,11 @@ export const load: PageLoad = ({ params }) => {
     throw redirect(301, '/buffr');
   }
 
+  // Il nome precedente del servizio: i vecchi collegamenti arrivano a Bordocampo.
+  if (slug === 'regia-tv-studio') {
+    throw redirect(301, '/progetti/bordocampo');
+  }
+
   if (!validCaseStudySlugs.includes(slug)) {
     throw error(404, { message: `Progetto "${slug}" non trovato` });
   }

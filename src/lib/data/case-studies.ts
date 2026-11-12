@@ -90,6 +90,15 @@ const phonesBuffr = [
   '/products/buffr/montaggio-v2.webp',
 ];
 
+// Schermate vere dell'app (build di sviluppo sul simulatore, 12/11/2026): la prova senza Mac usa il Mac finto dell'app.
+// [0] centro, [1] sinistra, [3] destra ([2] non e' usata: serve almeno 4 voci).
+const phonesPerigscope = [
+  '/progetti/landing/perigscope/prova-senza-mac.webp',
+  '/progetti/landing/perigscope/benvenuto.webp',
+  '/progetti/landing/perigscope/accesso.webp',
+  '/progetti/landing/perigscope/tastiera-mac.webp',
+];
+
 export const caseStudies: CaseStudy[] = [
   {
     id: 'buffr',
@@ -154,9 +163,9 @@ export const caseStudies: CaseStudy[] = [
     },
   },
   {
-    id: 'regia-tv-studio',
-    name: 'Produzione delle partite',
-    sector: 'Regia automatica per lo sport',
+    id: 'bordocampo',
+    name: 'Bordocampo',
+    sector: 'Produzione automatica delle partite',
     category: 'digital',
     kind: 'broadcast',
     status: { tone: 'internal', label: 'Motore interno in uso' },
@@ -178,9 +187,9 @@ export const caseStudies: CaseStudy[] = [
     },
     featured: true,
     seo: {
-      title: 'Produzione delle partite: regia automatica per lo sport',
+      title: 'Bordocampo: produzione automatica delle partite',
       description:
-        'Il cronista segna gli eventi dal palmare e la produzione automatica monta la partita da televisione con grafiche e replay. Motore in uso interno.',
+        'Bordocampo: il cronista segna gli eventi dal palmare e la produzione automatica monta la partita da televisione con grafiche e replay. Motore in uso interno.',
     },
   },
   {
@@ -270,6 +279,36 @@ export const caseStudies: CaseStudy[] = [
       title: 'Tetha: software per scadenze e documenti del cantiere',
       description:
         'Tetha legge i documenti scansionati dal telefono, avvisa trenta giorni prima di ogni scadenza e prepara il dossier per imprese edili e subappaltatori.',
+    },
+  },
+  {
+    id: 'perigscope',
+    name: 'Perigscope',
+    sector: 'Il Mac sull’iPhone',
+    category: 'digital',
+    kind: 'app',
+    status: { tone: 'beta', label: 'App in prova' },
+    platform: ['iPhone', 'Mac'],
+    audience: 'Chi lavora sul Mac e vuole usarlo anche lontano dalla scrivania',
+    accent: ['#FF0090', '#6D28D9'],
+    headline: 'Il tuo Mac, in tasca.',
+    text:
+      'Vedi lo schermo del tuo Mac sull’iPhone, muovi il puntatore, clicchi e scrivi come se fossi alla scrivania, da casa o da fuori. Trackpad vero, tastiera da Mac, dettatura, e tutto cifrato da capo a capo.',
+    focus: ['Controllo remoto', 'Trackpad e tastiera', 'iPhone Duo', 'Cifrato da capo a capo'],
+    href: 'https://perigscope.wearerighello.com',
+    icon: '/progetti/icons/perigscope.webp',
+    image: '/progetti/landing/perigscope/prova-senza-mac.webp',
+    imagePosition: 'center top',
+    stage: {
+      type: 'phones',
+      src: phonesPerigscope[0],
+      alt: 'Perigscope: la prova senza Mac, il benvenuto, l’accesso con email e la tastiera da Mac sull’iPhone',
+      screens: phonesPerigscope,
+    },
+    seo: {
+      title: 'Perigscope: il tuo Mac sull’iPhone, con trackpad e tastiera',
+      description:
+        'Perigscope porta il tuo Mac sull’iPhone: trackpad vero, tastiera da Mac, dettatura, cifratura da capo a capo. Pensata per iPhone Duo. App in prova.',
     },
   },
   {
@@ -698,10 +737,10 @@ export const orderedCaseStudies: CaseStudy[] = [...caseStudies].sort(
 /** Prodotti che lavorano davvero insieme: una coppia per legame, il resto lo ricava getCompanions. */
 const companionPairs: Array<[string, string]> = [
   ['buffr', 'buffr-live'],
-  ['buffr', 'regia-tv-studio'],
-  ['buffr-live', 'regia-tv-studio'],
-  ['regia-tv-studio', 'rigcast'],
-  ['regia-tv-studio', 'canale77'],
+  ['buffr', 'bordocampo'],
+  ['buffr-live', 'bordocampo'],
+  ['bordocampo', 'rigcast'],
+  ['bordocampo', 'canale77'],
   ['canale77', 'ch77-plus'],
   ['dico', 'assistenti-pa'],
   ['gusto-raffinato', 'gusto-raffinato-sala'],

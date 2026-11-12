@@ -268,15 +268,16 @@ const isSoftware = (s: CaseStudy) =>
 const APP_CATEGORY: Record<string, string> = {
   buffr: 'MultimediaApplication',
   'buffr-live': 'SportsApplication',
-  'regia-tv-studio': 'MultimediaApplication',
+  'bordocampo': 'MultimediaApplication',
   'ch77-plus': 'EntertainmentApplication',
   canale77: 'EntertainmentApplication',
   rigcast: 'MultimediaApplication',
+  perigscope: 'UtilitiesApplication',
   'gusto-raffinato': 'LifestyleApplication',
   lumis: 'MultimediaApplication'
 };
 
-const OS_NAME: Record<string, string> = { iPhone: 'iOS', iPad: 'iPadOS', Web: 'Web' };
+const OS_NAME: Record<string, string> = { iPhone: 'iOS', iPad: 'iPadOS', Mac: 'macOS', Web: 'Web' };
 
 const absolute = (src: string) => (src.startsWith('http') ? src : `${SITE_URL}${src}`);
 

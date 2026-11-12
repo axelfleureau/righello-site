@@ -1,7 +1,7 @@
 import type { Landing, MediaRef } from './types';
 
 /**
- * Produzione delle partite (Motore TV Studio). Fatti verificati e galleria delle animazioni del 22/09.
+ * Bordocampo, la produzione automatica delle partite (Motore TV Studio). Fatti verificati e galleria delle animazioni del 22/09.
  * Media: grafiche disegnate dal motore vero su riprese di partite vere senza grafiche, in campo lungo
  * (nessun volto in primo piano). Nomi, numeri, rose, arbitri e allenatore delle clip sono INVENTATI.
  * Schermate palmare e controllo marker: programmi veri avviati in locale su una partita dimostrativa (squadre e giocatori
@@ -9,7 +9,7 @@ import type { Landing, MediaRef } from './types';
  * editorial_approval.py (approvazioni con impronta), build_match_tv_studio.py (assert_export_branding), match_manager.py (/api/queue/add).
  * Rosa dalla foto della distinta: server.py run_roster_analysis. BUFFR: tv-studio/buffr_replay_import.py (proposte replay, tutte da approvare).
  */
-const DIR = '/progetti/landing/regia-tv-studio';
+const DIR = '/progetti/landing/bordocampo';
 const shared = '/progetti/regia';
 
 const clip = (name: string, alt: string, extra: Partial<MediaRef> = {}): MediaRef => ({

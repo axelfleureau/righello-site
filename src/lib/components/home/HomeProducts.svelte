@@ -8,7 +8,7 @@
 
   const lead = byId('buffr');
   // il resto della vetrina: un gestionale per ogni mestiere + la regia delle partite
-  const products = ['optima', 'tetha', 'gusto-raffinato-sala', 'regia-tv-studio'].map(byId);
+  const products = ['optima', 'tetha', 'gusto-raffinato-sala', 'bordocampo'].map(byId);
 
   // Numeri contati dai dati, mai scritti a mano: stessa regola della pagina Progetti.
   const software = caseStudies.filter((s) => ['app', 'gestionale', 'broadcast', 'piattaforma'].includes(s.kind));

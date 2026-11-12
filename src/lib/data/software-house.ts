@@ -386,7 +386,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
       {
         question: 'Fate app per iPhone e iPad e piattaforme per lo sport?',
         answer:
-          'Sì. BUFFR è la nostra app per iPhone su App Store: salva gli ultimi secondi di una partita e monta il video. BUFFR Live, Rig Cast e la produzione delle partite completano la filiera dello sport: ogni scheda dice se è online, in prova o in uso interno.',
+          'Sì. BUFFR è la nostra app per iPhone su App Store: salva gli ultimi secondi di una partita e monta il video. BUFFR Live, Rig Cast e Bordocampo, la produzione delle partite, completano la filiera dello sport: ogni scheda dice se è online, in prova o in uso interno.',
       },
       {
         question: 'Righello di Mestre e Righello di Pordenone sono la stessa azienda?',
