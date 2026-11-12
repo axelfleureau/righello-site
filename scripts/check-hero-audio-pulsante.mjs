@@ -49,7 +49,12 @@ async function main() {
     const caricata = new Promise((r) => { const t = setTimeout(r, 20000); c.on('Page.loadEventFired', () => { clearTimeout(t); r(); }); });
     await c.send('Page.navigate', { url: BASE + '/' });
     await caricata;
-    await sleep(4500);
+    // Il pulsante compare quando la pagina e' idratata e la hero e' in vista: su un build freddo puo' volerci un po'.
+    for (let i = 0; i < 60; i++) {
+      if (await c.ev(`!!document.querySelector('.audio-cue') && !document.querySelector('.audio-cue').classList.contains('audio-cue-hidden')`)) break;
+      await sleep(500);
+    }
+    await sleep(1500);
 
     const clic = async (x, y) => {
       for (const type of ['mouseMoved', 'mousePressed', 'mouseReleased']) {
