@@ -94,7 +94,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
         {
           icon: 'globe',
           title: 'Piattaforme web',
-          text: 'Sistemi sul web usati da molte persone: DICO porta le comunicazioni dei Comuni su WhatsApp e Telegram, Lumis gestisce gallery e vendita delle foto degli eventi.',
+          text: 'Sistemi sul web usati da molte persone: DICO prepara le comunicazioni dei Comuni per WhatsApp e Telegram, Lumis gestisce gallery e vendita delle foto degli eventi.',
           href: '/progetti/dico',
         },
         {
@@ -106,7 +106,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
         {
           icon: 'gear',
           title: 'Automazioni',
-          text: 'Compiti ripetitivi che girano da soli: Tetha avvisa trenta giorni prima di ogni scadenza e prepara in un clic il dossier del cantiere; DICO fa partire le uscite programmate.',
+          text: 'Compiti ripetitivi che girano da soli: Tetha avvisa trenta giorni prima di ogni scadenza e prepara in un clic il dossier del cantiere; DICO prepara le uscite programmate.',
           href: '/progetti/tetha',
         },
         {
@@ -130,7 +130,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
         },
         {
           title: 'Comuni ed enti',
-          text: 'DICO è online e porta le comunicazioni dei Comuni su WhatsApp e Telegram. L’assistente per i cittadini è in sperimentazione in un Comune del Friuli-Venezia Giulia.',
+          text: 'DICO è in test preliminare con i Comuni: prepara le comunicazioni per WhatsApp e Telegram e gli invii ai cittadini non sono ancora attivi. L’assistente per i cittadini è in sperimentazione in un Comune del Friuli-Venezia Giulia.',
         },
         {
           title: 'Turismo, sport e locali',
@@ -302,7 +302,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
         {
           icon: 'message',
           title: 'Comunicazione e assistenti per gli enti',
-          text: 'DICO porta le comunicazioni dei Comuni su WhatsApp e Telegram. Gli assistenti AI rispondono con le pagine dell’ente: uno è in sperimentazione in un Comune del Friuli-Venezia Giulia.',
+          text: 'DICO prepara le comunicazioni dei Comuni per WhatsApp e Telegram. Gli assistenti AI rispondono con le pagine dell’ente: uno è in sperimentazione in un Comune del Friuli-Venezia Giulia.',
           href: '/progetti/dico',
         },
       ],

@@ -9,7 +9,7 @@ export default {
   metrics: [
     { value: 4, label: 'pagine, dal giorno alla squadra', note: 'partite del giorno, scheda partita, calendario del girone, squadre' },
     { value: 1125, label: 'squadre con la loro pagina', note: 'somma delle squadre nell\'indice Squadre del sito, oggi' },
-    { value: 70, label: 'test automatici', note: 'test che passano oggi: stato della partita, minuto, nomi, resoconti' },
+    { value: 80, prefix: 'oltre ', label: 'test automatici', note: 'test che passano oggi: stato della partita, minuto, nomi, resoconti' },
   ],
 
   chapters: [

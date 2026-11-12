@@ -172,7 +172,7 @@ export const caseStudies: CaseStudy[] = [
     platform: ['Render automatico'],
     audience: 'Produzione televisiva sportiva',
     accent: ['#E11D2E', '#F5C400'],
-    headline: 'Il gestionale dei sogni di chi produce partite per la TV.',
+    headline: 'Dal palmare del cronista alla partita pronta per la TV.',
     text:
       'Il cronista segna gli eventi dal palmare, tu controlli marker, dati, loghi e approvazioni, poi la produzione automatica monta la partita da televisione con le grafiche già al loro posto: tempo e risultato, formazioni, rigori, pubblicità e replay.',
     focus: ['Grafiche automatiche', 'Replay e highlights', 'Formazioni e rigori', 'Sponsor in campo'],
@@ -198,13 +198,13 @@ export const caseStudies: CaseStudy[] = [
     sector: 'Canale 77 Premium e dirette in esclusiva',
     category: 'digital',
     kind: 'broadcast',
-    status: { tone: 'live', label: 'Attivazione Premium online' },
+    status: { tone: 'beta', label: 'Attivazione online · esclusive da programmare' },
     platform: ['Web', 'HbbTV', 'Smart TV', 'Android TV'],
     audience: 'Spettatori di sport locale',
     accent: ['#4F7CFF', '#FACC15'],
     headline: 'Codice e QR sulla TV; accesso e pagamento dal telefono. Niente password col telecomando.',
     text:
-      'Il televisore mostra un codice e un QR, il telefono apre la pagina di attivazione, si accede e si attiva Premium: la TV se ne accorge da sola e sblocca le dirette in esclusiva, a partire dalle partite.',
+      'Il televisore mostra un codice e un QR, il telefono apre la pagina di attivazione, si accede e si attiva Premium: la TV se ne accorge da sola e sblocca le dirette in esclusiva, quando ce ne sono.',
     focus: ['Abbinamento TV e telefono', 'Accesso con account', 'Dirette in esclusiva', 'HbbTV e Android TV'],
     href: 'https://ch77.wearerighello.com',
     logo: '/logos/canale-77.webp',
@@ -428,13 +428,13 @@ export const caseStudies: CaseStudy[] = [
     sector: 'Piattaforma video on demand e diretta',
     category: 'digital',
     kind: 'broadcast',
-    status: { tone: 'live', label: 'Online' },
+    status: { tone: 'live', label: 'Sito online · HbbTV e app TV in prova' },
     platform: ['Web', 'HbbTV', 'Smart TV'],
     audience: 'Spettatori di sport locale',
     accent: ['#4F7CFF', '#FACC15'],
     headline: 'Le partite, quando vuoi, anche sul televisore.',
     text:
-      'Il catalogo di Canale 77, CalcioFVG Live e CalcioVeneto Live in un posto solo: highlights, interviste, rubriche e partite, sul sito, sull\'HbbTV del digitale terrestre, sulle smart TV e sull\'app Android TV.',
+      'Il catalogo di Canale 77, CalcioFVG Live e CalcioVeneto Live in un posto solo: highlights, interviste, rubriche e partite, sul sito e, in prova, sull\'HbbTV del digitale terrestre e sulle app per televisore (Android TV, Samsung, LG).',
     focus: ['Video on demand', 'Diretta', 'HbbTV', 'Smart TV'],
     href: 'https://ch77.wearerighello.com',
     logo: '/logos/canale-77.webp',
@@ -447,7 +447,7 @@ export const caseStudies: CaseStudy[] = [
     seo: {
       title: 'Canale 77 On Demand: partite su sito, TV e HbbTV',
       description:
-        'Il catalogo di Canale 77, CalcioFVG Live e CalcioVeneto Live: highlights, interviste e partite su sito, HbbTV, smart TV e Android TV. Sviluppato da Righello.',
+        'Il catalogo di Canale 77, CalcioFVG Live e CalcioVeneto Live: highlights, interviste e partite sul sito e, in prova, su HbbTV e app per televisore. Di Righello.',
     },
   },
   {
@@ -456,13 +456,13 @@ export const caseStudies: CaseStudy[] = [
     sector: 'Piattaforma comunicazione PA',
     category: 'digital',
     kind: 'piattaforma',
-    status: { tone: 'live', label: 'Online' },
+    status: { tone: 'beta', label: 'In test preliminare · invii ai cittadini non attivi' },
     platform: ['Web'],
     audience: 'Comuni, enti e pubblica amministrazione',
     accent: ['#F2B83B', '#1E3A5F'],
     headline: 'Un solo messaggio per uscita, e i dettagli a un clic.',
     text:
-      'DICO porta le comunicazioni dei Comuni dove le persone guardano davvero: WhatsApp e Telegram. Si incolla un testo o si indicano fino a cinque link del sito del Comune, e «Prepara il messaggio» compila i campi e scrive nello stile dell\'ente. La redazione ritocca e approva. Esce un solo messaggio per volta, di norma uno a settimana, con le emergenze in cima e una riga per tematica: ogni link apre la pagina della settimana sul sito del Comune. L\'archivio e gli allegati sono ospitati in Europa.',
+      'DICO prepara le comunicazioni dei Comuni per dove le persone guardano davvero: WhatsApp e Telegram. Si incolla un testo o si indicano fino a cinque link del sito del Comune, e «Prepara il messaggio» compila i campi e scrive nello stile dell\'ente. La redazione ritocca e approva. Esce un solo messaggio per volta, di norma uno a settimana, con le emergenze in cima e una riga per tematica: ogni link apre la pagina della settimana sul sito del Comune. L\'archivio e gli allegati sono ospitati in Europa.',
     focus: ['Messaggio settimanale', 'Pagine per tematica', 'Redazione con IA', 'Portale enti'],
     href: 'https://www.dico.online',
     logo: '/logos/dico-online.webp',
@@ -477,7 +477,7 @@ export const caseStudies: CaseStudy[] = [
     seo: {
       title: 'DICO.ONLINE: messaggi dei Comuni su WhatsApp e Telegram',
       description:
-        'DICO porta le comunicazioni dei Comuni su WhatsApp e Telegram: un solo messaggio per uscita, con i dettagli sul sito del Comune. Online.',
+        'DICO porta le comunicazioni dei Comuni su WhatsApp e Telegram: un solo messaggio per uscita, con i dettagli sul sito del Comune. In test preliminare.',
     },
   },
   {

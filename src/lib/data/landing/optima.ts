@@ -27,8 +27,8 @@ export default {
   tagline: 'Clienti, task, ore e crediti in un posto solo. E un’AI che ti dice cosa conta adesso.',
 
   metrics: [
-    { value: 60, label: 'test sull’app iPhone', note: 'test di interfaccia automatici' },
-    { value: 26, label: 'controlli automatici del sito', note: 'task, buoni, preventivi, presenze, AI, colori, schermi' },
+    { value: 200, prefix: 'oltre ', label: 'test sull’app iPhone', note: 'test di interfaccia automatici' },
+    { value: 100, prefix: 'oltre ', label: 'controlli automatici del sito', note: 'task, buoni, preventivi, presenze, AI, colori, schermi' },
     { value: 2, suffix: ' GB', label: 'per file, anche a pezzi', note: 'limite di caricamento sulle task: il caricamento riprende se cade la rete' },
   ],
 
@@ -91,6 +91,8 @@ export default {
     { icon: 'cart', title: 'Buoni Righello', text: 'Credito da contratto che matura ogni mese, speso con un QR alla cassa del cliente.' },
     { icon: 'file', title: 'Preventivi e rate', text: 'Un solo calcolo per schermo, PDF e rate. Il cliente salva carta o addebito SEPA da un link.' },
     { icon: 'device', title: 'App iPhone nativa', text: 'Non una pagina web incorniciata: notifiche con Approva e Rivedi, Face ID per decidere.' },
+    { icon: 'link', title: 'Dalla task alla consegna', text: 'Collega la consegna alla task, il cliente rivede, tu correggi e arriva l’approvazione. Óptima propone la consegna giusta; il collegamento lo decidi tu.' },
+    { icon: 'layers', title: 'Carosello, ZIP e note del team', text: 'Una nuova versione di un carosello si carica in un colpo solo, con i file abbinati alle slide. Il visore scorre i file di uno ZIP e i link delle task aprono l’app. Le note del team restano separate da quelle del cliente.' },
     { icon: 'sparkle', title: 'Óptima AI', text: 'Risponde dai tuoi dati, prepara bozze e task, e chiede conferma prima di scrivere.' },
   ],
 

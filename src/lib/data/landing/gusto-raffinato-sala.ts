@@ -47,7 +47,8 @@ export default {
       note: 'Sala, Ranghi, Agenda, Menu, Magazzino, Personale, Giornata, Fedeltà'
     },
     {
-      value: 1398,
+      value: 2600,
+      prefix: 'oltre ',
       label: 'prove automatiche',
       note: 'sull\'app e sul sistema della sala, controllate a ogni modifica'
     }
@@ -110,7 +111,8 @@ export default {
     { icon: 'message', title: 'Di\' alla sala', text: 'Scrivi come lo diresti a un collega: l\'app propone il gesto e niente parte senza il tuo tocco.' },
     { icon: 'database', title: 'Magazzino e costi', text: 'Scorte, ricette e piatti esauriti. Costo e margine di ogni piatto si calcolano dalla ricetta.' },
     { icon: 'shield', title: 'Allergie in evidenza', text: 'L\'allergia detta al tavolo resta in testa alla scheda, scelta fra i 14 allergeni di legge.' },
-    { icon: 'users', title: 'Accessi per ruolo', text: 'Il banco è il gestionale, i telefoni dei camerieri sono palmari. Si entra col PIN.' },
+    { icon: 'users', title: 'Accessi per ruolo', text: 'Cinque ruoli (titolare, responsabile di sala, cameriere, runner, cassa) e uno schermo per ogni reparto: il dispositivo dice dove sei, il PIN dice chi sei.' },
+    { icon: 'globe', title: 'La vetrina del locale', text: 'Foto, orari e «finito per oggi» si cambiano dal gestionale e l\'app dei clienti li vede subito.' },
     { icon: 'file', title: 'Misure in A4', text: 'Metri quadri, pareti, porte e finestre in un PDF. Misure stimate, arrotondate a 5 cm.' }
   ],
 

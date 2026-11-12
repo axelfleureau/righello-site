@@ -11,7 +11,7 @@ export default {
     { value: 3, label: 'protocolli di invio', note: 'RTMP, RTMPS e SRT, con chiave e passphrase' },
     { text: '1080p50', label: 'la qualità "Sport"', note: 'una delle tre qualità pronte: Rete debole 720p25, Standard 1080p25, Sport 1080p50' },
     { value: 28, label: 'voci spiegate nell\'app', note: 'ogni voce ha la sua "i" con una spiegazione e uno schema' },
-    { value: 48, label: 'test automatici sul nucleo', note: 'test del nucleo dell\'app (indirizzi, stato, riconnessione) che passano oggi' },
+    { value: 60, prefix: 'oltre ', label: 'test automatici sul nucleo', note: 'test del nucleo dell\'app (indirizzi, stato, riconnessione) che passano oggi' },
   ],
 
   chapters: [
@@ -126,7 +126,7 @@ export default {
         id: 'benvenuto-3',
         label: 'Benvenuto 3',
         media: { type: 'image', src: `${A}/benvenuto-3.webp`, alt: 'Sai sempre quando sei in onda', ratio: WIDE, frame: 'none' },
-        note: 'La cornice dice se sei in onda. Il collegamento con la regia, che la accende, è in sviluppo.',
+        note: 'La cornice dice se sei in onda. Il collegamento con la regia, che la accende, è in prova.',
       },
       {
         id: 'home',
@@ -177,7 +177,7 @@ export default {
     {
       title: 'Il nucleo si prova senza camera',
       text:
-        'Indirizzi, stato, permessi e riconnessione sono una parte indipendente, che si prova senza camera né rete. 48 test automatici la tengono ferma.',
+        'Indirizzi, stato, permessi e riconnessione sono una parte indipendente, che si prova senza camera né rete. Più di sessanta test automatici la tengono ferma.',
       tags: ['Test automatici', 'App nativa'],
     },
   ],

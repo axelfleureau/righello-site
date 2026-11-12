@@ -85,12 +85,12 @@ const introFvg = clip('intro-fvg', 'Sigla di apertura Calcio FVG: due società, 
 
 export default {
   variant: 'broadcast',
-  tagline: 'Il gestionale dei sogni di chi produce partite per la TV.',
+  tagline: 'Dal palmare del cronista alla partita pronta per la TV.',
   hero: gol,
   metrics: [
     { value: 27, label: 'scene nella galleria', note: 'tutte qui sotto, in 8 categorie' },
     { value: 29, label: 'tipi di evento gestiti', note: 'ognuno con il suo trattamento scritto' },
-    { value: 478, label: 'test automatici', note: 'tutti superati, a ogni modifica del motore' },
+    { text: 'Centinaia', label: 'test automatici', note: 'a ogni modifica del motore' },
     { text: '1080p50', label: 'formato dei filmati', note: 'partita di prova: 1920×1080, 50 fotogrammi' },
   ],
   chapters: [
@@ -129,7 +129,7 @@ export default {
       highlight: 'stacco',
       text: 'Il replay entra con due pannelli sagomati e il cambio d\'immagine avviene sotto copertura piena, come in una regia televisiva. Due replay vicini hanno un solo raccordo. Nessun replay va in onda senza approvazione: se il taglio cambia, l\'approvazione decade.',
       bullets: [
-        'Stacco di 1,12 secondi, 28 fotogrammi, con il logo del circuito',
+        'Stacco di 1,12 secondi, con il logo del circuito',
         'Replay consecutivi: un solo raccordo, niente lampeggi del live',
         'Approvazione legata al contenuto: cambia il taglio, torna da approvare',
       ],
@@ -165,13 +165,13 @@ export default {
     },
     {
       icon: 'link',
-      title: 'Con BUFFR',
-      text: 'Il palmare alimenta BUFFR Live; i momenti salvati in BUFFR diventano proposte di replay, passaggio in parte manuale.',
+      title: 'Con BUFFR e Canale 77',
+      text: 'Il palmare alimenta BUFFR Live; i momenti salvati in BUFFR diventano proposte di replay, passaggio in parte manuale. Le partite prodotte sono pensate per Canale 77 (sito, TV e HbbTV).',
     },
     { icon: 'clock', title: 'Tabellone e gol', text: 'Tempo, risultato e rossi seguono gli eventi; il gol entra in due tempi: tabellone, poi banner del marcatore.' },
-    { icon: 'layers', title: 'Sponsor discreti', text: 'Blink in basso, Lanner in un riquadro: mai pubblicità a schermo pieno durante il gioco, cooling break compreso.' },
+    { icon: 'layers', title: 'Sponsor discreti', text: 'Blink in basso, Lanner in un riquadro: mai pubblicità a schermo pieno durante il gioco, cooling break compreso. La pubblicità di ogni gara è registrata prima del montaggio: se mancano barre o palinsesto, il montaggio non parte.' },
     { icon: 'users', title: 'Cartellini e cambi', text: 'Annunci in basso al centro. Il secondo giallo è un solo annuncio e una sola espulsione.' },
-    { icon: 'camera', title: 'Verticale social', text: 'MyLights Reel rifà i replay in 9:16, con stemmi, logo del circuito e risultato.' },
+    { icon: 'camera', title: 'Tre prodotti da una partita', text: 'L’integrale, la sintesi MyLights in 16:9 e il Reel in verticale 9:16, ciascuno con il suo montaggio e la sua approvazione.' },
   ],
   demo: {
     kicker: 'In azione',
@@ -395,6 +395,6 @@ export default {
   cta: {
     title: 'Una partita da televisione, senza regia a mano',
     highlight: 'senza regia a mano',
-    text: 'È il motore che usiamo noi, in produzione interna. Se produci sport locale e vuoi lo stesso risultato, parliamone.',
+    text: 'Bordocampo è il servizio con cui produciamo noi le partite; il motore che lo fa funzionare si chiama Motore TV Studio. Se produci sport locale e vuoi lo stesso risultato, parliamone.',
   },
 } satisfies Landing;

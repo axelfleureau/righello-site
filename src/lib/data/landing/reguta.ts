@@ -18,7 +18,7 @@ export default {
   tagline: 'Certificati, corsi e scadenze in un archivio che dice cosa fare per primo.',
 
   metrics: [
-    { value: 23, label: 'pagine del gestionale', note: 'dalle scadenze alla cantina' },
+    { text: 'Oltre venti', label: 'pagine del gestionale', note: 'dalle scadenze alla cantina' },
     { value: 5, label: 'tipi di scadenza in un elenco solo', note: 'corsi, idoneità sanitarie, documenti, documenti aziendali, macchinari' },
     { value: 33, label: 'categorie di corso con validità di legge', note: 'dal RLS annuale agli attestati senza scadenza' },
     { text: '30 / 60', suffix: ' gg', label: 'di preavviso', note: '30 giorni per quasi tutto, 60 per le idoneità sanitarie' },
@@ -110,8 +110,8 @@ export default {
       tags: ['Tracciabilità', 'Privacy'],
     },
     {
-      title: 'Accesso protetto, ruoli rispettati',
-      text: 'L’archivio non è raggiungibile da chiunque e il ruolo decide cosa si può fare. La lettura dei PDF propone soltanto: nulla si salva senza conferma.',
+      title: 'Ruoli e conferma',
+      text: 'Il ruolo decide cosa si può fare. La lettura dei PDF propone soltanto: nulla si salva senza conferma.',
       tags: ['Sicurezza', 'Conferma in due passi'],
     },
   ],

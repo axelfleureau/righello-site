@@ -96,7 +96,7 @@ export default {
     { icon: 'clock', title: 'Codice a tempo', text: "Vale pochi minuti e si usa una volta sola: scaduto, la TV ne mostra uno nuovo." },
     { icon: 'lock', title: 'Chiuso senza prova', text: "Se non si verifica un abbonamento il player resta chiuso, e si apre appena arriva una conferma." },
     { icon: 'calendar', title: 'Elenco delle esclusive', text: 'Una riga per partita, con orario e stato, letta da ogni schermo: lo stesso elenco ovunque.' },
-    { icon: 'globe', title: 'Ogni schermo', text: 'Lo stesso abbinamento funziona su HbbTV, sito, Samsung, LG e Android TV nativa.' },
+    { icon: 'globe', title: 'Ogni schermo', text: 'Lo stesso abbinamento è pensato per HbbTV, sito, Samsung, LG e Android TV nativa.' },
     { icon: 'users', title: 'Omaggi con scadenza', text: 'Un omaggio può avere una data di fine e si può revocare.' },
   ],
   demo: {

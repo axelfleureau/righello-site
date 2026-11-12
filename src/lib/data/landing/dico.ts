@@ -10,9 +10,9 @@ export default {
   tagline: 'La redazione di un Comune in un posto solo: un messaggio a settimana, e i dettagli a un clic.',
   metrics: [
     { value: 10, label: 'macro tematiche pronte', note: 'emergenze, viabilità, rifiuti, scuola, tributi, sociale, sport, cultura, servizi, avvisi' },
-    { value: 4, label: 'canali di invio', note: 'web app, Telegram, WhatsApp ed e-mail' },
+    { value: 4, label: 'canali previsti', note: 'web app, Telegram, WhatsApp ed e-mail; gli invii ai cittadini non sono ancora attivi' },
     { value: 5, label: 'link di fonte al massimo', note: 'per ogni comunicazione preparata dall\'assistente' },
-    { value: 340, label: 'test automatici', note: 'tutti superati, controllati il 6 ottobre 2026' },
+    { value: 600, prefix: 'oltre ', label: 'test automatici', note: 'controllati a ogni modifica' },
   ],
   chapters: [
     {
@@ -80,10 +80,10 @@ export default {
   },
   features: [
     { icon: 'search', title: 'Controllo del messaggio', text: 'Prima dell\'uscita segnala date relative, contraddizioni e informazioni mancanti. Non riscrive: decide la persona.' },
-    { icon: 'database', title: 'Memoria del Comune', text: 'Le comunicazioni già uscite guidano il tono dei nuovi testi. Ogni Comune ha la sua memoria, senza prestiti.' },
+    { icon: 'database', title: 'Memoria del Comune', text: 'All’inizio la memoria di ogni Comune è vuota e cresce con le comunicazioni pubblicate: guidano il tono dei nuovi testi. Ogni Comune ha la sua memoria, senza prestiti.' },
     { icon: 'users', title: 'Ruoli chiari', text: 'Base propone, Supervisore approva e decide la data, Amministratore dà i permessi.' },
     { icon: 'calendar', title: 'Calendario e uscite', text: 'Le proposte si programmano nel calendario; le voci approvate confluiscono nell\'uscita in preparazione.' },
-    { icon: 'globe', title: 'Quattro canali', text: 'Web app, Telegram, WhatsApp ed e-mail, ognuno con le sue regole, ritentato senza duplicati.' },
+    { icon: 'globe', title: 'Quattro canali previsti', text: 'Web app, Telegram, WhatsApp ed e-mail, ognuno con le sue regole (WhatsApp porta solo titolo e link), ritentato senza duplicati.' },
     { icon: 'layers', title: 'Un messaggio solo', text: 'Una riga per tematica, emergenze subito, sotto i 4.096 caratteri di WhatsApp con contatore.' },
   ],
   demo: {
@@ -186,7 +186,7 @@ export default {
     },
     {
       title: 'Archivio in Europa, dati separati',
-      text: 'Allegati e archivio restano in Europa. Ogni utente appartiene a un solo Comune, vincolo imposto a ogni livello; le credenziali dei canali sono cifrate.',
+      text: 'Gli allegati sono archiviati in Europa con vincolo di giurisdizione e il database è collocato in Europa occidentale. Ogni utente appartiene a un solo Comune, vincolo imposto a ogni livello; le credenziali dei canali sono cifrate.',
       tags: ['Dati in Europa', 'Sicurezza'],
     },
     {

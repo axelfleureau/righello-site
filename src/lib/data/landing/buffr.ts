@@ -118,6 +118,8 @@ export default {
     { icon: 'scan', title: 'Distinta fotografata', text: 'Si fotografa il foglio: iPhone lo trova, lo raddrizza e lo legge. Le rose arrivano coi numeri.' },
     { icon: 'layers', title: 'Taglio senza rischi', text: 'Accorci una clip quando vuoi: il file originale non si tocca.' },
     { icon: 'wand', title: 'Stile e testata', text: 'Grafiche nei colori che scegli, con il logo di chi trasmette negli stacchi.' },
+    { icon: 'bell', title: 'Clip che si caricano da sole', text: 'Le clip in coda continuano a caricarsi anche con l\'app chiusa o lo schermo bloccato; una card sul blocco schermo mostra a che punto sei.' },
+    { icon: 'layers', title: 'Eliminate di recente', text: 'Una clip eliminata resta quattordici giorni e si ripristina dalla Libreria con un tocco.' },
     { icon: 'camera', title: 'Camera da campo', text: 'Grandangolo 0,5×, 1× e 2×. Riprende anche di traverso, e le clip restano dritte.' },
   ],
 
@@ -125,7 +127,7 @@ export default {
     kicker: 'Dentro l\'app',
     title: 'Dalla camera al montaggio, schermata per schermata.',
     highlight: 'montaggio',
-    lead: 'Schermate della versione attuale dell\'app (1.2.7), catturate sul simulatore. Il simulatore non ha la camera e le clip qui sono prove disegnate, non riprese vere.',
+    lead: 'Schermate dell\'app (versione 1.2.7), catturate sul simulatore. Il simulatore non ha la camera e le clip qui sono prove disegnate, non riprese vere.',
     items: [
       {
         id: 'benvenuto',

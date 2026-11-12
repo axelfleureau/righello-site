@@ -6,12 +6,12 @@ import type { Landing } from './types';
  */
 export default {
   variant: 'broadcast',
-  tagline: 'Lo stesso catalogo sul sito, sul digitale terrestre e sulle app TV. Anche su quelle vecchie.',
+  tagline: 'Lo stesso catalogo sul sito e, in prova, sul digitale terrestre e sulle app TV, anche su televisori di qualche anno fa.',
   metrics: [
-    { value: 5, label: 'piattaforme, un solo catalogo', note: 'web, HbbTV, Samsung, LG, Android TV' },
+    { value: 5, label: 'versioni, un solo catalogo', note: 'web, HbbTV, Samsung, LG, Android TV' },
     { value: 3, label: 'testate in un posto solo', note: 'Canale 77, CalcioFVG Live, CalcioVeneto Live' },
-    { text: '21,8 s → 0,2 s', label: 'avvio su un Samsung del 2019', note: 'stesso video: MP4 contro HLS a pezzi corti, misura del 28 settembre' },
-    { value: 479, label: 'test automatici', note: 'tutti superati, controllati il 6 ottobre 2026' },
+    { text: '21,8 s → 0,2 s', label: 'avvio su un Samsung del 2019', note: 'MP4 contro HLS a pezzi corti, misura del 28 settembre' },
+    { value: 800, prefix: 'oltre ', label: 'test automatici', note: 'la suite era verde il 6 novembre 2026' },
   ],
   chapters: [
     {
@@ -41,7 +41,7 @@ export default {
     {
       id: 'ogni-televisore',
       kicker: 'Su ogni schermo',
-      title: 'Funziona anche sul televisore di qualche anno fa.',
+      title: 'Pensato anche per il televisore di qualche anno fa.',
       highlight: 'qualche anno fa',
       text:
         'Un televisore del digitale terrestre ha un solo profilo video obbligatorio: se il flusso è fuori standard, resta nero senza dare errore. La compatibilità si applica solo dove serve: l\'HbbTV riceve la copia adatta, sito e app ricevono sempre l\'originale.',
@@ -82,7 +82,7 @@ export default {
     { icon: 'play', title: 'Diretta', text: 'Si prova in HLS e, se serve, in DASH. Se il nostro player non mostra un fotogramma, passa a quello ufficiale.' },
     { icon: 'clock', title: 'Continua a guardare', text: 'Ogni contenuto riparte da dove si era rimasti, con la barra di avanzamento, e c\'è una lista personale.' },
     { icon: 'search', title: 'Ricerca', text: 'Si cerca per squadra, data, campionato o tipo di contenuto, con suggerimenti pronti.' },
-    { icon: 'chart', title: 'Spot e rendiconto', text: 'Spot per campagna, con finestra di date e zone, e rendiconto per chi investe.' },
+    { icon: 'chart', title: 'Spot e rendiconto', text: 'Spot per campagna, con finestra di date e preferenza per zona (stimata dalla rete, non garantita), e rendiconto per chi investe.' },
     { icon: 'lock', title: 'Premium', text: 'Le dirette in esclusiva si sbloccano con il telefono: CH77+ è nella sua pagina.' },
   ],
   demo: {
@@ -150,12 +150,12 @@ export default {
     },
     {
       title: 'Regole pure, provate a tavolino',
-      text: 'Sezioni, sport, doppioni, righe, scadenze: regole semplici e indipendenti, usate da sito, app e strumenti interni. 479 test le tengono ferme.',
+      text: 'Sezioni, sport, doppioni, righe, scadenze: regole semplici e indipendenti, usate da sito, app e strumenti interni. Centinaia di test le tengono ferme.',
       tags: ['Un solo punto di verità', 'Test automatici'],
     },
     {
       title: 'Un\'app per ogni schermo',
-      text: 'L\'HbbTV è una pagina leggerissima dentro il televisore, Samsung e LG hanno il loro pacchetto, Android TV un\'app nativa. Tutte leggono lo stesso catalogo.',
+      text: 'L\'HbbTV è una pagina leggerissima dentro il televisore, Samsung e LG hanno il loro pacchetto, Android TV un\'app nativa, pronti per gli store e non ancora pubblicati. Tutte leggono lo stesso catalogo.',
       tags: ['HbbTV', 'Smart TV', 'Android TV'],
     },
     {

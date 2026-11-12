@@ -28,8 +28,8 @@ export default {
 
   metrics: [
     { value: 30, label: 'giorni di preavviso', note: 'su ogni scadenza' },
-    { value: 37, label: 'tipi di documento riconosciuti', note: 'idoneità, attestati, UNILAV, DURC e altri, escluso "Da verificare"' },
-    { text: '30–86 s', label: 'per leggere un documento', note: 'tempi misurati sulla lettura reale del 30/09/2026' },
+    { value: 45, label: 'tipi di documento riconosciuti', note: 'idoneità, attestati, UNILAV, DURC e altri, escluso "Da verificare"' },
+    { value: 14, label: 'giorni di prova', note: 'sui tuoi documenti, senza carta di credito' },
     { value: 4, label: 'modi per caricare un documento', note: 'scansione nell’app, "Condividi con Tetha" da iPhone, trascinamento nel gestionale, bot Telegram' },
   ],
 
@@ -90,6 +90,7 @@ export default {
     { icon: 'link', title: 'Subappalti via link', text: 'Il subappaltatore carica senza registrarsi. Tu verifichi e decidi: idoneo o non idoneo, con il motivo.' },
     { icon: 'message', title: 'Anche da Telegram', text: 'Il capocantiere inoltra la foto al bot: Tetha riconosce il documento, chiede conferma e archivia.' },
     { icon: 'search', title: 'Chiedi a Tetha', text: 'Risponde sui documenti dell’impresa e mostra le fonti. Ogni impresa ha un tetto mensile di spesa.' },
+    { icon: 'file', title: 'Regolarità e F24', text: 'Il pacchetto di regolarità per farsi pagare e i pagamenti F24 con l’export per il commercialista. I documenti eliminati restano trenta giorni nel cestino, con Annulla.' },
     { icon: 'chart', title: 'Preventivi e consuntivi', text: 'Il preventivo si scrive a parole; il foglio ore incollato diventa consuntivo.' },
   ],
 
@@ -130,7 +131,7 @@ export default {
     title: 'La prossima richiesta del committente, pronta in un minuto.',
     highlight: 'pronta in un minuto',
     text:
-      'Quattordici giorni di prova sui tuoi documenti, senza carta di credito; poi 59 € + IVA al mese e 6 € + IVA a persona, app iPhone compresa.',
+      'Quattordici giorni di prova sui tuoi documenti, senza carta di credito; poi 59 € + IVA al mese e 6 € + IVA a persona, app iPhone compresa. I moduli Gestionale e Subappalti si aggiungono.',
     primary: { label: 'Vai a Tetha', href: 'https://tetha.wearerighello.com', external: true },
   },
 } satisfies Landing;

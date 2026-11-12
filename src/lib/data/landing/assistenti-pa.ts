@@ -9,7 +9,7 @@ export default {
   variant: 'pa',
   tagline: 'Risponde ai cittadini con le pagine del Comune. Se non trova, lo dice.',
   metrics: [
-    { value: 431, label: 'domande di prova', note: 'quattro elenchi di domande di collaudo: 110 + 88 + 183 + 50' },
+    { value: 433, label: 'domande di prova', note: 'quattro elenchi di domande di collaudo: 110 + 90 + 183 + 50' },
     { value: 9, label: 'tipi di dato personale coperti da regole fisse', note: 'email, IBAN, codice fiscale, targa, documento, telefono, indirizzo, partita IVA, numeri' },
     { text: '≈ 1,2 s', label: 'per rispondere (p95) nelle prove', note: 'suite di conversazioni e di conoscenza del 15 settembre 2026' },
     { value: 5, label: 'tipi di cifra che devono stare nella fonte', note: 'tempi, costi, orari, date, telefoni' },

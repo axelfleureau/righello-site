@@ -99,7 +99,7 @@ export const matchDestinations: FlowNode[] = [
     id: 'canale77',
     icon: 'tv',
     label: 'Canale 77 e televisori',
-    text: 'Il risultato va in onda su Canale 77 e arriva sugli schermi di casa.',
+    text: 'Pronta per Canale 77 e per i televisori di casa.',
   },
 ];
 

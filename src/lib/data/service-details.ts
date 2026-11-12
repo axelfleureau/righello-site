@@ -611,7 +611,7 @@ export const serviceFaqs: ServiceFaq[] = [
   },
   {
     q: 'Esistono esempi di assistenti AI per i Comuni?',
-    a: 'Sì. Un assistente WhatsApp è in sperimentazione in un Comune del Friuli-Venezia Giulia: risponde con le pagine ufficiali dell’ente, rimanda alla fonte e, se l’informazione non c’è, lo dice invece di inventarla. DICO.ONLINE, già online, porta le comunicazioni dei Comuni su WhatsApp e Telegram.',
+    a: 'Sì. Un assistente WhatsApp è in sperimentazione in un Comune del Friuli-Venezia Giulia: risponde con le pagine ufficiali dell’ente, rimanda alla fonte e, se l’informazione non c’è, lo dice invece di inventarla. DICO.ONLINE, in test preliminare, porta le comunicazioni dei Comuni su WhatsApp e Telegram.',
     services: ['agenti-ai'],
     onlyOnPage: true,
   },
@@ -629,7 +629,7 @@ export const serviceFaqs: ServiceFaq[] = [
   },
   {
     q: 'Gli agenti AI vengono addestrati con i dati dei clienti?',
-    a: 'Non nel senso di un nuovo addestramento. In DICO l’assistente non è riaddestrato: a ogni richiesta lavora sui dati del Comune (recupero dei dati), e la memoria di ogni Comune è quella dei suoi messaggi già usciti, senza prestiti da un ente all’altro. L’assistente per i Comuni risponde cercando nelle pagine dell’ente.',
+    a: 'Non nel senso di un nuovo addestramento. In DICO l’assistente non è riaddestrato: a ogni richiesta lavora sui dati del Comune (recupero dei dati), e la memoria di ogni Comune parte vuota e cresce con i suoi messaggi già usciti, senza prestiti da un ente all’altro. L’assistente per i Comuni risponde cercando nelle pagine dell’ente.',
     services: ['agenti-ai'],
     onlyOnPage: true,
   },
