@@ -3,7 +3,7 @@
   import { spring } from 'svelte/motion';
   import { browser } from '$app/environment';
 
-  const dispatch = createEventDispatcher<{ mobiletap: void; audiocue: void }>();
+  const dispatch = createEventDispatcher<{ mobiletap: void; audiocue: void; audiomute: void }>();
   
   export let videoSrc: string | null = null;
   export let youtubeId: string | null = null;
@@ -17,6 +17,8 @@
   // Controllo «Attiva l'audio» sullo schermo del telefono: lo decide il genitore (hero in vista,
   // audio non ancora attivo). Il clic e' un'attivazione utente valida: il genitore toglie il muto.
   export let audioCue = false;
+  // Audio gia' attivo: lo stesso controllo diventa «Silenzia» (clic = muto). Lo decide il genitore.
+  export let audioOn = false;
   
   let mounted = false;
   let isHovered = false;
@@ -784,17 +786,24 @@
             type="button"
             class="audio-cue"
             class:audio-cue-hidden={!audioCue}
+            class:audio-cue-on={audioOn}
             tabindex={audioCue ? 0 : -1}
             aria-hidden={audioCue ? undefined : 'true'}
-            aria-label="Attiva l'audio del video"
-            on:click|stopPropagation={() => dispatch('audiocue')}
+            aria-pressed={audioOn}
+            aria-label={audioOn ? 'Silenzia l\'audio del video' : 'Attiva l\'audio del video'}
+            on:click|stopPropagation={() => dispatch(audioOn ? 'audiomute' : 'audiocue')}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="audio-cue-icon" aria-hidden="true">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-              <line x1="23" y1="9" x2="17" y2="15"/>
-              <line x1="17" y1="9" x2="23" y2="15"/>
+              {#if audioOn}
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              {:else}
+                <line x1="23" y1="9" x2="17" y2="15"/>
+                <line x1="17" y1="9" x2="23" y2="15"/>
+              {/if}
             </svg>
-            Attiva l'audio
+            {audioOn ? 'Silenzia' : 'Attiva l\'audio'}
           </button>
         </div>
         
@@ -1054,6 +1063,18 @@
     /* compare dopo un istante: non deve lampeggiare mentre il video sta ancora partendo */
     transition: opacity 0.35s ease 0.8s, visibility 0s;
     animation: audio-cue-pulse 3s ease-in-out 1.2s infinite;
+  }
+
+  /* Audio attivo: «Silenzia» resta a portata di clic ma non pulsa e si fa piu' discreto. */
+  .audio-cue-on {
+    animation: none;
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(10, 10, 15, 0.45);
+  }
+  .audio-cue-on:hover,
+  .audio-cue-on:focus-visible {
+    border-color: rgba(214, 72, 126, 0.85);
+    background: rgba(10, 10, 15, 0.7);
   }
 
   .audio-cue-hidden {

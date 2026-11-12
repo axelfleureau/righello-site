@@ -22,12 +22,11 @@
  *     a cavallo del giro): ogni logo visibile ha davvero pixel sullo schermo, nessun buco largo,
  *     nessun salto: il fotogramma a 35 s e' identico a quello a 0 s.
  */
-import { spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { inflateSync } from 'node:zlib';
+import { avvia, sleep } from './lib/cdp.mjs';
 
 const args = process.argv.slice(2);
 const BASE = (args.find((a) => a.startsWith('http')) ?? 'http://127.0.0.1:5322').replace(/\/$/, '');
@@ -38,46 +37,13 @@ const ALTEZZA_MIN = 12; // px: sotto, il marchio e' un filo
 const SEGMENTO_MAX = 2700; // px CSS: x3 (iPhone) = 8100 < 8192
 const GAP_MAX = 80; // px: spazio massimo fra due elementi consecutivi della corsia in vista
 const SPAZIO_MAX = 60; // px: vuoto massimo ai bordi della fascia (un separatore + padding)
-const CHROME = process.env.CHROME_BIN || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const errori = [];
 const ok = (msg) => console.log(`  ok   ${msg}`);
 const ko = (msg) => { errori.push(msg); console.log(`  KO   ${msg}`); };
 const check = (cond, bene, male) => (cond ? ok(bene) : ko(male));
 
-/* ───────────────────────── CDP minimo ───────────────────────── */
-async function avvia() {
-  if (!existsSync(CHROME)) throw new Error(`Chrome non trovato (${CHROME}): impostare CHROME_BIN`);
-  const porta = 9800 + Math.floor(Math.random() * 150);
-  const dir = mkdtempSync(join(tmpdir(), 'check-loghi-'));
-  const a = ['--headless=new', `--remote-debugging-port=${porta}`, `--user-data-dir=${dir}`, '--no-first-run', '--hide-scrollbars', '--mute-audio', '--disable-3d-apis', 'about:blank'];
-  const proc = process.platform === 'darwin' && process.arch === 'arm64' ? spawn('arch', ['-arm64', CHROME, ...a], { stdio: 'ignore' }) : spawn(CHROME, a, { stdio: 'ignore' });
-  let ok = false;
-  for (let i = 0; i < 80 && !ok; i++) { try { await fetch(`http://127.0.0.1:${porta}/json/version`); ok = true; } catch { await sleep(250); } }
-  if (!ok) { proc.kill(); throw new Error('Chrome non parte'); }
-  const tgt = await (await fetch(`http://127.0.0.1:${porta}/json/new?about:blank`, { method: 'PUT' })).json();
-  const ws = new WebSocket(tgt.webSocketDebuggerUrl);
-  await new Promise((r, j) => { ws.onopen = r; ws.onerror = j; });
-  let id = 0; const pend = new Map(); const hand = new Map();
-  ws.onmessage = (m) => {
-    const d = JSON.parse(m.data);
-    if (d.id && pend.has(d.id)) { const p = pend.get(d.id); pend.delete(d.id); d.error ? p.j(new Error(JSON.stringify(d.error))) : p.r(d.result); }
-    else if (d.method && hand.has(d.method)) hand.get(d.method).forEach((h) => h(d.params));
-  };
-  const send = (method, params = {}) => new Promise((r, j) => { const i = ++id; pend.set(i, { r, j }); ws.send(JSON.stringify({ id: i, method, params })); });
-  const on = (e, h) => { if (!hand.has(e)) hand.set(e, []); hand.get(e).push(h); };
-  const ev = async (expr) => {
-    const r = await send('Runtime.evaluate', { expression: expr, awaitPromise: true, returnByValue: true });
-    if (r.exceptionDetails) throw new Error(JSON.stringify(r.exceptionDetails).slice(0, 500));
-    return r.result.value;
-  };
-  const chiudi = async () => { try { ws.close(); } catch { /* gia' chiuso */ } proc.kill(); await sleep(300); try { rmSync(dir, { recursive: true, force: true }); } catch { /* ok */ } };
-  await send('Page.enable'); await send('Runtime.enable'); await send('Network.enable');
-  // servizi esterni (banner cookie, analytics, video) non fanno parte della prova e coprirebbero la pagina
-  await send('Network.setBlockedURLs', { urls: ['*iubenda*', '*youtube*', '*ytimg*', '*googletagmanager*', '*google-analytics*', '*posthog*', '*cloudinary*'] });
-  return { send, on, ev, chiudi };
-}
+/* ───────────────────────── CDP minimo: scripts/lib/cdp.mjs ───────────────────────── */
 
 async function apri(c, { w, h, mobile, tema }) {
   await c.send('Emulation.setDeviceMetricsOverride', { width: w, height: h, deviceScaleFactor: mobile ? 2 : 1, mobile });

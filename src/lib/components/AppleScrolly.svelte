@@ -67,8 +67,14 @@
   let audioActiveTimer: ReturnType<typeof setTimeout>;
   let audioVerifyTimer: ReturnType<typeof setTimeout>;
   let audioRampFrame = 0;
+  // Il visitatore ha silenziato lui con il pulsante: nessun clic, tasto o rientro nella hero toglie di nuovo il muto
+  // finche' non e' lui a premere «Attiva l'audio».
+  let userMuted = false;
   $: audioOn = audioUnlocked && !videoMuted;
-  $: showAudioCue = heroInView && !audioOn;
+  // Il controllo sta sul telefono finche' la hero e' in vista: «Attiva l'audio» da muto, «Silenzia» con l'audio acceso.
+  $: showAudioCue = heroInView;
+  /** Quanta parte della hero deve restare in vista perche' il suono continui: sotto, si zittisce da solo. */
+  const AUDIO_VISIBLE_RATIO = 0.4;
   /** Entrata progressiva del volume, per non spaventare chi si trova il suono all'improvviso. */
   const AUDIO_FADE_MS = 400;
   /** Dopo tanti rifiuti del browser (iOS in risparmio energetico, Safari) non si insiste da soli: si aspetta il gesto successivo. */
@@ -185,6 +191,25 @@
     });
   }
 
+  function sendMuteToIframes() {
+    if (!browser) return;
+    document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube"]').forEach(iframe => {
+      iframe.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+    });
+  }
+
+  /** Muto subito (video e iframe), senza aspettare i riflessi di Svelte: serve quando la hero esce di scena o si preme «Silenzia». */
+  function silenceNow() {
+    cancelAnimationFrame(audioRampFrame);
+    clearTimeout(audioVerifyTimer);
+    clearTimeout(audioActiveTimer);
+    const v = heroVideoEl();
+    if (v) { v.muted = true; v.volume = 1; }
+    sendMuteToIframes();
+    videoMuted = true;
+    audioActiveVisible = false;
+  }
+
   function heroVideoEl(): HTMLVideoElement | null {
     return container?.querySelector<HTMLVideoElement>('.phone-screen video') ?? null;
   }
@@ -255,11 +280,14 @@
   // Vale come attivazione solo cio' che il browser stesso conta: clic/pressione del mouse, tocco (alla
   // fine, solo se non e' uno scorrimento), tasti veri. Esc e i soli modificatori no, rotella e swipe no.
   function onUserActivation(e: Event) {
+    // Il pulsante audio decide da solo (attiva o silenzia): se la pressione del mouse lo precedesse togliendo il muto,
+    // il clic successivo troverebbe «Silenzia» e spegnerebbe subito il suono appena acceso.
+    if ((e.target as Element | null)?.closest?.('.audio-cue')) return;
     if (e instanceof KeyboardEvent && IGNORED_KEYS.has(e.key)) return;
     if (e.type === 'pointerdown' && (e as PointerEvent).pointerType === 'touch') return;
     if (!heroInView && !audioUnlocked) return;
     // Movimento ridotto: il video parte solo dal controllo esplicito, non da un clic qualunque.
-    if (reduceMotion) return;
+    if (reduceMotion || userMuted) return;
     if (audioUnlocked && audioOn) {
       // Gia' attivo: se il browser lo aveva fermato/silenziato (iframe non pronto, Safari), ritenta col gesto nuovo.
       const v = heroVideoEl();
@@ -271,7 +299,14 @@
   function onAudioCue() {
     if (reduceMotion) { const v = heroVideoEl(); v?.play().catch(() => {}); }
     audioFailures = 0;
+    userMuted = false;
     requestHeroAudio();
+  }
+
+  // Pulsante «Silenzia»: il video continua muto, e il suono non torna da solo.
+  function muteHeroAudio() {
+    userMuted = true;
+    silenceNow();
   }
 
   // Scheda in secondo piano: video fermo (e niente audio che continua); al ritorno riprende, con suono se era attivo.
@@ -306,7 +341,7 @@
   function tryPolicyAutounmute() {
     const v = heroVideoEl();
     const nav = navigator as Navigator & { getAutoplayPolicy?: (el: HTMLMediaElement) => string };
-    if (!v || reduceMotion || audioFailures >= AUDIO_MAX_AUTO_FAILURES) return;
+    if (!v || reduceMotion || userMuted || audioFailures >= AUDIO_MAX_AUTO_FAILURES) return;
     try {
       if (nav.getAutoplayPolicy?.(v) === 'allowed') requestHeroAudio();
       // Gesto gia' dato su questa pagina (banner dei cookie, menu, clic precedente): l'attivazione e'
@@ -348,20 +383,26 @@
     audioObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         clearTimeout(heroVideoPauseTimer);
-        heroInView = entry.isIntersecting;
-        if (entry.isIntersecting) {
+        // «In vista» = ancora una parte consistente della hero: appena scorre via il suono si spegne,
+        // senza aspettare che esca del tutto (la hero e' lunga e resta a lungo mezza visibile).
+        // La quota si misura sull'altezza che puo' stare in vista (la sezione, o lo schermo se la sezione e' piu' alta):
+        // prima che GSAP la fissi la sezione e' piu' alta dello schermo e il rapporto semplice resterebbe sotto soglia.
+        const capienza = Math.min(entry.boundingClientRect.height, entry.rootBounds?.height ?? window.innerHeight) || 1;
+        const visible = entry.isIntersecting && entry.intersectionRect.height / capienza >= AUDIO_VISIBLE_RATIO;
+        heroInView = visible;
+        if (visible) {
           const v = heroVideoEl();
           if (!reduceMotion || audioUnlocked) v?.play().catch(() => {});
-          // Rientro nella hero: se l'utente aveva gia' attivato l'audio torna da solo (l'attivazione
-          // della pagina e' persistente; se il browser rifiuta, verifyAudio riporta a muto senza fermare il video).
-          if (audioUnlocked) requestHeroAudio();
+          // Rientro nella hero: se il visitatore aveva attivato l'audio (e non l'ha poi silenziato lui) torna da solo
+          // (l'attivazione della pagina e' persistente; se il browser rifiuta, verifyAudio riporta a muto senza fermare il video).
+          if (audioUnlocked && !userMuted) requestHeroAudio();
         } else {
-          // Left viewport: always mute
-          videoMuted = true;
-          heroVideoPauseTimer = setTimeout(() => heroVideoEl()?.pause(), 400);
+          silenceNow();
+          // Il video si ferma solo quando la hero e' davvero fuori scena.
+          if (!entry.isIntersecting) heroVideoPauseTimer = setTimeout(() => heroVideoEl()?.pause(), 400);
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: Array.from({ length: 21 }, (_, i) => i / 20) });
 
     audioObserver.observe(container);
     tryPolicyAutounmute();
@@ -848,11 +889,13 @@
           thumbnailUrl={heroVideoThumbnailUrl}
           muted={videoMuted}
           audioCue={showAudioCue}
+          audioOn={audioOn}
           disableVisibilityObserver={true}
           disable3dTilt={true}
           disableEntranceAnimation={true}
           on:mobiletap={unlockAudio}
           on:audiocue={onAudioCue}
+          on:audiomute={muteHeroAudio}
         />
       </div>
     </div>

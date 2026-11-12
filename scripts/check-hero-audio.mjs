@@ -14,7 +14,7 @@
  *   1. solo rotella/swipe/movimento: nessuna attivazione utente, video muto ma in riproduzione, controllo
  *      «Attiva l'audio» visibile, badge «Audio attivato» assente;
  *   2. dopo Spazio / freccia giu' / clic / tocco: audio attivo (non muto, volume pieno dopo l'entrata
- *      progressiva, video in riproduzione), badge visibile, controllo nascosto;
+ *      progressiva, video in riproduzione), badge visibile, il controllo diventa «Silenzia»;
  *   3. Esc, Tab e il solo Maiusc NON attivano;
  *   4. con l'audio attivo, a ogni altezza della hero resta attivo; fuori dalla hero si muta e si ferma;
  *      al ritorno riprende col suono senza un nuovo gesto; scheda in secondo piano = pausa;
@@ -121,6 +121,7 @@ const STATE = `(() => {
     y: Math.round(scrollY),
     video: v && { muted: v.muted, volume: +v.volume.toFixed(2), paused: v.paused, t: +v.currentTime.toFixed(2), ready: v.readyState },
     cueVisible: !!cue && cs(cue).visibility !== 'hidden' && +cs(cue).opacity > 0.01,
+    cueLabel: cue ? cue.textContent.trim() : null,
     badgeVisible: !!badge && cs(badge).display !== 'none',
   };
 })()`;
@@ -187,7 +188,9 @@ for (const [label, act] of [
     expect('non muto, volume pieno dopo l\'entrata progressiva, in riproduzione', isAudible(s), JSON.stringify(s.video));
     expect('badge «Audio attivato» visibile', s.badgeVisible);
     await sleep(700);
-    expect('controllo «Attiva l\'audio» nascosto', !(await state(c)).cueVisible);
+    // dal 12/11/2026 il controllo resta sul telefono e diventa «Silenzia» (il pulsante che zittisce: check-hero-audio-pulsante.mjs)
+    const fine = await state(c);
+    expect('il controllo resta e diventa «Silenzia»', fine.cueVisible && fine.cueLabel === 'Silenzia', fine.cueLabel);
   }));
 }
 
