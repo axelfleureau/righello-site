@@ -1058,6 +1058,7 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
     transform: translateX(-50%);
     opacity: 1;
     /* compare dopo un istante: non deve lampeggiare mentre il video sta ancora partendo */
@@ -1071,10 +1072,17 @@
     border-color: rgba(255, 255, 255, 0.35);
     background: rgba(10, 10, 15, 0.45);
   }
-  .audio-cue-on:hover,
   .audio-cue-on:focus-visible {
     border-color: rgba(214, 72, 126, 0.85);
     background: rgba(10, 10, 15, 0.7);
+  }
+  /* L'effetto al passaggio solo dove esiste davvero il mouse: su iPhone e iPad Safari tratta il primo tocco di un
+     elemento con :hover come «passaggio» e non come clic, e «Silenzia» non silenzierebbe al primo tocco. */
+  @media (hover: hover) {
+    .audio-cue-on:hover {
+      border-color: rgba(214, 72, 126, 0.85);
+      background: rgba(10, 10, 15, 0.7);
+    }
   }
 
   .audio-cue-hidden {

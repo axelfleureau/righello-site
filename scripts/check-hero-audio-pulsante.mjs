@@ -73,6 +73,20 @@ async function main() {
     check(s.label === "Attiva l'audio" && !s.nascosto, 'in cima: «Attiva l\'audio», visibile', `in cima: label «${s.label}», nascosto ${s.nascosto}`);
     check(s.preso, 'in cima: nessun livello sopra il pulsante', `in cima: sopra il pulsante c'e' «${s.sopra}»`);
 
+    // Safari su iPhone e iPad tratta il primo tocco di un elemento con :hover come «passaggio», non come clic:
+    // «Silenzia» non silenzierebbe al primo tocco. Gli effetti al passaggio devono stare dentro @media (hover: hover).
+    const hoverNudo = await c.ev(`(() => {
+      const trovati = [];
+      for (const sh of document.styleSheets) {
+        let rules; try { rules = sh.cssRules; } catch { continue; }
+        for (const r of rules) {
+          if (r.type === CSSRule.STYLE_RULE && /audio-cue/.test(r.selectorText) && /:hover/.test(r.selectorText)) trovati.push(r.selectorText);
+        }
+      }
+      return trovati;
+    })()`);
+    check(hoverNudo.length === 0, 'nessun :hover sul pulsante fuori da @media (hover: hover)', `:hover fuori da @media (hover: hover): ${hoverNudo.join(' | ')} (su iPhone il primo tocco non silenzia)`);
+
     console.log('\n2. Clic: accende, senza spegnersi da solo');
     await clic(s.cx, s.cy);
     s = await stato();
