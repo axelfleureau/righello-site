@@ -10,7 +10,7 @@ import { join } from 'node:path';
 const CHROME = process.env.CHROME_BIN || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export async function avvia() {
+export async function avvia({ bloccati } = {}) {
   if (!existsSync(CHROME)) throw new Error(`Chrome non trovato (${CHROME}): impostare CHROME_BIN`);
   const porta = 9800 + Math.floor(Math.random() * 150);
   const dir = mkdtempSync(join(tmpdir(), 'check-hero-'));
@@ -38,7 +38,7 @@ export async function avvia() {
   const chiudi = async () => { try { ws.close(); } catch { /* gia' chiuso */ } proc.kill(); await sleep(300); try { rmSync(dir, { recursive: true, force: true }); } catch { /* ok */ } };
   await send('Page.enable'); await send('Runtime.enable'); await send('Network.enable');
   // servizi esterni (banner cookie, analytics, video) non fanno parte della prova e coprirebbero la pagina
-  await send('Network.setBlockedURLs', { urls: ['*iubenda*', '*youtube*', '*ytimg*', '*googletagmanager*', '*google-analytics*', '*posthog*', '*cloudinary*'] });
+  await send('Network.setBlockedURLs', { urls: bloccati ?? ['*iubenda*', '*youtube*', '*ytimg*', '*googletagmanager*', '*google-analytics*', '*posthog*', '*cloudinary*'] });
   return { send, on, ev, chiudi };
 }
 
