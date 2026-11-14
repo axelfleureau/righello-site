@@ -344,7 +344,7 @@
   function tryPolicyAutounmute() {
     const v = heroVideoEl();
     const nav = navigator as Navigator & { getAutoplayPolicy?: (el: HTMLMediaElement) => string };
-    if (!v || reduceMotion || userMuted || audioFailures >= AUDIO_MAX_AUTO_FAILURES) return;
+    if (!v || reduceMotion || userMuted || audioUnlocked || audioFailures >= AUDIO_MAX_AUTO_FAILURES) return;
     try {
       if (nav.getAutoplayPolicy?.(v) === 'allowed') requestHeroAudio();
       // Gesto gia' dato su questa pagina (banner dei cookie, menu, clic precedente): l'attivazione e'
@@ -392,17 +392,20 @@
         // prima che GSAP la fissi la sezione e' piu' alta dello schermo e il rapporto semplice resterebbe sotto soglia.
         const capienza = Math.min(entry.boundingClientRect.height, entry.rootBounds?.height ?? window.innerHeight) || 1;
         const visible = entry.isIntersecting && entry.intersectionRect.height / capienza >= AUDIO_VISIBLE_RATIO;
+        const eraInVista = heroInView;
         heroInView = visible;
-        if (visible) {
+        // Il rientro e' un passaggio da «fuori» a «dentro»: con soglie fitte il callback scatta a ogni piccolo
+        // spostamento e il suono non deve ripartire (con la sua dissolvenza) a ogni scatto.
+        if (visible && !eraInVista) {
           const v = heroVideoEl();
           if (!reduceMotion || audioUnlocked) { v?.play().catch(() => {}); playYoutube(); }
           // Rientro nella hero: se il visitatore aveva attivato l'audio (e non l'ha poi silenziato lui) torna da solo
           // (l'attivazione della pagina e' persistente; se il browser rifiuta, verifyAudio riporta a muto senza fermare il video).
           if (audioUnlocked && !userMuted) requestHeroAudio();
           else tryPolicyAutounmute();
-        } else {
+        } else if (!visible) {
           silenceNow();
-          // Fuori scena il video si ferma davvero (muto e in pausa, anche l'iframe di riserva): lo stesso soglia del suono.
+          // Fuori scena il video si ferma davvero (muto e in pausa, anche l'iframe di riserva): la stessa soglia del suono.
           heroVideoPauseTimer = setTimeout(() => { heroVideoEl()?.pause(); pauseYoutube(); }, 400);
         }
       });
