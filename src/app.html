@@ -28,19 +28,41 @@
       });
     </script>
     <script>
-      // Google tag: la coda e la configurazione restano subito qui (nessun evento si perde),
-      // ma la libreria (~160 kB) si scarica a pagina caricata, per non contendere banda a
-      // stili, caratteri e immagini del primo schermo.
+      // Google tag (Ads) e Consent Mode v2, in regola con il GDPR: il consenso e' NEGATO prima di qualunque altra
+      // istruzione (la configurazione, che segue, non puo' piu' partire con un consenso implicito) e la libreria
+      // di Google (~160 kB) non viene nemmeno scaricata finche' iubenda non comunica un consenso concesso
+      // (consent update granted): chi rifiuta, o non sceglie, non contatta Google e non riceve cookie (_gcl_au).
+      // Chi ha gia' acconsentito in una visita precedente: iubenda rimanda la sua scelta a ogni pagina e la
+      // libreria parte a pagina caricata, come prima. La coda degli eventi resta qui, nulla si perde.
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied',
+        functionality_storage: 'denied', personalization_storage: 'denied', security_storage: 'granted'
+      });
+      gtag('set', 'ads_data_redaction', true);
       gtag('js', new Date());
       gtag('config', 'AW-18003003969');
-      window.addEventListener('load', function () {
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18003003969';
-        document.head.appendChild(s);
-      });
+      (function () {
+        var caricata = false;
+        function caricaGoogleTag() {
+          if (caricata) return;
+          caricata = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18003003969';
+          document.head.appendChild(s);
+        }
+        var spingi = dataLayer.push;
+        dataLayer.push = function () {
+          var r = spingi.apply(dataLayer, arguments);
+          for (var i = 0; i < arguments.length; i++) {
+            var a = arguments[i];
+            if (a && a[0] === 'consent' && a[1] === 'update' && a[2] && (a[2].ad_storage === 'granted' || a[2].analytics_storage === 'granted')) caricaGoogleTag();
+          }
+          return r;
+        };
+      })();
     </script>
     <link rel="icon" type="image/x-icon" href="%sveltekit.assets%/favicon.ico" />
     <link rel="icon" type="image/png" sizes="192x192" href="%sveltekit.assets%/icon-192.png" />
