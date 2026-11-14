@@ -123,6 +123,19 @@ async function main() {
       }
     }
     check(zittito, 'la hero e\' uscita di scena durante la prova', 'la hero non e\' mai uscita di scena: prova non conclusa');
+    // Con la hero fuori scena un clic su qualunque altra cosa (menu, tema) non deve riaccendere il suono né far ripartire il video.
+    const bersaglio = await c.ev(`(() => { const b = [...document.querySelectorAll('button')].find((x) => { const r = x.getBoundingClientRect(); return r.width > 20 && r.top >= 0 && r.top < 140 && r.bottom < 200 && !x.closest('#iubenda-cs-banner') && !x.closest('.audio-cue'); }); if (!b) return null; const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()`);
+    if (bersaglio) {
+      await c.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: bersaglio.x, y: bersaglio.y });
+      await c.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: bersaglio.x, y: bersaglio.y, button: 'left', buttons: 1, clickCount: 1 });
+      await c.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: bersaglio.x, y: bersaglio.y, button: 'left', buttons: 0, clickCount: 1 });
+      await c.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'ArrowDown', code: 'ArrowDown', windowsVirtualKeyCode: 40 });
+      await c.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'ArrowDown', code: 'ArrowDown', windowsVirtualKeyCode: 40 });
+      await sleep(1200);
+      const dopo = await c.ev(`(() => { const v = document.querySelector('.phone-screen video'); return { label: document.querySelector('.audio-cue').textContent.trim(), video: v ? { muted: v.muted, paused: v.paused } : null, y: Math.round(scrollY) }; })()`);
+      check(dopo.label === "Attiva l'audio", 'fuori scena: un clic e un tasto non riaccendono il suono', `fuori scena il suono si e' riacceso («${dopo.label}»)`);
+      if (dopo.video) check(dopo.video.muted && dopo.video.paused, 'fuori scena il video resta muto e fermo', `fuori scena il video e' ripartito: ${JSON.stringify(dopo.video)}`);
+    } else ko('nessun elemento cliccabile in alto per provare il clic fuori scena');
     await c.ev('scrollTo(0,0)');
     await sleep(300);
     for (let i = 0; i < 40; i++) { await c.send('Input.dispatchMouseEvent', { type: 'mouseWheel', x: 700, y: 400, deltaX: 0, deltaY: -PASSO_ROTELLA }); await sleep(60); }

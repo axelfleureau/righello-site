@@ -251,6 +251,9 @@
   // e' persistente per la pagina). Idempotente. Il percorso YouTube resta sulle postMessage (stesso gesto).
   function requestHeroAudio() {
     if (!browser) return;
+    // Mai con la hero fuori scena: un clic sul menu, un tasto o un rientro spurio non devono riaccendere il suono
+    // (e far ripartire il video) di una hero che non si vede.
+    if (!heroInView) return;
     const v = heroVideoEl();
     const first = !audioUnlocked;
     audioUnlocked = true;
@@ -285,7 +288,7 @@
     if ((e.target as Element | null)?.closest?.('.audio-cue')) return;
     if (e instanceof KeyboardEvent && IGNORED_KEYS.has(e.key)) return;
     if (e.type === 'pointerdown' && (e as PointerEvent).pointerType === 'touch') return;
-    if (!heroInView && !audioUnlocked) return;
+    if (!heroInView) return;
     // Movimento ridotto: il video parte solo dal controllo esplicito, non da un clic qualunque.
     if (reduceMotion || userMuted) return;
     if (audioUnlocked && audioOn) {
@@ -392,14 +395,15 @@
         heroInView = visible;
         if (visible) {
           const v = heroVideoEl();
-          if (!reduceMotion || audioUnlocked) v?.play().catch(() => {});
+          if (!reduceMotion || audioUnlocked) { v?.play().catch(() => {}); playYoutube(); }
           // Rientro nella hero: se il visitatore aveva attivato l'audio (e non l'ha poi silenziato lui) torna da solo
           // (l'attivazione della pagina e' persistente; se il browser rifiuta, verifyAudio riporta a muto senza fermare il video).
           if (audioUnlocked && !userMuted) requestHeroAudio();
+          else tryPolicyAutounmute();
         } else {
           silenceNow();
-          // Il video si ferma solo quando la hero e' davvero fuori scena.
-          if (!entry.isIntersecting) heroVideoPauseTimer = setTimeout(() => heroVideoEl()?.pause(), 400);
+          // Fuori scena il video si ferma davvero (muto e in pausa, anche l'iframe di riserva): lo stesso soglia del suono.
+          heroVideoPauseTimer = setTimeout(() => { heroVideoEl()?.pause(); pauseYoutube(); }, 400);
         }
       });
     }, { threshold: Array.from({ length: 21 }, (_, i) => i / 20) });
