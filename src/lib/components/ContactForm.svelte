@@ -272,7 +272,7 @@
     <p class="cf-mail">Preferisci la posta? <a href="mailto:{CONTACT.email}">{CONTACT.email}</a></p>
 
     <ContactDock {layout}>
-      <p class="cf-consent">Inviando accetti l’<a href={CONTACT.privacyUrl} target="_blank" rel="noopener noreferrer">informativa sulla privacy</a>.</p>
+      <p class="cf-consent">Usiamo i tuoi dati solo per risponderti. Leggi l’<a href={CONTACT.privacyUrl} target="_blank" rel="noopener noreferrer">informativa sulla privacy</a>.</p>
       <CxButton type="submit" full size={layout === 'page' ? 'lg' : 'md'} busy={sending} busyLabel={slow ? 'Ancora un attimo…' : 'Invio in corso…'} done={celebrating} doneLabel="Inviata">
         {s.status === 'failed' ? 'Riprova a inviare' : 'Invia la richiesta'}
       </CxButton>
