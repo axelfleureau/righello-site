@@ -274,7 +274,7 @@ export const departments: Department[] = [
   {
     id: 'agenti-ai',
     name: 'Agenti AI',
-    tagline: 'Il tuo nuovo dipendente digitale',
+    tagline: 'Un collega digitale al fianco del tuo team',
     description: 'Agenti AI progettati sui flussi reali della tua azienda. Riducono i costi operativi, eliminano le attività ridondanti e si integrano con i tuoi sistemi esistenti — lavorando al fianco del team, non al suo posto.',
     icon: 'brain',
     services: [

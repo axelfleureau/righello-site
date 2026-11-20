@@ -377,11 +377,11 @@ export const serviceDetails: ServiceDetail[] = [
     slug: 'agenti-ai',
     category: 'Agenti AI & Automazione Intelligente',
     name: 'Agenti AI',
-    titleLine1: 'Il tuo nuovo',
-    titleHighlight: 'dipendente digitale',
+    titleLine1: 'Un collega digitale',
+    titleHighlight: 'al fianco del tuo team',
     subtitle:
-      'Righello, studio digitale con sede legale a Pordenone e base operativa a Mestre, costruisce agenti AI su misura. Un agente AI è un programma che svolge compiti ripetitivi al posto di una persona e passa al team i casi dubbi. Risponde partendo dai dati dell’azienda, collegato a gestionale, email e documenti: lavora al fianco del team, non al suo posto.',
-    tagline: 'Il tuo nuovo dipendente digitale',
+      'Righello, studio digitale con sede legale a Pordenone e base operativa a Mestre, costruisce agenti AI su misura. Un agente AI è un programma che svolge compiti ripetitivi accanto al team e passa a una persona i casi dubbi. Risponde partendo dai dati dell’azienda, collegato a gestionale, email e documenti: lavora al fianco del team, non al suo posto.',
+    tagline: 'Un collega digitale al fianco del tuo team',
     accent: ['#10B981', '#0A5C42'],
     outcomes: [
       { title: 'Meno lavoro ripetitivo', text: 'Amministrazione, assistenza di base e documenti diventano processi che girano da soli.' },
@@ -593,7 +593,7 @@ const all = ['marketing', 'advertising', 'web', 'agenti-ai'];
 export const serviceFaqs: ServiceFaq[] = [
   {
     q: 'Cos’è un agente AI aziendale?',
-    a: 'Un agente AI aziendale è un programma che svolge compiti al posto di una persona: legge email e documenti, inserisce dati nel gestionale o nel CRM, risponde alle richieste più semplici. Righello lo costruisce sui flussi dell’azienda, lo collega ai sistemi che già usa e lascia al team i casi che chiedono una persona.',
+    a: 'Un agente AI aziendale è un programma che svolge compiti ripetitivi che oggi portano via tempo a una persona: legge email e documenti, inserisce dati nel gestionale o nel CRM, risponde alle richieste più semplici. Righello lo costruisce sui flussi dell’azienda, lo collega ai sistemi che già usa e lascia al team i casi che chiedono una persona.',
     services: ['agenti-ai'],
     onlyOnPage: true,
   },

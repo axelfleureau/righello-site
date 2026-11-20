@@ -37,7 +37,7 @@
   const comparison = {
     before: [
       'Post senza strategia',
-      'Budget pubblicitario sprecato',
+      'Budget senza un numero accanto',
       'Zero tracciamento conversioni',
       'Report mensili vaghi',
       'Creatività inconsistente',
@@ -45,7 +45,7 @@
     after: [
       'Content calendar strategico',
       'Ogni euro con il suo numero accanto',
-      'Pixel e tracking avanzato',
+      'Pixel, tracciamento lato server e GA4',
       'Cruscotti su misura',
       'Brand identity coerente',
     ],
@@ -101,15 +101,15 @@
     
     <div class="comparison-section">
       <h3 class="text-2xl md:text-3xl font-bold text-center mb-12">
-        <span class="text-[var(--text-primary)]">Prima vs </span>
-        <span class="gradient-text">Dopo</span>
+        <span class="text-[var(--text-primary)]">Senza metodo vs </span>
+        <span class="gradient-text">Con metodo</span>
       </h3>
       
       <div class="comparison-grid">
         <div class="comparison-column before">
           <div class="column-header">
             <span class="header-icon before-icon">✕</span>
-            <span>Prima</span>
+            <span>Senza metodo</span>
           </div>
           <ul class="comparison-list">
             {#each comparison.before as item}
@@ -136,7 +136,7 @@
         <div class="comparison-column after">
           <div class="column-header">
             <span class="header-icon after-icon">✓</span>
-            <span>Dopo</span>
+            <span>Con metodo</span>
           </div>
           <ul class="comparison-list">
             {#each comparison.after as item}
