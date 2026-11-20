@@ -1,6 +1,7 @@
 <script lang="ts">
   import { contactHref } from '$lib/data/contact';
   import { projects, departments, clients } from '$lib/data/projects';
+  import { caseStudies, softwareStudies, appStudies } from '$lib/data/case-studies';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import GlowCard from '$lib/components/GlowCard.svelte';
   import LogoCarousel from '$lib/components/LogoCarousel.svelte';
@@ -39,17 +40,18 @@
   
   const featuredProjects = projects.filter(p => p.featured);
   
+  // Solo numeri che il sito stesso può mostrare: i conteggi vengono dai dati, «tre» e «72 ore» da Contatti.
   const stats = [
-    { value: 470, suffix: '+', label: 'Progetti completati' },
-    { value: 25, suffix: 'M+', label: 'Views generate' },
-    { value: 98, suffix: '%', label: 'Clienti soddisfatti' },
-    { value: 8, suffix: '.5x', label: 'ROAS medio ads' },
+    { value: softwareStudies.length, suffix: '', label: 'Prodotti software costruiti da noi' },
+    { value: appStudies.length, suffix: '', label: 'App per iPhone e iPad' },
+    { value: caseStudies.length, suffix: '', label: 'Progetti con scheda e stato reale' },
+    { value: 3, suffix: '', label: 'Fondatori che leggono ogni richiesta' },
   ];
   
   const credibilityBadges = [
-    { icon: 'meta', label: 'Meta Partner' },
-    { icon: 'google', label: 'Google Partner' },
-    { icon: 'star', label: '5.0 Rating' },
+    { icon: 'check', label: 'Startup innovativa' },
+    { icon: 'check', label: 'App su App Store' },
+    { icon: 'check', label: 'Risposta in 72 ore lavorative' },
   ];
 
   const localLandingLinks = [
@@ -200,7 +202,7 @@
   <div class="section-container">
     <RevealOnScroll animation="fly-up">
       <div class="section-header">
-        <p class="section-subtitle">Risultati reali</p>
+        <p class="section-subtitle">In numeri</p>
         <h2 class="section-title max-w-4xl mx-auto">
           Numeri, non <span class="gradient-text">promesse</span>
         </h2>

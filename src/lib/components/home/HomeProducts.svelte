@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { caseStudies } from '$lib/data/case-studies';
+  import { caseStudies, softwareStudies, appStudies, storeStudies } from '$lib/data/case-studies';
   import type { CaseStudy } from '$lib/data/case-studies';
   import HomeProjectCard from './HomeProjectCard.svelte';
   import ProButton from '../progetti/ProButton.svelte';
@@ -11,11 +11,10 @@
   const products = ['optima', 'tetha', 'gusto-raffinato-sala', 'bordocampo'].map(byId);
 
   // Numeri contati dai dati, mai scritti a mano: stessa regola della pagina Progetti.
-  const software = caseStudies.filter((s) => ['app', 'gestionale', 'broadcast', 'piattaforma'].includes(s.kind));
   const facts = [
-    `${software.length} prodotti software costruiti da noi`,
-    `${caseStudies.filter((s) => s.platform.some((p) => p === 'iPhone' || p === 'iPad')).length} app per iPhone e iPad`,
-    `${caseStudies.filter((s) => s.status.tone === 'store').length} già su App Store`,
+    `${softwareStudies.length} prodotti software costruiti da noi`,
+    `${appStudies.length} app per iPhone e iPad`,
+    `${storeStudies.length} già su App Store`,
   ];
 </script>
 

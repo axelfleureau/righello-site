@@ -726,6 +726,11 @@ export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
 
 export const validCaseStudySlugs = caseStudies.map((study) => study.id);
 
+/** Prodotti software costruiti da noi, app per iPhone/iPad e app su store: contati dai dati, mai scritti a mano. */
+export const softwareStudies = caseStudies.filter((s) => ['app', 'gestionale', 'broadcast', 'piattaforma'].includes(s.kind));
+export const appStudies = caseStudies.filter((s) => s.platform.some((p) => p === 'iPhone' || p === 'iPad'));
+export const storeStudies = caseStudies.filter((s) => s.status.tone === 'store');
+
 /** Ordine dei tipi nell'elenco e nel percorso "precedente / prossimo": lo stesso che l'utente vede nei filtri. */
 export const kindOrder: ProjectKind[] = ['app', 'gestionale', 'broadcast', 'piattaforma', 'sito', 'contenuti'];
 

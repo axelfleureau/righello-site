@@ -878,6 +878,10 @@
               <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
               </svg>
+            {:else if badge.icon === 'check'}
+              <svg class="w-5 h-5 text-righello-pink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>
+              </svg>
             {/if}
             <span class="font-medium">{badge.label}</span>
           </div>
@@ -926,6 +930,10 @@
           {:else if badge.icon === 'star'}
             <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          {:else if badge.icon === 'check'}
+            <svg class="w-5 h-5 text-righello-pink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>
             </svg>
           {/if}
           <span class="font-medium">{badge.label}</span>

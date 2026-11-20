@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { softwareStudies } from '$lib/data/case-studies';
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import AnimatedCounter from './AnimatedCounter.svelte';
@@ -9,27 +10,27 @@
   const benefits = [
     {
       icon: 'chart',
-      title: 'ROI Misurabile',
-      description: 'Ogni euro investito tracciato. Dashboard in tempo reale con KPI chiari.',
-      stat: { value: 340, suffix: '%', label: 'ROI medio' },
+      title: 'Numeri che si leggono',
+      description: 'Seguiamo ogni contatto dal clic alla richiesta, dove il tracciamento lo permette, e ti diciamo dove i dati non arrivano. Un report ogni mese.',
+      stat: { value: 1, suffix: '', label: 'report al mese: cosa ha funzionato, cosa cambiamo' },
     },
     {
       icon: 'target',
-      title: 'Strategia Data-Driven',
-      description: 'Decisioni basate sui dati, non sulle sensazioni. A/B testing continuo.',
-      stat: { value: 85, suffix: '%', label: 'Conversioni migliorate' },
+      title: 'Strategia sui dati',
+      description: 'Decidiamo sui dati che abbiamo, non sulle impressioni. Prove continue su creatività, testi e pubblici.',
+      stat: { value: 3, suffix: ' mesi', label: 'di solito, per i primi miglioramenti' },
     },
     {
       icon: 'rocket',
-      title: 'Crescita Scalabile',
-      description: 'Processi replicabili e automazioni che scalano con il tuo business.',
-      stat: { value: 3, suffix: 'x', label: 'Crescita media' },
+      title: 'Strumenti costruiti da noi',
+      description: 'Quello che impariamo tenendo in piedi i nostri prodotti lo portiamo nel lavoro per te.',
+      stat: { value: softwareStudies.length, suffix: '', label: 'prodotti software costruiti da noi' },
     },
     {
       icon: 'shield',
-      title: 'Team Dedicato',
-      description: 'Un team di specialisti verticali, non generalisti. Esperti in ogni area.',
-      stat: { value: 15, suffix: '+', label: 'Specialisti' },
+      title: 'Persone che rispondono',
+      description: 'Strategia, contenuti, campagne e tecnologia nello stesso team: parli con chi fa il lavoro.',
+      stat: { value: 3, suffix: '', label: 'fondatori che leggono ogni richiesta' },
     },
   ];
   
@@ -43,9 +44,9 @@
     ],
     after: [
       'Content calendar strategico',
-      'ROAS ottimizzato costantemente',
+      'Ogni euro con il suo numero accanto',
       'Pixel e tracking avanzato',
-      'Dashboard real-time',
+      'Cruscotti su misura',
       'Brand identity coerente',
     ],
   };
