@@ -83,7 +83,7 @@
   const IGNORED_KEYS = new Set(['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Fn', 'NumLock', 'ScrollLock', 'Escape', 'AltGraph', 'OS', 'ContextMenu', 'Tab']);
   
   const heroSlide = {
-    subtitle: 'Agenzia Marketing',
+    subtitle: 'Marketing e software',
     title: 'La tua crescita,',
     titleGradient: 'inquadrata alla perfezione.',
     description: 'Marketing, contenuti e software su misura a Pordenone e Mestre. Misuriamo ogni campagna dal clic alla richiesta, e ti diciamo con onestà dove i dati non arrivano.'
