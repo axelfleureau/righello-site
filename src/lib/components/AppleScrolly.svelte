@@ -96,21 +96,21 @@
     {
       step: '01',
       title: 'Marketing & Social Media',
-      description: 'Strategie di marketing, contenuti e campagne social con risultati misurabili. Ogni azione è progettata per trasformare follower in clienti.',
+      description: 'Strategie di marketing, contenuti e campagne social con obiettivi chiari e numeri che si leggono. Ogni azione ha un perché e un modo per misurarla.',
       position: 'left',
       icon: '🎬'
     },
     {
       step: '02',
       title: 'Advertising & Automazione',
-      description: 'Meta Ads, Google Ads, TikTok Ads + workflow automatizzati. Ogni euro è tracciato, ogni processo ottimizzato per massimizzare il ROAS.',
+      description: 'Meta Ads, Google Ads, TikTok Ads + automazioni. Ogni euro con il suo numero accanto, ogni prova con una ragione.',
       position: 'right',
       icon: '📊'
     },
     {
       step: '03',
       title: 'Sviluppo Web & Software',
-      description: 'Siti web, e-commerce e web app che convertono. Design system, automazioni AI e integrazioni per scalare.',
+      description: 'Siti web, e-commerce e web app su misura. Design system, automazioni e integrazioni con gli strumenti che hai già.',
       position: 'left',
       icon: '💻'
     }

@@ -233,7 +233,7 @@
         <p class="section-subtitle">I nostri servizi</p>
         <h2 class="section-title mb-4">Cosa <span class="gradient-text">facciamo</span></h2>
         <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-          Marketing, sviluppo web e automazione: tre competenze integrate che trasformano il tuo business in un sistema di crescita misurabile.
+          Marketing, sviluppo web e automazione: tre competenze che lavorano insieme, con un solo interlocutore e numeri che si leggono.
         </p>
       </div>
     </RevealOnScroll>
