@@ -68,7 +68,7 @@
 
   const ctaItem = {
     title: '...e molto altro in arrivo',
-    subtitle: 'Nuovi contenuti ogni mese',
+    subtitle: 'Altri contenuti in arrivo',
     isCta: true,
     ctaHref: contactHref(),
     ctaLabel: 'Vuoi sapere di più?'

@@ -568,7 +568,7 @@
             </svg>
           </div>
           <p class="cta-end-card__title">E molto altro<br/>in arrivo</p>
-          <p class="cta-end-card__subtitle">Nuovi progetti ogni mese</p>
+          <p class="cta-end-card__subtitle">Altri progetti in arrivo</p>
           <span class="cta-end-card__btn">Scopri di più</span>
         </div>
       </a>

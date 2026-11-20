@@ -317,7 +317,7 @@
                     </svg>
                   </div>
                   <p class="avt-cta-card__title">E molto altro<br/>in arrivo</p>
-                  <p class="avt-cta-card__subtitle">Nuove recensioni ogni mese</p>
+                  <p class="avt-cta-card__subtitle">Altre recensioni in arrivo</p>
                   <a href={contactHref()} class="avt-cta-card__btn">Vuoi sapere di più?</a>
                 </div>
               {:else if activeTestimonial.cloudinaryUrl || activeTestimonial.videoSrc || activeTestimonial.youtubeId}
@@ -425,7 +425,7 @@
             <h3 class="avt-content__name">Vuoi essere il prossimo?</h3>
             <p class="avt-content__role">Contattaci per raccontare la tua esperienza</p>
             <blockquote class="avt-content__quote">
-              {#each 'Ogni mese aggiungiamo nuove storie di clienti soddisfatti. La prossima potrebbe essere la tua.'.split(/\s+/) as word, wi}
+              {#each 'Aggiungiamo le storie dei clienti che hanno voglia di raccontarle. La prossima potrebbe essere la tua.'.split(/\s+/) as word, wi}
                 <span class="avt-word" style="--word-index: {wi}">{word}&nbsp;</span>
               {/each}
             </blockquote>
