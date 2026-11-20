@@ -94,10 +94,10 @@ export const serviceDetails: ServiceDetail[] = [
     category: 'Marketing & Social Media',
     name: 'Marketing e social media',
     titleLine1: 'Strategie di marketing',
-    titleHighlight: 'che generano risultati',
+    titleHighlight: 'che si misurano',
     subtitle:
       'Gestione completa dei social media, produzione dei contenuti e piano editoriale, pensati per creare un rapporto vero con chi ti segue e portare richieste.',
-    tagline: 'Strategie che generano risultati',
+    tagline: 'Strategie che si misurano',
     accent: ['#D6487E', '#7A2B8F'],
     outcomes: [
       { title: 'Una linea chiara', text: 'Cosa dire, a chi e con quale obiettivo, in un piano mensile con calendario e rubriche.' },
@@ -192,10 +192,10 @@ export const serviceDetails: ServiceDetail[] = [
     titleHighlight: 'guidate dai dati',
     subtitle:
       'Campagne pubblicitarie con misurazione precisa e automazioni per ottimizzare ogni euro investito: più ritorno, meno spreco.',
-    tagline: 'Ogni euro tracciato, ogni processo ottimizzato',
+    tagline: 'Ogni euro con il suo numero accanto',
     accent: ['#06B6D4', '#0B5C73'],
     outcomes: [
-      { title: 'Ogni euro tracciato', text: 'Seguiamo ogni contatto, dal clic alla richiesta, con tracciamento sul sito e cruscotti su misura.' },
+      { title: 'Ogni euro con il suo numero', text: 'Seguiamo ogni contatto, dal clic alla richiesta, con tracciamento sul sito e cruscotti su misura.' },
       { title: 'Prove continue', text: 'Mettiamo alla prova creatività, testi e pubblici: si toglie ciò che non rende.' },
       { title: 'Il budget va dove rende', text: 'La spesa cresce sulle campagne che funzionano e si prova qualche canale nuovo.' },
     ],

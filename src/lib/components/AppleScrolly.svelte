@@ -86,7 +86,7 @@
     subtitle: 'Agenzia Marketing',
     title: 'La tua crescita,',
     titleGradient: 'inquadrata alla perfezione.',
-    description: 'Marketing, advertising e sviluppo digitale a Pordenone e Mestre con un approccio data-driven. Ogni euro investito, ogni conversione tracciata.'
+    description: 'Marketing, contenuti e software su misura a Pordenone e Mestre. Misuriamo ogni campagna dal clic alla richiesta, e ti diciamo con onestà dove i dati non arrivano.'
   };
   
   /** Scroll (in altezze di finestra x100) per ogni passo della hero fissa: regola la lunghezza della hero. */

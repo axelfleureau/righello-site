@@ -346,7 +346,7 @@
         <a class="source-pill" href={agencySourceUrl} target="_blank" rel="noopener noreferrer">
           Bando 2026 chiuso — risorse esaurite
         </a>
-        <h1>Bando AI FVG 2026: fino a 10.000€ per portare l’AI nella tua azienda</h1>
+        <h1>Bando AI FVG 2026: sportello chiuso. Cosa prevedeva e come lavorare al progetto AI, con o senza contributo</h1>
         <p class="hero-subtitle">
           La misura poteva coprire fino al 75% della spesa ammissibile. Lo sportello 2026 ha esaurito le risorse, ma Righello ti aiuta comunque a costruire il progetto AI giusto per la tua azienda, con o senza contributo.
         </p>
