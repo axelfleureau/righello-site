@@ -17,11 +17,9 @@ import { SITE_URL } from '$lib/data/site';
 export const SEARCH_CRAWLERS = [
   'Googlebot',
   'Google-InspectionTool',
-  'GoogleOther',
   'Bingbot',
   'Slurp',
   'DuckDuckBot',
-  'Baiduspider',
   'YandexBot',
   'Applebot'
 ] as const;
@@ -62,8 +60,12 @@ export const AI_TRAINING_CRAWLERS = [
   'CCBot',
   'cohere-ai',
   'Amazonbot',
-  'Meta-ExternalAgent'
+  'Meta-ExternalAgent',
+  'GoogleOther'
 ] as const;
+
+/** Chiuso dal robots.txt gestito di Cloudflare e non utile a un'azienda del Nord-Est: motore di ricerca cinese. */
+export const CLOSED_BY_DOMAIN_CRAWLERS = ['Baiduspider'] as const;
 
 export const AI_CRAWLERS = [...AI_ANSWER_CRAWLERS, ...AI_TRAINING_CRAWLERS] as const;
 
@@ -118,7 +120,7 @@ export function robotsTxt(): string {
       "# L'elenco vive in src/lib/seo/crawlers.ts (lo legge anche il server per rispondere 403 ai bot bloccati)."
     ].join('\n'),
     group(ALLOWED_CRAWLERS, open),
-    group([...AI_TRAINING_CRAWLERS, ...BLOCKED_CRAWLERS], ['Disallow: /']),
+    group([...AI_TRAINING_CRAWLERS, ...CLOSED_BY_DOMAIN_CRAWLERS, ...BLOCKED_CRAWLERS], ['Disallow: /']),
     group(['*'], open),
     `Sitemap: ${SITE_URL}/sitemap.xml`,
     ''

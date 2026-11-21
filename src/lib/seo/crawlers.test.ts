@@ -5,6 +5,7 @@ import {
   AI_CRAWLERS,
   AI_TRAINING_CRAWLERS,
   ALLOWED_CRAWLERS,
+  CLOSED_BY_DOMAIN_CRAWLERS,
   BLOCKED_CRAWLERS,
   isBlockedUserAgent,
   robotsTxt
@@ -76,7 +77,8 @@ describe('crawler', () => {
       'CCBot',
       'cohere-ai',
       'Amazonbot',
-      'Meta-ExternalAgent'
+      'Meta-ExternalAgent',
+      'GoogleOther'
     ]) {
       expect(AI_TRAINING_CRAWLERS as readonly string[], bot).toContain(bot);
       expect(agentsWith('Disallow: /'), bot).toContain(bot);
@@ -89,8 +91,25 @@ describe('crawler', () => {
     for (const bot of agentsWith('Disallow: /')) expect(aperti.has(bot.toLowerCase()), bot).toBe(false);
   });
 
+  it("nessun crawler consentito dal sito e' chiuso dal robots.txt gestito da Cloudflare (elenco letto sul sito il 21/11/2026)", () => {
+    const chiusiDaCloudflare = [
+      'AhrefsBot', 'Amazonbot', 'Applebot-Extended', 'AwarioRssBot', 'AwarioSmartBot', 'BLEXBot', 'Baiduspider',
+      'BlackWidow', 'BorderxBot', 'Bytespider', 'CCBot', 'CitibotSiteCrawler', 'Claude-Web', 'ClaudeBot', 'Cotoyogi',
+      'DataForSeoBot', 'Diffbot', 'DotBot', 'FishBot', 'GPTBot', 'Google-CloudVertexBot', 'Google-Extended',
+      'GoogleOther', 'HTTrack', 'ICC-Crawler', 'KimiBot', 'MJ12bot', 'MistralAI-Training', 'NavuBot', 'NetAnts',
+      'Offline Explorer', 'PetalBot', 'QualifiedBot', 'Scrapy', 'SemrushBot', 'SemrushBot-SWA', 'SiteSnagger',
+      'SiteSucker', 'Teleport', 'WARDBot', 'WebCopier', 'WebReaper', 'WebStripper', 'WebZIP', 'anthropic-ai',
+      'atlassian-bot', 'cohere-ai', 'ia_archiver', 'libwww-perl', 'lwp-trivial', 'magpie-crawler',
+      'meta-externalagent', 'omgili'
+    ].map((n) => n.toLowerCase());
+    for (const bot of ALLOWED_CRAWLERS)
+      expect(chiusiDaCloudflare, `${bot}: Cloudflare lo chiude, il sito lo ammette`).not.toContain(bot.toLowerCase());
+  });
+
   it('robots.txt chiude i bot bloccati dal server e quelli che addestrano modelli, e nessun altro', () => {
-    expect(agentsWith('Disallow: /').sort()).toEqual([...AI_TRAINING_CRAWLERS, ...BLOCKED_CRAWLERS].sort());
+    expect(agentsWith('Disallow: /').sort()).toEqual(
+      [...AI_TRAINING_CRAWLERS, ...CLOSED_BY_DOMAIN_CRAWLERS, ...BLOCKED_CRAWLERS].sort()
+    );
   });
 
   it('non chiude codice, stili, immagini e il resto di quello che serve a leggere le pagine', () => {
