@@ -18,7 +18,7 @@ import { softwareHousePages } from '../data/software-house';
 import { COMPANY, SITE_URL, socialLinks } from '../data/site';
 import { AREAS_SERVED, COMPANY_SUMMARY } from '../data/profile';
 import { founders } from '../data/team';
-import { AI_CRAWLERS } from './crawlers';
+import { AI_ANSWER_CRAWLERS } from './crawlers';
 import { lastModified } from './dates';
 import { sitePages } from './pages';
 
@@ -112,7 +112,7 @@ ${link('Contatti', '/contatti', 'WhatsApp, email e modulo; risposta entro 72 ore
 
 ## Per i crawler
 
-I crawler dei motori di ricerca e degli assistenti AI (${AI_CRAWLERS.join(', ')}) possono leggere tutto il sito pubblico: vedi ${url('/robots.txt')}. Mappa del sito: ${url('/sitemap.xml')}. Sono esclusi solo i programmi che copiano interi siti e gli analizzatori SEO di terzi.
+I motori di ricerca e gli assistenti AI che rispondono alle persone (${AI_ANSWER_CRAWLERS.join(', ')}) possono leggere tutto il sito pubblico: vedi ${url('/robots.txt')}. Mappa del sito: ${url('/sitemap.xml')}. Sono esclusi i programmi che copiano interi siti, gli analizzatori SEO di terzi e i crawler che addestrano modelli AI.
 
 ## Optional
 

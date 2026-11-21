@@ -1,7 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
+  AI_ANSWER_CRAWLERS,
   AI_CRAWLERS,
+  AI_TRAINING_CRAWLERS,
   ALLOWED_CRAWLERS,
   BLOCKED_CRAWLERS,
   isBlockedUserAgent,
@@ -48,32 +50,47 @@ describe('crawler', () => {
     expect(isBlockedUserAgent('')).toBe(false);
   });
 
-  it('i crawler AI che alimentano ricerca e risposte sono tutti consentiti', () => {
+  it('gli assistenti AI che rispondono alle persone sono consentiti', () => {
     for (const bot of [
-      'GPTBot',
       'OAI-SearchBot',
       'ChatGPT-User',
-      'ClaudeBot',
       'Claude-User',
       'Claude-SearchBot',
-      'anthropic-ai',
       'PerplexityBot',
       'Perplexity-User',
-      'Google-Extended',
-      'Applebot-Extended',
-      'CCBot',
-      'cohere-ai',
-      'Amazonbot',
       'MistralAI-User'
     ]) {
-      expect(AI_CRAWLERS as readonly string[], bot).toContain(bot);
+      expect(AI_ANSWER_CRAWLERS as readonly string[], bot).toContain(bot);
       expect(agentsWith('Allow: /'), bot).toContain(bot);
       expect(agentsWith('Disallow: /'), bot).not.toContain(bot);
     }
   });
 
-  it('robots.txt dichiara come bloccati gli stessi bot del server, e solo quelli', () => {
-    expect(agentsWith('Disallow: /').sort()).toEqual([...BLOCKED_CRAWLERS].sort());
+  it("i crawler che addestrano modelli AI sono chiusi, come nella parte di robots.txt gestita da Cloudflare", () => {
+    for (const bot of [
+      'GPTBot',
+      'ClaudeBot',
+      'anthropic-ai',
+      'Google-Extended',
+      'Applebot-Extended',
+      'CCBot',
+      'cohere-ai',
+      'Amazonbot',
+      'Meta-ExternalAgent'
+    ]) {
+      expect(AI_TRAINING_CRAWLERS as readonly string[], bot).toContain(bot);
+      expect(agentsWith('Disallow: /'), bot).toContain(bot);
+      expect(agentsWith('Allow: /'), bot).not.toContain(bot);
+    }
+  });
+
+  it('nessun crawler e\' consentito e chiuso nello stesso robots.txt (le due serie di regole non si contraddicono)', () => {
+    const aperti = new Set(agentsWith('Allow: /').map((n) => n.toLowerCase()));
+    for (const bot of agentsWith('Disallow: /')) expect(aperti.has(bot.toLowerCase()), bot).toBe(false);
+  });
+
+  it('robots.txt chiude i bot bloccati dal server e quelli che addestrano modelli, e nessun altro', () => {
+    expect(agentsWith('Disallow: /').sort()).toEqual([...AI_TRAINING_CRAWLERS, ...BLOCKED_CRAWLERS].sort());
   });
 
   it('non chiude codice, stili, immagini e il resto di quello che serve a leggere le pagine', () => {

@@ -5,8 +5,11 @@
  * leggono entrambi da qui: le due cose non possono piu' dire cose diverse.
  *
  * La scelta: il sito e' un biglietto da visita, quindi si lascia leggere a tutto cio' che
- * alimenta ricerca e risposte (motori di ricerca, assistenti AI, anteprime dei social).
- * Si tengono fuori solo gli strumenti che copiano il sito intero e gli analizzatori SEO di terzi.
+ * alimenta ricerca e risposte (motori di ricerca, assistenti AI che rispondono, anteprime dei
+ * social). Restano fuori gli strumenti che copiano il sito intero, gli analizzatori SEO di terzi e
+ * i crawler che servono ad ADDESTRARE modelli: e' la stessa linea che Cloudflare applica al
+ * robots.txt gestito del dominio («ricerca si', addestramento no, uso come riferimento»), cosi'
+ * le due parti del file non si contraddicono.
  */
 import { SITE_URL } from '$lib/data/site';
 
@@ -35,28 +38,34 @@ export const PREVIEW_CRAWLERS = [
   'Discordbot'
 ] as const;
 
-/** Assistenti e motori di risposta AI: addestramento, ricerca e lettura di una pagina richiesta da una persona. */
-export const AI_CRAWLERS = [
-  'GPTBot',
+/** Assistenti e motori di risposta AI: leggono una pagina per rispondere a una persona o per citare il sito. Ammessi. */
+export const AI_ANSWER_CRAWLERS = [
   'OAI-SearchBot',
   'ChatGPT-User',
-  'ClaudeBot',
   'Claude-User',
   'Claude-SearchBot',
-  'anthropic-ai',
   'PerplexityBot',
   'Perplexity-User',
+  'MistralAI-User',
+  'Meta-ExternalFetcher',
+  'DuckAssistBot',
+  'YouBot'
+] as const;
+
+/** Crawler che raccolgono testi per addestrare modelli AI: robots.txt li chiude (il server non risponde 403, e' una richiesta di cortesia). */
+export const AI_TRAINING_CRAWLERS = [
+  'GPTBot',
+  'ClaudeBot',
+  'anthropic-ai',
   'Google-Extended',
   'Applebot-Extended',
   'CCBot',
   'cohere-ai',
   'Amazonbot',
-  'MistralAI-User',
-  'Meta-ExternalAgent',
-  'Meta-ExternalFetcher',
-  'DuckAssistBot',
-  'YouBot'
+  'Meta-ExternalAgent'
 ] as const;
+
+export const AI_CRAWLERS = [...AI_ANSWER_CRAWLERS, ...AI_TRAINING_CRAWLERS] as const;
 
 /** Copiatori di siti e analizzatori SEO di terzi: fuori. */
 export const BLOCKED_CRAWLERS = [
@@ -86,7 +95,7 @@ export const BLOCKED_CRAWLERS = [
   'ia_archiver'
 ] as const;
 
-export const ALLOWED_CRAWLERS = [...SEARCH_CRAWLERS, ...PREVIEW_CRAWLERS, ...AI_CRAWLERS] as const;
+export const ALLOWED_CRAWLERS = [...SEARCH_CRAWLERS, ...PREVIEW_CRAWLERS, ...AI_ANSWER_CRAWLERS] as const;
 
 /** Percorsi che nessun motore deve leggere: area riservata e rotte di servizio. */
 export const PRIVATE_PATHS = ['/api/', '/admin'] as const;
@@ -104,11 +113,12 @@ export function robotsTxt(): string {
   const open = ['Allow: /', ...PRIVATE_PATHS.map((p) => `Disallow: ${p}`)];
   return [
     [
-      '# Righello: il sito si lascia leggere a motori di ricerca, assistenti AI e anteprime dei social.',
+      '# Righello: il sito si lascia leggere a motori di ricerca, assistenti AI che rispondono e anteprime dei social.',
+      "# I crawler che addestrano modelli AI sono esclusi, come nella parte gestita da Cloudflare.",
       "# L'elenco vive in src/lib/seo/crawlers.ts (lo legge anche il server per rispondere 403 ai bot bloccati)."
     ].join('\n'),
     group(ALLOWED_CRAWLERS, open),
-    group(BLOCKED_CRAWLERS, ['Disallow: /']),
+    group([...AI_TRAINING_CRAWLERS, ...BLOCKED_CRAWLERS], ['Disallow: /']),
     group(['*'], open),
     `Sitemap: ${SITE_URL}/sitemap.xml`,
     ''
