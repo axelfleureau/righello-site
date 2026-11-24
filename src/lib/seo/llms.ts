@@ -8,6 +8,8 @@ import { faqs as buffrFaqs, storeUrl as buffrStoreUrl } from '../components/buff
 import { caseStudies, caseStudyHref, kindLabels, type CaseStudy } from '../data/case-studies';
 import { CONTACT, formatPhone } from '../data/contact';
 import { bandoFaqs } from '../data/faqs/bando';
+import { incentiviHospitalityFaqs } from '../data/faqs/incentivi-hospitality';
+import { INCENTIVES_PATH, informationDate as incentivesDate } from '../data/incentivi-hospitality';
 import { contactFaqs } from '../data/faqs/contact';
 import { homeFaqs } from '../data/faqs/home';
 import { mestreFaqs } from '../data/faqs/mestre';
@@ -93,6 +95,10 @@ ${aiProof()
   .map((s) => link(s.name, caseStudyHref(s), `${s.seo.description} Stato: ${statusLine(s)}.`))
   .join('\n')}
 ${link('Bando Intelligenza Artificiale FVG 2026', BANDO, 'Guida al bando regionale: lo sportello 2026 si è chiuso con le risorse esaurite.')}
+
+## Strutture ricettive
+
+${link('Incentivi per hotel e strutture ricettive in FVG', INCENTIVES_PATH, `Voucher TUReSTA, Fondo turismo e bandi digitali, con stato verificato al ${incentivesDate}, calcolo dell'incentivo e fonti ufficiali della Regione.`)}
 
 ## Prodotti di Righello
 
@@ -206,5 +212,6 @@ ${section('Pagine per zona', zone)}
 ${section('Prodotti e lavori, con lo stato vero di ognuno', progetti)}
 ${section('BUFFR: domande frequenti', qa(buffrFaqs))}
 ${section(`Bando Intelligenza Artificiale FVG 2026 (${url(BANDO)})`, qa(bandoFaqs))}
+${section(`Incentivi per hotel e strutture ricettive in FVG (${url(INCENTIVES_PATH)})`, qa(incentiviHospitalityFaqs))}
 ${section('Come si lavora con Righello', qa(contactFaqs))}`;
 }

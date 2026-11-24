@@ -72,7 +72,7 @@ export interface NavItem {
 /** Voci della testata, nell'ordine in cui si leggono. */
 export const mainNav: NavItem[] = [
   { href: '/', label: 'Home' },
-  { href: '/servizi', label: 'Servizi', match: ['/servizi', '/agenzia-marketing-', '/software-house-', '/bando-intelligenza-artificiale-fvg-2026'] },
+  { href: '/servizi', label: 'Servizi', match: ['/servizi', '/agenzia-marketing-', '/software-house-', '/bando-intelligenza-artificiale-fvg-2026', '/incentivi-hospitality-fvg-2026'] },
   { href: '/progetti', label: 'Progetti', match: ['/progetti', '/buffr'] },
   { href: '/chi-siamo', label: 'Chi siamo' },
   { href: '/contatti', label: 'Contatti' },
@@ -156,6 +156,7 @@ export const footerColumns: FooterColumn[] = [
       { href: '/agenzia-marketing-mestre', label: 'Agenzia a Mestre' },
       ...softwareHouseLinks.map(({ href, label }) => ({ href, label })),
       { href: '/bando-intelligenza-artificiale-fvg-2026', label: 'Bando AI Friuli-Venezia Giulia' },
+      { href: '/incentivi-hospitality-fvg-2026', label: 'Incentivi per hotel in FVG' },
     ],
   },
 ];

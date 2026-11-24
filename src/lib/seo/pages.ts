@@ -53,6 +53,16 @@ const STATIC_PAGES: SitePage[] = [
     sources: ['src/routes/bando-intelligenza-artificiale-fvg-2026/+page.svelte']
   },
   {
+    path: '/incentivi-hospitality-fvg-2026',
+    priority: '0.8',
+    changefreq: 'monthly',
+    sources: [
+      'src/routes/incentivi-hospitality-fvg-2026/+page.svelte',
+      'src/lib/data/incentivi-hospitality.ts',
+      'src/lib/data/faqs/incentivi-hospitality.ts'
+    ]
+  },
+  {
     path: '/agenzia-marketing-pordenone',
     priority: '0.9',
     changefreq: 'monthly',

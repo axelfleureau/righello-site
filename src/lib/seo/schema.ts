@@ -27,6 +27,8 @@ import {
 } from '../data/case-studies';
 import { CONTACT, CONTACT_HOURS } from '../data/contact';
 import { bandoFaqs } from '../data/faqs/bando';
+import { incentiviHospitalityFaqs } from '../data/faqs/incentivi-hospitality';
+import { INCENTIVES_PATH } from '../data/incentivi-hospitality';
 import { contactFaqs } from '../data/faqs/contact';
 import { homeFaqs } from '../data/faqs/home';
 import { mestreFaqs } from '../data/faqs/mestre';
@@ -472,6 +474,7 @@ function nodesFor(path: string): Node[] {
     );
   else if (path === '/contatti') out.push(faq(contactFaqs));
   else if (path === BANDO_PATH) out.push(faq(bandoFaqs));
+  else if (path === INCENTIVES_PATH) out.push(faq(incentiviHospitalityFaqs));
   else if (path === '/agenzia-marketing-mestre' || path === '/agenzia-marketing-pordenone') {
     const label = localLandingLinks.find((l) => l.href === path)!.label;
     out.push(

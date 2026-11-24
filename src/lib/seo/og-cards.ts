@@ -73,6 +73,12 @@ const FIXED: Record<string, Fixed> = {
     note: 'Requisiti, contributo e documenti, per le imprese del Friuli-Venezia Giulia',
     accent: agencyAccent
   },
+  '/incentivi-hospitality-fvg-2026': {
+    kicker: 'Guida',
+    title: 'Incentivi per hotel e strutture ricettive',
+    note: 'Voucher TUReSTA, Fondo turismo e bandi digitali: stato, calcolo e fonti ufficiali',
+    accent: agencyAccent
+  },
   '/progetti': {
     kicker: 'Progetti',
     title: 'App, gestionali, regia delle partite e siti',
