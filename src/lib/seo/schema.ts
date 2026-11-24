@@ -28,7 +28,7 @@ import {
 import { CONTACT, CONTACT_HOURS } from '../data/contact';
 import { bandoFaqs } from '../data/faqs/bando';
 import { incentiviHospitalityFaqs } from '../data/faqs/incentivi-hospitality';
-import { INCENTIVES_PATH } from '../data/incentivi-hospitality';
+import { INCENTIVES_PATH, officialSources as incentivesSources } from '../data/incentivi-hospitality';
 import { contactFaqs } from '../data/faqs/contact';
 import { homeFaqs } from '../data/faqs/home';
 import { mestreFaqs } from '../data/faqs/mestre';
@@ -419,7 +419,11 @@ const STATIC_CRUMBS: Record<string, Array<{ name: string; path: string }>> = {
     { name: 'BUFFR', path: '/buffr' }
   ],
   '/chi-siamo': [{ name: 'Chi siamo', path: '/chi-siamo' }],
-  '/contatti': [{ name: 'Contatti', path: '/contatti' }]
+  '/contatti': [{ name: 'Contatti', path: '/contatti' }],
+  [INCENTIVES_PATH]: [
+    { name: 'Servizi', path: '/servizi' },
+    { name: 'Incentivi per hotel in FVG', path: INCENTIVES_PATH }
+  ]
 };
 
 function trailFor(path: string): Array<{ name: string; path: string }> {
@@ -517,6 +521,7 @@ function webPage(path: string, meta: PageMeta, main: Node[]): Node {
     ...(path === '/' ? {} : { breadcrumb: ref(nodeId(path, 'breadcrumb')) }),
     ...(lastModified(path) ? { dateModified: lastModified(path) } : {}),
     ...(path === BANDO_PATH ? { citation: officialSources.map((s) => s.href) } : {}),
+    ...(path === INCENTIVES_PATH ? { citation: incentivesSources.map((s) => s.url) } : {}),
     ...(SPEAKABLE_PATHS.has(path) ? { speakable: SPEAKABLE } : {}),
     ...(path === '/chi-siamo'
       ? { mainEntity: ref(ORG_ID) }

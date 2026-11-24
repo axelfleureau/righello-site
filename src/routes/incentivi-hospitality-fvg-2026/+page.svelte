@@ -170,6 +170,11 @@
           {#if !result.eligible}
             <p class="inc-warn">{result.reason}</p>
             <p class="inc-small">Senza le notti minime il voucher non spetta: a questo soggiorno si applicherebbero {eur.format(result.voucher)} di voucher teorico.</p>
+          {:else if stayCost === 0}
+            <dl>
+              <div><dt>Voucher</dt><dd>{eur.format(result.voucher)}</dd></div>
+            </dl>
+            <p class="inc-small">{perPerson} € × {Math.min(people, MAX_PEOPLE_PER_HOUSEHOLD)} {people === 1 ? 'persona' : 'persone'}. Inserisci il costo totale del soggiorno per vedere quanto resta da pagare.</p>
           {:else}
             <dl>
               <div><dt>Voucher</dt><dd>{eur.format(result.voucher)}</dd></div>
@@ -312,7 +317,7 @@
   .inc-note { max-width: 62ch; margin: 1rem auto 0; color: var(--text-secondary); line-height: 1.6; }
 
   .inc-measures { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
-  @media (min-width: 960px) { .inc-measures { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1200px) { .inc-measures { grid-template-columns: repeat(3, 1fr); } }
   .inc-card { display: flex; flex-direction: column; gap: 0.9rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 1.25rem; background: var(--bg-tertiary); }
   .inc-card h3 { margin: 0.6rem 0 0.35rem; font-size: var(--text-xl); line-height: 1.25; }
   .inc-card p { margin: 0; color: var(--text-secondary); line-height: 1.55; }
