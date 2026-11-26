@@ -388,7 +388,7 @@ export const caseStudies: CaseStudy[] = [
     status: { tone: 'live', label: 'Sito online' },
     platform: ['Web'],
     audience: 'Fotografi di eventi',
-    accent: ['#FF7A1A', '#E11D74'],
+    accent: ['#E8196A', '#0B0B0D'],
     headline: 'Dallo scatto alla vendita: gallery con il tuo marchio, consegna sicura.',
     text:
       'La piattaforma per fotografi di eventi: gallery ordinate in album, anteprime con filigrana, pagamento con carta sicuro e download in alta risoluzione. Sul sito e, in prova, su iPhone.',

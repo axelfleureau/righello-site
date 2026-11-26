@@ -11,7 +11,7 @@ export const SITE_URL = 'https://www.wearerighello.com';
  * Immagini di condivisione: una per pagina in `static/og/`, generate da `scripts/og-images.ts`.
  * Il `?v=` si cambia qui, una volta, quando le immagini vengono rifatte (i social tengono in memoria l'indirizzo).
  */
-export const OG_VERSION = 1;
+export const OG_VERSION = 2;
 export const OG_SIZE = { width: 1200, height: 630 } as const;
 
 /** Immagine di partenza: una pagina che non ne dichiara una (area riservata, errori) usa quella della home. */
