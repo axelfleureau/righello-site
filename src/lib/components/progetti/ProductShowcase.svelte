@@ -29,7 +29,7 @@
   const pad = (n: number) => String(n).padStart(2, '0');
 
   function primaryLink(study: CaseStudy) {
-    if (study.storeUrl) return { href: study.storeUrl, label: 'Scarica su App Store', external: true };
+    if (study.storeUrl && !study.webFirst) return { href: study.storeUrl, label: 'Scarica su App Store', external: true };
     if (study.href?.startsWith('http')) return { href: study.href, label: 'Visita il sito', external: true };
     return null;
   }

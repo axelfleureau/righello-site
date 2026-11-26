@@ -4,7 +4,7 @@ import type { Landing, MediaRef } from './types';
  * Perigscope (il Mac sull'iPhone). Fatti verificati su: scheda dell'App Store (store/store.json), README del progetto
  * (maclink), protocollo v2 e ponte Righello. Schermate: build di sviluppo sul simulatore iPhone, 12/11/2026; la prova
  * senza Mac mostra il Mac finto dell'app, non uno schermo di una persona. Nessun account vero usato.
- * Stato: app in prova (Apple non ha ancora approvato la versione 1.0): niente link allo store, niente «pubblicata».
+ * Stato: pubblicata su App Store (verificato con la ricerca dello store il 26/11/2026: versione 1.0.1, gratuita, prima uscita 23/11/2026).
  */
 const DIR = '/progetti/landing/perigscope';
 
@@ -113,7 +113,7 @@ export default {
     kicker: 'Le schermate',
     title: 'L’app, com’è davvero',
     highlight: 'com’è davvero',
-    lead: 'Schermate della versione in prova, dal simulatore di iPhone. La prova senza Mac mostra il Mac finto dell’app, non lo schermo di nessuno.',
+    lead: 'Schermate dell’app, dal simulatore di iPhone. La prova senza Mac mostra il Mac finto dell’app, non lo schermo di nessuno.',
     items: [
       { id: 'benvenuto', label: 'Benvenuto', media: benvenuto, note: 'Tre schermate d’apertura: la scrivania in tasca, il collegamento da ovunque, la privacy.' },
       { id: 'ovunque', label: 'Ovunque', media: ovunque, note: 'Il Mac e l’iPhone collegati: dal divano o da un altro continente, si apre e funziona.' },
@@ -143,6 +143,7 @@ export default {
   cta: {
     title: 'Un Mac che ti segue ovunque',
     highlight: 'ti segue ovunque',
-    text: 'Perigscope è un progetto Righello, oggi in prova. Se vuoi provarlo o hai un’idea per un controllo remoto fatto su misura, scrivici.',
+    text: 'Perigscope è un’app Righello, gratuita su App Store. Se hai un’idea per un controllo remoto fatto su misura, scrivici.',
+    primary: { label: 'Scarica su App Store', href: 'https://apps.apple.com/it/app/perigscope/id6826381109', external: true },
   },
 } satisfies Landing;

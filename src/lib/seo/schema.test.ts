@@ -245,7 +245,7 @@ describe('dati strutturati', () => {
       }
     });
 
-    it("l'elenco delle prove contiene le schede della pagina, con SoftwareApplication per il software e il collegamento allo store solo per BUFFR", () => {
+    it("l'elenco delle prove contiene le schede della pagina, con SoftwareApplication per il software e il collegamento allo store solo per le app con stato «store»", () => {
       for (const p of softwareHousePages) {
         const list = find(graph(p.path), 'ItemList')!;
         const entries = list['itemListElement'] as Node[];
@@ -266,7 +266,10 @@ describe('dati strutturati', () => {
       }
       const installs = JSON.stringify(graph('/software-house-pordenone')).match(/apps\.apple\.com[^"]*/g) ?? [];
       expect(installs.length).toBeGreaterThan(0);
-      for (const url of installs) expect(url).toContain('/buffr/');
+      // ogni collegamento allo store e' quello di un prodotto con stato «store» (anche la scheda per gli Stati Uniti)
+      const known = caseStudies.filter((c) => c.status.tone === 'store').map((c) => c.storeUrl!.replace(/^https:\/\//, ''));
+      const withUs = [...known, ...known.map((k) => k.replace('/it/app/', '/us/app/'))];
+      for (const url of installs) expect(withUs.some((k) => url.startsWith(k)), url).toBe(true);
     });
 
     it('la risposta in apertura e il titolo sono dichiarati `speakable` con selettori che esistono davvero nella pagina', () => {

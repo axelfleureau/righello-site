@@ -201,7 +201,7 @@ export default {
     title: 'Parliamone, nel tuo locale.',
     highlight: 'nel tuo locale',
     text:
-      'Lasciaci un contatto: ti richiamiamo, passiamo a vedere la sala e la mettiamo nel sistema insieme a te.',
+      'L\'app è su App Store e si apre con il codice sala che diamo al locale: non c\'è una registrazione pubblica. Lasciaci un contatto: ti richiamiamo, passiamo a vedere la sala e la mettiamo nel sistema insieme a te.',
     primary: { label: 'Vai a gustoraffinato.com', href: 'https://gustoraffinato.com', external: true }
   }
 } satisfies Landing;

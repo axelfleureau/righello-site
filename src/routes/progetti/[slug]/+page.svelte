@@ -21,7 +21,7 @@
   $: study = data.study;
   $: landing = resolveLanding(study);
   $: own = hasOwnLanding(study);
-  $: primary = study.storeUrl
+  $: primary = study.storeUrl && !study.webFirst
     ? { href: study.storeUrl, label: 'Scarica su App Store' }
     : study.href?.startsWith('http')
       ? { href: study.href, label: 'Visita il sito' }

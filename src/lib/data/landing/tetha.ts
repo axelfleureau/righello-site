@@ -131,7 +131,7 @@ export default {
     title: 'La prossima richiesta del committente, pronta in un minuto.',
     highlight: 'pronta in un minuto',
     text:
-      'Quattordici giorni di prova sui tuoi documenti, senza carta di credito; poi 59 € + IVA al mese e 6 € + IVA a persona, app iPhone compresa. I moduli Gestionale e Subappalti si aggiungono.',
+      'Quattordici giorni di prova sui tuoi documenti, senza carta di credito; poi 59 € + IVA al mese e 6 € + IVA a persona, app iPhone compresa (su App Store). I moduli Gestionale e Subappalti si aggiungono.',
     primary: { label: 'Vai a Tetha', href: 'https://tetha.wearerighello.com', external: true },
   },
 } satisfies Landing;

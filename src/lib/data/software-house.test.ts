@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getCaseStudyBySlug } from './case-studies';
+import { caseStudies, getCaseStudyBySlug } from './case-studies';
 import { serviceDetails, serviceFaqs } from './service-details';
 import { getSoftwareHouse, softwareHousePages, type SoftwareHousePage } from './software-house';
 import { footerColumns, softwareHouseLinks } from './site';
@@ -92,10 +92,22 @@ describe('pagine software house: dati', () => {
       expect(new Set(p.proof.map((x) => x.id)).size).toBe(p.proof.length);
     });
 
-    it('non dice stato falso: «App Store» solo accanto a BUFFR, e «online» o «in prova» come nelle schede', () => {
+    it('non dice stato falso: «App Store» solo accanto a prodotti che sono sullo store, e «online» o «in prova» come nelle schede', () => {
+      const onStore = caseStudies.filter((s) => s.status.tone === 'store').map((s) => s.name);
+      const notOnStore = caseStudies.filter((s) => s.status.tone !== 'store').map((s) => s.name);
+      const esc = (x: string) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       for (const line of textOf(p))
-        for (const sentence of line.split(/(?<=[.;:])\s+/))
-          if (/App Store/.test(sentence)) expect(sentence, sentence).toMatch(/BUFFR|nostra app/);
+        for (const sentence of line.split(/(?<=[.;:])\s+/)) {
+          if (!/App Store/.test(sentence)) continue;
+          expect(sentence, `${sentence}: nomina un prodotto sullo store`).toMatch(new RegExp(`${onStore.map(esc).join('|')}|nostra app`));
+          // nomi piu' lunghi per primi, e tolti man mano: «BUFFR Live» non e' «BUFFR»
+          let rest = sentence;
+          for (const name of [...notOnStore, ...onStore].sort((a, b) => b.length - a.length)) {
+            const found = new RegExp(`(^|[^\\wÀ-ÿ])${esc(name)}($|[^\\wÀ-ÿ])`).test(rest);
+            expect(found && notOnStore.includes(name), `${sentence}: «${name}» non e' sullo store`).toBe(false);
+            rest = rest.split(name).join(' ');
+          }
+        }
       for (const it of p.proof) {
         const study = getCaseStudyBySlug(it.id)!;
         if (study.status.tone !== 'store') expect(it.note, `${it.id} non e su App Store`).not.toMatch(/App Store/);

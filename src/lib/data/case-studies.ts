@@ -33,6 +33,8 @@ export interface CaseStudy {
   focus: string[];
   href?: string;
   storeUrl?: string;
+  /** Il pulsante principale resta il sito anche se l'app e' sullo store (gestionali: l'app si apre con l'account dell'azienda). */
+  webFirst?: boolean;
   logo?: string;
   icon?: string;
   image: string;
@@ -229,7 +231,7 @@ export const caseStudies: CaseStudy[] = [
     sector: 'Gestionale per agenzie e studi',
     category: 'digital',
     kind: 'gestionale',
-    status: { tone: 'live', label: 'Online · app iPhone in prova' },
+    status: { tone: 'store', label: 'Online · app su App Store' },
     platform: ['Web', 'iPhone'],
     audience: 'Agenzie e studi professionali',
     accent: ['#D6487E', '#7C5CFF'],
@@ -238,6 +240,8 @@ export const caseStudies: CaseStudy[] = [
       'Il gestionale con intelligenza artificiale per agenzie e studi: clienti, task, revisioni con il cliente, preventivi, ore e buoni, sul web e su iPhone.',
     focus: ['Gestionale AI', 'Web e iPhone', 'Video review', 'Preventivi'],
     href: 'https://appbeta.wearerighello.com',
+    storeUrl: 'https://apps.apple.com/it/app/optima/id6818720485',
+    webFirst: true,
     icon: '/progetti/icons/optima.webp',
     image: '/progetti/stage/optima.webp',
     stage: {
@@ -249,7 +253,7 @@ export const caseStudies: CaseStudy[] = [
     seo: {
       title: 'Óptima: gestionale con AI per agenzie e studi | Righello',
       description:
-        'Óptima è il gestionale con intelligenza artificiale per agenzie e studi: clienti, task, revisioni, preventivi, ore e buoni. Sul web e su iPhone (in prova).',
+        'Óptima è il gestionale con intelligenza artificiale per agenzie e studi: clienti, task, revisioni, preventivi, ore e buoni. Web e iPhone, su App Store.',
     },
   },
   {
@@ -258,7 +262,7 @@ export const caseStudies: CaseStudy[] = [
     sector: 'SaaS per l\'edilizia',
     category: 'digital',
     kind: 'gestionale',
-    status: { tone: 'live', label: 'Online · app iPhone in prova' },
+    status: { tone: 'store', label: 'Online · app su App Store' },
     platform: ['Web', 'iPhone'],
     audience: 'Imprese edili, lattonieri e subappaltatori',
     accent: ['#1FBF8F', '#0E4D45'],
@@ -267,6 +271,8 @@ export const caseStudies: CaseStudy[] = [
       'Imprese edili, lattonieri e subappaltatori tenevano scadenze e idoneità sanitarie su fogli Excel sparsi. Tetha legge i documenti scansionati dal telefono o mandati su Telegram, avvisa trenta giorni prima di ogni scadenza e prepara in un clic il dossier che il committente chiede al cancello del cantiere.',
     focus: ['Software per l\'edilizia', 'Bot Telegram', 'Automazione documentale', 'Dashboard'],
     href: 'https://tetha.wearerighello.com',
+    storeUrl: 'https://apps.apple.com/it/app/tetha/id6816619312',
+    webFirst: true,
     icon: '/progetti/icons/tetha.webp',
     image: '/progetti/stage/tetha.webp',
     stage: {
@@ -287,7 +293,7 @@ export const caseStudies: CaseStudy[] = [
     sector: 'Il Mac sull’iPhone',
     category: 'digital',
     kind: 'app',
-    status: { tone: 'beta', label: 'App in prova' },
+    status: { tone: 'store', label: 'Pubblicata su App Store' },
     platform: ['iPhone', 'Mac'],
     audience: 'Chi lavora sul Mac e vuole usarlo anche lontano dalla scrivania',
     accent: ['#FF0090', '#6D28D9'],
@@ -296,6 +302,7 @@ export const caseStudies: CaseStudy[] = [
       'Vedi lo schermo del tuo Mac sull’iPhone, muovi il puntatore, clicchi e scrivi come se fossi alla scrivania, da casa o da fuori. Trackpad vero, tastiera da Mac, dettatura, e tutto cifrato da capo a capo.',
     focus: ['Controllo remoto', 'Trackpad e tastiera', 'iPhone Duo', 'Cifrato da capo a capo'],
     href: 'https://perigscope.wearerighello.com',
+    storeUrl: 'https://apps.apple.com/it/app/perigscope/id6826381109',
     icon: '/progetti/icons/perigscope.webp',
     image: '/progetti/landing/perigscope/prova-senza-mac.webp',
     imagePosition: 'center top',
@@ -308,7 +315,7 @@ export const caseStudies: CaseStudy[] = [
     seo: {
       title: 'Perigscope: il tuo Mac sull’iPhone, con trackpad e tastiera',
       description:
-        'Perigscope porta il tuo Mac sull’iPhone: trackpad vero, tastiera da Mac, dettatura, cifratura da capo a capo. Pensata per iPhone Duo. App in prova.',
+        'Perigscope porta il tuo Mac sull’iPhone: trackpad vero, tastiera da Mac, dettatura, cifratura da capo a capo. Pensata per iPhone Duo. App su App Store.',
     },
   },
   {
@@ -317,7 +324,7 @@ export const caseStudies: CaseStudy[] = [
     sector: 'App per chi esce a mangiare',
     category: 'digital',
     kind: 'app',
-    status: { tone: 'beta', label: 'App iPhone in prova' },
+    status: { tone: 'store', label: 'Pubblicata su App Store' },
     platform: ['iPhone'],
     audience: 'Chi cerca un locale in Friuli Venezia Giulia',
     accent: ['#F0A33A', '#8A4B12'],
@@ -326,6 +333,7 @@ export const caseStudies: CaseStudy[] = [
       'L\'app per i clienti: il catalogo dei locali del Friuli Venezia Giulia, la prenotazione dove il locale usa Gusto, le tessere fedeltà che si riempiono dai consumi veri (anche in Wallet) e il menu letto sulle tue esigenze alimentari.',
     focus: ['iPhone', 'Catalogo dei locali', 'Prenotazione', 'Tessere fedeltà', 'Menu e allergie'],
     href: 'https://gustoraffinato.com',
+    storeUrl: 'https://apps.apple.com/it/app/gusto-raffinato/id6778067479',
     icon: '/progetti/icons/gusto-raffinato.webp',
     image: '/progetti/stage/gusto-raffinato.webp',
     stage: {
@@ -337,7 +345,7 @@ export const caseStudies: CaseStudy[] = [
     seo: {
       title: 'Gusto Raffinato: app per prenotare nei locali del FVG',
       description:
-        'L’app per i clienti: catalogo dei locali del Friuli-Venezia Giulia, prenotazione dove il locale usa Gusto e tessere fedeltà anche in Wallet. In prova su iPhone.',
+        'L’app per i clienti: catalogo dei locali del Friuli-Venezia Giulia, prenotazione dove il locale usa Gusto, tessere fedeltà anche in Wallet. Su App Store.',
     },
   },
   {
@@ -346,7 +354,7 @@ export const caseStudies: CaseStudy[] = [
     sector: 'Gestionale per ristoranti e locali',
     category: 'digital',
     kind: 'gestionale',
-    status: { tone: 'beta', label: 'App iPad e iPhone in prova' },
+    status: { tone: 'store', label: 'Pubblicata su App Store · iPad e iPhone' },
     platform: ['iPad', 'iPhone'],
     audience: 'Ristoratori e personale di sala',
     accent: ['#F0A33A', '#8A4B12'],
@@ -355,6 +363,7 @@ export const caseStudies: CaseStudy[] = [
       'Il gestionale per chi ha un locale: la sala in 3D con tavoli e conti, l\'agenda della serata, le comande dal palmare del cameriere, il magazzino e il costo dei piatti.',
     focus: ['iPad e iPhone', 'Sala in 3D', 'Palmare per i camerieri', 'Magazzino e costo dei piatti'],
     href: 'https://gustoraffinato.com',
+    storeUrl: 'https://apps.apple.com/it/app/gusto-raffinato-sala/id6816738724',
     icon: '/progetti/icons/gusto-raffinato-sala.webp',
     image: '/progetti/stage/gusto-sala-ipad.webp',
     stage: {
@@ -367,7 +376,7 @@ export const caseStudies: CaseStudy[] = [
     seo: {
       title: 'Gusto Raffinato Sala: gestionale per ristoranti su iPad',
       description:
-        'Gestionale per chi ha un locale: sala in 3D con tavoli e conti, agenda della serata, comande dal telefono del cameriere. App iPad e iPhone in prova.',
+        'Gestionale per chi ha un locale: sala in 3D con tavoli e conti, agenda della serata, comande dal telefono del cameriere. App iPad e iPhone su App Store.',
     },
   },
   {

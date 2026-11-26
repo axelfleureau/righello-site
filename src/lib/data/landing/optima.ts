@@ -87,13 +87,13 @@ export default {
 
   features: [
     { icon: 'bolt', title: 'Oggi e Task', text: 'Priorità, scadenze e bacheca del team, su web e iPhone con gli stessi numeri.' },
-    { icon: 'clock', title: 'Cartellino e rapportino', text: 'Entrata, uscita e attività del giorno; chi dirige è presente di default.' },
-    { icon: 'cart', title: 'Buoni Righello', text: 'Credito da contratto che matura ogni mese, speso con un QR alla cassa del cliente.' },
+    { icon: 'clock', title: 'Cartellino e rapportino', text: 'Entrata e uscita in due tocchi, anche con la carta a QR che cambia ogni pochi secondi, il pass nel Wallet o il tag all’ingresso dell’ufficio. Chi dirige è presente di default.' },
+    { icon: 'cart', title: 'Buoni Righello', text: 'Credito da contratto che matura ogni mese, speso con un QR alla cassa del cliente. Commesse, credito e registro dei buoni anche su iPhone.' },
     { icon: 'file', title: 'Preventivi e rate', text: 'Un solo calcolo per schermo, PDF e rate. Il cliente salva carta o addebito SEPA da un link.' },
-    { icon: 'device', title: 'App iPhone nativa', text: 'Non una pagina web incorniciata: notifiche con Approva e Rivedi, Face ID per decidere.' },
+    { icon: 'device', title: 'App iPhone nativa', text: 'Non una pagina web incorniciata: notifiche con Approva e Rivedi, Face ID per decidere, widget e attività in tempo reale nella schermata di blocco. È su App Store: l’account lo dà l’azienda.' },
     { icon: 'link', title: 'Dalla task alla consegna', text: 'Collega la consegna alla task, il cliente rivede, tu correggi e arriva l’approvazione. Óptima propone la consegna giusta; il collegamento lo decidi tu.' },
     { icon: 'layers', title: 'Carosello, ZIP e note del team', text: 'Una nuova versione di un carosello si carica in un colpo solo, con i file abbinati alle slide. Il visore scorre i file di uno ZIP e i link delle task aprono l’app. Le note del team restano separate da quelle del cliente.' },
-    { icon: 'sparkle', title: 'Óptima AI', text: 'Risponde dai tuoi dati, prepara bozze e task, e chiede conferma prima di scrivere.' },
+    { icon: 'sparkle', title: 'Óptima AI', text: 'Risponde dai tuoi dati, anche a voce dall’app, prepara bozze e task, e chiede conferma prima di scrivere.' },
   ],
 
   demo: {
@@ -133,7 +133,7 @@ export default {
   cta: {
     title: 'Un posto solo per il lavoro dell’agenzia.',
     highlight: 'Un posto solo',
-    text: 'Il gestionale è online; l’app iPhone è in prova con i primi team su TestFlight.',
+    text: 'Il gestionale è online e l’app per iPhone è su App Store: l’account lo dà l’azienda, e i collaboratori entrano con la stessa email del gestionale.',
     primary: { label: 'Apri Óptima', href: 'https://appbeta.wearerighello.com', external: true },
   },
 } satisfies Landing;

@@ -88,7 +88,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
         {
           icon: 'device',
           title: 'App per iPhone e iPad',
-          text: 'App per chi lavora sul campo o in sala. BUFFR è su App Store; Gusto Raffinato Sala porta la sala di un ristorante su iPad ed è in prova.',
+          text: 'App per chi lavora sul campo o in sala. BUFFR è su App Store; Gusto Raffinato Sala porta la sala di un ristorante su iPad ed è su App Store.',
           href: '/buffr',
         },
         {
@@ -141,7 +141,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
     note: {
       kicker: 'Prodotti nostri',
       title: 'Costruiamo software e lo teniamo in piedi ogni giorno',
-      text: 'BUFFR è su App Store. Óptima, il gestionale per agenzie e studi, e Tetha, per le imprese edili, sono online; le loro app per iPhone sono in prova. Aggiornamenti, store, pagamenti e assistenza li facciamo noi: è quello che portiamo nei lavori per i clienti.',
+      text: 'BUFFR, Perigscope e Gusto Raffinato sono su App Store. Óptima, il gestionale per agenzie e studi, e Tetha, per le imprese edili, sono online e hanno la loro app per iPhone su App Store. Aggiornamenti, store, pagamenti e assistenza li facciamo noi: è quello che portiamo nei lavori per i clienti.',
       link: { href: '/progetti', label: 'Tutti i prodotti e i lavori' },
     },
     method: {
@@ -173,8 +173,8 @@ export const softwareHousePages: SoftwareHousePage[] = [
     },
     proof: [
       { id: 'buffr', note: 'La nostra app per iPhone, su App Store: la camera salva gli ultimi secondi e monta il video della partita.' },
-      { id: 'optima', note: 'Gestionale con intelligenza artificiale per agenzie e studi: online; l’app iPhone è in prova.' },
-      { id: 'tetha', note: 'Software per scadenze e documenti di cantiere: online; l’app iPhone è in prova.' },
+      { id: 'optima', note: 'Gestionale con intelligenza artificiale per agenzie e studi, online. L’app di Óptima per iPhone è su App Store.' },
+      { id: 'tetha', note: 'Software per scadenze e documenti di cantiere, online. L’app di Tetha per iPhone è su App Store.' },
       { id: 'dico', note: 'Piattaforma online che porta le comunicazioni dei Comuni su WhatsApp e Telegram.' },
       { id: 'portopiccolo-apartments', note: 'Sito con prenotazione diretta, collegato al calendario del gestionale.' },
       { id: 'fiumedica', note: 'Il sito di un polo sanitario di Fiume Veneto: ventisei aree mediche, prenotazione e referti.' },
@@ -209,7 +209,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
       {
         question: 'Sviluppate app per iPhone e iPad?',
         answer:
-          'Sì. BUFFR, la nostra app per iPhone, è su App Store. Óptima, Tetha, BUFFR Live, Rig Cast e Gusto Raffinato hanno app per iPhone o iPad in prova, e ogni scheda dice a che punto è. Per un’app su misura si parte dalla chiamata gratuita e da una proposta scritta.',
+          'Sì. BUFFR, Óptima, Tetha, Perigscope e Gusto Raffinato (con Gusto Raffinato Sala per iPad) sono su App Store. BUFFR Live e Rig Cast sono app in prova, e ogni scheda dice a che punto è. Per un’app su misura si parte dalla chiamata gratuita e da una proposta scritta.',
       },
       {
         question: 'Quanto costa un software su misura?',

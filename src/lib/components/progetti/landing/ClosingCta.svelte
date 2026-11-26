@@ -14,6 +14,8 @@
   export let tone = 0;
 
   $: action = cta?.primary ? { href: cta.primary.href, label: cta.primary.label, external: cta.primary.external ?? cta.primary.href.startsWith('http') } : primary ? { ...primary, external: true } : null;
+  /** L'app e' sullo store ma il pulsante principale porta altrove (sito del gestionale): il link allo store non si perde. */
+  $: store = study.storeUrl && action?.href !== study.storeUrl ? { href: study.storeUrl, label: 'Scarica su App Store' } : null;
   $: title = cta?.title ?? `Parliamo di ${study.name}`;
   $: text = cta?.text ?? 'Raccontaci che cosa ti serve: ti rispondiamo noi, senza giri.';
 </script>
@@ -28,6 +30,9 @@
       <div class="cc__cta">
         {#if action}
           <ProButton variant="solid" arrow="up-right" external={action.external} size="lg" href={action.href}>{action.label}</ProButton>
+        {/if}
+        {#if store}
+          <ProButton variant="ghost" arrow="up-right" external size="lg" href={store.href}>{store.label}</ProButton>
         {/if}
         <ProButton variant={action ? 'ghost' : 'solid'} arrow="right" size="lg" href={contactHref(study)}>Parliamo di un progetto simile</ProButton>
       </div>
