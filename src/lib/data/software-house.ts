@@ -141,7 +141,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
     note: {
       kicker: 'Prodotti nostri',
       title: 'Costruiamo software e lo teniamo in piedi ogni giorno',
-      text: 'BUFFR, Perigscope e Gusto Raffinato sono su App Store. Óptima, il gestionale per agenzie e studi, e Tetha, per le imprese edili, sono online e hanno la loro app per iPhone su App Store. Aggiornamenti, store, pagamenti e assistenza li facciamo noi: è quello che portiamo nei lavori per i clienti.',
+      text: 'BUFFR, Perigscope, Eco, Squadro e Gusto Raffinato sono su App Store. Óptima, il gestionale per agenzie e studi, e Tetha, per le imprese edili, sono online e hanno la loro app per iPhone su App Store. Aggiornamenti, store, pagamenti e assistenza li facciamo noi: è quello che portiamo nei lavori per i clienti.',
       link: { href: '/progetti', label: 'Tutti i prodotti e i lavori' },
     },
     method: {
@@ -209,7 +209,7 @@ export const softwareHousePages: SoftwareHousePage[] = [
       {
         question: 'Sviluppate app per iPhone e iPad?',
         answer:
-          'Sì. BUFFR, Óptima, Tetha, Perigscope e Gusto Raffinato (con Gusto Raffinato Sala per iPad) sono su App Store. BUFFR Live e Rig Cast sono app in prova, e ogni scheda dice a che punto è. Per un’app su misura si parte dalla chiamata gratuita e da una proposta scritta.',
+          'Sì. BUFFR, Óptima, Tetha, Perigscope, Eco, Squadro e Gusto Raffinato (con Gusto Raffinato Sala per iPad) sono su App Store. BUFFR Live e Rig Cast sono app in prova, e ogni scheda dice a che punto è. Per un’app su misura si parte dalla chiamata gratuita e da una proposta scritta.',
       },
       {
         question: 'Quanto costa un software su misura?',

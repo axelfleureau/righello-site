@@ -275,6 +275,8 @@ const APP_CATEGORY: Record<string, string> = {
   canale77: 'EntertainmentApplication',
   rigcast: 'MultimediaApplication',
   perigscope: 'UtilitiesApplication',
+  eco: 'BusinessApplication',
+  squadro: 'DesignApplication',
   'gusto-raffinato': 'LifestyleApplication',
   lumis: 'MultimediaApplication'
 };

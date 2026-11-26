@@ -94,6 +94,20 @@ const phonesBuffr = [
 
 // Schermate vere dell'app (build di sviluppo sul simulatore, 12/11/2026): la prova senza Mac usa il Mac finto dell'app.
 // [0] centro, [1] sinistra, [3] destra ([2] non e' usata: serve almeno 4 voci).
+const phonesEco = [
+  '/progetti/landing/eco/oggi.webp',
+  '/progetti/landing/eco/recensioni.webp',
+  '/progetti/landing/eco/approva.webp',
+  '/progetti/landing/eco/negativa.webp',
+];
+
+const phonesSquadro = [
+  '/progetti/landing/squadro/pianta.webp',
+  '/progetti/landing/squadro/3d.webp',
+  '/progetti/landing/squadro/progetto.webp',
+  '/progetti/landing/squadro/differenze.webp',
+];
+
 const phonesPerigscope = [
   '/progetti/landing/perigscope/prova-senza-mac.webp',
   '/progetti/landing/perigscope/benvenuto.webp',
@@ -316,6 +330,67 @@ export const caseStudies: CaseStudy[] = [
       title: 'Perigscope: il tuo Mac sull’iPhone, con trackpad e tastiera',
       description:
         'Perigscope porta il tuo Mac sull’iPhone: trackpad vero, tastiera da Mac, dettatura, cifratura da capo a capo. Pensata per iPhone Duo. App su App Store.',
+    },
+  },
+  {
+    id: 'eco',
+    name: 'Eco',
+    sector: 'Risposte alle recensioni di Google',
+    category: 'digital',
+    kind: 'app',
+    status: { tone: 'store', label: 'Pubblicata su App Store' },
+    platform: ['iPhone', 'Web'],
+    audience: 'Attività con recensioni su Google e chi le segue per più clienti',
+    accent: ['#F7AE24', '#201911'],
+    headline: 'Rispondi alle recensioni di Google dall’iPhone, con la voce della tua attività.',
+    text:
+      'Eco ti avvisa quando arriva una recensione su Google e ti presenta una risposta già pronta, scritta con la voce della tua attività. La leggi, la ritocchi con un tocco se serve e la pubblichi. Le risposte delicate restano sempre a una persona.',
+    focus: ['Recensioni di Google', 'Bozze nella voce dell’attività', 'Approvazione con annulla', 'Più clienti in un posto'],
+    href: 'https://risposte.wearerighello.com',
+    storeUrl: 'https://apps.apple.com/it/app/eco-risposte-alle-recensioni/id6821380088',
+    icon: '/progetti/icons/eco.webp',
+    image: phonesEco[0],
+    imagePosition: 'center top',
+    stage: {
+      type: 'phones',
+      src: phonesEco[0],
+      alt: 'Eco: le risposte da approvare della giornata, l’elenco delle recensioni con la bozza pronta, l’approvazione una per una e una recensione negativa da rileggere',
+      screens: phonesEco,
+    },
+    seo: {
+      title: 'Eco: risposte alle recensioni di Google, per iPhone',
+      description:
+        'Eco ti avvisa quando arriva una recensione su Google e prepara la risposta con la voce della tua attività: la leggi, la ritocchi e la pubblichi. Su App Store.',
+    },
+  },
+  {
+    id: 'squadro',
+    name: 'Squadro',
+    sector: 'Rilievo di stanze con il LiDAR',
+    category: 'digital',
+    kind: 'app',
+    status: { tone: 'store', label: 'Pubblicata su App Store' },
+    platform: ['iPhone'],
+    audience: 'Chi deve rilevare e quotare un ambiente: tecnici, progettisti, chi ristruttura',
+    accent: ['#D9784F', '#172039'],
+    headline: 'Rilievo, progetto e consegna con un solo telefono.',
+    text:
+      'Squadro trasforma l’iPhone in uno strumento di rilievo: con il sensore LiDAR scansioni una stanza o un intero appartamento e ottieni la pianta quotata, la vista 3D, le differenze fra stato attuale e progetto, e il PDF o il file per il CAD.',
+    focus: ['Pianta quotata', 'Vista 3D', 'Stato attuale e progetto', 'PDF, DXF e OBJ'],
+    storeUrl: 'https://apps.apple.com/it/app/squadro/id6821417058',
+    icon: '/progetti/icons/squadro.webp',
+    image: phonesSquadro[0],
+    imagePosition: 'center top',
+    stage: {
+      type: 'phones',
+      src: phonesSquadro[0],
+      alt: 'Squadro: la pianta quotata di una stanza, la vista 3D, il progetto con le aperture e le differenze fra stato attuale e progetto',
+      screens: phonesSquadro,
+    },
+    seo: {
+      title: 'Squadro: la pianta di una stanza con il LiDAR dell’iPhone',
+      description:
+        'Squadro scansiona una stanza con il LiDAR dell’iPhone e dà la pianta quotata, il 3D, le differenze con il progetto e l’export in PDF e DXF. Su App Store.',
     },
   },
   {

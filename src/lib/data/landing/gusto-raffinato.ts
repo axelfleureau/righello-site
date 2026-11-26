@@ -3,7 +3,7 @@ import type { Landing } from './types';
 const A = '/progetti/landing/gusto-raffinato';
 
 /*
- * Gusto Raffinato: l'app per chi esce a mangiare (iPhone, su App Store: verificato il 26/11/2026, versione 1.0.3, gratuita).
+ * Gusto Raffinato: l'app per chi esce a mangiare (iPhone, su App Store: verificato il 26/11/2026, versione 1.0.3).
  * Fatti verificati (06/10/2026) e sul sito pubblico gustoraffinato.com.
  * Le schermate sono del locale d'esempio "Trattoria Al Glicine", inventato.
  * Nessun prezzo, nessun cliente reale, niente sulle fonti dei dati del catalogo.
@@ -187,7 +187,7 @@ export default {
     title: 'Per i clienti, e per chi ha un locale.',
     highlight: 'chi ha un locale',
     text:
-      'L\'app è su App Store, gratuita: se hai un locale e vuoi prenotazioni e timbri, parliamone.',
+      'L\'app è su App Store: se hai un locale e vuoi prenotazioni e timbri, parliamone.',
     primary: { label: 'Vai a gustoraffinato.com', href: 'https://gustoraffinato.com', external: true }
   }
 } satisfies Landing;
