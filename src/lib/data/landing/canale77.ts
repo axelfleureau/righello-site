@@ -29,9 +29,9 @@ export default {
       media: [
         {
           type: 'image',
-          src: '/progetti/landing/canale77/sito-web.webp',
-          alt: 'La pagina iniziale di Canale 77 On Demand sul sito: barra con Home, Calcio FVG, Calcio Veneto, Rugby, Basket, TG e programmi, in alto il contenuto in evidenza',
-          caption: 'Il sito: sezioni per sport e contenuto in evidenza.',
+          src: '/progetti/landing/canale77/sito-home.webp',
+          alt: 'La pagina iniziale di Canale 77 On Demand sul sito: barra con Calcio FVG, Calcio Veneto, Rugby, Basket, TG e programmi, il pulsante In onda, un contenuto in evidenza e la riga dei più visti della settimana',
+          caption: 'Il sito: sezioni per sport, diretta a un tocco e contenuto in evidenza.',
           ratio: '1600/860',
           frame: 'browser',
         },
@@ -78,11 +78,11 @@ export default {
     },
   ],
   features: [
-    { icon: 'layers', title: 'Catalogo unico', text: 'Tre testate, sezioni per sport (calcio, basket, rugby) e una riga di rubriche e programmi.' },
-    { icon: 'play', title: 'Diretta', text: 'Si prova in HLS e, se serve, in DASH. Se il nostro player non mostra un fotogramma, passa a quello ufficiale.' },
+    { icon: 'layers', title: 'Catalogo unico', text: 'Tre testate, sezioni per sport (calcio, basket, rugby), una riga di rubriche e programmi e, in alto, i più visti della settimana.' },
+    { icon: 'play', title: 'Diretta', text: 'Il pulsante «In onda» è sempre in barra, da qualunque sezione. Si prova in HLS e, se serve, in DASH; se il nostro player non mostra un fotogramma, passa a quello ufficiale.' },
     { icon: 'clock', title: 'Continua a guardare', text: 'Ogni contenuto riparte da dove si era rimasti, con la barra di avanzamento, e c\'è una lista personale.' },
     { icon: 'search', title: 'Ricerca', text: 'Si cerca per squadra, data, campionato o tipo di contenuto, con suggerimenti pronti.' },
-    { icon: 'chart', title: 'Spot e rendiconto', text: 'Spot per campagna, con finestra di date e preferenza per zona (stimata dalla rete, non garantita), e rendiconto per chi investe.' },
+    { icon: 'chart', title: 'Spot e rendiconto', text: 'Spot per campagna, con finestra di date e preferenza per zona, e rendiconto per chi investe. Sul sito la zona la sceglie lo spettatore alla prima apertura e resta sul suo dispositivo.' },
     { icon: 'lock', title: 'Premium', text: 'Le dirette in esclusiva si sbloccano con il telefono: CH77+ è nella sua pagina.' },
   ],
   demo: {
@@ -96,9 +96,21 @@ export default {
         label: 'Sito',
         media: {
           type: 'image',
-          src: '/progetti/landing/canale77/sito-web.webp',
-          alt: 'Il sito di Canale 77 On Demand sul computer: barra delle sezioni e contenuto in evidenza',
-          caption: 'Il sito sul computer: sezioni, contenuto in evidenza e le novità subito sotto.',
+          src: '/progetti/landing/canale77/sito-home.webp',
+          alt: 'Il sito di Canale 77 On Demand sul computer: barra delle sezioni, pulsante In onda e contenuto in evidenza',
+          caption: 'Il sito sul computer: sezioni, «In onda» in barra e il contenuto in evidenza.',
+          ratio: '1600/860',
+          frame: 'browser',
+        },
+      },
+      {
+        id: 'sito-righe',
+        label: 'Sito: le righe',
+        media: {
+          type: 'image',
+          src: '/progetti/landing/canale77/sito-righe.webp',
+          alt: 'Il sito di Canale 77 On Demand: la classifica I più visti della settimana, la riga Partite intere e la riga Highlights',
+          caption: 'Sotto il contenuto in evidenza: i più visti della settimana, le partite intere, gli highlights.',
           ratio: '1600/860',
           frame: 'browser',
         },

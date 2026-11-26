@@ -438,11 +438,11 @@ export const caseStudies: CaseStudy[] = [
     focus: ['Video on demand', 'Diretta', 'HbbTV', 'Smart TV'],
     href: 'https://ch77.wearerighello.com',
     logo: '/logos/canale-77.webp',
-    image: '/progetti/stage/canale77.webp',
+    image: '/progetti/stage/canale77-home.webp',
     stage: {
       type: 'browser',
-      src: '/progetti/stage/canale77.webp',
-      alt: 'Canale 77 On Demand: la pagina iniziale con highlights, interviste e rubriche',
+      src: '/progetti/stage/canale77-home.webp',
+      alt: 'Canale 77 On Demand: la pagina iniziale con le sezioni per sport, il pulsante In onda, un contenuto in evidenza e i più visti della settimana',
     },
     seo: {
       title: 'Canale 77 On Demand: partite su sito, TV e HbbTV',
